@@ -106,6 +106,8 @@ async function main() {
     if(init.sourceRejected)throw fail('SOURCE_INIT_REJECTED');
     balance=integer(params(init.responsePayload).AB ?? params(init.responsePayload).B);
     evidence.initialBalanceRaw=balance;
+    const reelstrip=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=REELSTRIP`,'REELSTRIP');
+    if(reelstrip.sourceRejected)throw fail('SOURCE_REELSTRIP_REJECTED');
   }
   let sequence=lease.durable+1;
   while(sequence<=plan.target && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending)){

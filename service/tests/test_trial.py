@@ -11,6 +11,7 @@ from trial_store import TrialStore, SCHEMA, TRIAL
 from trial_fields import settled, frame
 from store import Rejected
 from round_fields import FieldError
+from trial_recover import recover
 
 def payload(msg):
     return f'GN=bookofsevens96&PID=gdmgcmexplicit-test-fixture&MSGID={msg}&AP=false&BPL=5&LB=5'
@@ -145,5 +146,18 @@ class TrialTests(unittest.TestCase):
         self.begin();self.call('frame',**self.own(),sequence=1,step=step(remaining=2))
         with self.assertRaisesRegex(Rejected,'ROUND_PENDING'):self.call('release',**self.own())
         with self.assertRaisesRegex(Rejected,'TRIAL_NOT_QUIESCENT'):self.call('audit')
+    def test_only_explicit_uncharged_bootstrap_rejection_can_be_reopened(self):
+        self.begin();s=step();s['responsePayload']='MSGID=ERROR&EID=ERROR_PROTOCOL_SEQUENCE&AB=100000'
+        s['responseXml']='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+escape(s['responsePayload'])+'</PAYLOAD></GDMRESPONSE>'
+        with self.assertRaises(Rejected):self.call('frame',**self.own(),sequence=1,step=s)
+        result=recover(self.store.root)
+        self.assertEqual(result['archivedRejectedAttempts'],1)
+        saved=json.loads(self.store.db.execute('SELECT raw FROM rejected_attempts').fetchone()[0])
+        self.assertEqual(saved['steps'][0],s);self.assertIsNone(self.store.pending())
+        self.assertEqual(self.call('status')['status'],'pending')
+    def test_timeout_evidence_cannot_be_cleared_by_bootstrap_recovery(self):
+        self.begin();self.call('fail',**self.own(),category='source_network')
+        with self.assertRaises(Rejected):recover(self.store.root)
+        self.assertIsNotNone(self.store.pending())
 
 if __name__=='__main__':unittest.main()
