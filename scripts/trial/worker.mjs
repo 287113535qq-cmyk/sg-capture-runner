@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 import { connect } from './rpc.mjs';
 import { gameForShard } from './demo-sessions.mjs';
 import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
+import {SQUID_EXTENSION} from './squid-protocol.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
@@ -23,6 +24,7 @@ function canonical(v) {
 }
 const hash = v => createHash('sha256').update(v).digest('hex');
 const mappingHash = hash(canonical(registry.profiles[plan.sourceKey]));
+const extensionHash=hash(canonical(registry.profiles[SQUID_EXTENSION]));
 const role = process.argv[2] || 'capture';
 assert(['capture','audit','status'].includes(role));
 const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minRequestIntervalMs);
@@ -109,7 +111,8 @@ async function main() {
     }catch{return {...result,sourceRejected:true};}
     return result;
   }
-  const payload=msg=>plan.campaignId?
+  const payload=(msg,next={})=>msg.startsWith('FEATURE_')?
+    Object.entries({GN:game.runtimeSlug,PID:`gdmgcm${game.sessionId}`,MSGID:msg,CFG:next.CFG,...(next.FP?{FP:next.FP}:{})}).map(([k,v])=>`${k}=${v}`).join('&'):plan.campaignId?
     Object.entries({...plan.requestParams,PID:`gdmgcm${game.sessionId}`,MSGID:msg}).map(([k,v])=>`${k}=${v}`).join('&'):
     `GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
   async function bootstrap() {
@@ -123,7 +126,7 @@ async function main() {
   const state={};
   const capture=async (currentLease,currentOwned)=>{
     const result=await captureBatch({plan,lease:currentLease,owned:currentOwned,rpc,post,payload,bootstrap,
-      prepareRound:prepareNextgenRound,mappingHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
+      prepareRound:prepareNextgenRound,mappingHash,extensionHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
       deadline,limit,exchangeOperation,onProgress:()=>{
         const seconds=(performance.now()-sessionStart)/1000;
         console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,batchId:currentLease.batchId,

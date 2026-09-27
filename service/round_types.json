@@ -900,6 +900,35 @@
         "runtimeGameId": 33196,
         "sourceId": "64adc7af-3e83-4b6f-bed1-b0b8926b2107"
       }
+    },
+    "squidgameonemoregame96-round-one-base-v1-jackpot-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": "docs/squid-jackpot-protocol.md",
+      "featureSelector": "squid-jackpot-v1",
+      "featureTypes": {
+        "feature": 2,
+        "freeFeature": 3
+      }
     }
   }
 }

@@ -51,3 +51,6 @@ class NativeNextgenFields:
         fields=derive(raw)
         check(fields['money']['betRaw']==self.plan['betRaw'] and fields['buy']==0,'TRIAL_ACTUAL_COST_MISMATCH')
         return fields
+
+    def next_request(self, raw):
+        return {'MSGID':'FREE_GAME'} if self.frame(raw['steps'][-1]) else None

@@ -616,7 +616,10 @@ export function buildRoundDoc(
   const primaryBonusKind = normalizePrimaryBonusKind(meta.forcedPrimaryBonusKind) || classifyPrimaryBonusKind(entries);
   const hasFree = entries.some(entry => entry.msgId === 'FREE_GAME');
   const bonus = meta.bonusType ?? (hasFree ? NaN : 0);
-  if ((hasFree && !(bonus > 0)) || (!hasFree && bonus !== 0)) throw new Error('SG_FREE_TYPE_MAPPING_REQUIRED');
+  const reviewedNaturalPick = runtimeSlug === 'squidgameonemoregame96-round-one-base-v1'
+    && entries.some(entry => entry.msgId === 'FEATURE_START')
+    && entries.some(entry => entry.msgId === 'FEATURE_END') && bonus === 2;
+  if ((hasFree && !(bonus > 0)) || (!hasFree && bonus !== 0 && !reviewedNaturalPick)) throw new Error('SG_FREE_TYPE_MAPPING_REQUIRED');
   const fields = settledFields(preBalance, lastBalance, totalWinRaw, meta.buy ?? 0, bonus);
   const betRaw = fields.money.betRaw;
   const specialKinds = primaryBonusKind === 'none' ? [] : [primaryBonusKind];

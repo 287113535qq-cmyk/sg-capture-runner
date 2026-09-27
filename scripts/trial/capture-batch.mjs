@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
+import {nextRequest, roundMapping} from './squid-protocol.mjs';
 
 export function fail(code, category='source_protocol', extra={}) {
   return Object.assign(new Error(code), {code, category, ...extra});
@@ -22,7 +23,7 @@ export function integer(value) {
 // Shared by the live worker and an offline protocol/storage integration test.
 // The caller provides the only source transport. There are no network calls here.
 export async function captureBatch({plan, lease, owned, rpc, post, payload, bootstrap,
-  prepareRound, mappingHash, evidence, state, shouldStop, requestStop, deadline, limit,
+  prepareRound, mappingHash, extensionHash, evidence, state, shouldStop, requestStop, deadline, limit,
   onProgress=()=>{}, exchangeOperation='exchange_journal'}) {
   const sequenceTarget = lease.sequenceTarget ?? plan.target;
   if (lease.durable >= sequenceTarget) return rpc('release', owned);
@@ -59,20 +60,22 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       intentReady = true;
     }
     while (true) {
-      const msg = raw.steps.length ? 'FREE_GAME' : 'BET';
+      const next = nextRequest(raw);
+      if(!next)throw fail('ROUND_ALREADY_SETTLED');
+      const msg=next.MSGID, requestPayload=payload(msg,next);
       if (raw.steps.length >= plan.maxSteps) throw fail('ROUND_STEP_LIMIT');
-      if (!intentReady) await rpc('intent', {...owned, sequence, requestPayload:payload(msg)});
-      const step = await post(payload(msg), msg);
+      if (!intentReady) await rpc('intent', {...owned, sequence, requestPayload});
+      const step = await post(requestPayload, msg);
       evidence.sourceElapsedMs = (evidence.sourceElapsedMs || 0) + step.elapsedMs;
       raw.steps.push(step);
-      let normalized, following, remaining = null;
-      try { remaining = step.sourceRejected ? null : integer(params(step.responsePayload).NFG ?? '0'); } catch {}
+      let normalized, following, continuation, remaining = null;
+      try { if(!step.sourceRejected){continuation=nextRequest(raw);remaining=continuation?1:0;} } catch {}
       if (remaining === 0) {
-        try { normalized = prepareRound(raw, {buy:0, bonus:raw.steps.some(s => s.msgId === 'FREE_GAME') ? 1 : 0, typeMappingHash:mappingHash}); }
+        try { normalized = prepareRound(raw, roundMapping(raw,mappingHash,extensionHash)); }
         catch { /* Preserve the original response before server validation rejects it. */ }
       }
       if (remaining > 0 && raw.steps.length < plan.maxSteps) {
-        following = {sequence, requestPayload:payload('FREE_GAME')};
+        following = {sequence, requestPayload:payload(continuation.MSGID,continuation)};
       } else if (normalized && sequence < sequenceTarget && evidence.completedThisRun + 1 < limit
           && !shouldStop() && performance.now() + 2000 < deadline && normalized.money.endBalanceRaw >= 2500) {
         following = {sequence:sequence + 1, attempt:randomUUID(), startBalanceRaw:normalized.money.endBalanceRaw,

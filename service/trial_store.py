@@ -21,10 +21,13 @@ class TrialStore:
         self.trial, self.schema = self.plan['trialId'], self.plan['schema']
         if self.plan.get('campaignId'):
             from native_nextgen_fields import NativeNextgenFields
-            adapter=NativeNextgenFields(self.plan)
+            from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
+            adapter=SquidFields(self.plan) if self.plan['sourceKey']==SQUID_SOURCE else NativeNextgenFields(self.plan)
+            self.field_next=adapter.next_request
             self.field_frame,self.field_settled,self.field_request=adapter.frame,adapter.settled,adapter.request_params
         else:
             self.field_frame,self.field_settled,self.field_request=frame,settled,request_params
+            self.field_next=lambda raw: {'MSGID':'FREE_GAME'} if frame(raw['steps'][-1]) else None
         self.root = Path(root).resolve() / 'trials' / self.trial
         self.batch = batch
         if batch is not None:
@@ -295,8 +298,12 @@ class TrialStore:
         p = self.pending()
         require(p and req.get('sequence') == p['sequence'] and p['awaiting'] is None, 'PENDING_STATE_MISMATCH')
         require(len(p['raw']['steps']) < self.plan['maxSteps'], 'ROUND_STEP_LIMIT')
-        require(self.field_frame(p['raw']['steps'][-1]) > 0, 'ROUND_ALREADY_SETTLED')
-        self.field_request(req.get('requestPayload'), 'FREE_GAME')
+        following = self.field_next(p['raw'])
+        require(following is not None, 'ROUND_ALREADY_SETTLED')
+        parsed = self.field_request(req.get('requestPayload'), following['MSGID'])
+        require(all(parsed.get(k)==v for k,v in following.items()), 'CONTINUATION_INTENT_MISMATCH')
+        from round_fields import params
+        require(parsed['PID']==params(p['raw']['steps'][0]['requestPayload'])['PID'], 'SESSION_CHANGED_MID_ROUND')
         self.db.execute('UPDATE pending SET awaiting=? WHERE id=1', (req['requestPayload'],))
         return {'intentDurable':True}
 
@@ -305,13 +312,14 @@ class TrialStore:
         p, step = self.pending(), req.get('step')
         require(p and req.get('sequence') == p['sequence'] and isinstance(step,dict), 'PENDING_STATE_MISMATCH')
         require(step.get('requestPayload') == p['awaiting'] and p['awaiting'] is not None, 'FRAME_INTENT_MISMATCH')
-        require(step.get('msgId') == ('BET' if not p['raw']['steps'] else 'FREE_GAME'), 'TRIAL_MESSAGE_NOT_ALLOWED')
+        from round_fields import params
+        require(step.get('msgId') == params(p['awaiting']).get('MSGID'), 'TRIAL_MESSAGE_NOT_ALLOWED')
         raw = p['raw']
         raw['steps'].append(step)
         # Preserve official response even if subsequent protocol analysis rejects it.
         self.db.execute('UPDATE pending SET raw=?,awaiting=NULL WHERE id=1', (canonical(raw).decode(),))
         try:
-            remaining = self.field_frame(step)
+            remaining = 1 if self.field_next(raw) is not None else 0
             if remaining:
                 return p, remaining, None
             fields = self.field_settled(raw)
@@ -358,7 +366,7 @@ class TrialStore:
         if not p or not p['raw']['steps'] or self.db.execute('SELECT 1 FROM receipts WHERE sequence=?',(p['sequence'],)).fetchone():
             return
         try:
-            if self.field_frame(p['raw']['steps'][-1]) == 0:
+            if self.field_next(p['raw']) is None:
                 self._stage(req,p,self.field_settled(p['raw']))
         except (FieldError,ValueError,TypeError,KeyError):
             self.db.execute("UPDATE trial SET status='halted',failure='PROTOCOL_VALIDATION_FAILED' WHERE id=1")

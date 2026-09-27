@@ -167,7 +167,12 @@ def type_profile(source_key):
 
 
 def types(raw, kind):
-    profile, mapping_hash = type_profile(raw.get('sourceKey'))
+    source_key = raw.get('sourceKey')
+    # An additive feature profile leaves every previously accepted native-only
+    # record and mapping hash unchanged, including partially saved old rounds.
+    from squid_fields import SOURCE as SQUID_SOURCE, EXTENSION
+    has_jackpot = source_key == SQUID_SOURCE and any(s['msgId'].startswith('FEATURE_') for s in raw['steps'])
+    profile, mapping_hash = type_profile(EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -195,7 +200,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if has_free:
+    if has_jackpot:
+        check(kind in {'feature','freeFeature'} and profile.get('featureSelector') == 'squid-jackpot-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus = profile['featureTypes'][kind]
+    elif has_free:
         # This reviewed game has one automatic free-game feature and no CFG
         # selector in its native request/response protocol. Never apply this
         # interpretation to another game or to a fixture profile.
