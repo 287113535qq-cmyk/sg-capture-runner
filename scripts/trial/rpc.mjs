@@ -12,6 +12,7 @@ export function connect(plan) {
     '-o','ServerAliveInterval=15','-o','ServerAliveCountMax=3',`sgcapture@${process.env.SG_SSH_HOST}`],
     { stdio:['pipe','pipe','pipe'] });
   let current = null, closed = false;
+  const timings = {};
   function reject(code) {
     if (current) { clearTimeout(current.timer); current.reject(Object.assign(new Error(code), {code})); current = null; }
   }
@@ -27,16 +28,21 @@ export function connect(plan) {
     catch { reject('TRIAL_RPC_INVALID'); return; }
     if (!response.ok) { reject(/^[A-Z_]{1,80}$/.test(response.error || '') ? response.error : 'TRIAL_RPC_REJECTED'); return; }
     const pending = current; current = null; clearTimeout(pending.timer); pending.resolve(response);
+    const metric=timings[pending.op] ||= {count:0,totalMs:0,serverWorkMs:0,requestBytes:0};
+    metric.count++;metric.totalMs+=performance.now()-pending.start;
+    metric.serverWorkMs+=response.serverWorkMs || 0;metric.requestBytes+=pending.bytes;
   });
   return {
     rpc(op, data = {}) {
       assert(!current, 'Concurrent trial RPC forbidden');
       if (closed) return Promise.reject(Object.assign(new Error('TRIAL_SSH_CLOSED'), {code:'TRIAL_SSH_CLOSED'}));
       return new Promise((resolve, rejectPromise) => {
-        current = {resolve, reject:rejectPromise, timer:setTimeout(() => { reject('TRIAL_RPC_TIMEOUT'); child.kill(); }, op === 'audit' ? 600000 : 180000)};
-        child.stdin.write(JSON.stringify({schema:plan.schema,trialId:plan.trialId,op,...data})+'\n');
+        const input=JSON.stringify({schema:plan.schema,trialId:plan.trialId,op,...data})+'\n';
+        current = {resolve, reject:rejectPromise,op,start:performance.now(),bytes:Buffer.byteLength(input),timer:setTimeout(() => { reject('TRIAL_RPC_TIMEOUT'); child.kill(); }, op === 'audit' ? 600000 : 180000)};
+        child.stdin.write(input);
       });
     },
+    metrics() { return Object.fromEntries(Object.entries(timings).map(([op,m])=>[op,{...m,averageMs:m.totalMs/m.count,averageServerWorkMs:m.serverWorkMs/m.count}])); },
     close() { child.stdin.end(); lines.close(); child.kill(); },
   };
 }

@@ -40,6 +40,8 @@ class TrialStore:
           PRIMARY KEY(sequence,step));
         CREATE TABLE IF NOT EXISTS runs(owner TEXT PRIMARY KEY, started REAL NOT NULL, ended REAL,
           start_checkpoint INTEGER NOT NULL, end_checkpoint INTEGER, commit_sha TEXT NOT NULL);
+        CREATE INDEX IF NOT EXISTS trial_unfiled ON receipts(sequence) WHERE filed=0;
+        CREATE INDEX IF NOT EXISTS trial_uncommitted ON receipts(sequence) WHERE filed=1 AND committed=0;
         ''')
         row = self.db.execute('SELECT * FROM trial WHERE id=1').fetchone()
         if row:
@@ -49,6 +51,8 @@ class TrialStore:
 
     def close(self):
         self.db.close()
+        if hasattr(self.mongo,'close'):
+            self.mongo.close()
 
     def state(self):
         return self.db.execute('SELECT * FROM trial WHERE id=1').fetchone()
@@ -69,10 +73,33 @@ class TrialStore:
         require(isinstance(req, dict) and req.get('schema') == SCHEMA and req.get('trialId') == TRIAL, 'TRIAL_NOT_ALLOWED')
         require(len(canonical(req)) <= 1048576, 'REQUEST_TOO_LARGE')
         op = req.get('op')
-        require(op in {'status','claim','begin','intent','frame','flush','release','fail','audit'}, 'OP_NOT_ALLOWED')
+        require(op in {'status','claim','begin','intent','frame','exchange','flush','release','fail','audit','ping'}, 'OP_NOT_ALLOWED')
+        started = time.perf_counter()
         with file_lock(self.root / 'trial.lock'):
             result = getattr(self, '_' + op)(req)
-        return {'ok': True, 'schema': SCHEMA, 'fixtureOnly': False, **result}
+        return {'ok': True, 'schema': SCHEMA, 'fixtureOnly': False,
+                'serverWorkMs': round((time.perf_counter()-started)*1000,3), **result}
+
+    def _ping(self, req):
+        return {'pong': True}
+
+    def _exchange(self, req):
+        # Confirm the current response and prepare the following intent in one
+        # network round trip. The source request still waits for durable ack.
+        result = self._frame(req)
+        following = req.get('following')
+        if following is not None:
+            require(isinstance(following,dict), 'BAD_FOLLOWING_INTENT')
+            own = {'owner':req.get('owner'),'epoch':req.get('epoch')}
+            if result['complete']:
+                require(following.get('sequence') == req['sequence']+1
+                        and following.get('startBalanceRaw') == result['endBalanceRaw'], 'FOLLOWING_ROUND_MISMATCH')
+                self._begin({**following, **own})
+            else:
+                require(following.get('sequence') == req['sequence'], 'FOLLOWING_ROUND_MISMATCH')
+                self._intent({**following, **own})
+            result['followingIntentDurable'] = True
+        return result
 
     def _status(self, req):
         s = self.state()

@@ -113,9 +113,11 @@ async function main() {
     balance=await bootstrap();
     evidence.initialBalanceRaw=balance;
   }
-  let sequence=lease.durable+1;
-  while(sequence<=plan.target && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending)){
+  let sequence=lease.durable+1, prepared=null;
+  for(let i=0;i<10;i++)await rpc('ping');
+  while(sequence<=plan.target && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending || prepared)){
     let raw, attempt;
+    let intentReady=false;
     if(pending){raw=pending.raw;attempt=pending.attempt;sequence=pending.sequence;pending=null;}
     else{
       // Demo credit reset is allowed only between fully settled big rounds.
@@ -127,22 +129,41 @@ async function main() {
         evidence.demoBalanceRefreshes=(evidence.demoBalanceRefreshes || 0)+1;
       }
       raw={fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[]};
-      attempt=randomUUID();
-      await rpc('begin',{...owned(),sequence,attempt,startBalanceRaw:balance,requestPayload:payload('BET')});
+      if(prepared){
+        assert.equal(prepared.sequence,sequence);assert.equal(prepared.startBalanceRaw,balance);
+        attempt=prepared.attempt;prepared=null;
+      }else{
+        attempt=randomUUID();
+        await rpc('begin',{...owned(),sequence,attempt,startBalanceRaw:balance,requestPayload:payload('BET')});
+      }
+      intentReady=true;
     }
     while(true){
       const msg=raw.steps.length?'FREE_GAME':'BET';
       if(raw.steps.length>=plan.maxSteps)throw fail('ROUND_STEP_LIMIT');
-      if(msg==='FREE_GAME')await rpc('intent',{...owned(),sequence,requestPayload:payload(msg)});
+      if(!intentReady)await rpc('intent',{...owned(),sequence,requestPayload:payload(msg)});
       const step=await post(payload(msg),msg);
+      evidence.sourceElapsedMs=(evidence.sourceElapsedMs || 0)+step.elapsedMs;
       raw.steps.push(step);
-      let normalized;
-      if(!step.sourceRejected && integer(params(step.responsePayload).NFG ?? '0')===0){
+      let normalized, following;
+      const remaining=step.sourceRejected?null:integer(params(step.responsePayload).NFG ?? '0');
+      if(remaining===0){
         try{normalized=prepareNextgenRound(raw,{buy:0,bonus:raw.steps.some(s=>s.msgId==='FREE_GAME')?1:0,typeMappingHash:mappingHash});}
         catch { /* Send original response first; server preserves it and rejects invalid settlement. */ }
       }
-      const result=await rpc('frame',{...owned(),sequence,step,...(normalized?{normalized}:{})});
-      if(result.complete){balance=result.endBalanceRaw;evidence.endCheckpoint=result.checkpoint;break;}
+      if(remaining>0 && raw.steps.length<plan.maxSteps){
+        following={sequence,requestPayload:payload('FREE_GAME')};
+      }else if(normalized && sequence<plan.target && evidence.completedThisRun+1<limit && !stop
+        && performance.now()+2000<deadline && normalized.money.endBalanceRaw>=2500){
+        following={sequence:sequence+1,attempt:randomUUID(),startBalanceRaw:normalized.money.endBalanceRaw,requestPayload:payload('BET')};
+      }
+      const result=await rpc('exchange',{...owned(),sequence,step,...(normalized?{normalized}:{}),...(following?{following}:{})});
+      intentReady=result.followingIntentDurable===true;
+      if(result.complete){
+        balance=result.endBalanceRaw;evidence.endCheckpoint=result.checkpoint;
+        if(intentReady)prepared=following;
+        break;
+      }
     }
     evidence.completedThisRun++;sequence++;
     if(evidence.completedThisRun%100===0){
@@ -168,6 +189,7 @@ try {
   try{evidence.result=await rpc('status');}catch{}
   process.exitCode=2;
 } finally {
+  evidence.rpcMetrics=transport.metrics();
   evidence.elapsedSeconds=Number(((performance.now()-sessionStart)/1000).toFixed(3));
   if(evidence.completedThisRun)evidence.roundsPerSecond=evidence.completedThisRun/evidence.elapsedSeconds;
   if(process.env.GITHUB_OUTPUT && ['pending','claimed','complete','halted'].includes(evidence.result?.status))

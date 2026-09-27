@@ -12,6 +12,7 @@ from trial_fields import settled, frame
 from store import Rejected
 from round_fields import FieldError
 from trial_recover import recover
+from trial_maintenance import gate
 
 def payload(msg):
     return f'GN=bookofsevens96&PID=gdmgcmexplicit-test-fixture&MSGID={msg}&AP=false&BPL=5&LB=5'
@@ -159,5 +160,49 @@ class TrialTests(unittest.TestCase):
         self.begin();self.call('fail',**self.own(),category='source_network')
         with self.assertRaises(Rejected):recover(self.store.root)
         self.assertIsNotNone(self.store.pending())
+    def test_merged_exchange_confirms_previous_and_durably_prepares_next(self):
+        self.begin()
+        following={'sequence':2,'attempt':'00000000-0000-0000-0000-000000000002','startBalanceRaw':99975,'requestPayload':payload('BET')}
+        first=self.call('exchange',**self.own(),sequence=1,step=step(),normalized=settled(raw()),following=following)
+        self.assertTrue(first['followingIntentDurable']);self.assertEqual(first['durable'],1)
+        self.assertEqual(self.store.pending()['sequence'],2)
+        self.assertEqual(self.store.pending()['awaiting'],payload('BET'))
+        second=step(balance=99950)
+        self.call('exchange',**self.own(),sequence=2,step=second,normalized=settled(raw([second],99975)))
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],2)
+    def test_merged_free_game_does_not_prepare_an_extra_paid_round(self):
+        self.begin();first=step(remaining=1)
+        result=self.call('exchange',**self.own(),sequence=1,step=first,following={'sequence':1,'requestPayload':payload('FREE_GAME')})
+        self.assertFalse(result['complete']);self.assertTrue(result['followingIntentDurable'])
+        final=step('FREE_GAME',100025,50,0)
+        result=self.call('exchange',**self.own(),sequence=1,step=final,normalized=settled(raw([first,final])))
+        self.assertNotIn('followingIntentDurable',result);self.assertIsNone(self.store.pending())
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['statistics']['freeRounds'],1)
+    def test_invalid_following_intent_preserves_already_received_round(self):
+        self.begin()
+        with self.assertRaisesRegex(Rejected,'FOLLOWING_ROUND_MISMATCH'):
+            self.call('exchange',**self.own(),sequence=1,step=step(),normalized=settled(raw()),following={'sequence':3})
+        self.assertEqual(self.call('status')['durable'],1);self.assertIsNone(self.store.pending())
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
+    def test_lost_merged_ack_never_blindly_repeats_the_following_bet(self):
+        self.begin();following={'sequence':2,'attempt':'00000000-0000-0000-0000-000000000002','startBalanceRaw':99975,'requestPayload':payload('BET')}
+        self.call('exchange',**self.own(),sequence=1,step=step(),normalized=settled(raw()),following=following)
+        self.clock[0]+=601
+        with self.assertRaisesRegex(Rejected,'SOURCE_OUTCOME_UNKNOWN'):
+            self.call('claim',owner='other',sessionHash='a'*64,commitSha='b'*40)
+        self.assertEqual(self.call('status')['durable'],1)
+    def test_progress_queries_use_bounded_pending_indexes(self):
+        for query,index in [('SELECT * FROM receipts WHERE filed=0 ORDER BY sequence','trial_unfiled'),
+                            ('SELECT * FROM receipts WHERE filed=1 AND committed=0 ORDER BY sequence LIMIT 100','trial_uncommitted')]:
+            plan=' '.join(str(tuple(r)) for r in self.store.db.execute('EXPLAIN QUERY PLAN '+query))
+            self.assertIn(index,plan)
+    def test_maintenance_finishes_inflight_round_and_blocks_only_next_intent(self):
+        self.begin();gate(self.store.root,True)
+        self.call('frame',**self.own(),sequence=1,step=step(),normalized=settled(raw()))
+        with self.assertRaisesRegex(__import__('sqlite3').IntegrityError,'TRIAL_MAINTENANCE_STOP'):self.begin(2)
+        self.assertIsNone(self.store.pending());self.assertEqual(self.call('status')['durable'],1)
+        self.call('fail',**self.own(),category='storage');gate(self.store.root,False)
+        self.owner='upgraded';self.claim();self.assertEqual(self.lease['checkpoint'],1)
+        self.begin(2)
 
 if __name__=='__main__':unittest.main()
