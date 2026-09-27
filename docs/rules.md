@@ -9,4 +9,4 @@
 - 完整 WMS 大局需完成所有实际 feature/free continuation 并到达 EndGame；失败的未完成大局不能计为完整数据。统计 JSON 行不等于已验证协议完整性。
 - 先持久化原始及规范化完整局、幂等 Mongo 写入，确认成功后才能推进 checkpoint。不得清空旧 JSONL、Mongo、finish 或 skip ledger。
 - 新增持久化队列必须原子 claim、绑定 run/job owner、续租并 fencing；只回收过期 lease。同游戏变体串行；429 Retry-After 跨 run 持久化。
-- 当前准备阶段禁止真实官方请求、正式数据写入、队列领取和自动调度。不会通过本机或测试服执行采集。
+- 当前阶段禁止真实官方请求、正式游戏数据写入和自动采集调度。按用户后续“把链路全部走通”的要求，允许独立 fixture 队列、文件及暂存库写入验证；不会通过本机或测试服执行官方采集。

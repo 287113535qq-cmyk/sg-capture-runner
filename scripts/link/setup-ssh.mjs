@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+assert.equal(process.env.GITHUB_ACTIONS, 'true');
+assert.equal(process.env.RUNNER_OS, 'Linux');
+assert.equal(process.env.RUNNER_ENVIRONMENT, 'github-hosted');
+const dir = fs.mkdtempSync(path.join(process.env.RUNNER_TEMP || os.tmpdir(), 'sg-link-ssh-'));
+fs.chmodSync(dir, 0o700);
+const key = path.join(dir, 'identity'), known = path.join(dir, 'known_hosts');
+assert(process.env.SG_SSH_PRIVATE_KEY && process.env.SG_SSH_KNOWN_HOSTS);
+fs.writeFileSync(key, process.env.SG_SSH_PRIVATE_KEY.replace(/\r/g, '').trimEnd() + '\n', { mode: 0o600, flag: 'wx' });
+fs.writeFileSync(known, process.env.SG_SSH_KNOWN_HOSTS.replace(/\r/g, '').trimEnd() + '\n', { mode: 0o600, flag: 'wx' });
+const fingerprint = execFileSync('ssh-keygen', ['-lf', known], { encoding: 'utf8' });
+assert(fingerprint.includes('SHA256:HdDkyDW2SD2z5VuPVhhNHV7jD814nPh1jOUiWGBFZHA'), 'Pinned server key mismatch');
+fs.appendFileSync(process.env.GITHUB_ENV, `SG_SSH_KEY_FILE=${key}\nSG_SSH_HOSTS_FILE=${known}\n`);
+console.log('Restricted SSH identity configured; pinned host key verified');

@@ -1,0 +1,99 @@
+name: SG isolated link verification
+on:
+  workflow_dispatch:
+    inputs:
+      case_id:
+        description: 'Existing or new fixture case (fixture_ plus lowercase letters, digits, underscores)'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: sg-isolated-link-verification
+  cancel-in-progress: false
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      work_required: ${{ steps.verify.outputs.work_required }}
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Run durability and isolation unit tests
+        run: python3 -m unittest discover -s service/tests -v
+      - name: Configure restricted SSH identity
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Persist one fixture and inject a process stop after Mongo acknowledgement
+        id: verify
+        run: node scripts/link/worker.mjs seed
+  resume:
+    needs: seed
+    if: needs.seed.outputs.work_required == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH identity
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Recover on a fresh runner and verify file-Mongo parity
+        run: node scripts/link/worker.mjs resume
+  workers:
+    needs: [seed, resume]
+    if: needs.seed.outputs.work_required == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_LINK_SHARD: ${{ matrix.shard }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH identity
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: One distinct fixture game per runner
+        run: node scripts/link/worker.mjs worker
+  audit:
+    needs: [seed, resume, workers]
+    if: always() && needs.seed.result == 'success' && (needs.seed.outputs.work_required == 'false' || (needs.resume.result == 'success' && needs.workers.result == 'success'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH identity
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Verify 43 fixtures and repeat isolated acceptance import
+        run: node scripts/link/worker.mjs audit
