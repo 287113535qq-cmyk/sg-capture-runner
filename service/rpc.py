@@ -30,6 +30,7 @@ def main():
         service=Campaign(root)
     elif request.get('schema') == 'sg-work-pool-v1':
         from pool_trial import PoolTrial
+        from pool_audit import parallel_audit
         from pool_plan import validate_pool_plan
         config=Path(__file__).resolve().parents[1]/'config'
         if str(request.get('trialId','')).startswith('sg_r1_'):
@@ -39,7 +40,7 @@ def main():
             plan=validate_pool_plan(matches[0])
         else:plan=validate_pool_plan(json.loads((config/'trial-pool.json').read_text()))
         shared_mongo=TrialMongo(plan=plan)
-        service=PoolTrial(root,plan,shared_mongo.scoped)
+        service=PoolTrial(root,plan,shared_mongo.scoped,audit_executor=parallel_audit)
     elif (Path(root)/'trials'/TRIAL/'parallel.json').exists():
         service=ParallelTrial(root,lambda scope:TrialMongo(sequence_range=scope))
     else:

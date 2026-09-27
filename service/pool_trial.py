@@ -17,7 +17,7 @@ from work_pool import WorkPool
 
 
 class PoolTrial:
-    def __init__(self, root, plan, mongo_factory, clock=time.time):
+    def __init__(self, root, plan, mongo_factory, clock=time.time, audit_executor=None):
         self.plan = validate_pool_plan(plan)
         self.base, self.clock = Path(root).resolve(), clock
         self.root = self.base / 'trials' / self.plan['trialId']
@@ -35,6 +35,7 @@ class PoolTrial:
             self.pool = WorkPool(self.root, self.plan['trialId'], self.plan['target'], clock)
             self.pool.db.execute('CREATE TABLE IF NOT EXISTS startup(id INTEGER PRIMARY KEY CHECK(id=1))')
         self.mongo_factory = mongo_factory
+        self.audit_executor = audit_executor
         self.store = None
         self.identity = None
         self.worker_lease = None
@@ -207,15 +208,24 @@ class PoolTrial:
         reports = []
         batches = self.pool.db.execute('SELECT * FROM batches WHERE (? IS NULL OR worker=?) ORDER BY start', (shard, shard)).fetchall()
         require(all(batch['completed'] is not None for batch in batches), 'POOL_NOT_QUIESCENT')
-        for batch in batches:
-            spec = {key: batch[key] for key in ('id', 'worker', 'start', 'end')}
-            store = TrialStore(self.base, self.mongo_factory((batch['start'], batch['end'])), self.clock,
-                source_allowed=self.allowed, plan=self.plan, batch=spec)
-            try:
-                reports.append(store.dispatch(req))
-            finally:
-                store.close()
+        timing = None
+        if self.audit_executor and batches:
+            # Only the trusted service supplies this executor. RPC callers
+            # cannot raise parallelism or replace verification with sampling.
+            with file_lock(self.root / 'pool-audit.lock'):
+                reports, timing = self.audit_executor(self.base, self.plan, batches,
+                    {'schema':self.plan['schema'], 'trialId':self.plan['trialId'], 'op':'audit'})
+        else:
+            for batch in batches:
+                spec = {key: batch[key] for key in ('id', 'worker', 'start', 'end')}
+                store = TrialStore(self.base, self.mongo_factory((batch['start'], batch['end'])), self.clock,
+                    source_allowed=self.allowed, plan=self.plan, batch=spec)
+                try:
+                    reports.append(store.dispatch(req))
+                finally:
+                    store.close()
         result = self.status()
+        if timing is not None:result['auditExecution'] = timing
         result['verifiedFileRounds'] = sum(report['verifiedFileRounds'] for report in reports)
         result['statistics'] = {key: sum(r['statistics'][key] for r in reports)
             for key in ('count', 'stakeRaw', 'winRaw', 'sourceFrames', 'freeRounds', 'zeroWinRounds')}

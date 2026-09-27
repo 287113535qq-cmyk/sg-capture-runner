@@ -36,6 +36,7 @@
   while ((value = line()) !== null) {
     try {
       const input = JSON.parse(value);
+      if (cfg.readOnly === true && !['verify','summary'].includes(input.op)) throw Error('AUDIT_READ_ONLY');
       if (input.trial !== scope.trialId) throw Error('WRONG_TRIAL');
       const range=input.sequenceRange || [1,scope.target];
       if (!Array.isArray(range) || range.length!==2 || !range.every(Number.isSafeInteger) || range[0]<1 || range[1]>scope.target || range[0]>range[1]) throw Error('BAD_RANGE');

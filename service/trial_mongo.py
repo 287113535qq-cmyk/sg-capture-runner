@@ -9,7 +9,7 @@ from store import require, Rejected
 from trial_store import PLAN
 
 class TrialMongo:
-    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json', sequence_range=None, plan=None):
+    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json', sequence_range=None, plan=None, read_only=False):
         if plan is not None:
             from pool_plan import validate_pool_plan
             plan = validate_pool_plan(plan)
@@ -20,6 +20,7 @@ class TrialMongo:
         self.buffer=b''
         self.sequence_range=sequence_range
         self.ensured=False
+        self.read_only=bool(read_only)
 
     def close(self):
         process=self.process
@@ -46,12 +47,13 @@ class TrialMongo:
         return line.decode('utf-8')
 
     def call(self,op,data=None,sequence_range=None):
+        require(not self.read_only or op in {'verify','summary'}, 'AUDIT_MONGO_READ_ONLY')
         try:
             if self.process is None:
                 script=(Path(__file__).parent/'trial_mongo_worker.js').read_text(encoding='utf-8')
                 self.process=subprocess.Popen(['docker','exec','-i','mongodb','mongosh','--quiet','--norc','--eval',script],
                     stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
-                auth={**self.auth,'trialScope':{key:self.plan[key] for key in
+                auth={**self.auth,'readOnly':self.read_only,'trialScope':{key:self.plan[key] for key in
                     ('trialId','target','gameId','runtimeGameId','betRaw')}}
                 self.process.stdin.write(json.dumps(auth).encode()+b'\n')
             self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':self.plan['trialId'],

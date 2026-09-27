@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -12,6 +13,7 @@ from pool_plan import validate_pool_plan
 from store import Rejected, digest
 from test_trial import MemoryMongo, payload, raw, step
 from trial_fields import settled
+from pool_audit import parallel_audit, audit_lane
 
 
 def fixture_plan(target=400):
@@ -215,6 +217,52 @@ class PoolIntegrationTests(unittest.TestCase):
         self.assertEqual(status['journaled'],1)
         self.assertEqual(status['durable'],1)
         self.assertEqual(status['checkpoint'],1)
+
+    def parallel_fixture_audit(self):
+        shared, plan = self.mongo, self.plan
+        class ReadOnlyMemory:
+            def __init__(self, **kwargs):
+                if kwargs.get('read_only') is not True:raise AssertionError('READ_ONLY_REQUIRED')
+            def scoped(self, scope):return ScopedMemory(shared, plan, scope)
+            def close(self):pass
+        self.first.audit_executor = parallel_audit
+        # Use threads for the in-memory database; production uses spawn and
+        # independent persistent Mongo connections with the same lane logic.
+        with patch('pool_audit.ProcessPoolExecutor', side_effect=lambda max_workers,mp_context:
+                ThreadPoolExecutor(max_workers=max_workers)), patch('pool_audit.audit_lane',
+                side_effect=lambda *args:audit_lane(*args, mongo_type=ReadOnlyMemory)):
+            return self.call(self.first, 'audit')
+
+    def finish_every_worker(self):
+        running=set(range(20))
+        while running:
+            for i in list(running):
+                lease=self.take(self.workers[i],i)
+                if lease.get('done'):running.remove(i)
+                else:self.finish(self.workers[i],i,lease)
+
+    def test_parallel_replay_matches_serial_full_verification(self):
+        self.finish_every_worker()
+        serial=self.call(self.first,'audit')
+        parallel=self.parallel_fixture_audit()
+        self.assertEqual(parallel['auditExecution']['processes'],4)
+        for key in ('verifiedFileRounds','statistics','checkpoint','status','mongoPerBatchContentVerified'):
+            self.assertEqual(serial[key],parallel[key])
+        self.assertEqual(parallel['verifiedFileRounds'],self.plan['target'])
+
+    def test_parallel_replay_rejects_mongo_and_raw_file_corruption(self):
+        self.finish_every_worker()
+        first=next(iter(self.mongo.rows.values()));old=first['sourceRoundIdentity']
+        first['sourceRoundIdentity']='tampered'
+        with self.assertRaisesRegex(Rejected,'AUDIT_MONGO_CONTENT'):self.parallel_fixture_audit()
+        first['sourceRoundIdentity']=old
+        path=Path(self.tmp.name)/'trials'/self.plan['trialId']/'batches'/'1'/'raw.jsonl'
+        with path.open('ab') as stream:stream.write(b'{}\n')
+        with self.assertRaisesRegex(Rejected,'AUDIT_EXTRA_DATA'):self.parallel_fixture_audit()
+
+    def test_parallel_replay_requires_all_batches_settled(self):
+        self.take(self.workers[0],0)
+        with self.assertRaisesRegex(Rejected,'POOL_NOT_QUIESCENT'):self.parallel_fixture_audit()
 
 
 if __name__=='__main__':unittest.main()

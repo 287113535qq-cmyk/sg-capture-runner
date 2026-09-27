@@ -8,6 +8,7 @@ import hashlib
 import math
 import re
 import sys
+from functools import lru_cache
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -155,9 +156,18 @@ def wms(raw):
     kind = 'freeFeature' if free and feature else 'freeGame' if free else 'feature' if feature else 'none'
     return final, win, kind, stake
 
+@lru_cache(maxsize=256)
+def type_profile(source_key):
+    # Deployed releases are immutable. A new release starts new processes, so
+    # the same reviewed mapping need not be parsed and hashed for every round.
+    registry = json.loads((Path(__file__).resolve().parent / 'round_types.json').read_text(encoding='utf-8'))
+    profile = registry['profiles'].get(source_key)
+    signature = hashlib.sha256(json.dumps(profile, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    return profile, signature
+
+
 def types(raw, kind):
-    registry = json.loads((Path(__file__).parent / 'round_types.json').read_text(encoding='utf-8'))
-    profile = registry['profiles'].get(raw.get('sourceKey'))
+    profile, mapping_hash = type_profile(raw.get('sourceKey'))
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -196,7 +206,7 @@ def types(raw, kind):
         ids = [profile['freeTypes'].get(selector) for selector in free_selectors]
         check(all(type(code) is int and code > 0 for code in ids) and len(set(ids)) == 1, 'FREE_TYPE_MAPPING_REQUIRED')
         bonus = ids[0]
-    return buy, bonus, hashlib.sha256(json.dumps(profile,sort_keys=True,separators=(',', ':')).encode()).hexdigest()
+    return buy, bonus, mapping_hash
 
 def derive(raw):
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
