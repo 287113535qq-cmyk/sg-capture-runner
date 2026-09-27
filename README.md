@@ -41,7 +41,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 ## 隔离链路验证
 
-业务字段链路已新增原始协议分析、bet/mul/buy/bonus 复核和顶层 Mongo 字段写入。buy 与 bonus 按用户定义独立编号，详见 `docs/business-fields.md`；真实游戏类型映射不能由测试配置代替。
+业务字段链路已通过19条协议样本的实际入库验收，包含原始协议分析、bet/mul/buy/bonus 复核、顶层 Mongo 字段写入和跨运行恢复；同批次重跑新增0条。buy 与 bonus 按用户定义独立编号，详见 `docs/business-fields.md` 和 `docs/business-fields-result.json`；真实游戏类型映射不能由测试配置代替。
 
 `SG isolated link verification` 为手动 workflow。单节点写入 → 模拟 Mongo 成功后进程中断 → 新 Runner 恢复 → 20 个 Runner 分别处理不同测试任务 → 文件/Mongo 身份与内容校验 → 在隔离验收集合重复导入。所有测试数据带 `fixtureOnly=true`，服务拒绝正式游戏编号。正式游戏集合不参与测试。
 

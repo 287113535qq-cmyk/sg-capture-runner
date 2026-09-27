@@ -1,0 +1,930 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-27T12:09:43.785Z",
+  "scope": "synthetic-business-fields-through-real-isolated-storage",
+  "fixtureOnly": true,
+  "officialRequests": 0,
+  "gamePoolWrites": 0,
+  "realCaptureEnabled": false,
+  "caseId": "fixture_fields_20260927_v1",
+  "semantics": {
+    "bet": "actual paid big-round cost in currency units",
+    "mul": "whole-round payout divided by actual paid cost",
+    "buy": "0 base; purchase types 1,2,3,4,5 etc.; enhanced modes 11,12,13,14 etc.",
+    "bonus": "0 ordinary data; positive per-game stable free-data type; independent of buy",
+    "unknownMapping": "reject before persistence; never default to zero"
+  },
+  "counts": {
+    "records": 19,
+    "stagingRecords": 19,
+    "acceptedRecords": 19,
+    "repeatAddedRecords": 0,
+    "collectorTests": 25,
+    "serviceTests": 30,
+    "rejectedRemoteInvalidSubmissions": 6,
+    "recoveredJournalRows": 1
+  },
+  "buyCodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    11,
+    12,
+    13,
+    14
+  ],
+  "bonusCodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "fieldExamples": [
+    {
+      "_id": "a72f79cfab1e7b6c3ec593ac9c7a655d06754f29b1ecc82222557325a4e17137",
+      "gameId": "fixture-ng-enhanced-1",
+      "bet": 3,
+      "mul": 3.3333333333333335,
+      "buy": 11,
+      "bonus": 3
+    },
+    {
+      "_id": "61eb2c621caf764666cb939babc3c410c661995d00e1ea454da46387103c573f",
+      "gameId": "fixture-ng-enhanced-2",
+      "bet": 4,
+      "mul": 2.5,
+      "buy": 12,
+      "bonus": 0
+    },
+    {
+      "_id": "0180a7740a82defe98a430dfcde5194a14a9a4d6d92c4d7573c26146e4a93427",
+      "gameId": "fixture-ng-enhanced-3",
+      "bet": 5,
+      "mul": 2,
+      "buy": 13,
+      "bonus": 3
+    },
+    {
+      "_id": "58adee11c69304fc5d555032e191b075c548bbc4f104d367e0e20c1968778ffb",
+      "gameId": "fixture-ng-enhanced-4",
+      "bet": 6,
+      "mul": 1.6666666666666667,
+      "buy": 14,
+      "bonus": 0
+    },
+    {
+      "_id": "064647eebd4f69c9b76add3cb2b9b2e0e64646ce252d6bd4fdc4ad6e18ae349a",
+      "gameId": "fixture-ng-feature-only",
+      "bet": 2,
+      "mul": 0,
+      "buy": 0,
+      "bonus": 0
+    },
+    {
+      "_id": "e034649e57a7b9b1b79daad78f2c99bcf135e736c8ee4d285b35b867fe25d1c3",
+      "gameId": "fixture-ng-loss",
+      "bet": 1.25,
+      "mul": 0,
+      "buy": 0,
+      "bonus": 0
+    },
+    {
+      "_id": "c05356999597aa766b0e333677a305424249287968cf644216bfb1d9a61b1807",
+      "gameId": "fixture-ng-natural-free",
+      "bet": 2,
+      "mul": 5,
+      "buy": 0,
+      "bonus": 2
+    },
+    {
+      "_id": "b09904c02c47649d300a4feb3bfee60d4dd9d295c0e4101d40e041b253001a99",
+      "gameId": "fixture-ng-purchase-1",
+      "bet": 4,
+      "mul": 2.5,
+      "buy": 1,
+      "bonus": 1
+    },
+    {
+      "_id": "b06aac140b239714c27f58174a5599b6aafbcf672e2c1ff03dfe6d88e3c846e2",
+      "gameId": "fixture-ng-purchase-2",
+      "bet": 6,
+      "mul": 1.6666666666666667,
+      "buy": 2,
+      "bonus": 2
+    },
+    {
+      "_id": "73a6a41a0484ac906d50ffced6ee499626c8b170df55858d918d39e45e1da59f",
+      "gameId": "fixture-ng-purchase-3",
+      "bet": 8,
+      "mul": 1.25,
+      "buy": 3,
+      "bonus": 3
+    },
+    {
+      "_id": "63035126586587a788807babf6d865e3b018d06984eec08e5b92146adb73c454",
+      "gameId": "fixture-ng-purchase-4",
+      "bet": 10,
+      "mul": 1,
+      "buy": 4,
+      "bonus": 4
+    },
+    {
+      "_id": "f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509",
+      "gameId": "fixture-ng-purchase-5",
+      "bet": 12,
+      "mul": 0,
+      "buy": 5,
+      "bonus": 5
+    },
+    {
+      "_id": "a4d410c699fada2c44cf75822cb0f7131491fbd673712d700d1be2aeece2e824",
+      "gameId": "fixture-ng-win",
+      "bet": 1.25,
+      "mul": 0.8,
+      "buy": 0,
+      "bonus": 0
+    },
+    {
+      "_id": "496217aff8ebe5bd25a324e16625858a047543a9a193c3039e985538e8fb9e1e",
+      "gameId": "fixture-wms-base",
+      "bet": 2,
+      "mul": 0,
+      "buy": 0,
+      "bonus": 0
+    },
+    {
+      "_id": "4a8a8d6ed709904755c751570980e842cbd74be1e91ce4b5a8eb4e7379db294b",
+      "gameId": "fixture-wms-enhanced",
+      "bet": 3,
+      "mul": 3.3333333333333335,
+      "buy": 11,
+      "bonus": 4
+    },
+    {
+      "_id": "d4e600b652b72cbd9361f24cd035812a22897e8c13ed986090999235c3af47f2",
+      "gameId": "fixture-wms-free-1",
+      "bet": 2,
+      "mul": 5,
+      "buy": 0,
+      "bonus": 1
+    },
+    {
+      "_id": "f2651ec55433df475cc79d2dc740f9295696111c7685fbde30f42b85c84d8c78",
+      "gameId": "fixture-wms-free-2",
+      "bet": 2,
+      "mul": 5,
+      "buy": 0,
+      "bonus": 2
+    },
+    {
+      "_id": "f0d7ef4c66d47f03ef37ef5e6ef02c32ca6e4c568a5fb86da693abc80a89cfd7",
+      "gameId": "fixture-wms-free-feature",
+      "bet": 3,
+      "mul": 3.3333333333333335,
+      "buy": 12,
+      "bonus": 5
+    },
+    {
+      "_id": "5f424278c33848700d654f20c976929afc4b2b0e837bd2e0107ce6e412f5d231",
+      "gameId": "fixture-wms-purchase",
+      "bet": 10,
+      "mul": 1,
+      "buy": 3,
+      "bonus": 3
+    }
+  ],
+  "deployment": {
+    "installed": true,
+    "commit": "77259b7a9abb6ae456a5139735b82a4209660a88",
+    "storage": "/var/lib/sg-capture-runner",
+    "database": "sg_capture_staging_v1",
+    "sshUser": "sgcapture",
+    "forcedCommandOnly": true,
+    "created": false,
+    "scope": "readWrite-staging-only",
+    "restrictedWriterVerified": true,
+    "officialCaptureEnabled": false,
+    "gamePoolsTouched": false
+  },
+  "sourceVerification": {
+    "service/rpc.py": {
+      "deployedSha256": "00b83b0b1439b38fa6af00c219d6b0befa09e15832d5b1c4af8cd76f8444e990",
+      "gitBlobSha256": "35e5849a617a90544f72c84953718089495f2390f400af138b9ebc752815db44",
+      "match": "Git blob with CRLF checkout conversion"
+    },
+    "service/install.py": {
+      "deployedSha256": "7054a4050fe9e1b290680fe9f8ee194cb820a7558cc28da94f787c442dc4fe34",
+      "gitBlobSha256": "61da069670126585d77573b4c60536fab100add8d04a4ae7603caffafaa0c696",
+      "match": "Git blob with CRLF checkout conversion"
+    },
+    "service/store.py": {
+      "deployedSha256": "dff8f863a0c76e8fe4915025416f3475de3192f9b82098acb5f75bb5e29fed3e",
+      "gitBlobSha256": "cfe8aa7d6aa8fdbf389a43ceedf73fd726936edc63e27fbe5ceb89bdea2b0650",
+      "match": "Git blob with CRLF checkout conversion"
+    },
+    "service/mongo_bridge.py": {
+      "deployedSha256": "2bd1956f8b6b2378cd688413c8456ab2178a32f0ecd20537f4a5b35800badb56",
+      "gitBlobSha256": "b49654910cb37587d2bd53ec9fd0a74117d502fb301bcbcd126de3d36be2eabb",
+      "match": "Git blob with CRLF checkout conversion"
+    },
+    "service/round_types.json": {
+      "deployedSha256": "819d17cca4d05c18022fca898669b3e4c7588491ea262762bc57ebb2a4466a13",
+      "gitBlobSha256": "aab7235061071fc1126ad6974a4ffbbb51bd5a276d520afb4ee191cdff53314d",
+      "match": "Git blob with CRLF checkout conversion"
+    },
+    "service/round_fields.py": {
+      "deployedSha256": "ec0ea408057779eab519a3f621ece2909b1979e9b554372837a146be43e8da77",
+      "gitBlobSha256": "5cc60873b427ce8286329666d6e757db33104ce7954e047b6e26a0c74dbf3478",
+      "match": "Git blob with CRLF checkout conversion"
+    }
+  },
+  "legacyTransportCompatibility": {
+    "ok": true,
+    "schema": "sg-link-fixture-v1",
+    "fixtureOnly": true,
+    "count": 43,
+    "rawNormalizedMongoParity": true,
+    "businessFieldsVerified": 0,
+    "businessFields": [],
+    "identitySetHash": "de1b9f6f92c55dddf0edb5f14f23b78b2f4a853b5d312a3da1e52a3ccf11a8c8"
+  },
+  "runs": {
+    "complete": {
+      "conclusion": "success",
+      "createdAt": "2026-09-27T12:04:46Z",
+      "databaseId": 36317797437,
+      "headSha": "77259b7a9abb6ae456a5139735b82a4209660a88",
+      "jobs": [
+        {
+          "name": "seed",
+          "conclusion": "success"
+        },
+        {
+          "name": "resume",
+          "conclusion": "success"
+        },
+        {
+          "name": "audit",
+          "conclusion": "success"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-27T12:07:18Z",
+      "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36317797437",
+      "evidence": [
+        {
+          "schema": "sg-round-fields-verification-v1",
+          "caseId": "fixture_fields_20260927_v1",
+          "role": "seed",
+          "fixtureOnly": true,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "realProcessCrashAfterMongo": true,
+          "invalidSubmissionsRejected": 6,
+          "checkpointStayedAtZero": true
+        },
+        {
+          "schema": "sg-round-fields-verification-v1",
+          "caseId": "fixture_fields_20260927_v1",
+          "role": "resume",
+          "fixtureOnly": true,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "mongoInserted": 18,
+          "recoveredJournalRows": 1,
+          "duplicateAddedRows": 0,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 19,
+            "rawNormalizedMongoParity": true,
+            "businessFieldsVerified": 19,
+            "businessFields": [
+              {
+                "_id": "a72f79cfab1e7b6c3ec593ac9c7a655d06754f29b1ecc82222557325a4e17137",
+                "gameId": "fixture-ng-enhanced-1",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 3
+              },
+              {
+                "_id": "61eb2c621caf764666cb939babc3c410c661995d00e1ea454da46387103c573f",
+                "gameId": "fixture-ng-enhanced-2",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 12,
+                "bonus": 0
+              },
+              {
+                "_id": "0180a7740a82defe98a430dfcde5194a14a9a4d6d92c4d7573c26146e4a93427",
+                "gameId": "fixture-ng-enhanced-3",
+                "bet": 5,
+                "mul": 2,
+                "buy": 13,
+                "bonus": 3
+              },
+              {
+                "_id": "58adee11c69304fc5d555032e191b075c548bbc4f104d367e0e20c1968778ffb",
+                "gameId": "fixture-ng-enhanced-4",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 14,
+                "bonus": 0
+              },
+              {
+                "_id": "064647eebd4f69c9b76add3cb2b9b2e0e64646ce252d6bd4fdc4ad6e18ae349a",
+                "gameId": "fixture-ng-feature-only",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "e034649e57a7b9b1b79daad78f2c99bcf135e736c8ee4d285b35b867fe25d1c3",
+                "gameId": "fixture-ng-loss",
+                "bet": 1.25,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "c05356999597aa766b0e333677a305424249287968cf644216bfb1d9a61b1807",
+                "gameId": "fixture-ng-natural-free",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "b09904c02c47649d300a4feb3bfee60d4dd9d295c0e4101d40e041b253001a99",
+                "gameId": "fixture-ng-purchase-1",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 1,
+                "bonus": 1
+              },
+              {
+                "_id": "b06aac140b239714c27f58174a5599b6aafbcf672e2c1ff03dfe6d88e3c846e2",
+                "gameId": "fixture-ng-purchase-2",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 2,
+                "bonus": 2
+              },
+              {
+                "_id": "73a6a41a0484ac906d50ffced6ee499626c8b170df55858d918d39e45e1da59f",
+                "gameId": "fixture-ng-purchase-3",
+                "bet": 8,
+                "mul": 1.25,
+                "buy": 3,
+                "bonus": 3
+              },
+              {
+                "_id": "63035126586587a788807babf6d865e3b018d06984eec08e5b92146adb73c454",
+                "gameId": "fixture-ng-purchase-4",
+                "bet": 10,
+                "mul": 1,
+                "buy": 4,
+                "bonus": 4
+              },
+              {
+                "_id": "f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509",
+                "gameId": "fixture-ng-purchase-5",
+                "bet": 12,
+                "mul": 0,
+                "buy": 5,
+                "bonus": 5
+              },
+              {
+                "_id": "a4d410c699fada2c44cf75822cb0f7131491fbd673712d700d1be2aeece2e824",
+                "gameId": "fixture-ng-win",
+                "bet": 1.25,
+                "mul": 0.8,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "496217aff8ebe5bd25a324e16625858a047543a9a193c3039e985538e8fb9e1e",
+                "gameId": "fixture-wms-base",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "4a8a8d6ed709904755c751570980e842cbd74be1e91ce4b5a8eb4e7379db294b",
+                "gameId": "fixture-wms-enhanced",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 4
+              },
+              {
+                "_id": "d4e600b652b72cbd9361f24cd035812a22897e8c13ed986090999235c3af47f2",
+                "gameId": "fixture-wms-free-1",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 1
+              },
+              {
+                "_id": "f2651ec55433df475cc79d2dc740f9295696111c7685fbde30f42b85c84d8c78",
+                "gameId": "fixture-wms-free-2",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "f0d7ef4c66d47f03ef37ef5e6ef02c32ca6e4c568a5fb86da693abc80a89cfd7",
+                "gameId": "fixture-wms-free-feature",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 12,
+                "bonus": 5
+              },
+              {
+                "_id": "5f424278c33848700d654f20c976929afc4b2b0e837bd2e0107ce6e412f5d231",
+                "gameId": "fixture-wms-purchase",
+                "bet": 10,
+                "mul": 1,
+                "buy": 3,
+                "bonus": 3
+              }
+            ],
+            "identitySetHash": "69238e4511656435298c2a392c694041abb7d05803e0a2875cffcab763c206bb"
+          }
+        },
+        {
+          "schema": "sg-round-fields-verification-v1",
+          "caseId": "fixture_fields_20260927_v1",
+          "role": "audit",
+          "fixtureOnly": true,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 19,
+            "rawNormalizedMongoParity": true,
+            "businessFieldsVerified": 19,
+            "businessFields": [
+              {
+                "_id": "a72f79cfab1e7b6c3ec593ac9c7a655d06754f29b1ecc82222557325a4e17137",
+                "gameId": "fixture-ng-enhanced-1",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 3
+              },
+              {
+                "_id": "61eb2c621caf764666cb939babc3c410c661995d00e1ea454da46387103c573f",
+                "gameId": "fixture-ng-enhanced-2",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 12,
+                "bonus": 0
+              },
+              {
+                "_id": "0180a7740a82defe98a430dfcde5194a14a9a4d6d92c4d7573c26146e4a93427",
+                "gameId": "fixture-ng-enhanced-3",
+                "bet": 5,
+                "mul": 2,
+                "buy": 13,
+                "bonus": 3
+              },
+              {
+                "_id": "58adee11c69304fc5d555032e191b075c548bbc4f104d367e0e20c1968778ffb",
+                "gameId": "fixture-ng-enhanced-4",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 14,
+                "bonus": 0
+              },
+              {
+                "_id": "064647eebd4f69c9b76add3cb2b9b2e0e64646ce252d6bd4fdc4ad6e18ae349a",
+                "gameId": "fixture-ng-feature-only",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "e034649e57a7b9b1b79daad78f2c99bcf135e736c8ee4d285b35b867fe25d1c3",
+                "gameId": "fixture-ng-loss",
+                "bet": 1.25,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "c05356999597aa766b0e333677a305424249287968cf644216bfb1d9a61b1807",
+                "gameId": "fixture-ng-natural-free",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "b09904c02c47649d300a4feb3bfee60d4dd9d295c0e4101d40e041b253001a99",
+                "gameId": "fixture-ng-purchase-1",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 1,
+                "bonus": 1
+              },
+              {
+                "_id": "b06aac140b239714c27f58174a5599b6aafbcf672e2c1ff03dfe6d88e3c846e2",
+                "gameId": "fixture-ng-purchase-2",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 2,
+                "bonus": 2
+              },
+              {
+                "_id": "73a6a41a0484ac906d50ffced6ee499626c8b170df55858d918d39e45e1da59f",
+                "gameId": "fixture-ng-purchase-3",
+                "bet": 8,
+                "mul": 1.25,
+                "buy": 3,
+                "bonus": 3
+              },
+              {
+                "_id": "63035126586587a788807babf6d865e3b018d06984eec08e5b92146adb73c454",
+                "gameId": "fixture-ng-purchase-4",
+                "bet": 10,
+                "mul": 1,
+                "buy": 4,
+                "bonus": 4
+              },
+              {
+                "_id": "f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509",
+                "gameId": "fixture-ng-purchase-5",
+                "bet": 12,
+                "mul": 0,
+                "buy": 5,
+                "bonus": 5
+              },
+              {
+                "_id": "a4d410c699fada2c44cf75822cb0f7131491fbd673712d700d1be2aeece2e824",
+                "gameId": "fixture-ng-win",
+                "bet": 1.25,
+                "mul": 0.8,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "496217aff8ebe5bd25a324e16625858a047543a9a193c3039e985538e8fb9e1e",
+                "gameId": "fixture-wms-base",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "4a8a8d6ed709904755c751570980e842cbd74be1e91ce4b5a8eb4e7379db294b",
+                "gameId": "fixture-wms-enhanced",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 4
+              },
+              {
+                "_id": "d4e600b652b72cbd9361f24cd035812a22897e8c13ed986090999235c3af47f2",
+                "gameId": "fixture-wms-free-1",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 1
+              },
+              {
+                "_id": "f2651ec55433df475cc79d2dc740f9295696111c7685fbde30f42b85c84d8c78",
+                "gameId": "fixture-wms-free-2",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "f0d7ef4c66d47f03ef37ef5e6ef02c32ca6e4c568a5fb86da693abc80a89cfd7",
+                "gameId": "fixture-wms-free-feature",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 12,
+                "bonus": 5
+              },
+              {
+                "_id": "5f424278c33848700d654f20c976929afc4b2b0e837bd2e0107ce6e412f5d231",
+                "gameId": "fixture-wms-purchase",
+                "bet": 10,
+                "mul": 1,
+                "buy": 3,
+                "bonus": 3
+              }
+            ],
+            "identitySetHash": "69238e4511656435298c2a392c694041abb7d05803e0a2875cffcab763c206bb"
+          },
+          "acceptance": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 19,
+            "inserted": 19,
+            "duplicates": 0,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "repeatedImport": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 19,
+            "inserted": 0,
+            "duplicates": 19,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "buyCodes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            11,
+            12,
+            13,
+            14
+          ],
+          "bonusCodes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    "repeat": {
+      "conclusion": "success",
+      "createdAt": "2026-09-27T12:07:59Z",
+      "databaseId": 36317973384,
+      "headSha": "77259b7a9abb6ae456a5139735b82a4209660a88",
+      "jobs": [
+        {
+          "name": "seed",
+          "conclusion": "success"
+        },
+        {
+          "name": "audit",
+          "conclusion": "success"
+        },
+        {
+          "name": "resume",
+          "conclusion": "skipped"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-09-27T12:09:16Z",
+      "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36317973384",
+      "evidence": [
+        {
+          "schema": "sg-round-fields-verification-v1",
+          "caseId": "fixture_fields_20260927_v1",
+          "role": "seed",
+          "fixtureOnly": true,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "alreadyComplete": true
+        },
+        {
+          "schema": "sg-round-fields-verification-v1",
+          "caseId": "fixture_fields_20260927_v1",
+          "role": "audit",
+          "fixtureOnly": true,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 19,
+            "rawNormalizedMongoParity": true,
+            "businessFieldsVerified": 19,
+            "businessFields": [
+              {
+                "_id": "a72f79cfab1e7b6c3ec593ac9c7a655d06754f29b1ecc82222557325a4e17137",
+                "gameId": "fixture-ng-enhanced-1",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 3
+              },
+              {
+                "_id": "61eb2c621caf764666cb939babc3c410c661995d00e1ea454da46387103c573f",
+                "gameId": "fixture-ng-enhanced-2",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 12,
+                "bonus": 0
+              },
+              {
+                "_id": "0180a7740a82defe98a430dfcde5194a14a9a4d6d92c4d7573c26146e4a93427",
+                "gameId": "fixture-ng-enhanced-3",
+                "bet": 5,
+                "mul": 2,
+                "buy": 13,
+                "bonus": 3
+              },
+              {
+                "_id": "58adee11c69304fc5d555032e191b075c548bbc4f104d367e0e20c1968778ffb",
+                "gameId": "fixture-ng-enhanced-4",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 14,
+                "bonus": 0
+              },
+              {
+                "_id": "064647eebd4f69c9b76add3cb2b9b2e0e64646ce252d6bd4fdc4ad6e18ae349a",
+                "gameId": "fixture-ng-feature-only",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "e034649e57a7b9b1b79daad78f2c99bcf135e736c8ee4d285b35b867fe25d1c3",
+                "gameId": "fixture-ng-loss",
+                "bet": 1.25,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "c05356999597aa766b0e333677a305424249287968cf644216bfb1d9a61b1807",
+                "gameId": "fixture-ng-natural-free",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "b09904c02c47649d300a4feb3bfee60d4dd9d295c0e4101d40e041b253001a99",
+                "gameId": "fixture-ng-purchase-1",
+                "bet": 4,
+                "mul": 2.5,
+                "buy": 1,
+                "bonus": 1
+              },
+              {
+                "_id": "b06aac140b239714c27f58174a5599b6aafbcf672e2c1ff03dfe6d88e3c846e2",
+                "gameId": "fixture-ng-purchase-2",
+                "bet": 6,
+                "mul": 1.6666666666666667,
+                "buy": 2,
+                "bonus": 2
+              },
+              {
+                "_id": "73a6a41a0484ac906d50ffced6ee499626c8b170df55858d918d39e45e1da59f",
+                "gameId": "fixture-ng-purchase-3",
+                "bet": 8,
+                "mul": 1.25,
+                "buy": 3,
+                "bonus": 3
+              },
+              {
+                "_id": "63035126586587a788807babf6d865e3b018d06984eec08e5b92146adb73c454",
+                "gameId": "fixture-ng-purchase-4",
+                "bet": 10,
+                "mul": 1,
+                "buy": 4,
+                "bonus": 4
+              },
+              {
+                "_id": "f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509",
+                "gameId": "fixture-ng-purchase-5",
+                "bet": 12,
+                "mul": 0,
+                "buy": 5,
+                "bonus": 5
+              },
+              {
+                "_id": "a4d410c699fada2c44cf75822cb0f7131491fbd673712d700d1be2aeece2e824",
+                "gameId": "fixture-ng-win",
+                "bet": 1.25,
+                "mul": 0.8,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "496217aff8ebe5bd25a324e16625858a047543a9a193c3039e985538e8fb9e1e",
+                "gameId": "fixture-wms-base",
+                "bet": 2,
+                "mul": 0,
+                "buy": 0,
+                "bonus": 0
+              },
+              {
+                "_id": "4a8a8d6ed709904755c751570980e842cbd74be1e91ce4b5a8eb4e7379db294b",
+                "gameId": "fixture-wms-enhanced",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 11,
+                "bonus": 4
+              },
+              {
+                "_id": "d4e600b652b72cbd9361f24cd035812a22897e8c13ed986090999235c3af47f2",
+                "gameId": "fixture-wms-free-1",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 1
+              },
+              {
+                "_id": "f2651ec55433df475cc79d2dc740f9295696111c7685fbde30f42b85c84d8c78",
+                "gameId": "fixture-wms-free-2",
+                "bet": 2,
+                "mul": 5,
+                "buy": 0,
+                "bonus": 2
+              },
+              {
+                "_id": "f0d7ef4c66d47f03ef37ef5e6ef02c32ca6e4c568a5fb86da693abc80a89cfd7",
+                "gameId": "fixture-wms-free-feature",
+                "bet": 3,
+                "mul": 3.3333333333333335,
+                "buy": 12,
+                "bonus": 5
+              },
+              {
+                "_id": "5f424278c33848700d654f20c976929afc4b2b0e837bd2e0107ce6e412f5d231",
+                "gameId": "fixture-wms-purchase",
+                "bet": 10,
+                "mul": 1,
+                "buy": 3,
+                "bonus": 3
+              }
+            ],
+            "identitySetHash": "69238e4511656435298c2a392c694041abb7d05803e0a2875cffcab763c206bb"
+          },
+          "acceptance": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 19,
+            "inserted": 0,
+            "duplicates": 19,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "repeatedImport": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 19,
+            "inserted": 0,
+            "duplicates": 19,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "buyCodes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            11,
+            12,
+            13,
+            14
+          ],
+          "bonusCodes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Only two explicitly synthetic source profiles are configured; no real-game type mapping is implied.",
+    "WMS analysis accepts explicit per-Logic payout aggregation with a confirmed EndGame and matching stake/balance evidence.",
+    "Current server remains fixture-only with bounded request/round sizes; official capture and existing game-pool import remain disabled.",
+    "Unknown source, buy mode or free-data type is rejected, not guessed or assigned bonus=0."
+  ]
+}

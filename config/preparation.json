@@ -8,5 +8,5 @@
     "concurrentGamesPerRunner": 1,
     "sharedSessionsAllowed": false
   },
-  "readiness": "isolated-fixture-link-verified-real-capture-disabled"
+  "readiness": "isolated-business-fields-verified-real-capture-disabled"
 }
