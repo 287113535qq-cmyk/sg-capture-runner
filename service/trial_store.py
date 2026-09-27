@@ -174,6 +174,7 @@ class TrialStore:
         require(isinstance(owner,str) and OWNER.fullmatch(owner), 'BAD_OWNER')
         require(isinstance(fingerprint,str) and re.fullmatch('[a-f0-9]{64}', fingerprint), 'BAD_SESSION_HASH')
         require(isinstance(sha,str) and re.fullmatch('[a-f0-9]{40}', sha), 'BAD_COMMIT_SHA')
+        require(not self.db.execute('SELECT 1 FROM runs WHERE owner=?',(owner,)).fetchone(), 'OWNER_ALREADY_USED')
         require(s['session_hash'] is None or s['session_hash'] == fingerprint, 'TRIAL_SESSION_CHANGED')
         pending = self.pending()
         # An official request with no durably recorded response must not be retried.

@@ -58,7 +58,7 @@ async function main() {
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');
   assert.equal(game.serverAddress,'ogs-gdm-usnj.nyxop.net/nextgen');
   assert(game.sessionId && game.operatorId);
-  owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}`;
+  owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}:${randomUUID()}`;
   lease=await rpc('claim',{owner,sessionHash:hash(game.sessionId+'@'+game.operatorId),commitSha:process.env.GITHUB_SHA});
   evidence.startCheckpoint=lease.checkpoint;
   const limit=Number(process.env.SG_TRIAL_LIMIT || '1');

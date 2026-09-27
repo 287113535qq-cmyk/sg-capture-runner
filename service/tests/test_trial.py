@@ -291,4 +291,11 @@ class TrialTests(unittest.TestCase):
         self.call('release',**self.own());gate(self.store.root,False)
         self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
 
+    def test_reused_process_owner_is_rejected_before_changing_lease(self):
+        self.call('release',**self.own());before=dict(self.store.state())
+        with self.assertRaisesRegex(Rejected,'OWNER_ALREADY_USED'):self.claim()
+        self.assertEqual(dict(self.store.state()),before)
+        self.owner='same-job-new-process';self.claim()
+        self.assertEqual(self.lease['epoch'],before['epoch']+1)
+
 if __name__=='__main__':unittest.main()
