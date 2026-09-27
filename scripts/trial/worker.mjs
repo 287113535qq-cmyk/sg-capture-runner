@@ -98,22 +98,34 @@ async function main() {
     return result;
   }
   const payload=msg=>`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
+  async function bootstrap() {
+    const init=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=INIT`,'INIT');
+    if(init.sourceRejected)throw fail('SOURCE_INIT_REJECTED');
+    const nextBalance=integer(params(init.responsePayload).AB ?? params(init.responsePayload).B);
+    const reelstrip=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=REELSTRIP`,'REELSTRIP');
+    if(reelstrip.sourceRejected)throw fail('SOURCE_REELSTRIP_REJECTED');
+    return nextBalance;
+  }
   let pending=lease.pendingRound, balance;
   if(pending){
     assert.equal(pending.awaiting,null);balance=pending.raw.startBalanceRaw;
   }else{
-    const init=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=INIT`,'INIT');
-    if(init.sourceRejected)throw fail('SOURCE_INIT_REJECTED');
-    balance=integer(params(init.responsePayload).AB ?? params(init.responsePayload).B);
+    balance=await bootstrap();
     evidence.initialBalanceRaw=balance;
-    const reelstrip=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=REELSTRIP`,'REELSTRIP');
-    if(reelstrip.sourceRejected)throw fail('SOURCE_REELSTRIP_REJECTED');
   }
   let sequence=lease.durable+1;
   while(sequence<=plan.target && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending)){
     let raw, attempt;
     if(pending){raw=pending.raw;attempt=pending.attempt;sequence=pending.sequence;pending=null;}
     else{
+      // Demo credit reset is allowed only between fully settled big rounds.
+      // Its new balance becomes the next round's start; it is never a payout.
+      if(balance<2500){
+        const previous=balance;
+        balance=await bootstrap();
+        if(balance<=previous)throw fail('DEMO_BALANCE_REFRESH_FAILED');
+        evidence.demoBalanceRefreshes=(evidence.demoBalanceRefreshes || 0)+1;
+      }
       raw={fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[]};
       attempt=randomUUID();
       await rpc('begin',{...owned(),sequence,attempt,startBalanceRaw:balance,requestPayload:payload('BET')});
