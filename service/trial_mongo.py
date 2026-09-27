@@ -6,20 +6,26 @@ import subprocess
 import time
 from pathlib import Path
 from store import require, Rejected
-from trial_store import TRIAL
+from trial_store import PLAN
 
 class TrialMongo:
-    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json', sequence_range=None):
+    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json', sequence_range=None, plan=None):
+        if plan is not None:
+            from pool_plan import validate_pool_plan
+            plan = validate_pool_plan(plan)
+        self.plan = PLAN if plan is None else plan
         self.auth=json.loads(Path(auth_file).read_text())
         require(self.auth.get('database')=='sg_capture_staging_v1','WRONG_STAGING_DATABASE')
         self.process=None
         self.buffer=b''
         self.sequence_range=sequence_range
+        self.ensured=False
 
     def close(self):
         process=self.process
         self.process=None
         self.buffer=b''
+        self.ensured=False
         if process:
             try:process.stdin.close()
             except OSError:pass
@@ -39,14 +45,16 @@ class TrialMongo:
         line,self.buffer=self.buffer.split(b'\n',1)
         return line.decode('utf-8')
 
-    def call(self,op,data=None):
+    def call(self,op,data=None,sequence_range=None):
         try:
             if self.process is None:
                 script=(Path(__file__).parent/'trial_mongo_worker.js').read_text(encoding='utf-8')
                 self.process=subprocess.Popen(['docker','exec','-i','mongodb','mongosh','--quiet','--norc','--eval',script],
                     stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
-                self.process.stdin.write(json.dumps(self.auth).encode()+b'\n')
-            self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':TRIAL,'sequenceRange':self.sequence_range}).encode()+b'\n')
+                auth={**self.auth,'trialScope':{'trialId':self.plan['trialId'],'target':self.plan['target']}}
+                self.process.stdin.write(json.dumps(auth).encode()+b'\n')
+            self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':self.plan['trialId'],
+                'sequenceRange':sequence_range if sequence_range is not None else self.sequence_range}).encode()+b'\n')
             self.process.stdin.flush()
             for _ in range(10):
                 line=self._line()
@@ -59,6 +67,19 @@ class TrialMongo:
             self.close()
             raise Rejected('TRIAL_MONGO_FAILED') from None
 
-    def ensure(self):return self.call('ensure')
+    def ensure(self):
+        if not self.ensured:
+            self.call('ensure');self.ensured=True
     def put(self,records):return self.call('put',records)['inserted']
+    def verify(self,records):return self.call('verify',records)['verified']
     def summary(self):return self.call('summary')
+
+    def scoped(self, scope):
+        parent=self
+        class Scope:
+            def ensure(self):return parent.ensure()
+            def put(self, records):return parent.call('put',records,scope)['inserted']
+            def verify(self, records):return parent.call('verify',records,scope)['verified']
+            def summary(self):return parent.call('summary',sequence_range=scope)
+            def close(self):pass  # The RPC connection owns the shared bridge.
+        return Scope()

@@ -13,16 +13,25 @@ SCHEMA = PLAN['schema']
 TRIAL = PLAN['trialId']
 
 class TrialStore:
-    def __init__(self, root, mongo, clock=time.time, shard=None, source_allowed=None):
-        self.root = Path(root).resolve() / 'trials' / TRIAL
+    def __init__(self, root, mongo, clock=time.time, shard=None, source_allowed=None, plan=None, batch=None):
+        if plan is not None:
+            from pool_plan import validate_pool_plan
+            plan = validate_pool_plan(plan)
+        self.plan = PLAN if plan is None else plan
+        self.trial, self.schema = self.plan['trialId'], self.plan['schema']
+        self.root = Path(root).resolve() / 'trials' / self.trial
+        self.batch = batch
+        if batch is not None:
+            require(plan is not None and shard is None and type(batch['id']) is int and batch['id'] > 0, 'BAD_BATCH')
+            shard = {'id': batch['worker'], 'start': batch['start'], 'end': batch['end']}
         self.shard = shard
         self.base = shard['start']-1 if shard else 0
-        self.target = shard['end'] if shard else PLAN['target']
+        self.target = shard['end'] if shard else self.plan['target']
         self.source_allowed = source_allowed or (lambda: True)
         if shard:
             require(type(shard['id']) is int and 0 <= shard['id'] < 20
-                    and 0 <= self.base < self.target <= PLAN['target'], 'BAD_SHARD')
-            self.root = self.root / 'shards' / str(shard['id'])
+                    and 0 <= self.base < self.target <= self.plan['target'], 'BAD_SHARD')
+            self.root = self.root / ('batches' if batch else 'shards') / str(batch['id'] if batch else shard['id'])
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.mongo = mongo
         self.clock = clock
@@ -54,7 +63,7 @@ class TrialStore:
         CREATE TABLE IF NOT EXISTS runner_candidates(run_id TEXT NOT NULL,candidate INTEGER NOT NULL,network_ms REAL NOT NULL,
           PRIMARY KEY(run_id,candidate));
         ''')
-        plan_hash = digest({'plan':PLAN,'shard':shard}) if shard else digest(PLAN)
+        plan_hash = digest({'plan':self.plan,'batch':batch}) if batch else digest({'plan':self.plan,'shard':shard}) if shard else digest(self.plan)
         row = self.db.execute('SELECT * FROM trial WHERE id=1').fetchone()
         if row:
             require(row['plan_hash'] == plan_hash, 'TRIAL_PLAN_CHANGED')
@@ -83,14 +92,14 @@ class TrialStore:
         return self.state()
 
     def dispatch(self, req):
-        require(isinstance(req, dict) and req.get('schema') == SCHEMA and req.get('trialId') == TRIAL, 'TRIAL_NOT_ALLOWED')
+        require(isinstance(req, dict) and req.get('schema') == self.schema and req.get('trialId') == self.trial, 'TRIAL_NOT_ALLOWED')
         require(len(canonical(req)) <= 1048576, 'REQUEST_TOO_LARGE')
         op = req.get('op')
         require(op in {'status','claim','begin','intent','frame','exchange','exchange_journal','flush','release','fail','audit','ping','runner_register','runner_select'}, 'OP_NOT_ALLOWED')
         started = time.perf_counter()
         with file_lock(self.root / 'trial.lock'):
             result = getattr(self, '_' + op)(req)
-        return {'ok': True, 'schema': SCHEMA, 'fixtureOnly': False,
+        return {'ok': True, 'schema': self.schema, 'fixtureOnly': False,
                 'serverWorkMs': round((time.perf_counter()-started)*1000,3), **result}
 
     def _ping(self, req):
@@ -190,7 +199,7 @@ class TrialStore:
             return result
         result = {'complete':True, 'journaled':req['sequence'],
                   'endBalanceRaw':fields['money']['endBalanceRaw']}
-        flush = req['sequence']-self.state()['durable'] >= PLAN['mongoBatchSize'] or req['sequence'] == self.target
+        flush = req['sequence']-self.state()['durable'] >= self.plan['mongoBatchSize'] or req['sequence'] == self.target
         self.db.execute('BEGIN IMMEDIATE')
         try:
             self._stage(req,pending,fields)
@@ -215,7 +224,7 @@ class TrialStore:
           COALESCE(SUM(bonus>0),0) AS freeRounds, COALESCE(SUM(win=0),0) AS zeroWinRounds,
           COALESCE(MAX(1.0*win/stake),0) AS maxMul FROM receipts WHERE committed=1''').fetchone())
         pending = self.pending()
-        return {'trialId': TRIAL, 'gameId': 32471, 'runtimeGameId': 33026, 'target': self.target,
+        return {'trialId': self.trial, 'gameId': 32471, 'runtimeGameId': 33026, 'target': self.target,
                 'sequenceBase':self.base, **({'shardId':self.shard['id']} if self.shard else {}),
                 'status': s['status'], 'journaled': self.journaled(), 'durable': s['durable'], 'checkpoint': s['checkpoint'],
                 'epoch': s['epoch'], 'leaseUntil': s['lease_until'], 'cooldownUntil': s['cooldown_until'],
@@ -274,7 +283,7 @@ class TrialStore:
         self.owned(req)
         p = self.pending()
         require(p and req.get('sequence') == p['sequence'] and p['awaiting'] is None, 'PENDING_STATE_MISMATCH')
-        require(len(p['raw']['steps']) < PLAN['maxSteps'], 'ROUND_STEP_LIMIT')
+        require(len(p['raw']['steps']) < self.plan['maxSteps'], 'ROUND_STEP_LIMIT')
         require(frame(p['raw']['steps'][-1]) > 0, 'ROUND_ALREADY_SETTLED')
         request_params(req.get('requestPayload'), 'FREE_GAME')
         self.db.execute('UPDATE pending SET awaiting=? WHERE id=1', (req['requestPayload'],))
@@ -307,19 +316,21 @@ class TrialStore:
             return {'complete':False, 'remaining':remaining}
         self._stage(req, p, fields)
         self._recover_files(req)
-        if self.state()['durable'] - self.state()['checkpoint'] >= PLAN['mongoBatchSize']:
+        if self.state()['durable'] - self.state()['checkpoint'] >= self.plan['mongoBatchSize']:
             self._flush(req)
         return {'complete':True,'durable':self.state()['durable'],'checkpoint':self.state()['checkpoint'],
                 'endBalanceRaw':fields['money']['endBalanceRaw']}
 
     def _stage(self, req, p, fields):
         raw, seq = p['raw'], p['sequence']
-        identity = {'trialId':TRIAL,'gameId':32471,'runtimeGameId':33026,'sequence':seq,'attempt':p['attempt']}
+        identity = {'trialId':self.trial,'gameId':32471,'runtimeGameId':33026,'sequence':seq,'attempt':p['attempt']}
         record = {'_id':digest(identity), **identity, 'fixtureOnly':False, 'sourceRoundIdentity':'collector-operation',
                   'sourceSessionHash':self.state()['session_hash'], 'raw':raw, 'normalized':fields,
                   **{k:fields[k] for k in ('bet','mul','buy','bonus','roundFieldsVersion')}}
         if self.shard:
             record['shardId'] = self.shard['id']
+        if self.batch:
+            record['batchId'] = self.batch['id']
         record['rawHash'], record['normalizedHash'] = digest(raw), digest(fields)
         record['contentHash'] = digest(record)
         s = self.state()
@@ -427,6 +438,9 @@ class TrialStore:
         s = self.state()
         require(s['status'] != 'claimed' and self.journaled() == s['durable'] == s['checkpoint'] and not self.pending(), 'TRIAL_NOT_QUIESCENT')
         count = 0
+        verify_batch = []
+        if self.batch:
+            require(callable(getattr(self.mongo,'verify',None)), 'FULL_MONGO_VERIFICATION_REQUIRED')
         if s['checkpoint'] > self.base:
             with (self.root/'raw.jsonl').open('rb') as rf, (self.root/'rounds.jsonl').open('rb') as nf:
                 for row in self.db.execute('SELECT * FROM receipts ORDER BY sequence'):
@@ -437,9 +451,19 @@ class TrialStore:
                     require(json.loads(rawline) == {'_id':record['_id'],'contentHash':record['contentHash'],'rawHash':record['rawHash'],'raw':record['raw']}, 'AUDIT_RAW_MISMATCH')
                     require(json.loads(normline) == {k:v for k,v in record.items() if k!='raw'}, 'AUDIT_NORMALIZED_MISMATCH')
                     require(settled(record['raw']) == record['normalized'] and digest(record['raw']) == record['rawHash'], 'AUDIT_FIELDS_MISMATCH')
+                    if self.batch:
+                        require(record['contentHash'] == digest({k:v for k,v in record.items() if k!='contentHash'})
+                            and record['normalizedHash'] == digest(record['normalized'])
+                            and all(record[k] == record['normalized'][k] for k in ('bet','mul','buy','bonus')), 'AUDIT_CONTENT_HASH')
+                        verify_batch.append(record)
+                        if len(verify_batch) == 100:
+                            require(self.mongo.verify(verify_batch) == len(verify_batch), 'AUDIT_MONGO_CONTENT')
+                            verify_batch = []
                     count += 1
                 require(not rf.read(1) and not nf.read(1), 'AUDIT_EXTRA_DATA')
         require(count == s['checkpoint']-self.base, 'AUDIT_COUNT_MISMATCH')
+        if verify_batch:
+            require(self.mongo.verify(verify_batch) == len(verify_batch), 'AUDIT_MONGO_CONTENT')
         mongo = self.mongo.summary()
         stats = self._status(req)['statistics']
         require(all(mongo[k] == stats[k] for k in ['count','stakeRaw','winRaw','sourceFrames','freeRounds','zeroWinRounds']), 'AUDIT_MONGO_PARITY')

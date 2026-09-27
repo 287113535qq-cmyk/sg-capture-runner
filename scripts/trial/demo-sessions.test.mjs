@@ -20,3 +20,10 @@ test('game and shard scope cannot change',()=>{
   for(const shard of [-1,20,0.5,'0'])assert.throws(()=>gameForShard(base,shard));
   assert.throws(()=>gameForShard({...base,id:1},0));
 });
+test('a new trial has distinct stable sessions without changing legacy identifiers',()=>{
+  assert.equal(gameForShard(base,0).sessionId,gameForShard(base,0,'bookofsevens_300k_20260927').sessionId);
+  const next=gameForShard(base,0,'bookofsevens_next_fixture');
+  assert.notEqual(next.sessionId,gameForShard(base,0).sessionId);
+  assert.equal(next.sessionId,gameForShard(base,0,'bookofsevens_next_fixture').sessionId);
+  assert.throws(()=>gameForShard(base,0,'../unscoped'));
+});

@@ -1,6 +1,6 @@
-"""Durable small-batch allocator for a future, separately authorized capture.
+"""Durable small-batch allocator behind PoolTrial's fixed-session capture RPC.
 
-This module makes no source requests and is not exposed by the current RPC.
+This module makes no source requests. Enabling remains an operator-only action.
 Only unassigned sequences are distributed. A reserved batch stays attached to
 its original worker/session across recovery; unknown BETs are never reassigned.
 The caller must validate the batch's durable storage before completing it.
@@ -76,7 +76,7 @@ class WorkPool:
     def register(self, worker, session_hash, owner):
         require(type(worker) is int and 0 <= worker < 20, 'BAD_WORKER')
         require(isinstance(session_hash, str) and re.fullmatch('[a-f0-9]{64}', session_hash), 'BAD_SESSION_HASH')
-        require(isinstance(owner, str) and re.fullmatch('[a-zA-Z0-9:_-]{1,200}', owner), 'BAD_OWNER')
+        require(isinstance(owner, str) and re.fullmatch('[a-zA-Z0-9:_-]{1,100}', owner), 'BAD_OWNER')
         with self.transaction():
             old = self.db.execute('SELECT * FROM workers WHERE id=?', (worker,)).fetchone()
             require(not old or old['session_hash'] == session_hash, 'SESSION_CHANGED')
@@ -101,14 +101,24 @@ class WorkPool:
         return row
 
     def heartbeat(self, lease):
+        if self.owned(lease)['lease_until'] - self.clock() > 570:
+            return
         with self.transaction():
             self.owned(lease)
             self.db.execute('UPDATE workers SET lease_until=? WHERE id=?', (self.clock() + 600, lease['worker']))
+
+    def release_worker(self, lease):
+        with self.transaction():
+            worker = self.owned(lease)
+            require(worker['active_batch'] is None, 'WORKER_HAS_BATCH')
+            self.db.execute('UPDATE workers SET lease_until=0 WHERE id=?', (lease['worker'],))
 
     def take(self, lease):
         with self.transaction():
             worker = self.owned(lease)
             control = self.db.execute('SELECT * FROM control').fetchone()
+            if not control['enabled'] and control['failure'] is None and self.status()['complete']:
+                return None
             require(control['enabled'] and control['failure'] is None, 'POOL_STOPPED')
             if worker['active_batch'] is not None:
                 # The capture layer must recover the same journal/session.
@@ -161,6 +171,8 @@ class WorkPool:
             self.db.execute('UPDATE batches SET completed=? WHERE id=?', (self.clock(), batch_id))
             self.db.execute('UPDATE workers SET active_batch=NULL,observed_rate=? WHERE id=?',
                 (observed, lease['worker']))
+            if self.db.execute('SELECT COALESCE(SUM(end-start+1),0) FROM batches WHERE completed IS NOT NULL').fetchone()[0] == self.target:
+                self.db.execute('UPDATE control SET enabled=0 WHERE id=1')
 
     def status(self):
         control = dict(self.db.execute('SELECT * FROM control').fetchone())

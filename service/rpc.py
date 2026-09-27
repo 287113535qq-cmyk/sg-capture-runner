@@ -15,7 +15,7 @@ def main():
     if len(content) > 1048576:
         raise Rejected('REQUEST_TOO_LARGE')
     request = json.loads(content)
-    if request.get('schema') != 'sg-real-trial-v1':
+    if request.get('schema') not in {'sg-real-trial-v1','sg-work-pool-v1'}:
         result = Store('/var/lib/sg-capture-runner', MongoBridge()).dispatch(request)
         print(json.dumps(result, separators=(',', ':')))
         return
@@ -24,7 +24,14 @@ def main():
     from trial_parallel import ParallelTrial
     root='/var/lib/sg-capture-runner'
     from trial_store import TRIAL
-    if (Path(root)/'trials'/TRIAL/'parallel.json').exists():
+    shared_mongo=None
+    if request.get('schema') == 'sg-work-pool-v1':
+        from pool_trial import PoolTrial
+        from pool_plan import validate_pool_plan
+        plan=validate_pool_plan(json.loads((Path(__file__).resolve().parents[1]/'config/trial-pool.json').read_text()))
+        shared_mongo=TrialMongo(plan=plan)
+        service=PoolTrial(root,plan,shared_mongo.scoped)
+    elif (Path(root)/'trials'/TRIAL/'parallel.json').exists():
         service=ParallelTrial(root,lambda scope:TrialMongo(sequence_range=scope))
     else:
         service=TrialStore(root,TrialMongo())
@@ -45,6 +52,7 @@ def main():
             request=json.loads(content)
     finally:
         service.close()
+        if shared_mongo:shared_mongo.close()
 
 if __name__ == '__main__':
     try:

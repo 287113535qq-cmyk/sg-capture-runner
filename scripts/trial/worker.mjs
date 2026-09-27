@@ -5,12 +5,16 @@ import { createHash, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { connect } from './rpc.mjs';
 import { gameForShard } from './demo-sessions.mjs';
+import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
 const { XMLParser } = require('../../collector/node_modules/fast-xml-parser');
 const parser = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseTagValue:false});
-const plan = JSON.parse(fs.readFileSync('config/trial-300k.json','utf8'));
+const planFile = process.env.SG_TRIAL_PLAN || 'config/trial-300k.json';
+assert(['config/trial-300k.json','config/trial-pool.json'].includes(planFile));
+const plan = JSON.parse(fs.readFileSync(planFile,'utf8'));
+const isPool = plan.schema === 'sg-work-pool-v1';
 const registry = JSON.parse(fs.readFileSync('service/round_types.json','utf8'));
 function canonical(v) {
   if (v === null || typeof v !== 'object') return JSON.stringify(v);
@@ -25,50 +29,42 @@ const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minReque
 const exchangeOperation=process.env.SG_TRIAL_EXCHANGE || 'exchange_journal';
 assert([0,50].includes(requestIntervalMs));
 assert(['exchange','exchange_journal'].includes(exchangeOperation));
+if(isPool){assert.equal(requestIntervalMs,0);assert.equal(exchangeOperation,'exchange_journal');}
 const shard=process.env.SG_TRIAL_SHARD===undefined ? null : Number(process.env.SG_TRIAL_SHARD);
 assert(shard===null || Number.isInteger(shard) && shard>=0 && shard<20);
 const transport = connect(plan), rpc = (op,data={})=>transport.rpc(op,{...(shard===null?{}:{shardId:shard}),...data});
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
   target:plan.target,shardId:shard,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
-let lease, owner, stop = false, lastRequestAt = 0;
+let lease, leaseOwned, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
 process.on('SIGTERM', () => {stop=true;});
 process.on('SIGINT', () => {stop=true;});
-function owned() {return {owner,epoch:lease.epoch};}
-function fail(code, category='source_protocol', extra={}) {return Object.assign(new Error(code),{code,category,...extra});}
-function params(value) {
-  const p = {};
-  for (const part of String(value).split('&')) {
-    if (!part) continue;
-    const at=part.indexOf('=');
-    if (at<0 || Object.hasOwn(p,part.slice(0,at))) throw fail('AMBIGUOUS_SOURCE_RESPONSE');
-    p[part.slice(0,at)]=part.slice(at+1);
-  }
-  return p;
-}
-function integer(value) {
-  if (!/^\d+$/.test(String(value)) || !Number.isSafeInteger(Number(value))) throw fail('INVALID_SOURCE_MONEY');
-  return Number(value);
-}
+function owned() {return leaseOwned || {owner,epoch:lease.epoch};}
 const xml = v => String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 async function main() {
+  if (isPool && plan.configured !== true) {
+    if (role === 'capture') throw fail('POOL_NOT_CONFIGURED','storage');
+    evidence.result={status:'not_configured',globalSourceEnabled:false};return;
+  }
   if (role === 'status') { evidence.result=await rpc('status'); return; }
   if (role === 'audit') { evidence.result=await rpc('audit'); return; }
   const status=await rpc('status');
   if (status.status === 'complete') {evidence.alreadyComplete=true; evidence.result=status; return;}
   if (status.status === 'halted') throw fail('TRIAL_HALTED','storage');
   const baseGame=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
-  const game=shard===null?baseGame:gameForShard(baseGame,shard);
+  const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId);
+  if(isPool)assert(shard!==null);
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');
   assert.equal(game.serverAddress,'ogs-gdm-usnj.nyxop.net/nextgen');
   assert(game.sessionId && game.operatorId);
   owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}:${randomUUID()}`;
-  lease=await rpc('claim',{owner,sessionHash:hash(game.sessionId+'@'+game.operatorId),commitSha:process.env.GITHUB_SHA});
-  evidence.startCheckpoint=lease.checkpoint;
-  const sequenceTarget=lease.sequenceTarget ?? plan.target;
-  evidence.sequenceTarget=sequenceTarget;
-  evidence.sequenceBase=lease.sequenceBase ?? 0;
-  const limit=Number(process.env.SG_TRIAL_LIMIT || '1');
+  const identity={owner,sessionHash:hash(game.sessionId+'@'+game.operatorId),commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan))};
+  if(!isPool){
+    lease=await rpc('claim',identity);leaseOwned={owner,epoch:lease.epoch};
+    evidence.startCheckpoint=lease.checkpoint;evidence.sequenceTarget=lease.sequenceTarget ?? plan.target;
+    evidence.sequenceBase=lease.sequenceBase ?? 0;
+  }
+  const limit=isPool?plan.target:Number(process.env.SG_TRIAL_LIMIT || '1');
   assert(Number.isSafeInteger(limit) && limit>=1 && limit<=plan.target);
   const deadline=performance.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000;
   const cookies=new Map();
@@ -119,78 +115,30 @@ async function main() {
     if(reelstrip.sourceRejected)throw fail('SOURCE_REELSTRIP_REJECTED');
     return nextBalance;
   }
-  let pending=lease.pendingRound, balance;
-  if(pending){
-    assert.equal(pending.awaiting,null);balance=pending.raw.startBalanceRaw;
+  const state={};
+  const capture=async (currentLease,currentOwned)=>{
+    const result=await captureBatch({plan,lease:currentLease,owned:currentOwned,rpc,post,payload,bootstrap,
+      prepareRound:prepareNextgenRound,mappingHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
+      deadline,limit,exchangeOperation,onProgress:()=>{
+        const seconds=(performance.now()-sessionStart)/1000;
+        console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,batchId:currentLease.batchId,
+          completedThisRun:evidence.completedThisRun,batchCheckpoint:evidence.endCheckpoint,target:plan.target,
+          roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests,
+          ...(evidence.completedThisRun%1000===0?{rpcMetrics:transport.metrics(),sourceElapsedMs:evidence.sourceElapsedMs}: {})}));
+      }});
+    evidence.result=result;
+    if(isPool && result.status==='complete')evidence.completedBatches=(evidence.completedBatches || 0)+1;
+    return result;
+  };
+  if(isPool){
+    await runDynamicBatches({rpc,identity,capture,shouldStop:()=>stop,deadline,
+      onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;}});
+    evidence.result=await rpc('status');
   }else{
-    balance=await bootstrap();
-    evidence.initialBalanceRaw=balance;
+    for(let i=0;i<10;i++)await rpc('ping');
+    await capture(lease,leaseOwned);
   }
-  let sequence=lease.durable+1, prepared=null;
-  for(let i=0;i<10;i++)await rpc('ping');
-  while(sequence<=sequenceTarget && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending || prepared)){
-    let raw, attempt;
-    let intentReady=false;
-    if(pending){raw=pending.raw;attempt=pending.attempt;sequence=pending.sequence;pending=null;}
-    else{
-      // Demo credit reset is allowed only between fully settled big rounds.
-      // Its new balance becomes the next round's start; it is never a payout.
-      if(balance<2500){
-        const previous=balance;
-        balance=await bootstrap();
-        if(balance<=previous)throw fail('DEMO_BALANCE_REFRESH_FAILED');
-        evidence.demoBalanceRefreshes=(evidence.demoBalanceRefreshes || 0)+1;
-      }
-      raw={fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[]};
-      if(prepared){
-        assert.equal(prepared.sequence,sequence);assert.equal(prepared.startBalanceRaw,balance);
-        attempt=prepared.attempt;prepared=null;
-      }else{
-        attempt=randomUUID();
-        await rpc('begin',{...owned(),sequence,attempt,startBalanceRaw:balance,requestPayload:payload('BET')});
-      }
-      intentReady=true;
-    }
-    while(true){
-      const msg=raw.steps.length?'FREE_GAME':'BET';
-      if(raw.steps.length>=plan.maxSteps)throw fail('ROUND_STEP_LIMIT');
-      if(!intentReady)await rpc('intent',{...owned(),sequence,requestPayload:payload(msg)});
-      const step=await post(payload(msg),msg);
-      evidence.sourceElapsedMs=(evidence.sourceElapsedMs || 0)+step.elapsedMs;
-      raw.steps.push(step);
-      let normalized, following;
-      let remaining=null;
-      try{remaining=step.sourceRejected?null:integer(params(step.responsePayload).NFG ?? '0');}catch{}
-      if(remaining===0){
-        try{normalized=prepareNextgenRound(raw,{buy:0,bonus:raw.steps.some(s=>s.msgId==='FREE_GAME')?1:0,typeMappingHash:mappingHash});}
-        catch { /* Send original response first; server preserves it and rejects invalid settlement. */ }
-      }
-      if(remaining>0 && raw.steps.length<plan.maxSteps){
-        following={sequence,requestPayload:payload('FREE_GAME')};
-      }else if(normalized && sequence<sequenceTarget && evidence.completedThisRun+1<limit && !stop
-        && performance.now()+2000<deadline && normalized.money.endBalanceRaw>=2500){
-        following={sequence:sequence+1,attempt:randomUUID(),startBalanceRaw:normalized.money.endBalanceRaw,requestPayload:payload('BET')};
-      }
-      const result=await rpc(exchangeOperation,{...owned(),sequence,step,...(normalized?{normalized}:{}),...(following?{following}:{})});
-      if(result.stopRequested)stop=true;
-      if(result.stopRequested && !result.complete)throw fail('GLOBAL_SOURCE_STOPPED','storage');
-      intentReady=result.followingIntentDurable===true;
-      if(result.complete){
-        balance=result.endBalanceRaw;evidence.endCheckpoint=result.checkpoint;
-        if(intentReady)prepared=following;
-        break;
-      }
-    }
-    evidence.completedThisRun++;sequence++;
-    if(evidence.completedThisRun%100===0){
-      const seconds=(performance.now()-sessionStart)/1000;
-      console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,confirmed:evidence.endCheckpoint,target:sequenceTarget,
-        completedThisRun:evidence.completedThisRun,roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests,
-        ...(evidence.completedThisRun%1000===0?{rpcMetrics:transport.metrics(),sourceElapsedMs:evidence.sourceElapsedMs}: {})}));
-    }
-  }
-  evidence.result=await rpc('release',owned());
-  evidence.endCheckpoint=evidence.result.checkpoint;
+
 }
 try {
   await main();evidence.outcome='success';
@@ -203,7 +151,7 @@ try {
   }
   // A claim can itself detect an unknown prior source outcome and halt the
   // trial. Report that fresh state even when this Runner never acquired it.
-  try{evidence.result=await rpc('status');}catch{}
+  if(!isPool || plan.configured===true){try{evidence.result=await rpc('status');}catch{}}
   process.exitCode=2;
 } finally {
   evidence.rpcMetrics=transport.metrics();
@@ -213,6 +161,6 @@ try {
     fs.appendFileSync(process.env.GITHUB_OUTPUT,`trial_status=${evidence.result.status}\n`);
   console.log(JSON.stringify(evidence));
   if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-    `### ${plan.name}: 300,000 complete rounds\n\n\`\`\`json\n${JSON.stringify(evidence,null,2)}\n\`\`\`\n`);
+    `### ${plan.name}: ${plan.target ?? 'unconfigured'} complete rounds\n\n\`\`\`json\n${JSON.stringify(evidence,null,2)}\n\`\`\`\n`);
   transport.close();
 }

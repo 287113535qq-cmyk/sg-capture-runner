@@ -30,6 +30,12 @@ jobs:
       - name: Offline fixture tests only
         working-directory: collector
         run: npm test
+      - name: Durable storage and dynamic pool recovery tests
+        run: python3 -m unittest discover -s service/tests -q
+      - name: Session and startup checks
+        run: node --test scripts/trial/demo-sessions.test.mjs scripts/trial/runner-readiness.test.mjs scripts/trial/capture-batch.test.mjs
+      - name: Twenty-process offline capture and persistence integration
+        run: node scripts/trial/pool-e2e-fixture.mjs
       - name: Report preparation boundary
         run: |
           echo 'Offline preparation checks passed. No SG source request or database connection was made.' >> "$GITHUB_STEP_SUMMARY"
