@@ -1,0 +1,820 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-27T10:15:55.565Z",
+  "scope": "isolated-fixture-storage-link-only",
+  "caseId": "fixture_20260927_link_v1",
+  "fixtureOnly": true,
+  "officialRequests": 0,
+  "gamePoolWrites": 0,
+  "captureEnabled": false,
+  "automaticTriggerEnabled": false,
+  "stagingDatabase": "sg_capture_staging_v1",
+  "collections": [
+    "rounds",
+    "accepted_rounds"
+  ],
+  "summary": {
+    "completedFixtureGames": 21,
+    "durableRawRecords": 43,
+    "durableNormalizedRecords": 43,
+    "stagingMongoRecords": 43,
+    "acceptedMongoRecords": 43,
+    "repeatWorkflowAddedRecords": 0,
+    "identitySetHash": "de1b9f6f92c55dddf0edb5f14f23b78b2f4a853b5d312a3da1e52a3ccf11a8c8",
+    "matrixJobs": 20,
+    "distinctHostedRunners": 20,
+    "maxParallelConfigured": 20,
+    "peakOverlappingWorkerSteps": 6,
+    "actualOfficialTwentyWayConcurrencyVerified": false,
+    "linuxDurabilityUnitTestsPassed": 21,
+    "realMongoProcessCrashRecoveryVerifiedAcrossRuns": true
+  },
+  "deployment": {
+    "deployedCommit": "ba604020725612f30f64fb816f26e248bba1c79e",
+    "serviceFileSha256": {
+      "service/rpc.py": "00b83b0b1439b38fa6af00c219d6b0befa09e15832d5b1c4af8cd76f8444e990",
+      "service/install.py": "3c93679a47290591cd1fa69ba95b47cb552549ef62149e4944d5bfc40d82d651",
+      "service/store.py": "2aae65aeddd963321980c4a44cd58388f34ccd624d37ca9523dd93f575bdf61a",
+      "service/mongo_bridge.py": "2bd1956f8b6b2378cd688413c8456ab2178a32f0ecd20537f4a5b35800badb56"
+    },
+    "caseId": "fixture_20260927_link_v1",
+    "tasks": [
+      [
+        "complete",
+        21,
+        43,
+        43
+      ]
+    ],
+    "receipts": [
+      [
+        "committed",
+        43
+      ]
+    ],
+    "gitBlobSha256": {
+      "service/rpc.py": "35e5849a617a90544f72c84953718089495f2390f400af138b9ebc752815db44",
+      "service/install.py": "c6abb64e9383a6c8319d6dcacd24586a9f9de41b08c668edeee788fb712ae690",
+      "service/store.py": "013d8b707f04dd3b95ee94621522cd74a1d86bfe37bfad181aee10a3c4851000",
+      "service/mongo_bridge.py": "b49654910cb37587d2bd53ec9fd0a74117d502fb301bcbcd126de3d36be2eabb"
+    },
+    "sourceVerification": "All four deployed files exactly match Git commit blobs after LF-to-CRLF checkout conversion; deployed bytes use Windows line endings."
+  },
+  "runs": {
+    "initialCrashAndRecovery": {
+      "conclusion": "failure",
+      "createdAt": "2026-09-27T10:01:46Z",
+      "databaseId": 36311220550,
+      "event": "workflow_dispatch",
+      "headSha": "f98aca86e23c641e2f45f0a2d5bdf01b3868c5c0",
+      "status": "completed",
+      "updatedAt": "2026-09-27T10:02:49Z",
+      "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36311220550",
+      "jobs": [
+        {
+          "name": "seed",
+          "conclusion": "success"
+        },
+        {
+          "name": "resume",
+          "conclusion": "failure"
+        },
+        {
+          "name": "workers",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "audit",
+          "conclusion": "skipped"
+        }
+      ],
+      "evidence": [
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "seed",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "activeLeaseConflictRejected": true,
+          "firstInsert": 1,
+          "duplicateAddedRows": 0,
+          "realServerProcessCrashAfterMongo": true,
+          "checkpointDidNotAdvance": true,
+          "stoppedBetweenConfirmedRounds": true
+        }
+      ],
+      "failureReason": "Resume persisted all three records; the final Mongo cursor read failed. Fixed with bounded runCommand reads; all existing records and progress retained."
+    },
+    "fullMatrixAndAcceptance": {
+      "conclusion": "success",
+      "createdAt": "2026-09-27T10:05:31Z",
+      "databaseId": 36311422228,
+      "event": "workflow_dispatch",
+      "headSha": "ba604020725612f30f64fb816f26e248bba1c79e",
+      "status": "completed",
+      "updatedAt": "2026-09-27T10:08:24Z",
+      "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36311422228",
+      "jobs": [
+        {
+          "name": "seed",
+          "conclusion": "success"
+        },
+        {
+          "name": "resume",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (8)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (3)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (11)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (10)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (1)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (9)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (4)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (13)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (5)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (7)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (15)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (18)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (14)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (16)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (6)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (0)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (19)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (17)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workers (2)",
+          "conclusion": "success"
+        },
+        {
+          "name": "audit",
+          "conclusion": "success"
+        }
+      ],
+      "evidence": [
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "seed",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "singleAlreadyComplete": true
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "resume",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "alreadyComplete": true,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 3,
+            "rawNormalizedMongoParity": true,
+            "identitySetHash": "b944732f92c5137aadefa1b7d5e9ca0fe41c51f3503eecca7ab87cef830c553c"
+          }
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 8,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-08",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 3,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-03",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 11,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-11",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 10,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-10",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 1,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-01",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 9,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-09",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 4,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-04",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 13,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-13",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 5,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-05",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 7,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-07",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 15,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-15",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 12,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-12",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 18,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-18",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 14,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-14",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 16,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-16",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 6,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-06",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-00",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 19,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-19",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 17,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-17",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "worker",
+          "shard": 2,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "gameId": "fixture-02",
+          "activeGames": 1,
+          "mongoInserted": 2,
+          "checkpoint": 2
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "audit",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "completedFixtureGames": 21,
+          "distinctMatrixWorkers": 20,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 43,
+            "rawNormalizedMongoParity": true,
+            "identitySetHash": "de1b9f6f92c55dddf0edb5f14f23b78b2f4a853b5d312a3da1e52a3ccf11a8c8"
+          },
+          "acceptance": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 43,
+            "inserted": 43,
+            "duplicates": 0,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "repeatedImport": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 43,
+            "inserted": 0,
+            "duplicates": 43,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "completedGameNotReclaimed": true
+        }
+      ]
+    },
+    "sameCaseRepeat": {
+      "conclusion": "success",
+      "createdAt": "2026-09-27T10:12:57Z",
+      "databaseId": 36311817903,
+      "event": "workflow_dispatch",
+      "headSha": "ba604020725612f30f64fb816f26e248bba1c79e",
+      "status": "completed",
+      "updatedAt": "2026-09-27T10:13:29Z",
+      "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36311817903",
+      "jobs": [
+        {
+          "name": "seed",
+          "conclusion": "success"
+        },
+        {
+          "name": "audit",
+          "conclusion": "success"
+        },
+        {
+          "name": "resume",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "workers",
+          "conclusion": "skipped"
+        }
+      ],
+      "evidence": [
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "seed",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "alreadyComplete": true
+        },
+        {
+          "schema": "sg-link-fixture-v1",
+          "fixtureOnly": true,
+          "caseId": "fixture_20260927_link_v1",
+          "role": "audit",
+          "shard": 0,
+          "officialRequests": 0,
+          "gamePoolsTouched": false,
+          "completedFixtureGames": 21,
+          "distinctMatrixWorkers": 20,
+          "parity": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "count": 43,
+            "rawNormalizedMongoParity": true,
+            "identitySetHash": "de1b9f6f92c55dddf0edb5f14f23b78b2f4a853b5d312a3da1e52a3ccf11a8c8"
+          },
+          "acceptance": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 43,
+            "inserted": 0,
+            "duplicates": 43,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "repeatedImport": {
+            "ok": true,
+            "schema": "sg-link-fixture-v1",
+            "fixtureOnly": true,
+            "acceptedCount": 43,
+            "inserted": 0,
+            "duplicates": 43,
+            "target": "isolated_fixture_accepted_rounds",
+            "gamePoolsTouched": false
+          },
+          "completedGameNotReclaimed": true
+        }
+      ]
+    }
+  },
+  "runnerTimings": {
+    "matrixJobs": 20,
+    "distinctRunnerNames": 20,
+    "peakOverlappingWorkerSteps": 6,
+    "windows": [
+      {
+        "job": "workers (8)",
+        "runner": "GitHub Actions 1000000005",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:05:59Z",
+        "end": "2026-09-27T10:06:14Z"
+      },
+      {
+        "job": "workers (3)",
+        "runner": "GitHub Actions 1000000009",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:01Z",
+        "end": "2026-09-27T10:06:15Z"
+      },
+      {
+        "job": "workers (11)",
+        "runner": "GitHub Actions 1000000008",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:05:59Z",
+        "end": "2026-09-27T10:06:16Z"
+      },
+      {
+        "job": "workers (10)",
+        "runner": "GitHub Actions 1000000007",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:05:59Z",
+        "end": "2026-09-27T10:06:12Z"
+      },
+      {
+        "job": "workers (1)",
+        "runner": "GitHub Actions 1000000016",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:25Z",
+        "end": "2026-09-27T10:06:37Z"
+      },
+      {
+        "job": "workers (9)",
+        "runner": "GitHub Actions 1000000014",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:22Z",
+        "end": "2026-09-27T10:06:36Z"
+      },
+      {
+        "job": "workers (4)",
+        "runner": "GitHub Actions 1000000015",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:20Z",
+        "end": "2026-09-27T10:06:31Z"
+      },
+      {
+        "job": "workers (13)",
+        "runner": "GitHub Actions 1000000006",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:05:58Z",
+        "end": "2026-09-27T10:06:07Z"
+      },
+      {
+        "job": "workers (5)",
+        "runner": "GitHub Actions 1000000011",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:14Z",
+        "end": "2026-09-27T10:06:25Z"
+      },
+      {
+        "job": "workers (7)",
+        "runner": "GitHub Actions 1000000010",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:05:59Z",
+        "end": "2026-09-27T10:06:12Z"
+      },
+      {
+        "job": "workers (15)",
+        "runner": "GitHub Actions 1000000012",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:19Z",
+        "end": "2026-09-27T10:06:31Z"
+      },
+      {
+        "job": "workers (12)",
+        "runner": "GitHub Actions 1000000013",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:19Z",
+        "end": "2026-09-27T10:06:31Z"
+      },
+      {
+        "job": "workers (18)",
+        "runner": "GitHub Actions 1000000017",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:34Z",
+        "end": "2026-09-27T10:06:45Z"
+      },
+      {
+        "job": "workers (14)",
+        "runner": "GitHub Actions 1000000019",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:39Z",
+        "end": "2026-09-27T10:06:52Z"
+      },
+      {
+        "job": "workers (16)",
+        "runner": "GitHub Actions 1000000022",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:46Z",
+        "end": "2026-09-27T10:06:56Z"
+      },
+      {
+        "job": "workers (6)",
+        "runner": "GitHub Actions 1000000018",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:37Z",
+        "end": "2026-09-27T10:06:45Z"
+      },
+      {
+        "job": "workers (0)",
+        "runner": "GitHub Actions 1000000024",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:54Z",
+        "end": "2026-09-27T10:07:01Z"
+      },
+      {
+        "job": "workers (19)",
+        "runner": "GitHub Actions 1000000020",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:07:46Z",
+        "end": "2026-09-27T10:07:57Z"
+      },
+      {
+        "job": "workers (17)",
+        "runner": "GitHub Actions 1000000023",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:51Z",
+        "end": "2026-09-27T10:06:58Z"
+      },
+      {
+        "job": "workers (2)",
+        "runner": "GitHub Actions 1000000021",
+        "labels": [
+          "ubuntu-latest"
+        ],
+        "start": "2026-09-27T10:06:44Z",
+        "end": "2026-09-27T10:06:52Z"
+      }
+    ]
+  },
+  "unverified": [
+    "Official SG launch/session renewal and protocol requests remain disabled.",
+    "Real WMS/NextGen complete-round capture and source-to-storage integration remain unverified.",
+    "Existing 178 game-pool simulate collections are not import targets of this fixture service.",
+    "Fixture RPC limits are 21 tasks per case and 5 records per task; this is not a production ingestion service.",
+    "Case-local fixture cooldown is not a verified shared official-host Retry-After implementation.",
+    "Twenty jobs completed, but observed worker-step overlap peaked at six; this does not prove twenty simultaneous official collectors."
+  ]
+}
