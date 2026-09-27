@@ -112,7 +112,8 @@ try {
   assert.equal(workers.reduce((n,w)=>n+w.rounds,0),plan.target);
   assert(workers.every(w=>w.rounds>0));assert(workers.some(w=>w.batches>1));
   console.log(JSON.stringify({schema:'sg-pool-e2e-fixture-result-v1',...audit,
-    independentCaptureProcesses:20,sharedProductionCaptureLoop:true,sharedProductionPoolService:true,
+    independentCaptureLoops:20,captureProcesses:1,storageRpcProcesses:20,
+    sharedProductionCaptureLoop:true,sharedProductionPoolService:true,
     elapsedFixtureSeconds:Number(((performance.now()-start)/1000).toFixed(3)),workers}));
 }finally{
   for(const child of children)if(child.exitCode===null)child.kill();

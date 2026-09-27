@@ -47,3 +47,19 @@ test('failed capture is not retried or moved to another batch', async()=>{
     },capture:async()=>{throw Error('SOURCE_NETWORK_OUTCOME_UNKNOWN');}}),/SOURCE_NETWORK_OUTCOME_UNKNOWN/);
   assert.equal(next,1);
 });
+test('completion racing with registration exits without a false failure or source request',async()=>{
+  let calls=0;
+  await runDynamicBatches({identity:{owner:'late-worker'},shouldStop:()=>false,
+    deadline:performance.now()+10000,rpc:async op=>{
+      assert.equal(op,'register');calls++;return {done:true};
+    },capture:()=>assert.fail('No capture after completion')});
+  assert.equal(calls,1);
+});
+test('missing storage registrations stop startup within its own bounded deadline',async()=>{
+  let calls=0;
+  await assert.rejects(runDynamicBatches({identity:{owner:'waiting-worker'},shouldStop:()=>false,
+    deadline:performance.now()+60000,startupTimeoutMs:0,rpc:async op=>{
+      calls++;return op==='register'?{workerEpoch:1}:{waitingForWorkers:true,readyWorkers:19};
+    },capture:()=>assert.fail('No capture with nineteen ready sessions')}),/POOL_RUNNERS_NOT_READY/);
+  assert.equal(calls,2);
+});

@@ -97,13 +97,17 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
   return result;
 }
 
-export async function runDynamicBatches({rpc, identity, capture, shouldStop, deadline, onLease=()=>{}}) {
+export async function runDynamicBatches({rpc, identity, capture, shouldStop, deadline,
+  onLease=()=>{}, startupTimeoutMs=180000}) {
   const registered = await rpc('register', identity);
+  if (registered.done) return;
   const worker = {owner:identity.owner, workerEpoch:registered.workerEpoch};
+  const readyDeadline = performance.now() + startupTimeoutMs;
   while (!shouldStop() && performance.now() < deadline) {
     const lease = await rpc('next', worker);
     if (lease.done) return;
     if (lease.waitingForWorkers) {
+      if (performance.now() >= readyDeadline) throw fail('POOL_RUNNERS_NOT_READY','storage');
       await new Promise(resolve => setTimeout(resolve, 1000));
       continue;
     }

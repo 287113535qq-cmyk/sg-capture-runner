@@ -111,10 +111,19 @@ class PoolIntegrationTests(unittest.TestCase):
         self.assertEqual(len({r['sourceSessionHash'] for r in self.mongo.rows.values()}), 20)
         self.assertTrue(all(r['buy']==0 and r['bet']==0.25 and r['mul']==r['normalized']['money']['totalWinRaw']/25 for r in self.mongo.rows.values()))
         self.assertFalse((Path(self.tmp.name)/'trials'/'bookofsevens_300k_20260927').exists())
+        late=self.call(self.client(),'register',0,owner='late-worker',sessionHash=f'{1:064x}',
+            commitSha='b'*40,planHash=digest(self.plan))
+        self.assertTrue(late['done'])
 
     def test_source_start_waits_for_all_twenty_registered_sessions(self):
         self.first.pool.db.execute('DELETE FROM workers WHERE id=19')
         result = self.take(self.workers[0],0)
+        self.assertEqual(result['readyWorkers'],19)
+        self.assertEqual(self.first.pool.status()['assigned'],0)
+
+    def test_disconnected_idle_worker_does_not_satisfy_startup_barrier(self):
+        client=self.workers[19];client.close();self.clients.remove(client)
+        result=self.take(self.workers[0],0)
         self.assertEqual(result['readyWorkers'],19)
         self.assertEqual(self.first.pool.status()['assigned'],0)
 

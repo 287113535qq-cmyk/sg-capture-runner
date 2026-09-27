@@ -41,6 +41,12 @@ class PoolTrial:
         self.chunk_lease = None
 
     def close(self):
+        if self.worker_lease is not None:
+            try:
+                if self.pool.owned(self.worker_lease)['active_batch'] is None:
+                    self.pool.release_worker(self.worker_lease)
+            except Rejected:
+                pass
         if self.store:
             self.store.close()
         self.pool.close()
@@ -112,8 +118,13 @@ class PoolTrial:
             elif op == 'ping':
                 result = {'pong': True}
             elif op == 'register':
-                require(self.allowed(), 'GLOBAL_SOURCE_STOPPED')
                 require(req.get('planHash') == digest(self.plan), 'RUNNER_POOL_PLAN_MISMATCH')
+                if self.pool.status()['complete']:
+                    # Another resumed worker may reconcile the final durable
+                    # batch between this worker's status read and registration.
+                    return {'ok':True,'schema':self.plan['schema'],'fixtureOnly':False,'done':True,
+                        'serverWorkMs':round((time.perf_counter()-started)*1000,3)}
+                require(self.allowed(), 'GLOBAL_SOURCE_STOPPED')
                 require(isinstance(req.get('commitSha'), str) and re.fullmatch('[a-f0-9]{40}', req['commitSha']), 'BAD_COMMIT_SHA')
                 identity = {'worker': req.get('shardId'), 'owner': req.get('owner'),
                     'sessionHash': req.get('sessionHash'), 'commitSha': req['commitSha']}
