@@ -1,0 +1,65 @@
+{
+  "codeCommit": "1ee6121b37d39de9cfcd55d0868b87ccd2b88043",
+  "mode": "apply",
+  "linuxRelevantTestsPassed": 11,
+  "result": {
+    "evidenceHash": "f1768db535f14e0b12a3140a7a7fbf17b424da0729faa0ad4f7c096a462cc163",
+    "gameIds": [
+      32671,
+      32736
+    ],
+    "applied": true,
+    "alreadyApplied": false,
+    "targetChanges": 0,
+    "baselineChanges": 0,
+    "sessionChanges": 0,
+    "sourceRequests": 0,
+    "gamesRemainInPhaseOne": true
+  },
+  "before": {
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "secondRoundEnabled": false,
+    "enabled": false,
+    "reason": "ACTIVE_GAME_REQUIRES_REVIEW",
+    "activeGame": 32651,
+    "counts": {
+      "active": 1,
+      "complete": 3,
+      "needs-adapter": 153,
+      "ready": 21
+    },
+    "games": 178,
+    "targetPerGame": 300000,
+    "diskFreeBytes": 192197419008,
+    "diskReserveBytes": 32212254720,
+    "status": "paused"
+  },
+  "after": {
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "secondRoundEnabled": false,
+    "enabled": false,
+    "reason": "ACTIVE_GAME_REQUIRES_REVIEW",
+    "activeGame": 32651,
+    "counts": {
+      "active": 1,
+      "complete": 3,
+      "needs-adapter": 155,
+      "ready": 19
+    },
+    "games": 178,
+    "targetPerGame": 300000,
+    "diskFreeBytes": 192197378048,
+    "diskReserveBytes": 32212254720,
+    "status": "paused"
+  },
+  "activeTrialRawUnchanged": true,
+  "sourceRequests": 0,
+  "runtimeReleaseChanged": false,
+  "schema": "sg-feature-review-holds-result-v1",
+  "observedAtUtc": "2026-09-27T20:25:31.310940+00:00",
+  "windowsRelevantTestsPassed": 11,
+  "captureWorkflowEnabled": false,
+  "githubAccountRestrictionUnchanged": true
+}
