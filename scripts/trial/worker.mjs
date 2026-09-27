@@ -161,8 +161,11 @@ try {
   if(error.httpStatus)evidence.httpStatus=error.httpStatus;
   if(lease){
     try{evidence.result=await rpc('fail',{...owned(),category:error.category || 'storage',cooldownUntil:error.cooldownUntil || 0});}
-    catch{try{evidence.result=await rpc('status');}catch{}}
+    catch{}
   }
+  // A claim can itself detect an unknown prior source outcome and halt the
+  // trial. Report that fresh state even when this Runner never acquired it.
+  try{evidence.result=await rpc('status');}catch{}
   process.exitCode=2;
 } finally {
   evidence.elapsedSeconds=Number(((performance.now()-sessionStart)/1000).toFixed(3));
