@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "captureEnabled": false,
+  "automaticTriggerEnabled": false,
+  "planned": {
+    "runnerLabel": "ubuntu-latest",
+    "shards": 20,
+    "concurrentGamesPerRunner": 1,
+    "sharedSessionsAllowed": false
+  },
+  "readiness": "offline-preflight-only"
+}

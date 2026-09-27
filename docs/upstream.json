@@ -1,0 +1,42 @@
+{
+  "commit": "c5fea99d5600b8a6d3ac5e41518bdfed2b2d4eb8",
+  "sourceSubdirectory": "capture/capture-sg",
+  "files": [
+    {
+      "file": "config.ts",
+      "sha256": "4e794bb416ec957481159c86167e16b7b5f2cc46cfb5204c10744da6ed03e953"
+    },
+    {
+      "file": "sg.ts",
+      "sha256": "7fa76439a6df2fc6d8e28f8bf8802faeed0de1b2a8920e73902d9c4fc0df0f67"
+    },
+    {
+      "file": "sg.http.ts",
+      "sha256": "e214d23f521192974c47ed1936742bb39fc93573d799f68ecc42b7d977c47350"
+    },
+    {
+      "file": "sg.parse.ts",
+      "sha256": "e1be834af38abf322229148dd7b99b9b52247e3e4c94e78defb6a69d1c5219cc"
+    },
+    {
+      "file": "sg.round.ts",
+      "sha256": "6bcc3887b4ff1b1fc0caaaf20578e65ae1f4642b6ceb5ac5851808103596d6bf"
+    },
+    {
+      "file": "tsconfig.json",
+      "sha256": "a4000b193742efd590ae1512d2dfd5b0412d4d1bddcc1995c7885dea6b286476"
+    },
+    {
+      "file": "package.json",
+      "sha256": "0e6bf74283f56c7284f129fea1616fcc808f5ac0061da4919cdfea4de6474042"
+    },
+    {
+      "file": "package-lock.json",
+      "sha256": "eaaa857291ba92f6fdc3dde964ff6d9ab6d4a968e64b4edba211f919a763d5f9"
+    },
+    {
+      "file": "script/batch-capture.ts",
+      "sha256": "d5f1211e6c473c2cf7869d6203be517055aac4d30019e08fade0ec819d1d87bb"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "date": "2026-09-27",
+  "preparationOnly": true,
+  "captureEnabled": false,
+  "github": {
+    "repository": "zyzuoyang/sg-capture-runner",
+    "visibility": "PRIVATE",
+    "login": "zyzuoyang",
+    "permission": "ADMIN",
+    "initialWorkflowCount": 0,
+    "initialRunCount": 0,
+    "secretsConfigured": false
+  },
+  "upstreamCommit": "c5fea99d5600b8a6d3ac5e41518bdfed2b2d4eb8",
+  "sourceIdentityMapping": {
+    "runtimeGames": 178,
+    "uniqueMatches": 178
+  },
+  "localCorpus": {
+    "nonemptyBaseFiles": 178,
+    "bytes": 25834533276,
+    "finishMarkersPresent": 154,
+    "fullProtocolValidation": false,
+    "fullLineCount": false
+  },
+  "mongo": {
+    "collections": 178,
+    "metadataDocumentCount": 5017128,
+    "emptyCollections": 0,
+    "queryErrors": 0,
+    "uniqueIdentityParityChecked": false,
+    "readOnly": true
+  },
+  "boundedPreflight": {
+    "selection": "Mapped base games with round/init/traffic files each <=1 MiB; numeric filters follow upstream base-plan selection semantics",
+    "distinctGames": 134,
+    "plans": 134,
+    "complete": 5,
+    "pending": 61,
+    "missingConfig": 0,
+    "skipped": 68,
+    "largeGamesDeferred": 44,
+    "rowsInConfiguredUnskippedPlans": 7542,
+    "crossGameSharedSessionGroups": 0,
+    "sessionFreshnessVerified": false,
+    "scopeWarning": "Planner completion is not official protocol validation or file/Mongo parity; skipped games do not contribute row counts"
+  },
+  "checks": {
+    "npmCi": true,
+    "typeScript": true,
+    "offlineTests": 9,
+    "officialRequests": 0,
+    "newCapturedRounds": 0,
+    "databaseWrites": 0,
+    "sourceSecretScanFindings": 0
+  },
+  "notYetImplemented": [
+    "durable game claim/lease/heartbeat/fencing",
+    "durable raw+normalized round commit/checkpoint",
+    "idempotent Mongo import and identity/hash parity",
+    "persistent Retry-After and retry coordination",
+    "fresh independent session acquisition on Linux",
+    "WMS and NextGen distributed worker integration",
+    "single-runner capture/resume verification",
+    "20-runner expansion and production schedule"
+  ]
+}

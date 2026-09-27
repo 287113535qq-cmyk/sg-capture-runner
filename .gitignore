@@ -1,0 +1,10 @@
+node_modules/
+.local/
+collector/assets/
+collector/reports/
+dist/
+*.pem
+*.key
+.env*
+*.log
+*.jsonl

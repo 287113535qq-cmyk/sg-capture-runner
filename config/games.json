@@ -1,0 +1,1248 @@
+[
+  {
+    "gameId": 32749,
+    "runtimeGameId": 32971,
+    "sourceId": "14003749-b9cd-47dd-973a-85ca1e538338",
+    "name": "5 Treasures",
+    "pathSlug": "5-treasures"
+  },
+  {
+    "gameId": 32750,
+    "runtimeGameId": 32972,
+    "sourceId": "35d6d55b-42ae-6819-0b74-04211247d7e4",
+    "name": "88 Fortunes",
+    "pathSlug": "88-fortunes"
+  },
+  {
+    "gameId": 32751,
+    "runtimeGameId": 32973,
+    "sourceId": "f1dfdeeb-99dd-11ea-b3b3-0ad5da7db292",
+    "name": "88 Fortunes Megaways",
+    "pathSlug": "88-fortunes-megaways"
+  },
+  {
+    "gameId": 32752,
+    "runtimeGameId": 32974,
+    "sourceId": "8728dd95-a537-8f91-4a54-8c91f93cc41f",
+    "name": "Acorn Pixie",
+    "pathSlug": "acorn-pixie"
+  },
+  {
+    "gameId": 32753,
+    "runtimeGameId": 32975,
+    "sourceId": "a89c6295-cb4b-447a-831d-6b3e3e3a9b81",
+    "name": "Action Bank Plus",
+    "pathSlug": "action-bank-plus"
+  },
+  {
+    "gameId": 32754,
+    "runtimeGameId": 32976,
+    "sourceId": "cf839ce9-748a-4a39-950f-95e9c3f1227d",
+    "name": "Arthur and the Round Table",
+    "pathSlug": "arthur-and-the-round-table"
+  },
+  {
+    "gameId": 32755,
+    "runtimeGameId": 32977,
+    "sourceId": "8873a5e1-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Blazing X Asia",
+    "pathSlug": "blazing-x-asia"
+  },
+  {
+    "gameId": 32756,
+    "runtimeGameId": 32978,
+    "sourceId": "932eb44f-60b7-919e-6770-a99b6cb899bd",
+    "name": "Celestial King",
+    "pathSlug": "celestial-king"
+  },
+  {
+    "gameId": 32757,
+    "runtimeGameId": 32979,
+    "sourceId": "34bcae8d-a828-7d54-428a-9255709ddd2d",
+    "name": "Cheshire Cat",
+    "pathSlug": "cheshire-cat"
+  },
+  {
+    "gameId": 32758,
+    "runtimeGameId": 32980,
+    "sourceId": "754a3aa1-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "Cool Jewels",
+    "pathSlug": "cool-jewels"
+  },
+  {
+    "gameId": 32759,
+    "runtimeGameId": 32981,
+    "sourceId": "8873aa1a-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Crystal Forest",
+    "pathSlug": "crystal-forest"
+  },
+  {
+    "gameId": 32760,
+    "runtimeGameId": 32982,
+    "sourceId": "700da7a3-d46f-f758-18b8-0e79cc1b2d6c",
+    "name": "Dancing Drums",
+    "pathSlug": "dancing-drums"
+  },
+  {
+    "gameId": 32761,
+    "runtimeGameId": 32983,
+    "sourceId": "44a273e5-380a-4c51-8e10-410127a8093d",
+    "name": "Dancing Drums Explosion",
+    "pathSlug": "dancing-drums-explosion"
+  },
+  {
+    "gameId": 32762,
+    "runtimeGameId": 32984,
+    "sourceId": "d1348aff-7903-11ea-b3b3-0ad5da7db292",
+    "name": "Desert Cats",
+    "pathSlug": "desert-cats"
+  },
+  {
+    "gameId": 32763,
+    "runtimeGameId": 32985,
+    "sourceId": "c59031ee-610c-3a2e-bbb8-db07023a3a1b",
+    "name": "Dr. Jekyll Goes Wild",
+    "pathSlug": "dr-jekyll-goes-wild"
+  },
+  {
+    "gameId": 32764,
+    "runtimeGameId": 32986,
+    "sourceId": "e5106162-6a4b-0cfa-4203-bc2b539df2c2",
+    "name": "Dragon Spin",
+    "pathSlug": "dragon-spin"
+  },
+  {
+    "gameId": 32765,
+    "runtimeGameId": 32987,
+    "sourceId": "acc0fe0b-c051-4655-9ffe-ec41d8d8b971",
+    "name": "Drop and Lock Deep Sea Magic",
+    "pathSlug": "drop-and-lock-deep-sea-magic"
+  },
+  {
+    "gameId": 32766,
+    "runtimeGameId": 32988,
+    "sourceId": "4deda44e-68ca-43ba-87e5-1743cdab8d2f",
+    "name": "Eureka Blast Superlock",
+    "pathSlug": "eureka-blast-superlock"
+  },
+  {
+    "gameId": 32767,
+    "runtimeGameId": 32989,
+    "sourceId": "754a6b50-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "Fire Queen",
+    "pathSlug": "fire-queen"
+  },
+  {
+    "gameId": 32768,
+    "runtimeGameId": 32990,
+    "sourceId": "13017cb0-dcf4-8821-9c12-747515ac33f6",
+    "name": "Frozen Inferno",
+    "pathSlug": "frozen-inferno"
+  },
+  {
+    "gameId": 32769,
+    "runtimeGameId": 32991,
+    "sourceId": "fbaedcaa-e19b-ef60-6f42-c0dada281a57",
+    "name": "Fu Dao Le",
+    "pathSlug": "fu-dao-le"
+  },
+  {
+    "gameId": 32770,
+    "runtimeGameId": 32992,
+    "sourceId": "1c4b7ada-ebf5-4382-477f-5d5ce5f6efc2",
+    "name": "Giant's Gold",
+    "pathSlug": "giants-gold"
+  },
+  {
+    "gameId": 32771,
+    "runtimeGameId": 32993,
+    "sourceId": "4e7609b7-585a-01e6-3c01-70f5d28b4fb3",
+    "name": "Golden Chief",
+    "pathSlug": "golden-chief"
+  },
+  {
+    "gameId": 32772,
+    "runtimeGameId": 32994,
+    "sourceId": "facc6e1d-c856-87c9-a7a5-e316bac69cdd",
+    "name": "Heidi's Bier Haus",
+    "pathSlug": "heidis-bier-haus"
+  },
+  {
+    "gameId": 32773,
+    "runtimeGameId": 32995,
+    "sourceId": "49b523be-c420-a6d3-989e-9a7fb9bb5a99",
+    "name": "Hercules High & Mighty",
+    "pathSlug": "hercules-high--mighty"
+  },
+  {
+    "gameId": 32774,
+    "runtimeGameId": 32996,
+    "sourceId": "59e00a5f-37ca-5b7d-bd30-305ac7f51637",
+    "name": "Himalayas - Roof of the World",
+    "pathSlug": "himalayas--roof-of-the-world"
+  },
+  {
+    "gameId": 32775,
+    "runtimeGameId": 32997,
+    "sourceId": "3911504b-b2a0-4a25-5b95-7fa48f1c7bba",
+    "name": "Hula Hula Nights",
+    "pathSlug": "hula-hula-nights"
+  },
+  {
+    "gameId": 32776,
+    "runtimeGameId": 32998,
+    "sourceId": "754a6ce7-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "Invaders of Planet Moolah",
+    "pathSlug": "invaders-of-planet-moolah"
+  },
+  {
+    "gameId": 32777,
+    "runtimeGameId": 32999,
+    "sourceId": "622df8ec-8cd9-436d-95e3-b819c4cd57bd",
+    "name": "Jin Ji Bao Xi Endless Treasure Megaways",
+    "pathSlug": "jin-ji-bao-xi-endless-treasure-megaways"
+  },
+  {
+    "gameId": 32778,
+    "runtimeGameId": 33000,
+    "sourceId": "e1e5cfe1-69df-cae4-2f81-df4a6be5428a",
+    "name": "Jin Ji Bao Xi Endless Treasures",
+    "pathSlug": "jin-ji-bao-xi-endless-treasures"
+  },
+  {
+    "gameId": 32779,
+    "runtimeGameId": 33001,
+    "sourceId": "c48b558f-cad2-11ea-b3b3-0ad5da7db292",
+    "name": "Jinse Dao Dragon",
+    "pathSlug": "jinse-dao-dragon"
+  },
+  {
+    "gameId": 32780,
+    "runtimeGameId": 33002,
+    "sourceId": "98da1fe8-a545-42d8-9a9b-0d4d4321fd87",
+    "name": "King of Babylon Action Spins",
+    "pathSlug": "king-of-babylon-action-spins"
+  },
+  {
+    "gameId": 32781,
+    "runtimeGameId": 33003,
+    "sourceId": "54f27b48-98ef-37a9-ea72-9aee2d700a1d",
+    "name": "Kings Honour",
+    "pathSlug": "kings-honour"
+  },
+  {
+    "gameId": 32782,
+    "runtimeGameId": 33004,
+    "sourceId": "fe46afc3-9e81-8f97-2a6b-bd18278e30ce",
+    "name": "Knight's Keep",
+    "pathSlug": "knights-keep"
+  },
+  {
+    "gameId": 32783,
+    "runtimeGameId": 33005,
+    "sourceId": "f73327f0-514b-14a6-7389-3a70495528ee",
+    "name": "Kronos",
+    "pathSlug": "kronos"
+  },
+  {
+    "gameId": 32784,
+    "runtimeGameId": 33006,
+    "sourceId": "974943c0-af00-fb60-926c-e02071a8d625",
+    "name": "Kronos Unleashed",
+    "pathSlug": "kronos-unleashed"
+  },
+  {
+    "gameId": 32785,
+    "runtimeGameId": 33007,
+    "sourceId": "e88abbb6-0643-2175-da4a-12bb77771da5",
+    "name": "Lady Of Egypt",
+    "pathSlug": "lady-of-egypt"
+  },
+  {
+    "gameId": 32786,
+    "runtimeGameId": 33008,
+    "sourceId": "c7bcce50-8256-06c2-4802-f4b0e6ebab85",
+    "name": "Legend of Fortune",
+    "pathSlug": "legend-of-fortune"
+  },
+  {
+    "gameId": 32787,
+    "runtimeGameId": 33009,
+    "sourceId": "6ae981be-f97c-b831-ab9f-01b7694a5bc0",
+    "name": "Legend of the Pharaohs",
+    "pathSlug": "legend-of-the-pharaohs"
+  },
+  {
+    "gameId": 32788,
+    "runtimeGameId": 33010,
+    "sourceId": "bb25f414-202c-d3a8-bd4c-e77bb857a82f",
+    "name": "Lock It Link Night Life",
+    "pathSlug": "lock-it-link-night-life"
+  },
+  {
+    "gameId": 32441,
+    "runtimeGameId": 33021,
+    "sourceId": "f20a2079-99dd-11ea-b3b3-0ad5da7db292",
+    "name": "300 Shields Extreme",
+    "pathSlug": "300-shields-extreme"
+  },
+  {
+    "gameId": 32442,
+    "runtimeGameId": 33022,
+    "sourceId": "c8f9e486-97b4-4509-af81-df2c6557e178",
+    "name": "7s on Fire Power Mix",
+    "pathSlug": "7s-on-fire-power-mix"
+  },
+  {
+    "gameId": 32443,
+    "runtimeGameId": 33023,
+    "sourceId": "36da9be4-06db-4b92-ba9d-37753f9aacd4",
+    "name": "A Hot Hot Blazing Christmas",
+    "pathSlug": "a-hot-hot-blazing-christmas"
+  },
+  {
+    "gameId": 32464,
+    "runtimeGameId": 33025,
+    "sourceId": "c7b6a0d8-2bd7-80c3-2a45-89904751eda8",
+    "name": "Big Spinner",
+    "pathSlug": "big-spinner"
+  },
+  {
+    "gameId": 32471,
+    "runtimeGameId": 33026,
+    "sourceId": "318398df-e337-48a4-8669-a25e6237646d",
+    "name": "Book of Sevens",
+    "pathSlug": "book-of-sevens"
+  },
+  {
+    "gameId": 32474,
+    "runtimeGameId": 33027,
+    "sourceId": "c1be6ce7-6200-4c01-9964-8b0f0a4bf66c",
+    "name": "Carnival Cow Coin Combo",
+    "pathSlug": "carnival-cow-coin-combo"
+  },
+  {
+    "gameId": 32476,
+    "runtimeGameId": 33028,
+    "sourceId": "b8a3e86a-1827-406e-b9c1-f5b49610680c",
+    "name": "Chain Reactors Deluxe",
+    "pathSlug": "chain-reactors-deluxe"
+  },
+  {
+    "gameId": 32477,
+    "runtimeGameId": 33029,
+    "sourceId": "0678cd98-7e49-4a21-b2b5-8977103c7b1a",
+    "name": "Cherry 8",
+    "pathSlug": "cherry-8"
+  },
+  {
+    "gameId": 32486,
+    "runtimeGameId": 33030,
+    "sourceId": "44b1097e-b171-4d0e-bd0f-aea99f8c7e9a",
+    "name": "Colossal Splash Ink & Win",
+    "pathSlug": "colossal-splash-ink--win"
+  },
+  {
+    "gameId": 32489,
+    "runtimeGameId": 33031,
+    "sourceId": "16fd65e3-3a59-4238-9e9b-6583536e91fb",
+    "name": "Dancing Drums Link",
+    "pathSlug": "dancing-drums-link"
+  },
+  {
+    "gameId": 32497,
+    "runtimeGameId": 33032,
+    "sourceId": "4025f185-8188-4c8b-ad51-821e6ad91ce2",
+    "name": "Dragon Jin Long Jin Bao",
+    "pathSlug": "dragon-jin-long-jin-bao"
+  },
+  {
+    "gameId": 32500,
+    "runtimeGameId": 33033,
+    "sourceId": "dfff1a46-36e2-43c7-8512-c678c00e01e1",
+    "name": "Dragon Spin Cross Link Fire",
+    "pathSlug": "dragon-spin-cross-link-fire"
+  },
+  {
+    "gameId": 32501,
+    "runtimeGameId": 33034,
+    "sourceId": "0f85041b-b429-40b1-b6d6-9513c8f0e291",
+    "name": "Dragon Spin Cross Link Water",
+    "pathSlug": "dragon-spin-cross-link-water"
+  },
+  {
+    "gameId": 32502,
+    "runtimeGameId": 33035,
+    "sourceId": "f11c91fa-15be-4a84-b944-1a66f981aa23",
+    "name": "Dragon Unleashed - Prosperity Packets",
+    "pathSlug": "dragon-unleashed--prosperity-packets"
+  },
+  {
+    "gameId": 32503,
+    "runtimeGameId": 33036,
+    "sourceId": "498deab8-78c2-405c-9d39-5b5b59187c7a",
+    "name": "Dragon Unleashed Three Legends",
+    "pathSlug": "dragon-unleashed-three-legends"
+  },
+  {
+    "gameId": 32504,
+    "runtimeGameId": 33037,
+    "sourceId": "d3e0bd3f-8adb-47eb-868a-ee48405640e6",
+    "name": "Dragon Unleashed Treasured Happiness",
+    "pathSlug": "dragon-unleashed-treasured-happiness"
+  },
+  {
+    "gameId": 32514,
+    "runtimeGameId": 33038,
+    "sourceId": "6778707e-1df4-b40a-533a-d7933742653d",
+    "name": "Ever After",
+    "pathSlug": "ever-after"
+  },
+  {
+    "gameId": 32529,
+    "runtimeGameId": 33040,
+    "sourceId": "3476a525-f940-4627-afc1-bfdcc08fd3c2",
+    "name": "Gold Fish Feeding Time Deluxe Treasure",
+    "pathSlug": "gold-fish-feeding-time-deluxe-treasure"
+  },
+  {
+    "gameId": 32530,
+    "runtimeGameId": 33041,
+    "sourceId": "1c5dc050-480e-420a-8003-29fa3db96aae",
+    "name": "Gold Fish Feeding Time! Treasure",
+    "pathSlug": "gold-fish-feeding-time-treasure"
+  },
+  {
+    "gameId": 32532,
+    "runtimeGameId": 33043,
+    "sourceId": "059374dc-3512-4b65-aba9-f019fcb7619b",
+    "name": "Golden Fire Link Dragon Song",
+    "pathSlug": "golden-fire-link-dragon-song"
+  },
+  {
+    "gameId": 32536,
+    "runtimeGameId": 33046,
+    "sourceId": "d1348021-7903-11ea-b3b3-0ad5da7db292",
+    "name": "Gorilla Go Wilder",
+    "pathSlug": "gorilla-go-wilder"
+  },
+  {
+    "gameId": 32544,
+    "runtimeGameId": 33047,
+    "sourceId": "06f5a83c-ba58-4050-a5b6-91e1d68b7a90",
+    "name": "Huff N' Lots of Puff",
+    "pathSlug": "huff-n-lots-of-puff"
+  },
+  {
+    "gameId": 32545,
+    "runtimeGameId": 33048,
+    "sourceId": "fb7d947f-25fc-4f11-8003-1033026b1be5",
+    "name": "Huff N' More Puff",
+    "pathSlug": "huff-n-more-puff"
+  },
+  {
+    "gameId": 32547,
+    "runtimeGameId": 33049,
+    "sourceId": "f2d7afc5-1b78-49cd-a796-a368519c279c",
+    "name": "Huff N' Puff High Rise",
+    "pathSlug": "huff-n-puff-high-rise"
+  },
+  {
+    "gameId": 32548,
+    "runtimeGameId": 33050,
+    "sourceId": "198dfe83-c9c8-44eb-93dc-b66022696c56",
+    "name": "Huff N' Puff Money Mansion",
+    "pathSlug": "huff-n-puff-money-mansion"
+  },
+  {
+    "gameId": 32550,
+    "runtimeGameId": 33052,
+    "sourceId": "84c99c12-fe81-44f0-8663-8c2c89fa3e6d",
+    "name": "Hurricane Horse Coin Combo",
+    "pathSlug": "hurricane-horse-coin-combo"
+  },
+  {
+    "gameId": 32555,
+    "runtimeGameId": 33053,
+    "sourceId": "920fd071-e3cf-4185-88cc-9187044b1682",
+    "name": "Hypercharged Temple of Atlantis",
+    "pathSlug": "hypercharged-temple-of-atlantis"
+  },
+  {
+    "gameId": 32588,
+    "runtimeGameId": 33063,
+    "sourceId": "d13472a4-7903-11ea-b3b3-0ad5da7db292",
+    "name": "Merlin's Money Burst",
+    "pathSlug": "merlins-money-burst"
+  },
+  {
+    "gameId": 32590,
+    "runtimeGameId": 33064,
+    "sourceId": "78d8f00d-40e6-4417-bf4c-58f82753d1d1",
+    "name": "Mighty Monkey Coin Combo",
+    "pathSlug": "mighty-monkey-coin-combo"
+  },
+  {
+    "gameId": 32595,
+    "runtimeGameId": 33066,
+    "sourceId": "abfb4686-c3bb-4921-81fe-352d35795b65",
+    "name": "Money Raid Wapiti",
+    "pathSlug": "money-raid-wapiti"
+  },
+  {
+    "gameId": 32614,
+    "runtimeGameId": 33069,
+    "sourceId": "ad8b11c5-08b4-4728-996c-b666ee0553a3",
+    "name": "Quick Hit Blitz Blue",
+    "pathSlug": "quick-hit-blitz-blue"
+  },
+  {
+    "gameId": 32615,
+    "runtimeGameId": 33070,
+    "sourceId": "ab3c1d65-0be5-48db-a914-6ef124c8f380",
+    "name": "Quick Hit Blitz Gold",
+    "pathSlug": "quick-hit-blitz-gold"
+  },
+  {
+    "gameId": 32616,
+    "runtimeGameId": 33071,
+    "sourceId": "8322c418-2f8c-4273-a0f7-680732897592",
+    "name": "Quick Hit Blitz Purple",
+    "pathSlug": "quick-hit-blitz-purple"
+  },
+  {
+    "gameId": 32617,
+    "runtimeGameId": 33072,
+    "sourceId": "54c627da-e20b-4a7f-b6b6-ed37342fcef0",
+    "name": "Quick Hit Blitz Red",
+    "pathSlug": "quick-hit-blitz-red"
+  },
+  {
+    "gameId": 32618,
+    "runtimeGameId": 33073,
+    "sourceId": "a2f3bb79-117b-4f6f-be51-4d519364dfa5",
+    "name": "Quick Hit Link Fire",
+    "pathSlug": "quick-hit-link-fire"
+  },
+  {
+    "gameId": 32620,
+    "runtimeGameId": 33074,
+    "sourceId": "4b0cb744-82fd-40b5-92e6-94ba1b3c99f4",
+    "name": "Quick Hit Ultra Pays Monkey's Fortune",
+    "pathSlug": "quick-hit-ultra-pays-monkeys-fortune"
+  },
+  {
+    "gameId": 32621,
+    "runtimeGameId": 33075,
+    "sourceId": "62ad56ad-484b-44e5-ab56-6730f32c9b99",
+    "name": "Quick Hit Ultra Pays Wolf Mountain",
+    "pathSlug": "quick-hit-ultra-pays-wolf-mountain"
+  },
+  {
+    "gameId": 32626,
+    "runtimeGameId": 33076,
+    "sourceId": "54eeb178-9e31-4b48-8913-3e3139cc95c4",
+    "name": "Reign of The Mountain King",
+    "pathSlug": "reign-of-the-mountain-king"
+  },
+  {
+    "gameId": 32629,
+    "runtimeGameId": 33078,
+    "sourceId": "054b2224-6b69-41e6-9ca4-f804f9c29b88",
+    "name": "Rich Little Hens Founding Feathers",
+    "pathSlug": "rich-little-hens-founding-feathers"
+  },
+  {
+    "gameId": 32630,
+    "runtimeGameId": 33079,
+    "sourceId": "ed057a0c-51a3-4311-ad47-2b8058bbb340",
+    "name": "Rich Little Hens Rule of the Roost",
+    "pathSlug": "rich-little-hens-rule-of-the-roost"
+  },
+  {
+    "gameId": 32631,
+    "runtimeGameId": 33080,
+    "sourceId": "e10bfe6c-2591-43fa-b974-29c62fa7a6e1",
+    "name": "Rich Little Hens World Class",
+    "pathSlug": "rich-little-hens-world-class"
+  },
+  {
+    "gameId": 32632,
+    "runtimeGameId": 33081,
+    "sourceId": "1c311beb-7463-4fd5-8558-cf2749d095d1",
+    "name": "Rich Little Hens World Class Christmas Edition",
+    "pathSlug": "rich-little-hens-world-class-christmas-edition"
+  },
+  {
+    "gameId": 32633,
+    "runtimeGameId": 33082,
+    "sourceId": "e9c2311f-1d06-4946-b765-2094921fa8f8",
+    "name": "Rich Little Piggies Hog Wild",
+    "pathSlug": "rich-little-piggies-hog-wild"
+  },
+  {
+    "gameId": 32634,
+    "runtimeGameId": 33083,
+    "sourceId": "7932e5ea-0b0d-4d34-90fa-2f57df792722",
+    "name": "Rich Little Piggies Meal Ticket",
+    "pathSlug": "rich-little-piggies-meal-ticket"
+  },
+  {
+    "gameId": 32635,
+    "runtimeGameId": 33084,
+    "sourceId": "1fd8e3f7-6a40-4bc0-9e77-2e576c6c1b8a",
+    "name": "Rich Little Piggies Meal Ticket Christmas Edition",
+    "pathSlug": "rich-little-piggies-meal-ticket-christmas-edition"
+  },
+  {
+    "gameId": 32636,
+    "runtimeGameId": 33085,
+    "sourceId": "d2e64f21-31b0-4390-bb85-24bab61a5d94",
+    "name": "Rich Little Piggies World Class",
+    "pathSlug": "rich-little-piggies-world-class"
+  },
+  {
+    "gameId": 32637,
+    "runtimeGameId": 33086,
+    "sourceId": "b9922551-7719-4f9f-b135-858128b0b6a8",
+    "name": "Rich Little Piggies World Class Halloween Edition",
+    "pathSlug": "rich-little-piggies-world-class-halloween-edition"
+  },
+  {
+    "gameId": 32641,
+    "runtimeGameId": 33087,
+    "sourceId": "6a154113-d660-44cb-a310-cb3d8e41129c",
+    "name": "Rockets! Red Glare",
+    "pathSlug": "rockets-red-glare"
+  },
+  {
+    "gameId": 32644,
+    "runtimeGameId": 33088,
+    "sourceId": "d1346f83-7903-11ea-b3b3-0ad5da7db292",
+    "name": "Shields of the Wild",
+    "pathSlug": "shields-of-the-wild"
+  },
+  {
+    "gameId": 32651,
+    "runtimeGameId": 33089,
+    "sourceId": "38e81a0e-891b-4554-81b4-4ec7e8ff6457",
+    "name": "Squid Game One More Game",
+    "pathSlug": "squid-game-one-more-game"
+  },
+  {
+    "gameId": 32666,
+    "runtimeGameId": 33090,
+    "sourceId": "d1347ea8-7903-11ea-b3b3-0ad5da7db292",
+    "name": "The Wild 3",
+    "pathSlug": "the-wild-3"
+  },
+  {
+    "gameId": 32671,
+    "runtimeGameId": 33091,
+    "sourceId": "44e3a6ad-29ea-4e89-802d-04864d6e4405",
+    "name": "Thunder Drums Samurai Storm",
+    "pathSlug": "thunder-drums-samurai-storm"
+  },
+  {
+    "gameId": 32681,
+    "runtimeGameId": 33094,
+    "sourceId": "85f449fc-b50d-4c04-b310-f107d3cb7ff1",
+    "name": "Trinity Pots Rising Wilds",
+    "pathSlug": "trinity-pots-rising-wilds"
+  },
+  {
+    "gameId": 32686,
+    "runtimeGameId": 33095,
+    "sourceId": "d45e3bb2-d88c-44ff-be7d-f94fb01164f4",
+    "name": "Ultimate Fire Link Cash Falls Olvera Street",
+    "pathSlug": "ultimate-fire-link-cash-falls-olvera-street"
+  },
+  {
+    "gameId": 32687,
+    "runtimeGameId": 33096,
+    "sourceId": "de2bf770-1b51-48da-9e10-8714781d7b86",
+    "name": "Ultimate Fire Link China Street",
+    "pathSlug": "ultimate-fire-link-china-street"
+  },
+  {
+    "gameId": 32689,
+    "runtimeGameId": 33097,
+    "sourceId": "6d90bc93-ebfa-4d6b-a2f8-2088d590687c",
+    "name": "Ultimate Fire Link Olvera Street",
+    "pathSlug": "ultimate-fire-link-olvera-street"
+  },
+  {
+    "gameId": 32691,
+    "runtimeGameId": 33098,
+    "sourceId": "965039bc-c24d-480b-8e32-220380d66577",
+    "name": "Ultimate Fire Link Rue Royale",
+    "pathSlug": "ultimate-fire-link-rue-royale"
+  },
+  {
+    "gameId": 32703,
+    "runtimeGameId": 33103,
+    "sourceId": "040fb071-c625-4e4b-be47-812483fcba33",
+    "name": "Blazin Hot 7s Big Bonus",
+    "pathSlug": "blazin-hot-7s-big-bonus"
+  },
+  {
+    "gameId": 32704,
+    "runtimeGameId": 33104,
+    "sourceId": "b76ad828-f6e2-4c70-96a9-69de09f0e5c1",
+    "name": "Blazin' Hot 7s Bigger Bonus",
+    "pathSlug": "blazin-hot-7s-bigger-bonus"
+  },
+  {
+    "gameId": 32705,
+    "runtimeGameId": 33105,
+    "sourceId": "78a42416-eab8-4531-9c9c-ab2903b48f3d",
+    "name": "Dancing Drums Link Fortune",
+    "pathSlug": "dancing-drums-link-fortune"
+  },
+  {
+    "gameId": 32706,
+    "runtimeGameId": 33106,
+    "sourceId": "17dac548-0e04-4108-bcb3-922e6658cfb9",
+    "name": "Dancing Drums Link High Limit",
+    "pathSlug": "dancing-drums-link-high-limit"
+  },
+  {
+    "gameId": 32707,
+    "runtimeGameId": 33107,
+    "sourceId": "54fedb90-3656-4975-83eb-831034ea0dbc",
+    "name": "Dancing Drums Prosperity",
+    "pathSlug": "dancing-drums-prosperity"
+  },
+  {
+    "gameId": 32708,
+    "runtimeGameId": 33108,
+    "sourceId": "bef34dff-4a4c-4892-9572-8338dcdfcbb6",
+    "name": "Direct Hit featuring Money Zone",
+    "pathSlug": "direct-hit-featuring-money-zone"
+  },
+  {
+    "gameId": 32709,
+    "runtimeGameId": 33109,
+    "sourceId": "a1aee5cb-f637-4010-90c0-4f94457af6e8",
+    "name": "Duo Fu Duo Cai Grand Dragons",
+    "pathSlug": "duo-fu-duo-cai-grand-dragons"
+  },
+  {
+    "gameId": 32711,
+    "runtimeGameId": 33111,
+    "sourceId": "e848ca12-38b3-4d5f-b2c8-ba4e49174d96",
+    "name": "Hoppily Ever After",
+    "pathSlug": "hoppily-ever-after"
+  },
+  {
+    "gameId": 32712,
+    "runtimeGameId": 33112,
+    "sourceId": "438b6afe-241a-4829-9687-f7359a85b8aa",
+    "name": "Hot Hot Blazing Lock",
+    "pathSlug": "hot-hot-blazing-lock"
+  },
+  {
+    "gameId": 32713,
+    "runtimeGameId": 33113,
+    "sourceId": "0e70444b-3cc5-46a3-925c-e47d41685f30",
+    "name": "Huff N Even More Puff High Limit",
+    "pathSlug": "huff-n-even-more-puff-high-limit"
+  },
+  {
+    "gameId": 32714,
+    "runtimeGameId": 33114,
+    "sourceId": "94f355a0-9a45-462f-9ee6-d228a894045a",
+    "name": "Huff N Puff Money Mansion High Limit",
+    "pathSlug": "huff-n-puff-money-mansion-high-limit"
+  },
+  {
+    "gameId": 32715,
+    "runtimeGameId": 33115,
+    "sourceId": "cb50157c-46b8-4a6a-b661-cbe2f7b1311f",
+    "name": "Huff N' Even More Puff",
+    "pathSlug": "huff-n-even-more-puff"
+  },
+  {
+    "gameId": 32716,
+    "runtimeGameId": 33116,
+    "sourceId": "f8aaa8b0-6882-49b3-92df-5967a449a1f9",
+    "name": "Huff N’ Even More Puff Grand",
+    "pathSlug": "huff-n-even-more-puff-grand"
+  },
+  {
+    "gameId": 32717,
+    "runtimeGameId": 33117,
+    "sourceId": "e2cc66e3-ec80-4e4d-abe6-b7094b2381cc",
+    "name": "Huff N' Lots of Goals!",
+    "pathSlug": "huff-n-lots-of-goals"
+  },
+  {
+    "gameId": 32718,
+    "runtimeGameId": 33118,
+    "sourceId": "00c0f28f-6028-4487-937d-a227b684ef3b",
+    "name": "Huff N' More Puff High Limit",
+    "pathSlug": "huff-n-more-puff-high-limit"
+  },
+  {
+    "gameId": 32719,
+    "runtimeGameId": 33119,
+    "sourceId": "5da1d29f-9b3b-4c51-ae41-9972e9bbe9f0",
+    "name": "Hypercharged Inca Jungle",
+    "pathSlug": "hypercharged-inca-jungle"
+  },
+  {
+    "gameId": 32720,
+    "runtimeGameId": 33120,
+    "sourceId": "a9d24652-8cd8-490b-9421-929a164ccafa",
+    "name": "Hypercharged Jinzita",
+    "pathSlug": "hypercharged-jinzita"
+  },
+  {
+    "gameId": 32721,
+    "runtimeGameId": 33121,
+    "sourceId": "862c73ec-8599-4af4-a0b2-0c5416fdf730",
+    "name": "Hypercharged Pyramids of Ra",
+    "pathSlug": "hypercharged-pyramids-of-ra"
+  },
+  {
+    "gameId": 32722,
+    "runtimeGameId": 33122,
+    "sourceId": "ba4503f1-59ae-46c4-a12d-2938753a4dd9",
+    "name": "Jinse Dao Tiger",
+    "pathSlug": "jinse-dao-tiger"
+  },
+  {
+    "gameId": 32723,
+    "runtimeGameId": 33123,
+    "sourceId": "d1346de3-7903-11ea-b3b3-0ad5da7db292",
+    "name": "La Bomba",
+    "pathSlug": "la-bomba"
+  },
+  {
+    "gameId": 32724,
+    "runtimeGameId": 33124,
+    "sourceId": "ad7f3d4c-31d9-4d36-8793-2cda0fff04bb",
+    "name": "Lock It Link Diamonds",
+    "pathSlug": "lock-it-link-diamonds"
+  },
+  {
+    "gameId": 32725,
+    "runtimeGameId": 33125,
+    "sourceId": "8873abb6-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Medusa",
+    "pathSlug": "medusa"
+  },
+  {
+    "gameId": 32726,
+    "runtimeGameId": 33126,
+    "sourceId": "0bb0288f-ea0a-3783-af8b-f6fef01ba2de",
+    "name": "Medusa 2",
+    "pathSlug": "medusa-2"
+  },
+  {
+    "gameId": 32727,
+    "runtimeGameId": 33127,
+    "sourceId": "754a6e6e-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "Medusa Megaways",
+    "pathSlug": "medusa-megaways"
+  },
+  {
+    "gameId": 32728,
+    "runtimeGameId": 33128,
+    "sourceId": "326ad23d-cd9d-40c4-81ba-456d2551fb89",
+    "name": "Money Raid Kodiak",
+    "pathSlug": "money-raid-kodiak"
+  },
+  {
+    "gameId": 32729,
+    "runtimeGameId": 33129,
+    "sourceId": "0eea6721-7a0b-4e8a-b618-dd6e74448636",
+    "name": "Perfect Peacock Coin Combo",
+    "pathSlug": "perfect-peacock-coin-combo"
+  },
+  {
+    "gameId": 32730,
+    "runtimeGameId": 33130,
+    "sourceId": "8873ade4-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Pillars of Asgard",
+    "pathSlug": "pillars-of-asgard"
+  },
+  {
+    "gameId": 32731,
+    "runtimeGameId": 33131,
+    "sourceId": "0d527b7a-38a7-4c3c-bb29-6f3ab7f7faed",
+    "name": "Polterheist",
+    "pathSlug": "polterheist"
+  },
+  {
+    "gameId": 32732,
+    "runtimeGameId": 33132,
+    "sourceId": "02ab1c1d-09d8-464e-b8ab-d5ebc596f5fe",
+    "name": "Quick Hit Ultra Pays Eagle's Peak",
+    "pathSlug": "quick-hit-ultra-pays-eagles-peak"
+  },
+  {
+    "gameId": 32733,
+    "runtimeGameId": 33133,
+    "sourceId": "b87c7342-48c1-49b4-88b5-893c13702a1f",
+    "name": "Raging Rhino Rampage",
+    "pathSlug": "raging-rhino-rampage"
+  },
+  {
+    "gameId": 32734,
+    "runtimeGameId": 33134,
+    "sourceId": "88739c8d-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Rise of the Mountain King",
+    "pathSlug": "rise-of-the-mountain-king"
+  },
+  {
+    "gameId": 32735,
+    "runtimeGameId": 33135,
+    "sourceId": "7abaaf4c-5622-49c9-b84c-a9d3d2ff7615",
+    "name": "Squid Game Gganbu",
+    "pathSlug": "squid-game-gganbu"
+  },
+  {
+    "gameId": 32736,
+    "runtimeGameId": 33136,
+    "sourceId": "e042cb91-eb7c-461d-914e-04356f25013c",
+    "name": "Squid Game One Lucky Day",
+    "pathSlug": "squid-game-one-lucky-day"
+  },
+  {
+    "gameId": 32737,
+    "runtimeGameId": 33137,
+    "sourceId": "8873af9c-b553-11ea-b3b3-0ad5da7db292",
+    "name": "Starmania",
+    "pathSlug": "starmania"
+  },
+  {
+    "gameId": 32738,
+    "runtimeGameId": 33138,
+    "sourceId": "32e4e6d9-fad6-4066-b5e1-1b6abff7fb3c",
+    "name": "Terrific Tiger Coin Combo",
+    "pathSlug": "terrific-tiger-coin-combo"
+  },
+  {
+    "gameId": 32739,
+    "runtimeGameId": 33139,
+    "sourceId": "17e48a9a-fe9d-46b2-a419-591c43cbc333",
+    "name": "The Demon Code",
+    "pathSlug": "the-demon-code"
+  },
+  {
+    "gameId": 32740,
+    "runtimeGameId": 33140,
+    "sourceId": "5f06e0d0-8d29-43c1-a649-4ec935a41501",
+    "name": "Ultimate Fire Link Cash Falls By The Bay",
+    "pathSlug": "ultimate-fire-link-cash-falls-by-the-bay"
+  },
+  {
+    "gameId": 32741,
+    "runtimeGameId": 33141,
+    "sourceId": "cd51a63e-f0d2-4b28-8314-9650ddd40980",
+    "name": "Ultimate Fire Link Cash Falls China Street",
+    "pathSlug": "ultimate-fire-link-cash-falls-china-street"
+  },
+  {
+    "gameId": 32742,
+    "runtimeGameId": 33142,
+    "sourceId": "e9d5b408-2a4d-4aa8-b5a4-a9413c806882",
+    "name": "Ultimate Fire Link Cash Falls Glacier Gold",
+    "pathSlug": "ultimate-fire-link-cash-falls-glacier-gold"
+  },
+  {
+    "gameId": 32743,
+    "runtimeGameId": 33143,
+    "sourceId": "b1661c92-3c41-4069-bb41-5b39d041fdca",
+    "name": "Ultimate Fire Link Country Lights",
+    "pathSlug": "ultimate-fire-link-country-lights"
+  },
+  {
+    "gameId": 32744,
+    "runtimeGameId": 33144,
+    "sourceId": "27af1c93-5b0d-4cc8-97a7-ad8b0127735a",
+    "name": "Ultimate Fire Link River Walk",
+    "pathSlug": "ultimate-fire-link-river-walk"
+  },
+  {
+    "gameId": 32745,
+    "runtimeGameId": 33145,
+    "sourceId": "fe1083f8-3f0f-be1d-453b-26fde5051807",
+    "name": "Wonderhounds",
+    "pathSlug": "wonderhounds"
+  },
+  {
+    "gameId": 32746,
+    "runtimeGameId": 33146,
+    "sourceId": "6c4371cd-cd05-4b43-a05f-e9c503a0aac7",
+    "name": "Xiao Fu Bao",
+    "pathSlug": "xiao-fu-bao"
+  },
+  {
+    "gameId": 32747,
+    "runtimeGameId": 33147,
+    "sourceId": "a6e5032f-ad84-41d4-8ae9-f32be19d32c3",
+    "name": "Xiao Fu Bao 2",
+    "pathSlug": "xiao-fu-bao-2"
+  },
+  {
+    "gameId": 32748,
+    "runtimeGameId": 33148,
+    "sourceId": "4d1a82c3-d91d-8f7f-e5ab-88810a6715fa",
+    "name": "Zeus II",
+    "pathSlug": "zeus-ii"
+  },
+  {
+    "gameId": 32789,
+    "runtimeGameId": 33149,
+    "sourceId": "e8438275-0727-7756-ccce-a764d4e94980",
+    "name": "Lucky Tree",
+    "pathSlug": "lucky-tree"
+  },
+  {
+    "gameId": 32790,
+    "runtimeGameId": 33150,
+    "sourceId": "cd267f2f-1649-4193-8dcf-1e65ca5ed7f1",
+    "name": "Marvelous Mouse Coin Combo",
+    "pathSlug": "marvelous-mouse-coin-combo"
+  },
+  {
+    "gameId": 32791,
+    "runtimeGameId": 33151,
+    "sourceId": "33a16260-38ec-c4f5-9135-48979fa3284e",
+    "name": "Mighty Black Knight",
+    "pathSlug": "mighty-black-knight"
+  },
+  {
+    "gameId": 32792,
+    "runtimeGameId": 33152,
+    "sourceId": "81004034-351b-165c-5bc2-ce8946975918",
+    "name": "Montezuma",
+    "pathSlug": "montezuma"
+  },
+  {
+    "gameId": 32793,
+    "runtimeGameId": 33153,
+    "sourceId": "d1348982-7903-11ea-b3b3-0ad5da7db292",
+    "name": "Nemo's Voyage",
+    "pathSlug": "nemos-voyage"
+  },
+  {
+    "gameId": 32794,
+    "runtimeGameId": 33154,
+    "sourceId": "754a700d-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "OMG Kittens",
+    "pathSlug": "omg-kittens"
+  },
+  {
+    "gameId": 32795,
+    "runtimeGameId": 33155,
+    "sourceId": "f1df9d4e-99dd-11ea-b3b3-0ad5da7db292",
+    "name": "Pearl of the Caribbean",
+    "pathSlug": "pearl-of-the-caribbean"
+  },
+  {
+    "gameId": 32796,
+    "runtimeGameId": 33156,
+    "sourceId": "bea22a15-c8e8-4b27-bcbb-904b0a295533",
+    "name": "Pharaoh's Dream",
+    "pathSlug": "pharaohs-dream"
+  },
+  {
+    "gameId": 32797,
+    "runtimeGameId": 33157,
+    "sourceId": "2d2c386e-c11b-4cce-eaad-a2f9df96b76c",
+    "name": "Quick Hit Super Wheel Wild Red",
+    "pathSlug": "quick-hit-super-wheel-wild-red"
+  },
+  {
+    "gameId": 32798,
+    "runtimeGameId": 33158,
+    "sourceId": "4c62a041-c878-07ef-baee-dd2be1021a23",
+    "name": "Quick Hit Ultra Pays - Sun Dragon",
+    "pathSlug": "quick-hit-ultra-pays--sun-dragon"
+  },
+  {
+    "gameId": 32799,
+    "runtimeGameId": 33159,
+    "sourceId": "1bc13cc2-dd87-b32e-7ede-1a8a87d156de",
+    "name": "Raging Rhino",
+    "pathSlug": "raging-rhino"
+  },
+  {
+    "gameId": 32800,
+    "runtimeGameId": 33160,
+    "sourceId": "f1dfa0b1-99dd-11ea-b3b3-0ad5da7db292",
+    "name": "Raging Rhino Megaways",
+    "pathSlug": "raging-rhino-megaways"
+  },
+  {
+    "gameId": 32801,
+    "runtimeGameId": 33161,
+    "sourceId": "c48b53af-cad2-11ea-b3b3-0ad5da7db292",
+    "name": "Road to Riches Free Spins",
+    "pathSlug": "road-to-riches-free-spins"
+  },
+  {
+    "gameId": 32802,
+    "runtimeGameId": 33162,
+    "sourceId": "29b44717-0024-492e-a60d-a0491d607424",
+    "name": "Road to Riches Gold Pots",
+    "pathSlug": "road-to-riches-gold-pots"
+  },
+  {
+    "gameId": 32803,
+    "runtimeGameId": 33163,
+    "sourceId": "200cbbec-d90f-4da6-b67b-fc3616a784c0",
+    "name": "Road to Riches Race Day",
+    "pathSlug": "road-to-riches-race-day"
+  },
+  {
+    "gameId": 32804,
+    "runtimeGameId": 33164,
+    "sourceId": "c1aa2f35-e2f9-448c-98c6-ae02d4bb62f6",
+    "name": "Road to Riches Twilight Dream",
+    "pathSlug": "road-to-riches-twilight-dream"
+  },
+  {
+    "gameId": 32805,
+    "runtimeGameId": 33165,
+    "sourceId": "c42ffb22-ddbe-2b02-d2b3-0d15e3c70e19",
+    "name": "Soldier of Rome",
+    "pathSlug": "soldier-of-rome"
+  },
+  {
+    "gameId": 32806,
+    "runtimeGameId": 33166,
+    "sourceId": "754a718e-3d36-11ea-b3b3-0ad5da7db292",
+    "name": "Spartacus Gladiator of Rome",
+    "pathSlug": "spartacus-gladiator-of-rome"
+  },
+  {
+    "gameId": 32807,
+    "runtimeGameId": 33167,
+    "sourceId": "ede9a5f7-6512-4b06-b34a-1ac2b6383a12",
+    "name": "Spartacus Megaways",
+    "pathSlug": "spartacus-megaways"
+  },
+  {
+    "gameId": 32808,
+    "runtimeGameId": 33168,
+    "sourceId": "40565469-0964-412b-8412-37f7e5c55cf8",
+    "name": "Spirit of the River",
+    "pathSlug": "spirit-of-the-river"
+  },
+  {
+    "gameId": 32809,
+    "runtimeGameId": 33169,
+    "sourceId": "e0a76b88-8ea3-34ee-84ac-195dd64a60c0",
+    "name": "Sword of Destiny",
+    "pathSlug": "sword-of-destiny"
+  },
+  {
+    "gameId": 32810,
+    "runtimeGameId": 33170,
+    "sourceId": "f1de82d6-99dd-11ea-b3b3-0ad5da7db292",
+    "name": "The Legend of Big Foot",
+    "pathSlug": "the-legend-of-big-foot"
+  },
+  {
+    "gameId": 32811,
+    "runtimeGameId": 33171,
+    "sourceId": "2252ef53-491e-02cf-ae3c-fed983fc536b",
+    "name": "Triple Cash Wheel",
+    "pathSlug": "triple-cash-wheel"
+  },
+  {
+    "gameId": 32812,
+    "runtimeGameId": 33172,
+    "sourceId": "ec41b1a4-841f-3cff-a461-91e2ae828301",
+    "name": "Very Fruity",
+    "pathSlug": "very-fruity"
+  },
+  {
+    "gameId": 32813,
+    "runtimeGameId": 33173,
+    "sourceId": "d0a769ea-38c7-7361-b309-09bc8956720a",
+    "name": "Volts and Bolts",
+    "pathSlug": "volts-and-bolts"
+  },
+  {
+    "gameId": 32814,
+    "runtimeGameId": 33174,
+    "sourceId": "e3ab9e8b-9b90-7262-53ba-37707853ecf2",
+    "name": "Wild Streets",
+    "pathSlug": "wild-streets"
+  },
+  {
+    "gameId": 32815,
+    "runtimeGameId": 33175,
+    "sourceId": "4a78a58a-2948-418d-0a97-dea7529426b3",
+    "name": "Zeus God of Thunder",
+    "pathSlug": "zeus-god-of-thunder"
+  },
+  {
+    "gameId": 32816,
+    "runtimeGameId": 33176,
+    "sourceId": "547c1dc3-7b09-07b7-cef8-37e68f028c54",
+    "name": "Zeus III",
+    "pathSlug": "zeus-iii"
+  },
+  {
+    "gameId": 32820,
+    "runtimeGameId": 33180,
+    "sourceId": "ede88245-8362-44c7-aaed-a09352f41804",
+    "name": "Beaver Las Vegas",
+    "pathSlug": "beaver-las-vegas"
+  },
+  {
+    "gameId": 32821,
+    "runtimeGameId": 33181,
+    "sourceId": "808fae0a-9e77-4716-aa08-74caa4b62ec8",
+    "name": "Book of Fusion",
+    "pathSlug": "book-of-fusion"
+  },
+  {
+    "gameId": 32832,
+    "runtimeGameId": 33192,
+    "sourceId": "ea4646af-007c-470a-9231-5bc1245f96cf",
+    "name": "Key To Success",
+    "pathSlug": "key-to-success"
+  },
+  {
+    "gameId": 32833,
+    "runtimeGameId": 33193,
+    "sourceId": "2d9b2aef-e641-38eb-5f5c-a2c80e014e6b",
+    "name": "Panda Pow",
+    "pathSlug": "panda-pow"
+  },
+  {
+    "gameId": 32835,
+    "runtimeGameId": 33195,
+    "sourceId": "73a4272b-dd88-49dc-b0cf-f3a084ddb0e0",
+    "name": "Pyramids of Luxor",
+    "pathSlug": "pyramids-of-luxor"
+  },
+  {
+    "gameId": 32836,
+    "runtimeGameId": 33196,
+    "sourceId": "64adc7af-3e83-4b6f-bed1-b0b8926b2107",
+    "name": "Quarterback Fields of Glory",
+    "pathSlug": "quarterback-fields-of-glory"
+  },
+  {
+    "gameId": 32837,
+    "runtimeGameId": 33197,
+    "sourceId": "db4707ed-aa4d-4b7e-b44f-8c76285ea56e",
+    "name": "Road Trip 66",
+    "pathSlug": "road-trip-66"
+  },
+  {
+    "gameId": 32839,
+    "runtimeGameId": 33199,
+    "sourceId": "414594ef-a1b1-4ad0-be2c-0c80daa8090d",
+    "name": "The Green Machine Bingo",
+    "pathSlug": "the-green-machine-bingo"
+  }
+]

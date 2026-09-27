@@ -1,0 +1,36 @@
+name: SG offline preflight
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sg-preparation
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - name: Checkout preparation repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+      - name: Install locked dependencies without lifecycle scripts
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: TypeScript checks
+        working-directory: collector
+        run: npm run typecheck
+      - name: Offline fixture tests only
+        working-directory: collector
+        run: npm test
+      - name: Report preparation boundary
+        run: |
+          echo 'Offline preparation checks passed. No SG source request or database connection was made.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Capture and scheduled collection remain disabled.' >> "$GITHUB_STEP_SUMMARY"
