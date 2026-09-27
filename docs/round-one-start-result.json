@@ -1,0 +1,190 @@
+{
+  "schema": "sg-round-one-start-v1",
+  "atUtc": "2026-09-27T17:52:22.518615+00:00",
+  "runtimeCommit": "7f027f5cd70eea6908d9a9218cff280376e5f538",
+  "firstRoundEnabled": true,
+  "secondRoundEnabled": false,
+  "campaignId": "sg_round_one_20260928",
+  "catalogGames": 178,
+  "alreadyCompleteSkipped": 1,
+  "replayValidatedAndQueued": 24,
+  "stillNeedProtocolAdapter": 153,
+  "pilotRun": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338197009",
+  "activeRun": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338315642",
+  "ciRun": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338019387",
+  "tests": {
+    "python": 103,
+    "collector": 25,
+    "node": 16,
+    "fixtureRounds": 3000,
+    "allPassed": true
+  },
+  "live": {
+    "gameId": 32630,
+    "trialId": "sg_r1_20260928_32630",
+    "newTarget": 299900,
+    "creditedHistorical": 100,
+    "journaled": 36673,
+    "durable": 36143,
+    "checkpoint": 36143,
+    "failure": null,
+    "distinctRunningRunnerNames": 20,
+    "allTwentyCountersIncreased": true,
+    "allTwentyLeasesPresentAtStart": true,
+    "allTwentyLeasesPresentAtEnd": true,
+    "workers": [
+      {
+        "shard": 0,
+        "start": 745,
+        "end": 1145,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 1,
+        "start": 669,
+        "end": 996,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 2,
+        "start": 2285,
+        "end": 3451,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 3,
+        "start": 607,
+        "end": 952,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 4,
+        "start": 619,
+        "end": 947,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 5,
+        "start": 609,
+        "end": 920,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 6,
+        "start": 655,
+        "end": 988,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 7,
+        "start": 657,
+        "end": 949,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 8,
+        "start": 730,
+        "end": 1131,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 9,
+        "start": 569,
+        "end": 917,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 10,
+        "start": 569,
+        "end": 847,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 11,
+        "start": 2681,
+        "end": 4141,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 12,
+        "start": 2590,
+        "end": 3879,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 13,
+        "start": 1393,
+        "end": 2103,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 14,
+        "start": 1343,
+        "end": 2046,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 15,
+        "start": 1133,
+        "end": 1721,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 16,
+        "start": 2230,
+        "end": 3440,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 17,
+        "start": 2802,
+        "end": 4233,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 18,
+        "start": 567,
+        "end": 887,
+        "startLease": true,
+        "endLease": true
+      },
+      {
+        "shard": 19,
+        "start": 634,
+        "end": 980,
+        "startLease": true,
+        "endLease": true
+      }
+    ]
+  },
+  "storageStop": {
+    "userChoice": "existing-space-with-automatic-stop",
+    "stopNewRoundsBelowBytes": 32212254720,
+    "emergencyContinuationFloorBytes": 26843545600,
+    "automaticUnpause": false
+  },
+  "existingFollowup": {
+    "id": "sg-30",
+    "status": "ACTIVE"
+  },
+  "productionGamePoolWrites": false,
+  "remainingWork": "Continue protocol adaptation and strict validation for the other 153 first-round games, then safely add them without changing active game quotas or starting phase two."
+}

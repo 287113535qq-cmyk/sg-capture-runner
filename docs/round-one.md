@@ -19,3 +19,13 @@
 首批验证可以设置 round_one_limit=10，20 个会话最多各采 10 个完整局。小测和正式运行使用相同 trialId、会话、批次与数据库；暂停只释放所有权，未完成批次仍固定绑定原会话和局号范围，因此续跑直接计入第一轮目标。
 
 源站权限拒绝、未知结果、协议校验失败会保留已有响应并停采等待审查。不会换会话、换网络或重复发送未知 BET。第二轮始终关闭。
+
+## 首次运行已经验证
+
+代码版本 `7f027f5cd70eea6908d9a9218cff280376e5f538` 已部署。Linux CI 36338019387 的 103 项服务、25 项采集器、16 项 Node 测试及 3000 个模拟局均通过。
+
+真实短采 [36338197009](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338197009) 由 20 台各采 10 局，共 200 局含 9 个自然免费局，文件和 Mongo 完整内容审计通过，无待处理半局。见 [短采回执](round-one-pilot-result.json)。
+
+正式连续采集 [36338315642](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338315642) 从这 200 局续采。两次共同窗口检查的 20 个有效租约和各路计数增长证明 20 路实际运行；首款 Rich Little Hens Rule of the Roost 已确认历史 100 局，本轮新采目标 299900。最近快照和当前范围限制见 [启动回执](round-one-start-result.json)。正常批次内 journaled 比 durable/checkpoint 略多不代表丢数据。
+
+原跟进 sg-30 已更新为第一轮范围并启用，用于健康检查、剩余协议适配与报告；不另建重复 schedule。当前没有宣称剩余 153 款已经可以采集。

@@ -1,0 +1,277 @@
+{
+  "schema": "sg-round-one-pilot-audit-v1",
+  "trialId": "sg_r1_20260928_32630",
+  "gameId": 32630,
+  "verifiedRounds": 200,
+  "productiveWorkers": 20,
+  "sourceRequestsFromServer": 0,
+  "fullMongoContentVerified": true,
+  "pending": 0,
+  "newTarget": 299900,
+  "workers": [
+    {
+      "worker": 16,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 305,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 7,
+        "maxMul": 1.8
+      }
+    },
+    {
+      "worker": 14,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 2640,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 7,
+        "maxMul": 22.0
+      }
+    },
+    {
+      "worker": 4,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 575,
+        "sourceFrames": 17,
+        "freeRounds": 1,
+        "zeroWinRounds": 8,
+        "maxMul": 5.15
+      }
+    },
+    {
+      "worker": 1,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 235,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 6,
+        "maxMul": 1.8
+      }
+    },
+    {
+      "worker": 18,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 500,
+        "sourceFrames": 17,
+        "freeRounds": 1,
+        "zeroWinRounds": 5,
+        "maxMul": 3.15
+      }
+    },
+    {
+      "worker": 13,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 2740,
+        "sourceFrames": 20,
+        "freeRounds": 1,
+        "zeroWinRounds": 5,
+        "maxMul": 18.9
+      }
+    },
+    {
+      "worker": 17,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 0,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 10,
+        "maxMul": 0.0
+      }
+    },
+    {
+      "worker": 6,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 1665,
+        "sourceFrames": 17,
+        "freeRounds": 1,
+        "zeroWinRounds": 7,
+        "maxMul": 14.1
+      }
+    },
+    {
+      "worker": 2,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 895,
+        "sourceFrames": 17,
+        "freeRounds": 1,
+        "zeroWinRounds": 4,
+        "maxMul": 3.2
+      }
+    },
+    {
+      "worker": 19,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 480,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 5,
+        "maxMul": 1.55
+      }
+    },
+    {
+      "worker": 15,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 0,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 10,
+        "maxMul": 0.0
+      }
+    },
+    {
+      "worker": 12,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 15,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 8,
+        "maxMul": 0.1
+      }
+    },
+    {
+      "worker": 10,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 1505,
+        "sourceFrames": 19,
+        "freeRounds": 1,
+        "zeroWinRounds": 6,
+        "maxMul": 14.35
+      }
+    },
+    {
+      "worker": 0,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 120,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 7,
+        "maxMul": 0.9
+      }
+    },
+    {
+      "worker": 9,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 915,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 6,
+        "maxMul": 5.15
+      }
+    },
+    {
+      "worker": 8,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 980,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 3,
+        "maxMul": 6.55
+      }
+    },
+    {
+      "worker": 11,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 1660,
+        "sourceFrames": 28,
+        "freeRounds": 2,
+        "zeroWinRounds": 4,
+        "maxMul": 10.35
+      }
+    },
+    {
+      "worker": 7,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 270,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 7,
+        "maxMul": 2.1
+      }
+    },
+    {
+      "worker": 5,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 115,
+        "sourceFrames": 10,
+        "freeRounds": 0,
+        "zeroWinRounds": 6,
+        "maxMul": 0.6
+      }
+    },
+    {
+      "worker": 3,
+      "verifiedFileRounds": 10,
+      "statistics": {
+        "count": 10,
+        "stakeRaw": 1000,
+        "winRaw": 880,
+        "sourceFrames": 19,
+        "freeRounds": 1,
+        "zeroWinRounds": 7,
+        "maxMul": 4.45
+      }
+    }
+  ],
+  "runUrl": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36338197009",
+  "runtimeCommit": "7f027f5cd70eea6908d9a9218cff280376e5f538",
+  "phase": 1,
+  "secondRoundEnabled": false
+}

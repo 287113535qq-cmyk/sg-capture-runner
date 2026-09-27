@@ -1,6 +1,6 @@
 # SG 采集准备仓库
 
-当前状态：**Book of Sevens 的 30 万完整局已完成并通过审计，采集已停止。20 会话动态分批已接入、验证并部署，下一批的数量尚未配置。** 原样本采集编号为 32471、运行编号为 33026，只由 GitHub-hosted Linux Runner 发起官方 demo 请求，写入隔离库 `sg_capture_staging_v1.official_rounds`。通用 178 游戏采集入口仍关闭。原数据见 [最终报告](docs/trial-final-report.md)，最新效率优化和启用规则见 [动态分批说明](docs/dynamic-pool.md)。
+当前状态：**第一轮已启动，20 台 GitHub-hosted Linux Runner 实际并发采集。178 款已登记：Book of Sevens 已审计达到 30 万局并跳过，24 款已通过普通局协议与历史数据验证并入队，其余 153 款仍需适配验证。每款累计补足 30 万完整普通局；第二轮购买、加注模式保持关闭。** 新数据写入隔离库 `sg_capture_staging_v1.official_rounds`。用户选择使用现有空间，剩余低于 30 GiB 停止新局。规则见 [第一轮说明](docs/round-one.md)，启动和 20 路持续出局证据见 [启动回执](docs/round-one-start-result.json)。原 Book of Sevens 结果见 [最终报告](docs/trial-final-report.md)。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -35,7 +35,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 隔离服务已验证 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性。正式启动前仍需将这些机制接入真实游戏队列，完成官方主机级跨运行冷却、独立 session 刷新、Linux WMS/NextGen 完整局采集、正式目标集合的受控导入，以及真实局的单节点续跑验证。测试 RPC 只接受少量夹具，不能直接作为正式采集入库接口。未把历史会清库的上游导入脚本复制进本仓库。隔离验证服务及验收范围见 `docs/link-verification.md`。
 
-原多游戏计划未启用。已完成的单游戏试采后来扩展为 20 个独立会话；新的动态模式也是同游戏 20 个 `ubuntu-latest` Runner，每会话严格一个在途请求。唯一采集 workflow 仍为 `trial-300k.yml`，原有每 20 分钟的续跑只有在工作流启用且 `SG_TRIAL_ENABLED=true` 时才运行。目前工作流关闭、该变量为 false、动态目标未配置；启用新目标时必须同时选择正确的分配模式。Mongo 密码仅保留在服务器。
+原多游戏计划未启用。已完成的单游戏试采后来扩展为 20 个独立会话；新的动态模式也是同游戏 20 个 `ubuntu-latest` Runner，每会话严格一个在途请求。唯一采集 workflow 仍为 `trial-300k.yml`，原有每 20 分钟的续跑只有在工作流启用且 `SG_TRIAL_ENABLED=true` 时才运行。目前唯一工作流以 round-one 模式启用，SG_TRIAL_ENABLED=true，SG_TRIAL_ALLOCATION=round-one。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 
