@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "trialId": "bookofsevens_300k_20260927",
+  "stage": "low-latency-selected-single-worker-live",
+  "target": 300000,
+  "productionGamePoolWrites": false,
+  "runId": 36327120095,
+  "sourceConcurrency": 1,
+  "candidateJobs": 20,
+  "candidateJobsSendingSourceRequests": 1,
+  "sourceRequestsByOther19Jobs": 0,
+  "registeredCandidates": 12,
+  "lastFullAuditCheckpoint": 54354,
+  "serviceTests": {
+    "windows": 66,
+    "linux": 66
+  },
+  "snapshot": {
+    "status": "claimed",
+    "durable": 57254,
+    "checkpoint": 57254,
+    "epoch": 12,
+    "failure": null,
+    "journaled": 57318,
+    "elapsedSeconds": 99.327,
+    "completeRoundsThisRun": 2964,
+    "runAverageRoundsPerSecond": 29.841,
+    "startCheckpoint": 54354,
+    "commitSha": "1c365f74fee68afa05772d1950cc8bfd60a81d8a",
+    "windows": [
+      {
+        "firstSequence": 56255,
+        "lastSequence": 57254,
+        "intervals": 999,
+        "seconds": 32.687,
+        "completeRoundsPerSecond": 30.563,
+        "sourceRequests": 1020,
+        "sourceMeanMs": 23.13,
+        "sourceP50Ms": 23,
+        "sourceP95Ms": 26
+      },
+      {
+        "firstSequence": 55255,
+        "lastSequence": 56254,
+        "intervals": 999,
+        "seconds": 32.114,
+        "completeRoundsPerSecond": 31.108,
+        "sourceRequests": 1050,
+        "sourceMeanMs": 21.856,
+        "sourceP50Ms": 21,
+        "sourceP95Ms": 25
+      }
+    ],
+    "election": {
+      "run_id": "36327120095",
+      "winner": 1,
+      "candidates": [
+        {
+          "candidate": 1,
+          "network_ms": 2.571
+        },
+        {
+          "candidate": 0,
+          "network_ms": 2.867
+        },
+        {
+          "candidate": 2,
+          "network_ms": 2.928
+        },
+        {
+          "candidate": 11,
+          "network_ms": 6.441
+        },
+        {
+          "candidate": 13,
+          "network_ms": 6.514
+        },
+        {
+          "candidate": 4,
+          "network_ms": 20.819
+        },
+        {
+          "candidate": 18,
+          "network_ms": 21.594
+        },
+        {
+          "candidate": 5,
+          "network_ms": 24.727
+        },
+        {
+          "candidate": 14,
+          "network_ms": 53.217
+        },
+        {
+          "candidate": 17,
+          "network_ms": 53.221
+        },
+        {
+          "candidate": 3,
+          "network_ms": 55.355
+        },
+        {
+          "candidate": 16,
+          "network_ms": 68.756
+        }
+      ]
+    },
+    "activeSourceWorkers": 1,
+    "observedAt": "2026-09-27T14:48:56.828578+00:00"
+  },
+  "github": {
+    "status": "in_progress",
+    "conclusion": "",
+    "headSha": "1c365f74fee68afa05772d1950cc8bfd60a81d8a",
+    "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36327120095",
+    "createdAt": "2026-09-27T14:46:17Z",
+    "jobs": [
+      {
+        "jobId": 108641909924,
+        "name": "trial (2)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910029,
+        "name": "trial (0)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910052,
+        "name": "trial (5)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910077,
+        "name": "trial (6)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910078,
+        "name": "trial (17)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910086,
+        "name": "trial (11)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910092,
+        "name": "trial (4)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910102,
+        "name": "trial (9)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910110,
+        "name": "trial (7)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910123,
+        "name": "trial (13)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910127,
+        "name": "trial (18)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910130,
+        "name": "trial (10)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910132,
+        "name": "trial (14)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910135,
+        "name": "trial (3)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910137,
+        "name": "trial (1)",
+        "status": "in_progress",
+        "conclusion": "",
+        "captureStep": {
+          "status": "in_progress",
+          "conclusion": ""
+        }
+      },
+      {
+        "jobId": 108641910140,
+        "name": "trial (8)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910152,
+        "name": "trial (16)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910175,
+        "name": "trial (12)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910181,
+        "name": "trial (19)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      },
+      {
+        "jobId": 108641910216,
+        "name": "trial (15)",
+        "status": "completed",
+        "conclusion": "success",
+        "captureStep": {
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      }
+    ]
+  },
+  "notes": [
+    "Candidate nodes only ping the existing restricted storage server. The selected node alone invokes the collector; all 19 other capture steps were skipped.",
+    "Candidates registered within a 45-second window; late arrivals cannot change the selected winner.",
+    "Source requests remain serial and raw responses remain durably journaled before the next request.",
+    "Live checkpoint confirms per-batch file/Mongo content checks; the full end-of-target audit has not happened yet.",
+    "Observed speed is an empirical result, not a guaranteed future upper bound."
+  ],
+  "estimatedRemainingHoursAtRecentRate": 2.2062442968440417
+}
