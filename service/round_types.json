@@ -228,6 +228,678 @@
         "historicalValidatedCompleteRounds": 99,
         "historicalInvalidWagerRecords": 1
       }
+    },
+    "richlittlehensruletheroost96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32630,
+        "runtimeGameId": 33079,
+        "sourceId": "ed057a0c-51a3-4311-ad47-2b8058bbb340"
+      }
+    },
+    "richlittlepiggieshogwild96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32633,
+        "runtimeGameId": 33082,
+        "sourceId": "e9c2311f-1d06-4946-b765-2094921fa8f8"
+      }
+    },
+    "squidgameonemoregame96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32651,
+        "runtimeGameId": 33089,
+        "sourceId": "38e81a0e-891b-4554-81b4-4ec7e8ff6457"
+      }
+    },
+    "thunderdrumssamuraistorm96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32671,
+        "runtimeGameId": 33091,
+        "sourceId": "44e3a6ad-29ea-4e89-802d-04864d6e4405"
+      }
+    },
+    "blazinhot7sbiggerbonus96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32704,
+        "runtimeGameId": 33104,
+        "sourceId": "b76ad828-f6e2-4c70-96a9-69de09f0e5c1"
+      }
+    },
+    "hoppilyeverafter96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32711,
+        "runtimeGameId": 33111,
+        "sourceId": "e848ca12-38b3-4d5f-b2c8-ba4e49174d96"
+      }
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32714,
+        "runtimeGameId": 33114,
+        "sourceId": "94f355a0-9a45-462f-9ee6-d228a894045a"
+      }
+    },
+    "huffnlotsofpuffgoals96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32717,
+        "runtimeGameId": 33117,
+        "sourceId": "e2cc66e3-ec80-4e4d-abe6-b7094b2381cc"
+      }
+    },
+    "huffnmorepuffhighlimit96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32718,
+        "runtimeGameId": 33118,
+        "sourceId": "00c0f28f-6028-4487-937d-a227b684ef3b"
+      }
+    },
+    "hyperchargedincajungle96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32719,
+        "runtimeGameId": 33119,
+        "sourceId": "5da1d29f-9b3b-4c51-ae41-9972e9bbe9f0"
+      }
+    },
+    "hyperchargedjinzita96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32720,
+        "runtimeGameId": 33120,
+        "sourceId": "a9d24652-8cd8-490b-9421-929a164ccafa"
+      }
+    },
+    "hyperchargedpyramidsofra96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32721,
+        "runtimeGameId": 33121,
+        "sourceId": "862c73ec-8599-4af4-a0b2-0c5416fdf730"
+      }
+    },
+    "labomba96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32723,
+        "runtimeGameId": 33123,
+        "sourceId": "d1346de3-7903-11ea-b3b3-0ad5da7db292"
+      }
+    },
+    "medusa2hq-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32726,
+        "runtimeGameId": 33126,
+        "sourceId": "0bb0288f-ea0a-3783-af8b-f6fef01ba2de"
+      }
+    },
+    "squidgameoneluckyday96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32736,
+        "runtimeGameId": 33136,
+        "sourceId": "e042cb91-eb7c-461d-914e-04356f25013c"
+      }
+    },
+    "starmania-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32737,
+        "runtimeGameId": 33137,
+        "sourceId": "8873af9c-b553-11ea-b3b3-0ad5da7db292"
+      }
+    },
+    "thedemoncodecap250c96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32739,
+        "runtimeGameId": 33139,
+        "sourceId": "17e48a9a-fe9d-46b2-a419-591c43cbc333"
+      }
+    },
+    "wonderhounds-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32745,
+        "runtimeGameId": 33145,
+        "sourceId": "fe1083f8-3f0f-be1d-453b-26fde5051807"
+      }
+    },
+    "xiaofubao96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32746,
+        "runtimeGameId": 33146,
+        "sourceId": "6c4371cd-cd05-4b43-a05f-e9c503a0aac7"
+      }
+    },
+    "xiaofubaotwo96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32747,
+        "runtimeGameId": 33147,
+        "sourceId": "a6e5032f-ad84-41d4-8ae9-f32be19d32c3"
+      }
+    },
+    "beaverlasvegas96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32820,
+        "runtimeGameId": 33180,
+        "sourceId": "ede88245-8362-44c7-aaed-a09352f41804"
+      }
+    },
+    "pandapow-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32833,
+        "runtimeGameId": 33193,
+        "sourceId": "2d9b2aef-e641-38eb-5f5c-a2c80e014e6b"
+      }
+    },
+    "pyramidsofluxor96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32835,
+        "runtimeGameId": 33195,
+        "sourceId": "73a4272b-dd88-49dc-b0cf-f3a084ddb0e0"
+      }
+    },
+    "quarterbackfieldsofglory96-round-one-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32836,
+        "runtimeGameId": 33196,
+        "sourceId": "64adc7af-3e83-4b6f-bed1-b0b8926b2107"
+      }
     }
   }
 }

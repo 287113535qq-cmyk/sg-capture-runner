@@ -1,5 +1,6 @@
 node_modules/
 .local/
+config/round-one-active.json
 collector/assets/
 collector/reports/
 dist/

@@ -1,12 +1,17 @@
-name: SG Book of Sevens capture
+name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
       allocation:
         description: 'Dynamic batches for a configured new trial, or the preserved legacy trial'
-        default: dynamic
+        default: round-one
         type: choice
-        options: [dynamic, legacy-fixed]
+        options: [round-one, dynamic, legacy-fixed]
+      round_one_limit:
+        description: 'Per-worker first-round validation limit; 0 runs the authorized campaign'
+        default: '0'
+        type: choice
+        options: ['0', '10']
       round_limit:
         description: 'Legacy per-shard limit only; dynamic mode uses the configured global target'
         required: true
@@ -42,7 +47,7 @@ jobs:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJSON((inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'dynamic' && inputs.active_shards == '2' && '[0,1]' || (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'dynamic' && inputs.active_shards == '4' && '[0,1,2,3]' || '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]') }}
+        shard: ${{ fromJSON((inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed' && inputs.active_shards == '2' && '[0,1]' || (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed' && inputs.active_shards == '4' && '[0,1,2,3]' || '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]') }}
     timeout-minutes: 270
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
@@ -50,6 +55,7 @@ jobs:
       SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
       SG_TRIAL_MINUTES: '240'
       SG_TRIAL_INTERVAL_MS: '0'
+      SG_POOL_RUN_LIMIT: ${{ inputs.round_one_limit || '0' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -65,14 +71,20 @@ jobs:
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
-          CAPTURE_RUNNERS: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && '20' || inputs.active_shards || '20' }}
+          CAPTURE_RUNNERS: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'legacy-fixed' && '20' || inputs.active_shards || '20' }}
         run: node scripts/trial/runner-readiness.mjs
       - name: Capture complete rounds with independent sessions
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: node scripts/trial/worker.mjs capture
+        run: |
+          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
+            node scripts/trial/campaign-worker.mjs capture
+          else
+            unset SG_POOL_RUN_LIMIT
+            node scripts/trial/worker.mjs capture
+          fi
       - name: Audit this shard
-        if: success() && env.SG_TRIAL_PLAN == 'config/trial-300k.json'
+        if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: trial
@@ -95,12 +107,17 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Read aggregate confirmed count
         id: state
-        run: node scripts/trial/worker.mjs status
+        run: |
+          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
+            node scripts/trial/campaign-worker.mjs status
+          else
+            node scripts/trial/worker.mjs status
+          fi
       - name: Audit every completed round in the selected trial
-        if: steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
+        if: (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'round-one' && steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
       - name: Stop scheduled continuation when complete or requiring review
-        if: always() && (steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted')
+        if: always() && (steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted' || steps.state.outputs.campaign_status == 'complete' || steps.state.outputs.campaign_status == 'paused')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

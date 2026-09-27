@@ -105,7 +105,7 @@ export async function runDynamicBatches({rpc, identity, capture, shouldStop, dea
   const readyDeadline = performance.now() + startupTimeoutMs;
   while (!shouldStop() && performance.now() < deadline) {
     const lease = await rpc('next', worker);
-    if (lease.done) return;
+    if (lease.done || lease.paused) return;
     if (lease.waitingForWorkers) {
       if (performance.now() >= readyDeadline) throw fail('POOL_RUNNERS_NOT_READY','storage');
       await new Promise(resolve => setTimeout(resolve, 1000));

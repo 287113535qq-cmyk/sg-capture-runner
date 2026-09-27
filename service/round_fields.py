@@ -189,7 +189,7 @@ def types(raw, kind):
         # This reviewed game has one automatic free-game feature and no CFG
         # selector in its native request/response protocol. Never apply this
         # interpretation to another game or to a fixture profile.
-        if raw.get('sourceKey') == 'bookofsevens96-base-v1' and profile.get('freeSelector') == 'implicit-single-free-game':
+        if profile.get('fixtureOnly') is False and profile.get('freeSelector') == 'implicit-single-free-game' and (raw.get('sourceKey') == 'bookofsevens96-base-v1' or profile.get('adapter') == 'native-nextgen-v1'):
             check(protocol == 'nextgen' and free_selectors and all(selector is None for selector in free_selectors), 'FREE_TYPE_MAPPING_REQUIRED')
             free_selectors = ['native-free-game'] * len(free_selectors)
         check(free_selectors and all(selector is not None for selector in free_selectors), 'FREE_TYPE_MAPPING_REQUIRED')

@@ -22,7 +22,7 @@
   const cfg = JSON.parse(line());
   if (cfg.database !== 'sg_capture_staging_v1') throw Error('WRONG_DATABASE');
   const scope = cfg.trialScope || {trialId:'bookofsevens_300k_20260927',target:300000};
-  if (!/^bookofsevens_[a-z0-9_]{1,70}$/.test(scope.trialId) || !Number.isSafeInteger(scope.target)
+  if (!/^(bookofsevens_[a-z0-9_]{1,70}|sg_r1_20260928_[0-9]{5})$/.test(scope.trialId) || !Number.isSafeInteger(scope.target)
       || scope.target < 20 || scope.target > 300000) throw Error('WRONG_TRIAL_SCOPE');
   const target = db.getSiblingDB('sg_capture_staging_v1');
   await target.auth(cfg.user, cfg.password);
@@ -45,7 +45,7 @@
         result = {ready:true};
       } else if (input.op === 'put' || input.op === 'verify') {
         if (!Array.isArray(input.data) || !input.data.length || input.data.length > 100) throw Error('BAD_BATCH');
-        for (const r of input.data) if (r.trialId!==input.trial || r.gameId!==32471 || r.runtimeGameId!==33026 || r.fixtureOnly!==false || r.buy!==0 || r.bet!==0.25 || !Number.isSafeInteger(r.sequence) || r.sequence<range[0] || r.sequence>range[1]) throw Error('TRIAL_REQUIRED');
+        for (const r of input.data) if (r.trialId!==input.trial || r.gameId!==(scope.gameId??32471) || r.runtimeGameId!==(scope.runtimeGameId??33026) || r.fixtureOnly!==false || r.buy!==0 || r.bet!==(scope.betRaw??25)/100 || !Number.isSafeInteger(r.sequence) || r.sequence<range[0] || r.sequence>range[1]) throw Error('TRIAL_REQUIRED');
         let inserted = 0;
         if (input.op === 'put') {
           const operations = input.data.map(r=>({updateOne:{filter:{_id:r._id,contentHash:r.contentHash},update:{$setOnInsert:r},upsert:true}}));

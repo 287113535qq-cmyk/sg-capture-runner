@@ -39,6 +39,10 @@ class PoolTrial:
         self.identity = None
         self.worker_lease = None
         self.chunk_lease = None
+        self.campaign=None
+        if self.plan.get('campaignId'):
+            from campaign import Campaign
+            self.campaign=Campaign(self.base)
 
     def close(self):
         if self.worker_lease is not None:
@@ -50,10 +54,11 @@ class PoolTrial:
         if self.store:
             self.store.close()
         self.pool.close()
+        if self.campaign:self.campaign.close()
 
     def allowed(self):
         row = self.pool.db.execute('SELECT enabled,failure FROM control').fetchone()
-        return bool(row['enabled']) and row['failure'] is None
+        return bool(row['enabled']) and row['failure'] is None and (self.campaign is None or self.campaign.allowed())
 
     def open_batch(self, batch):
         if self.store and self.store.batch['id'] == batch['id']:
@@ -63,6 +68,7 @@ class PoolTrial:
         spec = {key: batch[key] for key in ('id', 'worker', 'start', 'end')}
         self.store = TrialStore(self.base, self.mongo_factory((batch['start'], batch['end'])),
             self.clock, source_allowed=self.allowed, plan=self.plan, batch=spec)
+        if self.campaign:self.store.new_round_allowed=lambda:self.allowed() and self.campaign.allowed(new_round=True)
         self.chunk_lease = None
         return self.store
 
@@ -78,6 +84,8 @@ class PoolTrial:
         return {**status, 'confirmedCount': status['statistics']['count']}
 
     def next_batch(self, req):
+        if self.campaign and not self.campaign.allowed(new_round=True):
+            return {'paused':True,'reason':self.campaign.status()['reason']}
         if self.pool.status()['complete']:
             self.pool.release_worker(self.worker_lease)
             return {'done': True}
@@ -143,6 +151,8 @@ class PoolTrial:
                     if op == 'release' and result['status'] == 'complete':
                         self.pool.complete(self.worker_lease, self.store.batch['id'], self.proof)
                         self.chunk_lease = None
+                    elif op == 'release' and result['status']=='pending':
+                        self.pool.suspend_worker(self.worker_lease,result)
                     if op == 'fail' and (req.get('category', '').startswith('source_') or result['status'] == 'halted'):
                         self.pool.halt('SOURCE_OR_SESSION_FAILURE')
         except Rejected:
@@ -216,4 +226,10 @@ class PoolTrial:
             require(all(a['end'] + 1 == b['start'] for a, b in zip(batches, batches[1:])), 'POOL_SEQUENCE_GAP')
             require(not batches or batches[0]['start'] == 1, 'POOL_SEQUENCE_START')
             require(result['verifiedFileRounds'] == result['checkpoint'], 'POOL_AUDIT_COUNT')
+            if self.campaign and result['status']=='complete':
+                temporary=self.root/'campaign-audit.tmp'
+                with temporary.open('wb') as stream:
+                    stream.write(canonical({'planHash':digest(self.plan),'verifiedFileRounds':result['verifiedFileRounds']}))
+                    stream.flush();os.fsync(stream.fileno())
+                os.replace(temporary,self.root/'campaign-audit.json');sync_dir(self.root)
         return result

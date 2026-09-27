@@ -12,7 +12,7 @@ const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
 const { XMLParser } = require('../../collector/node_modules/fast-xml-parser');
 const parser = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseTagValue:false});
 const planFile = process.env.SG_TRIAL_PLAN || 'config/trial-300k.json';
-assert(['config/trial-300k.json','config/trial-pool.json'].includes(planFile));
+assert(['config/trial-300k.json','config/trial-pool.json','config/round-one-active.json'].includes(planFile));
 const plan = JSON.parse(fs.readFileSync(planFile,'utf8'));
 const isPool = plan.schema === 'sg-work-pool-v1';
 const registry = JSON.parse(fs.readFileSync('service/round_types.json','utf8'));
@@ -51,8 +51,9 @@ async function main() {
   const status=await rpc('status');
   if (status.status === 'complete') {evidence.alreadyComplete=true; evidence.result=status; return;}
   if (status.status === 'halted') throw fail('TRIAL_HALTED','storage');
-  const baseGame=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
-  const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId);
+  let baseGame=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
+  if(plan.campaignId)baseGame={...baseGame,id:plan.gameId,runtimeSlug:plan.runtimeSlug};
+  const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId,plan);
   if(isPool)assert(shard!==null);
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');
   assert.equal(game.serverAddress,'ogs-gdm-usnj.nyxop.net/nextgen');
@@ -64,7 +65,9 @@ async function main() {
     evidence.startCheckpoint=lease.checkpoint;evidence.sequenceTarget=lease.sequenceTarget ?? plan.target;
     evidence.sequenceBase=lease.sequenceBase ?? 0;
   }
-  const limit=isPool?plan.target:Number(process.env.SG_TRIAL_LIMIT || '1');
+  const poolLimit=Number(process.env.SG_POOL_RUN_LIMIT || '0');
+  assert(Number.isSafeInteger(poolLimit) && poolLimit>=0);
+  const limit=isPool?(poolLimit>0?Math.min(plan.target,poolLimit):plan.target):Number(process.env.SG_TRIAL_LIMIT || '1');
   assert(Number.isSafeInteger(limit) && limit>=1 && limit<=plan.target);
   const deadline=performance.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000;
   const cookies=new Map();
@@ -106,7 +109,9 @@ async function main() {
     }catch{return {...result,sourceRejected:true};}
     return result;
   }
-  const payload=msg=>`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
+  const payload=msg=>plan.campaignId?
+    Object.entries({...plan.requestParams,PID:`gdmgcm${game.sessionId}`,MSGID:msg}).map(([k,v])=>`${k}=${v}`).join('&'):
+    `GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
   async function bootstrap() {
     const init=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=INIT`,'INIT');
     if(init.sourceRejected)throw fail('SOURCE_INIT_REJECTED');

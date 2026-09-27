@@ -19,6 +19,12 @@ class TrialStore:
             plan = validate_pool_plan(plan)
         self.plan = PLAN if plan is None else plan
         self.trial, self.schema = self.plan['trialId'], self.plan['schema']
+        if self.plan.get('campaignId'):
+            from native_nextgen_fields import NativeNextgenFields
+            adapter=NativeNextgenFields(self.plan)
+            self.field_frame,self.field_settled,self.field_request=adapter.frame,adapter.settled,adapter.request_params
+        else:
+            self.field_frame,self.field_settled,self.field_request=frame,settled,request_params
         self.root = Path(root).resolve() / 'trials' / self.trial
         self.batch = batch
         if batch is not None:
@@ -28,6 +34,7 @@ class TrialStore:
         self.base = shard['start']-1 if shard else 0
         self.target = shard['end'] if shard else self.plan['target']
         self.source_allowed = source_allowed or (lambda: True)
+        self.new_round_allowed=self.source_allowed
         if shard:
             require(type(shard['id']) is int and 0 <= shard['id'] < 20
                     and 0 <= self.base < self.target <= self.plan['target'], 'BAD_SHARD')
@@ -177,6 +184,9 @@ class TrialStore:
         require(isinstance(following,dict), 'BAD_FOLLOWING_INTENT')
         own = {'owner':req.get('owner'),'epoch':req.get('epoch')}
         if result['complete']:
+            if not self.new_round_allowed():
+                result['stopRequested']=True
+                return
             require(following.get('sequence') == req['sequence']+1
                     and following.get('startBalanceRaw') == result['endBalanceRaw'], 'FOLLOWING_ROUND_MISMATCH')
             if self.db.execute("SELECT 1 FROM sqlite_master WHERE type='trigger' AND name='trial_maintenance_before_bet'").fetchone():
@@ -224,7 +234,7 @@ class TrialStore:
           COALESCE(SUM(bonus>0),0) AS freeRounds, COALESCE(SUM(win=0),0) AS zeroWinRounds,
           COALESCE(MAX(1.0*win/stake),0) AS maxMul FROM receipts WHERE committed=1''').fetchone())
         pending = self.pending()
-        return {'trialId': self.trial, 'gameId': 32471, 'runtimeGameId': 33026, 'target': self.target,
+        return {'trialId': self.trial, 'gameId': self.plan['gameId'], 'runtimeGameId': self.plan['runtimeGameId'], 'target': self.target,
                 'sequenceBase':self.base, **({'shardId':self.shard['id']} if self.shard else {}),
                 'status': s['status'], 'journaled': self.journaled(), 'durable': s['durable'], 'checkpoint': s['checkpoint'],
                 'epoch': s['epoch'], 'leaseUntil': s['lease_until'], 'cooldownUntil': s['cooldown_until'],
@@ -264,15 +274,16 @@ class TrialStore:
 
     def _begin(self, req):
         require(self.source_allowed(), 'GLOBAL_SOURCE_STOPPED')
+        require(self.new_round_allowed(), 'NEW_ROUND_PAUSED')
         s = self.owned(req)
         journaled = self.journaled()
         require(journaled < self.target and not self.pending(), 'ROUND_ALREADY_PENDING')
         require(req.get('sequence') == journaled + 1, 'SEQUENCE_GAP')
-        require(type(req.get('startBalanceRaw')) is int and req['startBalanceRaw'] >= 25, 'BAD_START_BALANCE')
+        require(type(req.get('startBalanceRaw')) is int and req['startBalanceRaw'] >= self.plan['betRaw'], 'BAD_START_BALANCE')
         attempt = req.get('attempt','')
         require(isinstance(attempt,str) and re.fullmatch('[a-f0-9-]{36}',attempt), 'BAD_ATTEMPT')
-        request_params(req.get('requestPayload'), 'BET')
-        raw = {'fixtureOnly':False, 'protocol':'nextgen','sourceKey':SOURCE,'roundFieldsVersion':VERSION,
+        self.field_request(req.get('requestPayload'), 'BET')
+        raw = {'fixtureOnly':False, 'protocol':'nextgen','sourceKey':self.plan['sourceKey'],'roundFieldsVersion':VERSION,
                'startBalanceRaw':req['startBalanceRaw'], 'steps':[]}
         self.db.execute('INSERT INTO pending(id,sequence,attempt,raw,awaiting) VALUES(1,?,?,?,?)',
                         (req['sequence'],attempt,canonical(raw).decode(),req['requestPayload']))
@@ -284,8 +295,8 @@ class TrialStore:
         p = self.pending()
         require(p and req.get('sequence') == p['sequence'] and p['awaiting'] is None, 'PENDING_STATE_MISMATCH')
         require(len(p['raw']['steps']) < self.plan['maxSteps'], 'ROUND_STEP_LIMIT')
-        require(frame(p['raw']['steps'][-1]) > 0, 'ROUND_ALREADY_SETTLED')
-        request_params(req.get('requestPayload'), 'FREE_GAME')
+        require(self.field_frame(p['raw']['steps'][-1]) > 0, 'ROUND_ALREADY_SETTLED')
+        self.field_request(req.get('requestPayload'), 'FREE_GAME')
         self.db.execute('UPDATE pending SET awaiting=? WHERE id=1', (req['requestPayload'],))
         return {'intentDurable':True}
 
@@ -300,10 +311,10 @@ class TrialStore:
         # Preserve official response even if subsequent protocol analysis rejects it.
         self.db.execute('UPDATE pending SET raw=?,awaiting=NULL WHERE id=1', (canonical(raw).decode(),))
         try:
-            remaining = frame(step)
+            remaining = self.field_frame(step)
             if remaining:
                 return p, remaining, None
-            fields = settled(raw)
+            fields = self.field_settled(raw)
             require(req.get('normalized') == fields, 'RUNNER_SERVER_FIELDS_MISMATCH')
         except (FieldError, Rejected, ValueError, TypeError, KeyError):
             self.db.execute("UPDATE trial SET status='halted',failure='PROTOCOL_VALIDATION_FAILED' WHERE id=1")
@@ -323,7 +334,7 @@ class TrialStore:
 
     def _stage(self, req, p, fields):
         raw, seq = p['raw'], p['sequence']
-        identity = {'trialId':self.trial,'gameId':32471,'runtimeGameId':33026,'sequence':seq,'attempt':p['attempt']}
+        identity = {'trialId':self.trial,'gameId':self.plan['gameId'],'runtimeGameId':self.plan['runtimeGameId'],'sequence':seq,'attempt':p['attempt']}
         record = {'_id':digest(identity), **identity, 'fixtureOnly':False, 'sourceRoundIdentity':'collector-operation',
                   'sourceSessionHash':self.state()['session_hash'], 'raw':raw, 'normalized':fields,
                   **{k:fields[k] for k in ('bet','mul','buy','bonus','roundFieldsVersion')}}
@@ -347,8 +358,8 @@ class TrialStore:
         if not p or not p['raw']['steps'] or self.db.execute('SELECT 1 FROM receipts WHERE sequence=?',(p['sequence'],)).fetchone():
             return
         try:
-            if frame(p['raw']['steps'][-1]) == 0:
-                self._stage(req,p,settled(p['raw']))
+            if self.field_frame(p['raw']['steps'][-1]) == 0:
+                self._stage(req,p,self.field_settled(p['raw']))
         except (FieldError,ValueError,TypeError,KeyError):
             self.db.execute("UPDATE trial SET status='halted',failure='PROTOCOL_VALIDATION_FAILED' WHERE id=1")
             raise Rejected('PROTOCOL_VALIDATION_FAILED') from None
@@ -450,7 +461,7 @@ class TrialStore:
                     require(rawline.endswith(b'\n') and normline.endswith(b'\n'), 'PARTIAL_JSONL')
                     require(json.loads(rawline) == {'_id':record['_id'],'contentHash':record['contentHash'],'rawHash':record['rawHash'],'raw':record['raw']}, 'AUDIT_RAW_MISMATCH')
                     require(json.loads(normline) == {k:v for k,v in record.items() if k!='raw'}, 'AUDIT_NORMALIZED_MISMATCH')
-                    require(settled(record['raw']) == record['normalized'] and digest(record['raw']) == record['rawHash'], 'AUDIT_FIELDS_MISMATCH')
+                    require(self.field_settled(record['raw']) == record['normalized'] and digest(record['raw']) == record['rawHash'], 'AUDIT_FIELDS_MISMATCH')
                     if self.batch:
                         require(record['contentHash'] == digest({k:v for k,v in record.items() if k!='contentHash'})
                             and record['normalizedHash'] == digest(record['normalized'])

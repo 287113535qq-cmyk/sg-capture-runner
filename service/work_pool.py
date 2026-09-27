@@ -113,6 +113,15 @@ class WorkPool:
             require(worker['active_batch'] is None, 'WORKER_HAS_BATCH')
             self.db.execute('UPDATE workers SET lease_until=0 WHERE id=?', (lease['worker'],))
 
+    def suspend_worker(self, lease, proof):
+        require(proof.get('status')=='pending' and proof.get('pending') is None
+            and proof.get('journaled')==proof.get('durable')==proof.get('checkpoint'),'BATCH_NOT_DURABLE')
+        with self.transaction():
+            worker=self.owned(lease)
+            require(worker['active_batch'] is not None,'WORKER_HAS_NO_BATCH')
+            # Keep both the range and session binding; only release the owner.
+            self.db.execute('UPDATE workers SET lease_until=0 WHERE id=?',(lease['worker'],))
+
     def take(self, lease):
         with self.transaction():
             worker = self.owned(lease)

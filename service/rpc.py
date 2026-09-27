@@ -15,7 +15,7 @@ def main():
     if len(content) > 1048576:
         raise Rejected('REQUEST_TOO_LARGE')
     request = json.loads(content)
-    if request.get('schema') not in {'sg-real-trial-v1','sg-work-pool-v1'}:
+    if request.get('schema') not in {'sg-real-trial-v1','sg-work-pool-v1','sg-round-one-v1'}:
         result = Store('/var/lib/sg-capture-runner', MongoBridge()).dispatch(request)
         print(json.dumps(result, separators=(',', ':')))
         return
@@ -25,10 +25,19 @@ def main():
     root='/var/lib/sg-capture-runner'
     from trial_store import TRIAL
     shared_mongo=None
-    if request.get('schema') == 'sg-work-pool-v1':
+    if request.get('schema') == 'sg-round-one-v1':
+        from campaign import Campaign
+        service=Campaign(root)
+    elif request.get('schema') == 'sg-work-pool-v1':
         from pool_trial import PoolTrial
         from pool_plan import validate_pool_plan
-        plan=validate_pool_plan(json.loads((Path(__file__).resolve().parents[1]/'config/trial-pool.json').read_text()))
+        config=Path(__file__).resolve().parents[1]/'config'
+        if str(request.get('trialId','')).startswith('sg_r1_'):
+            plans=json.loads((config/'round-one-plans.json').read_text(encoding='utf-8'))
+            matches=[p for p in plans.values() if p['trialId']==request['trialId']]
+            if len(matches)!=1:raise Rejected('CAMPAIGN_PLAN_MISMATCH')
+            plan=validate_pool_plan(matches[0])
+        else:plan=validate_pool_plan(json.loads((config/'trial-pool.json').read_text()))
         shared_mongo=TrialMongo(plan=plan)
         service=PoolTrial(root,plan,shared_mongo.scoped)
     elif (Path(root)/'trials'/TRIAL/'parallel.json').exists():

@@ -51,7 +51,8 @@ class TrialMongo:
                 script=(Path(__file__).parent/'trial_mongo_worker.js').read_text(encoding='utf-8')
                 self.process=subprocess.Popen(['docker','exec','-i','mongodb','mongosh','--quiet','--norc','--eval',script],
                     stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
-                auth={**self.auth,'trialScope':{'trialId':self.plan['trialId'],'target':self.plan['target']}}
+                auth={**self.auth,'trialScope':{key:self.plan[key] for key in
+                    ('trialId','target','gameId','runtimeGameId','betRaw')}}
                 self.process.stdin.write(json.dumps(auth).encode()+b'\n')
             self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':self.plan['trialId'],
                 'sequenceRange':sequence_range if sequence_range is not None else self.sequence_range}).encode()+b'\n')
