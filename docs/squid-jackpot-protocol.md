@@ -27,3 +27,13 @@
 恢复工具不通过 RPC 暴露。必须先核对控制器已暂停、全部租约过期、原计划与会话及批次绑定不变、233 条已完成记录原文摘要一致，189 条 Mongo 全文读回一致；3 个未完成局均有已知持久响应、没有 awaiting 请求，且下一步为已验证续局。
 
 先持久记录原失败状态及证据摘要，再将已审查的协议停止转为可恢复状态。原数据与失败历史保留，不修改局号、额度或会话，不重发 BET。普通 claim 流程先补齐 44 条已完成日志的文件/Mongo，再恢复原未完成局。该流程没有任何源站请求；真实续局需在原 workflow 的短采验证通过后才放开连续采集。
+
+## 2026-09-27 19:55 UTC 验收状态
+
+协议修复已提交并部署为 `733dde4248c9789306c9ab312c9f8d76e584786b`。Windows 和 Linux 服务端各 117 项 Python 测试、25 项采集器测试、19 项 Node 测试、TypeScript 检查和 3000 个离线模拟局验证通过。服务器再次逐条核对 233 条原始/标准化记录及其摘要、189 条 Mongo 全文，3 个原始续局状态均可解释。旧配置、计划及原有类型映射保持一致。
+
+尚未启用恢复：GitHub 离线检查 [36345791808](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36345791808) 在分配 Runner 前失败，检查注释指出账户付款或消费上限问题，实际运行步骤为 0。因此没有真实选奖续局或短采成功证据，不能称采集已经恢复。当前认证没有读取账户账单详情的权限，不能据此断言已经耗尽免费分钟。
+
+GitHub Free 的私有仓库有账户共用的免费分钟额度，20 个并行节点仍累计消耗运行时间，详情见 [GitHub 官方计费说明](https://docs.github.com/en/billing/concepts/product-billing/github-actions)。没有调整付费设置、扩大授权范围或改换采集网络。原采集 workflow 继续禁用，源池及 campaign 保持暂停，恢复工具只执行了只读审查，原 failure 标记仍保留。详细结果见 [验收结果](squid-jackpot-recovery-result.json)。
+
+账户限制解除后：先通过原离线 preflight，再重新核对当前状态与私有恢复证明，调用 `service/protocol_recovery.py` 的 operator-only 恢复入口；使用原 `trial-300k.yml` 的 `allocation=round-one, round_one_limit=10` 验证原 3 局续完及新增完整内容落库；通过后才启用连续采集。此工具不允许未知请求结果，不自动重发 BET。
