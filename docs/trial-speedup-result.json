@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "trialId": "bookofsevens_300k_20260927",
+  "stage": "optimized-1000-round-capture-and-full-audit-verified",
+  "target": 300000,
+  "productionGamePoolWrites": false,
+  "maintenance": {
+    "previousRunId": 36320873221,
+    "plannedBoundaryStop": true,
+    "sourceRequestsCancelled": false,
+    "durableAtSwitch": 10138,
+    "checkpointBeforeTailRecovery": 10101,
+    "pendingAtSwitch": null,
+    "preservedTailRounds": 37
+  },
+  "benchmark": {
+    "runId": 36323030921,
+    "conclusion": "success",
+    "createdAt": "2026-09-27T13:37:20Z",
+    "headSha": "b23d88038ce353af5bbe42d5d2789fa4b126c51c",
+    "status": "completed",
+    "updatedAt": "2026-09-27T13:38:43Z",
+    "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36323030921",
+    "reports": [
+      {
+        "schema": "sg-real-trial-v1",
+        "trialId": "bookofsevens_300k_20260927",
+        "game": "Book of Sevens",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 300000,
+        "role": "capture",
+        "sourceRequests": 1032,
+        "paidRoundRequests": 1000,
+        "completedThisRun": 1000,
+        "productionGamePoolWrites": false,
+        "startCheckpoint": 10138,
+        "initialBalanceRaw": 100000,
+        "sourceElapsedMs": 22983,
+        "endCheckpoint": 11138,
+        "result": {
+          "ok": true,
+          "schema": "sg-real-trial-v1",
+          "fixtureOnly": false,
+          "serverWorkMs": 40.27,
+          "trialId": "bookofsevens_300k_20260927",
+          "gameId": 32471,
+          "runtimeGameId": 33026,
+          "target": 300000,
+          "status": "pending",
+          "durable": 11138,
+          "checkpoint": 11138,
+          "epoch": 5,
+          "leaseUntil": 0,
+          "cooldownUntil": 0,
+          "failure": null,
+          "pending": null,
+          "statistics": {
+            "count": 11138,
+            "stakeRaw": 278450,
+            "winRaw": 250800,
+            "sourceFrames": 11443,
+            "freeRounds": 60,
+            "zeroWinRounds": 10415,
+            "maxMul": 400
+          }
+        },
+        "outcome": "success",
+        "rpcMetrics": {
+          "status": {
+            "count": 1,
+            "totalMs": 1531.449817,
+            "serverWorkMs": 33.474,
+            "requestBytes": 83,
+            "averageMs": 1531.449817,
+            "averageServerWorkMs": 33.474
+          },
+          "claim": {
+            "count": 1,
+            "totalMs": 1122.5815980000002,
+            "serverWorkMs": 1119.863,
+            "requestBytes": 248,
+            "averageMs": 1122.5815980000002,
+            "averageServerWorkMs": 1119.863
+          },
+          "ping": {
+            "count": 10,
+            "totalMs": 29.972679000003154,
+            "serverWorkMs": 1.4369999999999998,
+            "requestBytes": 810,
+            "averageMs": 2.9972679000003155,
+            "averageServerWorkMs": 0.1437
+          },
+          "begin": {
+            "count": 1,
+            "totalMs": 8.028629999999794,
+            "serverWorkMs": 4.112,
+            "requestBytes": 323,
+            "averageMs": 8.028629999999794,
+            "averageServerWorkMs": 4.112
+          },
+          "exchange": {
+            "count": 1030,
+            "totalMs": 18649.089588999945,
+            "serverWorkMs": 15961.824,
+            "requestBytes": 1742569,
+            "averageMs": 18.105912222330044,
+            "averageServerWorkMs": 15.496916504854369
+          },
+          "release": {
+            "count": 1,
+            "totalMs": 42.479373999995005,
+            "serverWorkMs": 40.27,
+            "requestBytes": 124,
+            "averageMs": 42.479373999995005,
+            "averageServerWorkMs": 40.27
+          }
+        },
+        "elapsedSeconds": 56.72,
+        "roundsPerSecond": 17.63046544428773
+      },
+      {
+        "schema": "sg-real-trial-v1",
+        "trialId": "bookofsevens_300k_20260927",
+        "game": "Book of Sevens",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 300000,
+        "role": "audit",
+        "sourceRequests": 0,
+        "paidRoundRequests": 0,
+        "completedThisRun": 0,
+        "productionGamePoolWrites": false,
+        "result": {
+          "ok": true,
+          "schema": "sg-real-trial-v1",
+          "fixtureOnly": false,
+          "serverWorkMs": 8285.804,
+          "trialId": "bookofsevens_300k_20260927",
+          "gameId": 32471,
+          "runtimeGameId": 33026,
+          "target": 300000,
+          "status": "pending",
+          "durable": 11138,
+          "checkpoint": 11138,
+          "epoch": 5,
+          "leaseUntil": 0,
+          "cooldownUntil": 0,
+          "failure": null,
+          "pending": null,
+          "statistics": {
+            "count": 11138,
+            "stakeRaw": 278450,
+            "winRaw": 250800,
+            "sourceFrames": 11443,
+            "freeRounds": 60,
+            "zeroWinRounds": 10415,
+            "maxMul": 400
+          },
+          "verifiedFileRounds": 11138,
+          "mongo": {
+            "count": 11138,
+            "stakeRaw": 278450,
+            "winRaw": 250800,
+            "sourceFrames": 11443,
+            "freeRounds": 60,
+            "zeroWinRounds": 10415,
+            "minSequence": 1,
+            "maxSequence": 11138
+          },
+          "requestLatencyMs": {
+            "p50": 89,
+            "p95": 94,
+            "p99": 102
+          },
+          "activeSeconds": 2484.135,
+          "roundsPerSecond": 4.48365373440406,
+          "recoveredRunCount": 5,
+          "mongoPerBatchContentVerified": true,
+          "productionGamePoolWrites": false
+        },
+        "outcome": "success",
+        "rpcMetrics": {
+          "audit": {
+            "count": 1,
+            "totalMs": 8723.989081,
+            "serverWorkMs": 8285.804,
+            "requestBytes": 82,
+            "averageMs": 8723.989081,
+            "averageServerWorkMs": 8285.804
+          }
+        },
+        "elapsedSeconds": 8.729
+      }
+    ]
+  },
+  "comparison": {
+    "priorRunId": 36320569667,
+    "priorCompleteRounds": 1000,
+    "priorElapsedSeconds": 232.198,
+    "priorRoundsPerSecond": 4.306669308090509,
+    "newCompleteRounds": 1000,
+    "newElapsedSeconds": 56.72,
+    "newRoundsPerSecond": 17.63046544428773,
+    "observedThroughputRatio": 4.0937588152327224,
+    "estimatedRemainingHoursAtBenchmarkRate": 4.5511812888888885,
+    "notes": [
+      "Each sample counts whole paid rounds with all triggered free steps.",
+      "This is a before/after observation on different GitHub-hosted runners, not a controlled network comparison. The newer runner also had faster official responses.",
+      "Audit latency and activeSeconds cover the full historical trial; they are not the optimized benchmark-only performance.",
+      "Estimated duration excludes runner queueing and final audit; future runner network latency may differ."
+    ]
+  },
+  "optimizedContinuation": {
+    "runId": 36323242657,
+    "url": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36323242657",
+    "fromCheckpoint": 11138,
+    "target": 300000,
+    "scheduledContinuationEnabled": true,
+    "observedAt": "2026-09-27T13:43:18.425509+00:00",
+    "liveSnapshot": {
+      "status": "claimed",
+      "durable": 12669,
+      "checkpoint": 12638,
+      "epoch": 6,
+      "failure": null,
+      "recentWindow": {
+        "firstSequence": 11670,
+        "lastSequence": 12669,
+        "intervals": 999,
+        "seconds": 77.697,
+        "completeRoundsPerSecond": 12.858,
+        "officialRequestCount": 1030,
+        "officialMsMean": 38.658,
+        "officialMsP50": 38,
+        "officialMsP95": 43
+      },
+      "run": {
+        "startCheckpoint": 11138,
+        "commitSha": "b23d88038ce353af5bbe42d5d2789fa4b126c51c",
+        "elapsedSeconds": 119.634
+      }
+    },
+    "estimatedRemainingHoursAtObservedRate": 6.208024403311384
+  }
+}
