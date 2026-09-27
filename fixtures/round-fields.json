@@ -1,0 +1,578 @@
+{
+  "fixtureOnly": true,
+  "description": "Synthetic protocol samples, never official captures. Type mappings are fixture-specific, not approvals for any real game.",
+  "samples": [
+    {
+      "id": "ng-loss",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1",
+            "responsePayload": "MSGID=BET&B=99875&AB=99875&TW=0&NFG=0"
+          }
+        ]
+      },
+      "expected": {
+        "bet": 1.25,
+        "mul": 0.0,
+        "buy": 0,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "ng-win",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1",
+            "responsePayload": "MSGID=BET&B=99975&AB=99975&TW=100&NFG=0"
+          }
+        ]
+      },
+      "expected": {
+        "bet": 1.25,
+        "mul": 0.8,
+        "buy": 0,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "ng-natural-free",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1",
+            "responsePayload": "MSGID=BET&B=99800&AB=99800&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100800&AB=100800&TW=1000&NFG=0&CFG=2",
+            "responseBalance": 100800
+          }
+        ]
+      },
+      "expected": {
+        "bet": 2.0,
+        "mul": 5.0,
+        "buy": 0,
+        "bonus": 2
+      }
+    },
+    {
+      "id": "ng-feature-only",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1",
+            "responsePayload": "MSGID=BET&B=99800&AB=99800&TW=0&NFG=0"
+          },
+          {
+            "msgId": "FEATURE_START",
+            "requestPayload": "MSGID=FEATURE_START",
+            "responsePayload": "MSGID=FEATURE_START&B=99800&TW=0&NFR_1=1"
+          },
+          {
+            "msgId": "FEATURE_END",
+            "requestPayload": "MSGID=FEATURE_END",
+            "responsePayload": "MSGID=FEATURE_END&B=99800&AB=99800&TW=0&NFR_1=0&NFG=0"
+          }
+        ]
+      },
+      "expected": {
+        "bet": 2.0,
+        "mul": 0.0,
+        "buy": 0,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "ng-purchase-1",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&GSD=BUY~1",
+            "responsePayload": "MSGID=BET&B=99600&AB=99600&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100600&AB=100600&TW=1000&NFG=0&CFG=1",
+            "responseBalance": 100600
+          }
+        ]
+      },
+      "expected": {
+        "bet": 4.0,
+        "mul": 2.5,
+        "buy": 1,
+        "bonus": 1
+      }
+    },
+    {
+      "id": "ng-purchase-2",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&GSD=BUY~2",
+            "responsePayload": "MSGID=BET&B=99400&AB=99400&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100400&AB=100400&TW=1000&NFG=0&CFG=2",
+            "responseBalance": 100400
+          }
+        ]
+      },
+      "expected": {
+        "bet": 6.0,
+        "mul": 1.6666666666666667,
+        "buy": 2,
+        "bonus": 2
+      }
+    },
+    {
+      "id": "ng-purchase-3",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&GSD=BUY~3",
+            "responsePayload": "MSGID=BET&B=99200&AB=99200&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100200&AB=100200&TW=1000&NFG=0&CFG=3",
+            "responseBalance": 100200
+          }
+        ]
+      },
+      "expected": {
+        "bet": 8.0,
+        "mul": 1.25,
+        "buy": 3,
+        "bonus": 3
+      }
+    },
+    {
+      "id": "ng-purchase-4",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&GSD=BUY~4",
+            "responsePayload": "MSGID=BET&B=99000&AB=99000&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100000&AB=100000&TW=1000&NFG=0&CFG=4",
+            "responseBalance": 100000
+          }
+        ]
+      },
+      "expected": {
+        "bet": 10.0,
+        "mul": 1.0,
+        "buy": 4,
+        "bonus": 4
+      }
+    },
+    {
+      "id": "ng-purchase-5",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&GSD=BUY~5",
+            "responsePayload": "MSGID=BET&B=98800&AB=98800&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=98800&AB=98800&TW=0&NFG=0&CFG=5",
+            "responseBalance": 98800
+          }
+        ]
+      },
+      "expected": {
+        "bet": 12.0,
+        "mul": 0.0,
+        "buy": 5,
+        "bonus": 5
+      }
+    },
+    {
+      "id": "ng-enhanced-1",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&ABPM=1",
+            "responsePayload": "MSGID=BET&B=99700&AB=99700&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FEATURE_START",
+            "requestPayload": "MSGID=FEATURE_START",
+            "responsePayload": "MSGID=FEATURE_START&B=99700&TW=0&NFR_1=1"
+          },
+          {
+            "msgId": "FEATURE_END",
+            "requestPayload": "MSGID=FEATURE_END",
+            "responsePayload": "MSGID=FEATURE_END&B=99700&AB=99700&TW=0&NFR_1=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100700&AB=100700&TW=1000&NFG=0&CFG=3",
+            "responseBalance": 100700
+          }
+        ]
+      },
+      "expected": {
+        "bet": 3.0,
+        "mul": 3.3333333333333335,
+        "buy": 11,
+        "bonus": 3
+      }
+    },
+    {
+      "id": "ng-enhanced-2",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&ABPM=2",
+            "responsePayload": "MSGID=BET&B=100600&AB=100600&TW=1000&NFG=0"
+          }
+        ]
+      },
+      "expected": {
+        "bet": 4.0,
+        "mul": 2.5,
+        "buy": 12,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "ng-enhanced-3",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&ABPM=3",
+            "responsePayload": "MSGID=BET&B=99500&AB=99500&TW=0&NFG=1"
+          },
+          {
+            "msgId": "FREE_GAME",
+            "requestPayload": "MSGID=FREE_GAME",
+            "responsePayload": "MSGID=FREE_GAME&B=100500&AB=100500&TW=1000&NFG=0&CFG=3",
+            "responseBalance": 100500
+          }
+        ]
+      },
+      "expected": {
+        "bet": 5.0,
+        "mul": 2.0,
+        "buy": 13,
+        "bonus": 3
+      }
+    },
+    {
+      "id": "ng-enhanced-4",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-nextgen-v1",
+        "protocol": "nextgen",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "BET",
+            "requestPayload": "MSGID=BET&BPL=1&LB=1&ABPM=4",
+            "responsePayload": "MSGID=BET&B=100400&AB=100400&TW=1000&NFG=0"
+          }
+        ]
+      },
+      "expected": {
+        "bet": 6.0,
+        "mul": 1.6666666666666667,
+        "buy": 14,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "wms-base",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"200\" totalWin=\"0\"></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"99800\"/></GameResponse>",
+            "responseBalance": 99800
+          }
+        ]
+      },
+      "expected": {
+        "bet": 2.0,
+        "mul": 0.0,
+        "buy": 0,
+        "bonus": 0
+      }
+    },
+    {
+      "id": "wms-free-1",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"N\"/><GameResult stake=\"200\" totalWin=\"200\"><Feature name=\"Free1\"><data lastFreeSpin=\"N\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"0\" totalWin=\"800\"><Feature name=\"Free1\"><data lastFreeSpin=\"Y\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"100800\"/></GameResponse>",
+            "responseBalance": 100800
+          }
+        ]
+      },
+      "expected": {
+        "bet": 2.0,
+        "mul": 5.0,
+        "buy": 0,
+        "bonus": 1
+      }
+    },
+    {
+      "id": "wms-free-2",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"N\"/><GameResult stake=\"200\" totalWin=\"200\"><Feature name=\"Free2\"><data lastFreeSpin=\"N\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"0\" totalWin=\"800\"><Feature name=\"Free2\"><data lastFreeSpin=\"Y\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"100800\"/></GameResponse>",
+            "responseBalance": 100800
+          }
+        ]
+      },
+      "expected": {
+        "bet": 2.0,
+        "mul": 5.0,
+        "buy": 0,
+        "bonus": 2
+      }
+    },
+    {
+      "id": "wms-purchase",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\" purchase=\"3\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"N\"/><GameResult stake=\"1000\" totalWin=\"200\"><Feature name=\"Free3\"><data lastFreeSpin=\"N\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"0\" totalWin=\"800\"><Feature name=\"Free3\"><data lastFreeSpin=\"Y\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"100000\"/></GameResponse>",
+            "responseBalance": 100000
+          }
+        ]
+      },
+      "expected": {
+        "bet": 10.0,
+        "mul": 1.0,
+        "buy": 3,
+        "bonus": 3
+      }
+    },
+    {
+      "id": "wms-enhanced",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\" extra=\"1\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"N\"/><GameResult stake=\"300\" totalWin=\"200\"><Feature name=\"Free4\"><data lastFreeSpin=\"N\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"0\" totalWin=\"800\"><Feature name=\"Free4\"><data lastFreeSpin=\"Y\"/></Feature></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"100700\"/></GameResponse>",
+            "responseBalance": 100700
+          }
+        ]
+      },
+      "expected": {
+        "bet": 3.0,
+        "mul": 3.3333333333333335,
+        "buy": 11,
+        "bonus": 4
+      }
+    },
+    {
+      "id": "wms-free-feature",
+      "raw": {
+        "fixtureOnly": true,
+        "roundFieldsVersion": "sg-round-fields-v1",
+        "sourceKey": "fixture-wms-v1",
+        "protocol": "wms",
+        "winAggregation": "per-logic",
+        "startBalanceRaw": 100000,
+        "steps": [
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\" extra=\"2\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"N\"/><GameResult stake=\"300\" totalWin=\"200\"><Feature name=\"Free5\"><data lastFreeSpin=\"N\"/></Feature><HNSInfo hnsSpinsRemaining=\"2\"/></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "Logic",
+            "requestPayload": "<GameRequest type=\"Logic\"/>",
+            "responsePayload": "<GameResponse type=\"Logic\"><Header readyForEndGame=\"Y\"/><GameResult stake=\"0\" totalWin=\"800\"><Feature name=\"Free5\"><data lastFreeSpin=\"Y\"/></Feature><HNSInfo hnsSpinsRemaining=\"0\"/></GameResult></GameResponse>"
+          },
+          {
+            "msgId": "EndGame",
+            "requestPayload": "<GameRequest type=\"EndGame\"/>",
+            "responsePayload": "<GameResponse type=\"EndGame\"><Balance value=\"100700\"/></GameResponse>",
+            "responseBalance": 100700
+          }
+        ]
+      },
+      "expected": {
+        "bet": 3.0,
+        "mul": 3.3333333333333335,
+        "buy": 12,
+        "bonus": 5
+      }
+    }
+  ]
+}

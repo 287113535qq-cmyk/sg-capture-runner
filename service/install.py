@@ -45,6 +45,7 @@ def main():
     checked(re.fullmatch('[a-f0-9]{40}',args.commit),'Invalid commit')
     release=Path('/opt/sg-capture-runner/releases')/args.commit
     checked(release.resolve()==release and (release/'service/rpc.py').is_file(),'Invalid release directory')
+    checked((release/'service/round_fields.py').is_file() and (release/'service/round_types.json').is_file(),'Business-field analyzer or mapping missing')
     public=Path(args.public_key).read_text().strip().split()
     checked(len(public) in (2,3) and public[0]=='ssh-ed25519' and re.fullmatch('[A-Za-z0-9+/=]+',public[1]),'Invalid dedicated public key')
     key=' '.join(public[:2])+' sg-capture-runner-fixture'

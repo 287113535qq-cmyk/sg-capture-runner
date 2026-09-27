@@ -1,4 +1,5 @@
-import { extractRoundBalance, extractTotalWinFromPayload, parsePayloadParams } from './sg.parse';
+import { extractRoundBalance, parsePayloadParams } from './sg.parse';
+import { settledFields } from './sg.fields';
 
 export interface SGTrafficEntry {
   ts: string;
@@ -27,6 +28,8 @@ export interface SGRoundDocMeta {
   selectedFreeChoiceOptionIndex?: number | null;
   freeChoiceOptionCount?: number | null;
   buy?: number | null;
+  /** Per-game reviewed free-data type. Never derived from the generic bonus kind. */
+  bonusType?: number | null;
   enhancedBetLevel?: number | null;
   enhancedBetLabel?: string | null;
   forcedPrimaryBonusKind?: SGPrimaryBonusKind | null;
@@ -591,20 +594,37 @@ export function buildRoundDoc(
   }
 
   const lastEntry = entries[entries.length - 1];
+  const finalParams = parsePayloadParams(lastEntry.responsePayload);
+  if (lastEntry.msgId === 'FEATURE_START' || finalParams.MSGID === 'FEATURE_START'
+      || needsFreeGameContinuation(finalParams) || resolveFeaturePickRequest(finalParams) !== null
+      || Object.keys(finalParams).some(key => /^NFR_\d+$/.test(key) && Number(finalParams[key]) > 0)) {
+    throw new Error('SG_INCOMPLETE_ROUND');
+  }
   const lastBalance = lastEntry.responseBalance ?? extractRoundBalance({ ogsRc: '', success: true, payload: lastEntry.responsePayload });
   if (lastBalance === undefined) {
     throw new Error('cannot resolve SG round final balance');
   }
 
-  const totalWinRaw = extractTotalWinFromPayload(lastEntry.responsePayload);
-  const betRaw = Math.max(0, preBalance - lastBalance + totalWinRaw);
+  // Missing, malformed or inconsistent settlement evidence must not become zero.
+  if (finalParams.TW === undefined || !/^\d+$/.test(finalParams.TW)) throw new Error('SG_INVALID_MONEY_EVIDENCE');
+  const totalWinRaw = Number(finalParams.TW);
+  for (const key of ['B', 'AB']) {
+    if (finalParams[key] !== undefined && (!/^\d+$/.test(finalParams[key]) || Number(finalParams[key]) !== lastBalance)) {
+      throw new Error('SG_UNRECONCILED_FINAL_BALANCE');
+    }
+  }
   const primaryBonusKind = normalizePrimaryBonusKind(meta.forcedPrimaryBonusKind) || classifyPrimaryBonusKind(entries);
+  const hasFree = entries.some(entry => entry.msgId === 'FREE_GAME');
+  const bonus = meta.bonusType ?? (hasFree ? NaN : 0);
+  if ((hasFree && !(bonus > 0)) || (!hasFree && bonus !== 0)) throw new Error('SG_FREE_TYPE_MAPPING_REQUIRED');
+  const fields = settledFields(preBalance, lastBalance, totalWinRaw, meta.buy ?? 0, bonus);
+  const betRaw = fields.money.betRaw;
   const specialKinds = primaryBonusKind === 'none' ? [] : [primaryBonusKind];
   const doc: SGMongoDoc = {
-    bonus: 0,
-    buy: Math.max(0, toNumber(meta.buy)),
-    bet: betRaw / 100,
-    mul: betRaw > 0 ? totalWinRaw / betRaw : 0,
+    bonus: fields.bonus,
+    buy: fields.buy,
+    bet: fields.bet,
+    mul: fields.mul,
     rtp: [],
     data: {
       gameId,
@@ -612,6 +632,8 @@ export function buildRoundDoc(
       startBalance: preBalance / 100,
       endBalance: lastBalance / 100,
       totalWin: totalWinRaw / 100,
+      roundFieldsVersion: fields.roundFieldsVersion,
+      money: fields.money,
       stepCount: entries.length,
       msgIds: entries.map((entry) => entry.msgId),
       steps: entries,

@@ -7,6 +7,7 @@ import re
 import sqlite3
 import time
 from pathlib import Path
+from round_fields import validate as validate_round_fields, FieldError
 
 SCHEMA = "sg-link-fixture-v1"
 CASE = re.compile(r"fixture_[a-z0-9_]{1,64}\Z")
@@ -208,10 +209,22 @@ class Store:
         require(isinstance(normalized, dict) and normalized.get("fixtureOnly") is True, "FIXTURE_NORMALIZED_REQUIRED")
         require(normalized.get("sequence") == seq and normalized.get("gameKey") == task["game"], "ROUND_IDENTITY_MISMATCH")
         require(len(canonical(value)) <= 8192, "ROUND_TOO_LARGE")
+        business = self._business_fields(req['caseId'], raw, normalized)
         identity = {"caseId": req["caseId"], "gameId": task["game"], "sourceRoundId": value["sourceRoundId"]}
-        return {"_id": digest(identity), **identity, "sequence": seq, "fixtureOnly": True,
+        return {"_id": digest(identity), **identity, **business, "sequence": seq, "fixtureOnly": True,
                 "raw": raw, "normalized": normalized, "rawHash": digest(raw), "normalizedHash": digest(normalized),
                 "contentHash": digest({**identity, "raw": raw, "normalized": normalized})}
+
+    def _business_fields(self, case, raw, normalized):
+        enabled = case.startswith('fixture_fields_') or 'roundFieldsVersion' in raw or any(
+            key in normalized for key in ('bet', 'mul', 'buy', 'bonus', 'roundFieldsVersion'))
+        if not enabled:
+            return {}  # Existing transport-only receipts remain unchanged.
+        try:
+            return validate_round_fields(raw, normalized)
+        except (FieldError, ValueError, TypeError, KeyError, OverflowError) as exc:
+            code = str(exc) if isinstance(exc, FieldError) else 'INVALID_ROUND_FIELD_EVIDENCE'
+            raise Rejected(code) from None
 
     def _persist(self, db, req, receipt, failpoint=None):
         self._owned(db, req)
@@ -292,6 +305,9 @@ class Store:
         parameters = (req["caseId"], game) if game is not None else (req["caseId"],)
         require(not db.execute("SELECT 1 FROM receipts WHERE " + where + " AND status!='committed'", parameters).fetchone(), "UNCONFIRMED_RECORDS")
         records = [json.loads(r[0]) for r in db.execute("SELECT payload FROM receipts WHERE " + where + " ORDER BY game,sequence", parameters)]
+        for record in records:
+            fields = self._business_fields(req['caseId'], record['raw'], record['normalized'])
+            require(all(record.get(key) == value for key, value in fields.items()), 'TOP_LEVEL_FIELDS_MISMATCH')
         for task in db.execute("SELECT * FROM tasks WHERE " + where, parameters):
             expected = [r for r in records if r["gameId"] == task["game"]]
             require(task["checkpoint"] == len(expected), "CHECKPOINT_PARITY_FAILED")
@@ -319,7 +335,10 @@ class Store:
 
     def _verify(self, db, req):
         records = self._verified_records(db, req)
+        fields = [{key: record[key] for key in ('_id', 'gameId', 'bet', 'mul', 'buy', 'bonus')}
+                  for record in records if 'roundFieldsVersion' in record]
         return {"count": len(records), "rawNormalizedMongoParity": True,
+                "businessFieldsVerified": len(fields), "businessFields": fields,
                 "identitySetHash": digest(sorted((r["_id"], r["contentHash"]) for r in records))}
 
     def _promote(self, db, req):

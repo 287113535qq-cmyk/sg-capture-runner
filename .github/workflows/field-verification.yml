@@ -1,0 +1,86 @@
+name: SG business field verification
+on:
+  workflow_dispatch:
+    inputs:
+      case_id:
+        description: 'Isolated case starting with fixture_fields_'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: sg-isolated-link-verification
+  cancel-in-progress: false
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      work_required: ${{ steps.verify.outputs.work_required }}
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install locked offline collector dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Typecheck and offline collector tests
+        working-directory: collector
+        run: npm run typecheck && npm test
+      - name: Field analysis and durable storage tests
+        run: python3 -m unittest discover -s service/tests -v
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Reject wrong fields and interrupt after durable Mongo write
+        id: verify
+        run: node scripts/link/field-worker.mjs seed
+  resume:
+    needs: seed
+    if: needs.seed.outputs.work_required == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Recover and verify business fields for both protocols
+        run: node scripts/link/field-worker.mjs resume
+  audit:
+    needs: [seed, resume]
+    if: always() && needs.seed.result == 'success' && (needs.seed.outputs.work_required == 'false' || needs.resume.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SG_LINK_CASE: ${{ inputs.case_id }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Verify Mongo business fields and repeat acceptance import
+        run: node scripts/link/field-worker.mjs audit

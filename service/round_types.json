@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "profiles": {
+    "fixture-nextgen-v1": {
+      "fixtureOnly": true,
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 1,
+          "kind": "purchase",
+          "selectors": {
+            "GSD": "BUY~1",
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 2,
+          "kind": "purchase",
+          "selectors": {
+            "GSD": "BUY~2",
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 3,
+          "kind": "purchase",
+          "selectors": {
+            "GSD": "BUY~3",
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 4,
+          "kind": "purchase",
+          "selectors": {
+            "GSD": "BUY~4",
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 5,
+          "kind": "purchase",
+          "selectors": {
+            "GSD": "BUY~5",
+            "ABPM": null
+          }
+        },
+        {
+          "buy": 11,
+          "kind": "enhanced",
+          "selectors": {
+            "GSD": null,
+            "ABPM": "1"
+          }
+        },
+        {
+          "buy": 12,
+          "kind": "enhanced",
+          "selectors": {
+            "GSD": null,
+            "ABPM": "2"
+          }
+        },
+        {
+          "buy": 13,
+          "kind": "enhanced",
+          "selectors": {
+            "GSD": null,
+            "ABPM": "3"
+          }
+        },
+        {
+          "buy": 14,
+          "kind": "enhanced",
+          "selectors": {
+            "GSD": null,
+            "ABPM": "4"
+          }
+        }
+      ],
+      "freeTypes": {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5
+      }
+    },
+    "fixture-wms-v1": {
+      "fixtureOnly": true,
+      "protocol": "wms",
+      "modeSelectorKeys": [
+        "purchase",
+        "extra"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "purchase": null,
+            "extra": null
+          }
+        },
+        {
+          "buy": 1,
+          "kind": "purchase",
+          "selectors": {
+            "purchase": "1",
+            "extra": null
+          }
+        },
+        {
+          "buy": 2,
+          "kind": "purchase",
+          "selectors": {
+            "purchase": "2",
+            "extra": null
+          }
+        },
+        {
+          "buy": 3,
+          "kind": "purchase",
+          "selectors": {
+            "purchase": "3",
+            "extra": null
+          }
+        },
+        {
+          "buy": 4,
+          "kind": "purchase",
+          "selectors": {
+            "purchase": "4",
+            "extra": null
+          }
+        },
+        {
+          "buy": 5,
+          "kind": "purchase",
+          "selectors": {
+            "purchase": "5",
+            "extra": null
+          }
+        },
+        {
+          "buy": 11,
+          "kind": "enhanced",
+          "selectors": {
+            "purchase": null,
+            "extra": "1"
+          }
+        },
+        {
+          "buy": 12,
+          "kind": "enhanced",
+          "selectors": {
+            "purchase": null,
+            "extra": "2"
+          }
+        },
+        {
+          "buy": 13,
+          "kind": "enhanced",
+          "selectors": {
+            "purchase": null,
+            "extra": "3"
+          }
+        },
+        {
+          "buy": 14,
+          "kind": "enhanced",
+          "selectors": {
+            "purchase": null,
+            "extra": "4"
+          }
+        }
+      ],
+      "freeTypes": {
+        "Free1": 1,
+        "Free2": 2,
+        "Free3": 3,
+        "Free4": 4,
+        "Free5": 5
+      }
+    }
+  }
+}
