@@ -1,0 +1,257 @@
+{
+  "schema": "sg-capture-utilization-analysis-v1",
+  "runId": 36329489181,
+  "source": "docs/trial-final-run-workers.json",
+  "fixedQuotaRounds": {
+    "min": 10140,
+    "max": 10339
+  },
+  "roundsPerSecondAcrossWorkers": {
+    "min": 5.814692460752654,
+    "max": 29.164162019287463
+  },
+  "findings": [
+    "All source workers used zero artificial request interval.",
+    "Fixed nearly equal quotas finished at very different times; fast workers could not accept more unassigned work.",
+    "Source response wait and storage round-trip outside server dominate slow workers; server average work was under 9 ms per exchange.",
+    "Per-worker averages cover different time windows and must not be summed into an observed twenty-worker throughput."
+  ],
+  "dynamicAllocator": {
+    "file": "service/work_pool.py",
+    "productionRpcIntegrated": false,
+    "deployed": false,
+    "enabled": false,
+    "newSourceRequests": 0,
+    "offlineChecks": [
+      "20 concurrent allocation clients reserve disjoint ranges",
+      "faster workers receive more batches",
+      "all batches cover exact target without duplicates",
+      "recovery retains original worker, session and range",
+      "pending or unconfirmed batch cannot complete",
+      "stale owner cannot acknowledge after slow storage validation",
+      "global halt preserves completed data and blocks new assignments"
+    ]
+  },
+  "workers": [
+    {
+      "shardId": 0,
+      "rounds": 10140,
+      "elapsedSeconds": 1346.479,
+      "roundsPerSecond": 7.530752429113265,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 74.66260704091341,
+      "storageRpcMeanMs": 52.688021739771955,
+      "storageServerMeanMs": 7.515161465271173,
+      "storageRpcOutsideServerMeanMs": 45.172860274500785
+    },
+    {
+      "shardId": 1,
+      "rounds": 10140,
+      "elapsedSeconds": 347.687,
+      "roundsPerSecond": 29.164162019287463,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 22.812272291466922,
+      "storageRpcMeanMs": 10.187191999712239,
+      "storageServerMeanMs": 7.00352425695112,
+      "storageRpcOutsideServerMeanMs": 3.183667742761119
+    },
+    {
+      "shardId": 2,
+      "rounds": 10240,
+      "elapsedSeconds": 378.529,
+      "roundsPerSecond": 27.052088479350328,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 22.985499058380416,
+      "storageRpcMeanMs": 12.05057623286256,
+      "storageServerMeanMs": 8.043070903954822,
+      "storageRpcOutsideServerMeanMs": 4.0075053289077385
+    },
+    {
+      "shardId": 3,
+      "rounds": 10239,
+      "elapsedSeconds": 366.762,
+      "roundsPerSecond": 27.917286959935872,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 22.459507703870724,
+      "storageRpcMeanMs": 11.537849408680586,
+      "storageServerMeanMs": 8.037424464487051,
+      "storageRpcOutsideServerMeanMs": 3.5004249441935347
+    },
+    {
+      "shardId": 4,
+      "rounds": 10339,
+      "elapsedSeconds": 927.238,
+      "roundsPerSecond": 11.150319551183191,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 49.89275442991001,
+      "storageRpcMeanMs": 35.44947420512146,
+      "storageServerMeanMs": 7.7997853233138335,
+      "storageRpcOutsideServerMeanMs": 27.649688881807627
+    },
+    {
+      "shardId": 5,
+      "rounds": 10339,
+      "elapsedSeconds": 1021.269,
+      "roundsPerSecond": 10.123679461532662,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 52.70710864869941,
+      "storageRpcMeanMs": 42.40582402075312,
+      "storageServerMeanMs": 7.6939183960935456,
+      "storageRpcOutsideServerMeanMs": 34.71190562465958
+    },
+    {
+      "shardId": 6,
+      "rounds": 10339,
+      "elapsedSeconds": 367.359,
+      "roundsPerSecond": 28.14413148990497,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 22.429835180184373,
+      "storageRpcMeanMs": 11.34966417990522,
+      "storageServerMeanMs": 8.134943104572113,
+      "storageRpcOutsideServerMeanMs": 3.2147210753331077
+    },
+    {
+      "shardId": 7,
+      "rounds": 10339,
+      "elapsedSeconds": 451.884,
+      "roundsPerSecond": 22.879765603561975,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 26.216291612423284,
+      "storageRpcMeanMs": 15.264604985307843,
+      "storageServerMeanMs": 8.0071984377906,
+      "storageRpcOutsideServerMeanMs": 7.257406547517244
+    },
+    {
+      "shardId": 8,
+      "rounds": 10339,
+      "elapsedSeconds": 681.433,
+      "roundsPerSecond": 15.172438082687513,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 36.494807746281225,
+      "storageRpcMeanMs": 26.870144723453336,
+      "storageServerMeanMs": 8.137789222565262,
+      "storageRpcOutsideServerMeanMs": 18.732355500888076
+    },
+    {
+      "shardId": 9,
+      "rounds": 10339,
+      "elapsedSeconds": 991.081,
+      "roundsPerSecond": 10.432043395040365,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 46.52959791511541,
+      "storageRpcMeanMs": 45.009342345029026,
+      "storageServerMeanMs": 7.658329020848874,
+      "storageRpcOutsideServerMeanMs": 37.35101332418015
+    },
+    {
+      "shardId": 10,
+      "rounds": 10339,
+      "elapsedSeconds": 904.621,
+      "roundsPerSecond": 11.429095720749352,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 47.29956070660809,
+      "storageRpcMeanMs": 36.49296739760718,
+      "storageServerMeanMs": 7.826241517898882,
+      "storageRpcOutsideServerMeanMs": 28.6667258797083
+    },
+    {
+      "shardId": 11,
+      "rounds": 10339,
+      "elapsedSeconds": 369.705,
+      "roundsPerSecond": 27.965540092776674,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 22.393646019362723,
+      "storageRpcMeanMs": 11.830763227371005,
+      "storageServerMeanMs": 8.048181596014635,
+      "storageRpcOutsideServerMeanMs": 3.7825816313563703
+    },
+    {
+      "shardId": 12,
+      "rounds": 10339,
+      "elapsedSeconds": 883.15,
+      "roundsPerSecond": 11.706958047896734,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 50.8754688672168,
+      "storageRpcMeanMs": 31.54966562237446,
+      "storageServerMeanMs": 6.879517160540061,
+      "storageRpcOutsideServerMeanMs": 24.670148461834398
+    },
+    {
+      "shardId": 13,
+      "rounds": 10339,
+      "elapsedSeconds": 1655.277,
+      "roundsPerSecond": 6.246084492202815,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 93.96201702685003,
+      "storageRpcMeanMs": 60.382932821778816,
+      "storageServerMeanMs": 6.690093554121067,
+      "storageRpcOutsideServerMeanMs": 53.692839267657746
+    },
+    {
+      "shardId": 14,
+      "rounds": 10339,
+      "elapsedSeconds": 704.519,
+      "roundsPerSecond": 14.675260709789232,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 34.17609828741623,
+      "storageRpcMeanMs": 30.941307573530093,
+      "storageServerMeanMs": 8.530527364110204,
+      "storageRpcOutsideServerMeanMs": 22.41078020941989
+    },
+    {
+      "shardId": 15,
+      "rounds": 10339,
+      "elapsedSeconds": 1778.082,
+      "roundsPerSecond": 5.814692460752654,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 94.88754227733935,
+      "storageRpcMeanMs": 71.38625768714714,
+      "storageServerMeanMs": 7.310139233370882,
+      "storageRpcOutsideServerMeanMs": 64.07611845377626
+    },
+    {
+      "shardId": 16,
+      "rounds": 10339,
+      "elapsedSeconds": 373.86,
+      "roundsPerSecond": 27.654737067351412,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 23.387296233839237,
+      "storageRpcMeanMs": 11.22366499465978,
+      "storageServerMeanMs": 8.143134719880075,
+      "storageRpcOutsideServerMeanMs": 3.0805302747797043
+    },
+    {
+      "shardId": 17,
+      "rounds": 10339,
+      "elapsedSeconds": 718.037,
+      "roundsPerSecond": 14.398979439778172,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 38.74311326921281,
+      "storageRpcMeanMs": 27.583182520310103,
+      "storageServerMeanMs": 7.933960126995953,
+      "storageRpcOutsideServerMeanMs": 19.64922239331415
+    },
+    {
+      "shardId": 18,
+      "rounds": 10339,
+      "elapsedSeconds": 733.217,
+      "roundsPerSecond": 14.100873274896792,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 38.56786011656953,
+      "storageRpcMeanMs": 28.88004508576168,
+      "storageServerMeanMs": 6.961210472754186,
+      "storageRpcOutsideServerMeanMs": 21.918834613007494
+    },
+    {
+      "shardId": 19,
+      "rounds": 10339,
+      "elapsedSeconds": 995.723,
+      "roundsPerSecond": 10.38340984390237,
+      "requestIntervalMs": 0,
+      "sourceMeanMs": 50.06224880829984,
+      "storageRpcMeanMs": 42.50095683662062,
+      "storageServerMeanMs": 7.821082998411097,
+      "storageRpcOutsideServerMeanMs": 34.67987383820952
+    }
+  ]
+}
