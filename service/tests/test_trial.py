@@ -205,4 +205,90 @@ class TrialTests(unittest.TestCase):
         self.owner='upgraded';self.claim();self.assertEqual(self.lease['checkpoint'],1)
         self.begin(2)
 
+    def journal_record(self,seq=1,**kw):
+        self.begin(seq)
+        return self.call('exchange_journal',**self.own(),sequence=seq,step=step(),normalized=settled(raw()),**kw)
+
+    def test_durable_journal_recovers_entire_unexported_batch_after_restart(self):
+        for seq in range(1,4):self.journal_record(seq)
+        s=self.call('status')
+        self.assertEqual((s['journaled'],s['durable'],s['checkpoint']),(3,0,0))
+        self.assertFalse((self.store.root/'raw.jsonl').exists());self.assertFalse(self.mongo.rows)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],3)
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],3)
+
+    def test_journal_exports_and_verifies_mongo_at_exact_batch_boundary(self):
+        for seq in range(1,100):self.journal_record(seq)
+        self.assertEqual(self.call('status')['durable'],0)
+        self.journal_record(100)
+        s=self.call('status');self.assertEqual((s['journaled'],s['durable'],s['checkpoint']),(100,100,100))
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],100)
+
+    def test_journal_response_survives_rollback_before_receipt_commit(self):
+        class Crash(BaseException):pass
+        with patch.object(self.store,'_stage',side_effect=Crash):
+            with self.assertRaises(Crash):self.journal_record()
+        self.assertEqual(len(self.store.pending()['raw']['steps']),1)
+        self.assertIsNone(self.store.pending()['awaiting']);self.assertEqual(self.store.journaled(),0)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],1)
+
+    def test_bad_journal_following_preserves_response_for_recovery(self):
+        with self.assertRaisesRegex(Rejected,'FOLLOWING_ROUND_MISMATCH'):
+            self.journal_record(following={'sequence':3})
+        self.assertEqual(len(self.store.pending()['raw']['steps']),1)
+        self.assertEqual(self.store.journaled(),0)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],1)
+
+    def test_journal_lost_ack_does_not_repeat_armed_request(self):
+        following={'sequence':2,'attempt':'00000000-0000-0000-0000-000000000002','startBalanceRaw':99975,'requestPayload':payload('BET')}
+        result=self.journal_record(following=following)
+        self.assertTrue(result['followingIntentDurable'])
+        self.assertEqual((result['journaled'],result['durable']),(1,0))
+        self.clock[0]+=601
+        with self.assertRaisesRegex(Rejected,'SOURCE_OUTCOME_UNKNOWN'):
+            self.call('claim',owner='other',sessionHash='a'*64,commitSha='b'*40)
+        self.assertEqual(self.store.journaled(),1);self.assertEqual(self.store.pending()['sequence'],2)
+
+    def test_journal_free_round_resume_preserves_paid_round_boundary(self):
+        self.begin();first=step(remaining=1)
+        self.call('exchange_journal',**self.own(),sequence=1,step=first)
+        self.reclaim();self.assertEqual(len(self.lease['pendingRound']['raw']['steps']),1)
+        self.call('intent',**self.own(),sequence=1,requestPayload=payload('FREE_GAME'))
+        final=step('FREE_GAME',100025,50,0)
+        self.call('exchange_journal',**self.own(),sequence=1,step=final,normalized=settled(raw([first,final])))
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['statistics']['freeRounds'],1)
+
+    def test_partial_journal_batch_files_recover_without_duplicate_lines(self):
+        for seq in range(1,4):self.journal_record(seq)
+        original=self.store.writer._append_exact
+        def broken(path,offset,line):
+            if path.name=='rounds.jsonl':
+                with path.open('ab') as f:f.write(line[:31]);f.flush()
+                raise OSError('test crash')
+            original(path,offset,line)
+        with patch.object(self.store.writer,'_append_exact',side_effect=broken):
+            with self.assertRaises(OSError):self.call('flush',**self.own())
+        self.assertEqual(self.call('status')['durable'],0)
+        self.reclaim();self.call('release',**self.own())
+        self.assertEqual(self.call('audit')['verifiedFileRounds'],3)
+
+    def test_batch_mongo_lost_ack_does_not_arm_next_request(self):
+        for seq in range(1,100):self.journal_record(seq)
+        self.mongo.lose_ack=True
+        following={'sequence':101,'attempt':'00000000-0000-0000-0000-000000000101','startBalanceRaw':99975,'requestPayload':payload('BET')}
+        with self.assertRaisesRegex(Rejected,'TRIAL_MONGO_FAILED'):self.journal_record(100,following=following)
+        self.assertIsNone(self.store.pending())
+        self.assertEqual(self.call('status')['checkpoint'],0)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],100);self.assertEqual(self.mongo.inserted,100)
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],100)
+
+    def test_journal_maintenance_stops_cleanly_after_settlement(self):
+        self.begin();gate(self.store.root,True)
+        following={'sequence':2,'attempt':'00000000-0000-0000-0000-000000000002','startBalanceRaw':99975,'requestPayload':payload('BET')}
+        result=self.call('exchange_journal',**self.own(),sequence=1,step=step(),normalized=settled(raw()),following=following)
+        self.assertTrue(result['stopRequested']);self.assertNotIn('followingIntentDurable',result)
+        self.assertIsNone(self.store.pending())
+        self.call('release',**self.own());gate(self.store.root,False)
+        self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
+
 if __name__=='__main__':unittest.main()

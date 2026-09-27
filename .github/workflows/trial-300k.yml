@@ -9,10 +9,10 @@ on:
         type: choice
         options: ['1', '100', '1000', '300000']
       role:
-        description: 'Capture, verify all durable trial data, or read status'
+        description: 'Capture, audit, status, or benchmark three consecutive 1000-round phases'
         default: capture
         type: choice
-        options: [capture, audit, status]
+        options: [capture, audit, status, benchmark]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -30,6 +30,7 @@ jobs:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
       SG_TRIAL_MINUTES: '240'
+      SG_TRIAL_INTERVAL_MS: '0'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -47,9 +48,16 @@ jobs:
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
           SG_TRIAL_ROLE: ${{ inputs.role || 'capture' }}
-        run: node scripts/trial/worker.mjs "$SG_TRIAL_ROLE"
+        run: |
+          if [ "$SG_TRIAL_ROLE" = "benchmark" ]; then
+            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=50 SG_TRIAL_EXCHANGE=exchange node scripts/trial/worker.mjs capture
+            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=50 SG_TRIAL_EXCHANGE=exchange_journal node scripts/trial/worker.mjs capture
+            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=0 SG_TRIAL_EXCHANGE=exchange_journal node scripts/trial/worker.mjs capture
+          else
+            node scripts/trial/worker.mjs "$SG_TRIAL_ROLE"
+          fi
       - name: Verify durable files, classifications, checkpoint and Mongo totals
-        if: success() && (inputs.role == 'capture' || github.event_name == 'schedule')
+        if: success() && (inputs.role == 'capture' || inputs.role == 'benchmark' || github.event_name == 'schedule')
         run: node scripts/trial/worker.mjs audit
       - name: Stop scheduled continuation when complete or requiring review
         if: always() && vars.SG_TRIAL_ENABLED == 'true' && (steps.capture.outputs.trial_status == 'complete' || steps.capture.outputs.trial_status == 'halted')

@@ -73,7 +73,7 @@ class TrialStore:
         require(isinstance(req, dict) and req.get('schema') == SCHEMA and req.get('trialId') == TRIAL, 'TRIAL_NOT_ALLOWED')
         require(len(canonical(req)) <= 1048576, 'REQUEST_TOO_LARGE')
         op = req.get('op')
-        require(op in {'status','claim','begin','intent','frame','exchange','flush','release','fail','audit','ping'}, 'OP_NOT_ALLOWED')
+        require(op in {'status','claim','begin','intent','frame','exchange','exchange_journal','flush','release','fail','audit','ping'}, 'OP_NOT_ALLOWED')
         started = time.perf_counter()
         with file_lock(self.root / 'trial.lock'):
             result = getattr(self, '_' + op)(req)
@@ -101,6 +101,56 @@ class TrialStore:
             result['followingIntentDurable'] = True
         return result
 
+    def journaled(self):
+        return self.db.execute('SELECT COALESCE(MAX(sequence),0) FROM receipts').fetchone()[0]
+
+    def _following(self, req, result):
+        following = req.get('following')
+        if following is None:
+            return
+        require(isinstance(following,dict), 'BAD_FOLLOWING_INTENT')
+        own = {'owner':req.get('owner'),'epoch':req.get('epoch')}
+        if result['complete']:
+            require(following.get('sequence') == req['sequence']+1
+                    and following.get('startBalanceRaw') == result['endBalanceRaw'], 'FOLLOWING_ROUND_MISMATCH')
+            if self.db.execute("SELECT 1 FROM sqlite_master WHERE type='trigger' AND name='trial_maintenance_before_bet'").fetchone():
+                result['stopRequested'] = True
+                return
+            self._begin({**following, **own})
+        else:
+            require(following.get('sequence') == req['sequence'], 'FOLLOWING_ROUND_MISMATCH')
+            self._intent({**following, **own})
+        result['followingIntentDurable'] = True
+
+    def _exchange_journal(self, req):
+        # The received response is FULL-synchronous before analysis or any next
+        # intent. JSONL export may lag the durable journal by at most one batch;
+        # checkpoint still requires fsynced files and full Mongo readback.
+        pending, remaining, fields = self._receive(req)
+        if remaining:
+            result = {'complete':False, 'remaining':remaining}
+            self._following(req,result)
+            return result
+        result = {'complete':True, 'journaled':req['sequence'],
+                  'endBalanceRaw':fields['money']['endBalanceRaw']}
+        flush = req['sequence']-self.state()['durable'] >= PLAN['mongoBatchSize'] or req['sequence'] == PLAN['target']
+        self.db.execute('BEGIN IMMEDIATE')
+        try:
+            self._stage(req,pending,fields)
+            self.db.execute('DELETE FROM pending WHERE sequence=?',(req['sequence'],))
+            if not flush:
+                self._following(req,result)
+            self.db.execute('COMMIT')
+        except BaseException:
+            self.db.execute('ROLLBACK')
+            raise
+        if flush:
+            # Do not arm a next request before a potentially failing Mongo ack.
+            self._flush(req)
+            self._following(req,result)
+        result.update(durable=self.state()['durable'],checkpoint=self.state()['checkpoint'])
+        return result
+
     def _status(self, req):
         s = self.state()
         stats = dict(self.db.execute('''SELECT COUNT(*) AS count, COALESCE(SUM(stake),0) AS stakeRaw,
@@ -109,7 +159,7 @@ class TrialStore:
           COALESCE(MAX(1.0*win/stake),0) AS maxMul FROM receipts WHERE committed=1''').fetchone())
         pending = self.pending()
         return {'trialId': TRIAL, 'gameId': 32471, 'runtimeGameId': 33026, 'target': PLAN['target'],
-                'status': s['status'], 'durable': s['durable'], 'checkpoint': s['checkpoint'],
+                'status': s['status'], 'journaled': self.journaled(), 'durable': s['durable'], 'checkpoint': s['checkpoint'],
                 'epoch': s['epoch'], 'leaseUntil': s['lease_until'], 'cooldownUntil': s['cooldown_until'],
                 'failure': s['failure'], 'pending': None if pending is None else {
                     'sequence': pending['sequence'], 'frames': len(pending['raw']['steps']),
@@ -144,8 +194,9 @@ class TrialStore:
 
     def _begin(self, req):
         s = self.owned(req)
-        require(s['durable'] < PLAN['target'] and not self.pending(), 'ROUND_ALREADY_PENDING')
-        require(req.get('sequence') == s['durable'] + 1, 'SEQUENCE_GAP')
+        journaled = self.journaled()
+        require(journaled < PLAN['target'] and not self.pending(), 'ROUND_ALREADY_PENDING')
+        require(req.get('sequence') == journaled + 1, 'SEQUENCE_GAP')
         require(type(req.get('startBalanceRaw')) is int and req['startBalanceRaw'] >= 25, 'BAD_START_BALANCE')
         attempt = req.get('attempt','')
         require(isinstance(attempt,str) and re.fullmatch('[a-f0-9-]{36}',attempt), 'BAD_ATTEMPT')
@@ -166,7 +217,7 @@ class TrialStore:
         self.db.execute('UPDATE pending SET awaiting=? WHERE id=1', (req['requestPayload'],))
         return {'intentDurable':True}
 
-    def _frame(self, req):
+    def _receive(self, req):
         self.owned(req)
         p, step = self.pending(), req.get('step')
         require(p and req.get('sequence') == p['sequence'] and isinstance(step,dict), 'PENDING_STATE_MISMATCH')
@@ -179,12 +230,18 @@ class TrialStore:
         try:
             remaining = frame(step)
             if remaining:
-                return {'complete':False, 'remaining':remaining}
+                return p, remaining, None
             fields = settled(raw)
             require(req.get('normalized') == fields, 'RUNNER_SERVER_FIELDS_MISMATCH')
         except (FieldError, Rejected, ValueError, TypeError, KeyError):
             self.db.execute("UPDATE trial SET status='halted',failure='PROTOCOL_VALIDATION_FAILED' WHERE id=1")
             raise Rejected('PROTOCOL_VALIDATION_FAILED') from None
+        return p, remaining, fields
+
+    def _frame(self, req):
+        p, remaining, fields = self._receive(req)
+        if remaining:
+            return {'complete':False, 'remaining':remaining}
         self._stage(req, p, fields)
         self._recover_files(req)
         if self.state()['durable'] - self.state()['checkpoint'] >= PLAN['mongoBatchSize']:
@@ -201,8 +258,13 @@ class TrialStore:
         record['rawHash'], record['normalizedHash'] = digest(raw), digest(fields)
         record['contentHash'] = digest(record)
         s = self.state()
+        raw_offset, norm_offset = s['raw_offset'], s['norm_offset']
+        tail = self.db.execute('SELECT payload,raw_offset,norm_offset FROM receipts WHERE filed=0 ORDER BY sequence DESC LIMIT 1').fetchone()
+        if tail:
+            rawline, normline = self._file_lines(json.loads(tail['payload']))
+            raw_offset, norm_offset = tail['raw_offset']+len(rawline), tail['norm_offset']+len(normline)
         self.db.execute('INSERT INTO receipts(sequence,id,payload,hash,raw_offset,norm_offset,stake,win,bonus,frames) VALUES(?,?,?,?,?,?,?,?,?,?)',
-            (seq,record['_id'],canonical(record).decode(),record['contentHash'],s['raw_offset'],s['norm_offset'],
+            (seq,record['_id'],canonical(record).decode(),record['contentHash'],raw_offset,norm_offset,
              fields['money']['betRaw'],fields['money']['totalWinRaw'],fields['bonus'],len(raw['steps'])))
     def _recover_response(self, req):
         p = self.pending()
@@ -215,23 +277,38 @@ class TrialStore:
             self.db.execute("UPDATE trial SET status='halted',failure='PROTOCOL_VALIDATION_FAILED' WHERE id=1")
             raise Rejected('PROTOCOL_VALIDATION_FAILED') from None
 
+    @staticmethod
+    def _file_lines(record):
+        raw = canonical({'_id':record['_id'],'contentHash':record['contentHash'],'rawHash':record['rawHash'],'raw':record['raw']}) + b'\n'
+        norm = canonical({k:v for k,v in record.items() if k != 'raw'}) + b'\n'
+        return raw, norm
+
     def _recover_files(self, req):
-        for row in self.db.execute('SELECT * FROM receipts WHERE filed=0 ORDER BY sequence').fetchall():
+        while True:
+            rows = self.db.execute('SELECT * FROM receipts WHERE filed=0 ORDER BY sequence LIMIT 100').fetchall()
+            if not rows:
+                break
             self.owned(req)
-            record = json.loads(row['payload'])
-            raw = canonical({'_id':record['_id'],'contentHash':record['contentHash'],'rawHash':record['rawHash'],'raw':record['raw']}) + b'\n'
-            norm = canonical({k:v for k,v in record.items() if k != 'raw'}) + b'\n'
-            self.writer._append_exact(self.root/'raw.jsonl', row['raw_offset'], raw)
-            self.writer._append_exact(self.root/'rounds.jsonl', row['norm_offset'], norm)
-            require(row['sequence'] == self.state()['durable']+1, 'DURABLE_SEQUENCE_GAP')
+            s = self.state()
+            raw_offset, norm_offset = s['raw_offset'], s['norm_offset']
+            rawlines, normlines, timings = [], [], []
+            for i,row in enumerate(rows):
+                require(row['sequence'] == s['durable']+i+1, 'DURABLE_SEQUENCE_GAP')
+                require(row['raw_offset']==raw_offset and row['norm_offset']==norm_offset, 'DURABLE_OFFSET_CONFLICT')
+                record = json.loads(row['payload'])
+                raw, norm = self._file_lines(record)
+                rawlines.append(raw);normlines.append(norm)
+                raw_offset += len(raw);norm_offset += len(norm)
+                timings.extend((row['sequence'],i,step['elapsedMs']) for i,step in enumerate(record['raw']['steps']))
+            self.writer._append_exact(self.root/'raw.jsonl', s['raw_offset'], b''.join(rawlines))
+            self.writer._append_exact(self.root/'rounds.jsonl', s['norm_offset'], b''.join(normlines))
             self.db.execute('BEGIN IMMEDIATE')
             try:
-                self.db.execute('UPDATE receipts SET filed=1 WHERE sequence=?',(row['sequence'],))
+                self.db.executemany('UPDATE receipts SET filed=1 WHERE sequence=?',[(row['sequence'],) for row in rows])
                 self.db.execute('UPDATE trial SET durable=?,raw_offset=?,norm_offset=? WHERE id=1',
-                    (row['sequence'],row['raw_offset']+len(raw),row['norm_offset']+len(norm)))
-                self.db.executemany('INSERT OR IGNORE INTO timings(sequence,step,ms) VALUES(?,?,?)',
-                    [(row['sequence'],i,s['elapsedMs']) for i,s in enumerate(record['raw']['steps'])])
-                self.db.execute('DELETE FROM pending WHERE sequence=?',(row['sequence'],))
+                    (rows[-1]['sequence'],raw_offset,norm_offset))
+                self.db.executemany('INSERT OR IGNORE INTO timings(sequence,step,ms) VALUES(?,?,?)',timings)
+                self.db.executemany('DELETE FROM pending WHERE sequence=?',[(row['sequence'],) for row in rows])
                 self.db.execute('COMMIT')
             except BaseException:
                 self.db.execute('ROLLBACK')
@@ -283,7 +360,7 @@ class TrialStore:
 
     def _audit(self, req):
         s = self.state()
-        require(s['status'] != 'claimed' and s['durable'] == s['checkpoint'] and not self.pending(), 'TRIAL_NOT_QUIESCENT')
+        require(s['status'] != 'claimed' and self.journaled() == s['durable'] == s['checkpoint'] and not self.pending(), 'TRIAL_NOT_QUIESCENT')
         count = 0
         if s['checkpoint']:
             with (self.root/'raw.jsonl').open('rb') as rf, (self.root/'rounds.jsonl').open('rb') as nf:

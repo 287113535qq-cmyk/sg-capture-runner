@@ -20,9 +20,13 @@ const hash = v => createHash('sha256').update(v).digest('hex');
 const mappingHash = hash(canonical(registry.profiles[plan.sourceKey]));
 const role = process.argv[2] || 'capture';
 assert(['capture','audit','status'].includes(role));
+const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minRequestIntervalMs);
+const exchangeOperation=process.env.SG_TRIAL_EXCHANGE || 'exchange_journal';
+assert([0,50].includes(requestIntervalMs));
+assert(['exchange','exchange_journal'].includes(exchangeOperation));
 const transport = connect(plan), rpc = transport.rpc;
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
-  target:plan.target,role,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
+  target:plan.target,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
 let lease, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
 process.on('SIGTERM', () => {stop=true;});
@@ -62,7 +66,7 @@ async function main() {
   const deadline=performance.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000;
   const cookies=new Map();
   async function post(payload, msgId) {
-    const delay=plan.minRequestIntervalMs-(Date.now()-lastRequestAt);
+    const delay=requestIntervalMs-(Date.now()-lastRequestAt);
     if (delay>0) await new Promise(r=>setTimeout(r,delay));
     lastRequestAt=Date.now();evidence.sourceRequests++;if(msgId==='BET')evidence.paidRoundRequests++;
     const body='<gdmRequest><clienttype>flash</clienttype><lang>en_us</lang>'+
@@ -157,7 +161,8 @@ async function main() {
         && performance.now()+2000<deadline && normalized.money.endBalanceRaw>=2500){
         following={sequence:sequence+1,attempt:randomUUID(),startBalanceRaw:normalized.money.endBalanceRaw,requestPayload:payload('BET')};
       }
-      const result=await rpc('exchange',{...owned(),sequence,step,...(normalized?{normalized}:{}),...(following?{following}:{})});
+      const result=await rpc(exchangeOperation,{...owned(),sequence,step,...(normalized?{normalized}:{}),...(following?{following}:{})});
+      if(result.stopRequested)stop=true;
       intentReady=result.followingIntentDurable===true;
       if(result.complete){
         balance=result.endBalanceRaw;evidence.endCheckpoint=result.checkpoint;
@@ -169,7 +174,8 @@ async function main() {
     if(evidence.completedThisRun%100===0){
       const seconds=(performance.now()-sessionStart)/1000;
       console.log(JSON.stringify({trialId:plan.trialId,confirmed:evidence.endCheckpoint,target:plan.target,
-        completedThisRun:evidence.completedThisRun,roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests}));
+        completedThisRun:evidence.completedThisRun,roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests,
+        ...(evidence.completedThisRun%1000===0?{rpcMetrics:transport.metrics(),sourceElapsedMs:evidence.sourceElapsedMs}: {})}));
     }
   }
   evidence.result=await rpc('release',owned());
