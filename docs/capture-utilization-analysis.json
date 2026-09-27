@@ -18,8 +18,8 @@
   ],
   "dynamicAllocator": {
     "file": "service/work_pool.py",
-    "productionRpcIntegrated": false,
-    "deployed": false,
+    "productionRpcIntegrated": true,
+    "deployed": true,
     "enabled": false,
     "newSourceRequests": 0,
     "offlineChecks": [
@@ -30,7 +30,9 @@
       "pending or unconfirmed batch cannot complete",
       "stale owner cannot acknowledge after slow storage validation",
       "global halt preserves completed data and blocks new assignments"
-    ]
+    ],
+    "integrationReport": "pool-optimization-result.json",
+    "runtimeCommit": "e9a03da03d10cc40d5e795beb43d6b20e62e133b"
   },
   "workers": [
     {

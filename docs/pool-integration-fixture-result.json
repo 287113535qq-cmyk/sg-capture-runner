@@ -1,0 +1,151 @@
+{
+  "schema": "sg-pool-e2e-fixture-result-v1",
+  "fixtureOnly": true,
+  "officialSourceRequests": 0,
+  "status": "complete",
+  "verifiedFileRounds": 3000,
+  "statistics": {
+    "count": 3000,
+    "stakeRaw": 75000,
+    "winRaw": 11100,
+    "sourceFrames": 3444,
+    "freeRounds": 222,
+    "zeroWinRounds": 2778,
+    "maxMul": 2
+  },
+  "uniqueContinuousSequences": 3000,
+  "distinctSessions": 20,
+  "completedBatches": 112,
+  "sourceEnabled": false,
+  "mongoBackend": "SQLite content-check fixture; not real Mongo",
+  "independentCaptureLoops": 20,
+  "captureProcesses": 1,
+  "storageRpcProcesses": 20,
+  "sharedProductionCaptureLoop": true,
+  "sharedProductionPoolService": true,
+  "elapsedFixtureSeconds": 8.366,
+  "workers": [
+    {
+      "shard": 0,
+      "rounds": 234,
+      "paidFixtureRequests": 234,
+      "batches": 7
+    },
+    {
+      "shard": 1,
+      "rounds": 161,
+      "paidFixtureRequests": 161,
+      "batches": 4
+    },
+    {
+      "shard": 2,
+      "rounds": 212,
+      "paidFixtureRequests": 212,
+      "batches": 6
+    },
+    {
+      "shard": 3,
+      "rounds": 177,
+      "paidFixtureRequests": 177,
+      "batches": 7
+    },
+    {
+      "shard": 4,
+      "rounds": 205,
+      "paidFixtureRequests": 205,
+      "batches": 7
+    },
+    {
+      "shard": 5,
+      "rounds": 160,
+      "paidFixtureRequests": 160,
+      "batches": 7
+    },
+    {
+      "shard": 6,
+      "rounds": 205,
+      "paidFixtureRequests": 205,
+      "batches": 8
+    },
+    {
+      "shard": 7,
+      "rounds": 162,
+      "paidFixtureRequests": 162,
+      "batches": 7
+    },
+    {
+      "shard": 8,
+      "rounds": 161,
+      "paidFixtureRequests": 161,
+      "batches": 7
+    },
+    {
+      "shard": 9,
+      "rounds": 192,
+      "paidFixtureRequests": 192,
+      "batches": 7
+    },
+    {
+      "shard": 10,
+      "rounds": 106,
+      "paidFixtureRequests": 106,
+      "batches": 5
+    },
+    {
+      "shard": 11,
+      "rounds": 114,
+      "paidFixtureRequests": 114,
+      "batches": 4
+    },
+    {
+      "shard": 12,
+      "rounds": 106,
+      "paidFixtureRequests": 106,
+      "batches": 4
+    },
+    {
+      "shard": 13,
+      "rounds": 118,
+      "paidFixtureRequests": 118,
+      "batches": 4
+    },
+    {
+      "shard": 14,
+      "rounds": 156,
+      "paidFixtureRequests": 156,
+      "batches": 5
+    },
+    {
+      "shard": 15,
+      "rounds": 103,
+      "paidFixtureRequests": 103,
+      "batches": 5
+    },
+    {
+      "shard": 16,
+      "rounds": 104,
+      "paidFixtureRequests": 104,
+      "batches": 4
+    },
+    {
+      "shard": 17,
+      "rounds": 101,
+      "paidFixtureRequests": 101,
+      "batches": 5
+    },
+    {
+      "shard": 18,
+      "rounds": 111,
+      "paidFixtureRequests": 111,
+      "batches": 4
+    },
+    {
+      "shard": 19,
+      "rounds": 112,
+      "paidFixtureRequests": 112,
+      "batches": 5
+    }
+  ],
+  "verificationRun": "https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36336436958",
+  "testedCommit": "e9a03da03d10cc40d5e795beb43d6b20e62e133b"
+}
