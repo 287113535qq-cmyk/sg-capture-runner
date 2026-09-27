@@ -21,7 +21,13 @@ def main():
         return
     from trial_store import TrialStore
     from trial_mongo import TrialMongo
-    service = TrialStore('/var/lib/sg-capture-runner', TrialMongo())
+    from trial_parallel import ParallelTrial
+    root='/var/lib/sg-capture-runner'
+    from trial_store import TRIAL
+    if (Path(root)/'trials'/TRIAL/'parallel.json').exists():
+        service=ParallelTrial(root,lambda scope:TrialMongo(sequence_range=scope))
+    else:
+        service=TrialStore(root,TrialMongo())
     try:
         while True:
             try:

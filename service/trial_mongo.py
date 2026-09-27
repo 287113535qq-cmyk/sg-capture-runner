@@ -9,11 +9,12 @@ from store import require, Rejected
 from trial_store import TRIAL
 
 class TrialMongo:
-    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json'):
+    def __init__(self, auth_file='/etc/sg-capture-runner/mongo-auth.json', sequence_range=None):
         self.auth=json.loads(Path(auth_file).read_text())
         require(self.auth.get('database')=='sg_capture_staging_v1','WRONG_STAGING_DATABASE')
         self.process=None
         self.buffer=b''
+        self.sequence_range=sequence_range
 
     def close(self):
         process=self.process
@@ -45,7 +46,7 @@ class TrialMongo:
                 self.process=subprocess.Popen(['docker','exec','-i','mongodb','mongosh','--quiet','--norc','--eval',script],
                     stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
                 self.process.stdin.write(json.dumps(self.auth).encode()+b'\n')
-            self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':TRIAL}).encode()+b'\n')
+            self.process.stdin.write(json.dumps({'op':op,'data':data,'trial':TRIAL,'sequenceRange':self.sequence_range}).encode()+b'\n')
             self.process.stdin.flush()
             for _ in range(10):
                 line=self._line()

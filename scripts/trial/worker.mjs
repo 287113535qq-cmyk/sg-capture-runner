@@ -4,6 +4,7 @@ import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { connect } from './rpc.mjs';
+import { gameForShard } from './demo-sessions.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
@@ -24,9 +25,11 @@ const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minReque
 const exchangeOperation=process.env.SG_TRIAL_EXCHANGE || 'exchange_journal';
 assert([0,50].includes(requestIntervalMs));
 assert(['exchange','exchange_journal'].includes(exchangeOperation));
-const transport = connect(plan), rpc = transport.rpc;
+const shard=process.env.SG_TRIAL_SHARD===undefined ? null : Number(process.env.SG_TRIAL_SHARD);
+assert(shard===null || Number.isInteger(shard) && shard>=0 && shard<20);
+const transport = connect(plan), rpc = (op,data={})=>transport.rpc(op,{...(shard===null?{}:{shardId:shard}),...data});
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
-  target:plan.target,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
+  target:plan.target,shardId:shard,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
 let lease, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
 process.on('SIGTERM', () => {stop=true;});
@@ -54,13 +57,17 @@ async function main() {
   const status=await rpc('status');
   if (status.status === 'complete') {evidence.alreadyComplete=true; evidence.result=status; return;}
   if (status.status === 'halted') throw fail('TRIAL_HALTED','storage');
-  const game=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
+  const baseGame=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
+  const game=shard===null?baseGame:gameForShard(baseGame,shard);
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');
   assert.equal(game.serverAddress,'ogs-gdm-usnj.nyxop.net/nextgen');
   assert(game.sessionId && game.operatorId);
   owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}:${randomUUID()}`;
   lease=await rpc('claim',{owner,sessionHash:hash(game.sessionId+'@'+game.operatorId),commitSha:process.env.GITHUB_SHA});
   evidence.startCheckpoint=lease.checkpoint;
+  const sequenceTarget=lease.sequenceTarget ?? plan.target;
+  evidence.sequenceTarget=sequenceTarget;
+  evidence.sequenceBase=lease.sequenceBase ?? 0;
   const limit=Number(process.env.SG_TRIAL_LIMIT || '1');
   assert(Number.isSafeInteger(limit) && limit>=1 && limit<=plan.target);
   const deadline=performance.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000;
@@ -96,9 +103,11 @@ async function main() {
       // Preserve rejection as a frame when a paid/continuation intent exists.
       return {...result,sourceRejected:true};
     }
-    const p=params(result.responsePayload);
-    if(p.MSGID!==msgId) return {...result,sourceRejected:true};
-    if(p.AB!==undefined || p.B!==undefined)result.responseBalance=integer(p.AB ?? p.B);
+    try{
+      const p=params(result.responsePayload);
+      if(p.MSGID!==msgId) return {...result,sourceRejected:true};
+      if(p.AB!==undefined || p.B!==undefined)result.responseBalance=integer(p.AB ?? p.B);
+    }catch{return {...result,sourceRejected:true};}
     return result;
   }
   const payload=msg=>`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
@@ -119,7 +128,7 @@ async function main() {
   }
   let sequence=lease.durable+1, prepared=null;
   for(let i=0;i<10;i++)await rpc('ping');
-  while(sequence<=plan.target && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending || prepared)){
+  while(sequence<=sequenceTarget && evidence.completedThisRun<limit && (!stop && performance.now()<deadline || pending || prepared)){
     let raw, attempt;
     let intentReady=false;
     if(pending){raw=pending.raw;attempt=pending.attempt;sequence=pending.sequence;pending=null;}
@@ -150,19 +159,21 @@ async function main() {
       evidence.sourceElapsedMs=(evidence.sourceElapsedMs || 0)+step.elapsedMs;
       raw.steps.push(step);
       let normalized, following;
-      const remaining=step.sourceRejected?null:integer(params(step.responsePayload).NFG ?? '0');
+      let remaining=null;
+      try{remaining=step.sourceRejected?null:integer(params(step.responsePayload).NFG ?? '0');}catch{}
       if(remaining===0){
         try{normalized=prepareNextgenRound(raw,{buy:0,bonus:raw.steps.some(s=>s.msgId==='FREE_GAME')?1:0,typeMappingHash:mappingHash});}
         catch { /* Send original response first; server preserves it and rejects invalid settlement. */ }
       }
       if(remaining>0 && raw.steps.length<plan.maxSteps){
         following={sequence,requestPayload:payload('FREE_GAME')};
-      }else if(normalized && sequence<plan.target && evidence.completedThisRun+1<limit && !stop
+      }else if(normalized && sequence<sequenceTarget && evidence.completedThisRun+1<limit && !stop
         && performance.now()+2000<deadline && normalized.money.endBalanceRaw>=2500){
         following={sequence:sequence+1,attempt:randomUUID(),startBalanceRaw:normalized.money.endBalanceRaw,requestPayload:payload('BET')};
       }
       const result=await rpc(exchangeOperation,{...owned(),sequence,step,...(normalized?{normalized}:{}),...(following?{following}:{})});
       if(result.stopRequested)stop=true;
+      if(result.stopRequested && !result.complete)throw fail('GLOBAL_SOURCE_STOPPED','storage');
       intentReady=result.followingIntentDurable===true;
       if(result.complete){
         balance=result.endBalanceRaw;evidence.endCheckpoint=result.checkpoint;
@@ -173,7 +184,7 @@ async function main() {
     evidence.completedThisRun++;sequence++;
     if(evidence.completedThisRun%100===0){
       const seconds=(performance.now()-sessionStart)/1000;
-      console.log(JSON.stringify({trialId:plan.trialId,confirmed:evidence.endCheckpoint,target:plan.target,
+      console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,confirmed:evidence.endCheckpoint,target:sequenceTarget,
         completedThisRun:evidence.completedThisRun,roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests,
         ...(evidence.completedThisRun%1000===0?{rpcMetrics:transport.metrics(),sourceElapsedMs:evidence.sourceElapsedMs}: {})}));
     }

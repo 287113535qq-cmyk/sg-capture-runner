@@ -3,16 +3,21 @@ on:
   workflow_dispatch:
     inputs:
       round_limit:
-        description: 'Maximum NEW complete rounds this run; total target remains 300000'
+        description: 'Maximum NEW complete rounds per shard; combined target remains 300000'
         required: true
-        default: '1'
+        default: '100'
         type: choice
         options: ['1', '100', '1000', '300000']
+      active_shards:
+        description: 'Independent capture sessions (GitHub Free maximum 20)'
+        default: '20'
+        type: choice
+        options: ['2', '4', '20']
       role:
-        description: 'Capture, audit, status, or benchmark three consecutive 1000-round phases'
+        description: 'Capture, audit, or status'
         default: capture
         type: choice
-        options: [capture, audit, status, benchmark]
+        options: [capture, audit, status]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -23,16 +28,17 @@ concurrency:
   cancel-in-progress: false
 jobs:
   trial:
-    if: github.event_name == 'workflow_dispatch' || vars.SG_TRIAL_ENABLED == 'true'
+    if: github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true' || github.event_name == 'workflow_dispatch' && inputs.role == 'capture'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 20
       matrix:
-        shard: ${{ fromJSON((github.event_name == 'schedule' || inputs.role == 'capture') && '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]' || '[0]') }}
+        shard: ${{ fromJSON(inputs.active_shards == '2' && '[0,1]' || inputs.active_shards == '4' && '[0,1,2,3]' || '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]') }}
     timeout-minutes: 270
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
       SG_TRIAL_MINUTES: '240'
       SG_TRIAL_INTERVAL_MS: '0'
@@ -45,35 +51,43 @@ jobs:
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
-      - name: Select one capture runner by storage network latency
-        id: selection
-        if: github.event_name == 'schedule' || inputs.role == 'capture'
-        env:
-          SG_TRIAL_SHARD: ${{ matrix.shard }}
-        run: node scripts/trial/select-runner.mjs
       - name: Install locked dependencies
-        if: steps.selection.outputs.selected == 'true' || inputs.role == 'benchmark' || inputs.role == 'audit' || inputs.role == 'status'
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Run fixed single-game trial
-        id: capture
-        if: steps.selection.outputs.selected == 'true' || inputs.role == 'benchmark' || inputs.role == 'audit' || inputs.role == 'status'
+      - name: Capture independent session and assigned quota
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-          SG_TRIAL_ROLE: ${{ inputs.role || 'capture' }}
-        run: |
-          if [ "$SG_TRIAL_ROLE" = "benchmark" ]; then
-            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=50 SG_TRIAL_EXCHANGE=exchange node scripts/trial/worker.mjs capture
-            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=50 SG_TRIAL_EXCHANGE=exchange_journal node scripts/trial/worker.mjs capture
-            SG_TRIAL_LIMIT=1000 SG_TRIAL_INTERVAL_MS=0 SG_TRIAL_EXCHANGE=exchange_journal node scripts/trial/worker.mjs capture
-          else
-            node scripts/trial/worker.mjs "$SG_TRIAL_ROLE"
-          fi
-      - name: Verify durable files, classifications, checkpoint and Mongo totals
-        if: success() && steps.capture.outputs.trial_status != '' && (inputs.role == 'capture' || inputs.role == 'benchmark' || github.event_name == 'schedule')
+        run: node scripts/trial/worker.mjs capture
+      - name: Audit this shard
+        if: success()
+        run: node scripts/trial/worker.mjs audit
+  verify:
+    needs: trial
+    if: always() && (github.event_name == 'workflow_dispatch' || vars.SG_TRIAL_ENABLED == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Read aggregate confirmed count
+        id: state
+        run: node scripts/trial/worker.mjs status
+      - name: Audit legacy prefix and all independent shards
+        if: steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
       - name: Stop scheduled continuation when complete or requiring review
-        if: always() && vars.SG_TRIAL_ENABLED == 'true' && (steps.capture.outputs.trial_status == 'complete' || steps.capture.outputs.trial_status == 'halted' || (matrix.shard == 0 && (steps.selection.outputs.trial_status == 'complete' || steps.selection.outputs.trial_status == 'halted')))
+        if: always() && (steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted')
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method PUT repos/zyzuoyang/sg-capture-runner/actions/workflows/trial-300k.yml/disable
