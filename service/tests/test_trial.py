@@ -1,0 +1,149 @@
+import copy
+import json
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+from xml.sax.saxutils import escape
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from trial_store import TrialStore, SCHEMA, TRIAL
+from trial_fields import settled, frame
+from store import Rejected
+from round_fields import FieldError
+
+def payload(msg):
+    return f'GN=bookofsevens96&PID=gdmgcmexplicit-test-fixture&MSGID={msg}&AP=false&BPL=5&LB=5'
+
+def step(msg='BET',balance=99975,win=0,remaining=0,actual=None):
+    response=f'MSGID={msg}&B={balance}&AB={balance if actual is None else actual}&TW={win}&BPL=5&LB=5&FID=0|&IFG={int(msg=="FREE_GAME")}&NFG={remaining}'
+    return {'msgId':msg,'requestPayload':payload(msg),'responsePayload':response,
+        'responseXml':'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+escape(response)+'</PAYLOAD></GDMRESPONSE>',
+        'responseBalance':balance if actual is None else actual,'elapsedMs':12}
+
+def raw(steps=None,start=100000):
+    return {'fixtureOnly':False,'protocol':'nextgen','sourceKey':'bookofsevens96-base-v1',
+        'roundFieldsVersion':'sg-round-fields-v1','startBalanceRaw':start,'steps':steps or [step()]}
+
+class MemoryMongo:
+    def __init__(self):
+        self.rows={};self.lose_ack=False;self.inserted=0
+    def ensure(self):pass
+    def put(self,rows):
+        count=0
+        for r in rows:
+            if r['_id'] in self.rows:
+                if self.rows[r['_id']]!=r:raise Rejected('IDENTITY_CONFLICT')
+            else:self.rows[r['_id']]=copy.deepcopy(r);count+=1
+        self.inserted+=count
+        if self.lose_ack:self.lose_ack=False;raise Rejected('TRIAL_MONGO_FAILED')
+        return count
+    def summary(self):
+        rows=list(self.rows.values())
+        return {'count':len(rows),'stakeRaw':sum(r['normalized']['money']['betRaw'] for r in rows),
+                'winRaw':sum(r['normalized']['money']['totalWinRaw'] for r in rows),
+                'sourceFrames':sum(len(r['raw']['steps']) for r in rows),
+                'freeRounds':sum(r['bonus']>0 for r in rows),'zeroWinRounds':sum(r['mul']==0 for r in rows)}
+
+class TrialTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory(prefix='sg-trial-test-')
+        self.root=Path(self.tmp.name).resolve()
+        self.assertEqual(self.root.parent,Path(tempfile.gettempdir()).resolve())
+        self.clock=[1000.0];self.mongo=MemoryMongo()
+        self.store=TrialStore(self.root,self.mongo,lambda:self.clock[0]);self.owner='test-a'
+        self.claim()
+    def tearDown(self):
+        self.store.close();self.assertTrue(self.root.name.startswith('sg-trial-test-'));self.tmp.cleanup()
+    def call(self,op,**kw):
+        return self.store.dispatch({'schema':SCHEMA,'trialId':TRIAL,'op':op,**kw})
+    def claim(self):
+        self.lease=self.call('claim',owner=self.owner,sessionHash='a'*64,commitSha='b'*40)
+    def own(self):return {'owner':self.owner,'epoch':self.lease['epoch']}
+    def begin(self,seq=1,start=100000):
+        return self.call('begin',**self.own(),sequence=seq,attempt=f'00000000-0000-0000-0000-{seq:012d}',startBalanceRaw=start,requestPayload=payload('BET'))
+    def record(self,seq=1):
+        self.begin(seq)
+        return self.call('frame',**self.own(),sequence=seq,step=step(),normalized=settled(raw()))
+    def reclaim(self):
+        self.store.close();self.clock[0]+=601;self.owner+='b'
+        self.store=TrialStore(self.root,self.mongo,lambda:self.clock[0]);self.claim()
+    def test_files_durable_before_mongo_and_checkpoint(self):
+        self.record();s=self.call('status')
+        self.assertEqual((s['durable'],s['checkpoint']),(1,0));self.assertFalse(self.mongo.rows)
+        self.call('release',**self.own())
+        self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
+    def test_same_outcome_in_different_rounds_is_not_deduplicated(self):
+        self.record(1);self.record(2);self.call('release',**self.own())
+        self.assertEqual(len(self.mongo.rows),2)
+        self.assertEqual(self.call('audit')['statistics']['count'],2)
+    def test_mongo_lost_ack_recovers_idempotently(self):
+        self.record();self.mongo.lose_ack=True
+        with self.assertRaises(Rejected):self.call('flush',**self.own())
+        self.assertEqual(self.call('status')['checkpoint'],0);self.assertEqual(len(self.mongo.rows),1)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],1);self.assertEqual(self.mongo.inserted,1)
+        self.call('release',**self.own());self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
+    def test_response_journal_survives_crash_before_receipt(self):
+        self.begin()
+        class Crash(BaseException):pass
+        with patch.object(self.store,'_stage',side_effect=Crash):
+            with self.assertRaises(Crash):self.call('frame',**self.own(),sequence=1,step=step(),normalized=settled(raw()))
+        self.assertEqual(len(self.store.pending()['raw']['steps']),1)
+        self.reclaim();self.assertEqual(self.lease['checkpoint'],1);self.assertIsNone(self.lease['pendingRound'])
+    def test_partial_file_tail_recovers_without_duplicate_line(self):
+        self.begin()
+        original=self.store.writer._append_exact
+        def broken(path,offset,line):
+            with path.open('ab') as f:f.write(line[:31]);f.flush()
+            raise OSError('test crash')
+        with patch.object(self.store.writer,'_append_exact',side_effect=broken):
+            with self.assertRaises(OSError):self.call('frame',**self.own(),sequence=1,step=step(),normalized=settled(raw()))
+        self.reclaim();self.call('release',**self.own())
+        self.assertEqual(self.call('audit')['verifiedFileRounds'],1)
+    def test_unacknowledged_official_intent_halts_instead_of_rebet(self):
+        self.begin();self.clock[0]+=601
+        with self.assertRaisesRegex(Rejected,'SOURCE_OUTCOME_UNKNOWN'):
+            self.call('claim',owner='other',sessionHash='a'*64,commitSha='b'*40)
+        self.assertEqual(self.call('status')['status'],'halted')
+        with self.assertRaisesRegex(Rejected,'LEASE_LOST'):
+            self.call('frame',**self.own(),sequence=1,step=step(),normalized=settled(raw()))
+    def test_claim_does_not_steal_live_lease(self):
+        with self.assertRaisesRegex(Rejected,'GAME_BUSY'):
+            self.call('claim',owner='other',sessionHash='a'*64,commitSha='b'*40)
+    def test_unknown_profile_mode_and_wrong_fields_rejected(self):
+        bad=raw();bad['steps'][0]['requestPayload']+='&ABPM=1'
+        with self.assertRaises(FieldError):settled(bad)
+        self.begin();fields=settled(raw());fields['buy']=11
+        with self.assertRaisesRegex(Rejected,'PROTOCOL_VALIDATION_FAILED'):
+            self.call('frame',**self.own(),sequence=1,step=step(),normalized=fields)
+        self.assertEqual(self.call('status')['checkpoint'],0);self.assertFalse(self.mongo.rows)
+        self.assertEqual(self.call('status')['pending']['frames'],1)
+    def test_free_round_resume_and_final_settlement(self):
+        steps=[step(remaining=2),step('FREE_GAME',100000,25,1,99975),step('FREE_GAME',100025,50,0)]
+        self.begin();self.call('frame',**self.own(),sequence=1,step=steps[0])
+        self.reclaim();self.assertEqual(len(self.lease['pendingRound']['raw']['steps']),1)
+        for i,s in enumerate(steps[1:],1):
+            self.call('intent',**self.own(),sequence=1,requestPayload=payload('FREE_GAME'))
+            fields={'normalized':settled(raw(steps))} if i==2 else {}
+            self.call('frame',**self.own(),sequence=1,step=s,**fields)
+        self.call('release',**self.own());audit=self.call('audit')
+        self.assertEqual(audit['statistics']['freeRounds'],1)
+        r=next(iter(self.mongo.rows.values()));self.assertEqual((r['buy'],r['bonus'],r['bet'],r['mul']),(0,1,0.25,2))
+    def test_rejected_xml_is_preserved_and_not_counted(self):
+        self.begin();s=step();s['responseXml']=s['responseXml'].replace('true','false')
+        with self.assertRaisesRegex(Rejected,'PROTOCOL_VALIDATION_FAILED'):
+            self.call('frame',**self.own(),sequence=1,step=s)
+        self.assertEqual(self.store.pending()['raw']['steps'][0],s);self.assertEqual(self.call('status')['checkpoint'],0)
+    def test_storage_failure_releases_for_recovery(self):
+        self.record();self.call('fail',**self.own(),category='storage')
+        self.owner='new-run';self.claim();self.assertEqual(self.lease['checkpoint'],1)
+    def test_session_changed_rejected(self):
+        self.call('release',**self.own())
+        with self.assertRaisesRegex(Rejected,'TRIAL_SESSION_CHANGED'):
+            self.call('claim',owner='new',sessionHash='c'*64,commitSha='b'*40)
+    def test_incomplete_round_cannot_release_or_audit(self):
+        self.begin();self.call('frame',**self.own(),sequence=1,step=step(remaining=2))
+        with self.assertRaisesRegex(Rejected,'ROUND_PENDING'):self.call('release',**self.own())
+        with self.assertRaisesRegex(Rejected,'TRIAL_NOT_QUIESCENT'):self.call('audit')
+
+if __name__=='__main__':unittest.main()

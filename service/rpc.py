@@ -11,12 +11,34 @@ from mongo_bridge import MongoBridge
 def main():
     if os.environ.get('SSH_ORIGINAL_COMMAND', ''):
         raise Rejected('SHELL_COMMAND_FORBIDDEN')
-    content = sys.stdin.buffer.read(16385)
-    if len(content) > 16384:
+    content = sys.stdin.buffer.readline(1048577)
+    if len(content) > 1048576:
         raise Rejected('REQUEST_TOO_LARGE')
     request = json.loads(content)
-    result = Store('/var/lib/sg-capture-runner', MongoBridge()).dispatch(request)
-    print(json.dumps(result, separators=(',', ':')))
+    if request.get('schema') != 'sg-real-trial-v1':
+        result = Store('/var/lib/sg-capture-runner', MongoBridge()).dispatch(request)
+        print(json.dumps(result, separators=(',', ':')))
+        return
+    from trial_store import TrialStore
+    from trial_mongo import TrialMongo
+    service = TrialStore('/var/lib/sg-capture-runner', TrialMongo())
+    try:
+        while True:
+            try:
+                result = service.dispatch(request)
+            except Rejected as exc:
+                result = {'ok':False,'error':str(exc),'fixtureOnly':False}
+            except BaseException:
+                result = {'ok':False,'error':'TRIAL_INTERNAL_FAILURE','fixtureOnly':False}
+            print(json.dumps(result,separators=(',', ':')), flush=True)
+            content = sys.stdin.buffer.readline(1048577)
+            if not content:
+                break
+            if len(content)>1048576:
+                raise Rejected('REQUEST_TOO_LARGE')
+            request=json.loads(content)
+    finally:
+        service.close()
 
 if __name__ == '__main__':
     try:

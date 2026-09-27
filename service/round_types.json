@@ -194,6 +194,40 @@
         "Free4": 4,
         "Free5": 5
       }
+    },
+    "bookofsevens96-base-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32471,
+        "runtimeGameId": 33026,
+        "sourceId": "318398df-e337-48a4-8669-a25e6237646d",
+        "paidRequest": "BPL=5&LB=5&AP=false",
+        "nativeContinuation": "FREE_GAME until NFG=0",
+        "historicalFreeRounds": 4,
+        "freeChoiceRequestsObserved": 0,
+        "historicalRecords": 100,
+        "historicalValidatedCompleteRounds": 99,
+        "historicalInvalidWagerRecords": 1
+      }
     }
   }
 }

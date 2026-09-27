@@ -99,7 +99,7 @@ def main():
     current=Path('/opt/sg-capture-runner/current');candidate=current.with_name('current.installing')
     checked(not candidate.exists() and not candidate.is_symlink(),'Unfinished service activation needs inspection')
     candidate.symlink_to(release,target_is_directory=True);os.replace(candidate,current)
-    print(json.dumps({'installed':True,'commit':args.commit,'storage':str(storage),'database':DATABASE,'sshUser':'sgcapture','forcedCommandOnly':True,**created,**verified,'officialCaptureEnabled':False,'gamePoolsTouched':False}))
+    print(json.dumps({'installed':True,'commit':args.commit,'storage':str(storage),'database':DATABASE,'sshUser':'sgcapture','forcedCommandOnly':True,**created,**verified,'officialSourceRequestsOnServer':False,'singleGameTrialStorageEnabled':True,'gamePoolsTouched':False}))
 
 if __name__=='__main__':
     try:main()

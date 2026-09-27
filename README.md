@@ -1,6 +1,6 @@
 # SG 采集准备仓库
 
-当前状态：**隔离测试链路已通过，真实采集关闭**。已在 GitHub-hosted Linux Runner 实测 SSH、服务器持久化、Mongo 暂存及隔离验收导入；同一批次重新运行后仍为 43 条测试记录，新增 0 条。用户要求暂不拉真实数据，官方 SG 请求仍未开放。
+当前状态：**用户已授权单游戏 30 万完整局试采**。样本为 Book of Sevens（采集编号 32471、运行编号 33026），只在 GitHub-hosted Linux Runner 发起官方 demo 请求，写入隔离库 `sg_capture_staging_v1.official_rounds`。通用 178 游戏采集入口仍关闭。试采范围、恢复规则和验收口径见 `docs/trial-300k.md`。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -31,11 +31,11 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 映射只采用严格唯一的官方 sourceId，不按名字猜配，不导出 launch URL、session 或 operator 字段。
 
-## 真实采集尚未开放
+## 通用采集的剩余工作
 
 隔离服务已验证 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性。正式启动前仍需将这些机制接入真实游戏队列，完成官方主机级跨运行冷却、独立 session 刷新、Linux WMS/NextGen 完整局采集、正式目标集合的受控导入，以及真实局的单节点续跑验证。测试 RPC 只接受少量夹具，不能直接作为正式采集入库接口。未把历史会清库的上游导入脚本复制进本仓库。隔离验证服务及验收范围见 `docs/link-verification.md`。
 
-计划保持 20 个 GitHub-hosted `ubuntu-latest` Runner、每节点 1 个 active game，同游戏变体串行。每 20 分钟的 schedule 仅在用户重新授权开始采集并完成相应验收后启用。当前无采集 schedule、无官方采集运行。隔离验证仅使用专用受限 SSH key；Mongo 写入账号只允许访问新建的暂存库，密码保留在服务器。
+原多游戏计划保持 20 个 GitHub-hosted `ubuntu-latest` Runner、每节点 1 个 active game，同游戏变体串行。本次只启用 1 游戏、1 Runner。专用试采 workflow 每 20 分钟检查是否需要续跑，只有仓库变量 `SG_TRIAL_ENABLED=true` 时定时任务才运行；单局和续跑验收后才开启。完成 300000 局或发现需人工核查的源站/协议错误时关闭该 workflow。Mongo 密码仅保留在服务器。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 

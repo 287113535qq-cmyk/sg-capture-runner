@@ -1,0 +1,58 @@
+name: SG Book of Sevens 300k trial
+on:
+  workflow_dispatch:
+    inputs:
+      round_limit:
+        description: 'Maximum NEW complete rounds this run; total target remains 300000'
+        required: true
+        default: '1'
+        type: choice
+        options: ['1', '100', '1000', '300000']
+      role:
+        description: 'Capture, verify all durable trial data, or read status'
+        default: capture
+        type: choice
+        options: [capture, audit, status]
+  schedule:
+    - cron: '*/20 * * * *'
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: sg-real-single-game-trial
+  cancel-in-progress: false
+jobs:
+  trial:
+    if: github.event_name == 'workflow_dispatch' || vars.SG_TRIAL_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 270
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
+      SG_TRIAL_MINUTES: '240'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Run fixed single-game trial
+        id: capture
+        env:
+          SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+          SG_TRIAL_ROLE: ${{ inputs.role || 'capture' }}
+        run: node scripts/trial/worker.mjs "$SG_TRIAL_ROLE"
+      - name: Verify durable files, classifications, checkpoint and Mongo totals
+        if: success() && (inputs.role == 'capture' || github.event_name == 'schedule')
+        run: node scripts/trial/worker.mjs audit
+      - name: Stop scheduled continuation when complete or requiring review
+        if: always() && vars.SG_TRIAL_ENABLED == 'true' && (steps.capture.outputs.trial_status == 'complete' || steps.capture.outputs.trial_status == 'halted')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method PUT repos/zyzuoyang/sg-capture-runner/actions/workflows/trial-300k.yml/disable

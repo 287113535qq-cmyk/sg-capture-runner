@@ -8,5 +8,12 @@
     "concurrentGamesPerRunner": 1,
     "sharedSessionsAllowed": false
   },
-  "readiness": "isolated-business-fields-verified-real-capture-disabled"
+  "readiness": "single-game-300k-trial-authorized-generic-capture-disabled",
+  "singleGameTrial": {
+    "config": "config/trial-300k.json",
+    "authorizedTarget": 300000,
+    "runnerCount": 1,
+    "stagingOnly": true,
+    "automaticGate": "SG_TRIAL_ENABLED repository variable after real pilot verification"
+  }
 }
