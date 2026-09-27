@@ -28,6 +28,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   trial:
+    name: capture-${{ matrix.shard }}
     if: github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true' || github.event_name == 'workflow_dispatch' && inputs.role == 'capture'
     runs-on: ubuntu-latest
     strategy:
@@ -54,6 +55,11 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Wait for every capture runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CAPTURE_RUNNERS: ${{ inputs.active_shards || '20' }}
+        run: node scripts/trial/runner-readiness.mjs
       - name: Capture independent session and assigned quota
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}

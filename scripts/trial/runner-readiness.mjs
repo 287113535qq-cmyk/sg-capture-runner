@@ -1,0 +1,62 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+
+export const READY_STEP = 'Wait for every capture runner';
+
+export function inspectReadiness(jobs, expected) {
+  assert([2, 4, 20].includes(expected));
+  const selected = jobs.filter(job => /^capture-\d+$/.test(job.name));
+  const byShard = new Map(selected.map(job => [Number(job.name.slice(8)), job]));
+  assert.equal(byShard.size, selected.length, 'Duplicate capture runner');
+  const ready = [], failed = [];
+  for (let shard = 0; shard < expected; shard++) {
+    const job = byShard.get(shard);
+    if (!job) continue;
+    const step = job.steps?.find(item => item.name === READY_STEP);
+    if (job.status === 'completed' && job.conclusion !== 'success') failed.push(shard);
+    if (job.runner_name && (step?.status === 'in_progress' || step?.conclusion === 'success')) {
+      ready.push(shard);
+    }
+  }
+  return {expected, ready, failed, allReady: ready.length === expected && failed.length === 0};
+}
+
+async function main() {
+  assert.equal(process.env.GITHUB_ACTIONS, 'true');
+  assert.equal(process.env.RUNNER_ENVIRONMENT, 'github-hosted');
+  assert.equal(process.env.RUNNER_OS, 'Linux');
+  const expected = Number(process.env.CAPTURE_RUNNERS);
+  assert([2, 4, 20].includes(expected));
+  const repository = process.env.GITHUB_REPOSITORY;
+  assert.equal(repository, 'zyzuoyang/sg-capture-runner');
+  const run = process.env.GITHUB_RUN_ID, attempt = process.env.GITHUB_RUN_ATTEMPT;
+  assert(/^\d+$/.test(run) && /^\d+$/.test(attempt));
+  const token = process.env.GH_TOKEN;
+  assert(token);
+  const deadline = Date.now() + 180000;
+  let last = '';
+  while (Date.now() < deadline) {
+    const response = await fetch(`https://api.github.com/repos/${repository}/actions/runs/${run}/attempts/${attempt}/jobs?per_page=100`, {
+      headers: {Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json'},
+      signal: AbortSignal.timeout(15000),
+      redirect: 'error',
+    });
+    assert(response.ok, `RUNNER_READINESS_HTTP_${response.status}`);
+    const body = await response.json();
+    assert(body.total_count <= 100 && Array.isArray(body.jobs), 'Unexpected job list');
+    const state = inspectReadiness(body.jobs, expected);
+    const message = JSON.stringify({...state, sourceRequests: 0});
+    if (message !== last) { console.log(message); last = message; }
+    assert.equal(state.failed.length, 0, 'A capture runner failed before collective startup');
+    if (state.allReady) {
+      console.log(`All ${expected} capture runners reached the startup gate.`);
+      return;
+    }
+    await new Promise(resolve => setTimeout(resolve, 10000));
+  }
+  throw Error('RUNNER_CAPACITY_NOT_READY: no SG requests were made by this runner');
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch(error => { console.error(error.message); process.exitCode = 1; });
+}

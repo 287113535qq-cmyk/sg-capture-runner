@@ -8,13 +8,15 @@ on:
         type: choice
         default: ubuntu-latest
         options: [ubuntu-latest, mixed-linux]
-permissions: {}
+permissions:
+  contents: read
+  actions: read
 concurrency:
   group: sg-runner-capacity-check
   cancel-in-progress: false
 jobs:
   capacity:
-    name: capacity-${{ matrix.shard }}
+    name: capture-${{ matrix.shard }}
     runs-on: ${{ inputs.pool == 'mixed-linux' && matrix.shard >= 16 && 'ubuntu-22.04' || 'ubuntu-latest' }}
     timeout-minutes: 5
     strategy:
@@ -25,6 +27,14 @@ jobs:
     env:
       CAPACITY_SHARD: ${{ matrix.shard }}
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Wait for every capture runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CAPTURE_RUNNERS: '20'
+        run: node scripts/trial/runner-readiness.mjs
       - name: Hold runner for concurrent availability measurement
         shell: bash
         run: |
@@ -34,7 +44,7 @@ jobs:
           import os
           import time
 
-          # No checkout, dependencies, credentials, storage writes or SG requests.
+          # No capture credentials, SG requests or database writes.
           def emit(event):
               print(json.dumps({
                   "schema": "github-runner-capacity-v1",
