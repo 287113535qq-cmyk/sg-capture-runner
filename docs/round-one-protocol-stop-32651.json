@@ -1,0 +1,95 @@
+{
+  "schema": "sg-round-one-protocol-stop-v1",
+  "atUtc": "2026-09-27T19:08:09.215086+00:00",
+  "runId": 36338315642,
+  "runConclusion": "failure",
+  "runtimeCommit": "2f9aa749f994b5297788aa57389c839d6b7ac195",
+  "campaignId": "sg_round_one_20260928",
+  "completedGames": 3,
+  "activeGame": 32651,
+  "gameName": "Squid Game One More Game",
+  "cause": "Native BET/FREE_GAME adapter encountered a natural FEATURE_START branch absent from the settled 100-row baseline.",
+  "rootError": "UNKNOWN_TRIAL_FEATURE",
+  "originalHaltCode": "PROTOCOL_VALIDATION_FAILED",
+  "poolFailure": "BATCH_HALTED",
+  "pauseControls": {
+    "campaignEnabled": false,
+    "campaignReason": "ACTIVE_GAME_REQUIRES_REVIEW",
+    "sourceEnabled": false,
+    "githubVariableSG_TRIAL_ENABLED": "false",
+    "workflowState": "disabled_manually",
+    "secondRoundEnabled": false
+  },
+  "completeRoundStorage": {
+    "sqliteJournaled": 233,
+    "fileDurable": 189,
+    "mongoCheckpoint": 189,
+    "fullRowsReplayed": 233,
+    "fullMongoRowsReadBack": 189,
+    "completedRowsStillInJournal": 44
+  },
+  "pendingRounds": [
+    {
+      "sequence": 1015,
+      "batchId": 11,
+      "awaitingResponse": false,
+      "stepCount": 1,
+      "settlementError": "INCOMPLETE_ROUND"
+    },
+    {
+      "sequence": 1708,
+      "batchId": 18,
+      "awaitingResponse": false,
+      "stepCount": 6,
+      "settlementError": "INCOMPLETE_ROUND"
+    },
+    {
+      "sequence": 424,
+      "batchId": 5,
+      "awaitingResponse": false,
+      "stepCount": 1,
+      "settlementError": "UNKNOWN_TRIAL_FEATURE"
+    }
+  ],
+  "protocolEvidence": {
+    "failedSequence": 424,
+    "request": "ordinary BET, buy=0",
+    "observed": {
+      "FID": "1|",
+      "CFG": "1",
+      "FS_1": "0",
+      "NFR_1": "1"
+    },
+    "cachedTrafficSupportsFeatureStart": true,
+    "completeFeatureSettlementNotYetValidated": true
+  },
+  "coverageReview": {
+    "report": "docs/native-coverage-review-20260927.json",
+    "reviewedConfiguredGames": 24,
+    "knownAdditionalFeatureGames": [
+      32651,
+      32671,
+      32736
+    ],
+    "testsPassed": 3,
+    "noFindingDoesNotProveFullCoverage": true
+  },
+  "evidenceBackup": {
+    "schema": "sg-paused-evidence-backup-v1",
+    "trialId": "sg_r1_20260928_32651",
+    "backupDirectory": "/var/lib/sg-capture-runner/reviews/sg_r1_20260928_32651-20260927T185639",
+    "replayedCompleteRounds": 233,
+    "mongoContentVerified": 189,
+    "pendingRounds": 3,
+    "unknownResponses": 0,
+    "copiedBatches": 20,
+    "sourceRequests": 0,
+    "mongoWrites": 0,
+    "haltFlagsCleared": false,
+    "officialRequestsRetried": 0,
+    "originalDataChanged": false
+  },
+  "queueOrQuotaMutations": 0,
+  "sourceRequestsDuringReview": 0,
+  "nextStep": "Validate and test a complete per-game natural feature continuation and settlement adapter, stable bonus mapping, and an evidence-preserving recovery path before resuming. Keep all halt markers and pending requests intact."
+}
