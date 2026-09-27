@@ -1,0 +1,666 @@
+{
+  "schema": "sg-parallel-continuation-v1",
+  "githubRunId": 36329489181,
+  "codeCommit": "bb0c4ba8a0c0c51a3edbfacdca2a34e19e6dd78a",
+  "startConfirmed": 93817,
+  "requestedConcurrentJobs": 20,
+  "window": {
+    "start": 1790522857.7637653,
+    "end": 1790522989.1428547,
+    "seconds": 131.37908935546875,
+    "rounds": 36084,
+    "roundsPerSecond": 274.6555801004871
+  },
+  "startSample": {
+    "githubRunId": 36329489181,
+    "measuredAtEpoch": 1790522857.7637653,
+    "shards": [
+      {
+        "started": 1790522744.6878355,
+        "ended": null,
+        "start_checkpoint": 74417,
+        "end_checkpoint": null,
+        "shardId": 0,
+        "rounds": 834,
+        "seconds": 113.07592988014221,
+        "roundsPerSecond": 7.375574986507032
+      },
+      {
+        "started": 1790522743.9428582,
+        "ended": null,
+        "start_checkpoint": 96997,
+        "end_checkpoint": null,
+        "shardId": 2,
+        "rounds": 2943,
+        "seconds": 113.82090711593628,
+        "roundsPerSecond": 25.856409640122653
+      },
+      {
+        "started": 1790522742.7022462,
+        "ended": null,
+        "start_checkpoint": 108337,
+        "end_checkpoint": null,
+        "shardId": 3,
+        "rounds": 3131,
+        "seconds": 115.06151914596558,
+        "roundsPerSecond": 27.211530173072486
+      },
+      {
+        "started": 1790522743.9727619,
+        "ended": null,
+        "start_checkpoint": 119576,
+        "end_checkpoint": null,
+        "shardId": 4,
+        "rounds": 1211,
+        "seconds": 113.79100346565247,
+        "roundsPerSecond": 10.642317609630162
+      },
+      {
+        "started": 1790522746.617764,
+        "ended": null,
+        "start_checkpoint": 130915,
+        "end_checkpoint": null,
+        "shardId": 5,
+        "rounds": 1013,
+        "seconds": 111.14600133895874,
+        "roundsPerSecond": 9.11413805082095
+      },
+      {
+        "started": 1790522741.1021068,
+        "ended": null,
+        "start_checkpoint": 142254,
+        "end_checkpoint": null,
+        "shardId": 6,
+        "rounds": 3100,
+        "seconds": 116.66165852546692,
+        "roundsPerSecond": 26.572569250104383
+      },
+      {
+        "started": 1790522743.9962277,
+        "ended": null,
+        "start_checkpoint": 153593,
+        "end_checkpoint": null,
+        "shardId": 7,
+        "rounds": 2338,
+        "seconds": 113.76753759384155,
+        "roundsPerSecond": 20.55067771921751
+      },
+      {
+        "started": 1790522736.9710414,
+        "ended": null,
+        "start_checkpoint": 164932,
+        "end_checkpoint": null,
+        "shardId": 8,
+        "rounds": 1724,
+        "seconds": 120.79272389411926,
+        "roundsPerSecond": 14.272382842456391
+      },
+      {
+        "started": 1790522746.8922496,
+        "ended": null,
+        "start_checkpoint": 176271,
+        "end_checkpoint": null,
+        "shardId": 9,
+        "rounds": 1074,
+        "seconds": 110.87151575088501,
+        "roundsPerSecond": 9.686888401644559
+      },
+      {
+        "started": 1790522746.4060538,
+        "ended": null,
+        "start_checkpoint": 187610,
+        "end_checkpoint": null,
+        "shardId": 10,
+        "rounds": 1279,
+        "seconds": 111.35771155357361,
+        "roundsPerSecond": 11.485509015553717
+      },
+      {
+        "started": 1790522743.4343653,
+        "ended": null,
+        "start_checkpoint": 198949,
+        "end_checkpoint": null,
+        "shardId": 11,
+        "rounds": 3055,
+        "seconds": 114.32940006256104,
+        "roundsPerSecond": 26.72103586941158
+      },
+      {
+        "started": 1790522740.0398595,
+        "ended": null,
+        "start_checkpoint": 232966,
+        "end_checkpoint": null,
+        "shardId": 14,
+        "rounds": 1580,
+        "seconds": 117.72390580177307,
+        "roundsPerSecond": 13.421233259627401
+      },
+      {
+        "started": 1790522743.9976337,
+        "ended": null,
+        "start_checkpoint": 244305,
+        "end_checkpoint": null,
+        "shardId": 15,
+        "rounds": 594,
+        "seconds": 113.76613163948059,
+        "roundsPerSecond": 5.221237563762451
+      },
+      {
+        "started": 1790522740.0694716,
+        "ended": null,
+        "start_checkpoint": 255644,
+        "end_checkpoint": null,
+        "shardId": 16,
+        "rounds": 3070,
+        "seconds": 117.6942937374115,
+        "roundsPerSecond": 26.08452714665587
+      },
+      {
+        "started": 1790522745.2091053,
+        "ended": null,
+        "start_checkpoint": 266983,
+        "end_checkpoint": null,
+        "shardId": 17,
+        "rounds": 1493,
+        "seconds": 112.5546600818634,
+        "roundsPerSecond": 13.264666242287163
+      },
+      {
+        "started": 1790522741.0612638,
+        "ended": null,
+        "start_checkpoint": 289661,
+        "end_checkpoint": null,
+        "shardId": 19,
+        "rounds": 1093,
+        "seconds": 116.70250153541565,
+        "roundsPerSecond": 9.365694699083274
+      }
+    ],
+    "peakSimultaneousLeases": 16,
+    "aggregateRoundCount": 29532,
+    "cohortSeconds": 120.79272389411926,
+    "cohortRoundsPerSecond": 244.48492465395717,
+    "allShardsOverlapSeconds": 110.87151575088501,
+    "load1": 8.54443359375
+  },
+  "endSample": {
+    "githubRunId": 36329489181,
+    "measuredAtEpoch": 1790522989.1428547,
+    "shards": [
+      {
+        "started": 1790522744.6878355,
+        "ended": null,
+        "start_checkpoint": 74417,
+        "end_checkpoint": null,
+        "shardId": 0,
+        "rounds": 1778,
+        "seconds": 244.45501923561096,
+        "roundsPerSecond": 7.273321716034498
+      },
+      {
+        "started": 1790522743.9428582,
+        "ended": null,
+        "start_checkpoint": 96997,
+        "end_checkpoint": null,
+        "shardId": 2,
+        "rounds": 6468,
+        "seconds": 245.19999647140503,
+        "roundsPerSecond": 26.37846693751601
+      },
+      {
+        "started": 1790522742.7022462,
+        "ended": null,
+        "start_checkpoint": 108337,
+        "end_checkpoint": null,
+        "shardId": 3,
+        "rounds": 6893,
+        "seconds": 246.44060850143433,
+        "roundsPerSecond": 27.970227966548304
+      },
+      {
+        "started": 1790522743.9727619,
+        "ended": null,
+        "start_checkpoint": 119576,
+        "end_checkpoint": null,
+        "shardId": 4,
+        "rounds": 2727,
+        "seconds": 245.17009282112122,
+        "roundsPerSecond": 11.122890107112898
+      },
+      {
+        "started": 1790522746.617764,
+        "ended": null,
+        "start_checkpoint": 130915,
+        "end_checkpoint": null,
+        "shardId": 5,
+        "rounds": 2287,
+        "seconds": 242.5250906944275,
+        "roundsPerSecond": 9.429952148256422
+      },
+      {
+        "started": 1790522741.1021068,
+        "ended": null,
+        "start_checkpoint": 142254,
+        "end_checkpoint": null,
+        "shardId": 6,
+        "rounds": 6892,
+        "seconds": 248.04074788093567,
+        "roundsPerSecond": 27.785757214811706
+      },
+      {
+        "started": 1790522743.9962277,
+        "ended": null,
+        "start_checkpoint": 153593,
+        "end_checkpoint": null,
+        "shardId": 7,
+        "rounds": 5390,
+        "seconds": 245.1466269493103,
+        "roundsPerSecond": 21.986841373569078
+      },
+      {
+        "started": 1790522736.9710414,
+        "ended": null,
+        "start_checkpoint": 164932,
+        "end_checkpoint": null,
+        "shardId": 8,
+        "rounds": 3695,
+        "seconds": 252.171813249588,
+        "roundsPerSecond": 14.652708216611266
+      },
+      {
+        "started": 1790522746.8922496,
+        "ended": null,
+        "start_checkpoint": 176271,
+        "end_checkpoint": null,
+        "shardId": 9,
+        "rounds": 2468,
+        "seconds": 242.25060510635376,
+        "roundsPerSecond": 10.187797049739007
+      },
+      {
+        "started": 1790522746.4060538,
+        "ended": null,
+        "start_checkpoint": 187610,
+        "end_checkpoint": null,
+        "shardId": 10,
+        "rounds": 2700,
+        "seconds": 242.73680090904236,
+        "roundsPerSecond": 11.123158869559859
+      },
+      {
+        "started": 1790522743.4343653,
+        "ended": null,
+        "start_checkpoint": 198949,
+        "end_checkpoint": null,
+        "shardId": 11,
+        "rounds": 6723,
+        "seconds": 245.70848941802979,
+        "roundsPerSecond": 27.361691962388804
+      },
+      {
+        "started": 1790522740.0398595,
+        "ended": null,
+        "start_checkpoint": 232966,
+        "end_checkpoint": null,
+        "shardId": 14,
+        "rounds": 3534,
+        "seconds": 249.10299515724182,
+        "roundsPerSecond": 14.186902882356856
+      },
+      {
+        "started": 1790522743.9976337,
+        "ended": null,
+        "start_checkpoint": 244305,
+        "end_checkpoint": null,
+        "shardId": 15,
+        "rounds": 1345,
+        "seconds": 245.14522099494934,
+        "roundsPerSecond": 5.4865438312081585
+      },
+      {
+        "started": 1790522740.0694716,
+        "ended": null,
+        "start_checkpoint": 255644,
+        "end_checkpoint": null,
+        "shardId": 16,
+        "rounds": 6874,
+        "seconds": 249.07338309288025,
+        "roundsPerSecond": 27.598292176553702
+      },
+      {
+        "started": 1790522745.2091053,
+        "ended": null,
+        "start_checkpoint": 266983,
+        "end_checkpoint": null,
+        "shardId": 17,
+        "rounds": 3401,
+        "seconds": 243.93374943733215,
+        "roundsPerSecond": 13.942310188093652
+      },
+      {
+        "started": 1790522741.0612638,
+        "ended": null,
+        "start_checkpoint": 289661,
+        "end_checkpoint": null,
+        "shardId": 19,
+        "rounds": 2441,
+        "seconds": 248.0815908908844,
+        "roundsPerSecond": 9.839504782415087
+      }
+    ],
+    "peakSimultaneousLeases": 16,
+    "aggregateRoundCount": 65616,
+    "cohortSeconds": 252.171813249588,
+    "cohortRoundsPerSecond": 260.20354596513255,
+    "allShardsOverlapSeconds": 242.25060510635376,
+    "load1": 9.03857421875
+  },
+  "status": {
+    "ok": true,
+    "schema": "sg-real-trial-v1",
+    "trialId": "bookofsevens_300k_20260927",
+    "fixtureOnly": false,
+    "mode": "parallel-20",
+    "target": 300000,
+    "status": "claimed",
+    "legacyPrefix": 73217,
+    "journaled": 161002,
+    "durable": 160217,
+    "checkpoint": 160217,
+    "shards": [
+      {
+        "shardId": 0,
+        "start": 73218,
+        "end": 84557,
+        "status": "claimed",
+        "journaled": 3020,
+        "durable": 3000,
+        "checkpoint": 3000,
+        "leaseUntil": 1790523585.2280135,
+        "failure": null,
+        "pending": {
+          "sequence": 76238,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 1,
+        "start": 84558,
+        "end": 95897,
+        "status": "pending",
+        "journaled": 1200,
+        "durable": 1200,
+        "checkpoint": 1200,
+        "leaseUntil": 0.0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 2,
+        "start": 95898,
+        "end": 107237,
+        "status": "claimed",
+        "journaled": 7725,
+        "durable": 7700,
+        "checkpoint": 7700,
+        "leaseUntil": 1790523584.035163,
+        "failure": null,
+        "pending": {
+          "sequence": 103623,
+          "awaitingResponse": 0
+        }
+      },
+      {
+        "shardId": 3,
+        "start": 107238,
+        "end": 118576,
+        "status": "claimed",
+        "journaled": 8135,
+        "durable": 8100,
+        "checkpoint": 8100,
+        "leaseUntil": 1790523582.812928,
+        "failure": null,
+        "pending": {
+          "sequence": 115373,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 4,
+        "start": 118577,
+        "end": 129915,
+        "status": "claimed",
+        "journaled": 3798,
+        "durable": 3700,
+        "checkpoint": 3700,
+        "leaseUntil": 1790523584.1250584,
+        "failure": null,
+        "pending": {
+          "sequence": 122375,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 5,
+        "start": 129916,
+        "end": 141254,
+        "status": "claimed",
+        "journaled": 3346,
+        "durable": 3300,
+        "checkpoint": 3300,
+        "leaseUntil": 1790523586.9629207,
+        "failure": null,
+        "pending": {
+          "sequence": 133262,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 6,
+        "start": 141255,
+        "end": 152593,
+        "status": "claimed",
+        "journaled": 8064,
+        "durable": 8000,
+        "checkpoint": 8000,
+        "leaseUntil": 1790523581.20624,
+        "failure": null,
+        "pending": {
+          "sequence": 149319,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 7,
+        "start": 152594,
+        "end": 163932,
+        "status": "claimed",
+        "journaled": 6524,
+        "durable": 6500,
+        "checkpoint": 6500,
+        "leaseUntil": 1790523584.1472378,
+        "failure": null,
+        "pending": {
+          "sequence": 159118,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 8,
+        "start": 163933,
+        "end": 175271,
+        "status": "claimed",
+        "journaled": 4774,
+        "durable": 4700,
+        "checkpoint": 4700,
+        "leaseUntil": 1790523577.2726557,
+        "failure": null,
+        "pending": {
+          "sequence": 168707,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 9,
+        "start": 175272,
+        "end": 186610,
+        "status": "claimed",
+        "journaled": 3524,
+        "durable": 3500,
+        "checkpoint": 3500,
+        "leaseUntil": 1790523587.2092965,
+        "failure": null,
+        "pending": {
+          "sequence": 178796,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 10,
+        "start": 186611,
+        "end": 197949,
+        "status": "claimed",
+        "journaled": 3763,
+        "durable": 3700,
+        "checkpoint": 3700,
+        "leaseUntil": 1790523586.7168517,
+        "failure": null,
+        "pending": {
+          "sequence": 190374,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 11,
+        "start": 197950,
+        "end": 209288,
+        "status": "claimed",
+        "journaled": 7886,
+        "durable": 7800,
+        "checkpoint": 7800,
+        "leaseUntil": 1790523583.5276976,
+        "failure": null,
+        "pending": {
+          "sequence": 205836,
+          "awaitingResponse": 0
+        }
+      },
+      {
+        "shardId": 12,
+        "start": 209289,
+        "end": 220627,
+        "status": "pending",
+        "journaled": 1000,
+        "durable": 1000,
+        "checkpoint": 1000,
+        "leaseUntil": 0.0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 13,
+        "start": 220628,
+        "end": 231966,
+        "status": "pending",
+        "journaled": 1000,
+        "durable": 1000,
+        "checkpoint": 1000,
+        "leaseUntil": 0.0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 14,
+        "start": 231967,
+        "end": 243305,
+        "status": "claimed",
+        "journaled": 4618,
+        "durable": 4600,
+        "checkpoint": 4600,
+        "leaseUntil": 1790523580.313343,
+        "failure": null,
+        "pending": {
+          "sequence": 236585,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 15,
+        "start": 243306,
+        "end": 254644,
+        "status": "claimed",
+        "journaled": 2375,
+        "durable": 2300,
+        "checkpoint": 2300,
+        "leaseUntil": 1790523584.721668,
+        "failure": null,
+        "pending": {
+          "sequence": 245681,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 16,
+        "start": 254645,
+        "end": 265983,
+        "status": "claimed",
+        "journaled": 8045,
+        "durable": 8000,
+        "checkpoint": 8000,
+        "leaseUntil": 1790523580.26905,
+        "failure": null,
+        "pending": {
+          "sequence": 262690,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 17,
+        "start": 265984,
+        "end": 277322,
+        "status": "claimed",
+        "journaled": 4483,
+        "durable": 4400,
+        "checkpoint": 4400,
+        "leaseUntil": 1790523585.524283,
+        "failure": null,
+        "pending": {
+          "sequence": 270467,
+          "awaitingResponse": 1
+        }
+      },
+      {
+        "shardId": 18,
+        "start": 277323,
+        "end": 288661,
+        "status": "pending",
+        "journaled": 1000,
+        "durable": 1000,
+        "checkpoint": 1000,
+        "leaseUntil": 0.0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 19,
+        "start": 288662,
+        "end": 300000,
+        "status": "claimed",
+        "journaled": 3505,
+        "durable": 3500,
+        "checkpoint": 3500,
+        "leaseUntil": 1790523581.4346778,
+        "failure": null,
+        "pending": {
+          "sequence": 292167,
+          "awaitingResponse": 1
+        }
+      }
+    ],
+    "globalSourceEnabled": true,
+    "failure": null,
+    "cooldownUntil": 0.0,
+    "distinctBoundSessions": 20,
+    "countSemantics": "sum of confirmed rounds, not maximum sequence"
+  }
+}

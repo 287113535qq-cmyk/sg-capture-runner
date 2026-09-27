@@ -1,0 +1,1048 @@
+{
+  "schema": "sg-parallel-trial-result-v1",
+  "githubRunId": 36328768194,
+  "parallelism": 4,
+  "limitPerShard": 100,
+  "metrics": {
+    "githubRunId": 36328768194,
+    "measuredAtEpoch": 1790522279.6423984,
+    "shards": [
+      {
+        "started": 1790522033.206413,
+        "ended": 1790522044.2194731,
+        "start_checkpoint": 73317,
+        "end_checkpoint": 73417,
+        "shardId": 0,
+        "rounds": 100,
+        "seconds": 11.013060092926025,
+        "roundsPerSecond": 9.08012842536223
+      },
+      {
+        "started": 1790522046.9153657,
+        "ended": 1790522066.951997,
+        "start_checkpoint": 84657,
+        "end_checkpoint": 84757,
+        "shardId": 1,
+        "rounds": 100,
+        "seconds": 20.0366313457489,
+        "roundsPerSecond": 4.990858906091349
+      },
+      {
+        "started": 1790522034.8570437,
+        "ended": 1790522040.8851438,
+        "start_checkpoint": 95897,
+        "end_checkpoint": 95997,
+        "shardId": 2,
+        "rounds": 100,
+        "seconds": 6.02810001373291,
+        "roundsPerSecond": 16.588974929444618
+      },
+      {
+        "started": 1790522046.9157443,
+        "ended": 1790522065.8773363,
+        "start_checkpoint": 107237,
+        "end_checkpoint": 107337,
+        "shardId": 3,
+        "rounds": 100,
+        "seconds": 18.961591958999634,
+        "roundsPerSecond": 5.273818792020654
+      }
+    ],
+    "peakSimultaneousLeases": 2,
+    "aggregateRoundCount": 400,
+    "cohortSeconds": 33.74558401107788,
+    "cohortRoundsPerSecond": 11.853402799865293,
+    "allShardsOverlapSeconds": 0,
+    "load1": 1.72314453125
+  },
+  "workers": [
+    {
+      "schema": "sg-real-trial-v1",
+      "trialId": "bookofsevens_300k_20260927",
+      "game": "Book of Sevens",
+      "gameId": 32471,
+      "runtimeGameId": 33026,
+      "target": 300000,
+      "shardId": 1,
+      "role": "capture",
+      "requestIntervalMs": 0,
+      "exchangeOperation": "exchange_journal",
+      "sourceRequests": 107,
+      "paidRoundRequests": 100,
+      "completedThisRun": 100,
+      "productionGamePoolWrites": false,
+      "startCheckpoint": 84657,
+      "sequenceTarget": 95897,
+      "sequenceBase": 84557,
+      "initialBalanceRaw": 100000,
+      "sourceElapsedMs": 8862,
+      "endCheckpoint": 84757,
+      "result": {
+        "ok": true,
+        "schema": "sg-real-trial-v1",
+        "fixtureOnly": false,
+        "serverWorkMs": 7.967,
+        "trialId": "bookofsevens_300k_20260927",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 95897,
+        "sequenceBase": 84557,
+        "shardId": 1,
+        "status": "pending",
+        "journaled": 84757,
+        "durable": 84757,
+        "checkpoint": 84757,
+        "epoch": 2,
+        "leaseUntil": 0,
+        "cooldownUntil": 0,
+        "failure": null,
+        "pending": null,
+        "statistics": {
+          "count": 200,
+          "stakeRaw": 5000,
+          "winRaw": 2300,
+          "sourceFrames": 210,
+          "freeRounds": 2,
+          "zeroWinRounds": 190,
+          "maxMul": 20
+        }
+      },
+      "outcome": "success",
+      "rpcMetrics": {
+        "status": {
+          "count": 1,
+          "totalMs": 1202.4276830000001,
+          "serverWorkMs": 4.549,
+          "requestBytes": 95,
+          "averageMs": 1202.4276830000001,
+          "averageServerWorkMs": 4.549
+        },
+        "claim": {
+          "count": 1,
+          "totalMs": 1358.2055070000001,
+          "serverWorkMs": 1286.894,
+          "requestBytes": 297,
+          "averageMs": 1358.2055070000001,
+          "averageServerWorkMs": 1286.894
+        },
+        "ping": {
+          "count": 10,
+          "totalMs": 697.9045639999995,
+          "serverWorkMs": 1.747,
+          "requestBytes": 930,
+          "averageMs": 69.79045639999995,
+          "averageServerWorkMs": 0.17470000000000002
+        },
+        "begin": {
+          "count": 1,
+          "totalMs": 75.48927800000001,
+          "serverWorkMs": 5.074,
+          "requestBytes": 377,
+          "averageMs": 75.48927800000001,
+          "averageServerWorkMs": 5.074
+        },
+        "exchange_journal": {
+          "count": 105,
+          "totalMs": 8482.771745999988,
+          "serverWorkMs": 1156.383,
+          "requestBytes": 184281,
+          "averageMs": 80.78830234285702,
+          "averageServerWorkMs": 11.013171428571429
+        },
+        "release": {
+          "count": 1,
+          "totalMs": 77.44008000000031,
+          "serverWorkMs": 7.967,
+          "requestBytes": 173,
+          "averageMs": 77.44008000000031,
+          "averageServerWorkMs": 7.967
+        }
+      },
+      "elapsedSeconds": 21.32,
+      "roundsPerSecond": 4.690431519699812
+    },
+    {
+      "schema": "sg-real-trial-v1",
+      "trialId": "bookofsevens_300k_20260927",
+      "game": "Book of Sevens",
+      "gameId": 32471,
+      "runtimeGameId": 33026,
+      "target": 300000,
+      "shardId": 3,
+      "role": "capture",
+      "requestIntervalMs": 0,
+      "exchangeOperation": "exchange_journal",
+      "sourceRequests": 102,
+      "paidRoundRequests": 100,
+      "completedThisRun": 100,
+      "productionGamePoolWrites": false,
+      "startCheckpoint": 107237,
+      "sequenceTarget": 118576,
+      "sequenceBase": 107237,
+      "initialBalanceRaw": 100000,
+      "sourceElapsedMs": 8480,
+      "endCheckpoint": 107337,
+      "result": {
+        "ok": true,
+        "schema": "sg-real-trial-v1",
+        "fixtureOnly": false,
+        "serverWorkMs": 9.204,
+        "trialId": "bookofsevens_300k_20260927",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 118576,
+        "sequenceBase": 107237,
+        "shardId": 3,
+        "status": "pending",
+        "journaled": 107337,
+        "durable": 107337,
+        "checkpoint": 107337,
+        "epoch": 1,
+        "leaseUntil": 0,
+        "cooldownUntil": 0,
+        "failure": null,
+        "pending": null,
+        "statistics": {
+          "count": 100,
+          "stakeRaw": 2500,
+          "winRaw": 2500,
+          "sourceFrames": 100,
+          "freeRounds": 0,
+          "zeroWinRounds": 95,
+          "maxMul": 60
+        }
+      },
+      "outcome": "success",
+      "rpcMetrics": {
+        "status": {
+          "count": 1,
+          "totalMs": 1152.5106099999998,
+          "serverWorkMs": 0.38,
+          "requestBytes": 95,
+          "averageMs": 1152.5106099999998,
+          "averageServerWorkMs": 0.38
+        },
+        "claim": {
+          "count": 1,
+          "totalMs": 1323.0628500000003,
+          "serverWorkMs": 1249.199,
+          "requestBytes": 297,
+          "averageMs": 1323.0628500000003,
+          "averageServerWorkMs": 1249.199
+        },
+        "ping": {
+          "count": 10,
+          "totalMs": 664.3646980000003,
+          "serverWorkMs": 1.738,
+          "requestBytes": 930,
+          "averageMs": 66.43646980000003,
+          "averageServerWorkMs": 0.1738
+        },
+        "begin": {
+          "count": 1,
+          "totalMs": 70.61771299999964,
+          "serverWorkMs": 4.243,
+          "requestBytes": 378,
+          "averageMs": 70.61771299999964,
+          "averageServerWorkMs": 4.243
+        },
+        "exchange_journal": {
+          "count": 100,
+          "totalMs": 7791.330791999995,
+          "serverWorkMs": 1138.9139999999998,
+          "requestBytes": 177214,
+          "averageMs": 77.91330791999995,
+          "averageServerWorkMs": 11.389139999999998
+        },
+        "release": {
+          "count": 1,
+          "totalMs": 76.70161400000143,
+          "serverWorkMs": 9.204,
+          "requestBytes": 173,
+          "averageMs": 76.70161400000143,
+          "averageServerWorkMs": 9.204
+        }
+      },
+      "elapsedSeconds": 20.202,
+      "roundsPerSecond": 4.950004950004949
+    },
+    {
+      "schema": "sg-real-trial-v1",
+      "trialId": "bookofsevens_300k_20260927",
+      "game": "Book of Sevens",
+      "gameId": 32471,
+      "runtimeGameId": 33026,
+      "target": 300000,
+      "shardId": 2,
+      "role": "capture",
+      "requestIntervalMs": 0,
+      "exchangeOperation": "exchange_journal",
+      "sourceRequests": 122,
+      "paidRoundRequests": 100,
+      "completedThisRun": 100,
+      "productionGamePoolWrites": false,
+      "startCheckpoint": 95897,
+      "sequenceTarget": 107237,
+      "sequenceBase": 95897,
+      "initialBalanceRaw": 100000,
+      "sourceElapsedMs": 2911,
+      "endCheckpoint": 95997,
+      "result": {
+        "ok": true,
+        "schema": "sg-real-trial-v1",
+        "fixtureOnly": false,
+        "serverWorkMs": 4.953,
+        "trialId": "bookofsevens_300k_20260927",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 107237,
+        "sequenceBase": 95897,
+        "shardId": 2,
+        "status": "pending",
+        "journaled": 95997,
+        "durable": 95997,
+        "checkpoint": 95997,
+        "epoch": 1,
+        "leaseUntil": 0,
+        "cooldownUntil": 0,
+        "failure": null,
+        "pending": null,
+        "statistics": {
+          "count": 100,
+          "stakeRaw": 2500,
+          "winRaw": 4900,
+          "sourceFrames": 120,
+          "freeRounds": 4,
+          "zeroWinRounds": 91,
+          "maxMul": 56
+        }
+      },
+      "outcome": "success",
+      "rpcMetrics": {
+        "status": {
+          "count": 1,
+          "totalMs": 526.905049,
+          "serverWorkMs": 0.432,
+          "requestBytes": 95,
+          "averageMs": 526.905049,
+          "averageServerWorkMs": 0.432
+        },
+        "claim": {
+          "count": 1,
+          "totalMs": 1064.516612,
+          "serverWorkMs": 1054.233,
+          "requestBytes": 297,
+          "averageMs": 1064.516612,
+          "averageServerWorkMs": 1054.233
+        },
+        "ping": {
+          "count": 10,
+          "totalMs": 25.03969600000073,
+          "serverWorkMs": 1.567,
+          "requestBytes": 930,
+          "averageMs": 2.5039696000000733,
+          "averageServerWorkMs": 0.1567
+        },
+        "begin": {
+          "count": 1,
+          "totalMs": 7.066302000000178,
+          "serverWorkMs": 4.135,
+          "requestBytes": 377,
+          "averageMs": 7.066302000000178,
+          "averageServerWorkMs": 4.135
+        },
+        "exchange_journal": {
+          "count": 120,
+          "totalMs": 1663.5837699999952,
+          "serverWorkMs": 1317.4549999999995,
+          "requestBytes": 208112,
+          "averageMs": 13.863198083333293,
+          "averageServerWorkMs": 10.978791666666663
+        },
+        "release": {
+          "count": 1,
+          "totalMs": 7.650214999999662,
+          "serverWorkMs": 4.953,
+          "requestBytes": 173,
+          "averageMs": 7.650214999999662,
+          "averageServerWorkMs": 4.953
+        }
+      },
+      "elapsedSeconds": 6.572,
+      "roundsPerSecond": 15.216068167985393
+    },
+    {
+      "schema": "sg-real-trial-v1",
+      "trialId": "bookofsevens_300k_20260927",
+      "game": "Book of Sevens",
+      "gameId": 32471,
+      "runtimeGameId": 33026,
+      "target": 300000,
+      "shardId": 0,
+      "role": "capture",
+      "requestIntervalMs": 0,
+      "exchangeOperation": "exchange_journal",
+      "sourceRequests": 107,
+      "paidRoundRequests": 100,
+      "completedThisRun": 100,
+      "productionGamePoolWrites": false,
+      "startCheckpoint": 73317,
+      "sequenceTarget": 84557,
+      "sequenceBase": 73217,
+      "initialBalanceRaw": 100000,
+      "sourceElapsedMs": 4745,
+      "endCheckpoint": 73417,
+      "result": {
+        "ok": true,
+        "schema": "sg-real-trial-v1",
+        "fixtureOnly": false,
+        "serverWorkMs": 8.14,
+        "trialId": "bookofsevens_300k_20260927",
+        "gameId": 32471,
+        "runtimeGameId": 33026,
+        "target": 84557,
+        "sequenceBase": 73217,
+        "shardId": 0,
+        "status": "pending",
+        "journaled": 73417,
+        "durable": 73417,
+        "checkpoint": 73417,
+        "epoch": 2,
+        "leaseUntil": 0,
+        "cooldownUntil": 0,
+        "failure": null,
+        "pending": null,
+        "statistics": {
+          "count": 200,
+          "stakeRaw": 5000,
+          "winRaw": 4800,
+          "sourceFrames": 205,
+          "freeRounds": 1,
+          "zeroWinRounds": 186,
+          "maxMul": 44
+        }
+      },
+      "outcome": "success",
+      "rpcMetrics": {
+        "status": {
+          "count": 1,
+          "totalMs": 1050.4846229999998,
+          "serverWorkMs": 0.975,
+          "requestBytes": 95,
+          "averageMs": 1050.4846229999998,
+          "averageServerWorkMs": 0.975
+        },
+        "claim": {
+          "count": 1,
+          "totalMs": 1089.3300290000002,
+          "serverWorkMs": 1063.155,
+          "requestBytes": 297,
+          "averageMs": 1089.3300290000002,
+          "averageServerWorkMs": 1063.155
+        },
+        "ping": {
+          "count": 10,
+          "totalMs": 259.5432800000008,
+          "serverWorkMs": 1.755,
+          "requestBytes": 930,
+          "averageMs": 25.95432800000008,
+          "averageServerWorkMs": 0.1755
+        },
+        "begin": {
+          "count": 1,
+          "totalMs": 30.398157999999967,
+          "serverWorkMs": 4.607,
+          "requestBytes": 377,
+          "averageMs": 30.398157999999967,
+          "averageServerWorkMs": 4.607
+        },
+        "exchange_journal": {
+          "count": 105,
+          "totalMs": 3929.035148000001,
+          "serverWorkMs": 1222.8650000000002,
+          "requestBytes": 184823,
+          "averageMs": 37.41938236190477,
+          "averageServerWorkMs": 11.646333333333336
+        },
+        "release": {
+          "count": 1,
+          "totalMs": 33.76741800000127,
+          "serverWorkMs": 8.14,
+          "requestBytes": 173,
+          "averageMs": 33.76741800000127,
+          "averageServerWorkMs": 8.14
+        }
+      },
+      "elapsedSeconds": 12.1,
+      "roundsPerSecond": 8.264462809917356
+    }
+  ],
+  "globalAudit": {
+    "ok": true,
+    "schema": "sg-real-trial-v1",
+    "trialId": "bookofsevens_300k_20260927",
+    "fixtureOnly": false,
+    "mode": "parallel-20",
+    "target": 300000,
+    "status": "pending",
+    "legacyPrefix": 73217,
+    "journaled": 73817,
+    "durable": 73817,
+    "checkpoint": 73817,
+    "shards": [
+      {
+        "shardId": 0,
+        "start": 73218,
+        "end": 84557,
+        "status": "pending",
+        "journaled": 200,
+        "durable": 200,
+        "checkpoint": 200,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 1,
+        "start": 84558,
+        "end": 95897,
+        "status": "pending",
+        "journaled": 200,
+        "durable": 200,
+        "checkpoint": 200,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 2,
+        "start": 95898,
+        "end": 107237,
+        "status": "pending",
+        "journaled": 100,
+        "durable": 100,
+        "checkpoint": 100,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 3,
+        "start": 107238,
+        "end": 118576,
+        "status": "pending",
+        "journaled": 100,
+        "durable": 100,
+        "checkpoint": 100,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 4,
+        "start": 118577,
+        "end": 129915,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 5,
+        "start": 129916,
+        "end": 141254,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 6,
+        "start": 141255,
+        "end": 152593,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 7,
+        "start": 152594,
+        "end": 163932,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 8,
+        "start": 163933,
+        "end": 175271,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 9,
+        "start": 175272,
+        "end": 186610,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 10,
+        "start": 186611,
+        "end": 197949,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 11,
+        "start": 197950,
+        "end": 209288,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 12,
+        "start": 209289,
+        "end": 220627,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 13,
+        "start": 220628,
+        "end": 231966,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 14,
+        "start": 231967,
+        "end": 243305,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 15,
+        "start": 243306,
+        "end": 254644,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 16,
+        "start": 254645,
+        "end": 265983,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 17,
+        "start": 265984,
+        "end": 277322,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 18,
+        "start": 277323,
+        "end": 288661,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      },
+      {
+        "shardId": 19,
+        "start": 288662,
+        "end": 300000,
+        "status": "pending",
+        "journaled": 0,
+        "durable": 0,
+        "checkpoint": 0,
+        "leaseUntil": 0,
+        "failure": null,
+        "pending": null
+      }
+    ],
+    "globalSourceEnabled": true,
+    "failure": null,
+    "cooldownUntil": 0,
+    "distinctBoundSessions": 4,
+    "countSemantics": "sum of confirmed rounds, not maximum sequence",
+    "verifiedFileRounds": 73817,
+    "statistics": {
+      "count": 73817,
+      "stakeRaw": 1845425,
+      "winRaw": 1831250,
+      "sourceFrames": 76477,
+      "freeRounds": 522,
+      "zeroWinRounds": 68925,
+      "maxMul": 516
+    },
+    "mongoPerBatchContentVerified": true,
+    "productionGamePoolWrites": false,
+    "shardAudits": [
+      {
+        "shardId": null,
+        "verifiedFileRounds": 73217,
+        "mongo": {
+          "count": 73217,
+          "stakeRaw": 1830425,
+          "winRaw": 1816750,
+          "sourceFrames": 75842,
+          "freeRounds": 515,
+          "zeroWinRounds": 68363,
+          "minSequence": 1,
+          "maxSequence": 73217
+        }
+      },
+      {
+        "shardId": 0,
+        "verifiedFileRounds": 200,
+        "mongo": {
+          "count": 200,
+          "stakeRaw": 5000,
+          "winRaw": 4800,
+          "sourceFrames": 205,
+          "freeRounds": 1,
+          "zeroWinRounds": 186,
+          "minSequence": 73218,
+          "maxSequence": 73417
+        }
+      },
+      {
+        "shardId": 1,
+        "verifiedFileRounds": 200,
+        "mongo": {
+          "count": 200,
+          "stakeRaw": 5000,
+          "winRaw": 2300,
+          "sourceFrames": 210,
+          "freeRounds": 2,
+          "zeroWinRounds": 190,
+          "minSequence": 84558,
+          "maxSequence": 84757
+        }
+      },
+      {
+        "shardId": 2,
+        "verifiedFileRounds": 100,
+        "mongo": {
+          "count": 100,
+          "stakeRaw": 2500,
+          "winRaw": 4900,
+          "sourceFrames": 120,
+          "freeRounds": 4,
+          "zeroWinRounds": 91,
+          "minSequence": 95898,
+          "maxSequence": 95997
+        }
+      },
+      {
+        "shardId": 3,
+        "verifiedFileRounds": 100,
+        "mongo": {
+          "count": 100,
+          "stakeRaw": 2500,
+          "winRaw": 2500,
+          "sourceFrames": 100,
+          "freeRounds": 0,
+          "zeroWinRounds": 95,
+          "minSequence": 107238,
+          "maxSequence": 107337
+        }
+      },
+      {
+        "shardId": 4,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 5,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 6,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 7,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 8,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 9,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 10,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 11,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 12,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 13,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 14,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 15,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 16,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 17,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 18,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      },
+      {
+        "shardId": 19,
+        "verifiedFileRounds": 0,
+        "mongo": {
+          "count": 0,
+          "stakeRaw": 0,
+          "winRaw": 0,
+          "sourceFrames": 0,
+          "freeRounds": 0,
+          "zeroWinRounds": 0,
+          "minSequence": 0,
+          "maxSequence": 0
+        }
+      }
+    ]
+  }
+}
