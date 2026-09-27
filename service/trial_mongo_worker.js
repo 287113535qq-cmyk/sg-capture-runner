@@ -1,6 +1,9 @@
 // Fixed mongosh program: credentials and documents arrive only over stdin.
 (async () => {
   const fs = require('fs');
+  // mongosh configures fd 0 as nonblocking. Open a separate blocking handle
+  // so an idle period between batches is not mistaken for an input failure.
+  const inputFd = fs.openSync('/dev/stdin', 'r');
   let buffered = Buffer.alloc(0);
   function line() {
     while (true) {
@@ -10,7 +13,7 @@
         buffered = buffered.subarray(end + 1);
         return value;
       }
-      const chunk = Buffer.alloc(65536), count = fs.readSync(0, chunk, 0, chunk.length);
+      const chunk = Buffer.alloc(65536), count = fs.readSync(inputFd, chunk, 0, chunk.length);
       if (!count) { if (buffered.length) throw Error('PARTIAL_INPUT'); return null; }
       buffered = Buffer.concat([buffered, chunk.subarray(0, count)]);
       if (buffered.length > 33554432) throw Error('INPUT_TOO_LARGE');
