@@ -1,6 +1,12 @@
 name: SG single-game existing session readiness
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Existing session or twenty independent anonymous demo handshakes; no BET'
+        type: choice
+        default: parallel
+        options: [parallel, existing]
 permissions:
   contents: read
 concurrency:
@@ -17,7 +23,12 @@ jobs:
       - name: Install locked protocol parser
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Check existing demo session with one INIT and no BET
+      - name: Check demo sessions without any BET
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: node scripts/trial/session-check.mjs
+        run: |
+          if [ '${{ inputs.mode }}' = 'parallel' ]; then
+            node scripts/trial/parallel-session-check.mjs
+          else
+            node scripts/trial/session-check.mjs
+          fi
