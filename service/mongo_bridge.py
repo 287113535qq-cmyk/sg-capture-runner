@@ -43,7 +43,10 @@ if (input.operation === 'ensure') {
   result = {inserted:await put(rounds,input.data)};
 } else if (input.operation === 'records' || input.operation === 'accepted') {
   if (!/^fixture_[a-z0-9_]{1,64}$/.test(input.data)) throw Error('FIXTURE_REQUIRED');
-  result = await (input.operation === 'records' ? rounds : accepted).find({caseId:input.data}).toArray();
+  const response = await target.runCommand({find:input.operation === 'records' ? 'rounds' : 'accepted_rounds',
+    filter:{caseId:input.data},limit:106,batchSize:106,singleBatch:true,maxTimeMS:5000});
+  if (!response.ok || !response.cursor) throw Error('BOUNDED_READ_FAILED');
+  result = response.cursor.firstBatch;
 } else {
   let inserted = 0;
   for (const record of input.data) inserted += await put(accepted,record);

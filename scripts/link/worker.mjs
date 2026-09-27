@@ -99,7 +99,11 @@ async function main() {
   }
   if (role === 'resume') {
     const status = await rpc('status');
-    if (status.tasks.find(t => t.game === single).status === 'complete') { evidence.alreadyComplete = true; return; }
+    if (status.tasks.find(t => t.game === single).status === 'complete') {
+      const verified = await rpc('verify', { gameId: single });
+      assert.equal(verified.count, 3);
+      evidence.alreadyComplete = true; evidence.parity = verified; return;
+    }
     const lease = await claim(single);
     evidence.startCheckpoint = lease.checkpoint;
     const second = await commit(single, lease, 2);
@@ -110,7 +114,7 @@ async function main() {
     const duplicated = await commit(single, lease, 3);
     assert(duplicated.duplicate && duplicated.mongoInserted === 0);
     await rpc('release', { ...owned(single, lease), status: 'complete' });
-    const verified = await rpc('verify');
+    const verified = await rpc('verify', { gameId: single });
     assert.equal(verified.count, 3);
     evidence.resumedOnAnotherRunner = true;
     evidence.parity = verified;

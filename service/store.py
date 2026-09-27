@@ -285,9 +285,14 @@ class Store:
                 "cooldownUntil": db.execute("SELECT cooldown_until FROM cases WHERE id=?", (req["caseId"],)).fetchone()[0]}
 
     def _verified_records(self, db, req):
-        require(not db.execute("SELECT 1 FROM receipts WHERE case_id=? AND status!='committed'", (req["caseId"],)).fetchone(), "UNCONFIRMED_RECORDS")
-        records = [json.loads(r[0]) for r in db.execute("SELECT payload FROM receipts WHERE case_id=? ORDER BY game,sequence", (req["caseId"],))]
-        for task in db.execute("SELECT * FROM tasks WHERE case_id=?", (req["caseId"],)):
+        game = req.get("gameId") if req["op"] == "verify" else None
+        if game is not None:
+            self._task(db, req)
+        where = "case_id=?" + (" AND game=?" if game is not None else "")
+        parameters = (req["caseId"], game) if game is not None else (req["caseId"],)
+        require(not db.execute("SELECT 1 FROM receipts WHERE " + where + " AND status!='committed'", parameters).fetchone(), "UNCONFIRMED_RECORDS")
+        records = [json.loads(r[0]) for r in db.execute("SELECT payload FROM receipts WHERE " + where + " ORDER BY game,sequence", parameters)]
+        for task in db.execute("SELECT * FROM tasks WHERE " + where, parameters):
             expected = [r for r in records if r["gameId"] == task["game"]]
             require(task["checkpoint"] == len(expected), "CHECKPOINT_PARITY_FAILED")
             raw_path, norm_path = self._paths(req["caseId"], task["game"])
@@ -307,6 +312,8 @@ class Store:
                 require(raw_row == {"_id": record["_id"], "rawHash": record["rawHash"], "contentHash": record["contentHash"], "fixtureOnly": True, "raw": record["raw"]}, "RAW_PARITY_FAILED")
                 require(digest(record["raw"]) == record["rawHash"] and digest(record["normalized"]) == record["normalizedHash"], "HASH_PARITY_FAILED")
         mongo = self.mongo.records(req["caseId"])
+        if game is not None:
+            mongo = [record for record in mongo if record["gameId"] == game]
         require(sorted(mongo, key=lambda r: r["_id"]) == sorted(records, key=lambda r: r["_id"]), "MONGO_PARITY_FAILED")
         return records
 

@@ -216,6 +216,17 @@ class DurableTests(unittest.TestCase):
         queue.close()
         self.assertEqual(results.count('claimed'),1)
         self.assertEqual(results.count('GAME_BUSY'),3)
+    def test_single_game_parity_does_not_hide_other_games_pending_journal(self):
+        self.case='fixture_scope'
+        self.call('initialize',games=[{'gameId':'fixture-one','target':3},{'gameId':'fixture-other','target':3}])
+        self.lease=self.call('claim',gameId='fixture-one',owner='worker-a')
+        self.commit(1)
+        other=self.call('claim',gameId='fixture-other',owner='worker-other')
+        value=self.round(1);value['sourceRoundId']='fixture-other:round:1';value['normalized']['gameKey']='fixture-other'
+        with self.assertRaises(InjectedCrash):
+            self.call('commit',gameId='fixture-other',owner='worker-other',epoch=other['epoch'],round=value,failpoint='after_files')
+        self.assertEqual(self.call('verify',gameId='fixture-one')['count'],1)
+        with self.assertRaisesRegex(Rejected,'UNCONFIRMED_RECORDS'):self.call('verify')
     def test_plan_cannot_change_after_initialization(self):
         with self.assertRaisesRegex(Rejected,'PLAN_CHANGED'):
             self.call('initialize',games=[{'gameId':'fixture-one','target':2}])
