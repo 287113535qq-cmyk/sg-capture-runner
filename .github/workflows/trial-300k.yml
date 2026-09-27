@@ -25,6 +25,11 @@ jobs:
   trial:
     if: github.event_name == 'workflow_dispatch' || vars.SG_TRIAL_ENABLED == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON((github.event_name == 'schedule' || inputs.role == 'capture') && '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]' || '[0]') }}
     timeout-minutes: 270
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
@@ -35,16 +40,24 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: Install locked dependencies
-        working-directory: collector
-        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Configure restricted SSH
         run: node scripts/link/setup-ssh.mjs
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Select one capture runner by storage network latency
+        id: selection
+        if: github.event_name == 'schedule' || inputs.role == 'capture'
+        env:
+          SG_TRIAL_SHARD: ${{ matrix.shard }}
+        run: node scripts/trial/select-runner.mjs
+      - name: Install locked dependencies
+        if: steps.selection.outputs.selected == 'true' || inputs.role == 'benchmark' || inputs.role == 'audit' || inputs.role == 'status'
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Run fixed single-game trial
         id: capture
+        if: steps.selection.outputs.selected == 'true' || inputs.role == 'benchmark' || inputs.role == 'audit' || inputs.role == 'status'
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
           SG_TRIAL_ROLE: ${{ inputs.role || 'capture' }}
@@ -57,10 +70,10 @@ jobs:
             node scripts/trial/worker.mjs "$SG_TRIAL_ROLE"
           fi
       - name: Verify durable files, classifications, checkpoint and Mongo totals
-        if: success() && (inputs.role == 'capture' || inputs.role == 'benchmark' || github.event_name == 'schedule')
+        if: success() && steps.capture.outputs.trial_status != '' && (inputs.role == 'capture' || inputs.role == 'benchmark' || github.event_name == 'schedule')
         run: node scripts/trial/worker.mjs audit
       - name: Stop scheduled continuation when complete or requiring review
-        if: always() && vars.SG_TRIAL_ENABLED == 'true' && (steps.capture.outputs.trial_status == 'complete' || steps.capture.outputs.trial_status == 'halted')
+        if: always() && vars.SG_TRIAL_ENABLED == 'true' && (steps.capture.outputs.trial_status == 'complete' || steps.capture.outputs.trial_status == 'halted' || (matrix.shard == 0 && (steps.selection.outputs.trial_status == 'complete' || steps.selection.outputs.trial_status == 'halted')))
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api --method PUT repos/zyzuoyang/sg-capture-runner/actions/workflows/trial-300k.yml/disable

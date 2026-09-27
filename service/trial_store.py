@@ -42,6 +42,9 @@ class TrialStore:
           start_checkpoint INTEGER NOT NULL, end_checkpoint INTEGER, commit_sha TEXT NOT NULL);
         CREATE INDEX IF NOT EXISTS trial_unfiled ON receipts(sequence) WHERE filed=0;
         CREATE INDEX IF NOT EXISTS trial_uncommitted ON receipts(sequence) WHERE filed=1 AND committed=0;
+        CREATE TABLE IF NOT EXISTS runner_elections(run_id TEXT PRIMARY KEY,closes REAL NOT NULL,winner INTEGER);
+        CREATE TABLE IF NOT EXISTS runner_candidates(run_id TEXT NOT NULL,candidate INTEGER NOT NULL,network_ms REAL NOT NULL,
+          PRIMARY KEY(run_id,candidate));
         ''')
         row = self.db.execute('SELECT * FROM trial WHERE id=1').fetchone()
         if row:
@@ -73,7 +76,7 @@ class TrialStore:
         require(isinstance(req, dict) and req.get('schema') == SCHEMA and req.get('trialId') == TRIAL, 'TRIAL_NOT_ALLOWED')
         require(len(canonical(req)) <= 1048576, 'REQUEST_TOO_LARGE')
         op = req.get('op')
-        require(op in {'status','claim','begin','intent','frame','exchange','exchange_journal','flush','release','fail','audit','ping'}, 'OP_NOT_ALLOWED')
+        require(op in {'status','claim','begin','intent','frame','exchange','exchange_journal','flush','release','fail','audit','ping','runner_register','runner_select'}, 'OP_NOT_ALLOWED')
         started = time.perf_counter()
         with file_lock(self.root / 'trial.lock'):
             result = getattr(self, '_' + op)(req)
@@ -82,6 +85,47 @@ class TrialStore:
 
     def _ping(self, req):
         return {'pong': True}
+
+    def _candidate(self, req):
+        run, candidate = req.get('runId'), req.get('candidate')
+        require(isinstance(run,str) and re.fullmatch('[0-9]{1,20}',run), 'BAD_RUN_ID')
+        require(type(candidate) is int and 0 <= candidate < 20, 'BAD_CANDIDATE')
+        return run, candidate
+
+    def _probe_available(self):
+        s = self.state()
+        return s['cooldown_until'] <= self.clock() and (s['status']=='pending' or s['status']=='claimed' and s['lease_until'] <= self.clock())
+
+    def _runner_register(self, req):
+        run, candidate = self._candidate(req)
+        ms = req.get('networkMs')
+        require(type(ms) in (int,float) and 0 <= ms <= 10000, 'BAD_PROBE_TIMING')
+        if not self._probe_available():
+            return {'eligible':False,'trialStatus':self.state()['status']}
+        now = self.clock()
+        self.db.execute('INSERT OR IGNORE INTO runner_elections(run_id,closes) VALUES(?,?)',(run,now+45))
+        election = self.db.execute('SELECT * FROM runner_elections WHERE run_id=?',(run,)).fetchone()
+        if election['winner'] is not None or now >= election['closes']:
+            return {'eligible':False,'reason':'ELECTION_CLOSED'}
+        self.db.execute('INSERT OR IGNORE INTO runner_candidates(run_id,candidate,network_ms) VALUES(?,?,?)',(run,candidate,ms))
+        return {'eligible':True,'waitMs':max(0,round((election['closes']-self.clock())*1000))}
+
+    def _runner_select(self, req):
+        run, candidate = self._candidate(req)
+        election = self.db.execute('SELECT * FROM runner_elections WHERE run_id=?',(run,)).fetchone()
+        require(election is not None and self.db.execute('SELECT 1 FROM runner_candidates WHERE run_id=? AND candidate=?',(run,candidate)).fetchone(), 'UNREGISTERED_CANDIDATE')
+        if self.clock() < election['closes']:
+            return {'ready':False,'waitMs':max(0,round((election['closes']-self.clock())*1000))}
+        if not self._probe_available():
+            return {'ready':True,'selected':False,'trialStatus':self.state()['status']}
+        if election['winner'] is None:
+            winner = self.db.execute('SELECT candidate FROM runner_candidates WHERE run_id=? ORDER BY network_ms,candidate LIMIT 1',(run,)).fetchone()[0]
+            self.db.execute('UPDATE runner_elections SET winner=? WHERE run_id=? AND winner IS NULL',(winner,run))
+        winner = self.db.execute('''SELECT c.candidate,c.network_ms FROM runner_elections e JOIN runner_candidates c
+          ON c.run_id=e.run_id AND c.candidate=e.winner WHERE e.run_id=?''',(run,)).fetchone()
+        return {'ready':True,'selected':candidate==winner['candidate'],'winner':winner['candidate'],
+                'winnerNetworkMs':winner['network_ms'],
+                'candidates':self.db.execute('SELECT COUNT(*) FROM runner_candidates WHERE run_id=?',(run,)).fetchone()[0]}
 
     def _exchange(self, req):
         # Confirm the current response and prepare the following intent in one

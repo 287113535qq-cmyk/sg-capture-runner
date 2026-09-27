@@ -298,4 +298,50 @@ class TrialTests(unittest.TestCase):
         self.owner='same-job-new-process';self.claim()
         self.assertEqual(self.lease['epoch'],before['epoch']+1)
 
+    def test_runner_election_selects_only_lowest_latency_registered_candidate(self):
+        self.call('release',**self.own())
+        for candidate,ms in [(0,40),(1,3),(2,20)]:
+            self.assertTrue(self.call('runner_register',runId='123',candidate=candidate,networkMs=ms)['eligible'])
+        self.assertFalse(self.call('runner_select',runId='123',candidate=1)['ready'])
+        self.clock[0]+=46
+        for candidate in range(3):
+            result=self.call('runner_select',runId='123',candidate=candidate)
+            self.assertEqual(result['winner'],1);self.assertEqual(result['selected'],candidate==1)
+        self.assertEqual(self.call('status')['status'],'pending');self.assertIsNone(self.store.pending())
+        self.assertFalse(self.mongo.rows)
+
+    def test_runner_election_never_reselects_after_closed_deadline(self):
+        self.call('release',**self.own())
+        self.call('runner_register',runId='123',candidate=0,networkMs=10)
+        self.clock[0]+=46
+        self.assertTrue(self.call('runner_select',runId='123',candidate=0)['selected'])
+        self.assertFalse(self.call('runner_register',runId='123',candidate=1,networkMs=1)['eligible'])
+        self.assertEqual(self.call('runner_select',runId='123',candidate=0)['winner'],0)
+        with self.assertRaisesRegex(Rejected,'UNREGISTERED_CANDIDATE'):
+            self.call('runner_select',runId='123',candidate=1)
+
+    def test_runner_probe_cannot_interfere_with_live_capture_or_halted_trial(self):
+        before=dict(self.store.state())
+        self.assertFalse(self.call('runner_register',runId='123',candidate=0,networkMs=1)['eligible'])
+        self.assertEqual(dict(self.store.state()),before)
+        self.begin();self.call('fail',**self.own(),category='source_network')
+        self.assertFalse(self.call('runner_register',runId='124',candidate=0,networkMs=1)['eligible'])
+        self.assertEqual(self.call('status')['status'],'halted')
+
+    def test_candidate_registration_does_not_acquire_or_bypass_game_lease(self):
+        self.call('release',**self.own())
+        self.call('runner_register',runId='123',candidate=0,networkMs=1)
+        self.clock[0]+=46
+        self.assertTrue(self.call('runner_select',runId='123',candidate=0)['selected'])
+        self.owner='winning-process';self.claim()
+        with self.assertRaisesRegex(Rejected,'GAME_BUSY'):
+            self.call('claim',owner='losing-process',sessionHash='a'*64,commitSha='b'*40)
+        self.assertFalse(self.call('runner_select',runId='123',candidate=0)['selected'])
+
+    def test_probe_identity_and_bounds_rejected_without_election(self):
+        for args in [dict(runId='../bad',candidate=0,networkMs=1),dict(runId='1',candidate=20,networkMs=1),
+                     dict(runId='1',candidate=0,networkMs=float('inf')),dict(runId='1',candidate=0,networkMs=-1)]:
+            with self.assertRaises(Rejected):self.call('runner_register',**args)
+        self.assertEqual(self.store.db.execute('SELECT COUNT(*) FROM runner_elections').fetchone()[0],0)
+
 if __name__=='__main__':unittest.main()
