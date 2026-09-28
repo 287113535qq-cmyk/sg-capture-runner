@@ -1,28 +1,14 @@
-# SG 采集准备仓库
+# SG 第一轮采集
 
-当前职责纠正（2026-09-28）：用户要求**测试服只负责 MongoDB 落库，采集、调度、玩法处理、校验、日志及恢复逻辑全部在 GitHub 执行**。已写入 [当前规则](docs/rules.md)，覆盖此前服务端调度和复算设计。**代码迁移尚未完成，旧 runtime 仍在测试服承担这些处理；采集继续关闭。** 文档更新不代表迁移、服务器恢复或重新采集已经完成。
+当前状态（2026-09-28 16:50 UTC）：**GitHub 处理、测试服仅 MongoDB 存取的迁移已完成，真实短采全文验收通过，已恢复正式采集。** 用户批准的两个辅助集合保存进度和中断现场；完整局仍写入 `sg_capture_staging_v1.official_rounds`。测试服不再执行采集调度、玩法、标准化、恢复或全文审计算法，旧 SQLite / 原始文件已冻结备份。
 
-新增写入保护规则：测试服 CPU 或内存任一达到 95% 时暂停新写入；两者均低于 90% 并稳定 60 秒后，逐步续写 GitHub 保留的待写批次。其他故障暂停不会因此解除。详见 [当前规则](docs/rules.md)；**规则已记录，运行代码尚未接入**。
+32723 / 32726 原有 88337 个完整局全部保留并读回核验。两组各 20 分片、每分片新增 10 个完整局，共 400 个官方短采新增；验收时未完成局为 0。19 个旧未知请求留存完整证据后归档，没有重发未知 BET，没有删除完整记录。详见 [迁移报告](docs/github-processing-migration.md) 和 [验收结果](docs/github-processing-migration-result.json)。
 
-最新状态（2026-09-28 14:18 UTC）：**玩法暂挂与自动换游戏已实际生效，但随后出现新的存储服务故障，当前两组均已停止。** 原组多分片返回 `TRIAL_INTERNAL_FAILURE`，后续还有 `TRIAL_MONGO_FAILED`、`TRIAL_RPC_TIMEOUT`；管理端读取 campaign 时也实际遇到 SQLite `database is locked`。14:12服务器观测 load average 2476.85、8 GiB swap使用8170/8191 MiB，不能把这个新问题当未适配玩法跳过，也尚不能由这些观测确认唯一根因。两条正式运行和一条已排队定时运行均已取消，两仓库 workflow disabled_manually、SG_TRIAL_ENABLED=false，最终只读核对无活动或排队任务。尝试记录服务端全局停止时SSH超时，是否提交尚未核实，不能宣称已应用。没有删除任何局、重放BET、复用旧proof或改生产游戏服务；正式运行日志已完整私有下载并核验。资源/数据库恢复后必须先审查最新完整记录及pending，再生成新的受控恢复证据。详见 [运行后存储故障](docs/protocol-parking-storage-stop-20260928.md)。
+正式任务：[primary 36453841229](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36453841229)、[secondary 36453845517](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36453845517)。两仓库每组最多 20 分片，先就绪者先工作，排队者启动后加入。两仓库 `SG_TRIAL_ENABLED=true`；Codex 的 sg-30 提醒按用户要求继续暂停。运行中计数是进度，不能当作整款全文终审。
 
-下方14:00为故障前的成功运行快照，不代表现在仍在拉取。
+测试服 CPU 或内存任一达到 95%，或采样失效，GitHub 暂停提交写入；两者低于 90% 稳定 60 秒后小批恢复。资源暂停不解除其他故障，不能可靠保存响应时停止新源请求。保护已接入实际运行，详见 [当前规则](docs/rules.md)。
 
-最新状态（2026-09-28 14:00 UTC）：**已按用户授权启用“未适配游戏保留现场暂挂，分片继续领取下一款”。两组正式采集已恢复。** primary 运行 [36432378883](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36432378883)，secondary 运行 [36432385047](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36432385047)。当时 20+13 个 capture 步骤运行、第二组另 7 个排队，启动后自动领任务。当前分别采 32723、32726，完整日志快照 25931、14124，均非全量终审或整款完成。
-
-当前 complete6、active2、parked-protocol6、ready9、needs-adapter155，总178；暂挂 32714/32717/32718/32719/32720/32721，原始记录、未完成局、单份目标和原账号归属全部保留，未删除或重发 BET。两个采集定时变量为 true；Codex 的 sg-30 提醒仍暂停。Windows/Linux 各199项 Python、30项 Node 测试通过；真实短采验证两组自动切换，210个完整日志复核、199个已落盘全文核验、11个留在暂挂游戏的持久日志。详见 [调度实现](docs/protocol-parking-20260928.md) 和 [实际结果](docs/protocol-parking-result.json)。
-
-以下为历史记录，不覆盖上述调度和现场状态。
-
-最新状态（2026-09-28 13:14 UTC）：**32714 Hard Hat 适配已部署，分组恢复已实际应用；受控短采出现另一个自然功能 Touch Up，尚未通过恢复验收。** [短采 36425867764](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36425867764) 的 20 个 capture 步骤全部进入执行，新增 101 个完整日志；32714 当前 103 个完整日志，其中 97 个文件/SQLite/Mongo 全文核验，6 个待落盘。新 pending 为 batch4/worker13/sequence307：成功 Money Mansion FREE_GAME 转入 FID2 Touch Up；原 Hard Hat sequence402 的 BET 原样保留，其 worker 在同组停止前未发送源请求，真实 Hard Hat 结算仍未验证。两个 pending 均无未知在途结果，全部私有备份，未删除或重发 BET。详见 [恢复及新停采结果](docs/huff-group-recovery-20260928.md)。
-
-当前仍完成 6/178 款，complete6、active2、ready15、needs-adapter155；secondary 的 32717 仍 244/228、单 pending，逐条核对未变。两个组均暂停，定时变量 false；primary workflow disabled_manually，secondary active 保留手动入口。共同 dispatch 开关为 true：此前错误升级的历史暂停已受控解除，但两个组的协议暂停仍拒绝实际采集。已应用 proof 不能复用，下一次恢复必须绑定最新现场。
-
-以下为此前分组启用经过，不覆盖上述最新现场。
-
-最新状态（2026-09-28 11:38 UTC 后续审查）：**第二组已按“就绪分片先领任务、排队分片启动后加入”实际采集成功。** [短采 36416561237](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36416561237) 的 20 个分片分批完成，每个新增 10 局，共 200 局原始/标准化/文件/SQLite/Mongo 全文核验通过。这不代表 20 台同时采集，也不把此前 10 台观测值视作永久上限。两账号分组调度已受控迁移：primary 保留 32714 协议现场，secondary 独立领取 32717，178 款目标和历史仍各一份。详见 [实施与实际结果](docs/available-workers-20260928.md)。
-
-随后第二组正式运行 36416743264 在 32717 自然 FID=2 功能触发协议保护而停止，最终 244 个完整日志记录保留，其中 228 个已落盘全文核验、16 个待落盘，另有 1 个成功 BET 后的自然功能待完成。全部私有备份，未删除或重放；32714 原有现场不变。**当前完成 6 款，每款累计 300000 局；队列 complete6、active2、ready15、needs-adapter155。两个组均因协议适配暂停，定时采集变量 false，第二组保留手动入口。** 详见 [32717 新停采审查](docs/huff-goals-natural-feature-stop-20260928.md) 与 [32714 原停采审查](docs/huff-natural-free-stop-20260928.md)。第二轮关闭，新数据只写隔离库 sg_capture_staging_v1.official_rounds。
+178 款仍为单份第一轮目标，各累计 300000 个完整普通 buy0 大局；当前已完成 6 款，迁移前 active2、parked-protocol6、ready9、needs-adapter155。未适配游戏保留现场暂挂后处理下一款，不能删除自然功能或重放 BET。第二轮关闭。历史经过见 [玩法暂挂](docs/protocol-parking-20260928.md)、[旧存储故障](docs/protocol-parking-storage-stop-20260928.md)，这些旧快照不覆盖本页新架构状态。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -57,7 +43,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 初期隔离服务验证了 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性，记录见 `docs/link-verification.md`。早期测试 RPC 只接受夹具，不能作为正式采集入库接口；之后已建立独立的第一轮 campaign/pool 采集服务，当前运行状态及剩余协议适配以本文开头和最新报告为准。未把历史会清库的上游导入脚本复制进本仓库。
 
-唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库最多 20 个 `ubuntu-latest` 矩阵任务。可用分片先领取任务，迟到分片就绪后加入；每会话一个在途请求。primary 使用全局 0–19，secondary 使用 20–39，各组独立活动游戏，同一游戏不能跨组重复分配。178 款目标、历史和全局磁盘/存储保护仍共用；实时状态从可信组身份的 `status` RPC 及 `group_control`/`dispatch_control` 读取，迁移前 `control` 表和初始 config 标签均不能视作实时队列。每 20 分钟定时定义保留，当前双方 `SG_TRIAL_ENABLED=false`，不会自动采集；第二组手动入口 active，正式源端恢复需完成协议审查。Mongo 密码仅保留在服务器。
+唯一采集 workflow 为每仓库的 `trial-300k.yml`，每组最多 20 个 `ubuntu-latest` 矩阵任务；primary 固定全局 worker 0–19，secondary 20–39。任务唯一归属、批次、租约与检查点算法均在 GitHub，通过可信 SSH 组身份读写 Mongo 的 `capture_state_v2` / `capture_journal_v2`。同一游戏不会跨组重复分配，每会话仅一个在途请求。实时状态以这两个辅助集合及 GitHub 状态入口为准；旧 SQLite control / group_control / dispatch_control 仅为冻结历史，初始 config 标签也不是实时队列。每 20 分钟续采定义保留，Mongo 凭据只留在测试服。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 
@@ -67,7 +53,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 `SG isolated link verification` 为手动 workflow。单节点写入 → 模拟 Mongo 成功后进程中断 → 新 Runner 恢复 → 20 个 Runner 分别处理不同测试任务 → 文件/Mongo 身份与内容校验 → 在隔离验收集合重复导入。所有测试数据带 `fixtureOnly=true`，服务拒绝正式游戏编号。正式游戏集合不参与测试。
 
-服务使用 SQLite 持久化租约/进度和追加写入日志，Mongo 使用专用账号及唯一索引。恢复不会清空已有文件。
+历史隔离验证使用 SQLite 持久化租约/进度和追加日志；该架构已由上方 Mongo-only 迁移替代。旧文件仍保留，Mongo 继续使用专用账号及唯一约束。
 
 2026-09-27 验收：21 个测试任务、43 条记录，20 个独立 Runner 的矩阵任务全部成功；实际任务步骤同时运行峰值为 6，尚未证明 20 台同时持续采集。21 项持久化及隔离测试通过。
 

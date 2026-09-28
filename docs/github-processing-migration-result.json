@@ -1,0 +1,123 @@
+{
+  "schema": "sg-github-processing-migration-result-v2",
+  "observedAt": "2026-09-28T16:52:32+00:00",
+  "processingLocation": "existing GitHub-hosted Linux Runners",
+  "serverRole": "restricted MongoDB I/O and raw OS metrics only",
+  "database": "sg_capture_staging_v1",
+  "approvedCollections": [
+    "official_rounds",
+    "capture_state_v2",
+    "capture_journal_v2"
+  ],
+  "oldBusinessRpcEnabled": false,
+  "legacyArchiveExportEnabled": false,
+  "frozenManifestHash": "a2ed9a77e25a6ef5faa63d6ac29eccd4f262a4e07926c17cf14fe2840409ceb5",
+  "gatewayCommit": "780a488e52d71494dd3f47563e3dd13f271741fc",
+  "captureCommit": "70c82c5655187744d582d1a3801fd8bde1a7b037",
+  "authorizationManifestHash": "243e57b3ce65e8d6d0944ff3b6153dea89c47c415f05559475516bf167460da8",
+  "authorizedTrialScopes": 11,
+  "oldCompletePreserved": 88337,
+  "oldUncommitted": 1427,
+  "oldUncommittedAlreadyInMongo": 733,
+  "missingCompleteInserted": 694,
+  "unknownAttemptsArchivedWithoutReplay": 19,
+  "validCompleteDeleted": 0,
+  "unknownBetsReplayed": 0,
+  "officialShortCaptureNewComplete": 400,
+  "pendingAtShortValidation": 0,
+  "groups": {
+    "primary": {
+      "gameId": 32723,
+      "oldPreserved": 56177,
+      "newComplete": 200,
+      "fullReadback": 56377,
+      "workersVerified": 20,
+      "archivedUnknownAttempts": 16,
+      "recoveryProof": "ca9afc926f23660821280bd1d43e438dc8fde4b12d5ec6fd33d76b593b6c78b4",
+      "migrationRun": "36448552050",
+      "recoveryRun": "36450642470",
+      "shortRun": "36451797786",
+      "validationRun": "36452818236",
+      "formalActivationRun": "36453579446",
+      "formalCaptureRun": "36453841229"
+    },
+    "secondary": {
+      "gameId": 32726,
+      "oldPreserved": 32160,
+      "newComplete": 200,
+      "fullReadback": 32360,
+      "workersVerified": 20,
+      "archivedUnknownAttempts": 3,
+      "recoveryProof": "e8cb89471a78bcee461ba6127fc515d7b6f68ee9191f659ac672716bee9a39fd",
+      "migrationRun": "36448560072",
+      "recoveryRun": "36450649411",
+      "shortRun": "36451810517",
+      "validationRun": "36452826296",
+      "formalActivationRun": "36453587810",
+      "formalCaptureRun": "36453845517"
+    }
+  },
+  "resourceGuard": {
+    "pauseWhenEitherPercentAtLeast": 95,
+    "resumeWhenBothPercentBelow": 90,
+    "resumeStableSeconds": 60,
+    "sampleSeconds": 10,
+    "staleAfterSeconds": 30,
+    "initialWritePermitsPerGroup": 1,
+    "automaticRecoveryOfNonResourceFaults": false
+  },
+  "tests": {
+    "pythonWindowsFull": 207,
+    "pythonLinuxFull": 207,
+    "runnerV2TargetedNode": 30,
+    "historicalJsonNumberRoundTrips": 2000,
+    "offlineFixtureIntegration": 3000,
+    "linuxPreflightRuns": [
+      "36450311639",
+      "36451509383"
+    ],
+    "artificialServerOverloadPerformed": false
+  },
+  "configuredWorkers": 40,
+  "bothScheduledVariablesEnabled": true,
+  "codexAutomation": "sg-30 remains paused at user request",
+  "completedGames": 6,
+  "targetGames": 178,
+  "secondRoundEnabled": false,
+  "allGamesComplete": false,
+  "limits": [
+    "Short-run success does not assert that 40 workers were simultaneously collecting.",
+    "Unsupported natural gameplay remains preserved and parked; it is not discarded to evade adaptation.",
+    "Current running counts are not the final full-game audit.",
+    "Only resource backpressure resumes automatically; unknown source results and storage faults require new evidence-bound review."
+  ],
+  "formalSnapshot": {
+    "counts": {
+      "complete": 6,
+      "active": 2,
+      "parked-protocol": 6,
+      "ready": 9,
+      "needs-adapter": 155
+    },
+    "groups": {
+      "primary": {
+        "activeGame": 32723,
+        "journaledComplete": 56784,
+        "checkpointComplete": 56576,
+        "poolFailure": null,
+        "globalHold": false,
+        "captureStepsInProgress": 20,
+        "queuedJobs": 0
+      },
+      "secondary": {
+        "activeGame": 32726,
+        "journaledComplete": 32563,
+        "checkpointComplete": 32360,
+        "poolFailure": null,
+        "globalHold": false,
+        "captureStepsInProgress": 19,
+        "queuedJobs": 1
+      }
+    }
+  }
+}
