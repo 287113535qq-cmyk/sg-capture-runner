@@ -39,7 +39,9 @@ class TrialStore:
         self.source_allowed = source_allowed or (lambda: True)
         self.new_round_allowed=self.source_allowed
         if shard:
-            require(type(shard['id']) is int and 0 <= shard['id'] < 20
+            from runner_federation import worker_count
+            capacity = worker_count(self.root, self.trial) if batch else 20
+            require(type(shard['id']) is int and 0 <= shard['id'] < capacity
                     and 0 <= self.base < self.target <= self.plan['target'], 'BAD_SHARD')
             self.root = self.root / ('batches' if batch else 'shards') / str(batch['id'] if batch else shard['id'])
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)

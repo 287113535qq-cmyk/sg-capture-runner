@@ -15,6 +15,16 @@ def main():
     if len(content) > 1048576:
         raise Rejected('REQUEST_TOO_LARGE')
     request = json.loads(content)
+    runner_group = os.environ.get('SG_RUNNER_GROUP', 'primary')
+    if runner_group not in {'primary', 'secondary'}:
+        raise Rejected('RUNNER_GROUP_UNKNOWN')
+    if runner_group == 'secondary':
+        from runner_federation import worker_count
+        if request.get('schema') not in {'sg-round-one-v1', 'sg-work-pool-v1'}:
+            raise Rejected('SECONDARY_ROUND_ONE_ONLY')
+        probe_id = 'sg_r1_20260928_32651'
+        if worker_count(Path('/var/lib/sg-capture-runner/trials')/probe_id, probe_id) != 40:
+            raise Rejected('RUNNER_GROUP_DISABLED')
     if request.get('schema') not in {'sg-real-trial-v1','sg-work-pool-v1','sg-round-one-v1'}:
         result = Store('/var/lib/sg-capture-runner', MongoBridge()).dispatch(request)
         print(json.dumps(result, separators=(',', ':')))
@@ -40,7 +50,7 @@ def main():
             plan=validate_pool_plan(matches[0])
         else:plan=validate_pool_plan(json.loads((config/'trial-pool.json').read_text()))
         shared_mongo=TrialMongo(plan=plan)
-        service=PoolTrial(root,plan,shared_mongo.scoped,audit_executor=parallel_audit)
+        service=PoolTrial(root,plan,shared_mongo.scoped,audit_executor=parallel_audit,runner_group=runner_group)
     elif (Path(root)/'trials'/TRIAL/'parallel.json').exists():
         service=ParallelTrial(root,lambda scope:TrialMongo(sequence_range=scope))
     else:

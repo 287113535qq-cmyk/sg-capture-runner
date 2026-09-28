@@ -121,7 +121,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          workflow='repos/zyzuoyang/sg-capture-runner/actions/workflows/trial-300k.yml'
+          workflow="repos/${GITHUB_REPOSITORY}/actions/workflows/trial-300k.yml"
           state="$(gh api "$workflow" --jq '.state')"
           if [ "$state" = 'active' ]; then
             if ! gh api --method PUT "$workflow/disable"; then

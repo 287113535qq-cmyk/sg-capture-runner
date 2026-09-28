@@ -15,6 +15,7 @@ import sqlite3
 import time
 
 from store import Rejected, require
+from runner_federation import worker_count
 
 
 class WorkPool:
@@ -23,6 +24,7 @@ class WorkPool:
         require(type(target) is int and 20 <= target <= 300000, 'BAD_TARGET')
         self.clock, self.target = clock, target
         directory = Path(directory)
+        self.worker_count = worker_count(directory, trial_id)
         directory.mkdir(parents=True, exist_ok=True)
         self.db = sqlite3.connect(directory / 'work-pool.sqlite3', isolation_level=None, timeout=30)
         self.db.row_factory = sqlite3.Row
@@ -34,7 +36,7 @@ class WorkPool:
             enabled INTEGER NOT NULL DEFAULT 0, failure TEXT,
             next_sequence INTEGER NOT NULL DEFAULT 1);
           CREATE TABLE IF NOT EXISTS workers(
-            id INTEGER PRIMARY KEY CHECK(id>=0 AND id<20),
+            id INTEGER PRIMARY KEY CHECK(id>=0 AND id<40),
             session_hash TEXT NOT NULL UNIQUE, owner TEXT NOT NULL, epoch INTEGER NOT NULL,
             lease_until REAL NOT NULL, active_batch INTEGER, observed_rate REAL);
           CREATE TABLE IF NOT EXISTS batches(
@@ -43,6 +45,8 @@ class WorkPool:
             created REAL NOT NULL, completed REAL,
             CHECK(start<=end));
         ''')
+        # Keep the original plan signature. Runtime capacity is an independently
+        # audited operator extension, never a rewrite of the original quota.
         signature = hashlib.sha256(json.dumps({'trialId': trial_id, 'target': target, 'workers': 20,
             'version': 1}, sort_keys=True).encode()).hexdigest()
         self.db.execute('INSERT OR IGNORE INTO control(id,plan_hash) VALUES(1,?)', (signature,))
@@ -74,7 +78,7 @@ class WorkPool:
         self.db.execute('UPDATE control SET enabled=0,failure=COALESCE(failure,?) WHERE id=1', (reason,))
 
     def register(self, worker, session_hash, owner):
-        require(type(worker) is int and 0 <= worker < 20, 'BAD_WORKER')
+        require(type(worker) is int and 0 <= worker < self.worker_count, 'BAD_WORKER')
         require(isinstance(session_hash, str) and re.fullmatch('[a-f0-9]{64}', session_hash), 'BAD_SESSION_HASH')
         require(isinstance(owner, str) and re.fullmatch('[a-zA-Z0-9:_-]{1,100}', owner), 'BAD_OWNER')
         with self.transaction():
@@ -141,7 +145,7 @@ class WorkPool:
             # Aim for eight seconds per batch, and shrink near the finish so
             # fast runners do not exit with large quotas stranded on slow ones.
             size = 100 if worker['observed_rate'] is None else round(worker['observed_rate'] * 8)
-            size = min(max(20, size), 400, math.ceil(remaining / 20), remaining)
+            size = min(max(20, size), 400, math.ceil(remaining / self.worker_count), remaining)
             start, end = control['next_sequence'], control['next_sequence'] + size - 1
             cursor = self.db.execute('INSERT INTO batches(worker,start,end,created) VALUES(?,?,?,?)',
                 (lease['worker'], start, end, self.clock()))

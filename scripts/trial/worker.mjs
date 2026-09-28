@@ -7,6 +7,7 @@ import { connect } from './rpc.mjs';
 import { gameForShard } from './demo-sessions.mjs';
 import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
 import {SQUID_EXTENSION} from './squid-protocol.mjs';
+import {globalShard} from './runner-group.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
@@ -32,8 +33,8 @@ const exchangeOperation=process.env.SG_TRIAL_EXCHANGE || 'exchange_journal';
 assert([0,50].includes(requestIntervalMs));
 assert(['exchange','exchange_journal'].includes(exchangeOperation));
 if(isPool){assert.equal(requestIntervalMs,0);assert.equal(exchangeOperation,'exchange_journal');}
-const shard=process.env.SG_TRIAL_SHARD===undefined ? null : Number(process.env.SG_TRIAL_SHARD);
-assert(shard===null || Number.isInteger(shard) && shard>=0 && shard<20);
+const shard=process.env.SG_TRIAL_SHARD===undefined ? null : globalShard(
+  Number(process.env.SG_TRIAL_SHARD), plan, process.env.GITHUB_REPOSITORY);
 const transport = connect(plan), rpc = (op,data={})=>transport.rpc(op,{...(shard===null?{}:{shardId:shard}),...data});
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
   target:plan.target,shardId:shard,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};

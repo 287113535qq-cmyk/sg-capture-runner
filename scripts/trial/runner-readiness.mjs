@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
+import {repositories} from './runner-group.mjs';
 
 export const READY_STEP = 'Wait for every capture runner';
 
@@ -28,7 +29,7 @@ async function main() {
   const expected = Number(process.env.CAPTURE_RUNNERS);
   assert([2, 4, 20].includes(expected));
   const repository = process.env.GITHUB_REPOSITORY;
-  assert.equal(repository, 'zyzuoyang/sg-capture-runner');
+  assert(Object.hasOwn(repositories, repository), 'RUNNER_REPOSITORY_NOT_ALLOWED');
   const run = process.env.GITHUB_RUN_ID, attempt = process.env.GITHUB_RUN_ATTEMPT;
   assert(/^\d+$/.test(run) && /^\d+$/.test(attempt));
   const token = process.env.GH_TOKEN;

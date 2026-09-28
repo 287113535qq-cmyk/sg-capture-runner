@@ -1,4 +1,4 @@
-"""Twenty stable sessions pull durable small batches through the existing journal.
+"""Repository-scoped stable sessions pull batches through the existing journal.
 
 All SG I/O stays on the Runner. This service only assigns work and stores,
 validates, and audits responses. There is no RPC that enables collection.
@@ -14,14 +14,17 @@ from pool_plan import validate_pool_plan
 from store import require, Rejected, canonical, digest, file_lock, sync_dir
 from trial_store import TrialStore
 from work_pool import WorkPool
+from runner_federation import group_range, worker_count
 
 
 class PoolTrial:
-    def __init__(self, root, plan, mongo_factory, clock=time.time, audit_executor=None):
+    def __init__(self, root, plan, mongo_factory, clock=time.time, audit_executor=None, runner_group='primary'):
         self.plan = validate_pool_plan(plan)
         self.base, self.clock = Path(root).resolve(), clock
         self.root = self.base / 'trials' / self.plan['trialId']
         self.root.mkdir(parents=True, exist_ok=True)
+        self.runner_group = runner_group
+        self.worker_range = group_range(runner_group, worker_count(self.root, self.plan['trialId']))
         with file_lock(self.root / 'pool-init.lock'):
             manifest = self.root / 'pool-plan.json'
             if manifest.exists():
@@ -34,6 +37,7 @@ class PoolTrial:
                 sync_dir(self.root)
             self.pool = WorkPool(self.root, self.plan['trialId'], self.plan['target'], clock)
             self.pool.db.execute('CREATE TABLE IF NOT EXISTS startup(id INTEGER PRIMARY KEY CHECK(id=1))')
+            self.pool.db.execute('CREATE TABLE IF NOT EXISTS group_startup(name TEXT PRIMARY KEY)')
         self.mongo_factory = mongo_factory
         self.audit_executor = audit_executor
         self.store = None
@@ -91,11 +95,15 @@ class PoolTrial:
             self.pool.release_worker(self.worker_lease)
             return {'done': True}
         require(self.allowed(), 'GLOBAL_SOURCE_STOPPED')
-        if not self.pool.db.execute('SELECT 1 FROM startup WHERE id=1').fetchone():
-            live = self.pool.db.execute('SELECT COUNT(*) FROM workers WHERE lease_until>?', (self.clock(),)).fetchone()[0]
+        started = self.pool.db.execute('SELECT 1 FROM group_startup WHERE name=?', (self.runner_group,)).fetchone()
+        if self.runner_group == 'primary':
+            started = started or self.pool.db.execute('SELECT 1 FROM startup WHERE id=1').fetchone()
+        if not started:
+            live = self.pool.db.execute('SELECT COUNT(*) FROM workers WHERE lease_until>? AND id>=? AND id<?',
+                (self.clock(), self.worker_range.start, self.worker_range.stop)).fetchone()[0]
             if live != 20:
                 return {'waitingForWorkers': True, 'readyWorkers': live}
-            self.pool.db.execute('INSERT OR IGNORE INTO startup(id) VALUES(1)')
+            self.pool.db.execute('INSERT OR IGNORE INTO group_startup(name) VALUES(?)', (self.runner_group,))
         while True:
             batch = self.pool.take(self.worker_lease)
             if batch is None:
@@ -127,6 +135,7 @@ class PoolTrial:
             elif op == 'ping':
                 result = {'pong': True}
             elif op == 'register':
+                require(type(req.get('shardId')) is int and req['shardId'] in self.worker_range, 'RUNNER_GROUP_MISMATCH')
                 require(req.get('planHash') == digest(self.plan), 'RUNNER_POOL_PLAN_MISMATCH')
                 if self.pool.status()['complete']:
                     # Another resumed worker may reconcile the final durable
@@ -168,7 +177,7 @@ class PoolTrial:
         completed = allocation['completedBatchRounds']
         totals = {key: completed for key in ('journaled', 'durable', 'checkpoint')}
         workers = {i: {'shardId': i, 'checkpoint': 0, 'journaled': 0, 'durable': 0, 'pending': None,
-            'activeBatch': None, 'leaseUntil': 0, 'failure': None} for i in range(20)}
+            'activeBatch': None, 'leaseUntil': 0, 'failure': None} for i in range(self.pool.worker_count)}
         for row in self.pool.db.execute('SELECT worker,SUM(end-start+1) AS n FROM batches WHERE completed IS NOT NULL GROUP BY worker'):
             workers[row['worker']].update({key: row['n'] for key in totals})
         for batch in self.pool.db.execute('SELECT * FROM batches WHERE completed IS NULL'):
@@ -195,7 +204,8 @@ class PoolTrial:
             finally:
                 db.close()
         status = 'complete' if allocation['complete'] else 'halted' if allocation['failure'] else 'claimed' if allocation['unfinishedBatches'] else 'pending'
-        return {'trialId': self.plan['trialId'], 'mode': 'dynamic-20', 'target': self.plan['target'],
+        return {'trialId': self.plan['trialId'], 'mode': f'dynamic-{self.pool.worker_count}',
+            'workerCapacity': self.pool.worker_count, 'target': self.plan['target'],
             'status': status, **totals, 'shards': list(workers.values()), 'globalSourceEnabled': self.allowed(),
             'failure': allocation['failure'], 'unassigned': allocation['unassigned'],
             'unfinishedBatches': allocation['unfinishedBatches'], 'distinctBoundSessions': self.pool.db.execute('SELECT COUNT(*) FROM workers').fetchone()[0],
@@ -203,7 +213,7 @@ class PoolTrial:
 
     def audit(self, req):
         shard = req.get('shardId')
-        require(shard is None or type(shard) is int and 0 <= shard < 20, 'BAD_WORKER')
+        require(shard is None or type(shard) is int and shard in self.worker_range, 'BAD_WORKER')
         require(shard is not None or self.pool.status()['complete'] or not self.allowed(), 'POOL_NOT_QUIESCENT')
         reports = []
         batches = self.pool.db.execute('SELECT * FROM batches WHERE (? IS NULL OR worker=?) ORDER BY start', (shard, shard)).fetchall()
