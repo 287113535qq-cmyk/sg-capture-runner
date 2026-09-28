@@ -2,7 +2,7 @@
 
 当前状态（2026-09-28 18:54 UTC）：**已按用户要求等 32723 / 32726 完整结束后完成数据库往返优化，两组 400 局真实短采全文验收通过，正式采集已恢复。** 累计完成 8 / 178 款；当前 primary 采集 32737 Starmania，secondary 采集 32746 Xiao Fu Bao，两组各 20 个实际活动分片。完整游戏还需达到目标并通过终审，运行中计数只是进度。
 
-正式任务：[primary 36467917789](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36467917789)、[secondary 36467921980](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36467921980)。两个 `SG_TRIAL_ENABLED=true`，原每 20 分钟定义保留；Codex sg-30 提醒按用户要求继续暂停。可用分片先工作，排队者启动后加入；每款完成或安全暂挂后由新整组继续，避免收尾退出造成下一款并发下降。
+原正式任务：[primary 36467917789](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36467917789)、[secondary 36467921980](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36467921980)。两个 `SG_TRIAL_ENABLED=true`，原每 20 分钟定义保留。2026-09-29 用户要求持续处理，Codex `sg-30` 巡检已恢复，每 20 分钟检查并推进适配；第一组已自动续接 [36474147259](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36474147259)。可用分片先工作，排队者启动后加入；每款完成或安全暂挂后由新整组继续。见 [持续处理规则及最新接续证据](docs/continuous-processing.md)，本页其他进度数字为上方时间的历史快照。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 
