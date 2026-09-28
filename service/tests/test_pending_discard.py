@@ -189,4 +189,84 @@ class DiscardTests(unittest.TestCase):
             verify_discard(store,bound,HTTP_TARGETS,evidence)
 
 
+class HoppilyDiscardTests(unittest.TestCase):
+    def setUp(self):
+        from campaign import CONFIG
+        from pending_discard import HOPPILY_HTTP_REVIEW, HOPPILY_HTTP_TARGETS
+        from test_campaign import NativeAdapterTests
+        from round_fields import VERSION
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name);self.clock=lambda:2000
+        self.plan=json.loads((CONFIG/'round-one-plans.json').read_text('utf-8'))['32711']
+        self.c=Campaign(self.root,disk_free=lambda:100*1024**3);self.addCleanup(self.c.close)
+        self.c.db.execute("UPDATE control SET active_game=32711,enabled=0,reason='ACTIVE_GAME_REQUIRES_REVIEW'")
+        self.mongo={};self.factory=lambda scope:self.mongo.setdefault(scope,VerifiedMongo())
+        self.pool=PoolTrial(self.root,self.plan,self.factory,self.clock);self.addCleanup(self.pool.close)
+        self.stores=[];self.targets=HOPPILY_HTTP_TARGETS
+        helper=NativeAdapterTests();helper.plan=self.plan
+        for bid,worker in ((136,18),(137,15),(140,7),(145,14)):
+            seq=self.targets[bid][0];start=seq-1;end=seq+98
+            self.pool.pool.db.execute('INSERT INTO batches(id,worker,start,end,created) VALUES(?,?,?,?,0)',(bid,worker,start,end))
+            self.pool.pool.db.execute('INSERT INTO workers(id,session_hash,owner,epoch,lease_until,active_batch) VALUES(?,?,?,1,0,?)',
+                (worker,format(worker,'064x'),'old',bid))
+            s=TrialStore(self.root,self.factory((start,end)),lambda:1000,plan=self.plan,
+                batch={'id':bid,'worker':worker,'start':start,'end':end})
+            self.stores.append(s);self.addCleanup(s.close)
+            owned={'owner':'old','epoch':s._claim({'owner':'old','sessionHash':format(worker,'064x'),'commitSha':'a'*40})['epoch']}
+            step=helper.step('BET',100000,99800,0)
+            raw={'fixtureOnly':False,'protocol':'nextgen','sourceKey':self.plan['sourceKey'],
+                 'roundFieldsVersion':VERSION,'startBalanceRaw':100000,'steps':[step]}
+            s._begin({**owned,'sequence':start,'attempt':f'00000000-0000-0000-0000-{start:012d}',
+                      'startBalanceRaw':100000,'requestPayload':step['requestPayload']})
+            s._exchange_journal({**owned,'sequence':start,'step':step,'normalized':s.field_settled(raw)})
+            if bid==136:s._flush(owned)
+            s._begin({**owned,'sequence':seq,'attempt':f'00000000-0000-0000-0000-{seq:012d}',
+                      'startBalanceRaw':100000,'requestPayload':step['requestPayload']})
+            if bid==137:
+                s.db.execute("UPDATE trial SET status='halted',failure='source_http',lease_until=0")
+            else:
+                s._exchange_journal({**owned,'sequence':seq,'step':helper.step('BET',100000,99800,0,1)})
+                s.db.execute("UPDATE trial SET status='pending',failure='storage',lease_until=0")
+        self.pool.pool.halt('SOURCE_OR_SESSION_FAILURE')
+        rows=lambda db,table:[dict(r) for r in db.execute('SELECT * FROM '+table+' ORDER BY id')]
+        self.evidence={'runId':36399061495,'shardId':15,'httpStatus':502,'error':'SOURCE_HTTP_REJECTED',
+                       'originalOutcome':'unknown','action':'abandon_without_replay'}
+        self.proof={'authorization':HOPPILY_HTTP_REVIEW,'trialId':self.plan['trialId'],'planHash':digest(self.plan),
+            'httpEvidence':self.evidence,'campaignHash':digest(rows(self.c.db,'control')[0]),
+            'controlHash':digest(rows(self.pool.pool.db,'control')[0]),'workersHash':digest(rows(self.pool.pool.db,'workers')),
+            'allocationHash':digest(rows(self.pool.pool.db,'batches')),'expectedComplete':4,'expectedCommitted':1,'batches':{}}
+        for s in self.stores:
+            self.proof['batches'][str(s.batch['id'])]={'stateHash':digest(dict(s.state())),
+                'receiptsHash':digest([dict(r) for r in s.db.execute('SELECT * FROM receipts ORDER BY sequence')]),
+                'pendingHash':digest(s.pending())}
+
+    def test_game_bound_review_preserves_complete_rows_and_archives_four_pending(self):
+        before=[s.pending() for s in self.stores]
+        with patch('pending_discard.HOPPILY_HTTP_PENDING_HASH',digest(self.stores[1].pending())):
+            result=discard(self.root,self.proof,self.factory,self.root/'reviews/hoppily',True,self.clock)
+        self.assertEqual((result['preservedComplete'],result['mongoVerified'],len(result['discarded'])),(4,1,4))
+        self.assertTrue(result['gatesRemainPaused']);self.assertEqual(result['unknownBetAbandonedWithoutReplay'],1)
+        event=json.loads((self.root/'reviews/hoppily/event.json').read_text())
+        self.assertEqual([b['pending'] for b in event['batches']],before)
+        for s in self.stores:
+            self.assertIsNone(s.pending())
+            self.assertEqual(digest([dict(r) for r in s.db.execute('SELECT * FROM receipts ORDER BY sequence')]),
+                             self.proof['batches'][str(s.batch['id'])]['receiptsHash'])
+
+    def test_unknown_attempt_requires_exact_http_incident_and_private_hash(self):
+        s=self.stores[1];bound=self.proof['batches']['137']
+        with patch('pending_discard.HOPPILY_HTTP_PENDING_HASH',digest(s.pending())):
+            self.assertEqual(verify_discard(s,bound,self.targets,self.evidence),s.pending())
+            for change in ({'runId':36391708988},{'shardId':1},{'httpStatus':403},{'httpStatus':429},{'action':'retry'}):
+                with self.assertRaises(Rejected):verify_discard(s,bound,self.targets,{**self.evidence,**change})
+        with self.assertRaisesRegex(Rejected,'DISCARD_UNKNOWN_NOT_REVIEWED'):
+            verify_discard(s,bound,self.targets,self.evidence)
+
+    def test_profile_cannot_select_old_game_or_an_unreviewed_trial(self):
+        for trial in ('sg_r1_20260928_32651','sg_r1_20260928_32704'):
+            with self.assertRaisesRegex(Rejected,'DISCARD_AUTHORIZATION_REQUIRED'):
+                discard(self.root,{**self.proof,'trialId':trial},self.factory,self.root/'reviews/no-change',True,self.clock)
+        self.assertFalse((self.root/'reviews/no-change').exists())
+
+
 if __name__ == '__main__': unittest.main()

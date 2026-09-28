@@ -29,6 +29,10 @@ SECOND_HTTP_TARGETS = {2473:(247738,'FREE_GAME'),2479:(248400,'FREE_GAME'),
     2480:(248565,'FREE_GAME'),2481:(248645,'FREE_GAME'),2483:(248940,'FREE_GAME'),
     2491:(249697,'ABANDON_UNKNOWN_BET')}
 SECOND_HTTP_PENDING_HASH = '9e1bb881e2e2d55feab810fa347bb10a7fac8627ce1e5dd93e2340536e5f54bb'
+HOPPILY_HTTP_REVIEW = 'user-discard-http502-run36399061495-32711-20260928'
+HOPPILY_HTTP_TARGETS = {136:(12587,'FREE_GAME'),137:(12638,'ABANDON_UNKNOWN_BET'),
+    140:(12813,'FREE_GAME'),145:(13407,'FREE_GAME')}
+HOPPILY_HTTP_PENDING_HASH = 'f47f2a1d5b4ed36e7ae32e87462c139a1521c960c1a99efa780f1bbb416bbcd2'
 
 
 def verify_discard(store, bound, targets=None, http_evidence=None):
@@ -48,9 +52,10 @@ def verify_discard(store, bound, targets=None, http_evidence=None):
         # to remove anomalous rounds and start the flow again. A gateway error
         # does NOT establish that BET failed. Preserve that uncertainty forever;
         # never turn this into a replay/retry rule for unknown requests.
-        require(targets in (HTTP_TARGETS, SECOND_HTTP_TARGETS), 'DISCARD_UNKNOWN_NOT_REVIEWED')
+        require(targets in (HTTP_TARGETS, SECOND_HTTP_TARGETS, HOPPILY_HTTP_TARGETS), 'DISCARD_UNKNOWN_NOT_REVIEWED')
         bid, known_hash, run, worker = (93,HTTP_PENDING_HASH,36390301074,3) if targets == HTTP_TARGETS else (
-            2491,SECOND_HTTP_PENDING_HASH,36391708988,1)
+            (2491,SECOND_HTTP_PENDING_HASH,36391708988,1) if targets == SECOND_HTTP_TARGETS else
+            (137,HOPPILY_HTTP_PENDING_HASH,36399061495,15))
         require(store.batch['id'] == bid and digest(pending) == known_hash
                 and pending['awaiting'] is not None and not raw['steps']
                 and store.state()['failure'] == 'source_http', 'DISCARD_UNKNOWN_NOT_REVIEWED')
@@ -104,17 +109,20 @@ def assert_batch_binding(store, bound):
 
 def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time):
     review = proof.get('authorization')
-    require(review in {REVIEW, HTTP_REVIEW, SECOND_HTTP_REVIEW} and proof.get('trialId') == 'sg_r1_20260928_32651',
+    game_id = 32711 if review == HOPPILY_HTTP_REVIEW else 32651
+    require(review in {REVIEW, HTTP_REVIEW, SECOND_HTTP_REVIEW, HOPPILY_HTTP_REVIEW}
+            and proof.get('trialId') == f'sg_r1_20260928_{game_id}',
             'DISCARD_AUTHORIZATION_REQUIRED')
-    targets = TARGETS if review == REVIEW else HTTP_TARGETS if review == HTTP_REVIEW else SECOND_HTTP_TARGETS
+    targets = {REVIEW:TARGETS,HTTP_REVIEW:HTTP_TARGETS,SECOND_HTTP_REVIEW:SECOND_HTTP_TARGETS,
+               HOPPILY_HTTP_REVIEW:HOPPILY_HTTP_TARGETS}[review]
     halted_batch, halted_failure = (18, 'PROTOCOL_VALIDATION_FAILED') if review == REVIEW else (
-        93 if review == HTTP_REVIEW else 2491, 'source_http')
+        93 if review == HTTP_REVIEW else 137 if review == HOPPILY_HTTP_REVIEW else 2491, 'source_http')
     pool_failure = 'BATCH_HALTED' if review == REVIEW else 'SOURCE_OR_SESSION_FAILURE'
     root = Path(root).resolve()
     destination = Path(backup_dir).resolve()
     require(destination.is_relative_to(root / 'reviews') and destination != root / 'reviews', 'DISCARD_BACKUP_PATH')
     campaign = Campaign(root)
-    plan = campaign.plans['32651']
+    plan = campaign.plans[str(game_id)]
     pool = PoolTrial(root, plan, mongo_factory, clock)
     try:
         with ExitStack() as locks:
@@ -122,7 +130,7 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
             locks.enter_context(file_lock(pool.root / 'protocol-review.lock'))
             state = dict(campaign.db.execute('SELECT * FROM control').fetchone())
             control = dict(pool.pool.db.execute('SELECT * FROM control').fetchone())
-            require(state['active_game'] == 32651 and not state['enabled']
+            require(state['active_game'] == game_id and not state['enabled']
                     and state['reason'] == 'ACTIVE_GAME_REQUIRES_REVIEW', 'DISCARD_CAMPAIGN_NOT_PAUSED')
             require(not control['enabled'] and control['failure'] == pool_failure, 'DISCARD_POOL_NOT_PAUSED')
             require(campaign.disk_free() >= campaign.config['diskReserveBytes'], 'DISK_RESERVE_REACHED')
