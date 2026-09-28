@@ -57,6 +57,12 @@ def sample(clear=False):
     return raw(steps)
 
 
+def retained_terminal():
+    value = sample()
+    response(value['steps'][-1], remove=['CFG', 'FS_2', 'NFR_2', 'CFR_2', 'CFP_2'])
+    return value
+
+
 class QuarterbackFieldsTests(unittest.TestCase):
     def setUp(self):
         self.adapter = QuarterbackFields(PLAN)
@@ -113,6 +119,21 @@ class QuarterbackFieldsTests(unittest.TestCase):
             response(value['steps'][-1], extra, remove)
             with self.assertRaises(FieldError):
                 self.adapter.settled(value)
+
+    def test_retained_fid_end_without_any_counters_is_terminal_but_partial_group_is_not(self):
+        value = retained_terminal()
+        self.assertIsNone(self.adapter.next_request(value))
+        self.assertEqual(self.adapter.settled(value)['bonus'], 2)
+        for extra in [{'CFG': 2}, {'FS_2': 1}, {'NFR_2': 1}, {'CFR_2': 1}, {'CFP_2': 1}]:
+            incomplete = copy.deepcopy(value)
+            response(incomplete['steps'][-1], extra)
+            with self.assertRaisesRegex(FieldError, 'FOAM_MISSING_END_COUNTERS'):
+                self.adapter.settled(incomplete)
+        for changes in [{'AB': 1}, {'TW': 1}, {'IFG': 1}, {'NFG': 1}]:
+            invalid = copy.deepcopy(value)
+            response(invalid['steps'][-1], changes)
+            with self.assertRaises(FieldError):
+                self.adapter.settled(invalid)
 
     def test_no_skipped_start_duplicate_pick_extra_end_paid_replay_or_session_change(self):
         for case in range(5):

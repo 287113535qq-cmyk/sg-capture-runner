@@ -7,7 +7,7 @@ import {nextRequest,roundMapping} from './squid-protocol.mjs';
 import {captureBatch} from './capture-batch.mjs';
 
 const output=spawnSync(process.env.PYTHON || 'python',['-c',
-  "import sys,json;sys.path[:0]=['service','service/tests'];from test_quarterback_fields import sample,raw,exchange,PLAN;from quarterback_fields import QuarterbackFields;values=[sample(),sample(True),raw([exchange('BET')]),raw([exchange('BET',FID='0|',NFG=1),exchange('FREE_GAME',FID='0|',NFG=0,TW=50,B=100025,AB=100025)])];print(json.dumps([{'raw':r,'fields':QuarterbackFields(PLAN).settled(r)} for r in values]))"],{encoding:'utf8'});
+  "import sys,json;sys.path[:0]=['service','service/tests'];from test_quarterback_fields import sample,raw,exchange,retained_terminal,PLAN;from quarterback_fields import QuarterbackFields;values=[sample(),sample(True),raw([exchange('BET')]),raw([exchange('BET',FID='0|',NFG=1),exchange('FREE_GAME',FID='0|',NFG=0,TW=50,B=100025,AB=100025)]),retained_terminal()];print(json.dumps([{'raw':r,'fields':QuarterbackFields(PLAN).settled(r)} for r in values]))"],{encoding:'utf8'});
 assert.equal(output.status,0,output.stderr);
 const cases=JSON.parse(output.stdout);
 const require=createRequire(import.meta.url);
@@ -79,4 +79,16 @@ test('actual capture loop resumes the original successful BET without INIT/BET a
     deadline:performance.now()+60000,limit:1});
   assert.equal(evidence.completedThisRun,1);assert.deepEqual(pending.raw.steps[0],raw.steps[0]);
   assert.deepEqual(events,['intent','source:FEATURE_START','exchange_journal','intent','source:FEATURE_PICK','exchange_journal','intent','source:FEATURE_END','exchange_journal','release']);
+});
+
+
+test('retained FID with absent END counter group matches independently; partial groups stay rejected',()=>{
+  const {raw,fields}=cases.at(-1);
+  assert.equal(nextRequest(raw),null);
+  assert.equal(fields.bonus,2);
+  for(const extra of ['CFG=2','FS_2=1','NFR_2=1','CFR_2=1','CFP_2=1']){
+    const invalid=structuredClone(raw);invalid.steps[3].responsePayload+='&'+extra;
+    assert.throws(()=>nextRequest(invalid));
+    assert.throws(()=>prepareNextgenRound(invalid,{buy:0,bonus:2,typeMappingHash:'x'}));
+  }
 });

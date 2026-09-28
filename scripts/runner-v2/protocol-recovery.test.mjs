@@ -9,13 +9,16 @@ import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {reviewOtherGroupRun} from './protocol-github-boundary.mjs';
 
-test('operator profile pins the reviewed implementation with a platform-independent file fingerprint',()=>{
+test('applied protocol profiles remain immutable and cannot authorize the newer implementation',()=>{
+ const applied={demon:'8fb2493c0f99a0cf6c63fe33bba8a72211e9525aeab2ad6da8b23d8916d7d72b',
+  quarterback:'bbdfcc8de8754df4bcef840d98652d10df91dcf9d08922f0dfadc7d117059a6c'};
  for(const name of ['demon','quarterback']){
   const p=JSON.parse(fs.readFileSync(`config/protocol-${name}-20260929.json`,'utf8'));
   assert.equal(p.adapterHashFormat,'utf8-lf-sha256');
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,
     createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),applied[name]);assert.equal(hash(p.adapterFiles),p.adapterHash);
+  assert.notEqual(hash(actual),p.adapterHash); // Production still rejects ADAPTER_VERSION_CHANGED.
  }
 });
 

@@ -1,5 +1,19 @@
 # 两个明确会话拒绝与未启动短采的精确恢复
 
+## 2026-09-29 07:14 北京时间实际执行
+
+固定 a6ee0b9：primary session-recover `36495340810` 成功，proof `922baf840c37342a2fb0125712cd727fe59be519b283a1066ab1b726959954bb`；164旧完整记录全文保留，仅明确拒绝的2个attempt私有归档，另4个原pending不变。secondary `36495748952` 成功，proof `ab5e7634aa159e0df2aef22ad9ac535a11a488de9601bcbba717ce3e2a1ee5e8`；42旧完整记录与唯一原pending保留。两个proof均已应用，绝不能重跑。
+
+随后只启动 secondary 短采 `36495948701`；20分片进入采集步骤，合计45次源请求、31次BET、30条新增完整日志。第一组没有派发短采。worker23在 batch1/sequence20 的新局实际完成 BET→FEATURE_START→FEATURE_PICK→FEATURE_END，END成功返回FID2但省略整组结束计数，旧判断报FOAM_MISSING_END_COUNTERS并共同保护停止。不是会话拒绝、网络未知结果或Runner容量失败。旧原sequence113尚未发送START，原pending及许可未消费。
+
+32836现有72完整日志、62条Mongo全文一致（10待写），另2pending：新sequence20含完整四帧，原sequence113含原BET。32739仍164/164、4pending，两个已归档attempt不恢复为原局。全部236条完整记录已离线逐条校验，原206完整数据保留不变。
+
+END修正精确限定此游戏四帧独立Foam链，FID保留但CFG/FS/NFR/CFR/CFP全缺失允许结束；部分计数和正免费计数仍拒绝。真实sequence20独立Python/TypeScript回放得到stake25、TW350、start99958、end/AB100283、bonus2；尚未写入完整局，不计为新增完整记录。已应用profile文件完全冻结，测试校验原完整profile摘要并确认新代码无法沿用旧许可，生产版本检查没有放宽。
+
+Windows236项Python、124项Node（83 Runner+41协议）、TypeScript通过；真实数据回放源请求0、现场改写0。后续必须新建本次END现场的Mongo v2证据绑定操作器：无源重发地结算已收齐四帧、补写10条待落库记录、保留原113及Demon4pending，审查共同hold及新run/commit许可后重新短采。不能直接点重跑、修改runKey或沿用本次session-recover。
+
+以下是本次已经执行的操作器设计说明，不能作为下一次恢复的授权proof。
+
 实现针对 [已归档事故](protocol-short-session-stop-20260929.md)，使用原 `trial-300k.yml` 的 `session-recover / session-validate / session-formal`，只在 GitHub 执行。没有增加通用忽略错误或自动更换会话逻辑。服务器继续仅执行受限 Mongo 原生操作。
 
 primary 的 `config/session-demon-20260929.json` 固定失败运行 `36492435648:1`、当前 campaign/pool/15批摘要、此前已应用 proof 及旧备份摘要；secondary 的 `config/session-quarterback-20260929.json` 固定 `36492439112:1` 及其4批现场。配置有效期两小时，只能使用已绑定文件版本。两个仓库必须均无其他活动/排队任务，全部原租约已结束，没有 bootstrap / 请求未知在途、完整记录与 Mongo 全文一致。

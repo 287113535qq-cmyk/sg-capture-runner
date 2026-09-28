@@ -1,5 +1,7 @@
 # 32836 独立 Foam Finger 协议
 
+2026-09-29 07:14 北京时间：session恢复已实际执行，随后新局sequence20首次走完真实Foam四帧。END保留FID2但省略CFG/FS_2/NFR_2/CFR_2/CFP_2整组字段，旧适配器拦下并保留原响应。客户端receivedFeatureEnd→panelEnd→readyForNextSpin支持这一结束形式；已修正Python/Runner/独立TypeScript并通过真实原始数据回放（stake25、TW350、bonus2），尚未受控补写或短采验收。部分计数缺失、正免费计数、其他功能栈仍拒绝。详见[新的实际结果](session-recovery-20260929.md)。下方要求保留FID必有计数的描述仅为旧实现。
+
 实际执行更新：恢复已应用，旧 42 个完整记录已落库核验；随后短采被 primary 的会话拒绝共同保护拦截，32836 源请求为 0。尚未验证真实 Foam 结算；旧 proof 不可重跑。见[现场结果](protocol-short-session-stop-20260929.md)。
 
 候选适配按官方只读 `quarterbackfieldsofglory/412.bundle.js`（SHA256 `43c79de4ffeeebec57ab1a0c7765b47a310d489f82a589bd69be4a495be233a2`）及 `game.bundle.js`（`789a750fbcc2e3539d1257a3926908c04f5d478cf957b5464b691f06d79fb3ec`）实现。原现场和历史流量见 [观察报告](quarterback-observation-20260929.md)。本文件说明实现边界，不授权解除暂挂。

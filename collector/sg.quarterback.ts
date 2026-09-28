@@ -1,5 +1,5 @@
 /** Exact standalone foam terminal convention. NFR is awarded rounds;
- * successful END plus CFR=NFR establishes completion for this one family.
+ * successful END either omits all feature counters or has CFR=NFR.
  * The Runner and Python additionally validate every request/XML frame.
  */
 export function settledQuarterbackFoam(source: string, entries: any[]): boolean {
@@ -32,7 +32,8 @@ export function settledQuarterbackFoam(source: string, entries: any[]): boolean 
   if (data.length > 5 || data.some(v => !/^\d+$/.test(v) || !Number.isSafeInteger(Number(v)))
       || r[2].FP !== `0|1|${data[0]}`) return false;
   const end = p[3];
-  if (['2', '2|'].includes(end.FID) && (end.NFR_2 === undefined || end.CFR_2 === undefined)) return false;
+  if (['2', '2|'].includes(end.FID) && (end.NFR_2 === undefined || end.CFR_2 === undefined)
+      && !['CFG', 'FS_2', 'NFR_2', 'CFR_2', 'CFP_2'].every(k => end[k] === undefined)) return false;
   return (end.NFR_2 === undefined || end.NFR_2 === '0' || end.NFR_2 === '1' && end.CFR_2 === '1')
     && (end.CFP_2 === undefined || end.CFP_2 === '1');
 }

@@ -56,7 +56,8 @@ function sequence(raw){
       need(['2','2|'].includes(fid) && p.CFG==='2' && p.CFP_2==='1','UNKNOWN_TRIAL_FEATURE');
       next={MSGID:'FEATURE_END',CFG:'2'};
     }else{
-      if(['2','2|'].includes(fid))need(p.NFR_2!==undefined && p.CFR_2!==undefined,'FOAM_MISSING_END_COUNTERS');
+      if(['2','2|'].includes(fid))need(['CFG','FS_2','NFR_2','CFR_2','CFP_2'].every(k=>p[k]===undefined)
+        || p.NFR_2!==undefined && p.CFR_2!==undefined,'FOAM_MISSING_END_COUNTERS');
       if(p.NFR_2!==undefined)need(integer(p.NFR_2)===0 || p.CFR_2===p.NFR_2,'INCOMPLETE_ROUND');
       need([undefined,'1'].includes(p.CFP_2),'INCOMPLETE_ROUND');next=null;
     }

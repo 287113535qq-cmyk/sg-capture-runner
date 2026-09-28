@@ -128,9 +128,9 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
     "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
-    "service/quarterback_fields.py": "834f292bdd307601d0ee6f0b4c3235f241455255b1862f0f5e9eaf22528198e1",
-    "scripts/trial/quarterback-protocol.mjs": "689fdde8ad07615020ee73cca8884aa1e860e421bd035eedc3ee78a763900bd7",
-    "collector/sg.quarterback.ts": "d20f1ce2a62b96ec0d6a471fa1741e6e5a0694ec7f535fc6224c283fdc8a9a4c",
+    "service/quarterback_fields.py": "838fbefcda35c2438d462374e3d15317ccf827b86504dcc89fac572a0fbdd89d",
+    "scripts/trial/quarterback-protocol.mjs": "9bcd1b1c6ffe0d6b45e2f12d589799867c161292e2f418f14143fd3148366c0f",
+    "collector/sg.quarterback.ts": "9d1b28f902ed3245ccbbde3fad54d77e4ed96ff0e140a7db9b12c86283e24ebe",
     "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
   },
   "reviewDocuments": [
@@ -145,7 +145,8 @@
     "docs/quarterback-foam-adapter-result.json",
     "docs/quarterback-foam-protocol.md",
     "docs/quarterback-foam-recovery.md",
-    "docs/quarterback-observation-20260929.md"
+    "docs/quarterback-observation-20260929.md",
+    "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "0411b8512bbe57651a71fba1170069331c6d5b1ca9998fe169bad34ad50524a1",
@@ -153,9 +154,10 @@
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-foam-adapter-result.json": "4ffc8db87ca2ad7d101b6a02205105283540d52e25d4e738b1431431edceb5ac",
-    "docs/quarterback-foam-protocol.md": "04b947ba3452dc18f3be7bc765b107483e37b1f4171aa0e6eeaec2528a228395",
+    "docs/quarterback-foam-protocol.md": "4ddb5418c73ff1d96a275dc565495d18561eeb0b617cb04647401ce2f3e2a896",
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
-    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
+    "docs/session-recovery-20260929.md": "bae4407ad8b5a31419ab3cf8fc214ac4868c8a94423cfaa0ec0e876e9155f708"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -164,5 +166,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "03f976c872c32ffd3d4854216bbc632c7b16ffdb80f275e96a9a7c4b0f6d06b1"
+  "ruleHash": "8a0042687f3e0201386369b1be9ecd236362b581688c6364a14a91444c3f548d"
 }

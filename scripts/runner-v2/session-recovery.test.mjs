@@ -152,10 +152,13 @@ test('unchanged original Foam chain and full 242-round readback are still requir
   assert.equal(r.replacementAttemptsSettled,0);assert.equal((await f.operator.formal()).validationLimit,0);
 });
 
-test('session profiles pin all reviewed code and workflow without changing old applied profiles',()=>{
+test('applied session profiles stay frozen at a6ee0b9 and reject this newer adapter',()=>{
+  const applied={demon:'0649552a6b59bec5a890f03c49a0893bead69704eb866e41a542f48887d741a3',
+    quarterback:'5e1311594d704a103057b6e2f63220de28af430c10fa1354c2b875eb67dcc7b9'};
   for(const name of ['demon','quarterback']) {
     const p=JSON.parse(fs.readFileSync(`config/session-${name}-20260929.json`,'utf8'));
     const files=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-    assert.deepEqual(files,p.adapterFiles);assert.equal(hash(files),p.adapterHash);
+    assert.equal(hash(p),applied[name]);assert.equal(hash(p.adapterFiles),p.adapterHash);
+    assert.notEqual(hash(files),p.adapterHash);
   }
 });

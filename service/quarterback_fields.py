@@ -133,11 +133,14 @@ class QuarterbackFields(NativeNextgenFields):
                       'UNKNOWN_TRIAL_FEATURE')
                 next_step = {'MSGID': 'FEATURE_END', 'CFG': '2'}
             else:
-                # The official controller ends after successful END. Retained
-                # NFR=1 is awarded count: require CFR=1 (zero remaining).
-                # Missing END counters are allowed only when FID is cleared.
+                # The client's receivedFeatureEnd -> panelEnd returns to spin
+                # even with retained FID. Live END omits the entire feature
+                # counter group; this is not a zero-filled counter response.
                 if p.get('FID') in {'2', '2|'}:
-                    check(p.get('NFR_2') is not None and p.get('CFR_2') is not None, 'FOAM_MISSING_END_COUNTERS')
+                    counters = ('CFG', 'FS_2', 'NFR_2', 'CFR_2', 'CFP_2')
+                    check(all(k not in p for k in counters) or
+                          (p.get('NFR_2') is not None and p.get('CFR_2') is not None),
+                          'FOAM_MISSING_END_COUNTERS')
                 if 'NFR_2' in p:
                     check(amount(p['NFR_2']) == 0 or p.get('CFR_2') == p['NFR_2'], 'INCOMPLETE_ROUND')
                 check(p.get('CFP_2') in {None, '1'}, 'INCOMPLETE_ROUND')
