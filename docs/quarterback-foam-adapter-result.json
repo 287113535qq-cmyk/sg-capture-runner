@@ -8,12 +8,31 @@
   "pendingPreserved": 1,
   "pendingHash": "e5d11d5088d9656740214abb16b5e521ab9d29535b2753f8f429054f2df32b05",
   "rawHash": "832e48ccd79221965768f3ad29566500db6155bec56cd4207938279594a9231a",
-  "nextRequest": {"MSGID": "FEATURE_START", "CFG": "2"},
-  "windows": {"python": 235, "nodeProtocolAndRunner": 114, "collector": 25, "typescript": true},
-  "linuxPreflightVerified": false,
-  "recoveryApplied": false,
+  "nextRequest": {
+    "MSGID": "FEATURE_START",
+    "CFG": "2"
+  },
+  "windows": {
+    "python": 235,
+    "nodeProtocolAndRunner": 114,
+    "collector": 25,
+    "typescript": true
+  },
+  "linuxPreflightVerified": true,
+  "recoveryApplied": true,
   "liveFoamSettlementVerified": false,
   "officialSourceRequestsDuringOfflineReview": 0,
   "databaseWritesDuringOfflineReview": 0,
-  "allNaturalBranchesCovered": false
+  "allNaturalBranchesCovered": false,
+  "linuxPreflightRun": 36491605005,
+  "recoveryRun": 36491868052,
+  "recoveryProof": "9c82aee7541428ecc2b44d4b8158a0aa933ae6879cbf8e6609b4e377c08b4533",
+  "shortRun": 36492439112,
+  "shortValidated": false,
+  "sourceRequestsDuringShort": 0,
+  "currentJournaled": 42,
+  "currentCheckpoint": 42,
+  "currentPending": 1,
+  "blockedBy": "primary SOURCE_REJECTED / ERROR_INVALID_SESSION",
+  "resultReport": "docs/protocol-short-session-stop-20260929.md"
 }

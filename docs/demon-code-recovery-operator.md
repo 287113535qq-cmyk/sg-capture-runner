@@ -2,9 +2,9 @@
 
 本实现接续已经成功下注的自然免费局，保留 164 个完整日志和 6 个未完成局；不删除自然触发、不重新 BET。它与 Panda 网络未知 BET 的归档操作器分开，不能互相替用。恢复逻辑仅在 GitHub 运行，服务器只执行原生 Mongo 读写和系统指标读取。
 
-## 当前实施状态
+## 初始实现验证（后续实际执行见下）
 
-操作器、Runner 接续和短采运行绑定已经实现。Windows / Linux 各 224 项 Python、69 项 Mongo v2 Runner、34 项协议 Node 测试通过；Linux 的 25 项 collector、TypeScript 和 3000 局离线集成通过。预检 [36487710120](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36487710120) 固定提交 `5812f3d`，没有 SG/数据库连接；原私有现场只读审查也通过。**尚未执行线上恢复、未创建可应用的运行时 proof，也未验证真实 FID1 结算。** `config/protocol-demon-20260929.json` 是固定旧现场和候选代码的审查锚点，不是已恢复的证明。
+操作器、Runner 接续和短采运行绑定已经实现。Windows / Linux 各 224 项 Python、69 项 Mongo v2 Runner、34 项协议 Node 测试通过；Linux 的 25 项 collector、TypeScript 和 3000 局离线集成通过。预检 [36487710120](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36487710120) 固定提交 `5812f3d`，没有 SG/数据库连接；原私有现场只读审查也通过。**上述预检当时未执行线上恢复。2026-09-29 后续已实际应用恢复并进入短采；因原会话返回 ERROR_INVALID_SESSION，未通过验收，真实 FID1 结算仍未验证。已应用 proof 不能重跑，详见[实际结果](protocol-short-session-stop-20260929.md)。** `config/protocol-demon-20260929.json` 是固定旧现场和候选代码的审查锚点，不是已恢复的证明。
 
 新增的 `protocol-recover`、`protocol-validate`、`protocol-formal` 都使用原 `trial-300k.yml` 并发锁，不会自动触发。维护步骤没有 SG 配置或源请求能力。正常采集路径继续使用原来的资源保护、意图/响应持久化、固定会话和批次分配。
 

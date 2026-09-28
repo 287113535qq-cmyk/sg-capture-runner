@@ -139,18 +139,22 @@
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
     "docs/panda-network-recovery-20260929.md",
+    "docs/protocol-short-session-stop-20260929-result.json",
+    "docs/protocol-short-session-stop-20260929.md",
     "docs/quarterback-foam-recovery.md",
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
+    "docs/continuous-processing.md": "0411b8512bbe57651a71fba1170069331c6d5b1ca9998fe169bad34ad50524a1",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
-    "docs/demon-code-recovery-operator-result.json": "7243f4ca2054066e4fc4c3154e4069f0100d8a572f92fe3a7b8cad7834ddf5c9",
-    "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
+    "docs/demon-code-recovery-operator-result.json": "070888afd97629caa5005b668d29b509df66e845cba0d7cd0ed006f0f85d0f82",
+    "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
-    "docs/quarterback-foam-recovery.md": "bcc2feacce4ee69d9b21324b43ddf15dcb35839f0bc1b4808ffbc27350ad5789",
+    "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
+    "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
+    "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
@@ -160,5 +164,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2e5ef0495f372caf2ab9b3afa8fd9a806df1f074447b1304a675eefa91169e1f"
+  "ruleHash": "02365cd912524e7117e979bd688d5f423d810f837ff540016edfa05e8fa949a5"
 }

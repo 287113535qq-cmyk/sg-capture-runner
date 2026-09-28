@@ -1,12 +1,13 @@
 # SG 第一轮采集
 
-当前状态（2026-09-29 05:49:33 北京时间只读快照）：累计完成 **12 / 178 款**。32745 与 32833 均已终审，并分别顺带保存 299850 / 299900 个新局的真实玩法观察档案。primary 自动进入 32747，20 个活动 worker，实际完整日志 254548、checkpoint253500；仍在采集，不能当全量终审。
+当前状态（2026-09-29 06:34 北京时间核验）：累计完成 **13 / 178 款**。32747 已正常全文终审；随后 32820 / 32835 保存原始现场后安全暂挂，两组 ready 已耗尽。当前队列 complete13 / active2 / parked-protocol8 / ready0 / needs-adapter155；active 标签不表示正在采集。
 
-secondary 的 32836 Quarterback Fields of Glory 触发自然 FID2 foamPickBonus，原 42 个完整日志和 1 个已响应 pending 均保留，全部旧租约结束后已安全暂挂，5 个池/批次备份逐条核验一致。两个 global-hold 均 false，primary 未受影响。第二组当前没有其他 ready 游戏，下一步继续独立适配。现场及官方客户端差异见 [32836 观察](docs/quarterback-observation-20260929.md)。这是带时间的快照，实时状态应重新读取。
+32739 与 32836 的专用适配和 Mongo v2 恢复已在固定 `37a419a` 实际执行，原 164 + 42 个完整记录全部落库并全文核验，原 7 个 pending 保留。两组受控短采未通过：32739 的两个原会话在 FREE_GAME 接续时返回 `ERROR_INVALID_SESSION`，共同保护停止两组。此次共 3 个源请求（两次被拒绝的 FREE_GAME、一次成功 INIT），新 BET 0、新完整局 0；32836 源请求 0，真实特殊玩法结算均未验证。
 
-正式任务：[primary 36485389455](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36485389455)、[secondary 36486208416](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36486208416)。两者固定 `21a0ef3`。本轮没有取消正常采集、修改开关或执行源端恢复；新增的 [32739 Mongo v2 恢复操作器](docs/demon-code-recovery-operator.md) 尚未实际应用，不能把代码完成当作真实 FID1 已结算。正常游戏优先；受控恢复须满足独立记录的空闲边界。
+两仓库现无活动/排队采集，workflow 被短采保护关闭，两个 `SG_TRIAL_ENABLED=false`。primary global-hold=true，secondary 自身 hold=false。不得直接重跑已应用恢复、重发原 BET、换会话接管旧局或清开关。新的会话异常需要独立证据绑定处理；详见[本次实际结果](docs/protocol-short-session-stop-20260929.md)、[Foam 适配](docs/quarterback-foam-protocol.md)和[两款自然暂挂留档](docs/primary-natural-parks-20260929.md)。
 
-每款自动接续、原每 20 分钟兜底和 Codex `sg-30` 巡检继续。过去的 Panda 网络事件已经恢复，旧 proof 不可重做；见 [历史恢复证据](docs/panda-network-recovery-20260929.md) 和 [持续处理规则](docs/continuous-processing.md)。
+Codex `sg-30` 继续巡检和推进适配；正常自动续接规则仍保留，真实源端保护必须审查后恢复。原 Panda 网络事件 proof 和本次两款 protocol-recover proof 均已经应用，不能重做。以上是带时间的现场，后续应读取实时 Mongo 与 GitHub。
+
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 
 采集、调度、玩法、标准化、恢复和全文审计全部在 GitHub；测试服只提供受限 MongoDB 读写与原始系统指标。完整局只写 `sg_capture_staging_v1.official_rounds`，用户批准的 `capture_state_v2` / `capture_journal_v2` 保存进度和现场。旧 SQLite / 原始文件冻结保留，见 [迁移报告](docs/github-processing-migration.md)。
@@ -15,7 +16,7 @@ secondary 的 32836 Quarterback Fields of Glory 触发自然 FID2 foamPickBonus�
 
 测试服 CPU 或内存任一达到 95%，或采样失效，GitHub 暂停提交写入；两者低于 90% 稳定 60 秒后小批恢复。资源恢复不解除其他故障；无法可靠保存响应时停止新源请求。详见 [当前规则](docs/rules.md)。
 
-178 款各累计 300000 个完整普通 buy0 大局，单份目标不变。上述快照 complete12、active1、parked-protocol8、ready2、needs-adapter155。未适配玩法保留现场暂挂后处理下一款，不能删除自然功能或重放 BET；第二轮关闭。旧报告不覆盖本页最新运行状态。
+178 款各累计 300000 个完整普通 buy0 大局，单份目标不变。上述快照 complete13、active2、parked-protocol8、ready0、needs-adapter155。未适配玩法保留现场暂挂后处理下一款，不能删除自然功能或重放 BET；第二轮关闭。旧报告不覆盖本页最新运行状态。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 

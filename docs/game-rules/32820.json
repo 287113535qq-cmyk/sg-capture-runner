@@ -96,8 +96,14 @@
     "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/primary-natural-parks-20260929.md",
+    "docs/protocol-short-session-stop-20260929.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
+    "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -105,5 +111,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6ee07a89a9371f275fe7c8116e9e78edda71be729be16297aede6be5b1664a3c"
+  "ruleHash": "2f7d08e7eb6c037ee94b2c9c1914866c7be24f99f2243b26f36af40e3f4eea76"
 }

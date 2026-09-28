@@ -1,5 +1,7 @@
 # 32836 独立 Foam Finger 协议
 
+实际执行更新：恢复已应用，旧 42 个完整记录已落库核验；随后短采被 primary 的会话拒绝共同保护拦截，32836 源请求为 0。尚未验证真实 Foam 结算；旧 proof 不可重跑。见[现场结果](protocol-short-session-stop-20260929.md)。
+
 候选适配按官方只读 `quarterbackfieldsofglory/412.bundle.js`（SHA256 `43c79de4ffeeebec57ab1a0c7765b47a310d489f82a589bd69be4a495be233a2`）及 `game.bundle.js`（`789a750fbcc2e3539d1257a3926908c04f5d478cf957b5464b691f06d79fb3ec`）实现。原现场和历史流量见 [观察报告](quarterback-observation-20260929.md)。本文件说明实现边界，不授权解除暂挂。
 
 正式解析入口为 `service/quarterback_fields.py`，独立 Runner 镜像为 `scripts/trial/quarterback-protocol.mjs`。Mongo v2 GitHub 分析器按 sourceKey 精确选择本游戏；旧 SQLite 服务不启用。普通计划 BPR1/RB5、实际 stake25、buy0、planHash 不变。

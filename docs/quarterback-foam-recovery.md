@@ -1,5 +1,7 @@
 # 32836 Mongo v2 原局接续
 
+实际执行更新：恢复已应用，旧 42 个完整记录已落库核验；随后短采被 primary 的会话拒绝共同保护拦截，32836 源请求为 0。尚未验证真实 Foam 结算；旧 proof 不可重跑。见[现场结果](protocol-short-session-stop-20260929.md)。
+
 本候选将 `protocol-recover / protocol-validate / protocol-formal` 扩展为两个**固定**场景。primary 保持 32739 的固定锚点；secondary 仅接受 `config/protocol-quarterback-20260929.json` 的 32836、4批、42完整局、1 pending 和全部原摘要。不是可由输入游戏ID执行的通用解锁。
 
 恢复前读取两个仓库所有活动/排队运行、当前 attempt/jobs、两个 global-hold 及目标 campaign/pool/batch。目标组必须无其他运行、无活动游戏/终审/ready、目标租约全部过期；旧 parked 快照必须逐条一致。secondary 的恢复可与 primary 的**已确认正常 capture 矩阵**共存，不改 primary 文档或租约；另一组维护任务、未知/截断 job 列表、失败采集和共同 hold 均拒绝。primary 的 Demon 恢复继续要求两个仓库整体空闲，不抢占正常游戏。

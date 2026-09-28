@@ -2,15 +2,18 @@
   "schema": "sg-demon-protocol-recovery-implementation-v1",
   "gameId": 32739,
   "implemented": true,
-  "recoveryApplied": false,
-  "runtimeProofCreated": false,
+  "recoveryApplied": true,
+  "runtimeProofCreated": true,
   "liveFidOneSettlementVerified": false,
-  "sourceRequests": 0,
-  "liveDatabaseWrites": 0,
+  "sourceRequests": 3,
   "oldCompleteAnchor": 164,
   "oldPendingAnchor": 6,
   "originalBatchCount": 15,
-  "tests": {
+  "applicationBoundary": "No primary active/audit/ready game; both GitHub repositories idle except maintenance; target leases expired; global holds false",
+  "profile": "config/protocol-demon-20260929.json",
+  "implementationCommit": "5812f3d00057c922a30cfedaf8ae166c1acdb896",
+  "linuxLogSha256": "c0645889e5cde3c54f1f5a298ada1947230c288b4c9aeb4dc26f6216c9b65eab",
+  "initialImplementationTests": {
     "windowsPython": 224,
     "windowsRunnerNode": 69,
     "windowsProtocolNode": 34,
@@ -23,8 +26,24 @@
     "typeScript": "passed",
     "offlineFixtureRounds": 3000
   },
-  "applicationBoundary": "No primary active/audit/ready game; both GitHub repositories idle except maintenance; target leases expired; global holds false",
-  "profile": "config/protocol-demon-20260929.json",
-  "implementationCommit": "5812f3d00057c922a30cfedaf8ae166c1acdb896",
-  "linuxLogSha256": "c0645889e5cde3c54f1f5a298ada1947230c288b4c9aeb4dc26f6216c9b65eab"
+  "recoveryRun": 36492164377,
+  "recoveryProof": "b5ba5397c644c4e611ce5aabea24f34986a1404e176f5c327b1c074b629159d3",
+  "shortRun": 36492435648,
+  "shortValidated": false,
+  "formalApplied": false,
+  "currentJournaled": 164,
+  "currentCheckpoint": 164,
+  "currentPending": 6,
+  "appliedCommit": "37a419a78aa03340f0b838ccf39016dddf811107",
+  "resultReport": "docs/protocol-short-session-stop-20260929.md",
+  "tests": {
+    "run": 36491605005,
+    "conclusion": "success",
+    "python": 235,
+    "protocolNode": 40,
+    "runnerNode": 74,
+    "collector": 25,
+    "typeScript": true,
+    "offlineFixtureRounds": 3000
+  }
 }

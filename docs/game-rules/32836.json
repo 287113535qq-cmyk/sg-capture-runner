@@ -140,17 +140,21 @@
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
+    "docs/protocol-short-session-stop-20260929-result.json",
+    "docs/protocol-short-session-stop-20260929.md",
     "docs/quarterback-foam-adapter-result.json",
     "docs/quarterback-foam-protocol.md",
     "docs/quarterback-foam-recovery.md",
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
-    "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
-    "docs/quarterback-foam-adapter-result.json": "5b9dbdea399e0a1e76913a2ce0ac161a37b91e51772c853e4f52089b4e744e6e",
-    "docs/quarterback-foam-protocol.md": "4c50a23d5d00822687e0fa3b95a556a66f7ce64572031e0d768d535ddb3a9ea5",
-    "docs/quarterback-foam-recovery.md": "bcc2feacce4ee69d9b21324b43ddf15dcb35839f0bc1b4808ffbc27350ad5789",
+    "docs/continuous-processing.md": "0411b8512bbe57651a71fba1170069331c6d5b1ca9998fe169bad34ad50524a1",
+    "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
+    "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
+    "docs/quarterback-foam-adapter-result.json": "4ffc8db87ca2ad7d101b6a02205105283540d52e25d4e738b1431431edceb5ac",
+    "docs/quarterback-foam-protocol.md": "04b947ba3452dc18f3be7bc765b107483e37b1f4171aa0e6eeaec2528a228395",
+    "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
@@ -160,5 +164,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f69bac5cd99c03361c4bba76ca132a830e0f6222283f921cdafc5bbc9b6e27f8"
+  "ruleHash": "03f976c872c32ffd3d4854216bbc632c7b16ffdb80f275e96a9a7c4b0f6d06b1"
 }
