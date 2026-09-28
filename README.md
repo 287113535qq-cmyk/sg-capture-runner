@@ -1,5 +1,7 @@
 # SG 采集准备仓库
 
+最新启动排查（2026-09-28 10:59 UTC）：第二组独立运行 [36411958007](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36411958007) 只检查 GitHub Runner，不连接 SG 或采集服务器。等待 600 秒仍只有 10 台同时就绪，其余在第一批退出后启动，最终未达到 20 台；不能据此断言永久上限为 10。分配不同游戏不能解决此 Runner 排队问题，分游戏调度尚未迁移。检查及证据见 [独立检查报告](docs/secondary-isolated-runner-check-20260928.md) 与 [分游戏方案](docs/secondary-independent-games-review-20260928.md)。两组无活动任务，第二组手动入口 active，两边定时采集变量 false；完成数仍为 6，32714 继续协议暂停。
+
 当前状态（2026-09-28 10:35 UTC 后续检查）：**已完成 6 款，每款累计 300000 局；32711 Hoppily Ever After 已完成全量终审。活动游戏 32714 Huff N Puff Money Mansion High Limit 触发尚未适配的 Hard Hat 自然免费玩法，原组运行 36405044999 已停止，campaign/source 已关闭。现有 2 个完整记录及 1 个未完成局全部保留，私有备份和只读核验已完成。第二组运行 36403634321 的手动 attempt2 仅观察到 8 台同时就绪；attempt3 仅重跑 capture-0，因其余 19 个分片仍失败而立即退出，两次均未采集。手动入口已恢复，定时采集仍关闭。尚未实现 40 台同时采集。** 队列 complete6、active1、ready16、needs-adapter155；实时进度以 status RPC 为准。每款累计补足 30 万完整普通局，第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [32714 停采审查](docs/huff-natural-free-stop-20260928.md)、[第二组排除检查](docs/secondary-account-diagnostics-20260928.md) 与 [32711 恢复回执](docs/hoppily-recovery-20260928-result.json)。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
