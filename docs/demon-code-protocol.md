@@ -21,3 +21,9 @@
 在已有全文终审中顺带统计 FID、NFG/TFG/CFGG/FGT、SNFG/STFG/EFGS/SBEFG、DST、倍率和CAPS。DFFP/DDDP/DCCS/DAAP/DAAS、EVP、RGS/RGSF/SCP/CSF/CSD/ICSD、EFG/CTW只保存字段存在次数，不公开盘面或原始payload。这些字段对应客户端的Demon、Void、HellGate、HeartStopper等演出；不能把每个演出都称为需要独立源请求的玩法。未完成局仍只在私有证据中保留，不混入完整局观察统计。
 
 只读回放150条历史链/299帧与原适配器规范化一致；164条已持久完整记录的原始/标准化/content摘要通过，6个pending摘要未变，下一步均为FREE_GAME。历史只有FID0，FID1真实结算尚未验证。恢复时须新建适用Mongo v2的proof，核对两仓库运行、租约、暂挂快照和原摘要；不得套用Panda网络清理profile，也不得删除或重新BET这6个自然续局。当前其他游戏继续正常采集。
+
+## 验证与恢复边界
+
+Windows 和 GitHub Linux 各224项Python、34项协议/启动Node、56项Mongo v2 Runner测试通过，采集器25项测试、TypeScript、3000局离线集成通过。Linux运行 [36483794715](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36483794715) 固定代码 `222a0707ed737c036e949b00e7a25dce554edf3a`，没有SG请求或数据库连接。回执见 [适配结果](demon-code-adapter-result.json)。
+
+本轮仅开发、离线回放和测试，没有解除32739暂挂、修改Mongo现场或派发官方短采。后续优先在正常采集边界准备Mongo v2专用恢复，保留原6个pending和164个完整局，以原会话接续FREE_GAME；未知栈继续安全暂挂。当前正在运行的游戏仍固定原代码，不为此中断。

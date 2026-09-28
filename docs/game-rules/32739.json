@@ -140,9 +140,9 @@
   ],
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "a372c656a07ad241a2fed1b27866435e3aeb27d44c2d747467a105440ff9d833",
-    "docs/demon-code-adapter-result.json": "efeebbc4b90ceb29ca7ba194319f9cb90dee40d41f7a9035d738bbd2b3bac227",
+    "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
-    "docs/demon-code-protocol.md": "164a597dbc588cab68f510c76df6fb7bdf3318f51ce9192fa6613847309a0e37",
+    "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
   },
   "observations": {
@@ -152,5 +152,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "57912c539318f4be7f25b346cb9b729b34ca7536a84b10f8561ae14a0523a1ac"
+  "ruleHash": "a0f92c0c76ca1d4c493be0fe610ebf293bd11dfe03c03024f0b796af7e14c88d"
 }

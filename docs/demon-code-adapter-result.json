@@ -77,7 +77,18 @@
     "collectorTests": 25,
     "typescript": "passed",
     "offlineFixtureRounds": 3000,
-    "linuxPreflight": "pending"
+    "linuxPreflight": "success",
+    "linuxRun": 36483794715,
+    "linuxCommit": "222a0707ed737c036e949b00e7a25dce554edf3a",
+    "linuxPythonTests": [
+      224
+    ],
+    "linuxNodeTestCounts": [
+      25,
+      34,
+      56
+    ],
+    "linuxLogSha256": "7b79e71ac28015a7c23d9c30ed19cd5cfffa2854426f4b9438e65d92dad35ab1"
   },
   "scope": {
     "implementedFids": [
