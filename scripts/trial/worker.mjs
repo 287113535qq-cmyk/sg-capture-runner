@@ -164,6 +164,11 @@ try {
   if(!isPool || plan.configured===true){try{evidence.result=await rpc('status');}catch{}}
   process.exitCode=2;
 } finally {
+  if(isPool && leaseOwned && owner) {
+    // The source call has ended. A protocol hold may retain an unfinished
+    // natural round; relinquish only our fenced leases, never its attempt.
+    try{await rpc('yield_protocol_stop',owned());}catch{}
+  }
   evidence.rpcMetrics=transport.metrics();
   evidence.elapsedSeconds=Number(((performance.now()-sessionStart)/1000).toFixed(3));
   if(evidence.completedThisRun)evidence.roundsPerSecond=evidence.completedThisRun/evidence.elapsedSeconds;

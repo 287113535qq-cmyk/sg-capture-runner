@@ -68,7 +68,38 @@ class PoolTrial:
 
     def allowed(self):
         row = self.pool.db.execute('SELECT enabled,failure FROM control').fetchone()
-        return bool(row['enabled']) and row['failure'] is None and (self.campaign is None or self.campaign.allowed())
+        group_allowed=self.campaign is None or (self.campaign.game_allowed(self.plan['gameId'])
+            if hasattr(self.campaign,'game_allowed') else self.campaign.allowed())
+        return bool(row['enabled']) and row['failure'] is None and group_allowed
+
+    def yield_protocol_stop(self, req):
+        """The fenced worker has finished its source call; retain its attempt,
+        release only its leases so another game need not wait for lease expiry."""
+        require(self.campaign is not None and getattr(self.campaign,'parking_enabled',lambda:False)(),
+                'PARKING_NOT_ENABLED')
+        require(self.identity is not None and req.get('shardId')==self.identity['worker']
+                and req.get('owner')==self.identity['owner']
+                and req.get('workerEpoch')==self.worker_lease['epoch'],'POOL_WORKER_MISMATCH')
+        require(self.pool.db.execute('SELECT failure FROM control').fetchone()[0]=='BATCH_HALTED','PARKING_POOL_FAILURE')
+        worker=self.pool.owned(self.worker_lease)
+        if worker['active_batch'] is not None:
+            require(req.get('batchId')==worker['active_batch'],'POOL_BATCH_MISMATCH')
+            batch=self.pool.db.execute('SELECT * FROM batches WHERE id=?',(worker['active_batch'],)).fetchone()
+            store=self.open_batch(batch)
+            with file_lock(store.root/'trial.lock'):
+                state=store.state();pending=store.pending()
+                require(state['session_hash']==worker['session_hash'] and state['epoch']==req.get('epoch')
+                        and state['owner'] in {None,req['owner']},'PARKING_BATCH_FENCE')
+                require(pending is None or pending['awaiting'] is None,'PARKING_UNKNOWN_SOURCE_OUTCOME')
+                require(state['failure'] in {None,'storage','PROTOCOL_VALIDATION_FAILED'}
+                        and (state['status']!='halted' or state['failure']=='PROTOCOL_VALIDATION_FAILED'),
+                        'PARKING_NON_PROTOCOL_FAILURE')
+                # Preserve owner, epoch, failure, status, pending and all data.
+                store.db.execute('UPDATE trial SET lease_until=0 WHERE id=1')
+        with self.pool.transaction():
+            self.pool.owned(self.worker_lease)
+            self.pool.db.execute('UPDATE workers SET lease_until=0 WHERE id=?',(self.worker_lease['worker'],))
+        return {'yielded':True,'roundDataChanged':False}
 
     def open_batch(self, batch):
         if self.store and self.store.batch['id'] == batch['id']:
@@ -140,6 +171,8 @@ class PoolTrial:
                 result = self.audit(req)
             elif op == 'ping':
                 result = {'pong': True}
+            elif op == 'yield_protocol_stop':
+                result = self.yield_protocol_stop(req)
             elif op == 'register':
                 require(type(req.get('shardId')) is int and req['shardId'] in self.worker_range, 'RUNNER_GROUP_MISMATCH')
                 require(req.get('planHash') == digest(self.plan), 'RUNNER_POOL_PLAN_MISMATCH')
@@ -180,7 +213,9 @@ class PoolTrial:
                     # Follow-up RPCs may report TRIAL_HALTED after the durable
                     # protocol rejection. Classify the original stored failure.
                     if self.store.state()['failure'] == 'PROTOCOL_VALIDATION_FAILED':
-                        self.campaign.pause('ACTIVE_GAME_REQUIRES_REVIEW')
+                        if hasattr(self.campaign,'pause_game'):
+                            self.campaign.pause_game(self.plan['gameId'],'ACTIVE_GAME_REQUIRES_REVIEW')
+                        else:self.campaign.pause('ACTIVE_GAME_REQUIRES_REVIEW')
                     else:
                         self.campaign.pause_global('SOURCE_OR_STORAGE_REQUIRES_REVIEW')
             raise

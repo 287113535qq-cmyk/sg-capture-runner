@@ -1,7 +1,7 @@
 """Opt-in per-group assignments; source requests remain on GitHub Runners."""
 import json
 from campaign import Campaign
-from store import require, digest
+from store import require, digest, file_lock
 
 POLICY={'schema':'sg-independent-groups-v1','campaignId':'sg_round_one_20260928',
         'groups':['primary','secondary'],'startup':'available-workers','maxWorkersPerGroup':20}
@@ -41,6 +41,36 @@ class GroupCampaign(Campaign):
             return False
         return bool(self._state()['enabled'])
 
+    def parking_enabled(self):
+        from protocol_parking import enabled
+        return enabled(self)
+
+    def game_allowed(self, gid):
+        return self._state()['active_game']==gid and self.allowed()
+
+    def pause_game(self,gid,reason):
+        # A late, fenced RPC from a parked game must not pause the next game.
+        self.db.execute('UPDATE group_control SET enabled=0,reason=COALESCE(reason,?) WHERE name=? AND active_game=?',
+                        (reason,self.runner_group,gid))
+
+    def select(self, owner):
+        require(isinstance(owner,str) and 1<=len(owner)<=100,'BAD_OWNER')
+        if self.parking_enabled():
+            with file_lock(self.directory/'selection.lock'):
+                state=self._state()
+                global_state=self.db.execute('SELECT enabled FROM dispatch_control').fetchone()
+                if global_state[0] and state['active_game'] is not None and not state['enabled'] \
+                        and state['reason']=='ACTIVE_GAME_REQUIRES_REVIEW':
+                    from protocol_parking import park
+                    try:
+                        if not park(self):return {'action':'wait','waitingForGameDrain':True,
+                                                  'gameId':state['active_game'],**self.status()}
+                    except Exception as error:
+                        reason='DISK_RESERVE_REACHED' if str(error)=='DISK_RESERVE_REACHED' else 'PARKING_REVIEW_REQUIRED'
+                        self.pause_global(reason)
+                        return {'action':'stop',**self.status()}
+        return super().select(owner)
+
     def pause_global(self, reason):
         self.db.execute("UPDATE dispatch_control SET enabled=0,reason=CASE WHEN reason IS NULL OR reason='DISK_RESERVE_REACHED' THEN ? ELSE reason END WHERE id=1",(reason,))
 
@@ -63,7 +93,10 @@ class GroupCampaign(Campaign):
         state=super().status()
         global_state=dict(self.db.execute('SELECT * FROM dispatch_control WHERE id=1').fetchone())
         enabled=state['enabled'] and bool(global_state['enabled'])
+        parking=self.parking_enabled()
         return {**state,'runnerGroup':self.runner_group,'startupPolicy':'available-workers',
+                'protocolParkingEnabled':parking,'globalPaused':not bool(global_state['enabled']),
+                'parkedGames':[r[0] for r in self.db.execute('SELECT game_id FROM parked_games ORDER BY game_id')] if parking else [],
                 'enabled':enabled,'reason':global_state['reason'] or state['reason'],
                 'status':'complete' if state['counts'].get('complete')==178 else 'running' if enabled else 'paused',
                 'groups':[{k:r[k] for k in ('name','enabled','active_game','reason')}

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import {spawn} from 'node:child_process';
 import {connect} from './rpc.mjs';
 import {repositories} from './runner-group.mjs';
+import {canContinueAfterChildFailure} from './campaign-continuation.mjs';
 const config=JSON.parse(fs.readFileSync('config/round-one.json','utf8'));
 assert.equal(config.phase,1);assert.equal(config.secondRoundEnabled,false);
 const role=process.argv[2] || 'capture';assert(['capture','status'].includes(role));
@@ -37,7 +38,15 @@ try{
       assert.equal(next.plan.phase,1);assert.equal(next.plan.buy,0);
       console.log(JSON.stringify({campaignId:config.campaignId,gameId:next.plan.gameId,action:next.action,targetNew:next.plan.target}));
       const code=await child(next.plan,next.action);
-      if(code!==0){process.exitCode=2;break;}
+      if(code!==0){
+        const status=await transport.rpc('status');
+        if(!canContinueAfterChildFailure(status,next.plan.gameId,process.env.SG_POOL_RUN_LIMIT)){
+          process.exitCode=2;break;
+        }
+        // select performs the evidence backup and unique game reassignment.
+        // A failed child is never restarted against its old pending round.
+        lastTrial=next.plan.trialId;continue;
+      }
       if(next.action==='capture')lastTrial=next.plan.trialId;
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0)break;
     }
