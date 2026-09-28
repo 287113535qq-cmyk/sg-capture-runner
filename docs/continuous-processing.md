@@ -10,6 +10,8 @@
 
 2026-09-29 04:42 北京时间核验：累计完成 10 款；本次 32833 网络未知结果保护已通过新的 Mongo v2 精确 proof 恢复，旧 20,493 局全保留、200 局短采和 20,693 局全文核验成功。primary `36480623741` 采集 32745，secondary `36480630609` 采集 32833，两组各 20 个实际 worker，global-hold 均为 false。32739 已原样暂挂，继续其余 ready 游戏。proof `2e38b9613912dd503875b5a80bc8e31152dddc218d09de43ec9a202ca9d6252b` 已应用，不能重跑；详情见 [恢复报告](panda-network-recovery-20260929.md)。这是带时间的证据，下一次仍以实时 Mongo 和 GitHub 为准。
 
+2026-09-29 05:49:33 北京时间后续核验：累计 complete12，32745 / 32833 均已终审且真实玩法观察日志已生成。primary `36485389455` 正常采集32747，20个有效worker、254548完整日志/253500checkpoint。secondary 32836已安全暂挂（42完整日志、1个已响应pending，5个池/批次备份一致），该组ready耗尽；其定时运行可以正常退出无任务，不能当又一次分片启动故障。全队列 complete12/active1/parked-protocol8/ready2/needs-adapter155，两个global-hold均false，磁盘145.09GiB。两个workflow active、变量true；没有停止primary去恢复暂挂游戏。32739的新Mongo v2恢复操作器已通过双端测试但尚未应用；见[操作器](demon-code-recovery-operator.md)与[32836客户端证据](quarterback-observation-20260929.md)。
+
 ## 持续处理的边界
 
 - 未适配自然玩法保存原现场并暂挂该游戏，继续其他已支持的 ready 游戏。暂挂游戏与其余待适配游戏仍须完成，不能排除出第一轮。

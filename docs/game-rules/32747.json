@@ -95,8 +95,14 @@
     "service/game_rule_catalog.py": "5ce71e1e3a1484a276a18b04c04a4e4cdf2bc40b7b4951b369d797a6795b5906"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/continuous-processing.md",
+    "docs/quarterback-observation-20260929.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -104,5 +110,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a1c5e401bf054d0f75261e7d7e60bc9341eb57a3bc41e8b8792f401bc3c70317"
+  "ruleHash": "6ed0260e75e0727d5c64b2cb752b103f85f6fa754a395712c83abb604c5a5f17"
 }

@@ -149,6 +149,7 @@
     "docs/pending-discard-20260928-result.json",
     "docs/pending-discard-20260928.md",
     "docs/public-repository-transition-20260928.md",
+    "docs/quarterback-observation-20260929.md",
     "docs/round-one-protocol-stop-32651.json",
     "docs/round-one-protocol-stop-32651.md",
     "docs/runner-federation-20260928.md",
@@ -168,6 +169,7 @@
     "docs/pending-discard-20260928-result.json": "a3a7a62d09c41dead34d1d5475669917c9c2805dd25a66bc9a09889441f3b857",
     "docs/pending-discard-20260928.md": "e8c9f7e997c740e026e648d2c40cb00acb71605fb7c30efd7c8be00022002354",
     "docs/public-repository-transition-20260928.md": "c9d404e3b76ef66a8dca77a193d82f5c438dc160504bfcd9ad82fb212c82f335",
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/round-one-protocol-stop-32651.json": "30704a85c773af65d8da466b39697a55378fd152cc0ad49aa5f18dfdbb33b5c0",
     "docs/round-one-protocol-stop-32651.md": "b3623ba61713d8b10e8139a97aec048d6fb34bf961cc0769032313aa4a458b14",
     "docs/runner-federation-20260928.md": "b126da42f00dddf4d36961dd920040eacc5282d50cb0c6e7f1ce2864594bdb46",
@@ -182,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0ddb145630661d17d1017b3f8a2a022b417531f33cc30a7986e9844de6bf790c"
+  "ruleHash": "0622fcb77f765b2c1548ee59e8dbfc72cf8345ed7b313aa56d1389cf5861691c"
 }

@@ -160,7 +160,7 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/demon-code-recovery-operator.md": "ecf5b3f246242481de0bc21d7eb53a0e3ce3c7c5e8769b585f6d64080d2444ee",
+    "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
     "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
     "docs/huff-goals-natural-feature-stop-20260928.md": "e272d8f3461652495c4cab697968d4f81f2f620d795dc3420959e9246300feac",
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "998a1774314307682283bc5f7925ae786c2f48afd89d6731168f2eb831421564"
+  "ruleHash": "56b99c3979dc67111f95c621bacf30b8ef84f73bdb469fc82b64dac93544024a"
 }

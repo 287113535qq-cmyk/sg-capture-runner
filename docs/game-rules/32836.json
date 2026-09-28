@@ -96,10 +96,14 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
-    "docs/demon-code-recovery-operator.md"
+    "docs/continuous-processing.md",
+    "docs/demon-code-recovery-operator.md",
+    "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/demon-code-recovery-operator.md": "ecf5b3f246242481de0bc21d7eb53a0e3ce3c7c5e8769b585f6d64080d2444ee"
+    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
+    "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -108,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7fdabc7d0d7de12eed4613b78f699ca13a5aac80a1e6fa238705b56f8ba42ef8"
+  "ruleHash": "6e0de53de81787f484090fdc5b65e2a242471b5a62b92439b638e1a05c8a88a4"
 }

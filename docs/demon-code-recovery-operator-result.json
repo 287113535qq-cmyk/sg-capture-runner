@@ -14,8 +14,17 @@
     "windowsPython": 224,
     "windowsRunnerNode": 69,
     "windowsProtocolNode": 34,
-    "linuxPreflight": "pending"
+    "linuxPreflight": "success",
+    "linuxRun": 36487710120,
+    "linuxPython": 224,
+    "linuxRunnerNode": 69,
+    "linuxProtocolNode": 34,
+    "linuxCollector": 25,
+    "typeScript": "passed",
+    "offlineFixtureRounds": 3000
   },
   "applicationBoundary": "No primary active/audit/ready game; both GitHub repositories idle except maintenance; target leases expired; global holds false",
-  "profile": "config/protocol-demon-20260929.json"
+  "profile": "config/protocol-demon-20260929.json",
+  "implementationCommit": "5812f3d00057c922a30cfedaf8ae166c1acdb896",
+  "linuxLogSha256": "c0645889e5cde3c54f1f5a298ada1947230c288b4c9aeb4dc26f6216c9b65eab"
 }

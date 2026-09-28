@@ -98,12 +98,14 @@
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/panda-network-recovery-20260929-result.json",
-    "docs/panda-network-recovery-20260929.md"
+    "docs/panda-network-recovery-20260929.md",
+    "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "a372c656a07ad241a2fed1b27866435e3aeb27d44c2d747467a105440ff9d833",
+    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
     "docs/panda-network-recovery-20260929-result.json": "3b62d441b9026d15cfbf9cb6f0694a1d33ae1ff2e0a9fc7875b3de9b53005c64",
-    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
+    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -112,5 +114,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "035061e5913d5493b59b765cf04ad21d618280273b10960968a8119ce01c3577"
+  "ruleHash": "5408ae8ed174bd71ed35584f1105be90c4c88bef2b07b24b68f24beec33aaf5d"
 }

@@ -138,16 +138,18 @@
     "docs/demon-code-protocol.md",
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
-    "docs/panda-network-recovery-20260929.md"
+    "docs/panda-network-recovery-20260929.md",
+    "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "a372c656a07ad241a2fed1b27866435e3aeb27d44c2d747467a105440ff9d833",
+    "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
-    "docs/demon-code-recovery-operator-result.json": "9be9f5ee01f224b062a10b8116edb28b09b48dfddeb6438404770c930b5b9c65",
-    "docs/demon-code-recovery-operator.md": "ecf5b3f246242481de0bc21d7eb53a0e3ce3c7c5e8769b585f6d64080d2444ee",
-    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
+    "docs/demon-code-recovery-operator-result.json": "7243f4ca2054066e4fc4c3154e4069f0100d8a572f92fe3a7b8cad7834ddf5c9",
+    "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
+    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
+    "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -156,5 +158,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8657b04e4848a6bd721741affc854eea108ffc8d4da537cf353245e83e506208"
+  "ruleHash": "d8c108c882607a750c4f872b568eb11ce4554d92b7377a7169832d2d35fdbc71"
 }
