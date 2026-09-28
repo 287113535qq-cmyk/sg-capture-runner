@@ -177,7 +177,9 @@ class PoolTrial:
             if self.store and self.store.state()['status'] == 'halted':
                 self.pool.halt('BATCH_HALTED')
                 if hasattr(self.campaign,'pause_global'):
-                    if str(exc) == 'PROTOCOL_VALIDATION_FAILED':
+                    # Follow-up RPCs may report TRIAL_HALTED after the durable
+                    # protocol rejection. Classify the original stored failure.
+                    if self.store.state()['failure'] == 'PROTOCOL_VALIDATION_FAILED':
                         self.campaign.pause('ACTIVE_GAME_REQUIRES_REVIEW')
                     else:
                         self.campaign.pause_global('SOURCE_OR_STORAGE_REQUIRES_REVIEW')

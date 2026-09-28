@@ -139,5 +139,24 @@ class GroupCampaignTests(unittest.TestCase):
         s.pause_global('SOURCE_OR_STORAGE_REQUIRES_REVIEW')
         self.assertFalse(late.allowed())
 
+    def test_protocol_stop_followup_does_not_escalate_to_global_stop(self):
+        self.migrate();s=self.group('secondary');s.enable_by_operator();plan=s.select('second')['plan']
+        mongo=MemoryMongo()
+        c=PoolTrial(self.root,plan,lambda scope:ScopedMemory(mongo,plan,scope),self.clock,runner_group='secondary')
+        self.handles.append(c)
+        common={'schema':plan['schema'],'trialId':plan['trialId'],'shardId':20,'owner':'worker'}
+        registered=c.dispatch({**common,'op':'register','sessionHash':'c'*64,'commitSha':'c'*40,'planHash':digest(plan)})
+        common['workerEpoch']=registered['workerEpoch'];lease=c.dispatch({**common,'op':'next'})
+        common.update(batchId=lease['batchId'],epoch=lease['epoch'])
+        frame=exchange('BET',{'B':97783,'AB':97783,'TW':0,'FID':'9|','FS_9':0,'NFR_9':1})
+        c.dispatch({**common,'op':'begin','sequence':1,'attempt':'00000000-0000-0000-0000-000000000001',
+                    'startBalanceRaw':sample()['startBalanceRaw'],'requestPayload':frame['requestPayload']})
+        with self.assertRaisesRegex(Rejected,'PROTOCOL_VALIDATION_FAILED'):
+            c.dispatch({**common,'op':'exchange_journal','sequence':1,'step':frame})
+        with self.assertRaises(Rejected):c.dispatch({**common,'op':'fail','category':'storage'})
+        self.assertEqual(c.store.state()['failure'],'PROTOCOL_VALIDATION_FAILED')
+        self.assertEqual(s.db.execute('SELECT enabled FROM dispatch_control').fetchone()[0],1)
+        self.assertFalse(s.allowed())
+
 
 if __name__=='__main__':unittest.main()
