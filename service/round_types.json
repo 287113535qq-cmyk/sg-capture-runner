@@ -993,6 +993,40 @@
       "featureTypes": {
         "demonFreeGames": 2
       }
+    },
+    "quarterbackfieldsofglory96-round-one-base-v1-foam-pick-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "quarterback-foam-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32836,
+        "runtimeGameId": 33196,
+        "sourceId": "64adc7af-3e83-4b6f-bed1-b0b8926b2107",
+        "protocolReview": "docs/quarterback-foam-protocol.md",
+        "clientSha256": "43c79de4ffeeebec57ab1a0c7765b47a310d489f82a589bd69be4a495be233a2"
+      },
+      "featureSelector": "quarterback-foam-v1",
+      "featureTypes": {
+        "foamPick": 2
+      }
     }
   }
 }

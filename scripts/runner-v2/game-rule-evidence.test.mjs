@@ -64,3 +64,14 @@ test('Demon archive keeps mode counters and stage presence without copying priva
   assert(!JSON.stringify(value).includes('private-'));
   assert(!Object.hasOwn(make().finish(proof).value.fieldObservations,'GSD.DST'));
 });
+
+test('foam archive retains awarded/current counts while hiding choice data and boards',()=>{
+  const rules=new GameRuleEvidence({plan:{...plan,gameId:32836},card,revision:'f'.repeat(40)});
+  rules.observeVerified(record([['BET','FID=2|&NFR_2=1&CFR_2=0'],['FEATURE_START','CFP_2=0&GSD=featureData~private-choices#display~private-board#BVAL~private-value']],2));
+  const {value}=rules.finish(proof);
+  assert.deepEqual(value.fieldObservations.NFR_2.values,{'1':1});
+  assert.equal(value.fieldObservations['GSD.featureData'].present,1);
+  assert.deepEqual(value.fieldObservations['GSD.featureData'].values,{});
+  assert(!JSON.stringify(value).includes('private-'));
+  assert(!Object.hasOwn(make().finish(proof).value.fieldObservations,'CFP_2'));
+});

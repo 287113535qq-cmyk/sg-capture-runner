@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
+import {protocolPolicy} from './protocol-policy.mjs';
 
 export const protocolHash=value=>createHash('sha256').update(stable(value)).digest('hex');
 
@@ -9,7 +10,9 @@ export const protocolHash=value=>createHash('sha256').update(stable(value)).dige
 export function reviewProtocolResume({plan,batch,grant,worker,sessionHash,commit,now=Date.now()}) {
   const marker=batch.protocolResume,p=batch.pending;
   assert(marker && grant?.schema==='sg-protocol-resume-v1','PENDING_REQUIRES_REVIEW');
-  assert(grant.gameId===32739 && plan.gameId===32739 && grant.trialId===plan.trialId
+  const policy=protocolPolicy(plan.gameId);
+  assert(worker>=policy.offset && worker<policy.offset+20,'RESUME_WORKER_GROUP_CHANGED');
+  assert(grant.gameId===plan.gameId && grant.trialId===plan.trialId
     && grant.planHash===protocolHash(plan),'RESUME_PLAN_CHANGED');
   assert(/^[a-f0-9]{64}$/.test(marker.proofHash) && grant.proofHash===marker.proofHash,'RESUME_PROOF_CHANGED');
   assert(/^[a-f0-9]{40}$/.test(grant.commit) && grant.commit===commit,'RESUME_CODE_CHANGED');

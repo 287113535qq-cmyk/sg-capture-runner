@@ -7,16 +7,19 @@ import {RunnerState} from './state-store.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {reviewOtherGroupRun} from './protocol-github-boundary.mjs';
 
 test('operator profile pins the reviewed implementation with a platform-independent file fingerprint',()=>{
-  const p=JSON.parse(fs.readFileSync('config/protocol-demon-20260929.json','utf8'));
+ for(const name of ['demon','quarterback']){
+  const p=JSON.parse(fs.readFileSync(`config/protocol-${name}-20260929.json`,'utf8'));
   assert.equal(p.adapterHashFormat,'utf8-lf-sha256');
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,
     createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
   assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+ }
 });
 
-function fixture(){
+function fixture(gameId=32739){
   const now=100000,commit='d'.repeat(40),plan={gameId:32739,trialId:'sg_r1_20260928_32739',target:299850,buy:0,phase:1};
   const progress=[8,14,12,32,31,36,9,12,5,1,2,1,1,0,0],workers=[3,1,14,6,0,17,16,19,13,2,15,12,11,9,10];
   const pendingIds=[1,2,4,5,9,10],pool={enabled:false,failure:'PROTOCOL_VALIDATION_FAILED',planHash:hash(plan),
@@ -36,6 +39,21 @@ function fixture(){
   const profile={schema:'sg-parked-protocol-profile-v1',id:'demon-32739-20260929',group:'primary',gameId:32739,
     planHash:hash(plan),poolHash:hash(pool),complete:164,checkpoint:0,pending:6,adapterHash:'a'.repeat(64),
     batches:batches.map(({value:b})=>({id:b.id,hash:hash(b),pendingHash:b.pending?hash(b.pending):null}))};
+  if(gameId===32836){
+    plan.gameId=32836;plan.trialId='sg_r1_20260928_32836';plan.target=299900;
+    campaign.games=[{game_id:32836,status:'parked-protocol',baseline:100},{game_id:32833,status:'complete',baseline:100}];
+    const counts=[12,12,10,8];batches.splice(4);pool.workers={};pool.nextSequence=401;pool.nextBatchId=5;
+    for(const [i,d] of batches.entries()){
+      const b=d.value;Object.assign(b,{worker:20+i,sessionHash:String(20+i).padStart(64,'0'),journaled:b.start+counts[i]-1,
+        pending:i===1?{sequence:113,attempt:'original-2',awaiting:null,raw:{startBalanceRaw:10000,steps:[{msgId:'BET',responsePayload:'FID=2|'}]}}:null,
+        failure:i===1?'PROTOCOL_VALIDATION_FAILED':null});
+      d._id=`secondary/batch:${plan.trialId}:${b.id}`;
+      pool.workers[b.worker]={sessionHash:b.sessionHash,owner:'old',epoch:1,leaseUntil:0,resumeSafe:false,activeBatch:{id:b.id,worker:b.worker,start:b.start,end:b.end}};
+    }
+    pool.planHash=hash(plan);parked.pool=structuredClone(pool);parked.evidence=batches.map(d=>({key:`parked:${plan.trialId}:${d.value.id}`,hash:hash(d.value)}));
+    Object.assign(profile,{id:'quarterback-32836-20260929',group:'secondary',gameId:32836,planHash:hash(plan),poolHash:hash(pool),complete:42,pending:1,
+      batches:batches.map(({value:b})=>({id:b.id,hash:hash(b),pendingHash:b.pending?hash(b.pending):null}))});
+  }
   return {now,commit,plan,campaign,pool,batches,parked,holds,profile};
 }
 
@@ -76,9 +94,9 @@ test('one short-run binding allows delayed shards but prevents scheduler or reru
   assert.equal(requireShortRun({validationLimit:0},'capture-run:125:1'),false);
 });
 
-async function operatorFixture(){
-  const f=fixture(),docs=new Map(),rounds=new Map(),events=[];let idle=true;
-  const put=(c,k,v)=>docs.set(c+'/'+k,{_id:'primary/'+k,version:1,value:structuredClone(v)});
+async function operatorFixture(gameId=32739){
+  const f=fixture(gameId),docs=new Map(),rounds=new Map(),events=[];let idle=true;
+  const put=(c,k,v)=>docs.set(c+'/'+k,{_id:f.profile.group+'/'+k,version:1,value:structuredClone(v)});
   put('state','campaign',f.campaign);put('state','pool:'+f.plan.trialId,f.pool);put('state','write-permits',{limit:1,slots:{}});
   put('journal','parked-pool:'+f.plan.trialId,f.parked);
   for(const {value:b} of f.batches){
@@ -93,7 +111,7 @@ async function operatorFixture(){
     if(op==='global_holds')return structuredClone(f.holds);
     if(op==='read')return structuredClone(docs.get(r.collection+'/'+r.key)||null);
     if(op==='read_many')return r.keys.map(k=>docs.get(r.collection+'/'+k)).filter(Boolean).map(x=>structuredClone(x));
-    if(op==='create'){const k=r.collection+'/'+r.key;if(docs.has(k))return {created:false};put(r.collection,r.key,r.value);events.push(k);return {created:true};}
+    if(op==='create'){assert(r.value && typeof r.value==='object' && !Array.isArray(r.value),'DOCUMENT_REQUIRED');const k=r.collection+'/'+r.key;if(docs.has(k))return {created:false};put(r.collection,r.key,r.value);events.push(k);return {created:true};}
     if(op==='cas'){
       const k=r.collection+'/'+r.key,old=docs.get(k);if(old.version!==r.version)return {replaced:false};
       // Verify durable backup was completed BEFORE the first target mutation.
@@ -107,7 +125,7 @@ async function operatorFixture(){
   }};
   const gate={observe(){},status:()=>({allowed:true,maxBatchSize:100,metrics:{diskFreeBytes:100*1024**3}})};
   const store=new RunnerState({transport,gate,now:()=>f.now,sleep:async()=>{}});
-  const parser={async call(r){if(r.op==='next')return {MSGID:'FREE_GAME'};assert.equal(r.op,'verify');return {verified:true};}};
+  const parser={async call(r){if(r.op==='next')return f.plan.gameId===32836?{MSGID:'FEATURE_START',CFG:'2'}:{MSGID:'FREE_GAME'};assert.equal(r.op,'verify');return {verified:true};}};
   const operator=new ProtocolRecovery({store,transport,gate,parser,plan:f.plan,profile:f.profile,
     githubIdle:async()=>assert(idle,'OTHER_RUN_ACTIVE'),commit:f.commit,owner:'maintenance',now:()=>f.now,sleep:async()=>{}});
   return {...f,docs,rounds,events,operator,store,block(){idle=false;}};
@@ -148,22 +166,24 @@ test('a backup or reconciliation failure leaves the original parked game unavail
 
 async function finishShort(f){
   const pool=f.docs.get('state/pool:'+f.plan.trialId).value;
-  for(let worker=0;worker<20;worker++){
+  const offset=f.profile.group==='primary'?0:20;
+  for(let worker=offset;worker<offset+20;worker++){
     let w=pool.workers[worker];
     if(!w){
       const id=pool.nextBatchId++,start=pool.nextSequence,end=start+99;pool.nextSequence=end+1;
       w=pool.workers[worker]={sessionHash:String(worker).padStart(64,'0'),activeBatch:{id,worker,start,end},epoch:1};
-      f.docs.set('state/batch:'+f.plan.trialId+':'+id,{_id:'primary/batch:'+f.plan.trialId+':'+id,version:1,
+      f.docs.set('state/batch:'+f.plan.trialId+':'+id,{_id:f.profile.group+'/batch:'+f.plan.trialId+':'+id,version:1,
         value:{id,worker,start,end,sessionHash:w.sessionHash,journaled:start-1,checkpoint:start-1,pending:null,failure:null,epoch:1}});
     }
     const b=f.docs.get('state/batch:'+f.plan.trialId+':'+w.activeBatch.id).value,pending=b.pending;
     for(let n=0;n<10;n++){
       const sequence=b.journaled+1,raw=n===0 && pending?structuredClone(pending.raw):{startBalanceRaw:10000,steps:[]};
-      raw.steps.push({msgId:pending && n===0?'FREE_GAME':'BET',responsePayload:'NFG=0'});
+      if(f.plan.gameId===32836 && pending && n===0)raw.steps.push(...['FEATURE_START','FEATURE_PICK','FEATURE_END'].map(msgId=>({msgId,responsePayload:msgId})));
+      else raw.steps.push({msgId:pending && n===0?'FREE_GAME':'BET',responsePayload:'NFG=0'});
       const r={_id:hash({fixture:sequence}),contentHash:hash({complete:sequence}),trialId:f.plan.trialId,
         sequence,attempt:pending && n===0?pending.attempt:'new-'+sequence,batchId:b.id,shardId:worker,
-        sourceSessionHash:w.sessionHash,fixtureOnly:false,buy:0,bonus:b.id===5 && pending && n===0?2:0,raw};
-      f.docs.set('journal/'+receiptKey(f.plan.trialId,sequence),{_id:'primary/'+receiptKey(f.plan.trialId,sequence),version:1,value:r});
+        sourceSessionHash:w.sessionHash,fixtureOnly:false,buy:0,bonus:b.id===(f.plan.gameId===32836?2:5) && pending && n===0?2:0,raw};
+      f.docs.set('journal/'+receiptKey(f.plan.trialId,sequence),{_id:f.profile.group+'/'+receiptKey(f.plan.trialId,sequence),version:1,value:r});
       f.rounds.set(r._id,structuredClone(r));b.journaled=sequence;b.checkpoint=sequence;
     }
     Object.assign(b,{pending:null,protocolResume:null,leaseUntil:0,owner:'short'});
@@ -190,5 +210,51 @@ test('short validation rejects changed original prefix, attempt, special mapping
     f.rounds.set(row._id,structuredClone(row));
     await assert.rejects(f.operator.validate());
     assert(!f.docs.has('journal/protocol:'+f.profile.id+':validation'));
+  }
+});
+
+test('secondary foam has an independent exact scene and never accepts the Demon group/profile',()=>{
+  const f=fixture(32836);assert.deepEqual(reviewParkedProtocol(f),{complete:42,checkpoint:0,pending:1});
+  for(const change of [x=>x.profile.group='primary',x=>x.profile.id='demon-32739-20260929',
+    x=>x.pool.workers[20].leaseUntil=200000,x=>x.batches[1].value.pending.awaiting='BET',
+    x=>x.holds[0].value.active=true,x=>x.batches[1].value.pending.sequence++]){
+    const x=structuredClone(f);change(x);assert.throws(()=>reviewParkedProtocol(x));
+  }
+});
+test('secondary backup is Mongo-document shaped, keeps original BET, and requires a real four-stage short result',async()=>{
+  const f=await operatorFixture(32836),result=await f.operator.recover();
+  assert.equal(result.count,42);assert.equal(result.oldPendingPreserved,1);assert.equal(result.sourceRequests,0);
+  const b=f.docs.get('state/batch:'+f.plan.trialId+':2').value;
+  assert.deepEqual(b.pending,f.batches[1].value.pending);
+  const grant=(await f.store.get('journal','protocol-resume:'+result.proofHash)).value;
+  assert.deepEqual(reviewProtocolResume({plan:f.plan,batch:b,grant,worker:21,sessionHash:b.sessionHash,commit:f.commit,now:f.now}),b.pending);
+  assert.throws(()=>reviewProtocolResume({plan:f.plan,batch:b,grant,worker:1,sessionHash:b.sessionHash,commit:f.commit,now:f.now}));
+  await assert.rejects(f.operator.formal());
+  await finishShort(f);const validation=await f.operator.validate();
+  assert.equal(validation.fullReadback,242);assert.equal(validation.originalPendingSettled,1);
+  assert.equal(validation.liveFoamSettlementVerified,true);assert.equal(validation.liveFidOneSettlementVerified,undefined);
+  assert.equal((await f.operator.formal()).validationLimit,0);
+  assert.deepEqual(f.holds,fixture().holds);
+  assert([...f.docs.values()].every(d=>d._id.startsWith('secondary/')));
+});
+test('secondary short cannot invent END, replace the original attempt or remap foam as ordinary',async()=>{
+  for(const mode of ['end','prefix','bonus']){
+    const f=await operatorFixture(32836);await f.operator.recover();await finishShort(f);
+    const r=f.docs.get('journal/'+receiptKey(f.plan.trialId,113)).value;
+    if(mode==='end')r.raw.steps.pop();
+    if(mode==='prefix')r.raw.steps[0].responsePayload='changed';
+    if(mode==='bonus')r.bonus=0;
+    f.rounds.set(r._id,structuredClone(r));await assert.rejects(f.operator.validate());
+    assert(!f.docs.has('journal/protocol:'+f.profile.id+':validation'));
+  }
+});
+test('secondary recovery may coexist only with the other groups normal matrix, never another maintenance run',()=>{
+  const run={id:1,run_attempt:1,head_sha:'d'.repeat(40),path:'.github/workflows/trial-300k.yml',event:'workflow_dispatch',status:'in_progress'};
+  const jobs=Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'in_progress',conclusion:null,steps:[{name:'Capture complete rounds with independent sessions'}]}));
+  const args={policy:{group:'secondary'},run,jobs,totalCount:20};assert.equal(reviewOtherGroupRun(args).id,1);
+  for(const change of [x=>x.policy.group='primary',x=>x.totalCount=21,x=>x.run.path='unknown.yml',
+    x=>x.jobs[0].conclusion='failure',x=>x.jobs.forEach(j=>j.steps=[]),
+    x=>{x.jobs.push({name:'protocol-control',status:'in_progress',conclusion:null});x.totalCount++;}]){
+    const x=structuredClone(args);change(x);assert.throws(()=>reviewOtherGroupRun(x));
   }
 });

@@ -126,12 +126,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "0395321aba246a54b9f1c6d443fff65ed9fb4fada46f23fb602a788fa28d8abc",
-    "scripts/runner-v2/record_fields.py": "bfd55c3cae318239d3733aafca5578178a7a77d5618b8381af4f42381b539e4b",
+    "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
+    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
     "service/huff_fields.py": "f17bb20cfd57e00ff3f73cd210cf7bc81aa9d1e1d0919b321417925c2c695b52",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "babec80279caa2f0490a3671faeeefa9430d44d1f6ca6f2cd8b8219d80d9b1f4",
-    "service/game_rule_catalog.py": "5ce71e1e3a1484a276a18b04c04a4e4cdf2bc40b7b4951b369d797a6795b5906"
+    "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "56b99c3979dc67111f95c621bacf30b8ef84f73bdb469fc82b64dac93544024a"
+  "ruleHash": "b7f6b1461ea44a3f17fdb16680ce05057b348347f0820a19d3040c6fe9c1e3aa"
 }

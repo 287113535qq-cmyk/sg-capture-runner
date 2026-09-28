@@ -1,5 +1,6 @@
 import { extractRoundBalance, parsePayloadParams } from './sg.parse';
 import { settledFields } from './sg.fields';
+import { settledQuarterbackFoam } from './sg.quarterback';
 
 export interface SGTrafficEntry {
   ts: string;
@@ -595,9 +596,10 @@ export function buildRoundDoc(
 
   const lastEntry = entries[entries.length - 1];
   const finalParams = parsePayloadParams(lastEntry.responsePayload);
+  const foamEnded = settledQuarterbackFoam(runtimeSlug, entries);
   if (lastEntry.msgId === 'FEATURE_START' || finalParams.MSGID === 'FEATURE_START'
-      || needsFreeGameContinuation(finalParams) || resolveFeaturePickRequest(finalParams) !== null
-      || Object.keys(finalParams).some(key => /^NFR_\d+$/.test(key) && Number(finalParams[key]) > 0)) {
+      || needsFreeGameContinuation(finalParams) || (!foamEnded && (resolveFeaturePickRequest(finalParams) !== null
+      || Object.keys(finalParams).some(key => /^NFR_\d+$/.test(key) && Number(finalParams[key]) > 0)))) {
     throw new Error('SG_INCOMPLETE_ROUND');
   }
   const lastBalance = lastEntry.responseBalance ?? extractRoundBalance({ ogsRc: '', success: true, payload: lastEntry.responsePayload });
@@ -616,12 +618,13 @@ export function buildRoundDoc(
   const primaryBonusKind = normalizePrimaryBonusKind(meta.forcedPrimaryBonusKind) || classifyPrimaryBonusKind(entries);
   const hasFree = entries.some(entry => entry.msgId === 'FREE_GAME');
   const bonus = meta.bonusType ?? (hasFree ? NaN : 0);
-  const reviewedNaturalPick = runtimeSlug === 'squidgameonemoregame96-round-one-base-v1'
+  const reviewedNaturalPick = foamEnded && bonus === 2 || runtimeSlug === 'squidgameonemoregame96-round-one-base-v1'
     && entries.some(entry => entry.msgId === 'FEATURE_START')
     && entries.some(entry => entry.msgId === 'FEATURE_END') && bonus === 2;
   if ((hasFree && !(bonus > 0)) || (!hasFree && bonus !== 0 && !reviewedNaturalPick)) throw new Error('SG_FREE_TYPE_MAPPING_REQUIRED');
   const fields = settledFields(preBalance, lastBalance, totalWinRaw, meta.buy ?? 0, bonus);
   const betRaw = fields.money.betRaw;
+  if (foamEnded && (betRaw !== 25 || fields.buy !== 0)) throw new Error('SG_INVALID_WAGER_BASIS');
   const specialKinds = primaryBonusKind === 'none' ? [] : [primaryBonusKind];
   const doc: SGMongoDoc = {
     bonus: fields.bonus,

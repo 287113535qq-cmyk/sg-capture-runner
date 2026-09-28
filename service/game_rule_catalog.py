@@ -78,6 +78,18 @@ def contract(game_id):
             'GSD.EVP / RGS / RGSF / SCP / SCMB / SCM / CSF / CSD / ICSD': 'Void、HellGate、HeartStopper、消除和盘面演出证据；不额外发送选择或下注请求。',
             'GSD.IMUL / NMUL / PMUL / CTW / CAPS': '倍率、客户端累计赢奖和封顶显示证据；结算仍独立核对 TW/B/AB。',
         })
+    elif game_id == 32836:
+        native.update({'family': 'quarterback-foam-v1',
+            'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
+            'continue': '普通/FID0 免费保持旧规则；独立 FID2 foam 按 START → 单次 PICK → END。PICK 使用 START 的 CFP_2+1 及 GSD.featureData 首项。',
+            'complete': 'Foam 必须成功 END，NFR_2-CFR_2 没有剩余、没有后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。缺失 NFG 不能使触发帧提前结束。',
+            'bounds': '仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。离线通过不表示原暂挂已恢复或真实 foam 已结算。'})
+        native['files'] += ['service/quarterback_fields.py', 'scripts/trial/quarterback-protocol.mjs', 'collector/sg.quarterback.ts']
+        native['fields'].update({
+            'CFG / FS_2 / NFR_2 / CFR_2 / CFP_2': 'CFG2 为 foam；NFR 是获赠轮数，CFR 为已完成轮数，CFP 为已选次数；单看 NFR>0 不能认定 END 后仍未完成。',
+            'FP': '0|CFP_2+1|GSD.featureData首项；第三项不是按钮位置，也不按最大值选择。',
+            'GSD.featureData / BVAL / display': '#和~分段；featureData 来自 START，BVAL/盘面保留原文证据，公开统计仅记录存在。',
+        })
     return native
 
 
@@ -87,6 +99,7 @@ REVIEW_DOCS = {
     32736: ['docs/natural-feature-review-32671-32736.md'],
     32714: ['docs/huff-hard-hat-protocol.md', 'docs/huff-natural-free-stop-20260928.md'],
     32717: ['docs/huff-goals-client-review-20260928.md'],
+    32836: ['docs/quarterback-observation-20260929.md', 'docs/quarterback-foam-protocol.md'],
 }
 
 

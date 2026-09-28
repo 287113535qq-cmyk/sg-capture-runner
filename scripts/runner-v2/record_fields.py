@@ -9,6 +9,7 @@ from native_nextgen_fields import NativeNextgenFields
 from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
 from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
 from demon_fields import DemonFields, SOURCE as DEMON_SOURCE
+from quarterback_fields import QuarterbackFields, SOURCE as QUARTERBACK_SOURCE
 
 adapters = {}
 
@@ -18,7 +19,7 @@ def execute(request):
     key = digest(plan)
     if key not in adapters:
         plan = validate_pool_plan(plan)
-        cls = {SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields}.get(plan['sourceKey'], NativeNextgenFields)
+        cls = {SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = cls(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']

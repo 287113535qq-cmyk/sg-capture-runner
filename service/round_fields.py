@@ -41,6 +41,9 @@ def params(payload):
     return result
 
 def nextgen(raw):
+    from quarterback_fields import SOURCE as QUARTERBACK_SOURCE, is_foam, feature_settlement
+    if raw.get('sourceKey') == QUARTERBACK_SOURCE and is_foam(raw):
+        return feature_settlement(raw)
     steps = raw['steps']
     check(steps[0].get('msgId') == 'BET', 'MISSING_PAID_ROUND_START')
     flags = []
@@ -176,7 +179,9 @@ def types(raw, kind):
     huff_type = feature_type(raw) if source_key == HUFF_SOURCE else None
     from demon_fields import SOURCE as DEMON_SOURCE, EXTENSION as DEMON_EXTENSION, feature_type as demon_feature_type
     demon_type = demon_feature_type(raw) if source_key == DEMON_SOURCE else None
-    profile, mapping_hash = type_profile(DEMON_EXTENSION if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    from quarterback_fields import SOURCE as QUARTERBACK_SOURCE, EXTENSION as QUARTERBACK_EXTENSION, is_foam
+    foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
+    profile, mapping_hash = type_profile(QUARTERBACK_EXTENSION if foam_type else DEMON_EXTENSION if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -204,7 +209,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if demon_type:
+    if foam_type:
+        check(kind == 'feature' and profile.get('featureSelector') == 'quarterback-foam-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus = profile['featureTypes']['foamPick']
+    elif demon_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == 'demon-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes'][demon_type]
     elif huff_type:

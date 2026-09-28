@@ -6,12 +6,14 @@ import {reviewParkedProtocol,protocolGrant} from './protocol-recovery-core.mjs';
 import {reviewReleasedBatches} from './incident-core.mjs';
 import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter,stable} from './mongo-writer.mjs';
+import {protocolPolicy} from './protocol-policy.mjs';
 
 export class ProtocolRecovery {
   constructor({store,transport,gate,parser,plan,profile,githubIdle,commit,owner,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
     Object.assign(this,{store,transport,gate,parser,plan,profile,githubIdle,commit,owner,now,sleep});
     this.prefix='protocol:'+profile.id;this.poolKey='pool:'+plan.trialId;
-    assert(profile.group==='primary' && profile.gameId===32739 && plan.gameId===32739,'WRONG_PROTOCOL_RECOVERY');
+    this.policy=protocolPolicy(plan.gameId);
+    assert(profile.group===this.policy.group && profile.id===this.policy.id && profile.gameId===plan.gameId,'WRONG_PROTOCOL_RECOVERY');
   }
   async boundary(){
     await this.githubIdle();await this.store.writable();
@@ -45,7 +47,7 @@ export class ProtocolRecovery {
         else assert(!allCommitted && r.sequence>b.checkpoint,'CHECKPOINT_WITHOUT_RECORD');
         d.update(stable([r._id,r.contentHash])+'\n');count++;workerCounts[b.worker]=(workerCounts[b.worker]||0)+1;
       }
-      if(backup)await this.store.create('journal',`${this.prefix}:records:${b.id}`,records,{immutable:true});
+      if(backup)await this.store.create('journal',`${this.prefix}:records:${b.id}`,{records},{immutable:true});
     }
     let after=0,seen=0;
     while(true){
@@ -65,7 +67,7 @@ export class ProtocolRecovery {
     for(const {value:b} of s.batches){
       const old=(await this.store.get('journal',`parked:${this.plan.trialId}:${b.id}`))?.value;
       assert(old?.poolPlanHash===this.profile.planHash && hash(old.batch)===hash(b),'PARKED_BATCH_CHANGED');
-      if(b.pending)assert(stable(await this.parser.call({op:'next',plan:this.plan,raw:b.pending.raw}))===stable({MSGID:'FREE_GAME'}),'CONTINUATION_NOT_VERIFIED');
+      if(b.pending)assert(stable(await this.parser.call({op:'next',plan:this.plan,raw:b.pending.raw}))===stable(this.policy.next),'CONTINUATION_NOT_VERIFIED');
     }
     const verified=await this.verifyRecords(s);
     assert(verified.count===this.profile.complete && verified.committed===this.profile.checkpoint,'COUNTS_CHANGED');
@@ -123,7 +125,7 @@ export class ProtocolRecovery {
     assert(s.pool.value.enabled && !s.pool.value.failure && s.pool.value.planHash===hash(this.plan),'POOL_HALTED');
     let end=0;const sessions=new Set();
     for(const [id,w] of Object.entries(s.pool.value.workers)){
-      assert(Number(id)>=0 && Number(id)<20 && !sessions.has(w.sessionHash),'WORKER_CHANGED');sessions.add(w.sessionHash);
+      assert(Number(id)>=this.policy.offset && Number(id)<this.policy.offset+20 && !sessions.has(w.sessionHash),'WORKER_CHANGED');sessions.add(w.sessionHash);
     }
     for(const [i,{value:b}] of s.batches.entries()){
       assert(b.id===i+1 && b.start===end+1 && b.end>=b.start && b.end-b.start<100 && b.end<=this.plan.target,'RANGE_CHANGED');end=b.end;
@@ -138,14 +140,15 @@ export class ProtocolRecovery {
     assert(!(await this.store.get('journal',this.prefix+':validation')),'VALIDATION_ALREADY_APPLIED');
     const full=await this.verifyRecords(s,{allCommitted:true});
     assert(full.count===this.profile.complete+200 && Object.keys(full.workerCounts).length===20,'SHORT_COUNT_CHANGED');
-    for(let w=0;w<20;w++)assert(full.workerCounts[w]-(base.workerCounts[w]||0)===10,'SHORT_WORKER_COUNT_CHANGED');
+    for(let w=this.policy.offset;w<this.policy.offset+20;w++)assert(full.workerCounts[w]-(base.workerCounts[w]||0)===10,'SHORT_WORKER_COUNT_CHANGED');
     const before=(await this.store.get('journal',this.prefix+':before')).value;
     for(const [w,old] of Object.entries(before.pool.value.workers))assert(s.pool.value.workers[w]?.sessionHash===old.sessionHash,'SESSION_CHANGED');
-    let resumed=0,fidOneSettled=false;
+    let resumed=0,specialSettled=false;
     for(const {value:b} of before.batches){
       const after=s.batches.find(x=>x.value.id===b.id)?.value;
       assert(after && ['id','worker','start','end','sessionHash'].every(k=>after[k]===b[k]) && after.epoch>b.epoch,'ORIGINAL_BATCH_CHANGED');
-      const originals=(await this.store.get('journal',`${this.prefix}:records:${b.id}`)).value;
+      const originals=(await this.store.get('journal',`${this.prefix}:records:${b.id}`)).value.records;
+      assert(Array.isArray(originals),'PRIVATE_BACKUP_INVALID');
       if(originals.length){const current=await this.store.getMany('journal',originals.map(r=>receiptKey(this.plan.trialId,r.sequence)));
         assert(current.every((x,i)=>x && stable(x.value)===stable(originals[i])),'OLD_RECORDS_CHANGED');}
       if(!b.pending)continue;
@@ -154,18 +157,24 @@ export class ProtocolRecovery {
       assert(r.raw.startBalanceRaw===b.pending.raw.startBalanceRaw && r.raw.steps.length>b.pending.raw.steps.length
         && stable(r.raw.steps.slice(0,b.pending.raw.steps.length))===stable(b.pending.raw.steps),'PENDING_PREFIX_CHANGED');
       assert(r.raw.steps.filter(x=>x.msgId==='BET').length===1,'BET_REPLAYED');
-      if(b.id===5 && b.pending.sequence===432){assert(r.bonus===2,'FID_ONE_SETTLEMENT_MISSING');fidOneSettled=true;}
+      if(b.id===this.policy.specialBatch && b.pending.sequence===this.policy.specialSequence){
+        assert(r.bonus===2,'NATURAL_FEATURE_SETTLEMENT_MISSING');
+        if(this.plan.gameId===32836)assert(r.raw.steps.map(x=>x.msgId).join(',')==='BET,FEATURE_START,FEATURE_PICK,FEATURE_END','FOAM_SETTLEMENT_MISSING');
+        specialSettled=true;
+      }
       resumed++;
     }
-    assert(resumed===6 && fidOneSettled,'ORIGINAL_PENDING_NOT_SETTLED');
+    assert(resumed===this.policy.pending && specialSettled,'ORIGINAL_PENDING_NOT_SETTLED');
     await this.boundary();assert(hash(await this.snapshots())===hash(s),'STATE_CHANGED');
     const result={proofHash:base.proofHash,fullReadback:full.count,oldPreserved:this.profile.complete,newComplete:200,
-      originalPendingSettled:resumed,liveFidOneSettlementVerified:true,pending:0,poolHash:hash(s.pool.value),campaignHash:hash(s.campaign.value),at:this.now()};
+      originalPendingSettled:resumed,liveNaturalFeatureSettlementVerified:true,
+      ...(this.plan.gameId===32739?{liveFidOneSettlementVerified:true}:{liveFoamSettlementVerified:true}),
+      pending:0,poolHash:hash(s.pool.value),campaignHash:hash(s.campaign.value),at:this.now()};
     await this.store.create('journal',this.prefix+':validation',result,{immutable:true});return result;
   }
   async formal(){
     const {s,base}=await this.reviewedShort(),p=(await this.store.get('journal',this.prefix+':validation'))?.value;
-    assert(p?.proofHash===base.proofHash && p.fullReadback===this.profile.complete+200 && p.originalPendingSettled===6 && p.liveFidOneSettlementVerified
+    assert(p?.proofHash===base.proofHash && p.fullReadback===this.profile.complete+200 && p.originalPendingSettled===this.policy.pending && p.liveNaturalFeatureSettlementVerified
       && p.poolHash===hash(s.pool.value) && p.campaignHash===hash(s.campaign.value) && this.now()>=p.at && this.now()-p.at<15*60000,'VALIDATION_STALE_OR_CHANGED');
     await this.store.create('journal',this.prefix+':formal',{proof:p,at:this.now(),commit:this.commit},{immutable:true});
     await this.store.update('state','campaign',v=>{assert(hash(v)===p.campaignHash,'CAMPAIGN_CHANGED');return {...v,validationLimit:0,protocolValidation:null};});

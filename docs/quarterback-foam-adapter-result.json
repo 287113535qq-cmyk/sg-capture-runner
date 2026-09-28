@@ -1,0 +1,19 @@
+{
+  "gameId": 32836,
+  "implemented": true,
+  "scope": "standalone FID2 foam; ordinary/FID0 unchanged",
+  "historicalChainsUnchanged": 100,
+  "historicalFrames": 110,
+  "oldCompleteRecordsVerified": 42,
+  "pendingPreserved": 1,
+  "pendingHash": "e5d11d5088d9656740214abb16b5e521ab9d29535b2753f8f429054f2df32b05",
+  "rawHash": "832e48ccd79221965768f3ad29566500db6155bec56cd4207938279594a9231a",
+  "nextRequest": {"MSGID": "FEATURE_START", "CFG": "2"},
+  "windows": {"python": 235, "nodeProtocolAndRunner": 114, "collector": 25, "typescript": true},
+  "linuxPreflightVerified": false,
+  "recoveryApplied": false,
+  "liveFoamSettlementVerified": false,
+  "officialSourceRequestsDuringOfflineReview": 0,
+  "databaseWritesDuringOfflineReview": 0,
+  "allNaturalBranchesCovered": false
+}

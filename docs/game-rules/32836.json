@@ -22,19 +22,25 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "quarterback-foam-v1",
     "messages": [
       "BET",
-      "FREE_GAME"
+      "FREE_GAME",
+      "FEATURE_START",
+      "FEATURE_PICK",
+      "FEATURE_END"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "普通/FID0 免费保持旧规则；独立 FID2 foam 按 START → 单次 PICK → END。PICK 使用 START 的 CFP_2+1 及 GSD.featureData 首项。",
+    "complete": "Foam 必须成功 END，NFR_2-CFR_2 没有剩余、没有后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。缺失 NFG 不能使触发帧提前结束。",
+    "bounds": "仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。离线通过不表示原暂挂已恢复或真实 foam 已结算。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/quarterback_fields.py",
+      "scripts/trial/quarterback-protocol.mjs",
+      "collector/sg.quarterback.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -44,7 +50,10 @@
       "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "CFG / FS_2 / NFR_2 / CFR_2 / CFP_2": "CFG2 为 foam；NFR 是获赠轮数，CFR 为已完成轮数，CFP 为已选次数；单看 NFR>0 不能认定 END 后仍未完成。",
+      "FP": "0|CFP_2+1|GSD.featureData首项；第三项不是按钮位置，也不按最大值选择。",
+      "GSD.featureData / BVAL / display": "#和~分段；featureData 来自 START，BVAL/盘面保留原文证据，公开统计仅记录存在。"
     }
   },
   "typeMappings": {
@@ -70,15 +79,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "quarterbackfieldsofglory96-round-one-base-v1-foam-pick-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "quarterback-foam-v1",
+      "featureTypes": {
+        "foamPick": 2
+      }
     }
   },
   "mappingHashes": {
-    "quarterbackfieldsofglory96-round-one-base-v1": "d3e9b4478b5d47102391c1ba9d4cb2789351763770fead39a224b5a55e326fbe"
+    "quarterbackfieldsofglory96-round-one-base-v1": "d3e9b4478b5d47102391c1ba9d4cb2789351763770fead39a224b5a55e326fbe",
+    "quarterbackfieldsofglory96-round-one-base-v1-foam-pick-v1": "86ed7eb3c78b4c40708de512c744b5b5a17bf9a7ca5970445d76d812830e0e3c"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -90,19 +126,31 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "0395321aba246a54b9f1c6d443fff65ed9fb4fada46f23fb602a788fa28d8abc",
-    "scripts/runner-v2/record_fields.py": "bfd55c3cae318239d3733aafca5578178a7a77d5618b8381af4f42381b539e4b",
-    "service/game_rule_catalog.py": "5ce71e1e3a1484a276a18b04c04a4e4cdf2bc40b7b4951b369d797a6795b5906"
+    "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
+    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
+    "service/quarterback_fields.py": "834f292bdd307601d0ee6f0b4c3235f241455255b1862f0f5e9eaf22528198e1",
+    "scripts/trial/quarterback-protocol.mjs": "689fdde8ad07615020ee73cca8884aa1e860e421bd035eedc3ee78a763900bd7",
+    "collector/sg.quarterback.ts": "d20f1ce2a62b96ec0d6a471fa1741e6e5a0694ec7f535fc6224c283fdc8a9a4c",
+    "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
   },
-  "reviewDocuments": [],
+  "reviewDocuments": [
+    "docs/quarterback-observation-20260929.md",
+    "docs/quarterback-foam-protocol.md"
+  ],
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
+    "docs/quarterback-foam-adapter-result.json",
+    "docs/quarterback-foam-protocol.md",
+    "docs/quarterback-foam-recovery.md",
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "64de5202db92503576724d11f490ca075dfcd9f173f594a6e0fd1204d0eca57f",
     "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
+    "docs/quarterback-foam-adapter-result.json": "5b9dbdea399e0a1e76913a2ce0ac161a37b91e51772c853e4f52089b4e744e6e",
+    "docs/quarterback-foam-protocol.md": "4c50a23d5d00822687e0fa3b95a556a66f7ce64572031e0d768d535ddb3a9ea5",
+    "docs/quarterback-foam-recovery.md": "bcc2feacce4ee69d9b21324b43ddf15dcb35839f0bc1b4808ffbc27350ad5789",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
@@ -112,5 +160,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6e0de53de81787f484090fdc5b65e2a242471b5a62b92439b638e1a05c8a88a4"
+  "ruleHash": "f69bac5cd99c03361c4bba76ca132a830e0f6222283f921cdafc5bbc9b6e27f8"
 }

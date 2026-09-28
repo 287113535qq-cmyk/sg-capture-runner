@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {protocolPolicy} from './protocol-policy.mjs';
 
 export function reviewParkedProtocol({profile,plan,campaign,pool,batches,parked,holds,now=Date.now()}) {
-  assert(profile.schema==='sg-parked-protocol-profile-v1' && profile.id==='demon-32739-20260929'
-    && profile.group==='primary' && plan.gameId===32739,'WRONG_PROTOCOL_RECOVERY');
+  const policy=protocolPolicy(plan.gameId);
+  assert(profile.schema==='sg-parked-protocol-profile-v1' && profile.id===policy.id
+    && profile.group===policy.group && profile.gameId===plan.gameId,'WRONG_PROTOCOL_RECOVERY');
   assert(hash(plan)===profile.planHash && plan.phase===1 && plan.buy===0,'PLAN_CHANGED');
   assert(campaign.enabled && !campaign.reason && campaign.activeGame===null && !campaign.audit
     && campaign.validationLimit===0 && !campaign.protocolValidation,'CAMPAIGN_NOT_IDLE');
@@ -19,7 +21,7 @@ export function reviewParkedProtocol({profile,plan,campaign,pool,batches,parked,
   let complete=0,checkpoint=0,pending=0,next=1;
   const sessions=new Set();
   for(const [id,w] of Object.entries(pool.workers)){
-    assert(Number(id)>=0 && Number(id)<20 && /^[a-f0-9]{64}$/.test(w.sessionHash) && !sessions.has(w.sessionHash),'WORKER_CHANGED');
+    assert(Number(id)>=policy.offset && Number(id)<policy.offset+20 && /^[a-f0-9]{64}$/.test(w.sessionHash) && !sessions.has(w.sessionHash),'WORKER_CHANGED');
     sessions.add(w.sessionHash);
   }
   for(const [i,doc] of batches.entries()){
@@ -39,7 +41,7 @@ export function reviewParkedProtocol({profile,plan,campaign,pool,batches,parked,
     }else assert(!b.failure && e.pendingHash===null,'FAILURE_WITHOUT_PENDING');
   }
   assert(next===pool.nextSequence && complete===profile.complete && checkpoint===profile.checkpoint
-    && pending===profile.pending && complete===164 && pending===6,'COUNTS_CHANGED');
+    && pending===profile.pending && complete===policy.complete && pending===policy.pending,'COUNTS_CHANGED');
   return {complete,checkpoint,pending};
 }
 

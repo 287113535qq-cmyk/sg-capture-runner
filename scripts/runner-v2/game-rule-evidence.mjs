@@ -13,6 +13,8 @@ const presenceOnly=new Set(['GSD.MMW','GSD.WH1','GSD.WH2','GSD.WHSLICE']);
 const demonFields=['FGT','GSD.SNFG','GSD.STFG','GSD.EFG','GSD.EFGS','GSD.SBEFG','GSD.DST',
   'GSD.DFFP','GSD.DDDP','GSD.DCCS','GSD.DAAP','GSD.DAAS','GSD.EVP','GSD.RGS','GSD.RGSF',
   'GSD.SCP','GSD.SCMB','GSD.SCM','GSD.CSF','GSD.CSD','GSD.ICSD','GSD.IMUL','GSD.NMUL','GSD.PMUL','GSD.CTW','GSD.CAPS'];
+const quarterbackFields=['FS_2','NFR_2','CFR_2','CFP_2','FTV_2','FPM_2','GSD.featureData','GSD.BVAL','GSD.display'];
+for(const field of ['FTV_2','FPM_2','GSD.featureData','GSD.BVAL','GSD.display'])presenceOnly.add(field);
 for(const field of ['EFG','DFFP','DDDP','DCCS','DAAP','DAAS','EVP','RGS','RGSF','SCP','CSF','CSD','ICSD','CTW'])presenceOnly.add('GSD.'+field);
 const names=new Set(['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION','FG','WHEEL','WHEEL1','WHEEL2','MEGAHAT','BUZZSAW','FREE_SPINS','BASE_GAME']);
 function values(payload,tracked){
@@ -44,7 +46,7 @@ export class GameRuleEvidence {
     this.revision=/^[a-f0-9]{40}$/.test(revision||'')?revision:null;
     this.rounds=0;this.frames=0;this.specialRounds=0;this.continuations={total:0,min:null,max:0};
     this.messages={};this.transitions={};this.bonus={};this.examples={};this.mappingHashes=new Set();
-    this.tracked=plan.gameId===32739?[...fields,...demonFields]:fields;
+    this.tracked=plan.gameId===32836?[...fields,...quarterbackFields]:plan.gameId===32739?[...fields,...demonFields]:fields;
     this.fields=Object.fromEntries(this.tracked.map(k=>[k,{present:0,missing:0,empty:0,redacted:0,overflowOccurrences:0,values:{}}]));
   }
   observeVerified(record){

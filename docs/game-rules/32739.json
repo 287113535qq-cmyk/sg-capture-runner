@@ -124,11 +124,11 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "0395321aba246a54b9f1c6d443fff65ed9fb4fada46f23fb602a788fa28d8abc",
-    "scripts/runner-v2/record_fields.py": "bfd55c3cae318239d3733aafca5578178a7a77d5618b8381af4f42381b539e4b",
+    "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
+    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
-    "service/game_rule_catalog.py": "5ce71e1e3a1484a276a18b04c04a4e4cdf2bc40b7b4951b369d797a6795b5906"
+    "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -139,6 +139,7 @@
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
     "docs/panda-network-recovery-20260929.md",
+    "docs/quarterback-foam-recovery.md",
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
@@ -149,6 +150,7 @@
     "docs/demon-code-recovery-operator-result.json": "7243f4ca2054066e4fc4c3154e4069f0100d8a572f92fe3a7b8cad7834ddf5c9",
     "docs/demon-code-recovery-operator.md": "abd0c06d0eec6d91fdfae836b08d17ea2e004e31dccb38b9812dff98148acfe8",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
+    "docs/quarterback-foam-recovery.md": "bcc2feacce4ee69d9b21324b43ddf15dcb35839f0bc1b4808ffbc27350ad5789",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
   "observations": {
@@ -158,5 +160,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d8c108c882607a750c4f872b568eb11ce4554d92b7377a7169832d2d35fdbc71"
+  "ruleHash": "2e5ef0495f372caf2ab9b3afa8fd9a806df1f074447b1304a675eefa91169e1f"
 }

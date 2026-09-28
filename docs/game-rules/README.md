@@ -181,6 +181,6 @@
 | [32832](32832.json) | Key To Success | not-documented | 待确认 |
 | [32833](32833.json) | Panda Pow | implemented-subset | 1 |
 | [32835](32835.json) | Pyramids of Luxor | implemented-subset | 1 |
-| [32836](32836.json) | Quarterback Fields of Glory | implemented-subset | 1 |
+| [32836](32836.json) | Quarterback Fields of Glory | implemented-subset | 2 |
 | [32837](32837.json) | Road Trip 66 | not-documented | 待确认 |
 | [32839](32839.json) | The Green Machine Bingo | not-documented | 待确认 |
