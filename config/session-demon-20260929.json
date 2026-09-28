@@ -1,0 +1,124 @@
+{
+  "schema": "sg-session-incident-v1",
+  "id": "invalid-session-36492435648-20260929",
+  "group": "primary",
+  "gameId": 32739,
+  "createdAt": 1790635828109,
+  "planHash": "dc3cfcf700417d4b67cadd70569330f6a917419210f3a1f529ef93155d0934c2",
+  "campaignHash": "34ee0bcaa56480a90b1d741641edbe1b584e83e95d0561f50cf4e24eedf72461",
+  "poolHash": "702f7edb0c5c6e67f577cfc587c18ca80280a75a2068970b694fd9e3950d766f",
+  "complete": 164,
+  "pending": 6,
+  "abandon": [
+    2,
+    4
+  ],
+  "previousCommit": "37a419a78aa03340f0b838ccf39016dddf811107",
+  "previousSnapshotHash": "2787ce08daed66bd232a0e7949eb77183d339171e076519c05d03558103a53e7",
+  "primaryHoldHash": "6ceb8b049e23f7fa0c71f6ecfb3a2e07738ee0032597fb934f56742a5591d689",
+  "secondaryHoldHash": "30c7a08178c567906470b870e26f448dc6f68cc0423ff524f0c297b13d458811",
+  "batches": [
+    {
+      "id": 1,
+      "hash": "70c878b08882df45ad5a25b7c9ec4f9524a9fca9bbb6933963b858b77389c3a9",
+      "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f"
+    },
+    {
+      "id": 2,
+      "hash": "4d184519149670cfddd675a50e09237d9a2396e14fef1d256b8124e80028e9dd",
+      "pendingHash": "723103f4797c431627abdd81062e5a197a313b68b1b8cd55d5762ae9a5e89f0b"
+    },
+    {
+      "id": 3,
+      "hash": "03ff5d3f48e4b73d873d2d21be909182e546ec72707e39b65cd764b49c6a7dd1",
+      "pendingHash": null
+    },
+    {
+      "id": 4,
+      "hash": "687a226a64deb8003abe4170a7b6d895b425894f20b2aea3d1e0898fc943cda2",
+      "pendingHash": "fcf427ba3655a9284addb42f93bab35447f8f0ecbdd2208fa3415a591d9b1b72"
+    },
+    {
+      "id": 5,
+      "hash": "a96bb188eb4411fa831e9e2a1ff3872ccadf0de440f39e5c1e86d5810205fb1c",
+      "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30"
+    },
+    {
+      "id": 6,
+      "hash": "295ccca20d61f4913171c5f8cfce1deedd63e356064d219bcf2fd6977d241589",
+      "pendingHash": null
+    },
+    {
+      "id": 7,
+      "hash": "3cab0da13d1439fd111ed908e1dbb470047c7730f962612ff289b5f47b2686e2",
+      "pendingHash": null
+    },
+    {
+      "id": 8,
+      "hash": "b3f9f250a93a9c08382837af45c472f188401d3db31a591a15c908dfdeff43c8",
+      "pendingHash": null
+    },
+    {
+      "id": 9,
+      "hash": "368c1f1f39598a999c5b9d761754d1b369bdc7af37fedbaa928d1047f08f9995",
+      "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912"
+    },
+    {
+      "id": 10,
+      "hash": "aa0eae46be44c1adea09a5b27e5e10537142f205f0730ef4075c17c0e57e2822",
+      "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7"
+    },
+    {
+      "id": 11,
+      "hash": "ddef976b26a9ce88b94f294fe3e4860a78242ed9442e657e931e9d1bc07269f3",
+      "pendingHash": null
+    },
+    {
+      "id": 12,
+      "hash": "6024d0b34d1a3f2d8076fe783a6bbe05044b2b4b1e28bc134905eebc7e76c756",
+      "pendingHash": null
+    },
+    {
+      "id": 13,
+      "hash": "a6807dabcbf52479e388315f787ee955b5ab3a13ad56aeb59b3ed5451b717f22",
+      "pendingHash": null
+    },
+    {
+      "id": 14,
+      "hash": "6b22c8cbe8ae473399d3e7c8f69c370d11619772462e381927bcbdce102a6c99",
+      "pendingHash": null
+    },
+    {
+      "id": 15,
+      "hash": "6e255d714a62b9104dfbc3cf815a46ba735c9f1d0dae70b7e8a95b96b5a4063b",
+      "pendingHash": null
+    }
+  ],
+  "adapterHashFormat": "utf8-lf-sha256",
+  "adapterFiles": {
+    "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
+    "service/quarterback_fields.py": "834f292bdd307601d0ee6f0b4c3235f241455255b1862f0f5e9eaf22528198e1",
+    "scripts/trial/quarterback-protocol.mjs": "689fdde8ad07615020ee73cca8884aa1e860e421bd035eedc3ee78a763900bd7",
+    "scripts/runner-v2/protocol-policy.mjs": "e7d4a5f4689eb638df92c91fa011f0df682837e7af1cf2e90d9cbf0f82649ef7",
+    "scripts/runner-v2/protocol-github-boundary.mjs": "02a8cc2b42c7793e2d5989845fcf3de46e660ac00f44ff67d270edda8a32ddb0",
+    "collector/sg.quarterback.ts": "d20f1ce2a62b96ec0d6a471fa1741e6e5a0694ec7f535fc6224c283fdc8a9a4c",
+    "collector/sg.round.ts": "68829a1ff3c7d8f07878dd6ee9837e00da564a8c7a0b74e0a663829b37a31ffa",
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
+    "service/round_types.json": "024cdb48095f932a8e6e0fb42d3f0cd6cbcb9ec9e1aabf668ae43404e76f6f06",
+    "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
+    "scripts/trial/capture-batch.mjs": "041717226e61c45891677042dcd6de60ccf118b037d8f1ce23852c5036caef53",
+    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
+    "scripts/runner-v2/batch-controller.mjs": "86fd581e2e3377239526c64e8e6964d2832560d9862582935d1cc6b6c32f8f27",
+    "scripts/runner-v2/protocol-resume.mjs": "cea05f78d7cecfae1891e6cf86d2b544d8d88f052939d5bfdf845f250ff1b52d",
+    "scripts/runner-v2/protocol-recovery-core.mjs": "8ef8400e823c9da1886fe66e8ac34e40ee86936fd89ba084e8df8cedd8a8043f",
+    "scripts/runner-v2/protocol-recovery.mjs": "bf9c67bfe73b7a515fc8ccb259101b0b22f877eb86e7f7a88ed6df0e1ca8d081",
+    "scripts/runner-v2/protocol-control.mjs": "a675f4eef4adbba781580be0dfcb26561b7ea8e71c488c5079fc79b2a18e0307",
+    "scripts/runner-v2/campaign.mjs": "085e5be1dd355e9d15df21b9e14d50c8ff27c375ab06ed197a76c43bb5818ecb",
+    "scripts/runner-v2/campaign-worker.mjs": "af8d3b932d4ba3a6f2f0dd76d0377f1acb07c0ee0ac3f92324738a6b2e050439",
+    "scripts/runner-v2/session-control.mjs": "cece226ca31eb9597e9710c92da73503a117988009745790a2024544b80ec605",
+    "scripts/runner-v2/session-recovery.mjs": "ddc2835c3f9ba662737a090fbc0bdfd030493bff171115f713e0e8d05754759d",
+    ".github/workflows/trial-300k.yml": "c888d264fac9bbf35f5a3c0bd1614633b349347e1a1b931f49581c8ef0b834b2"
+  },
+  "adapterHash": "077052933470f836d5f485edd8aa2af993a7849765d585127448ff2a35e79b34"
+}
