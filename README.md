@@ -1,5 +1,11 @@
 # SG 采集准备仓库
 
+最新状态（2026-09-28 13:14 UTC）：**32714 Hard Hat 适配已部署，分组恢复已实际应用；受控短采出现另一个自然功能 Touch Up，尚未通过恢复验收。** [短采 36425867764](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36425867764) 的 20 个 capture 步骤全部进入执行，新增 101 个完整日志；32714 当前 103 个完整日志，其中 97 个文件/SQLite/Mongo 全文核验，6 个待落盘。新 pending 为 batch4/worker13/sequence307：成功 Money Mansion FREE_GAME 转入 FID2 Touch Up；原 Hard Hat sequence402 的 BET 原样保留，其 worker 在同组停止前未发送源请求，真实 Hard Hat 结算仍未验证。两个 pending 均无未知在途结果，全部私有备份，未删除或重发 BET。详见 [恢复及新停采结果](docs/huff-group-recovery-20260928.md)。
+
+当前仍完成 6/178 款，complete6、active2、ready15、needs-adapter155；secondary 的 32717 仍 244/228、单 pending，逐条核对未变。两个组均暂停，定时变量 false；primary workflow disabled_manually，secondary active 保留手动入口。共同 dispatch 开关为 true：此前错误升级的历史暂停已受控解除，但两个组的协议暂停仍拒绝实际采集。已应用 proof 不能复用，下一次恢复必须绑定最新现场。
+
+以下为此前分组启用经过，不覆盖上述最新现场。
+
 最新状态（2026-09-28 11:38 UTC 后续审查）：**第二组已按“就绪分片先领任务、排队分片启动后加入”实际采集成功。** [短采 36416561237](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36416561237) 的 20 个分片分批完成，每个新增 10 局，共 200 局原始/标准化/文件/SQLite/Mongo 全文核验通过。这不代表 20 台同时采集，也不把此前 10 台观测值视作永久上限。两账号分组调度已受控迁移：primary 保留 32714 协议现场，secondary 独立领取 32717，178 款目标和历史仍各一份。详见 [实施与实际结果](docs/available-workers-20260928.md)。
 
 随后第二组正式运行 36416743264 在 32717 自然 FID=2 功能触发协议保护而停止，最终 244 个完整日志记录保留，其中 228 个已落盘全文核验、16 个待落盘，另有 1 个成功 BET 后的自然功能待完成。全部私有备份，未删除或重放；32714 原有现场不变。**当前完成 6 款，每款累计 300000 局；队列 complete6、active2、ready15、needs-adapter155。两个组均因协议适配暂停，定时采集变量 false，第二组保留手动入口。** 详见 [32717 新停采审查](docs/huff-goals-natural-feature-stop-20260928.md) 与 [32714 原停采审查](docs/huff-natural-free-stop-20260928.md)。第二轮关闭，新数据只写隔离库 sg_capture_staging_v1.official_rounds。

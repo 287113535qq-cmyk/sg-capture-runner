@@ -1,9 +1,13 @@
 # 32714 Hard Hat adapter
 
 This adds a production adapter and an independent Runner implementation for
-32714 Huff N Puff Money Mansion High Limit. It is not yet deployed or cleared
-for live recovery. Both groups remain paused. 32717 Wheel is a different
-protocol and is not enabled by this change.
+32714 Huff N Puff Money Mansion High Limit. Release `a6ff895` was deployed and
+the evidence-bound primary recovery was applied on 2026-09-28 at 13:02 UTC.
+The controlled short run then stopped on a different natural mode, Touch Up
+(FID2), before the original Hard Hat pending round resumed. Both groups are
+paused again. Live Hard Hat settlement is still unverified. See the
+[actual recovery and short-run result](huff-group-recovery-20260928.md).
+32717 Wheel remains a separate protocol and is not enabled by this change.
 
 ## Pinned evidence
 
@@ -41,7 +45,7 @@ Hard Hat with Money Mansion. These are internal normalization codes, not SG
 feature IDs. Existing ordinary and FID0 records keep their original profile,
 bonus and mapping hash. No frozen plan, campaign configuration or quota changes.
 
-## Validation and remaining recovery work
+## Adapter validation before deployment
 
 Windows and Linux: 184 Python tests passed, including eight new adapter tests.
 The final additional combination/reset checks passed all 31 Huff tests on both
@@ -58,16 +62,15 @@ The final candidate is independently staged at
 SHA256 `9e5de58468ee598400e981b97ec98f754e0be893c905d34cb558f90b52a1f409`.
 Read-only replay confirms both current complete records are unchanged and the
 preserved pending raw hash still matches. The one durable Mongo document was
-also fully read back. Runtime remains `c9b02dc`; no source request, live-state
-write, deletion, proof application or workflow dispatch was performed.
+also fully read back. At that pre-deployment checkpoint, runtime remained
+`c9b02dc`; no source request, live-state write, deletion, proof application or
+workflow dispatch had been performed.
 
-Before switching runtime and collecting: bind a new recovery proof to the
-current independent-group database, verify both groups' leases and GitHub runs,
-back up the current control state, retain the original failure event, and
-restore only the reviewed primary game. The old single-campaign recovery
-operator and earlier applied proofs cannot be reused. The historical global
-pause needs a separate evidence-bound clearing step; secondary remains paused.
-Then run the original workflow with round_one_limit=10, finish the preserved
-natural round, flush the prior journal and verify raw/normalized/file/SQLite/
-Mongo documents before formal continuation. Live Hard Hat settlement is still
-unverified until that controlled run completes.
+The new group recovery operator subsequently passed all 190 Python tests on
+both Windows and Linux. It backed up both groups, retained the old failure,
+cleared the precisely reviewed historical global pause and opened primary
+only. That proof is applied and must never be reused. The first short run was
+not a successful validation: a new Money Mansion response triggered Touch Up.
+The current pending set and receipt counts therefore differ from the first
+proof. A new protocol implementation and a new evidence-bound review are
+required before any further source request.

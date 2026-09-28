@@ -1,8 +1,15 @@
 {
   "schema": "sg-huff-hard-hat-adapter-review-v1",
   "gameId": 32714,
-  "implementedFeatures": ["MMANSION", "HARDHAT"],
-  "unsupportedFeaturesStillRejected": ["PAINT", "HOMEIMP", "MANSION"],
+  "implementedFeatures": [
+    "MMANSION",
+    "HARDHAT"
+  ],
+  "unsupportedFeaturesStillRejected": [
+    "PAINT",
+    "HOMEIMP",
+    "MANSION"
+  ],
   "windowsFullPythonTests": 184,
   "linuxFullPythonTests": 184,
   "finalHuffPythonTestsEachPlatform": 31,
@@ -15,13 +22,13 @@
   "pendingRawHash": "67d1e0dae3eab7e26ac6d5706798fc1ceef5b10f86d57e14e402e404952b47b7",
   "pendingNext": "FREE_GAME",
   "candidateArchiveSha256": "9e5de58468ee598400e981b97ec98f754e0be893c905d34cb558f90b52a1f409",
-  "runtimeUnchanged": "c9b02dc1e9beb44f866f5d314c9cebb9cf28b6fb",
-  "deployed": false,
+  "deployed": true,
   "liveHardHatSettlementVerified": false,
-  "recoveryProofCreated": false,
-  "recoveryApplied": false,
-  "sourceRequests": 0,
-  "liveDatabaseWrites": 0,
+  "recoveryProofCreated": true,
+  "recoveryApplied": true,
+  "sourceRequests": 137,
   "dataDeleted": 0,
-  "nextStep": "Implement and test group-aware evidence-bound recovery; then controlled primary short capture and full audit."
+  "nextStep": "First recovery applied; short run stopped on new Touch Up transition before Hard Hat resumed. Live settlement unverified. New protocol adaptation and a new proof are required.",
+  "runtimeCommit": "a6ff8951b49296ade47d3269d396239f5b900023",
+  "sourceActivityEvidence": "docs/huff-group-recovery-20260928-result.json"
 }
