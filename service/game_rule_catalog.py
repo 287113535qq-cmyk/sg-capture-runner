@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+GAME_ID_PATTERN = re.compile(r'(?<![0-9A-Za-z])([0-9]{5})(?![0-9A-Za-z])')
 
 
 def digest(value):
@@ -87,7 +88,7 @@ def cards(root=ROOT):
     for path in sorted((root / 'docs').glob('*')):
         if path.suffix not in {'.md', '.json'}:
             continue
-        mentioned = set(re.findall(r'(?<![0-9])([0-9]{5})(?![0-9])', path.read_text(encoding='utf-8-sig'))) & known
+        mentioned = set(GAME_ID_PATTERN.findall(path.read_text(encoding='utf-8-sig'))) & known
         if len(mentioned) <= 10:
             for gid in mentioned:
                 analyses[gid].add(path.relative_to(root).as_posix())

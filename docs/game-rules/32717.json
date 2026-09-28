@@ -92,7 +92,7 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "1f987729e47bb15439e165b393f25ad75fad1024622c6903551c56543c5a6076",
     "scripts/runner-v2/record_fields.py": "63f8b1f8c593e3d0f42f7d5b6e970eb3f8fb02331922f2b13e1f903a2c43b20e",
-    "service/game_rule_catalog.py": "c2f65945ae576def48ee75e65fec3ab7f944ee1d0242ec9ffdde03d06dcf8b01"
+    "service/game_rule_catalog.py": "bb5e4607e6c50aaa76fa0768ea9611bb33509696af4c90c327b22f5a0855897a"
   },
   "reviewDocuments": [
     "docs/huff-goals-client-review-20260928.md"
@@ -130,5 +130,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "99373df832a7e3aba185b8e6d15f302032752777998ad536146e5cc8f3b80a9f"
+  "ruleHash": "9525cbb35937d1d4750e13a6bdad6d6116a9624512b240d6a18807d5dd2364b4"
 }

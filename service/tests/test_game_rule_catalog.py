@@ -5,7 +5,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'service'))
-from game_rule_catalog import cards, generated
+from game_rule_catalog import cards, generated, GAME_ID_PATTERN
 from round_fields import type_profile
 from store import digest
 
@@ -60,6 +60,10 @@ class GameRuleCatalogTests(unittest.TestCase):
             text = first[f'{gid}.json']
             for private in ('"requestPayload"', '"responsePayload"', '"responseXml"', '"sessionHash"', '"password"'):
                 self.assertNotIn(private, text)
+
+    def test_game_ids_inside_hashes_are_not_misidentified_as_analysis_references(self):
+        text = '游戏32714 "32717": sg_r1_20260928_32714 f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509'
+        self.assertEqual(set(GAME_ID_PATTERN.findall(text)), {'32714', '32717'})
 
 
 if __name__ == '__main__':
