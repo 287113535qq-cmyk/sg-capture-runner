@@ -1,0 +1,189 @@
+"""Restricted database I/O only. No capture, SQLite, scheduler, or game imports.
+
+Trusted group/manifest/auth paths come from the root-owned SSH wrapper. This
+candidate is not selected by the existing capture entry point.
+"""
+import json
+import base64
+import os
+from pathlib import Path
+import re
+import sys
+import time
+
+LIMIT = 8 * 1024 * 1024
+DATABASE = 'sg_capture_staging_v1'
+COLLECTIONS = {'state': 'capture_state_v2', 'journal': 'capture_journal_v2'}
+
+
+class Refused(Exception):
+    pass
+
+
+def need(value, code):
+    if not value:
+        raise Refused(code)
+
+
+def resources():
+    memory = {x.split(':')[0]: int(x.split()[1]) for x in Path('/proc/meminfo').read_text().splitlines()}
+    disk = os.statvfs('/var/lib/sg-capture-runner')
+    return {'sampledAtMs': int(time.time() * 1000),
+            'bootId': Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
+            'cpuTicks': [int(x) for x in Path('/proc/stat').read_text().splitlines()[0].split()[1:9]],
+            'memTotalKiB': memory['MemTotal'], 'memAvailableKiB': memory['MemAvailable'],
+            'diskFreeBytes': disk.f_bavail * disk.f_frsize}
+
+
+class Gateway:
+    def __init__(self, database, group, manifest, sample=resources):
+        need(group in ('primary', 'secondary'), 'GROUP_REQUIRED')
+        need(manifest.get('schema') == 'sg-mongo-only-access-v2', 'MANIFEST_REQUIRED')
+        self.db, self.group, self.manifest, self.sample = database, group, manifest, sample
+
+    def scope(self, request):
+        trial = request.get('trialId')
+        need(isinstance(trial, str) and trial in self.manifest['trials'], 'TRIAL_NOT_ALLOWED')
+        scope = self.manifest['trials'][trial]
+        need(scope['group'] == self.group, 'GROUP_SCOPE_DENIED')
+        return trial, scope
+
+    def dispatch(self, r):
+        need(isinstance(r, dict) and r.get('schema') == 'sg-mongo-only-v2', 'SCHEMA_REQUIRED')
+        need('group' not in r and 'runnerGroup' not in r, 'GROUP_IS_NOT_CLIENT_INPUT')
+        op = r.get('op')
+        if op == 'resources':
+            return self.sample()
+        if op == 'hello':
+            return {'group': self.group, 'database': DATABASE, 'schema': 'sg-mongo-only-v2',
+                    'captureLogicOnServer': False, 'legacyRuntimeEnabled': False}
+        if op in ('legacy_manifest', 'legacy_bytes'):
+            # Temporary, read-only transfer of the already frozen archive.
+            # SQLite decoding/validation/migration happens on GitHub, never here.
+            need(self.manifest.get('legacyExportEnabled') is True, 'LEGACY_EXPORT_DISABLED')
+            directory = Path('/var/lib/sg-capture-runner/reviews/github-processing-freeze-20260928')
+            allowed = self.manifest['legacyTrialDirectories'][self.group]
+            if op == 'legacy_manifest':
+                files = json.loads((directory / 'manifest.json').read_text())
+                return {'files': [x for x in files if any(x['path'].startswith(t + '/') for t in allowed)],
+                        'receipt': json.loads((directory / 'backup-receipt.json').read_text())}
+            relative = r.get('path')
+            need(isinstance(relative, str) and '\\' not in relative
+                 and (relative == 'queue-before.sqlite3' or any(relative.startswith(t + '/') for t in allowed)),
+                 'LEGACY_PATH_DENIED')
+            path = directory / relative
+            need(path.resolve().is_relative_to(directory) and path.is_file() and not path.is_symlink(), 'LEGACY_PATH_DENIED')
+            offset = r.get('offset', 0)
+            need(type(offset) is int and 0 <= offset <= path.stat().st_size, 'BAD_OFFSET')
+            with path.open('rb') as stream:
+                stream.seek(offset); chunk = stream.read(256 * 1024)
+            return {'offset': offset, 'size': path.stat().st_size, 'data': base64.b64encode(chunk).decode()}
+        if op in ('read', 'create', 'cas', 'scan'):
+            alias = r.get('collection')
+            need(alias in COLLECTIONS, 'COLLECTION_NOT_ALLOWED')
+            collection = self.db[COLLECTIONS[alias]]
+            key = r.get('key')
+            need(isinstance(key, str) and re.fullmatch(r'[a-zA-Z0-9:_-]{1,180}', key), 'BAD_KEY')
+            identity = self.group + '/' + key
+            if op == 'scan':
+                need(alias == 'journal', 'SCAN_NOT_ALLOWED')
+                prefix = self.group + '/' + key
+                cursor = r.get('after', prefix)
+                need(isinstance(cursor, str) and cursor.startswith(prefix), 'BAD_CURSOR')
+                # Bounded indexed prefix range; never caller-provided Mongo queries.
+                return list(collection.find({'_id': {'$gt': cursor, '$lt': prefix + '\uffff'}},
+                                            max_time_ms=10000).sort('_id', 1).limit(100))
+            if op == 'read':
+                return collection.find_one({'_id': identity}, max_time_ms=10000)
+            need(self.manifest.get('metadataWritesEnabled') is True, 'METADATA_WRITES_DISABLED')
+            value = r.get('value')
+            need(isinstance(value, dict), 'DOCUMENT_REQUIRED')
+            if op == 'create':
+                document = {'_id': identity, 'version': 0, 'value': value}
+                try:
+                    collection.insert_one(document)
+                    return {'created': True}
+                except Exception as exc:
+                    if getattr(exc, 'code', None) == 11000:
+                        return {'created': False}
+                    raise
+            expected = r.get('version')
+            need(type(expected) is int and 0 <= expected < 9007199254740991, 'BAD_VERSION')
+            result = collection.replace_one({'_id': identity, 'version': expected},
+                                            {'_id': identity, 'version': expected + 1, 'value': value})
+            return {'replaced': result.matched_count == 1, 'version': expected + 1}
+        if op in ('rounds_read', 'rounds_insert'):
+            trial, scope = self.scope(r)
+            collection = self.db['official_rounds']
+            if op == 'rounds_read':
+                ids = r.get('ids')
+                need(isinstance(ids, list) and 1 <= len(ids) <= 100
+                     and all(isinstance(x, str) and re.fullmatch('[a-f0-9]{64}', x) for x in ids), 'BAD_IDS')
+                return list(collection.find({'trialId': trial, '_id': {'$in': ids}}, max_time_ms=10000).limit(100))
+            need(self.manifest.get('roundWritesEnabled') is True, 'ROUND_WRITES_DISABLED')
+            rows = r.get('records')
+            need(isinstance(rows, list) and 1 <= len(rows) <= 100, 'BAD_BATCH')
+            for row in rows:
+                need(isinstance(row, dict) and row.get('trialId') == trial
+                     and row.get('gameId') == scope['gameId'] and row.get('runtimeGameId') == scope['runtimeGameId']
+                     and row.get('fixtureOnly') is False and row.get('buy') == 0
+                     and type(row.get('sequence')) is int and 1 <= row['sequence'] <= scope['target']
+                     and isinstance(row.get('_id'), str) and re.fullmatch('[a-f0-9]{64}', row['_id'])
+                     and isinstance(row.get('contentHash'), str) and re.fullmatch('[a-f0-9]{64}', row['contentHash']),
+                     'ROUND_SCOPE_DENIED')
+            # Insert-only idempotent upserts: never mutate an existing round.
+            # Full content equality is checked by the GitHub client.
+            from pymongo import UpdateOne
+            result = collection.bulk_write([UpdateOne({'_id': row['_id'], 'contentHash': row['contentHash']},
+                                                      {'$setOnInsert': row}, upsert=True) for row in rows], ordered=True)
+            return {'inserted': result.upserted_count}
+        raise Refused('OPERATION_NOT_ALLOWED')
+
+
+def main():
+    need(not os.environ.get('SSH_ORIGINAL_COMMAND'), 'SHELL_FORBIDDEN')
+    group = os.environ.get('SG_RUNNER_GROUP')
+    need(group in ('primary', 'secondary'), 'GROUP_REQUIRED')
+    # The v2 dependencies are shipped in the immutable release, not installed
+    # into the host Python or into any production application environment.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'vendor-python'))
+    from pymongo import MongoClient
+    from pymongo.write_concern import WriteConcern
+    from pymongo.read_concern import ReadConcern
+    auth = json.loads(Path('/etc/sg-capture-runner/mongo-auth.json').read_text())
+    need(auth.get('database') == DATABASE, 'WRONG_DATABASE')
+    manifest = json.loads(Path('/etc/sg-capture-runner/mongo-only-access-v2.json').read_text())
+    client = MongoClient('mongodb://127.0.0.1:27017', username=auth['user'], password=auth['password'],
+                         authSource=DATABASE, maxPoolSize=1, minPoolSize=0,
+                         serverSelectionTimeoutMS=10000, connectTimeoutMS=10000, socketTimeoutMS=45000,
+                         retryWrites=False, retryReads=False, appname='sg-mongo-only-v2')
+    database = client.get_database(DATABASE, write_concern=WriteConcern(w='majority', j=True, wtimeout=30000),
+                                   read_concern=ReadConcern('majority'))
+    gateway = Gateway(database, group, manifest)
+    try:
+        while True:
+            line = sys.stdin.buffer.readline(LIMIT + 2)
+            if not line:
+                break
+            try:
+                need(len(line) <= LIMIT and line.endswith(b'\n'), 'REQUEST_TOO_LARGE')
+                result = gateway.dispatch(json.loads(line))
+                output = json.dumps({'ok': True, 'result': result}, separators=(',', ':'))
+                need(len(output.encode()) <= 16 * 1024 * 1024, 'RESPONSE_TOO_LARGE')
+            except Refused as exc:
+                output = json.dumps({'ok': False, 'error': str(exc)})
+            except Exception:
+                output = '{"ok":false,"error":"MONGO_OPERATION_OUTCOME_UNKNOWN"}'
+            print(output, flush=True)
+            if len(line) > LIMIT:
+                break
+    finally:
+        client.close()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception:
+        print('{"ok":false,"error":"GATEWAY_UNAVAILABLE"}', flush=True)
+        sys.exit(2)
