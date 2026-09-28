@@ -33,3 +33,7 @@ primary 的 `config/session-demon-20260929.json` 固定失败运行 `36492435648
 若其余原会话也返回拒绝，立即按原共同保护停止并保存新响应，不能沿用本次两个异常的授权证据来批量丢弃其他局。部分执行失败、已使用proof、过期或不同提交、重复短采均拒绝；不得直接修改runKey或套用旧protocol-recover/Panda/SQLite清理。
 
 实现入口 `scripts/runner-v2/session-control.mjs` 与 `session-recovery.mjs`。专项测试覆盖仅归档明确两局、未知/权限/错误XML拒绝、前缀和许可变化拒绝、活动运行/租约/共同hold拒绝、备份失败不动原局、保留secondary原BET、不同新attempt与真实特殊结算验收。当前本文件记录实现，实际执行结果另行追加，不能把离线测试当恢复成功。
+
+Linux预检 `36497112735` 在结束修正提交 `6a29299` 成功：236 Python、83 Mongo v2 Runner、41协议Node、25 collector、TypeScript、3000离线夹具，未连接SG或Mongo。尚无本次新END现场可应用恢复proof。
+
+六次新运行的metadata、全部jobs、日志ZIP已校验CRC/SHA，连同恢复前后完整私有现场双份保存于本机.local及服务器reviews/session-end-stop-20260929。归档session-runs-20260929-full.tar，SHA256 `fdce1fd866b03e87bdc7fecdc7ef8326992697c84339eb8176addd34af6de99c`；新快照规范化摘要 `107c3472fbbd4a9960f624e77eed666a6285878bce0f187908135013c81d00d3`。07:21北京时间两仓库无活动/排队，已保存租约均到期；下次操作仍需读取实时边界。GitHub运行没有删除。
