@@ -33,3 +33,5 @@ campaign/source 均暂停，原 workflow 为 `disabled_manually`，本次把原�
 ## 已完成验证
 
 Windows：141 项 Python、21 项 Node 测试通过。新增测试实际覆盖 40 个并发分配连接、精确耗尽同一目标且无重叠；真实旧 SQLite `id<20` 约束的迁移、未知 intent 不变、活动租约和陈旧 proof 拒绝；两组各自 startup 屏障和 40 个测试完整局的文件、SQLite、模拟 Mongo 全文一致；原 20 个会话输出完全一致。测试数据均为离线夹具，不计为官方新采，不表示 40 台云端已启动或已达到某个速度。
+
+代码 `28bd95859ae1647c7ddc4f055894911ef81d3106` 的 [Linux 预检 36395090374](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36395090374) 已成功：141 项 Python、25 项 collector、21 项 Node、TypeScript，以及保留的 20 会话/3000 局离线采集持久化集成全部通过。该预检不使用 SG Secrets，也没有发出官方源请求。当前会话没有可用的浏览器控制执行入口，未能通过浏览器接入第二账号；CLI 权限阻塞仍待解决。
