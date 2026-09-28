@@ -1,0 +1,60 @@
+{
+  "repository": "287113535qq-cmyk/sg-capture-runner",
+  "deletedRuns": [
+    36398275924,
+    36401689140
+  ],
+  "archiveSha256": "80548e06ea627eacc69ca5fec524a9e8aafc31c810e329e8cca9a4e59712a010",
+  "archiveBytes": 634880,
+  "privateBackupVerified": true,
+  "archiveManifest": {
+    "repository": "287113535qq-cmyk/sg-capture-runner",
+    "runs": [
+      {
+        "runId": 36398275924,
+        "captureJobs": 20,
+        "captureStepsSkipped": 20,
+        "files": {
+          "jobs.json": "fb518efda0a679691cee551b37e42841603f5f89684315c3341c17775ad12538",
+          "logs.zip": "67b6d46f8d163c16c7f93f39129fa3aa4caa72c28de7ed65b2a8cc402181b800",
+          "run.json": "f6059d6802f2638d517c16c9d5dcb31021c0b453ecf70337a89d47096090bf3a"
+        }
+      },
+      {
+        "runId": 36401689140,
+        "captureJobs": 20,
+        "captureStepsSkipped": 20,
+        "files": {
+          "jobs.json": "d7caa8da43c965f377adac298f85646ec0a88ad66e1cba286f8dfccd3fa07493",
+          "logs.zip": "901304f62d65bb70723c1d016e0767e3b18ccc06fc8398e417b24f05a4269b53",
+          "run.json": "0e2b2d38d949ede1a3a3fd1ba33512cd7e020a55f34fc08bd4b95006f11fcaf4"
+        }
+      }
+    ]
+  },
+  "newRunId": 36403634321,
+  "newRunConclusion": "failure",
+  "readyBeforeFirstTimeout": [
+    1,
+    6,
+    8,
+    10,
+    11,
+    15,
+    17
+  ],
+  "configuredWorkers": 20,
+  "startupDeadlineSeconds": 180,
+  "failure": "RUNNER_CAPACITY_NOT_READY",
+  "captureStepsSkipped": 20,
+  "sourceRequests": 0,
+  "secondarySessionBindings": 0,
+  "workflowState": "disabled_manually",
+  "scheduleEnabled": false,
+  "accountCapacityCause": "not provided by API",
+  "fortyWorkersValidated": false,
+  "earlierReadyCounts": [
+    5,
+    6
+  ]
+}
