@@ -40,7 +40,12 @@ def execute(request):
         assert digest(identity)==old['_id']
         assert fields == old['normalized'] and digest(raw) == old['rawHash']
         assert digest(fields) == old['normalizedHash']
-        assert digest({k:v for k,v in old.items() if k!='contentHash'}) == old['contentHash']
+        # JavaScript/JSON transport does not distinguish 2 from 2.0. Rebuild
+        # only the independently derived money fields in their original Python
+        # numeric representation before checking the unchanged legacy digest.
+        restored={**old,'normalized':fields,'bet':fields['bet'],'mul':fields['mul']}
+        assert old['bet']==fields['bet'] and old['mul']==fields['mul']
+        assert digest({k:v for k,v in restored.items() if k!='contentHash'}) == old['contentHash']
         return {'verified': True}
     assert op == 'record' and request['normalized'] == fields
     identity = {k: request[k] for k in ('sequence', 'attempt')}

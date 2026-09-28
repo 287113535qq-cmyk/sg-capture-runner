@@ -19,7 +19,7 @@ on:
         type: choice
         options: ['1', '100', '1000', '300000']
       active_shards:
-        description: 'Independent capture sessions (GitHub Free maximum 20)'
+        description: 'Configured capture sessions; available first-round workers start independently'
         default: '20'
         type: choice
         options: ['2', '4', '20']
@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover]
+        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -39,6 +39,31 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  github-control:
+    if: github.event_name == 'workflow_dispatch' && (inputs.role == 'github-activate' || inputs.role == 'github-validate' || inputs.role == 'github-promote')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Apply evidence-bound migration control on GitHub
+        env:
+          CONTROL_ROLE: ${{ inputs.role }}
+        run: |
+          case "$CONTROL_ROLE" in
+            github-activate) node scripts/runner-v2/activation.mjs short ;;
+            github-validate) node scripts/runner-v2/validate-migration.mjs ;;
+            github-promote) node scripts/runner-v2/activation.mjs formal ;;
+            *) exit 2 ;;
+          esac
   github-recover:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'github-recover'
     runs-on: ubuntu-latest
@@ -167,7 +192,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: trial
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && inputs.role != 'github-migrate' && inputs.role != 'github-recover' || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

@@ -19,10 +19,12 @@ let stop=false;
 process.on('SIGTERM',()=>{stop=true;});process.on('SIGINT',()=>{stop=true;});
 const sleep=()=>new Promise(r=>setTimeout(r,10000));
 async function capture(plan){
+  const validationLimit=(await store.get('state','campaign')).value.validationLimit || 0;
   fs.writeFileSync('config/round-one-active.json',JSON.stringify(plan)+'\n');
   return new Promise((resolve,reject)=>{
     const child=spawn(process.execPath,['scripts/trial/worker.mjs','capture'],{stdio:'inherit',env:{...process.env,
-      SG_PROCESSING_MODE:'github-v2',SG_TRIAL_PLAN:'config/round-one-active.json',SG_TRIAL_MINUTES:String(Math.max(1,(end-Date.now())/60000))}});
+      SG_PROCESSING_MODE:'github-v2',SG_POOL_RUN_LIMIT:String(validationLimit || Number(process.env.SG_POOL_RUN_LIMIT||'0')),
+      SG_TRIAL_PLAN:'config/round-one-active.json',SG_TRIAL_MINUTES:String(Math.max(1,(end-Date.now())/60000))}});
     child.on('error',()=>reject(Error('CAPTURE_CHILD_FAILED')));child.on('exit',resolve);
   });
 }
@@ -37,7 +39,7 @@ try{
       if(next.action==='wait'){await sleep();continue;}
       if(next.action==='audit'){console.log(JSON.stringify(await campaign.audit(next.plan)));continue;}
       const code=await capture(next.plan);
-      if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0){if(code!==0)process.exitCode=2;break;}
+      if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
       if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}
       await sleep();
     }

@@ -27,6 +27,12 @@ class GithubMigrationTests(unittest.TestCase):
                         'sequence':1,'attempt':'00000000-0000-0000-0000-000000000001',
                         'sessionHash':'a'*64,'worker':0,'batchId':1})
         self.assertEqual(execute({'op':'verify','plan':plan,'raw':raw,'record':record}),{'verified':True})
+        def json_number(value):
+            if isinstance(value,float) and value.is_integer():return int(value)
+            if isinstance(value,dict):return {k:json_number(v) for k,v in value.items()}
+            if isinstance(value,list):return [json_number(v) for v in value]
+            return value
+        self.assertEqual(execute({'op':'verify','plan':plan,'raw':raw,'record':json_number(record)}),{'verified':True})
         bad=copy.deepcopy(record);bad['shardId']=1
         with self.assertRaises(AssertionError):execute({'op':'verify','plan':plan,'raw':raw,'record':bad})
 
