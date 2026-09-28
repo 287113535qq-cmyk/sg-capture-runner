@@ -4,13 +4,17 @@
 
 ## 实际状态
 
-第二个仓库为公开空仓库。本机当前 GitHub CLI 账号 `zyzuoyang` 对该仓库 `push=false`、`admin=false`，且没有待接受的仓库邀请。尚未推送第二个仓库、配置其 Secrets 或启动其工作流；服务端仍运行 `733dde4248c9789306c9ab312c9f8d76e584786b`，容量仍为 20。新增代码默认关闭第二组，尚未执行迁移。
+第二个公开仓库的邀请 `335034808` 已接受，CLI `zyzuoyang` 已有 push 权限。两仓库已同步代码，第二仓库的独立受限 SSH key、Secrets 和变量均已配置。线上 current 已部署 `7463e7fd1bf4736c8f5fcdd3280a8a3656d28cc3`，运行容量已受控迁移为 40，原 20 个 worker、2491 个批次、冻结配置与计划保持不变。两组越界 register 均实际返回 `RUNNER_GROUP_MISMATCH`。
 
 原正式运行 `36391708988` 在分片 1 的 BET 请求遇到 HTTP 502 后停止。静止状态为完整日志 248682 局，文件/Mongo checkpoint 248384 局，298 局待持久化；加上已核验的 100 局历史，当前记录进度为 248782/300000。该快照不替代一次新的全量终审。
 
-未完成大局共 6 个：batch2473/worker7/sequence247738、2479/0/248400、2480/2/248565、2481/12/248645、2483/10/248940、2491/1/249697。前五个已保存响应，等待 FREE_GAME；最后一个仍有未知 BET intent、没有成功响应。数据未删除、原请求未重发。以前两次清理的 proof 不适用于这次停止。需依据用户已授权的异常大局处理方式，重新生成证据、备份及专门审查。
+该次未完成大局共 6 个：batch2473/worker7/sequence247738、2479/0/248400、2480/2/248565、2481/12/248645、2483/10/248940、2491/1/249697。依据用户已授权的异常大局处理方式，已全量核验、私有备份后清理这 6 个未完成 attempt。完整 248682 局全部保留，原 20 个会话绑定不变；最后一个原 BET 结果仍记为 unknown，归档为 abandon_without_replay，未重发。独立清理 proof 为 `39d5119d8b567a5f9d761291bb1edc40150be2bd8eba96c3e98a7f2dd136ec27`，已应用一次，不可重用。容量迁移 proof 为 `73dc1cb923610269d0d980102d118114f829304945c2a132a74d997cebbccf63`，也已应用。
 
-campaign/source 均暂停，原 workflow 为 `disabled_manually`，本次把原仓库 `SG_TRIAL_ENABLED` 同步设为 `false`。队列 complete3、active1、ready19、needs-adapter155。
+两仓库短采同时派发。原组 [36398269790](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36398269790) 成功：20 个 worker 各新增 10 局，共 200 局，原 298 条日志全部完成持久化，6 个替代大局均以新 attempt 结算。随后四进程全量审计 248882 局的原始/标准化/文件/SQLite/Mongo 全文一致，耗时 129.225 秒；旧 248682 局逐条保留，pending=0。加 100 条已核验历史为 248982/300000。审计结果见 [验证回执](runner-federation-validation-result.json)。
+
+第二组 [36398275924](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36398275924) 未进入采集：180 秒启动期限内只有本地 shard 0、4、6、7、13 获得 Runner 并就绪，其余 15 个排队，报 `RUNNER_CAPACITY_NOT_READY` 后停止剩余任务。20 个任务的采集步骤全部 skipped，官方源请求 0，第二组会话绑定 0。观察到 5 台就绪并不能证明账号永久上限为 5；API 未提供账号限制原因。第二仓库 workflow 已禁用、`SG_TRIAL_ENABLED=false`，不反复派发同样检查，不降低启动要求来掩盖容量不足。详细证据见 [容量回执](runner-federation-capacity-result.json)。
+
+原组已开启 `SG_TRIAL_ENABLED=true` 并派发正式续采 [36399061495](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36399061495)，allocation=round-one、round_one_limit=0。第二组仍待 Runner 容量明确后验证。因此当前是原 20 分片续采，不能声称 40 台已同时采集。接入时队列仍为 complete3、active1、ready19、needs-adapter155，实时进度以 status RPC 为准。
 
 ## 实现和边界
 
@@ -22,16 +26,15 @@ campaign/source 均暂停，原 workflow 为 `disabled_manually`，本次把原�
 - operator-only `federation_migration.activate` 必须在 campaign/pool 暂停、全部 worker 和批次租约过期、磁盘空间达标时运行。先只读生成状态 hash，apply 绑定相同 hash；私有备份 queue/pool 和审计事件后，仅扩展 worker ID 的数据库约束。保留已有 worker、绑定、范围、configHash、planHash 和所有 pending/receipts；不解除原故障或采集开关。
 - 工作流停止步骤使用本仓库的 `GITHUB_REPOSITORY`，避免第二仓库尝试关闭原仓库。服务端全局 source gate 仍约束两组。
 
-## 接入步骤
+## 第二组后续验证
 
-1. 本机通过 CLI 登录第二个账号，或获得第二仓库足以管理代码、Actions Secrets 和变量的权限。凭据只走 GitHub 登录界面或已有本机 CLI，不发到聊天、不写入 Git。
-2. 两个仓库使用同一已验证 release；第二仓库 schedule 开关保持 false。其源配置通过 Secrets 提供，原始数据和 `.local` 不进入公开仓库。
-3. 为第二组生成独立 SSH key，服务器授权为受限 forced command。secondary entry 禁止 shell command，再调用唯一的 root-owned secondary RPC wrapper，由该 wrapper 固定设置 `SG_RUNNER_GROUP=secondary`。不能给第二仓库原组 key 或任意 shell 权限；sudoers 只允许无参数专用 wrapper。
-4. 核查两个仓库全部运行/排队任务和服务端租约，在暂停状态部署不可变 release，复核原 config 和 plan 字节一致。运行 `scripts/activate-runner-federation.py --root ... --backup-dir ...` 获取 hash，再以相同路径、`--expected-hash ... --apply` 激活容量。manifest 最后发布；迁移不会恢复采集。
-5. 对上述六个未完成大局重新审查处理并核对 298 条日志落盘；先两仓库各 `allocation=round-one, round_one_limit=10` 短采，验证原 20 个绑定不变、40 个独立会话、范围去重、每个完成局的原始/标准化/文件/SQLite/Mongo 一致。确认后才启用两仓库定时续采和 limit0。
+1. 账号拥有者检查 Actions/账号页面是否有验证或额度提示。GitHub 官方 [Actions limits](https://docs.github.com/en/actions/reference/limits) 列明标准 Free 总并发通常为 20，具体本次只分配 5 台的原因仍需账号侧证据，必要时通过 GitHub Support 核实。不要擅自改变费用或增加账号。
+2. 配置、权限和容量迁移已完成，无需重新接受邀请、换 key、重跑迁移或清理旧 pending。第二仓库 schedule 保持 false，直到新容量证据支持重试。
+3. 在两个仓库无活动/排队采集、原任务安全结束且租约过期的边界，读取最新 campaign、活动 trial、完整记录基线和绑定。不能沿用 248682/248882 旧快照，也不能中断在途 BET 来制造新的未知结果。
+4. 第二组以 `allocation=round-one, round_one_limit=10` 短采，确认真正获得 20 个 Runner、20–39 注册成功，原 20 个绑定不变，总共 40 个独立会话，分配不重叠；对照当次新基线核验全部新增完整局及文件/SQLite/Mongo。再让两组同时运行以确认实际并发。全部通过才开启第二仓库定时和 limit0。
 
 ## 已完成验证
 
-Windows：141 项 Python、21 项 Node 测试通过。新增测试实际覆盖 40 个并发分配连接、精确耗尽同一目标且无重叠；真实旧 SQLite `id<20` 约束的迁移、未知 intent 不变、活动租约和陈旧 proof 拒绝；两组各自 startup 屏障和 40 个测试完整局的文件、SQLite、模拟 Mongo 全文一致；原 20 个会话输出完全一致。测试数据均为离线夹具，不计为官方新采，不表示 40 台云端已启动或已达到某个速度。
+离线测试覆盖 40 个并发分配连接、精确耗尽同一目标且无重叠；真实旧 SQLite `id<20` 约束迁移、未知 intent 不变、活动租约和陈旧 proof 拒绝；两组各自 startup 屏障与 40 个夹具完整局的文件、SQLite、模拟 Mongo 全文一致；原 20 个会话输出完全一致。追加的清理验证确保最多同时打开一个历史批次，2491 批次不会无界占用 SQLite/文件句柄。测试数据不计为官方新采，也不表示 40 台云端实际运行。
 
-代码 `28bd95859ae1647c7ddc4f055894911ef81d3106` 的 [Linux 预检 36395090374](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36395090374) 已成功：141 项 Python、25 项 collector、21 项 Node、TypeScript，以及保留的 20 会话/3000 局离线采集持久化集成全部通过。该预检不使用 SG Secrets，也没有发出官方源请求。当前会话没有可用的浏览器控制执行入口，未能通过浏览器接入第二账号；CLI 权限阻塞仍待解决。
+原 federation 代码的 [Linux 预检 36395090374](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36395090374) 成功；最终 runtime `7463e7f` 的第二仓库 [Linux 预检 36396807308](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36396807308) 也成功，包含 143 Python、25 collector、21 Node、TypeScript、20 会话/3000 局离线集成。部署时服务端再次通过完整 143 Python 测试。官方源端已验证的是原组新增的 200 局；第二组源端验证仍未完成。

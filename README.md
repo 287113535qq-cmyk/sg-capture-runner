@@ -1,6 +1,6 @@
 # SG 采集准备仓库
 
-当前状态（2026-09-28 第二仓库接入准备快照）：**第一轮暂停，complete3、active1、ready19、needs-adapter155。32651 完整日志 248682 局，其中 248384 局完成文件/Mongo 持久化，298 局待落盘；加上 100 条已核验历史，记录进度 248782/300000。正式运行 36391708988 因 SG HTTP 502 停止，保留 6 个未完成大局，其中 1 个 BET 结果未知，未重发。用户指定第二个仓库再运行 20 个分片；40 分片隔离与受控迁移代码已准备，第二仓库尚缺管理授权，尚未部署或启用第二组。** 每款累计补足 30 万完整普通局；第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [第二仓库接入状态](docs/runner-federation-20260928.md)；此前恢复记录见 [历史清理回执](docs/pending-discard-20260928.md)。
+当前状态（2026-09-28 第二仓库接入验证快照）：**原 20 分片已派发正式续采 36399061495。32651 短采后 248882 局通过文件/SQLite/Mongo 全文核验，另有 100 条已核验历史；6 个异常未完成大局已私有备份并以新 attempt 替代，旧完整数据全部保留，未知原 BET 未重发。第二仓库邀请已接受，代码、Secrets、独立受限 SSH 和服务端 40 分片容量已部署；但其短采在 180 秒内仅等到 5 台 Runner，其余 15 台排队，20 个采集步骤全部跳过，第二组现保持暂停。尚未实现 40 台同时采集。** 接入时队列 complete3、active1、ready19、needs-adapter155；实时进度以 status RPC 为准。每款累计补足 30 万完整普通局，第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [第二仓库接入状态](docs/runner-federation-20260928.md) 与 [验证回执](docs/runner-federation-validation-result.json)。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -35,7 +35,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 隔离服务已验证 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性。正式启动前仍需将这些机制接入真实游戏队列，完成官方主机级跨运行冷却、独立 session 刷新、Linux WMS/NextGen 完整局采集、正式目标集合的受控导入，以及真实局的单节点续跑验证。测试 RPC 只接受少量夹具，不能直接作为正式采集入库接口。未把历史会清库的上游导入脚本复制进本仓库。隔离验证服务及验收范围见 `docs/link-verification.md`。
 
-已完成的单游戏试采后来扩展为 20 个独立会话；当前线上仍为同游戏 20 个 `ubuntu-latest` Runner，每会话严格一个在途请求。唯一采集 workflow 仍为 `trial-300k.yml`，原有每 20 分钟的续跑只有在工作流启用且 `SG_TRIAL_ENABLED=true` 时才运行。前次清理后曾恢复采集；最新 HTTP 502 停止后，原工作流再次禁用，`SG_TRIAL_ENABLED=false`，`SG_TRIAL_ALLOCATION=round-one`。第二组尚未启用。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。实时队列状态通过 campaign `status` RPC 查询，不能把初始 config 标签当成实时状态。
+唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库矩阵 20 个 `ubuntu-latest` Runner、每会话一个在途请求。服务端共享容量为 40，primary 限制全局 0–19，secondary 限制 20–39；额度和动态分配器共用。原仓库 `SG_TRIAL_ENABLED=true`、`SG_TRIAL_ALLOCATION=round-one`，每 20 分钟续跑；第二仓库因启动容量未满足而禁用 workflow、保持 `SG_TRIAL_ENABLED=false`，不声称第二组已投入采集。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。实时队列通过 campaign `status` RPC 查询，不能把初始 config 标签当成实时状态。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 
