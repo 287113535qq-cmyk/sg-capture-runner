@@ -172,7 +172,9 @@ def types(raw, kind):
     # record and mapping hash unchanged, including partially saved old rounds.
     from squid_fields import SOURCE as SQUID_SOURCE, EXTENSION
     has_jackpot = source_key == SQUID_SOURCE and any(s['msgId'].startswith('FEATURE_') for s in raw['steps'])
-    profile, mapping_hash = type_profile(EXTENSION if has_jackpot else source_key)
+    from huff_fields import SOURCE as HUFF_SOURCE, EXTENSION as HUFF_EXTENSION, feature_type
+    huff_type = feature_type(raw) if source_key == HUFF_SOURCE else None
+    profile, mapping_hash = type_profile(HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -200,7 +202,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if has_jackpot:
+    if huff_type:
+        check(kind == 'freeGame' and profile.get('featureSelector') == 'huff-hard-hat-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus = profile['featureTypes'][huff_type]
+    elif has_jackpot:
         check(kind in {'feature','freeFeature'} and profile.get('featureSelector') == 'squid-jackpot-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes'][kind]
     elif has_free:

@@ -3,7 +3,8 @@
 Pinned client: 67bcebfd2f16477c8c3b2686b6e10b70f41bde3579d929e89e04e321ffa4e93d.
 FID describes the client's feature slots; GSD.FEAT describes the replay feature.
 Preserve both. Recognizing either does not establish a complete settlement chain.
-No runtime entry point imports this module and no result authorizes a request.
+No result here authorizes a request. The capture adapter separately validates
+the complete sequence, supported feature subset and settlement.
 """
 import hashlib
 import json

@@ -22,7 +22,9 @@ class TrialStore:
         if self.plan.get('campaignId'):
             from native_nextgen_fields import NativeNextgenFields
             from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
-            adapter=SquidFields(self.plan) if self.plan['sourceKey']==SQUID_SOURCE else NativeNextgenFields(self.plan)
+            from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
+            adapters={SQUID_SOURCE:SquidFields,HUFF_SOURCE:HuffFields}
+            adapter=adapters.get(self.plan['sourceKey'],NativeNextgenFields)(self.plan)
             self.field_next=adapter.next_request
             self.field_frame,self.field_settled,self.field_request=adapter.frame,adapter.settled,adapter.request_params
         else:
