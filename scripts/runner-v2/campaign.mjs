@@ -3,6 +3,14 @@ import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
+// Release the hosted-runner slot while the last ranges belong to other workers.
+// In particular, a queued stable session may still own a resumable partial batch.
+export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
+  const own=pool.workers[String(worker)];
+  return pool.nextSequence>target && pool.confirmed<target && own
+    && !own.activeBatch && own.leaseUntil<=now;
+}
+
 export class GithubCampaign {
   constructor({store,transport,control,analyzer,plans,group,owner,now=Date.now}){
     Object.assign(this,{store,transport,control,analyzer,plans,group,owner,now});

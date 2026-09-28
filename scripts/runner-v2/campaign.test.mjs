@@ -1,6 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {GithubCampaign} from './campaign.mjs';
+import {GithubCampaign,idleAtAssignedTail} from './campaign.mjs';
+
+test('idle tail workers release runner capacity without taking a queued worker batch',()=>{
+  const pool={nextSequence:301,confirmed:200,workers:{0:{activeBatch:null,leaseUntil:0},1:{activeBatch:{id:3},leaseUntil:0}}};
+  assert.equal(idleAtAssignedTail(pool,0,300,1000),true);
+  assert.equal(idleAtAssignedTail(pool,1,300,1000),false);
+  assert.equal(!!idleAtAssignedTail(pool,2,300,1000),false);
+  assert.equal(idleAtAssignedTail({...pool,confirmed:300},0,300,1000),false); // Keep final auditor.
+  assert.equal(idleAtAssignedTail({...pool,nextSequence:201},0,300,1000),false);
+});
 
 function fixture(){
   const docs=new Map(),rows=[];

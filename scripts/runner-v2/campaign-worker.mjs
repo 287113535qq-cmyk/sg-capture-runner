@@ -4,7 +4,7 @@ import {connectGateway} from './transport.mjs';
 import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
 import {SourceControl} from './control.mjs';
-import {GithubCampaign} from './campaign.mjs';
+import {GithubCampaign,idleAtAssignedTail} from './campaign.mjs';
 import {analyzer} from './analyzer.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 
@@ -41,6 +41,13 @@ try{
       const code=await capture(next.plan);
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
       if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}
+      if(code===0){
+        const pool=(await store.get('state','pool:'+next.plan.trialId)).value;
+        const worker=Number(process.env.SG_TRIAL_SHARD)+(group==='secondary'?20:0);
+        if(idleAtAssignedTail(pool,worker,next.plan.target)){
+          console.log(JSON.stringify({action:'yield-runner',reason:'REMAINING_RANGES_OWNED_BY_OTHER_WORKERS'}));break;
+        }
+      }
       await sleep();
     }
   }
