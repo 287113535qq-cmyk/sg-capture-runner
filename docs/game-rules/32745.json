@@ -95,8 +95,16 @@
     "service/game_rule_catalog.py": "bb5e4607e6c50aaa76fa0768ea9611bb33509696af4c90c327b22f5a0855897a"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/continuous-processing.md",
+    "docs/panda-network-recovery-20260929-result.json",
+    "docs/panda-network-recovery-20260929.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/continuous-processing.md": "a372c656a07ad241a2fed1b27866435e3aeb27d44c2d747467a105440ff9d833",
+    "docs/panda-network-recovery-20260929-result.json": "3b62d441b9026d15cfbf9cb6f0694a1d33ae1ff2e0a9fc7875b3de9b53005c64",
+    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -104,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8c0cea627335e4a65771f78d0b38c484a99464817867e889b9b8919081ead793"
+  "ruleHash": "6f8607d07308ebde9e860addb9ecdb6c1b85c4a320e52a815892bc07e7dfa4bf"
 }

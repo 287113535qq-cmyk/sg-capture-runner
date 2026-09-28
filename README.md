@@ -1,8 +1,8 @@
 # SG 第一轮采集
 
-当前状态（2026-09-28 18:54 UTC）：**已按用户要求等 32723 / 32726 完整结束后完成数据库往返优化，两组 400 局真实短采全文验收通过，正式采集已恢复。** 累计完成 8 / 178 款；当前 primary 采集 32737 Starmania，secondary 采集 32746 Xiao Fu Bao，两组各 20 个实际活动分片。完整游戏还需达到目标并通过终审，运行中计数只是进度。
+当前状态（2026-09-29 04:42:17 北京时间）：**本次网络未知 BET 已完成私有备份、精确归档和全文核验，两组正式采集已恢复。** 累计完成 10 / 178 款；primary 已安全暂挂 32739，正在采集 32745，secondary 继续采集 32833 Panda Pow。两组各 20 个实际活动 worker，global-hold 均为 false。运行中完整日志分别为 9844 / 26777，checkpoint 为 9000 / 25700，数值持续增长，尚未达到各自全游戏终审。
 
-原正式任务：[primary 36467917789](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36467917789)、[secondary 36467921980](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36467921980)。两个 `SG_TRIAL_ENABLED=true`，原每 20 分钟定义保留。2026-09-29 用户要求持续处理，Codex `sg-30` 巡检已恢复，每 20 分钟检查并推进适配；第一组已自动续接 [36474147259](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36474147259)。可用分片先工作，排队者启动后加入；每款完成或安全暂挂后由新整组继续。见 [持续处理规则及最新接续证据](docs/continuous-processing.md)，本页其他进度数字为上方时间的历史快照。
+当前正式任务：[primary 36480623741](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36480623741)、[secondary 36480630609](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36480630609)。两个 workflow active、`SG_TRIAL_ENABLED=true`，每款自动接续、原每 20 分钟兜底和 Codex `sg-30` 巡检均继续。见 [本次恢复证据](docs/panda-network-recovery-20260929.md)、[验收结果](docs/panda-network-recovery-20260929-result.json) 和 [持续处理规则](docs/continuous-processing.md)。未知 BET 已归档不重发，20,493 个旧完整局全部保留，200 个官方短采验收通过；自然未适配现场单独保留处理。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 
@@ -12,7 +12,7 @@
 
 测试服 CPU 或内存任一达到 95%，或采样失效，GitHub 暂停提交写入；两者低于 90% 稳定 60 秒后小批恢复。资源恢复不解除其他故障；无法可靠保存响应时停止新源请求。详见 [当前规则](docs/rules.md)。
 
-178 款各累计 300000 个完整普通 buy0 大局，单份目标不变。当前 complete8、active2、parked-protocol6、ready7、needs-adapter155。未适配玩法保留现场暂挂后处理下一款，不能删除自然功能或重放 BET；第二轮关闭。旧报告不覆盖本页最新运行状态。
+178 款各累计 300000 个完整普通 buy0 大局，单份目标不变。上述快照 complete10、active2、parked-protocol7、ready4、needs-adapter155。未适配玩法保留现场暂挂后处理下一款，不能删除自然功能或重放 BET；第二轮关闭。旧报告不覆盖本页最新运行状态。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 

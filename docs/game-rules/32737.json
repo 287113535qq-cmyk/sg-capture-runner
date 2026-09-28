@@ -97,12 +97,10 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
-    "docs/continuous-processing.md",
     "docs/runner-io-optimization-20260928-result.json",
     "docs/runner-io-optimization-20260928.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "df5b41cde6846230e1dabd7210fa1af3f9c0adf9e9e250df6d6b8db687e259dd",
     "docs/runner-io-optimization-20260928-result.json": "65737b1c9b3448ff642b1db40a82013309989c2ea775e16a99eb35f35e67ccea",
     "docs/runner-io-optimization-20260928.md": "ebd1a592c2b9379f6f237223f1de9398dacda14d0b279ad6c6a46914911856ba"
   },
@@ -113,5 +111,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "58784f7943572315bab94616b0ac529dd04ccdb80dc3385dda8fd22a712ae8fc"
+  "ruleHash": "63cdd11515fd67da2b5a038f0b73039acfea4dbb3e6d8af6524efaa6be68f3d8"
 }

@@ -96,14 +96,12 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
-    "docs/continuous-processing.md",
     "docs/panda-network-recovery-20260929.md",
     "docs/runner-io-optimization-20260928-result.json",
     "docs/runner-io-optimization-20260928.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "df5b41cde6846230e1dabd7210fa1af3f9c0adf9e9e250df6d6b8db687e259dd",
-    "docs/panda-network-recovery-20260929.md": "fa759afb98a0728146fafc71f53ec92cbe42cf97006c193f9f1c43198d173c1c",
+    "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
     "docs/runner-io-optimization-20260928-result.json": "65737b1c9b3448ff642b1db40a82013309989c2ea775e16a99eb35f35e67ccea",
     "docs/runner-io-optimization-20260928.md": "ebd1a592c2b9379f6f237223f1de9398dacda14d0b279ad6c6a46914911856ba"
   },
@@ -114,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "30fa6e307ffd0a8b75940e60ab072ec9f02f449b9eeb757dcd9540f3792f7c20"
+  "ruleHash": "6ed3348f0417c6a2f480fc8d4f98083bf64441fe7ab6652de7529b2e92b61f41"
 }
