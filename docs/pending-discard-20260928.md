@@ -86,3 +86,32 @@ or discard policy for unknown requests. HTTP 403/429 and other unmatched
 incidents cannot use this profile. All backups, lease, full-content and pause
 checks still apply. The original HTTP response body was not retained by the
 existing runner; evidence is its logged HTTP status and the persisted intent.
+
+Operator commit `8c5c69fc9f4dc3726ff992e91c41294cb5ba757e` passed 136 Python
+tests on Windows and seven discard tests on Linux. After all capture jobs had
+ended and the final worker lease expired, proof
+`07481604f803207c93f596c49b667234e65304b6e74601bf1f1b16f593e65c4a`
+was reviewed and applied once. All 5,969 complete receipts and the 5,825
+committed file/Mongo records were fully verified before the five removals.
+Backup and original unknown intent are preserved privately in
+`/var/lib/sg-capture-runner/reviews/sg_r1_20260928_32651-20260928-http502-authorized-discard`.
+Runtime release, plans, bindings, ranges and quotas remain unchanged.
+
+[Second short validation 36391451147](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36391451147)
+succeeded with another 200 complete rounds (197 ordinary-only and three natural
+free rounds). All five replacement attempts settled and had new UUIDs. The
+144 journal-only records were flushed. A full operator audit verified **6,169**
+complete records in files, SQLite and Mongo, preserving all prior 5,969 payloads
+exactly. No active pending or unknown response remained; the abandoned old
+gateway attempt's outcome remains unknown in the audit archive. With 100
+verified historical rounds, the game's credited total at this boundary was
+6,269. These records include five pure jackpot-pick rounds and one combined
+jackpot/free round: six FEATURE_START, 58 FEATURE_PICK and six FEATURE_END
+responses were observed in complete chains and passed full settlement checks.
+
+With no other active/queued jobs, the original
+[formal continuation 36391708988](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36391708988)
+was dispatched with `round_one_limit=0`, 20 runners and `allocation=round-one`.
+Scheduled continuation is enabled again. The operator archive contains
+`short-validation-result.json`; the public summary is
+`http502-discard-20260928-result.json`. Neither old discard proof may be reused.

@@ -1,6 +1,6 @@
 # SG 采集准备仓库
 
-当前状态（2026-09-28 恢复时快照）：**第一轮已恢复，178 款中 complete3、active1、ready19、needs-adapter155。用户明确授权删除异常未完成大局后，32651 的 3 个旧 pending 已备份并移除，233 个完整大局全部保留。原工作流 20 台短采全部成功，新增 200 个完整大局，37 条旧日志已补齐存储，合计 433 条新采记录通过文件、SQLite 和 Mongo 全文核验，3 个缺口均用新 attempt 完成补采。正式续采 run36390301074 已启动。** 每款累计补足 30 万完整普通局；第二轮购买、加注模式保持关闭。新数据仅写入隔离库 `sg_capture_staging_v1.official_rounds`，原始局数据、凭据和会话保留在私有存储，不能提交到公开仓库。用户选择使用现有空间，剩余低于 30 GiB 停止新局。最新处理见 [授权清理及补采回执](docs/pending-discard-20260928.md)，此前公开仓库处理见 [历史回执](docs/public-repository-transition-20260928.md)，范围见 [第一轮说明](docs/round-one.md)。原 Book of Sevens 结果见 [最终报告](docs/trial-final-report.md)。
+当前状态（2026-09-28 恢复时快照）：**第一轮已恢复，178 款中 complete3、active1、ready19、needs-adapter155。按用户授权，两次共 8 个异常未完成大局已备份后移除并用新 attempt 补采，完整大局全部保留。第一批处理原会话失效；随后上游 HTTP 502 造成的第二次停止也已处理，原未知 BET 的不确定性保留在私有审计中，未重发。两次 20 台短采各新增 200 局并成功，第二次边界共 6,169 条新采记录通过文件、SQLite 和 Mongo 全文核验，加上 100 条历史，共 6,269 局；6 条自然选奖链已完整通过。正式续采 run36391708988 已启动。** 每款累计补足 30 万完整普通局；第二轮购买、加注模式保持关闭。新数据仅写入隔离库 `sg_capture_staging_v1.official_rounds`，原始局数据、凭据和会话保留在私有存储，不能提交到公开仓库。用户选择使用现有空间，剩余低于 30 GiB 停止新局。最新处理见 [授权清理及补采回执](docs/pending-discard-20260928.md)，此前公开仓库处理见 [历史回执](docs/public-repository-transition-20260928.md)，范围见 [第一轮说明](docs/round-one.md)。原 Book of Sevens 结果见 [最终报告](docs/trial-final-report.md)。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
