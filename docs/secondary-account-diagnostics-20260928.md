@@ -46,3 +46,14 @@ Actions 管理策略和默认 workflow 权限两个只读接口均对当前协�
 现有证据将故障缩小到 GitHub Runner 分配/排队与本地 180 秒集体启动门槛之间，尚不能确定平台内部原因。没有证据支持删除重建仓库；不应通过降低 20 台要求、轮换账号、修改费用或忽略失败来掩盖问题。第二组继续暂停，原组独立运行。
 
 参考：[GitHub Actions 并发限制](https://docs.github.com/en/actions/reference/limits)、[公开仓库标准 Runner 计费说明](https://docs.github.com/en/billing/concepts/product-billing/github-actions)、[GitHub 状态 API](https://www.githubstatus.com/api/v2/summary.json)。公开标准 Runner 免费不等于保证立即分配所请求的并发数量。
+
+## 10:25 UTC 后续检查：手动 attempt2
+
+用户在网页重跑了同一个 run，最新 `36403634321/attempts/2` 于 10:17:19 开始分配 capture job，10:21:15 以 failure 结束。必须区分此次 attempt2 与上文 attempt1。
+
+- 日志在 10:17:41 记录本地分片 1、2、5、8、11、14、15、17 共 8 个就绪；180 秒后仍未达到 20 个。这里的 8 是本次观察值，不是永久并发上限。
+- 全部 20 个采集步骤仍为 skipped，没有 SG 请求，也没有第二组会话采集验证。最早的 capture job 于 10:20:29 退出，剩余任务最早于 10:20:31 开始。
+- verify 成功读取共享 campaign：complete6、active32714、paused。它按原 workflow 的保护步骤重新禁用了本仓库 workflow，因而手动入口再次关闭；这不是本机退出登录或仓库损坏。
+- 排队的定时运行 `36408847012` 因 `SG_TRIAL_ENABLED=false` 全部跳过，没有采集。
+
+随后核实两仓库均无活动/排队运行、两边定时变量均 false，按用户既有要求恢复第二组手动入口为 active，没有派发新运行。全局 source/campaign 保持暂停，等待 32714 协议适配。未删除本次运行、未改变 180 秒门槛、未调整账号权限或费用；同类已知容量问题不再重复派发验证。

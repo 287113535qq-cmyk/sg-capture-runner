@@ -31,3 +31,13 @@
 2 个完整记录的原始、标准化和内容摘要已核验；其中 1 个 durable 记录与文件及 Mongo 全文一致，另 1 个仍仅在持久日志中。1 个 pending 原样保留。删除 0、恢复应用 0、租约变更 0、额度变更 0。公开脱敏回执见 [审查结果](huff-natural-free-stop-20260928-result.json)。
 
 原组 workflow 已由保护机制禁用，定时变量已设 false；campaign/source 均关闭。第二组手动入口依用户要求保持 active、定时变量 false，截至本次检查旧运行 `36403634321` 仍为 attempt1，没有新的手动采集。不要把第二组旧启动失败当成本次协议故障，也不要重用 32711/32651 的清理或恢复 proof。
+
+## 后续离线字段审查
+
+新增 `service/huff_feature_review.py` 和 `scripts/review-huff-features.py`，固定上述客户端 hash，只读检查历史流量和私有 pending 副本。该模块没有接入 TrialStore、Runner 或类型注册表，所有结果明确为 `captureAuthorized=false`、`settlementVerified=false`。生产适配器仍拒绝本次非零 FID；不能把诊断中的 `clientContinuationHint` 当成恢复许可。
+
+实际重读 103 行历史流量，检查 100 个普通 BET 链、101 个成功帧，无解析问题；只观察到 FID0/MMANSION 的完整流量。当前 pending 仍只有 FID1 的 BET 触发，没有 HARDHAT 的成功回放响应。报告见 [字段清单](huff-feature-inventory-20260928.json)，不包含 session 或原始请求。
+
+新增核实：客户端第 3186、3192–3193 行将 FID0 与 MMBG 分支交给 MansionIntro，第 2785 行仅在 MMW 结果缺失时显式请求 FREE_GAME。历史最后一帧虽然 `MMBG=1`，但已包含 MMW 且 NFG=0，因此不能把 MMBG 当作剩余次数无限补发。FID 的两个槽位、PCFID 和当前 FEAT 分别保留，不直接合并为一个 bonus 类型。普通帧缺失的 NFG/TFG/CFGG 在清单中保留 null，不填成已观测的零。
+
+Windows/Linux 各 15 项专项测试通过，覆盖字段歧义、组合槽位、五种回放名称、缺失计数、请求模式、会话变更、XML 全文证据、额外 BET、MMBG 终止判断和输出脱敏。测试夹具不算官方局。下一步仍需完整核实组合和嵌套玩法的实际状态及结算，再实现正式 adapter/bonus 映射及独立恢复 proof；本次没有部署运行时或发出 SG 请求。
