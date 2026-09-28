@@ -24,10 +24,10 @@ export class BatchController {
     assert(this.lease && r.owner===this.lease.owner && r.workerEpoch===this.lease.epoch,'WORKER_OWNER_MISMATCH');
     assert(r.shardId===this.lease.worker,'WORKER_CHANGED');
     await this.pool.heartbeat(this.lease);
-    if(r.batchId!==undefined)assert(this.batch && r.batchId===this.batch.id && r.epoch===this.lease.epoch,'BATCH_FENCE');
+    if(r.batchId!==undefined)assert(this.batch && r.batchId===this.batch.id && r.epoch===this.batchEpoch,'BATCH_FENCE');
   }
   batchOwned(value){
-    assert(value.owner===this.lease.owner && value.epoch===this.lease.epoch,'BATCH_LEASE_LOST');
+    assert(value.owner===this.lease.owner && value.epoch===this.batchEpoch,'BATCH_LEASE_LOST');
     assert(value.sessionHash===this.identity.sessionHash,'SESSION_CHANGED');
   }
   async update(change){
@@ -45,15 +45,17 @@ export class BatchController {
       assert(!value.pendingOriginal && !value.failure,'BATCH_REVIEW_REQUIRED');
       assert(!value.pending?.awaiting && !value.bootstrapAwaiting,'UNKNOWN_SOURCE_OUTCOME');
       assert(!value.pending,'PENDING_REQUIRES_REVIEW');
-      value.owner=this.lease.owner;value.epoch=this.lease.epoch;value.leaseUntil=this.now()+600000;return value;
+      value.owner=this.lease.owner;value.epoch=Math.max(value.epoch+1,this.lease.epoch);
+      value.leaseUntil=this.now()+600000;return value;
     });
-    this.queue=new DurableQueue({store:this.store,plan:this.plan,batchKey:this.batchKey,owner:this.lease.owner,epoch:this.lease.epoch});
+    this.batchEpoch=saved.value.epoch;
+    this.queue=new DurableQueue({store:this.store,plan:this.plan,batchKey:this.batchKey,owner:this.lease.owner,epoch:this.batchEpoch});
     this.writer=new MongoWriter({gate:this.gate,queue:this.queue,
       permits:new WritePermits({store:this.store,group:this.group,owner:this.lease.owner,now:this.now}),
       sink:{read:ids=>this.transport.request('rounds_read',{trialId:this.plan.trialId,ids}),
         insert:records=>this.transport.request('rounds_insert',{trialId:this.plan.trialId,records})}});
     await this.flush();
-    return {done:false,batchId:this.batch.id,epoch:this.lease.epoch,durable:saved.value.journaled,
+    return {done:false,batchId:this.batch.id,epoch:this.batchEpoch,durable:saved.value.journaled,
       checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:null};
   }
   async flush(){
