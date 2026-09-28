@@ -10,16 +10,20 @@ const messages=new Set(['BET','FREE_GAME','FEATURE_START','FEATURE_PICK','FEATUR
 const fields=['NFG','IFG','TFG','CFGG','CFG','FID','FS_1','NFR_1','CFR_1','CFP_1',
   'GSD.FEAT','GSD.PCFID','GSD.MMBG','GSD.NEXTTRIGGER','GSD.CFTFG','GSD.MMW','GSD.WH1','GSD.WH2','GSD.WHSLICE'];
 const presenceOnly=new Set(['GSD.MMW','GSD.WH1','GSD.WH2','GSD.WHSLICE']);
+const demonFields=['FGT','GSD.SNFG','GSD.STFG','GSD.EFG','GSD.EFGS','GSD.SBEFG','GSD.DST',
+  'GSD.DFFP','GSD.DDDP','GSD.DCCS','GSD.DAAP','GSD.DAAS','GSD.EVP','GSD.RGS','GSD.RGSF',
+  'GSD.SCP','GSD.SCMB','GSD.SCM','GSD.CSF','GSD.CSD','GSD.ICSD','GSD.IMUL','GSD.NMUL','GSD.PMUL','GSD.CTW','GSD.CAPS'];
+for(const field of ['EFG','DFFP','DDDP','DCCS','DAAP','DAAS','EVP','RGS','RGSF','SCP','CSF','CSD','ICSD','CTW'])presenceOnly.add('GSD.'+field);
 const names=new Set(['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION','FG','WHEEL','WHEEL1','WHEEL2','MEGAHAT','BUZZSAW','FREE_SPINS','BASE_GAME']);
-function values(payload){
+function values(payload,tracked){
   const out=Object.create(null);
   for(const part of (payload||'').split('&')){
     const at=part.indexOf('=');if(at<0)continue;
-    const key=part.slice(0,at);if(fields.includes(key)||key==='GSD')out[key]=part.slice(at+1);
+    const key=part.slice(0,at);if(tracked.includes(key)||key==='GSD')out[key]=part.slice(at+1);
   }
   for(const part of (out.GSD||'').split('#')){
     const at=part.indexOf('~'),key='GSD.'+part.slice(0,at);
-    if(at>=0 && fields.includes(key))out[key]=part.slice(at+1);
+    if(at>=0 && tracked.includes(key))out[key]=part.slice(at+1);
   }
   delete out.GSD;return out;
 }
@@ -40,7 +44,8 @@ export class GameRuleEvidence {
     this.revision=/^[a-f0-9]{40}$/.test(revision||'')?revision:null;
     this.rounds=0;this.frames=0;this.specialRounds=0;this.continuations={total:0,min:null,max:0};
     this.messages={};this.transitions={};this.bonus={};this.examples={};this.mappingHashes=new Set();
-    this.fields=Object.fromEntries(fields.map(k=>[k,{present:0,missing:0,empty:0,redacted:0,overflowOccurrences:0,values:{}}]));
+    this.tracked=plan.gameId===32739?[...fields,...demonFields]:fields;
+    this.fields=Object.fromEntries(this.tracked.map(k=>[k,{present:0,missing:0,empty:0,redacted:0,overflowOccurrences:0,values:{}}]));
   }
   observeVerified(record){
     const steps=record.raw.steps;
@@ -60,8 +65,8 @@ export class GameRuleEvidence {
       const msg=messages.has(step.msgId)?step.msgId:'UNRECOGNIZED';
       this.messages[msg]=(this.messages[msg]||0)+1;
       if(previous){const edge=previous+'>'+msg;this.transitions[edge]=(this.transitions[edge]||0)+1;}previous=msg;
-      const parsed=values(step.responsePayload);
-      for(const field of fields){
+      const parsed=values(step.responsePayload,this.tracked);
+      for(const field of this.tracked){
         const stats=this.fields[field],value=parsed[field];
         if(value===undefined){stats.missing++;continue;}
         stats.present++;if(value==='')stats.empty++;

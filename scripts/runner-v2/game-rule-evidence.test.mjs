@@ -51,3 +51,16 @@ test('snapshot embeds the saved rule version and distinguishes differing plan ve
   const rules=make(),before=rules.finish(proof);assert.equal(before.value.ruleCardPlanMatches,true);
   assert.equal(rules.finish({...proof,planHash:'9'.repeat(64)}).value.ruleCardPlanMatches,false);
 });
+
+test('Demon archive keeps mode counters and stage presence without copying private boards',()=>{
+  const rules=new GameRuleEvidence({plan:{...plan,gameId:32739},card,revision:'f'.repeat(40)});
+  rules.observeVerified(record([['BET','FID=0|&NFG=1'],['FREE_GAME','FID=1|0|&NFG=10&TFG=10&CFGG=0&FGT=10&GSD=DST~2#SBEFG~2#DDDP~private-board#RGSF~private-board#SNFG~private-value']],2));
+  const {value}=rules.finish(proof);
+  assert.deepEqual(value.fieldObservations['GSD.DST'].values,{'2':1});
+  assert.equal(value.fieldObservations['GSD.SBEFG'].missing,1);
+  assert.equal(value.fieldObservations['GSD.DDDP'].present,1);
+  assert.deepEqual(value.fieldObservations['GSD.DDDP'].values,{});
+  assert.equal(value.fieldObservations['GSD.SNFG'].redacted,1);
+  assert(!JSON.stringify(value).includes('private-'));
+  assert(!Object.hasOwn(make().finish(proof).value.fieldObservations,'GSD.DST'));
+});

@@ -64,6 +64,20 @@ def contract(game_id):
             'TFG / CFGG': '免费总次数/当前进度保留；不假设每帧 NFG 必须减1。',
             'GSD.MMBG / GSD.MMW': 'Money Mansion 标记与结果是否存在；MMBG 不是剩余次数。',
         })
+    elif game_id == 32739:
+        native.update({'family': 'demon-free-v1',
+            'continue': 'NFG>0 继续 FREE_GAME；FID0 reaction 与 FID1|0| 免费模式均使用原下注参数。次数可以增长或重置，不固定循环。',
+            'complete': '最终显式 NFG=0；FID1 触发后必须实际取得一次后续 FREE_GAME 响应。再核对终帧 B/AB、TW 和实际下注100。',
+            'bounds': '仅支持 FID 缺失/空/0/0| 与官方客户端明确的 1|0|；其他栈和选择协议仍暂挂。代码测试通过不表示暂挂现场已恢复或 FID1 已真实结算。'})
+        native['files'] += ['service/demon_fields.py', 'scripts/trial/demon-protocol.mjs']
+        native['fields'].update({
+            'FID': '首槽0为 reaction，含1表示免费模式；本候选仅放行已明确的1|0|，保留完整槽位。',
+            'TFG / CFGG / FGT': '总数、当前免费进度和新触发数；模式转换会重置计数，不要求逐帧 NFG 减1。',
+            'GSD.SNFG / STFG / EFG / EFGS / SBEFG': '客户端保存/显示的免费次数及新增次数信息，不取代 NFG 终局判定。',
+            'GSD.DST / DFFP / DDDP / DCCS / DAAP / DAAS': '客户端四种 Demon 演出及其结果字段；保留原始证据，归档只存有界类型/存在统计。',
+            'GSD.EVP / RGS / RGSF / SCP / SCMB / SCM / CSF / CSD / ICSD': 'Void、HellGate、HeartStopper、消除和盘面演出证据；不额外发送选择或下注请求。',
+            'GSD.IMUL / NMUL / PMUL / CTW / CAPS': '倍率、客户端累计赢奖和封顶显示证据；结算仍独立核对 TW/B/AB。',
+        })
     return native
 
 

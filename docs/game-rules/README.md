@@ -98,7 +98,7 @@
 | [32736](32736.json) | Squid Game One Lucky Day | implemented-subset | 1 |
 | [32737](32737.json) | Starmania | implemented-subset | 1 |
 | [32738](32738.json) | Terrific Tiger Coin Combo | not-documented | 待确认 |
-| [32739](32739.json) | The Demon Code | implemented-subset | 1 |
+| [32739](32739.json) | The Demon Code | implemented-subset | 2 |
 | [32740](32740.json) | Ultimate Fire Link Cash Falls By The Bay | not-documented | 待确认 |
 | [32741](32741.json) | Ultimate Fire Link Cash Falls China Street | not-documented | 待确认 |
 | [32742](32742.json) | Ultimate Fire Link Cash Falls Glacier Gold | not-documented | 待确认 |

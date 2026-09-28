@@ -1,0 +1,92 @@
+{
+  "schema": "sg-demon-offline-replay-v1",
+  "gameId": 32739,
+  "clientSha256": "c3327610020e409155c59cd19ff22d3aec5251f4a1f57d478d2ac80baf14295c",
+  "historicalTrafficSha256": "531b911509090ddb1a9f7afc682fea27fe36f96f14e1034587666e6d23c8bdc4",
+  "historicalChainsUnchanged": 150,
+  "historicalFrames": 299,
+  "historicalFids": [
+    "0|",
+    "<missing>"
+  ],
+  "existingCompleteRecordsVerified": 164,
+  "pendingUnchanged": [
+    {
+      "sequence": 9,
+      "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f",
+      "rawHash": "050209fff4781264f189656b216b97aa621154e8394048c404385115ab359045",
+      "frames": 4,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    },
+    {
+      "sequence": 902,
+      "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7",
+      "rawHash": "fe631a103b1e801e07e59b7047a4d7e6a46f53a08cdfc6a497f3874c362d67b3",
+      "frames": 1,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    },
+    {
+      "sequence": 115,
+      "pendingHash": "fb04ccfe078a8623bfccd07d46d09f9ae01b1976ef923775b44d991b2119895e",
+      "rawHash": "699fbe1bef25fdf1c3163c85b6bbe96dbb6ad2d016c35fe6b47e4413c5cb2ea3",
+      "frames": 1,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    },
+    {
+      "sequence": 333,
+      "pendingHash": "85b1c63d28a640af56c7c8cdf152bb3d0608710c876c3994517a0fae9fa7b4fe",
+      "rawHash": "465d189e5048bcb137aa3f3e5f79037e64732d4ac35520c1357a1b5fb95981f6",
+      "frames": 4,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    },
+    {
+      "sequence": 432,
+      "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30",
+      "rawHash": "53a0d3c5b347730a1235a1ceb855d07d30b6d68b519fcdad4a13e88a8308cc00",
+      "frames": 9,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    },
+    {
+      "sequence": 806,
+      "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912",
+      "rawHash": "ca10dcaac6ba511a0f9066e31402826d35c158c2660afef2a7c7de74ec971ab9",
+      "frames": 3,
+      "next": {
+        "MSGID": "FREE_GAME"
+      }
+    }
+  ],
+  "officialSourceRequests": 0,
+  "databaseWrites": 0,
+  "recoveryApplied": false,
+  "liveFidOneSettlementVerified": false,
+  "validation": {
+    "windowsPythonTests": 224,
+    "windowsTrialNodeTests": 34,
+    "windowsRunnerNodeTests": 56,
+    "collectorTests": 25,
+    "typescript": "passed",
+    "offlineFixtureRounds": 3000,
+    "linuxPreflight": "pending"
+  },
+  "scope": {
+    "implementedFids": [
+      "0|",
+      "1|0|"
+    ],
+    "unsupportedStacksRemainHeld": true,
+    "liveRecoveryApplied": false,
+    "liveFidOneSettlementVerified": false,
+    "runningCaptureInterrupted": false
+  }
+}

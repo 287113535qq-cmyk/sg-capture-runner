@@ -1,5 +1,6 @@
 // Offline mirror of service/squid_fields.py, independently checked by storage.
 import {HUFF_SOURCE,huffNextRequest,huffMapping} from './huff-protocol.mjs';
+import {DEMON_SOURCE,demonNextRequest,demonMapping} from './demon-protocol.mjs';
 export const SQUID_SOURCE='squidgameonemoregame96-round-one-base-v1';
 export const SQUID_EXTENSION=SQUID_SOURCE+'-jackpot-v1';
 function parse(text) {
@@ -14,6 +15,7 @@ function parse(text) {
 }
 function integer(v) {if(!/^\d+$/.test(String(v)) || !Number.isSafeInteger(Number(v)))throw new Error('INVALID_PROTOCOL_COUNTER');return Number(v);}
 export function nextRequest(raw) {
+  if(raw.sourceKey===DEMON_SOURCE)return demonNextRequest(raw);
   if(raw.sourceKey===HUFF_SOURCE)return huffNextRequest(raw);
   if(!raw.steps.length)return {MSGID:'BET'};
   if(raw.sourceKey!==SQUID_SOURCE)return integer(parse(raw.steps.at(-1).responsePayload).NFG ?? '0')>0?{MSGID:'FREE_GAME'}:null;
@@ -40,6 +42,7 @@ export function nextRequest(raw) {
   return next;
 }
 export function roundMapping(raw, baseHash, extensionHash) {
+  if(raw.sourceKey===DEMON_SOURCE)return demonMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===HUFF_SOURCE)return huffMapping(raw,baseHash,extensionHash);
   const free=raw.steps.some(s=>s.msgId==='FREE_GAME');
   const special=raw.sourceKey===SQUID_SOURCE && raw.steps.some(s=>s.msgId.startsWith('FEATURE_'));

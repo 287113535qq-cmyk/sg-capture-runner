@@ -8,6 +8,7 @@ import { gameForShard } from './demo-sessions.mjs';
 import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
 import {SQUID_EXTENSION} from './squid-protocol.mjs';
 import {HUFF_SOURCE,HUFF_EXTENSION} from './huff-protocol.mjs';
+import {DEMON_SOURCE,DEMON_EXTENSION} from './demon-protocol.mjs';
 import {globalShard} from './runner-group.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
@@ -26,7 +27,7 @@ function canonical(v) {
 }
 const hash = v => createHash('sha256').update(v).digest('hex');
 const mappingHash = hash(canonical(registry.profiles[plan.sourceKey]));
-const extensionHash=hash(canonical(registry.profiles[plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
+const extensionHash=hash(canonical(registry.profiles[plan.sourceKey===DEMON_SOURCE?DEMON_EXTENSION:plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
 const role = process.argv[2] || 'capture';
 assert(['capture','audit','status'].includes(role));
 const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minRequestIntervalMs);
