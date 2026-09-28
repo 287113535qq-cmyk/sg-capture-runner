@@ -29,3 +29,38 @@ queued. Keep the scheduled gate false for the original workflow's 10-round
 per-worker validation. Verify replacement attempts, complete storage and
 settlement before enabling the normal first-round run. All 178 games retain
 their 300,000-round first-round targets; phase two remains disabled.
+
+## Execution result
+
+Operator review commit `71e3c17427e8c95da8d3fb24e2f5418254390135` passed all
+135 Python tests on Windows and all six new discard tests on Linux. It ran from
+an independent review directory; runtime `current` remains `733dde4`.
+Proof `203e492c34f671d49ee1ff608a67c147e91e9a0c50e738ebde2187b545341c45`
+was applied once after verifying no active/queued capture jobs and expired
+leases. The three old pending attempts were removed. All 233 complete receipts
+were preserved exactly. No source traffic or Mongo deletion occurred.
+
+[Short validation 36390142715](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36390142715)
+succeeded in all 20 capture jobs and the aggregate verification job. Each
+worker completed ten new big rounds: 200 in total, including three natural
+free-game rounds. The three discarded sequence positions were filled by
+different attempt UUIDs, each starting with a new BET and settling completely.
+The 37 previously journaled records were flushed. A separate operator audit
+verified all 433 records against raw/normalized files, SQLite and full Mongo
+contents, including the unchanged 233 original records. No pending or unknown
+responses remained after validation. Together with 100 verified historical
+rounds, this game had 533 credited rounds at that boundary.
+
+The private backup and audit event are stored under
+`/var/lib/sg-capture-runner/reviews/sg_r1_20260928_32651-20260928-user-authorized-discard`;
+`short-validation-result.json` records the full verification. These private
+records are not part of this public repository. Do not rerun the old recovery
+proof or this already-applied discard.
+
+After another no-active-job check, the original
+[formal capture 36390301074](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36390301074)
+was dispatched with `allocation=round-one`, `round_one_limit=0` and 20 workers.
+The scheduled gate is now true; campaign/source gates are enabled with no
+failure. This is a recovery snapshot, not a claim that the game or all 178
+first-round targets are complete. The three natural free rounds do not by
+themselves establish live jackpot-pick coverage.
