@@ -21,3 +21,5 @@ primary 的 32714 原始 trial/pending/receipts 再次核对未变。当前两�
 已定位只读官方缓存 `html5/huffnlotsofpuffgoals/js/app.js`，SHA256 为 `f41a7744c5d2d5f966fa3c9c2ccf0b77ac3fc0d68614f985518090d3e3fbed7f`；本次仅定位和固定证据，未宣称完成协议适配。后续需核实 `FID=2` 的完整请求序列、转移条件、奖金分类、最终余额和结算，并编写专用适配及双端测试。成功 BET 必须保留，不能删除自然触发局后反复重新下注。新的绑定证据、原始现场复核及受控恢复通过后，才可先完成此局、补落盘 16 个记录并进行短采全文核验。
 
 暂停原因修复已完成 Windows/Linux 各 168 项 Python 测试，确认两仓库无活动或排队任务、服务端工作和 batch 租约为 0 后，部署为线上 current=`c9b02dc1e9beb44f866f5d314c9cebb9cf28b6fb`。原始暂停状态和失败证据保留，未执行协议恢复。
+
+后续离线审查已确认本游戏 FID2 为 Wheel，WheelIntro 明确发送 FREE_GAME；不能套用 32714 同编号玩法。历史只有 FID0/FG 完整链，尚无 FID2 完整结算，详见 [客户端证据及历史复核](huff-goals-client-review-20260928.md)。
