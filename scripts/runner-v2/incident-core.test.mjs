@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {digest,reviewIncident,releaseReviewedPool} from './incident-core.mjs';
+import {digest,reviewIncident,releaseReviewedPool,reviewReleasedBatches} from './incident-core.mjs';
 function fixture(){
   const plan={gameId:32833,buy:0,phase:1};
   const pending={sequence:4,awaiting:'MSGID=BET&PID=fixture',raw:{steps:[]}};
@@ -36,4 +36,15 @@ test('releasing ownership retains sessions, allocation, ranges and confirmed com
   assert.equal(after.workers[38].sessionHash,'fixture');assert.equal(after.workers[38].resumeSafe,true);
   assert.equal(after.workers[38].owner,null);assert.equal(after.workers[38].leaseUntil,0);
   assert.equal(original.workers[38].owner,'old');
+});
+
+test('completed short run can validate an explicit safe worker release with a stale batch timestamp',()=>{
+  const pool={workers:{38:{leaseUntil:0,resumeSafe:true,owner:'short',epoch:3,sessionHash:'s',activeBatch:{id:81}}}};
+  const batches=[{value:{id:81,worker:38,leaseUntil:10000,owner:'short',epoch:4,sessionHash:'s',journaled:13,checkpoint:13,end:100}}];
+  reviewReleasedBatches(pool,batches,100);
+  for(const patch of [{resumeSafe:false},{leaseUntil:200},{owner:'different'},{epoch:5}]){
+    const changed=structuredClone(pool);Object.assign(changed.workers[38],patch);assert.throws(()=>reviewReleasedBatches(changed,batches,100));
+  }
+  const unsettled=structuredClone(batches);unsettled[0].value.pending={awaiting:null};assert.throws(()=>reviewReleasedBatches(pool,unsettled,100));
+  const orphan=structuredClone(pool);orphan.workers[38].activeBatch=null;assert.throws(()=>reviewReleasedBatches(orphan,batches,100));
 });

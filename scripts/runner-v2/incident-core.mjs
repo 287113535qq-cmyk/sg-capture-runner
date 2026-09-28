@@ -43,3 +43,18 @@ export function releaseReviewedPool(pool,proofHash){
   // confirmed accounts only completed batches; partial readback is not added.
   return next;
 }
+
+// A successful partial-batch release is persisted on its owning pool worker.
+// Old batch timestamps are not renewed/cleared by that release. This check is
+// only for a completed short run after githubIdle(), never unknown recovery.
+export function reviewReleasedBatches(pool,batches,now=Date.now()){
+  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now),'WORKERS_ACTIVE');
+  for(const {value:b} of batches){
+    assert(!b.pending && !b.bootstrapAwaiting && !b.failure && b.journaled===b.checkpoint,'UNSETTLED_BATCH');
+    const w=pool.workers[String(b.worker)];assert(w?.sessionHash===b.sessionHash,'SESSION_CHANGED');
+    if(b.leaseUntil<=now)continue;
+    if(w.activeBatch?.id===b.id){
+      assert(w.resumeSafe===true && w.leaseUntil===0 && w.owner===b.owner && w.epoch<=b.epoch,'BATCH_NOT_RELEASED');
+    }else assert(b.journaled===b.end,'UNOWNED_PARTIAL_BATCH');
+  }
+}

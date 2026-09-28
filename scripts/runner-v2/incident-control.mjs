@@ -9,7 +9,7 @@ import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter,stable} from './mongo-writer.mjs';
 import {analyzer} from './analyzer.mjs';
 import {repositories} from '../trial/runner-group.mjs';
-import {digest,reviewIncident,releaseReviewedPool} from './incident-core.mjs';
+import {digest,reviewIncident,releaseReviewedPool,reviewReleasedBatches} from './incident-core.mjs';
 
 const profile=JSON.parse(fs.readFileSync('config/incident-panda-20260929.json','utf8'));
 const group=repositories[process.env.GITHUB_REPOSITORY]?.name;
@@ -37,7 +37,8 @@ async function snapshots(){
   assert(campaign&&pool&&hold,'MISSING_STATE');const batches=[];
   for(let i=1;i<pool.value.nextBatchId;i++){const b=await store.get('state',`batch:${plan.trialId}:${i}`);assert(b,'BATCH_MISSING');batches.push(b);}
   assert(Object.values(pool.value.workers).every(w=>w.leaseUntil<=Date.now()),'WORKERS_ACTIVE');
-  assert(batches.every(b=>b.value.leaseUntil<=Date.now()),'BATCHES_ACTIVE');
+  if(stage==='recover')assert(batches.every(b=>b.value.leaseUntil<=Date.now()),'BATCHES_ACTIVE');
+  else reviewReleasedBatches(pool.value,batches);
   return {campaign,pool,hold,batches};
 }
 async function verifyRecords(snapshot,{allCommitted=false}={}){
