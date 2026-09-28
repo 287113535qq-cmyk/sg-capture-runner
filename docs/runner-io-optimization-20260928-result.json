@@ -1,0 +1,248 @@
+{
+  "status": "formal-running",
+  "implementationCommit": "04d38e4b72011fc600634146031334f9a8440a3c",
+  "matrixContinuationCommit": "284a3f48939a4836b035d1b25ab8dbec91f60947",
+  "gateway": {
+    "commit": "04d38e4b72011fc600634146031334f9a8440a3c",
+    "gatewaySha256": "67a56b1848f09ce8aacce393e26bbad1ad6e112cd7d3d3c4374af52827b720c8",
+    "previousGames": [
+      {
+        "group": "primary",
+        "game": 32723,
+        "fullReadback": 299850,
+        "campaignVersion": 5
+      },
+      {
+        "group": "secondary",
+        "game": 32726,
+        "fullReadback": 299850,
+        "campaignVersion": 7
+      }
+    ],
+    "manifestUnchanged": true,
+    "serverBusinessLogic": false,
+    "newOperations": [
+      "control_read",
+      "read_many"
+    ],
+    "sourceRequests": 0
+  },
+  "officialCompletedGames": 8,
+  "totalGames": 178,
+  "oldGames": {
+    "32723": {
+      "fullNewReadback": 299850,
+      "verifiedHistory": 150
+    },
+    "32726": {
+      "fullNewReadback": 299850,
+      "verifiedHistory": 150
+    }
+  },
+  "tests": {
+    "pythonWindows": 209,
+    "pythonLinux": 209,
+    "runnerV2Node": 41,
+    "otherNode": 30,
+    "collector": 25,
+    "typescript": true,
+    "offlineFixtureRounds": 3000
+  },
+  "offlineCalls": {
+    "fixtureRounds": 100,
+    "before": 1220,
+    "after": 518,
+    "reductionPercent": 57.54,
+    "productionThroughput": false,
+    "controlLayer": "simplified fixture"
+  },
+  "runs": {
+    "initialPreflight": 36466216460,
+    "finalPreflight": 36467328601,
+    "secondaryTail": 36464472008,
+    "primary": {
+      "activate": 36466525077,
+      "short": 36466766463,
+      "validate": 36467380620,
+      "formalControl": 36467623047,
+      "formalCapture": 36467917789
+    },
+    "secondary": {
+      "activate": 36466529813,
+      "short": 36466770854,
+      "validate": 36467384722,
+      "formalControl": 36467628048,
+      "formalCapture": 36467921980
+    }
+  },
+  "receipts": [
+    {
+      "_id": "primary/game-audit:sg_r1_20260928_32723",
+      "version": 0,
+      "value": {
+        "trialId": "sg_r1_20260928_32723",
+        "planHash": "4e46af210c61ad88c429bb307b92ef2f27bcac201201bc7b1a52c7728090e994",
+        "fullReadback": 299850,
+        "recordsHash": "807aeb1ceed6e0cf2a752da63f85d6d9f8268797c24b6e841b9defa4ded31e12"
+      }
+    },
+    {
+      "_id": "primary/optimization-formal-20260928",
+      "version": 0,
+      "value": {
+        "proof": {
+          "group": "primary",
+          "trialId": "sg_r1_20260928_32737",
+          "proofHash": "f590fb01cc1bb49cdda2c624366362f4386192541c49ff02d145b2a64bdc6141",
+          "fullReadback": 200,
+          "workersVerified": 20,
+          "pending": 0,
+          "poolHash": "1cd0f36cee934102f35172bc626f1def6c3c8703869964fe3939fc6791086a5a",
+          "at": 1790621179192,
+          "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+        },
+        "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+      }
+    },
+    {
+      "_id": "primary/optimization-validation-20260928",
+      "version": 0,
+      "value": {
+        "group": "primary",
+        "trialId": "sg_r1_20260928_32737",
+        "proofHash": "f590fb01cc1bb49cdda2c624366362f4386192541c49ff02d145b2a64bdc6141",
+        "fullReadback": 200,
+        "workersVerified": 20,
+        "pending": 0,
+        "poolHash": "1cd0f36cee934102f35172bc626f1def6c3c8703869964fe3939fc6791086a5a",
+        "at": 1790621179192,
+        "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+      }
+    },
+    {
+      "_id": "secondary/game-audit:sg_r1_20260928_32726",
+      "version": 0,
+      "value": {
+        "trialId": "sg_r1_20260928_32726",
+        "planHash": "683d5f107d8380d068bc0cde48319328224cf41476c8080839a1a6d363beb064",
+        "fullReadback": 299850,
+        "recordsHash": "375e0bb2ea850afed383bc65d394ec351f45dcc889273015a67f9f6dda2903b5"
+      }
+    },
+    {
+      "_id": "secondary/optimization-formal-20260928",
+      "version": 0,
+      "value": {
+        "proof": {
+          "group": "secondary",
+          "trialId": "sg_r1_20260928_32746",
+          "proofHash": "08472bb0e8f623cf392d60b0234de4df58b7261ce751e57c29f7a8355221af84",
+          "fullReadback": 200,
+          "workersVerified": 20,
+          "pending": 0,
+          "poolHash": "876ea4e84dadc52040ed873de452e126ed3923df03cc2f6c7de4395fbd04a864",
+          "at": 1790621184141,
+          "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+        },
+        "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+      }
+    },
+    {
+      "_id": "secondary/optimization-validation-20260928",
+      "version": 0,
+      "value": {
+        "group": "secondary",
+        "trialId": "sg_r1_20260928_32746",
+        "proofHash": "08472bb0e8f623cf392d60b0234de4df58b7261ce751e57c29f7a8355221af84",
+        "fullReadback": 200,
+        "workersVerified": 20,
+        "pending": 0,
+        "poolHash": "876ea4e84dadc52040ed873de452e126ed3923df03cc2f6c7de4395fbd04a864",
+        "at": 1790621184141,
+        "commit": "284a3f48939a4836b035d1b25ab8dbec91f60947"
+      }
+    }
+  ],
+  "archive": {
+    "archiveSha256": "4e54b9f1b5c9a84eaa63de7a06c6a18e772d1baf5668e9f25efff28a3e79fcd3",
+    "bytes": 2396160,
+    "private": true
+  },
+  "preserved": {
+    "sourceIntentAndResponseDurability": true,
+    "fullMongoReadback": true,
+    "unknownSourceReplay": false,
+    "validRoundDeletion": false,
+    "serverBusinessLogic": false,
+    "cpuOrMemory95Pause": true,
+    "codexAutomation": "paused"
+  },
+  "observedAt": "2026-09-28T18:54:48.970679+00:00",
+  "liveWindow": {
+    "start": {
+      "at": 1790621574.5697398,
+      "utc": "2026-09-28T18:52:54.569740+00:00",
+      "groups": [
+        {
+          "group": "primary",
+          "game": 32737,
+          "journaled": 4259,
+          "checkpoint": 2890,
+          "activeWorkers": 20,
+          "failure": null
+        },
+        {
+          "group": "secondary",
+          "game": 32746,
+          "journaled": 3801,
+          "checkpoint": 2640,
+          "activeWorkers": 20,
+          "failure": null
+        }
+      ]
+    },
+    "end": {
+      "at": 1790621688.9706788,
+      "utc": "2026-09-28T18:54:48.970679+00:00",
+      "groups": [
+        {
+          "group": "primary",
+          "game": 32737,
+          "journaled": 16886,
+          "checkpoint": 15600,
+          "activeWorkers": 20,
+          "failure": null
+        },
+        {
+          "group": "secondary",
+          "game": 32746,
+          "journaled": 15245,
+          "checkpoint": 14000,
+          "activeWorkers": 20,
+          "failure": null
+        }
+      ]
+    },
+    "seconds": 114.4,
+    "completeJournalRoundsPerMinute": {
+      "primary": 6622.5,
+      "secondary": 6002.0
+    },
+    "cpuBusyPercent": 59.7,
+    "memoryPercentAtEnd": 63.44,
+    "diskGiBAtEnd": 149.57,
+    "comparisonLimit": "Different games and a short 114-second live window; not a controlled same-game benchmark or full-game completion guarantee."
+  },
+  "counts": {
+    "complete": 8,
+    "active": 2,
+    "ready": 7,
+    "parked-protocol": 6,
+    "needs-adapter": 155
+  },
+  "activeSourceWorkers": 40,
+  "scheduleEnabled": {
+    "primary": true,
+    "secondary": true
+  }
+}

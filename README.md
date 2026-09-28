@@ -1,14 +1,18 @@
 # SG 第一轮采集
 
-当前状态（2026-09-28 16:50 UTC）：**GitHub 处理、测试服仅 MongoDB 存取的迁移已完成，真实短采全文验收通过，已恢复正式采集。** 用户批准的两个辅助集合保存进度和中断现场；完整局仍写入 `sg_capture_staging_v1.official_rounds`。测试服不再执行采集调度、玩法、标准化、恢复或全文审计算法，旧 SQLite / 原始文件已冻结备份。
+当前状态（2026-09-28 18:54 UTC）：**已按用户要求等 32723 / 32726 完整结束后完成数据库往返优化，两组 400 局真实短采全文验收通过，正式采集已恢复。** 累计完成 8 / 178 款；当前 primary 采集 32737 Starmania，secondary 采集 32746 Xiao Fu Bao，两组各 20 个实际活动分片。完整游戏还需达到目标并通过终审，运行中计数只是进度。
 
-32723 / 32726 原有 88337 个完整局全部保留并读回核验。两组各 20 分片、每分片新增 10 个完整局，共 400 个官方短采新增；验收时未完成局为 0。19 个旧未知请求留存完整证据后归档，没有重发未知 BET，没有删除完整记录。详见 [迁移报告](docs/github-processing-migration.md) 和 [验收结果](docs/github-processing-migration-result.json)。
+正式任务：[primary 36467917789](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36467917789)、[secondary 36467921980](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36467921980)。两个 `SG_TRIAL_ENABLED=true`，原每 20 分钟定义保留；Codex sg-30 提醒按用户要求继续暂停。可用分片先工作，排队者启动后加入；每款完成或安全暂挂后由新整组继续，避免收尾退出造成下一款并发下降。
 
-正式任务：[primary 36453841229](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36453841229)、[secondary 36453845517](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36453845517)。两仓库每组最多 20 分片，先就绪者先工作，排队者启动后加入。两仓库 `SG_TRIAL_ENABLED=true`；Codex 的 sg-30 提醒按用户要求继续暂停。运行中计数是进度，不能当作整款全文终审。
+优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 
-测试服 CPU 或内存任一达到 95%，或采样失效，GitHub 暂停提交写入；两者低于 90% 稳定 60 秒后小批恢复。资源暂停不解除其他故障，不能可靠保存响应时停止新源请求。保护已接入实际运行，详见 [当前规则](docs/rules.md)。
+采集、调度、玩法、标准化、恢复和全文审计全部在 GitHub；测试服只提供受限 MongoDB 读写与原始系统指标。完整局只写 `sg_capture_staging_v1.official_rounds`，用户批准的 `capture_state_v2` / `capture_journal_v2` 保存进度和现场。旧 SQLite / 原始文件冻结保留，见 [迁移报告](docs/github-processing-migration.md)。
 
-178 款仍为单份第一轮目标，各累计 300000 个完整普通 buy0 大局；当前已完成 6 款，迁移前 active2、parked-protocol6、ready9、needs-adapter155。未适配游戏保留现场暂挂后处理下一款，不能删除自然功能或重放 BET。第二轮关闭。历史经过见 [玩法暂挂](docs/protocol-parking-20260928.md)、[旧存储故障](docs/protocol-parking-storage-stop-20260928.md)，这些旧快照不覆盖本页新架构状态。
+恢复后 114 秒实际窗口：primary 约 6623 局 / 分钟，secondary 约 6002 局 / 分钟，均为完整大局日志增量；不同游戏不能据此作精确同条件提速比较，完整报告保留窗口和落库检查点。
+
+测试服 CPU 或内存任一达到 95%，或采样失效，GitHub 暂停提交写入；两者低于 90% 稳定 60 秒后小批恢复。资源恢复不解除其他故障；无法可靠保存响应时停止新源请求。详见 [当前规则](docs/rules.md)。
+
+178 款各累计 300000 个完整普通 buy0 大局，单份目标不变。当前 complete8、active2、parked-protocol6、ready7、needs-adapter155。未适配玩法保留现场暂挂后处理下一款，不能删除自然功能或重放 BET；第二轮关闭。旧报告不覆盖本页最新运行状态。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
