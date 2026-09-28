@@ -4,7 +4,7 @@ The user authorized deleting anomalous incomplete big rounds and starting the
 capture flow again on 2026-09-28. This supersedes the previous requirement to
 resume the three pending attempts in trial `sg_r1_20260928_32651`.
 
-The bounded operator procedure in `service/pending_discard.py` covers only
+The initial bounded operator procedure in `service/pending_discard.py` covers
 batch 5 / sequence 424, batch 11 / sequence 1015, and batch 18 / sequence 1708.
 The last attempt has a durably recorded `ERROR_INVALID_SESSION` response; the
 other two remain incomplete after the protocol stop. None is credited as a
@@ -12,7 +12,7 @@ completed round. This procedure is not an automatic error-skipping policy.
 
 Before removal it checks the paused gates, expired leases, unchanged plans,
 session bindings, full receipt contents, files and committed Mongo contents.
-An unknown response cannot be discarded. It preserves private SQLite backups,
+The initial profile refuses unknown responses. It preserves private SQLite backups,
 files and all original pending attempts and failure evidence. Each pending
 removal and its audit event share one FULL-synchronous SQLite transaction.
 Complete receipts, quotas, allocation ranges and session bindings are unchanged.
@@ -64,3 +64,25 @@ The scheduled gate is now true; campaign/source gates are enabled with no
 failure. This is a recovery snapshot, not a claim that the game or all 178
 first-round targets are complete. The three natural free rounds do not by
 themselves establish live jackpot-pick coverage.
+
+## Subsequent HTTP 502 stop
+
+Formal run 36390301074 completed 5,536 additional big rounds before shard 3
+received HTTP 502 for the new BET at batch 93 / sequence 5982. There was no
+official game response for that attempt: its outcome remains unknown. The
+runner preserved the intent and stopped. Four other incomplete free-game
+rounds were interrupted by the global gate. At this stop, 5,969 complete rounds
+were journaled and 5,825 were in files/Mongo; 144 needed normal flushing.
+The workflow and scheduled gate were disabled again.
+
+The user's instruction to remove anomalous big rounds and start the flow again
+also authorizes abandoning these five incomplete attempts. The additional
+operator profile binds this one incident, run ID, HTTP status, exact private
+pending hash and sequences 5374, 5713, 5982, 6209, 6375. It retains the unknown
+status of the old BET in the private audit, never replays that intent, and does
+not count it. Replacement capture starts the normal initialization flow and
+uses a new attempt. This narrow abandonment exception is not a general retry
+or discard policy for unknown requests. HTTP 403/429 and other unmatched
+incidents cannot use this profile. All backups, lease, full-content and pause
+checks still apply. The original HTTP response body was not retained by the
+existing runner; evidence is its logged HTTP status and the persisted intent.

@@ -20,17 +20,40 @@ from trial_store import TrialStore
 
 REVIEW = 'user-discard-incomplete-32651-20260928'
 TARGETS = {5: (424, 'FEATURE_START'), 11: (1015, 'FREE_GAME'), 18: (1708, 'REJECTED_FREE_GAME')}
+HTTP_REVIEW = 'user-discard-http502-32651-20260928'
+HTTP_TARGETS = {85: (5374, 'FREE_GAME'), 89: (5713, 'FREE_GAME'),
+                93: (5982, 'ABANDON_UNKNOWN_BET'), 97: (6209, 'FREE_GAME'), 101: (6375, 'FREE_GAME')}
+HTTP_PENDING_HASH = '5ed34cd3a5d34baa66a637fe3342b6f050d077d1016c048227a65a28ef0f0cb3'
 
 
-def verify_discard(store, bound):
+def verify_discard(store, bound, targets=None, http_evidence=None):
+    targets = TARGETS if targets is None else targets
     pending = store.pending()
-    require(pending and pending['awaiting'] is None, 'DISCARD_UNKNOWN_SOURCE_OUTCOME')
-    sequence, following = TARGETS[store.batch['id']]
+    require(pending is not None, 'DISCARD_PENDING_MISSING')
+    sequence, following = targets[store.batch['id']]
+    if following != 'ABANDON_UNKNOWN_BET':
+        require(pending['awaiting'] is None, 'DISCARD_UNKNOWN_SOURCE_OUTCOME')
     require(pending['sequence'] == sequence == store.journaled() + 1, 'DISCARD_SEQUENCE_CHANGED')
     require(digest(pending) == bound['pendingHash'], 'DISCARD_PENDING_CHANGED')
     require(not store.db.execute('SELECT 1 FROM receipts WHERE sequence=?', (sequence,)).fetchone(),
             'DISCARD_COMPLETE_FORBIDDEN')
     raw = pending['raw']
+    if following == 'ABANDON_UNKNOWN_BET':
+        # One explicit, evidence-bound abandonment under the user's instruction
+        # to remove anomalous rounds and start the flow again. A gateway error
+        # does NOT establish that BET failed. Preserve that uncertainty forever;
+        # never turn this into a replay/retry rule for unknown requests.
+        require(targets == HTTP_TARGETS and store.batch['id'] == 93
+                and digest(pending) == HTTP_PENDING_HASH
+                and pending['awaiting'] is not None and not raw['steps']
+                and store.state()['failure'] == 'source_http', 'DISCARD_UNKNOWN_NOT_REVIEWED')
+        require(http_evidence and http_evidence.get('runId') == 36390301074
+                and http_evidence.get('httpStatus') == 502 and http_evidence.get('shardId') == 3
+                and http_evidence.get('error') == 'SOURCE_HTTP_REJECTED'
+                and http_evidence.get('originalOutcome') == 'unknown'
+                and http_evidence.get('action') == 'abandon_without_replay', 'DISCARD_HTTP_EVIDENCE_REQUIRED')
+        store.field_request(pending['awaiting'], 'BET')
+        return pending
     if following == 'REJECTED_FREE_GAME':
         last = raw['steps'][-1]
         require(last.get('sourceRejected') is True and last['msgId'] == 'FREE_GAME'
@@ -55,8 +78,12 @@ def backup_database(db, target):
 
 
 def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time):
-    require(proof.get('authorization') == REVIEW and proof.get('trialId') == 'sg_r1_20260928_32651',
+    review = proof.get('authorization')
+    require(review in {REVIEW, HTTP_REVIEW} and proof.get('trialId') == 'sg_r1_20260928_32651',
             'DISCARD_AUTHORIZATION_REQUIRED')
+    targets = TARGETS if review == REVIEW else HTTP_TARGETS
+    halted_batch, halted_failure = (18, 'PROTOCOL_VALIDATION_FAILED') if review == REVIEW else (93, 'source_http')
+    pool_failure = 'BATCH_HALTED' if review == REVIEW else 'SOURCE_OR_SESSION_FAILURE'
     root = Path(root).resolve()
     destination = Path(backup_dir).resolve()
     require(destination.is_relative_to(root / 'reviews') and destination != root / 'reviews', 'DISCARD_BACKUP_PATH')
@@ -72,7 +99,7 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
             control = dict(pool.pool.db.execute('SELECT * FROM control').fetchone())
             require(state['active_game'] == 32651 and not state['enabled']
                     and state['reason'] == 'ACTIVE_GAME_REQUIRES_REVIEW', 'DISCARD_CAMPAIGN_NOT_PAUSED')
-            require(not control['enabled'] and control['failure'] == 'BATCH_HALTED', 'DISCARD_POOL_NOT_PAUSED')
+            require(not control['enabled'] and control['failure'] == pool_failure, 'DISCARD_POOL_NOT_PAUSED')
             require(campaign.disk_free() >= campaign.config['diskReserveBytes'], 'DISK_RESERVE_REACHED')
             workers = [dict(row) for row in pool.pool.db.execute('SELECT * FROM workers ORDER BY id')]
             batches = [dict(row) for row in pool.pool.db.execute('SELECT * FROM batches ORDER BY id')]
@@ -90,8 +117,9 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
                 before = dict(store.state()); bound = proof['batches'][str(batch['id'])]
                 require(digest(before) == bound['stateHash'], 'DISCARD_STATE_CHANGED')
                 require(before['lease_until'] <= clock() and before['cooldown_until'] <= clock(), 'DISCARD_ACTIVE_LEASE')
-                require(before['status'] == ('halted' if batch['id'] == 18 else 'pending')
-                        and before['failure'] in ({'PROTOCOL_VALIDATION_FAILED'} if batch['id'] == 18 else {None, 'storage'}),
+                expected_status = 'halted' if batch['id'] == halted_batch else 'complete' if batch['completed'] is not None else 'pending'
+                require(before['status'] == expected_status
+                        and before['failure'] in ({halted_failure} if batch['id'] == halted_batch else {None, 'storage'}),
                         'DISCARD_UNREVIEWED_FAILURE')
                 rows = [dict(r) for r in store.db.execute('SELECT * FROM receipts ORDER BY sequence')]
                 require(digest(rows) == bound['receiptsHash'], 'DISCARD_RECEIPTS_CHANGED')
@@ -116,19 +144,20 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
                     require((file.read_bytes() if file.exists() else b'') == expected, 'DISCARD_FILE_MISMATCH')
                 count += len(rows); committed_count += len(durable)
                 pending = store.pending()
-                if batch['id'] in TARGETS:
-                    pending = verify_discard(store, bound)
+                if batch['id'] in targets:
+                    pending = verify_discard(store, bound, targets, proof.get('httpEvidence'))
                     removed.append({'batch': batch['id'], 'sequence': pending['sequence']})
                 else:
                     require(pending is None, 'DISCARD_UNREVIEWED_PENDING')
                 checked.append({'batch': spec, 'state': before, 'pending': pending,
                                 'timings': [dict(r) for r in store.db.execute('SELECT * FROM timings ORDER BY sequence,step')]})
             require(count == proof['expectedComplete'] and committed_count == proof['expectedCommitted']
-                    and len(removed) == 3, 'DISCARD_COUNT_MISMATCH')
-            result = {'review': REVIEW, 'proofHash': digest(proof), 'applied': apply,
+                    and len(removed) == len(targets), 'DISCARD_COUNT_MISMATCH')
+            result = {'review': review, 'proofHash': digest(proof), 'applied': apply,
                       'preservedComplete': count, 'mongoVerified': committed_count, 'discarded': removed,
                       'completeRoundsDeleted': 0, 'sourceRequests': 0, 'sessionBindingsChanged': 0,
-                      'quotaChanges': 0, 'gatesRemainPaused': True}
+                      'quotaChanges': 0, 'gatesRemainPaused': True,
+                      'unknownBetAbandonedWithoutReplay': 1 if review == HTTP_REVIEW else 0}
             if not apply:
                 return result
             # Exclusive backup creation and audit insertion prevent blind reapplication.
@@ -153,13 +182,13 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
             sync_dir(destination / 'batches'); sync_dir(destination); sync_dir(destination.parent)
             db = pool.pool.db
             db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL,applied INTEGER NOT NULL DEFAULT 0)')
-            db.execute('INSERT INTO pending_discards(id,payload) VALUES(?,?)', (REVIEW, canonical(event).decode()))
+            db.execute('INSERT INTO pending_discards(id,payload) VALUES(?,?)', (review, canonical(event).decode()))
             for store, item in zip(stores, checked):
-                if store.batch['id'] not in TARGETS: continue
+                if store.batch['id'] not in targets: continue
                 store.db.execute('BEGIN IMMEDIATE')
                 try:
                     store.db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL)')
-                    store.db.execute('INSERT INTO pending_discards VALUES(?,?)', (REVIEW, canonical(item).decode()))
+                    store.db.execute('INSERT INTO pending_discards VALUES(?,?)', (review, canonical(item).decode()))
                     store.db.execute('DELETE FROM timings WHERE sequence=?', (item['pending']['sequence'],))
                     store.db.execute('DELETE FROM pending WHERE sequence=?', (item['pending']['sequence'],))
                     store.db.execute("UPDATE trial SET status='pending',owner=NULL,lease_until=0,failure=NULL WHERE id=1")
@@ -167,7 +196,7 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
                 except BaseException:
                     store.db.execute('ROLLBACK'); raise
             require(all(store.pending() is None for store in stores), 'DISCARD_PENDING_REMAINS')
-            db.execute('UPDATE pending_discards SET applied=1 WHERE id=?', (REVIEW,))
+            db.execute('UPDATE pending_discards SET applied=1 WHERE id=?', (review,))
             # Gate activation is a separate operator step after a fresh job check.
             return result
     finally:

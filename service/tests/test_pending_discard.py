@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from campaign import Campaign
-from pending_discard import discard, REVIEW, TARGETS
+from pending_discard import discard, verify_discard, REVIEW, TARGETS, HTTP_TARGETS
 from pool_trial import PoolTrial
 from store import Rejected, digest
 from trial_store import TrialStore
@@ -140,6 +140,25 @@ class DiscardTests(unittest.TestCase):
         self.run_discard(True)
         with self.assertRaises(Rejected):self.run_discard(True)
         with self.assertRaises(Rejected):self.stores[0].dispatch({'schema':PLAN['schema'],'trialId':PLAN['trialId'],'op':'discard'})
+
+    def test_only_the_reviewed_gateway_attempt_can_be_abandoned_without_replay(self):
+        from types import SimpleNamespace
+        pending = {'sequence':5982,'attempt':'00000000-0000-0000-0000-000000005982',
+                   'raw':{**sample(),'steps':[]},'awaiting':sample()['steps'][0]['requestPayload']}
+        store = SimpleNamespace(batch={'id':93}, pending=lambda:pending, journaled=lambda:5981,
+            db=self.stores[0].db, state=lambda:{'failure':'source_http'}, field_request=self.stores[0].field_request)
+        evidence = {'runId':36390301074,'httpStatus':502,'shardId':3,'error':'SOURCE_HTTP_REJECTED',
+                    'originalOutcome':'unknown','action':'abandon_without_replay'}
+        bound={'pendingHash':digest(pending)}
+        # The live code binds one actual private pending hash. Only this fixture
+        # substitutes a synthetic hash; no broad HTTP retry policy is installed.
+        with patch('pending_discard.HTTP_PENDING_HASH',digest(pending)):
+            self.assertEqual(verify_discard(store,bound,HTTP_TARGETS,evidence),pending)
+            for change in ({'httpStatus':403},{'httpStatus':429},{'runId':0},{'action':'retry'},{'originalOutcome':'failed'}):
+                with self.assertRaises(Rejected):verify_discard(store,bound,HTTP_TARGETS,{**evidence,**change})
+            with self.assertRaises(Rejected):verify_discard(store,bound,HTTP_TARGETS,None)
+        with self.assertRaisesRegex(Rejected,'DISCARD_UNKNOWN_NOT_REVIEWED'):
+            verify_discard(store,bound,HTTP_TARGETS,evidence)
 
 
 if __name__ == '__main__': unittest.main()
