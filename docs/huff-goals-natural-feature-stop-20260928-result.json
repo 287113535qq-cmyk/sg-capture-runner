@@ -1,0 +1,27 @@
+{
+  "backupManifestHash": "12fcdd36191b7f879cc9bd459eba45b4c4a2f850f94a271986ce3e51c26df319",
+  "completePreserved": 244,
+  "dataDeleted": 0,
+  "durableFileMongoVerified": 228,
+  "gameId": 32717,
+  "journalOnly": 16,
+  "leaseMutations": 0,
+  "pending": [
+    {
+      "awaiting": null,
+      "batch": 5,
+      "frames": 1,
+      "pendingHash": "c2232121b17fc58e076ad84fa29eff05c22878199e1a300f807c7014eb0bf7ed",
+      "rawHash": "3a74bab9f1861122a38c626355a1ab293d25ae9762de3b496f5cfc9209b98e91",
+      "sequence": 427,
+      "worker": 37
+    }
+  ],
+  "planHash": "9cc1a10383a43ca90dc809bf052f8b95037899bcc51561b9288cabccccad3d4d",
+  "reviewOnly": true,
+  "runId": 36416743264,
+  "schema": "sg-huff-goals-stop-review-v1",
+  "sourceRequests": 0,
+  "stateMutations": 0,
+  "trialId": "sg_r1_20260928_32717"
+}

@@ -1,8 +1,8 @@
 # SG 采集准备仓库
 
-最新启动排查（2026-09-28 10:59 UTC）：第二组独立运行 [36411958007](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36411958007) 只检查 GitHub Runner，不连接 SG 或采集服务器。等待 600 秒仍只有 10 台同时就绪，其余在第一批退出后启动，最终未达到 20 台；不能据此断言永久上限为 10。分配不同游戏不能解决此 Runner 排队问题，分游戏调度尚未迁移。检查及证据见 [独立检查报告](docs/secondary-isolated-runner-check-20260928.md) 与 [分游戏方案](docs/secondary-independent-games-review-20260928.md)。两组无活动任务，第二组手动入口 active，两边定时采集变量 false；完成数仍为 6，32714 继续协议暂停。
+最新状态（2026-09-28 11:38 UTC 后续审查）：**第二组已按“就绪分片先领任务、排队分片启动后加入”实际采集成功。** [短采 36416561237](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36416561237) 的 20 个分片分批完成，每个新增 10 局，共 200 局原始/标准化/文件/SQLite/Mongo 全文核验通过。这不代表 20 台同时采集，也不把此前 10 台观测值视作永久上限。两账号分组调度已受控迁移：primary 保留 32714 协议现场，secondary 独立领取 32717，178 款目标和历史仍各一份。详见 [实施与实际结果](docs/available-workers-20260928.md)。
 
-当前状态（2026-09-28 10:35 UTC 后续检查）：**已完成 6 款，每款累计 300000 局；32711 Hoppily Ever After 已完成全量终审。活动游戏 32714 Huff N Puff Money Mansion High Limit 触发尚未适配的 Hard Hat 自然免费玩法，原组运行 36405044999 已停止，campaign/source 已关闭。现有 2 个完整记录及 1 个未完成局全部保留，私有备份和只读核验已完成。第二组运行 36403634321 的手动 attempt2 仅观察到 8 台同时就绪；attempt3 仅重跑 capture-0，因其余 19 个分片仍失败而立即退出，两次均未采集。手动入口已恢复，定时采集仍关闭。尚未实现 40 台同时采集。** 队列 complete6、active1、ready16、needs-adapter155；实时进度以 status RPC 为准。每款累计补足 30 万完整普通局，第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [32714 停采审查](docs/huff-natural-free-stop-20260928.md)、[第二组排除检查](docs/secondary-account-diagnostics-20260928.md) 与 [32711 恢复回执](docs/hoppily-recovery-20260928-result.json)。
+随后第二组正式运行 36416743264 在 32717 自然 FID=2 功能触发协议保护而停止，最终 244 个完整日志记录保留，其中 228 个已落盘全文核验、16 个待落盘，另有 1 个成功 BET 后的自然功能待完成。全部私有备份，未删除或重放；32714 原有现场不变。**当前完成 6 款，每款累计 300000 局；队列 complete6、active2、ready15、needs-adapter155。两个组均因协议适配暂停，定时采集变量 false，第二组保留手动入口。** 详见 [32717 新停采审查](docs/huff-goals-natural-feature-stop-20260928.md) 与 [32714 原停采审查](docs/huff-natural-free-stop-20260928.md)。第二轮关闭，新数据只写隔离库 sg_capture_staging_v1.official_rounds。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -33,11 +33,11 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 映射只采用严格唯一的官方 sourceId，不按名字猜配，不导出 launch URL、session 或 operator 字段。
 
-## 通用采集的剩余工作
+## 初期链路准备记录
 
-隔离服务已验证 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性。正式启动前仍需将这些机制接入真实游戏队列，完成官方主机级跨运行冷却、独立 session 刷新、Linux WMS/NextGen 完整局采集、正式目标集合的受控导入，以及真实局的单节点续跑验证。测试 RPC 只接受少量夹具，不能直接作为正式采集入库接口。未把历史会清库的上游导入脚本复制进本仓库。隔离验证服务及验收范围见 `docs/link-verification.md`。
+初期隔离服务验证了 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性，记录见 `docs/link-verification.md`。早期测试 RPC 只接受夹具，不能作为正式采集入库接口；之后已建立独立的第一轮 campaign/pool 采集服务，当前运行状态及剩余协议适配以本文开头和最新报告为准。未把历史会清库的上游导入脚本复制进本仓库。
 
-唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库矩阵 20 个 `ubuntu-latest` Runner、每会话一个在途请求。服务端共享容量为 40，primary 限制全局 0–19，secondary 限制 20–39；额度和动态分配器共用。两个仓库当前均为 `SG_TRIAL_ENABLED=false`、`SG_TRIAL_ALLOCATION=round-one`；原组 workflow 因协议保护已禁用，第二组 workflow 保留用户要求的手动入口。每 20 分钟的定时定义保留，当前不会自动采集。第二组尚未投入正式采集。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。实时队列通过 campaign `status` RPC 查询，不能把初始 config 标签当成实时状态。
+唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库最多 20 个 `ubuntu-latest` 矩阵任务。可用分片先领取任务，迟到分片就绪后加入；每会话一个在途请求。primary 使用全局 0–19，secondary 使用 20–39，各组独立活动游戏，同一游戏不能跨组重复分配。178 款目标、历史和全局磁盘/存储保护仍共用；实时状态从可信组身份的 `status` RPC 及 `group_control`/`dispatch_control` 读取，迁移前 `control` 表和初始 config 标签均不能视作实时队列。每 20 分钟定时定义保留，当前双方 `SG_TRIAL_ENABLED=false`，不会自动采集；第二组手动入口 active，正式源端恢复需完成协议审查。Mongo 密码仅保留在服务器。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 
