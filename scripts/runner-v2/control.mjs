@@ -13,6 +13,10 @@ export class SourceControl {
     const saved=await this.store.get('state','campaign');
     if(!saved?.value.enabled)throw fail('CAMPAIGN_PAUSED');
     if(this.plan && saved.value.activeGame!==this.plan.gameId)throw fail('GAME_NO_LONGER_ACTIVE');
+    if(this.plan){
+      const pool=(await this.store.get('state','pool:'+this.plan.trialId))?.value;
+      if(!pool?.enabled || pool.failure)throw fail('POOL_PAUSED');
+    }
     const disk=this.gate.status().metrics?.diskFreeBytes;
     assert(Number.isSafeInteger(disk),'DISK_SAMPLE_REQUIRED');
     if(disk<(newRound?30:25)*1024**3){
