@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import {connectGateway} from './transport.mjs';
 import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
@@ -42,8 +43,10 @@ try{
   }
   assert(count===journaled && oldPreserved===recovery.completeFullReadback);
   assert(Object.keys(workers).length===20 && Object.values(workers).every(n=>n===10),'SHORT_WORKER_COUNTS_INCOMPLETE');
+  assert(stable((await store.get('state','pool:'+plan.trialId)).value)===stable(pool),'POOL_CHANGED_DURING_AUDIT');
   const result={group,trialId:plan.trialId,recoveryProof:recovery.proofHash,fullReadback:count,oldPreserved,
-    newComplete,workersVerified:20,pending:0,oldRecordsDeleted:0,unknownBetsReplayed:0};
+    newComplete,workersVerified:20,pending:0,oldRecordsDeleted:0,unknownBetsReplayed:0,
+    poolHash:createHash('sha256').update(stable(pool)).digest('hex'),at:Date.now()};
   await store.create('state','migration-validation-complete',result,{immutable:true});console.log(JSON.stringify(result));
 }catch(error){console.log(JSON.stringify({group,error:'SHORT_VALIDATION_REQUIRES_REVIEW'}));process.exitCode=2;}
 finally{parser.close();transport.close();}

@@ -1,6 +1,8 @@
 // Source-free, evidence-bound activation; no SG credentials or source calls.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {stable} from './mongo-writer.mjs';
 import {connectGateway} from './transport.mjs';
 import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
@@ -22,6 +24,8 @@ try{
     const validation=(await store.get('state','migration-validation-complete'))?.value;
     assert(validation && validation.recoveryProof===proof.proofHash && validation.workersVerified===20
       && validation.newComplete===200 && validation.pending===0,'SHORT_CAPTURE_NOT_VERIFIED');
+    assert(campaign.validationLimit===10 && validation.poolHash===createHash('sha256').update(stable(pool)).digest('hex')
+      && 0<=Date.now()-validation.at && Date.now()-validation.at<15*60000,'SHORT_PROOF_STALE_OR_CHANGED');
   }
   await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3);
   await store.create('journal','activation:'+stage,{proofHash:proof.proofHash,stage,trialId:plan.trialId},{immutable:true});
