@@ -36,8 +36,8 @@ def main():
     from trial_store import TRIAL
     shared_mongo=None
     if request.get('schema') == 'sg-round-one-v1':
-        from campaign import Campaign
-        service=Campaign(root)
+        from campaign import for_group
+        service=for_group(root,runner_group)
     elif request.get('schema') == 'sg-work-pool-v1':
         from pool_trial import PoolTrial
         from pool_audit import parallel_audit

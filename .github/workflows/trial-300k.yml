@@ -97,6 +97,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           CAPTURE_RUNNERS: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'legacy-fixed' && '20' || inputs.active_shards || '20' }}
+          CAPTURE_STARTUP_MODE: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && 'available-workers' || '' }}
+          SG_CAPTURE_ALLOCATION: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
         run: node scripts/trial/runner-readiness.mjs
       - name: Capture complete rounds with independent sessions
         env:

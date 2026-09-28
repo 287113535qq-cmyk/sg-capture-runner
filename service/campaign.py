@@ -11,12 +11,13 @@ CONFIG=Path(__file__).resolve().parents[1]/'config'
 
 
 class Campaign:
-    def __init__(self, root, disk_free=None, clock=time.time):
+    def __init__(self, root, disk_free=None, clock=time.time, _group_mode=False):
         self.root=Path(root).resolve();self.clock=clock
         self.config=json.loads((CONFIG/'round-one.json').read_text(encoding='utf-8'))
         self.plans=json.loads((CONFIG/'round-one-plans.json').read_text(encoding='utf-8'))
         require(self.config['phase']==1 and self.config['buy']==0 and self.config['secondRoundEnabled'] is False,'SECOND_ROUND_FORBIDDEN')
         self.directory=self.root/'campaigns'/self.config['campaignId'];self.directory.mkdir(parents=True,exist_ok=True)
+        require(_group_mode or not (self.directory/'independent-groups.json').exists(), 'GROUP_OPERATOR_REQUIRED')
         self.disk_free=disk_free or (lambda:shutil.disk_usage(self.root).free)
         self.db=sqlite3.connect(self.directory/'queue.sqlite3',isolation_level=None,timeout=30)
         self.db.row_factory=sqlite3.Row;self.db.execute('PRAGMA journal_mode=WAL');self.db.execute('PRAGMA synchronous=FULL')
@@ -34,11 +35,34 @@ class Campaign:
 
     def close(self):self.db.close()
 
+    def _state(self):
+        return self.db.execute('SELECT * FROM control WHERE id=1').fetchone()
+
+    def _update(self, fields, values=()):
+        self.db.execute('UPDATE control SET '+fields+' WHERE id=1',values)
+
+    def _record_owner(self, gid):pass
+
+    def _assign(self, gid):
+        self.db.execute('BEGIN IMMEDIATE')
+        try:
+            if gid is None:
+                old=self._state()['active_game']
+                self.db.execute("UPDATE games SET status='complete',confirmed=300000,completed=? WHERE game_id=?",(self.clock(),old))
+                self._update('active_game=NULL,audit_owner=NULL,audit_until=0')
+            else:
+                self._record_owner(gid)
+                self.db.execute("UPDATE games SET status='active' WHERE game_id=?",(gid,))
+                self._update('active_game=?',(gid,))
+            self.db.execute('COMMIT')
+        except BaseException:
+            self.db.execute('ROLLBACK');raise
+
     def pause(self, reason):
-        self.db.execute('UPDATE control SET enabled=0,reason=COALESCE(reason,?) WHERE id=1',(reason,))
+        self._update('enabled=0,reason=COALESCE(reason,?)',(reason,))
 
     def allowed(self, new_round=False):
-        state=self.db.execute('SELECT * FROM control').fetchone()
+        state=self._state()
         # Already-authorized free continuations may finish into the lower reserve,
         # while no new BET is armed after the 30 GiB soft stop.
         if new_round:
@@ -51,12 +75,12 @@ class Campaign:
 
     def enable_by_operator(self):
         require(self.disk_free()>=self.config['diskReserveBytes'],'DISK_RESERVE_REACHED')
-        state=self.db.execute('SELECT * FROM control').fetchone()
+        state=self._state()
         require(state['reason'] is None,'CAMPAIGN_REVIEW_REQUIRED')
-        self.db.execute('UPDATE control SET enabled=1 WHERE id=1')
+        self._update('enabled=1')
 
     def status(self):
-        state=dict(self.db.execute('SELECT * FROM control').fetchone())
+        state=dict(self._state())
         counts={r['status']:r['n'] for r in self.db.execute('SELECT status,COUNT(*) n FROM games GROUP BY status')}
         return {'campaignId':self.config['campaignId'],'phase':1,'secondRoundEnabled':False,
             'enabled':bool(state['enabled']),'reason':state['reason'],'activeGame':state['active_game'],
@@ -68,7 +92,7 @@ class Campaign:
         require(isinstance(owner,str) and 1<=len(owner)<=100,'BAD_OWNER')
         with file_lock(self.directory/'selection.lock'):
             if not self.allowed(new_round=True):return {'action':'stop',**self.status()}
-            state=self.db.execute('SELECT * FROM control').fetchone()
+            state=self._state()
             gid=state['active_game']
             if gid is not None:
                 plan=self.plans[str(gid)];pool=WorkPool(self.root/'trials'/plan['trialId'],plan['trialId'],plan['target'])
@@ -81,11 +105,10 @@ class Campaign:
                     if receipt.exists():
                         audit=json.loads(receipt.read_text())
                         require(audit['planHash']==digest(plan) and audit['verifiedFileRounds']==plan['target'],'CAMPAIGN_AUDIT_MISMATCH')
-                        self.db.execute("UPDATE games SET status='complete',confirmed=300000,completed=? WHERE game_id=?",(self.clock(),gid))
-                        self.db.execute('UPDATE control SET active_game=NULL,audit_owner=NULL,audit_until=0 WHERE id=1');gid=None
+                        self._assign(None);gid=None
                     else:
                         if state['audit_until']<=self.clock() or state['audit_owner']==owner:
-                            self.db.execute('UPDATE control SET audit_owner=?,audit_until=? WHERE id=1',(owner,self.clock()+1800))
+                            self._update('audit_owner=?,audit_until=?',(owner,self.clock()+1800))
                             return {'action':'audit','plan':plan}
                         return {'action':'wait','gameId':gid}
                 else:return {'action':'capture','plan':plan}
@@ -99,8 +122,7 @@ class Campaign:
             pool=WorkPool(self.root/'trials'/plan['trialId'],plan['trialId'],plan['target'])
             try:pool.enable_by_operator()
             finally:pool.close()
-            self.db.execute("UPDATE games SET status='active' WHERE game_id=?",(gid,))
-            self.db.execute('UPDATE control SET active_game=? WHERE id=1',(gid,))
+            self._assign(gid)
             return {'action':'capture','plan':plan}
 
     def dispatch(self, req):
@@ -108,3 +130,11 @@ class Campaign:
         require(req.get('op') in {'status','select'},'CAMPAIGN_OP_FORBIDDEN')
         result=self.status() if req['op']=='status' else self.select(req.get('owner'))
         return {'ok':True,**result}
+
+
+def for_group(root, runner_group='primary', **kwargs):
+    from runner_federation import CAMPAIGN
+    if (Path(root)/'campaigns'/CAMPAIGN/'independent-groups.json').exists():
+        from group_campaign import GroupCampaign
+        return GroupCampaign(root,runner_group=runner_group,**kwargs)
+    return Campaign(root,**kwargs)

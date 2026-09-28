@@ -22,9 +22,18 @@ class PoolTrial:
         self.plan = validate_pool_plan(plan)
         self.base, self.clock = Path(root).resolve(), clock
         self.root = self.base / 'trials' / self.plan['trialId']
-        self.root.mkdir(parents=True, exist_ok=True)
         self.runner_group = runner_group
         self.worker_range = group_range(runner_group, worker_count(self.root, self.plan['trialId']))
+        self.campaign=None
+        if self.plan.get('campaignId'):
+            from campaign import for_group
+            self.campaign=for_group(self.base,runner_group,clock=clock)
+            try:
+                if hasattr(self.campaign,'assert_plan_access'):
+                    self.campaign.assert_plan_access(self.plan['gameId'])
+            except BaseException:
+                self.campaign.close();raise
+        self.root.mkdir(parents=True, exist_ok=True)
         with file_lock(self.root / 'pool-init.lock'):
             manifest = self.root / 'pool-plan.json'
             if manifest.exists():
@@ -44,10 +53,6 @@ class PoolTrial:
         self.identity = None
         self.worker_lease = None
         self.chunk_lease = None
-        self.campaign=None
-        if self.plan.get('campaignId'):
-            from campaign import Campaign
-            self.campaign=Campaign(self.base)
 
     def close(self):
         if self.worker_lease is not None:
@@ -101,7 +106,8 @@ class PoolTrial:
         if not started:
             live = self.pool.db.execute('SELECT COUNT(*) FROM workers WHERE lease_until>? AND id>=? AND id<?',
                 (self.clock(), self.worker_range.start, self.worker_range.stop)).fetchone()[0]
-            if live != 20:
+            minimum=1 if getattr(self.campaign,'independent_startup',False) else 20
+            if live < minimum:
                 return {'waitingForWorkers': True, 'readyWorkers': live}
             self.pool.db.execute('INSERT OR IGNORE INTO group_startup(name) VALUES(?)', (self.runner_group,))
         while True:
@@ -165,9 +171,16 @@ class PoolTrial:
                         self.pool.suspend_worker(self.worker_lease,result)
                     if op == 'fail' and (req.get('category', '').startswith('source_') or result['status'] == 'halted'):
                         self.pool.halt('SOURCE_OR_SESSION_FAILURE')
-        except Rejected:
+                        if hasattr(self.campaign,'pause_global'):
+                            self.campaign.pause_global('SOURCE_OR_STORAGE_REQUIRES_REVIEW')
+        except Rejected as exc:
             if self.store and self.store.state()['status'] == 'halted':
                 self.pool.halt('BATCH_HALTED')
+                if hasattr(self.campaign,'pause_global'):
+                    if str(exc) == 'PROTOCOL_VALIDATION_FAILED':
+                        self.campaign.pause('ACTIVE_GAME_REQUIRES_REVIEW')
+                    else:
+                        self.campaign.pause_global('SOURCE_OR_STORAGE_REQUIRES_REVIEW')
             raise
         return {'ok': True, 'schema': self.plan['schema'], 'fixtureOnly': False,
             'serverWorkMs': round((time.perf_counter() - started) * 1000, 3), **result}

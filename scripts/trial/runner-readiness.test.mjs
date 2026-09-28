@@ -1,6 +1,17 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {inspectReadiness, READY_STEP, readinessTimeoutMs} from './runner-readiness.mjs';
+import {inspectReadiness, READY_STEP, readinessTimeoutMs, independentShard} from './runner-readiness.mjs';
+
+test('available workers start independently, with bounded original shard identity', () => {
+  const env={CAPTURE_STARTUP_MODE:'available-workers',SG_CAPTURE_ALLOCATION:'round-one',
+    GITHUB_REPOSITORY:'287113535qq-cmyk/sg-capture-runner',SG_TRIAL_SHARD:'17'};
+  assert.equal(independentShard(env),17);
+  assert.equal(independentShard({...env,SG_TRIAL_SHARD:'0'}),0);
+  assert.equal(independentShard({...env,CAPTURE_STARTUP_MODE:''}),null);
+  for(const value of ['', '-1','20','01','1.0'])assert.throws(()=>independentShard({...env,SG_TRIAL_SHARD:value}));
+  assert.throws(()=>independentShard({...env,SG_CAPTURE_ALLOCATION:'legacy-fixed'}));
+  assert.throws(()=>independentShard({...env,GITHUB_REPOSITORY:'untrusted/repository'}));
+});
 
 const ready = shard => ({name: `capture-${shard}`, status: 'in_progress', runner_name: `runner-${shard}`,
   steps: [{name: READY_STEP, status: 'in_progress'}]});

@@ -4,6 +4,14 @@ import {repositories} from './runner-group.mjs';
 
 export const READY_STEP = 'Wait for every capture runner';
 
+export function independentShard(env) {
+  if (env.CAPTURE_STARTUP_MODE !== 'available-workers') return null;
+  assert.equal(env.SG_CAPTURE_ALLOCATION, 'round-one', 'INDEPENDENT_ROUND_ONE_ONLY');
+  assert(Object.hasOwn(repositories, env.GITHUB_REPOSITORY), 'RUNNER_REPOSITORY_NOT_ALLOWED');
+  assert(/^(?:[0-9]|1[0-9])$/.test(env.SG_TRIAL_SHARD ?? ''), 'BAD_LOCAL_SHARD');
+  return Number(env.SG_TRIAL_SHARD);
+}
+
 export function readinessTimeoutMs(value) {
   // The longer window is used only by an explicit source-free diagnostic.
   assert(value === undefined || value === '180' || value === '600', 'BAD_READINESS_TIMEOUT');
@@ -36,6 +44,13 @@ async function main() {
   assert([2, 4, 20].includes(expected));
   const repository = process.env.GITHUB_REPOSITORY;
   assert(Object.hasOwn(repositories, repository), 'RUNNER_REPOSITORY_NOT_ALLOWED');
+  assert([undefined,'','available-workers'].includes(process.env.CAPTURE_STARTUP_MODE), 'BAD_STARTUP_MODE');
+  const shard = independentShard(process.env);
+  if (shard !== null) {
+    console.log(JSON.stringify({startup:'available-workers',shard,requestedWorkers:expected,
+      allTwentyReadyVerified:false,sourceRequests:0}));
+    return;
+  }
   const run = process.env.GITHUB_RUN_ID, attempt = process.env.GITHUB_RUN_ATTEMPT;
   assert(/^\d+$/.test(run) && /^\d+$/.test(attempt));
   const token = process.env.GH_TOKEN;
