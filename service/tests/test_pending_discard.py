@@ -141,6 +141,34 @@ class DiscardTests(unittest.TestCase):
         with self.assertRaises(Rejected):self.run_discard(True)
         with self.assertRaises(Rejected):self.stores[0].dispatch({'schema':PLAN['schema'],'trialId':PLAN['trialId'],'op':'discard'})
 
+    def test_review_backup_and_apply_use_one_open_batch_at_a_time(self):
+        active=[0]; peak=[0]
+        class TrackedStore(TrialStore):
+            def __init__(self,*args,**kwargs):
+                super().__init__(*args,**kwargs);active[0]+=1;peak[0]=max(peak[0],active[0])
+            def close(self):
+                super().close();active[0]-=1
+        with patch('pending_discard.TrialStore',TrackedStore):
+            self.run_discard();self.run_discard(True)
+        self.assertEqual(peak[0],1);self.assertEqual(active[0],0)
+
+    def test_second_gateway_incident_requires_its_own_run_worker_and_pending_hash(self):
+        from types import SimpleNamespace
+        from pending_discard import SECOND_HTTP_TARGETS
+        pending={'sequence':249697,'attempt':'00000000-0000-0000-0000-000000249697',
+                 'raw':{**sample(),'steps':[]},'awaiting':sample()['steps'][0]['requestPayload']}
+        store=SimpleNamespace(batch={'id':2491},pending=lambda:pending,journaled=lambda:249696,
+            db=self.stores[0].db,state=lambda:{'failure':'source_http'},field_request=self.stores[0].field_request)
+        evidence={'runId':36391708988,'shardId':1,'httpStatus':502,'error':'SOURCE_HTTP_REJECTED',
+                  'originalOutcome':'unknown','action':'abandon_without_replay'}
+        bound={'pendingHash':digest(pending)}
+        with patch('pending_discard.SECOND_HTTP_PENDING_HASH',digest(pending)):
+            self.assertEqual(verify_discard(store,bound,SECOND_HTTP_TARGETS,evidence),pending)
+            for change in ({'runId':36390301074},{'shardId':3},{'httpStatus':403},{'httpStatus':429},{'action':'retry'}):
+                with self.assertRaises(Rejected):verify_discard(store,bound,SECOND_HTTP_TARGETS,{**evidence,**change})
+        with self.assertRaisesRegex(Rejected,'DISCARD_UNKNOWN_NOT_REVIEWED'):
+            verify_discard(store,bound,SECOND_HTTP_TARGETS,evidence)
+
     def test_only_the_reviewed_gateway_attempt_can_be_abandoned_without_replay(self):
         from types import SimpleNamespace
         pending = {'sequence':5982,'attempt':'00000000-0000-0000-0000-000000005982',

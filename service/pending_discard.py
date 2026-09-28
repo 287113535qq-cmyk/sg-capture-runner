@@ -4,7 +4,7 @@ Not exposed through RPC and never automatic. Preserve a private full backup and
 the original attempts before removing pending rows. Replacements use fresh
 attempt IDs through the normal INIT/BET path; complete receipts are untouched.
 """
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 import json
 import os
 from pathlib import Path
@@ -24,6 +24,11 @@ HTTP_REVIEW = 'user-discard-http502-32651-20260928'
 HTTP_TARGETS = {85: (5374, 'FREE_GAME'), 89: (5713, 'FREE_GAME'),
                 93: (5982, 'ABANDON_UNKNOWN_BET'), 97: (6209, 'FREE_GAME'), 101: (6375, 'FREE_GAME')}
 HTTP_PENDING_HASH = '5ed34cd3a5d34baa66a637fe3342b6f050d077d1016c048227a65a28ef0f0cb3'
+SECOND_HTTP_REVIEW = 'user-discard-http502-run36391708988-32651-20260928'
+SECOND_HTTP_TARGETS = {2473:(247738,'FREE_GAME'),2479:(248400,'FREE_GAME'),
+    2480:(248565,'FREE_GAME'),2481:(248645,'FREE_GAME'),2483:(248940,'FREE_GAME'),
+    2491:(249697,'ABANDON_UNKNOWN_BET')}
+SECOND_HTTP_PENDING_HASH = '9e1bb881e2e2d55feab810fa347bb10a7fac8627ce1e5dd93e2340536e5f54bb'
 
 
 def verify_discard(store, bound, targets=None, http_evidence=None):
@@ -43,12 +48,14 @@ def verify_discard(store, bound, targets=None, http_evidence=None):
         # to remove anomalous rounds and start the flow again. A gateway error
         # does NOT establish that BET failed. Preserve that uncertainty forever;
         # never turn this into a replay/retry rule for unknown requests.
-        require(targets == HTTP_TARGETS and store.batch['id'] == 93
-                and digest(pending) == HTTP_PENDING_HASH
+        require(targets in (HTTP_TARGETS, SECOND_HTTP_TARGETS), 'DISCARD_UNKNOWN_NOT_REVIEWED')
+        bid, known_hash, run, worker = (93,HTTP_PENDING_HASH,36390301074,3) if targets == HTTP_TARGETS else (
+            2491,SECOND_HTTP_PENDING_HASH,36391708988,1)
+        require(store.batch['id'] == bid and digest(pending) == known_hash
                 and pending['awaiting'] is not None and not raw['steps']
                 and store.state()['failure'] == 'source_http', 'DISCARD_UNKNOWN_NOT_REVIEWED')
-        require(http_evidence and http_evidence.get('runId') == 36390301074
-                and http_evidence.get('httpStatus') == 502 and http_evidence.get('shardId') == 3
+        require(http_evidence and http_evidence.get('runId') == run
+                and http_evidence.get('httpStatus') == 502 and http_evidence.get('shardId') == worker
                 and http_evidence.get('error') == 'SOURCE_HTTP_REJECTED'
                 and http_evidence.get('originalOutcome') == 'unknown'
                 and http_evidence.get('action') == 'abandon_without_replay', 'DISCARD_HTTP_EVIDENCE_REQUIRED')
@@ -77,12 +84,31 @@ def backup_database(db, target):
         os.fsync(stream.fileno())
 
 
+@contextmanager
+def open_review_store(root, plan, batch, mongo_factory, clock):
+    spec = {key: batch[key] for key in ('id','worker','start','end')}
+    store = TrialStore(root,mongo_factory((batch['start'],batch['end'])),clock,plan=plan,batch=spec)
+    try:
+        with file_lock(store.root/'trial.lock'):
+            yield store
+    finally:
+        store.close()
+
+
+def assert_batch_binding(store, bound):
+    require(digest(dict(store.state())) == bound['stateHash'], 'DISCARD_STATE_CHANGED')
+    require(digest(store.pending()) == bound['pendingHash'], 'DISCARD_PENDING_CHANGED')
+    require(digest([dict(r) for r in store.db.execute('SELECT * FROM receipts ORDER BY sequence')])
+            == bound['receiptsHash'], 'DISCARD_RECEIPTS_CHANGED')
+
+
 def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time):
     review = proof.get('authorization')
-    require(review in {REVIEW, HTTP_REVIEW} and proof.get('trialId') == 'sg_r1_20260928_32651',
+    require(review in {REVIEW, HTTP_REVIEW, SECOND_HTTP_REVIEW} and proof.get('trialId') == 'sg_r1_20260928_32651',
             'DISCARD_AUTHORIZATION_REQUIRED')
-    targets = TARGETS if review == REVIEW else HTTP_TARGETS
-    halted_batch, halted_failure = (18, 'PROTOCOL_VALIDATION_FAILED') if review == REVIEW else (93, 'source_http')
+    targets = TARGETS if review == REVIEW else HTTP_TARGETS if review == HTTP_REVIEW else SECOND_HTTP_TARGETS
+    halted_batch, halted_failure = (18, 'PROTOCOL_VALIDATION_FAILED') if review == REVIEW else (
+        93 if review == HTTP_REVIEW else 2491, 'source_http')
     pool_failure = 'BATCH_HALTED' if review == REVIEW else 'SOURCE_OR_SESSION_FAILURE'
     root = Path(root).resolve()
     destination = Path(backup_dir).resolve()
@@ -90,7 +116,6 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
     campaign = Campaign(root)
     plan = campaign.plans['32651']
     pool = PoolTrial(root, plan, mongo_factory, clock)
-    stores = []
     try:
         with ExitStack() as locks:
             locks.enter_context(file_lock(campaign.directory / 'selection.lock'))
@@ -109,55 +134,55 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
                     and digest(batches) == proof['allocationHash'], 'DISCARD_BINDING_CHANGED')
             require({str(b['id']) for b in batches} == set(proof['batches']), 'DISCARD_BATCHES_CHANGED')
             checked = []; removed = []; count = committed_count = 0
+            # The paused global gate and expired leases prevent Runner writes.
+            # Open only one batch at a time: a full trial has thousands of DBs.
             for batch in batches:
-                spec = {k: batch[k] for k in ('id', 'worker', 'start', 'end')}
-                store = TrialStore(root, mongo_factory((batch['start'], batch['end'])), clock, plan=plan, batch=spec)
-                stores.append(store)
-                locks.enter_context(file_lock(store.root / 'trial.lock'))
-                before = dict(store.state()); bound = proof['batches'][str(batch['id'])]
-                require(digest(before) == bound['stateHash'], 'DISCARD_STATE_CHANGED')
-                require(before['lease_until'] <= clock() and before['cooldown_until'] <= clock(), 'DISCARD_ACTIVE_LEASE')
-                expected_status = 'halted' if batch['id'] == halted_batch else 'complete' if batch['completed'] is not None else 'pending'
-                require(before['status'] == expected_status
-                        and before['failure'] in ({halted_failure} if batch['id'] == halted_batch else {None, 'storage'}),
-                        'DISCARD_UNREVIEWED_FAILURE')
-                rows = [dict(r) for r in store.db.execute('SELECT * FROM receipts ORDER BY sequence')]
-                require(digest(rows) == bound['receiptsHash'], 'DISCARD_RECEIPTS_CHANGED')
-                require([r['sequence'] for r in rows] == list(range(batch['start'], batch['start'] + len(rows))),
-                        'DISCARD_RECEIPT_GAP')
-                records = [json.loads(r['payload']) for r in rows]
-                for record in records:
-                    require(store.field_settled(record['raw']) == record['normalized']
-                            and digest(record['raw']) == record['rawHash']
-                            and digest(record['normalized']) == record['normalizedHash']
-                            and digest({k: v for k, v in record.items() if k != 'contentHash'}) == record['contentHash'],
-                            'DISCARD_RECORD_MISMATCH')
-                require(all(r['filed'] == r['committed'] for r in rows), 'DISCARD_STORAGE_INCOMPLETE')
-                durable = [json.loads(r['payload']) for r in rows if r['committed']]
-                require(before['durable'] == before['checkpoint'] == store.base + len(durable), 'DISCARD_COUNT_MISMATCH')
-                for index in range(0, len(durable), 100):
-                    require(store.mongo.verify(durable[index:index+100]) == len(durable[index:index+100]), 'DISCARD_MONGO_MISMATCH')
-                require(store.mongo.summary()['count'] == len(durable), 'DISCARD_MONGO_COUNT')
-                for index, name in enumerate(('raw.jsonl', 'rounds.jsonl')):
-                    expected = b''.join(store._file_lines(record)[index] for record in durable)
-                    file = store.root / name
-                    require((file.read_bytes() if file.exists() else b'') == expected, 'DISCARD_FILE_MISMATCH')
-                count += len(rows); committed_count += len(durable)
-                pending = store.pending()
-                if batch['id'] in targets:
-                    pending = verify_discard(store, bound, targets, proof.get('httpEvidence'))
-                    removed.append({'batch': batch['id'], 'sequence': pending['sequence']})
-                else:
-                    require(pending is None, 'DISCARD_UNREVIEWED_PENDING')
-                checked.append({'batch': spec, 'state': before, 'pending': pending,
-                                'timings': [dict(r) for r in store.db.execute('SELECT * FROM timings ORDER BY sequence,step')]})
+                with open_review_store(root, plan, batch, mongo_factory, clock) as store:
+                    spec = store.batch
+                    before = dict(store.state()); bound = proof['batches'][str(batch['id'])]
+                    require(digest(before) == bound['stateHash'], 'DISCARD_STATE_CHANGED')
+                    require(before['lease_until'] <= clock() and before['cooldown_until'] <= clock(), 'DISCARD_ACTIVE_LEASE')
+                    expected_status = 'halted' if batch['id'] == halted_batch else 'complete' if batch['completed'] is not None else 'pending'
+                    require(before['status'] == expected_status
+                            and before['failure'] in ({halted_failure} if batch['id'] == halted_batch else {None, 'storage'}),
+                            'DISCARD_UNREVIEWED_FAILURE')
+                    rows = [dict(r) for r in store.db.execute('SELECT * FROM receipts ORDER BY sequence')]
+                    require(digest(rows) == bound['receiptsHash'], 'DISCARD_RECEIPTS_CHANGED')
+                    require([r['sequence'] for r in rows] == list(range(batch['start'], batch['start'] + len(rows))),
+                            'DISCARD_RECEIPT_GAP')
+                    records = [json.loads(r['payload']) for r in rows]
+                    for record in records:
+                        require(store.field_settled(record['raw']) == record['normalized']
+                                and digest(record['raw']) == record['rawHash']
+                                and digest(record['normalized']) == record['normalizedHash']
+                                and digest({k: v for k, v in record.items() if k != 'contentHash'}) == record['contentHash'],
+                                'DISCARD_RECORD_MISMATCH')
+                    require(all(r['filed'] == r['committed'] for r in rows), 'DISCARD_STORAGE_INCOMPLETE')
+                    durable = [json.loads(r['payload']) for r in rows if r['committed']]
+                    require(before['durable'] == before['checkpoint'] == store.base + len(durable), 'DISCARD_COUNT_MISMATCH')
+                    for index in range(0, len(durable), 100):
+                        require(store.mongo.verify(durable[index:index+100]) == len(durable[index:index+100]), 'DISCARD_MONGO_MISMATCH')
+                    require(store.mongo.summary()['count'] == len(durable), 'DISCARD_MONGO_COUNT')
+                    for index, name in enumerate(('raw.jsonl', 'rounds.jsonl')):
+                        expected = b''.join(store._file_lines(record)[index] for record in durable)
+                        file = store.root / name
+                        require((file.read_bytes() if file.exists() else b'') == expected, 'DISCARD_FILE_MISMATCH')
+                    count += len(rows); committed_count += len(durable)
+                    pending = store.pending()
+                    if batch['id'] in targets:
+                        pending = verify_discard(store, bound, targets, proof.get('httpEvidence'))
+                        removed.append({'batch': batch['id'], 'sequence': pending['sequence']})
+                    else:
+                        require(pending is None, 'DISCARD_UNREVIEWED_PENDING')
+                    checked.append({'batch': spec, 'state': before, 'pending': pending,
+                                    'timings': [dict(r) for r in store.db.execute('SELECT * FROM timings ORDER BY sequence,step')]})
             require(count == proof['expectedComplete'] and committed_count == proof['expectedCommitted']
                     and len(removed) == len(targets), 'DISCARD_COUNT_MISMATCH')
             result = {'review': review, 'proofHash': digest(proof), 'applied': apply,
                       'preservedComplete': count, 'mongoVerified': committed_count, 'discarded': removed,
                       'completeRoundsDeleted': 0, 'sourceRequests': 0, 'sessionBindingsChanged': 0,
                       'quotaChanges': 0, 'gatesRemainPaused': True,
-                      'unknownBetAbandonedWithoutReplay': 1 if review == HTTP_REVIEW else 0}
+                      'unknownBetAbandonedWithoutReplay': 0 if review == REVIEW else 1}
             if not apply:
                 return result
             # Exclusive backup creation and audit insertion prevent blind reapplication.
@@ -166,16 +191,18 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
                      'workers': workers, 'allocation': batches, 'batches': checked, 'at': clock()}
             backup_database(campaign.db, destination / 'queue.sqlite3')
             backup_database(pool.pool.db, destination / 'work-pool.sqlite3')
-            for store in stores:
-                directory = destination / 'batches' / str(store.batch['id'])
-                directory.mkdir(parents=True, mode=0o700)
-                backup_database(store.db, directory / 'state.sqlite3')
-                for name in ('raw.jsonl', 'rounds.jsonl'):
-                    if (store.root / name).exists():
-                        shutil.copyfile(store.root / name, directory / name)
-                        (directory / name).chmod(0o600)
-                        with (directory / name).open('r+b') as stream: os.fsync(stream.fileno())
-                sync_dir(directory)
+            for batch in batches:
+                with open_review_store(root, plan, batch, mongo_factory, clock) as store:
+                    assert_batch_binding(store,proof['batches'][str(batch['id'])])
+                    directory = destination / 'batches' / str(store.batch['id'])
+                    directory.mkdir(parents=True, mode=0o700)
+                    backup_database(store.db, directory / 'state.sqlite3')
+                    for name in ('raw.jsonl', 'rounds.jsonl'):
+                        if (store.root / name).exists():
+                            shutil.copyfile(store.root / name, directory / name)
+                            (directory / name).chmod(0o600)
+                            with (directory / name).open('r+b') as stream: os.fsync(stream.fileno())
+                    sync_dir(directory)
             with (destination / 'event.json').open('xb') as stream:
                 stream.write(canonical(event)); stream.flush(); os.fsync(stream.fileno())
             (destination / 'event.json').chmod(0o600)
@@ -183,22 +210,23 @@ def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time
             db = pool.pool.db
             db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL,applied INTEGER NOT NULL DEFAULT 0)')
             db.execute('INSERT INTO pending_discards(id,payload) VALUES(?,?)', (review, canonical(event).decode()))
-            for store, item in zip(stores, checked):
-                if store.batch['id'] not in targets: continue
-                store.db.execute('BEGIN IMMEDIATE')
-                try:
-                    store.db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL)')
-                    store.db.execute('INSERT INTO pending_discards VALUES(?,?)', (review, canonical(item).decode()))
-                    store.db.execute('DELETE FROM timings WHERE sequence=?', (item['pending']['sequence'],))
-                    store.db.execute('DELETE FROM pending WHERE sequence=?', (item['pending']['sequence'],))
-                    store.db.execute("UPDATE trial SET status='pending',owner=NULL,lease_until=0,failure=NULL WHERE id=1")
-                    store.db.execute('COMMIT')
-                except BaseException:
-                    store.db.execute('ROLLBACK'); raise
-            require(all(store.pending() is None for store in stores), 'DISCARD_PENDING_REMAINS')
+            for item in checked:
+                if item['batch']['id'] not in targets: continue
+                with open_review_store(root, plan, item['batch'], mongo_factory, clock) as store:
+                    assert_batch_binding(store,proof['batches'][str(store.batch['id'])])
+                    store.db.execute('BEGIN IMMEDIATE')
+                    try:
+                        store.db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL)')
+                        store.db.execute('INSERT INTO pending_discards VALUES(?,?)', (review, canonical(item).decode()))
+                        store.db.execute('DELETE FROM timings WHERE sequence=?', (item['pending']['sequence'],))
+                        store.db.execute('DELETE FROM pending WHERE sequence=?', (item['pending']['sequence'],))
+                        store.db.execute("UPDATE trial SET status='pending',owner=NULL,lease_until=0,failure=NULL WHERE id=1")
+                        store.db.execute('COMMIT')
+                    except BaseException:
+                        store.db.execute('ROLLBACK'); raise
+                    require(store.pending() is None, 'DISCARD_PENDING_REMAINS')
             db.execute('UPDATE pending_discards SET applied=1 WHERE id=?', (review,))
             # Gate activation is a separate operator step after a fresh job check.
             return result
     finally:
-        for store in stores: store.close()
         pool.close(); campaign.close()
