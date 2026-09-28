@@ -1,0 +1,175 @@
+"""Operator-only removal of explicitly reviewed incomplete rounds.
+
+Not exposed through RPC and never automatic. Preserve a private full backup and
+the original attempts before removing pending rows. Replacements use fresh
+attempt IDs through the normal INIT/BET path; complete receipts are untouched.
+"""
+from contextlib import ExitStack
+import json
+import os
+from pathlib import Path
+import shutil
+import sqlite3
+import time
+
+from campaign import Campaign
+from pool_trial import PoolTrial
+from round_fields import params
+from store import canonical, digest, file_lock, require, sync_dir
+from trial_store import TrialStore
+
+REVIEW = 'user-discard-incomplete-32651-20260928'
+TARGETS = {5: (424, 'FEATURE_START'), 11: (1015, 'FREE_GAME'), 18: (1708, 'REJECTED_FREE_GAME')}
+
+
+def verify_discard(store, bound):
+    pending = store.pending()
+    require(pending and pending['awaiting'] is None, 'DISCARD_UNKNOWN_SOURCE_OUTCOME')
+    sequence, following = TARGETS[store.batch['id']]
+    require(pending['sequence'] == sequence == store.journaled() + 1, 'DISCARD_SEQUENCE_CHANGED')
+    require(digest(pending) == bound['pendingHash'], 'DISCARD_PENDING_CHANGED')
+    require(not store.db.execute('SELECT 1 FROM receipts WHERE sequence=?', (sequence,)).fetchone(),
+            'DISCARD_COMPLETE_FORBIDDEN')
+    raw = pending['raw']
+    if following == 'REJECTED_FREE_GAME':
+        last = raw['steps'][-1]
+        require(last.get('sourceRejected') is True and last['msgId'] == 'FREE_GAME'
+                and params(last['responsePayload']) == {'MSGID': 'ERROR', 'EID': 'ERROR_INVALID_SESSION'},
+                'DISCARD_UNREVIEWED_ERROR')
+        raw = {**raw, 'steps': raw['steps'][:-1]}
+        following = 'FREE_GAME'
+    next_request = store.field_next(raw)
+    require(next_request and next_request['MSGID'] == following, 'DISCARD_NOT_INCOMPLETE')
+    return pending
+
+
+def backup_database(db, target):
+    copied = sqlite3.connect(target)
+    try:
+        db.backup(copied)
+    finally:
+        copied.close()
+    target.chmod(0o600)
+    with target.open('r+b') as stream:
+        os.fsync(stream.fileno())
+
+
+def discard(root, proof, mongo_factory, backup_dir, apply=False, clock=time.time):
+    require(proof.get('authorization') == REVIEW and proof.get('trialId') == 'sg_r1_20260928_32651',
+            'DISCARD_AUTHORIZATION_REQUIRED')
+    root = Path(root).resolve()
+    destination = Path(backup_dir).resolve()
+    require(destination.is_relative_to(root / 'reviews') and destination != root / 'reviews', 'DISCARD_BACKUP_PATH')
+    campaign = Campaign(root)
+    plan = campaign.plans['32651']
+    pool = PoolTrial(root, plan, mongo_factory, clock)
+    stores = []
+    try:
+        with ExitStack() as locks:
+            locks.enter_context(file_lock(campaign.directory / 'selection.lock'))
+            locks.enter_context(file_lock(pool.root / 'protocol-review.lock'))
+            state = dict(campaign.db.execute('SELECT * FROM control').fetchone())
+            control = dict(pool.pool.db.execute('SELECT * FROM control').fetchone())
+            require(state['active_game'] == 32651 and not state['enabled']
+                    and state['reason'] == 'ACTIVE_GAME_REQUIRES_REVIEW', 'DISCARD_CAMPAIGN_NOT_PAUSED')
+            require(not control['enabled'] and control['failure'] == 'BATCH_HALTED', 'DISCARD_POOL_NOT_PAUSED')
+            require(campaign.disk_free() >= campaign.config['diskReserveBytes'], 'DISK_RESERVE_REACHED')
+            workers = [dict(row) for row in pool.pool.db.execute('SELECT * FROM workers ORDER BY id')]
+            batches = [dict(row) for row in pool.pool.db.execute('SELECT * FROM batches ORDER BY id')]
+            require(all(w['lease_until'] <= clock() for w in workers), 'DISCARD_ACTIVE_WORKERS')
+            require(digest(plan) == proof['planHash'] and digest(state) == proof['campaignHash']
+                    and digest(control) == proof['controlHash'] and digest(workers) == proof['workersHash']
+                    and digest(batches) == proof['allocationHash'], 'DISCARD_BINDING_CHANGED')
+            require({str(b['id']) for b in batches} == set(proof['batches']), 'DISCARD_BATCHES_CHANGED')
+            checked = []; removed = []; count = committed_count = 0
+            for batch in batches:
+                spec = {k: batch[k] for k in ('id', 'worker', 'start', 'end')}
+                store = TrialStore(root, mongo_factory((batch['start'], batch['end'])), clock, plan=plan, batch=spec)
+                stores.append(store)
+                locks.enter_context(file_lock(store.root / 'trial.lock'))
+                before = dict(store.state()); bound = proof['batches'][str(batch['id'])]
+                require(digest(before) == bound['stateHash'], 'DISCARD_STATE_CHANGED')
+                require(before['lease_until'] <= clock() and before['cooldown_until'] <= clock(), 'DISCARD_ACTIVE_LEASE')
+                require(before['status'] == ('halted' if batch['id'] == 18 else 'pending')
+                        and before['failure'] in ({'PROTOCOL_VALIDATION_FAILED'} if batch['id'] == 18 else {None, 'storage'}),
+                        'DISCARD_UNREVIEWED_FAILURE')
+                rows = [dict(r) for r in store.db.execute('SELECT * FROM receipts ORDER BY sequence')]
+                require(digest(rows) == bound['receiptsHash'], 'DISCARD_RECEIPTS_CHANGED')
+                require([r['sequence'] for r in rows] == list(range(batch['start'], batch['start'] + len(rows))),
+                        'DISCARD_RECEIPT_GAP')
+                records = [json.loads(r['payload']) for r in rows]
+                for record in records:
+                    require(store.field_settled(record['raw']) == record['normalized']
+                            and digest(record['raw']) == record['rawHash']
+                            and digest(record['normalized']) == record['normalizedHash']
+                            and digest({k: v for k, v in record.items() if k != 'contentHash'}) == record['contentHash'],
+                            'DISCARD_RECORD_MISMATCH')
+                require(all(r['filed'] == r['committed'] for r in rows), 'DISCARD_STORAGE_INCOMPLETE')
+                durable = [json.loads(r['payload']) for r in rows if r['committed']]
+                require(before['durable'] == before['checkpoint'] == store.base + len(durable), 'DISCARD_COUNT_MISMATCH')
+                for index in range(0, len(durable), 100):
+                    require(store.mongo.verify(durable[index:index+100]) == len(durable[index:index+100]), 'DISCARD_MONGO_MISMATCH')
+                require(store.mongo.summary()['count'] == len(durable), 'DISCARD_MONGO_COUNT')
+                for index, name in enumerate(('raw.jsonl', 'rounds.jsonl')):
+                    expected = b''.join(store._file_lines(record)[index] for record in durable)
+                    file = store.root / name
+                    require((file.read_bytes() if file.exists() else b'') == expected, 'DISCARD_FILE_MISMATCH')
+                count += len(rows); committed_count += len(durable)
+                pending = store.pending()
+                if batch['id'] in TARGETS:
+                    pending = verify_discard(store, bound)
+                    removed.append({'batch': batch['id'], 'sequence': pending['sequence']})
+                else:
+                    require(pending is None, 'DISCARD_UNREVIEWED_PENDING')
+                checked.append({'batch': spec, 'state': before, 'pending': pending,
+                                'timings': [dict(r) for r in store.db.execute('SELECT * FROM timings ORDER BY sequence,step')]})
+            require(count == proof['expectedComplete'] and committed_count == proof['expectedCommitted']
+                    and len(removed) == 3, 'DISCARD_COUNT_MISMATCH')
+            result = {'review': REVIEW, 'proofHash': digest(proof), 'applied': apply,
+                      'preservedComplete': count, 'mongoVerified': committed_count, 'discarded': removed,
+                      'completeRoundsDeleted': 0, 'sourceRequests': 0, 'sessionBindingsChanged': 0,
+                      'quotaChanges': 0, 'gatesRemainPaused': True}
+            if not apply:
+                return result
+            # Exclusive backup creation and audit insertion prevent blind reapplication.
+            destination.mkdir(parents=True, mode=0o700)
+            event = {'result': result, 'proof': proof, 'campaign': state, 'control': control,
+                     'workers': workers, 'allocation': batches, 'batches': checked, 'at': clock()}
+            backup_database(campaign.db, destination / 'queue.sqlite3')
+            backup_database(pool.pool.db, destination / 'work-pool.sqlite3')
+            for store in stores:
+                directory = destination / 'batches' / str(store.batch['id'])
+                directory.mkdir(parents=True, mode=0o700)
+                backup_database(store.db, directory / 'state.sqlite3')
+                for name in ('raw.jsonl', 'rounds.jsonl'):
+                    if (store.root / name).exists():
+                        shutil.copyfile(store.root / name, directory / name)
+                        (directory / name).chmod(0o600)
+                        with (directory / name).open('r+b') as stream: os.fsync(stream.fileno())
+                sync_dir(directory)
+            with (destination / 'event.json').open('xb') as stream:
+                stream.write(canonical(event)); stream.flush(); os.fsync(stream.fileno())
+            (destination / 'event.json').chmod(0o600)
+            sync_dir(destination / 'batches'); sync_dir(destination); sync_dir(destination.parent)
+            db = pool.pool.db
+            db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL,applied INTEGER NOT NULL DEFAULT 0)')
+            db.execute('INSERT INTO pending_discards(id,payload) VALUES(?,?)', (REVIEW, canonical(event).decode()))
+            for store, item in zip(stores, checked):
+                if store.batch['id'] not in TARGETS: continue
+                store.db.execute('BEGIN IMMEDIATE')
+                try:
+                    store.db.execute('CREATE TABLE IF NOT EXISTS pending_discards(id TEXT PRIMARY KEY,payload TEXT NOT NULL)')
+                    store.db.execute('INSERT INTO pending_discards VALUES(?,?)', (REVIEW, canonical(item).decode()))
+                    store.db.execute('DELETE FROM timings WHERE sequence=?', (item['pending']['sequence'],))
+                    store.db.execute('DELETE FROM pending WHERE sequence=?', (item['pending']['sequence'],))
+                    store.db.execute("UPDATE trial SET status='pending',owner=NULL,lease_until=0,failure=NULL WHERE id=1")
+                    store.db.execute('COMMIT')
+                except BaseException:
+                    store.db.execute('ROLLBACK'); raise
+            require(all(store.pending() is None for store in stores), 'DISCARD_PENDING_REMAINS')
+            db.execute('UPDATE pending_discards SET applied=1 WHERE id=?', (REVIEW,))
+            # Gate activation is a separate operator step after a fresh job check.
+            return result
+    finally:
+        for store in stores: store.close()
+        pool.close(); campaign.close()
