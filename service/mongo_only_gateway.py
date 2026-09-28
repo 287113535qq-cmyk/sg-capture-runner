@@ -57,6 +57,12 @@ class Gateway:
         if op == 'hello':
             return {'group': self.group, 'database': DATABASE, 'schema': 'sg-mongo-only-v2',
                     'captureLogicOnServer': False, 'legacyRuntimeEnabled': False}
+        if op == 'global_holds':
+            # Fixed, read-only cross-group safety records. Their contents and
+            # all decisions are calculated by GitHub, not by this transport.
+            collection = self.db[COLLECTIONS['state']]
+            return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
+                    for group in ('primary', 'secondary')]
         if op in ('legacy_manifest', 'legacy_bytes'):
             # Temporary, read-only transfer of the already frozen archive.
             # SQLite decoding/validation/migration happens on GitHub, never here.
@@ -112,9 +118,14 @@ class Gateway:
             result = collection.replace_one({'_id': identity, 'version': expected},
                                             {'_id': identity, 'version': expected + 1, 'value': value})
             return {'replaced': result.matched_count == 1, 'version': expected + 1}
-        if op in ('rounds_read', 'rounds_insert'):
+        if op in ('rounds_read', 'rounds_scan', 'rounds_insert'):
             trial, scope = self.scope(r)
             collection = self.db['official_rounds']
+            if op == 'rounds_scan':
+                after=r.get('after',0)
+                need(type(after) is int and 0<=after<=scope['target'],'BAD_CURSOR')
+                return list(collection.find({'trialId':trial,'sequence':{'$gt':after}},max_time_ms=10000)
+                            .sort('sequence',1).limit(100))
             if op == 'rounds_read':
                 ids = r.get('ids')
                 need(isinstance(ids, list) and 1 <= len(ids) <= 100

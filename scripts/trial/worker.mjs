@@ -118,10 +118,18 @@ async function main() {
     Object.entries({...plan.requestParams,PID:`gdmgcm${game.sessionId}`,MSGID:msg}).map(([k,v])=>`${k}=${v}`).join('&'):
     `GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}&AP=false&BPL=5&LB=5`;
   async function bootstrap() {
-    const init=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=INIT`,'INIT');
+    const guarded=process.env.SG_PROCESSING_MODE==='github-v2';
+    const send=async(msg)=>{
+      const requestPayload=`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=${msg}`;
+      if(guarded)await rpc('bootstrap_intent',{...owned(),msgId:msg,requestPayload});
+      const step=await post(requestPayload,msg);
+      if(guarded)await rpc('bootstrap_frame',{...owned(),step});
+      return step;
+    };
+    const init=await send('INIT');
     if(init.sourceRejected)throw fail('SOURCE_INIT_REJECTED');
     const nextBalance=integer(params(init.responsePayload).AB ?? params(init.responsePayload).B);
-    const reelstrip=await post(`GN=${game.runtimeSlug}&PID=gdmgcm${game.sessionId}&MSGID=REELSTRIP`,'REELSTRIP');
+    const reelstrip=await send('REELSTRIP');
     if(reelstrip.sourceRejected)throw fail('SOURCE_REELSTRIP_REJECTED');
     return nextBalance;
   }
@@ -156,7 +164,7 @@ try {
   evidence.outcome='stopped';evidence.error=/^[A-Z_]{1,80}$/.test(error.code || '')?error.code:'TRIAL_RUN_FAILED';
   if(error.httpStatus)evidence.httpStatus=error.httpStatus;
   if(lease){
-    try{evidence.result=await rpc('fail',{...owned(),category:error.category || 'storage',cooldownUntil:error.cooldownUntil || 0});}
+    try{evidence.result=await rpc('fail',{...owned(),category:error.category || 'storage',code:evidence.error,cooldownUntil:error.cooldownUntil || 0});}
     catch{}
   }
   // A claim can itself detect an unknown prior source outcome and halt the

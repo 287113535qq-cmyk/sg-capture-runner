@@ -55,6 +55,11 @@ class GatewayTests(unittest.TestCase):
         source=pathlib.Path(sys.modules['mongo_only_gateway'].__file__).read_text()
         for imported in ('import sqlite3','from trial_store','from campaign','from round_fields','subprocess'):
             self.assertNotIn(imported,source)
+    def test_shared_holds_are_read_only_and_fixed_to_the_two_groups(self):
+        self.call('create',collection='state',key='global-hold',value={'active':True})
+        holds=self.call('global_holds')
+        self.assertTrue(holds[0]['value']['active']);self.assertIsNone(holds[1])
+        with self.assertRaises(Refused):self.call('global_holds',group='secondary')
 
 
 if __name__=='__main__':unittest.main()

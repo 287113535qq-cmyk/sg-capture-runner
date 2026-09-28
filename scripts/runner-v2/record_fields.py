@@ -35,6 +35,9 @@ def execute(request):
     fields = adapter.settled(raw)
     if op == 'verify':
         old = request['record']
+        assert all(old[k]==plan[k] for k in ('trialId','gameId','runtimeGameId'))
+        identity={k:old[k] for k in ('sequence','attempt','trialId','gameId','runtimeGameId')}
+        assert digest(identity)==old['_id']
         assert fields == old['normalized'] and digest(raw) == old['rawHash']
         assert digest(fields) == old['normalizedHash']
         assert digest({k:v for k,v in old.items() if k!='contentHash'}) == old['contentHash']

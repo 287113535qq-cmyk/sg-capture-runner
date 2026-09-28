@@ -78,10 +78,10 @@ export class RunnerPool {
       if(old && old.leaseUntil>this.now())throw fail('WORKER_BUSY');
       // A new process must review any previous batch before claiming source
       // ownership. Expiry alone never authorizes reuse of an unknown intent.
-      if(old?.activeBatch)throw fail('BATCH_RESUME_REVIEW_REQUIRED');
+      if(old?.activeBatch && old.resumeSafe!==true)throw fail('BATCH_RESUME_REVIEW_REQUIRED');
       epoch=(old?.epoch || 0)+1;
       value.workers[String(worker)]={sessionHash:identity.sessionHash,owner:identity.owner,epoch,
-        leaseUntil:this.now()+600_000,activeBatch:null};return value;
+        leaseUntil:this.now()+600_000,activeBatch:old?.activeBatch || null,resumeSafe:false};return value;
     });
     return {worker,owner:identity.owner,epoch};
   }
@@ -107,7 +107,11 @@ export class RunnerPool {
   }
   async heartbeat(lease) {
     await this.store.update('state',this.key,value=>{
-      const worker=this.owned(value,lease);
+      const worker=value.workers[String(lease.worker)];
+      // Resource backpressure can outlast a lease. An active batch cannot be
+      // reassigned while resumeSafe is false; renew only the same fenced owner.
+      if(!worker || worker.owner!==lease.owner || worker.epoch!==lease.epoch
+          || worker.leaseUntil<=this.now() && (!worker.activeBatch || worker.resumeSafe))throw fail('LEASE_LOST');
       if(worker.leaseUntil-this.now()>570_000)return null;
       worker.leaseUntil=this.now()+600_000;return value;
     });
@@ -119,7 +123,15 @@ export class RunnerPool {
     await this.store.update('state',this.key,value=>{
       const worker=this.owned(value,lease);
       if(worker.activeBatch?.id!==batch.id)throw fail('BATCH_OWNER_MISMATCH');
-      value.confirmed+=proof.confirmed;worker.activeBatch=null;return value;
+      const already=value.legacyConfirmedByBatch?.[String(batch.id)] || 0;
+      assert(already<=proof.confirmed);
+      value.confirmed+=proof.confirmed-already;worker.activeBatch=null;return value;
+    });
+  }
+  async release(lease,{resumeSafe=false}={}) {
+    await this.store.update('state',this.key,value=>{
+      const worker=this.owned(value,lease);
+      worker.resumeSafe=resumeSafe;worker.leaseUntil=0;return value;
     });
   }
 }

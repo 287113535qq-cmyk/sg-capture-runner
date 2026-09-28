@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
+import {connectLocal} from '../runner-v2/local-rpc.mjs';
 export function connect(plan) {
+  if(process.env.SG_PROCESSING_MODE==='github-v2')return connectLocal(plan);
   assert.equal(process.env.GITHUB_ACTIONS, 'true');
   assert.equal(process.env.RUNNER_OS, 'Linux');
   assert.equal(process.env.RUNNER_ENVIRONMENT, 'github-hosted');

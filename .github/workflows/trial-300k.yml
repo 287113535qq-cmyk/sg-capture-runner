@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate]
+        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -39,6 +39,24 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  github-recover:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'github-recover'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Reconcile original complete rounds and archive frozen unknown attempts
+        run: node scripts/runner-v2/recover-migration.mjs
   github-migrate:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'github-migrate'
     runs-on: ubuntu-latest
@@ -139,7 +157,7 @@ jobs:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
         run: |
           if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/trial/campaign-worker.mjs capture
+            node scripts/runner-v2/campaign-worker.mjs capture
           else
             unset SG_POOL_RUN_LIMIT
             node scripts/trial/worker.mjs capture
@@ -149,7 +167,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: trial
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && inputs.role != 'github-migrate' || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && inputs.role != 'github-migrate' && inputs.role != 'github-recover' || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -170,7 +188,7 @@ jobs:
         id: state
         run: |
           if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/trial/campaign-worker.mjs status
+            node scripts/runner-v2/campaign-worker.mjs status
           else
             node scripts/trial/worker.mjs status
           fi
