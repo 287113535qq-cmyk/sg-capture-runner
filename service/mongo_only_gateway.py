@@ -63,6 +63,22 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'control_read':
+            # Fixed document reads only; all source/lease decisions remain on GitHub.
+            ids = ['primary/global-hold', 'secondary/global-hold', self.group + '/campaign']
+            if r.get('trialId') is not None:
+                trial, _ = self.scope(r)
+                ids.append(self.group + '/pool:' + trial)
+            rows = list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(4))
+            return rows
+        if op == 'read_many':
+            alias, keys = r.get('collection'), r.get('keys')
+            need(alias in COLLECTIONS, 'COLLECTION_NOT_ALLOWED')
+            need(isinstance(keys, list) and 1 <= len(keys) <= 100
+                 and all(isinstance(k, str) and re.fullmatch(r'[a-zA-Z0-9:_-]{1,180}', k) for k in keys)
+                 and len(set(keys)) == len(keys), 'BAD_KEYS')
+            ids = [self.group + '/' + k for k in keys]
+            return list(self.db[COLLECTIONS[alias]].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(100))
         if op in ('legacy_manifest', 'legacy_bytes'):
             # Temporary, read-only transfer of the already frozen archive.
             # SQLite decoding/validation/migration happens on GitHub, never here.

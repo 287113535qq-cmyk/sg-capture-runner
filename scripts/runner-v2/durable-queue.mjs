@@ -6,19 +6,24 @@ export const receiptKey=(trial,sequence)=>`receipt:${trial}:${String(sequence).p
 // The durable copy is an immutable Mongo journal document. This queue lives on
 // GitHub and performs every comparison and checkpoint decision there.
 export class DurableQueue {
-  constructor({store,plan,batchKey,owner,epoch}){Object.assign(this,{store,plan,batchKey,owner,epoch});}
+  constructor({store,plan,batchKey,owner,epoch,readBatch,updateBatch}){
+    Object.assign(this,{store,plan,batchKey,owner,epoch});
+    this.readBatch=readBatch || (()=>store.get('state',batchKey));
+    this.updateBatch=updateBatch || (change=>store.update('state',batchKey,change));
+  }
   async append(record) {
     assert.equal(record.trialId,this.plan.trialId);
     return this.store.create('journal',receiptKey(record.trialId,record.sequence),record,{immutable:true});
   }
   async assertDurable(records) {
-    for(const record of records) {
-      const saved=await this.store.get('journal',receiptKey(record.trialId,record.sequence));
+    const savedRows=await this.store.getMany('journal',records.map(r=>receiptKey(r.trialId,r.sequence)));
+    for(const [i,record] of records.entries()) {
+      const saved=savedRows[i];
       assert(saved && stable(saved.value)===stable(record),'DURABLE_QUEUE_CONTENT_MISMATCH');
     }
   }
   async confirm(records) {
-    await this.store.update('state',this.batchKey,batch=>{
+    await this.updateBatch(batch=>{
       assert(batch.owner===this.owner && batch.epoch===this.epoch,'BATCH_LEASE_LOST');
       for(const r of records) {
         assert(r.trialId===this.plan.trialId && r.batchId===batch.id,'BATCH_RECORD_MISMATCH');
@@ -30,13 +35,14 @@ export class DurableQueue {
     });
   }
   async outstanding() {
-    const saved=await this.store.get('state',this.batchKey);assert(saved,'BATCH_MISSING');
-    const batch=saved.value,records=[];
-    for(let sequence=batch.checkpoint+1;sequence<=batch.journaled && records.length<100;sequence++) {
-      const record=await this.store.get('journal',receiptKey(this.plan.trialId,sequence));
-      assert(record,'DURABLE_QUEUE_GAP');records.push(record.value);
-    }
-    return records;
+    const saved=await this.readBatch();assert(saved,'BATCH_MISSING');
+    const batch=saved.value,keys=[];
+    for(let sequence=batch.checkpoint+1;sequence<=batch.journaled && keys.length<100;sequence++)
+      keys.push(receiptKey(this.plan.trialId,sequence));
+    if(!keys.length)return [];
+    const records=await this.store.getMany('journal',keys);
+    assert(records.every(Boolean),'DURABLE_QUEUE_GAP');
+    return records.map(x=>x.value);
   }
 }
 

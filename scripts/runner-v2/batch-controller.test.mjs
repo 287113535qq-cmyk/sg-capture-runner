@@ -11,6 +11,7 @@ async function fixture(){
   const plan={trialId:'sg_r1_20260928_32723',gameId:32723,target:400,betRaw:25,maxSteps:100,sourceKey:'fixture'};
   const transport={async request(op,r){
     if(op==='resources')return {};
+    if(op==='read_many')return r.keys.filter(k=>docs.has(r.collection+'/'+k)).map(k=>({_id:'primary/'+k,...structuredClone(docs.get(r.collection+'/'+k))}));
     if(op==='rounds_read')return r.ids.filter(id=>rounds.has(id)).map(id=>structuredClone(rounds.get(id)));
     if(op==='rounds_insert'){for(const row of r.records)rounds.set(row._id,structuredClone(row));return {};}
     const k=r.collection+'/'+r.key,old=docs.get(k);
@@ -25,7 +26,7 @@ async function fixture(){
   }};
   const gate={observe(){},status:()=>({allowed:true,maxBatchSize:100}),hold(){}};
   const store=new RunnerState({transport,gate,now:()=>now,sleep:async()=>{}});
-  const control={allowed:async()=>{},halt:async reason=>store.update('state','global-hold',v=>({...v,active:true,reason}))};
+  const control={allowed:async()=>store.get('state','pool:'+plan.trialId),halt:async reason=>store.update('state','global-hold',v=>({...v,active:true,reason}))};
   const parser={async call(r){
     if(r.op==='intent')return {};
     if(r.raw.steps.at(-1)?.responsePayload.includes('FID=2'))throw Object.assign(Error('UNKNOWN_TRIAL_FEATURE'),{code:'UNKNOWN_TRIAL_FEATURE'});
@@ -82,4 +83,29 @@ test('natural unknown feature is retained and parked; explicit source rejection 
     assert.equal((await f.store.get('state','global-hold')).value.active,rejected);
     assert.equal((await f.store.get('state','campaign')).value.games[0].status,rejected?'active':'parking-protocol');
   }
+});
+
+test('cached batch version cannot overwrite a concurrent operator change or authorize another request',async()=>{
+  const f=await fixture();
+  await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  await f.store.update('state',f.controller.batchKey,b=>({...b,operatorEvidence:'preserve'}));
+  await assert.rejects(f.rpc('exchange_journal',{...f.owned,sequence:1,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'NFG=0'}}),{code:'BATCH_VERSION_CHANGED'});
+  assert.equal(f.controller.batchSnapshot,null);
+  const saved=(await f.store.get('state',f.controller.batchKey)).value;
+  assert.equal(saved.operatorEvidence,'preserve');assert.equal(saved.pending.awaiting,'MSGID=BET');
+  assert.equal(f.rounds.size,0);
+  await assert.rejects(f.rpc('intent',{...f.owned,sequence:1,requestPayload:'MSGID=BET'}),/BATCH_SNAPSHOT_REQUIRED/);
+});
+
+test('fresh control snapshot rejects a replaced worker before another source intent',async()=>{
+  const f=await fixture();
+  await f.store.update('state',f.controller.pool.key,p=>{p.workers['0'].owner='replacement';p.workers['0'].epoch++;return p;});
+  await assert.rejects(f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'}),{code:'LEASE_LOST'});
+  assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending,null);
+});
+
+test('same fenced active owner renews after prolonged resource pause using a fresh snapshot',async()=>{
+  const f=await fixture();f.advance(700000);
+  await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending.awaiting,'MSGID=BET');
 });

@@ -20,10 +20,10 @@ export class BatchController {
     return {status:pool.failure||!pool.enabled?'halted':pool.confirmed===this.plan.target?'complete':'pending',
       trialId:this.plan.trialId,confirmed:pool.confirmed,target:this.plan.target,reason:pool.failure};
   }
-  async owned(r) {
+  async owned(r,{heartbeat=true}={}) {
     assert(this.lease && r.owner===this.lease.owner && r.workerEpoch===this.lease.epoch,'WORKER_OWNER_MISMATCH');
     assert(r.shardId===this.lease.worker,'WORKER_CHANGED');
-    await this.pool.heartbeat(this.lease);
+    if(heartbeat)await this.pool.heartbeat(this.lease);
     if(r.batchId!==undefined)assert(this.batch && r.batchId===this.batch.id && r.epoch===this.batchEpoch,'BATCH_FENCE');
   }
   batchOwned(value){
@@ -31,7 +31,15 @@ export class BatchController {
     assert(value.sessionHash===this.identity.sessionHash,'SESSION_CHANGED');
   }
   async update(change){
-    return this.store.update('state',this.batchKey,value=>{this.batchOwned(value);return change(value);});
+    assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
+    const before=this.batchSnapshot;
+    const value=structuredClone(before.value);this.batchOwned(value);
+    const next=change(value);
+    try{
+      const after=await this.store.cas('state',this.batchKey,before,next);
+      if(!after)throw fail('BATCH_VERSION_CHANGED');
+      this.batchSnapshot=after;return after;
+    }catch(error){this.batchSnapshot=null;throw error;}
   }
   async next(r){
     await this.owned(r);await this.control.allowed({newRound:true});
@@ -49,7 +57,10 @@ export class BatchController {
       value.leaseUntil=this.now()+600000;return value;
     });
     this.batchEpoch=saved.value.epoch;
-    this.queue=new DurableQueue({store:this.store,plan:this.plan,batchKey:this.batchKey,owner:this.lease.owner,epoch:this.batchEpoch});
+    this.batchSnapshot=saved;
+    this.queue=new DurableQueue({store:this.store,plan:this.plan,batchKey:this.batchKey,owner:this.lease.owner,epoch:this.batchEpoch,
+      readBatch:async()=>{assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');return this.batchSnapshot;},
+      updateBatch:change=>this.update(change)});
     this.writer=new MongoWriter({gate:this.gate,queue:this.queue,
       permits:new WritePermits({store:this.store,group:this.group,owner:this.lease.owner,now:this.now}),
       sink:{read:ids=>this.transport.request('rounds_read',{trialId:this.plan.trialId,ids}),
@@ -67,7 +78,9 @@ export class BatchController {
     }
   }
   async intent(r,begin=false){
-    await this.owned(r);await this.control.allowed({newRound:begin});
+    await this.owned(r,{heartbeat:false});
+    const poolSnapshot=await this.control.allowed({newRound:begin});
+    await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
     let raw;
     if(begin){
       assert(Number.isSafeInteger(r.startBalanceRaw)&&r.startBalanceRaw>=this.plan.betRaw);
@@ -75,7 +88,8 @@ export class BatchController {
       raw={fixtureOnly:false,protocol:'nextgen',sourceKey:this.plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:r.startBalanceRaw,steps:[]};
     }else{
-      const current=(await this.store.get('state',this.batchKey)).value;this.batchOwned(current);
+      assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
+      const current=this.batchSnapshot.value;this.batchOwned(current);
       assert(current.pending && current.pending.sequence===r.sequence && current.pending.awaiting===null,'PENDING_INTENT_CONFLICT');
       raw=current.pending.raw;
     }
@@ -96,7 +110,7 @@ export class BatchController {
   }
   async exchange(r){
     this.spool.append(r.step);
-    await this.owned(r);
+    await this.owned(r,{heartbeat:false});
     // Persist the complete response BEFORE parsing, normalization, or allowing
     // any following request. Failure leaves the original evidence untouched.
     const stored=await this.update(value=>{
@@ -129,19 +143,21 @@ export class BatchController {
     // Following intents are intentionally created by the next loop iteration.
     // This avoids pre-reserving another BET when resources or source stop.
     return {complete:!!record,followingIntentDurable:false,
-      checkpoint:(await this.store.get('state',this.batchKey)).value.checkpoint,
+      checkpoint:this.batchSnapshot.value.checkpoint,
       ...(record?{endBalanceRaw:record.normalized.money.endBalanceRaw}:{})};
   }
   async bootstrap(r,frame=false){
     if(frame)this.spool.append(r.step);
-    await this.owned(r);
+    await this.owned(r,{heartbeat:false});
     if(!frame){
-      await this.control.allowed({newRound:true});
+      const poolSnapshot=await this.control.allowed({newRound:true});
+      await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
       assert(['INIT','REELSTRIP'].includes(r.msgId),'BOOTSTRAP_METHOD');
       await this.update(v=>{assert(!v.pending && !v.bootstrapAwaiting,'BOOTSTRAP_PENDING');v.bootstrapAwaiting={msgId:r.msgId,payload:r.requestPayload};return v;});
       return {intentDurable:true};
     }
-    const before=(await this.store.get('state',this.batchKey)).value;this.batchOwned(before);
+    assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
+    const before=this.batchSnapshot.value;this.batchOwned(before);
     assert(before.bootstrapAwaiting?.payload===r.step.requestPayload,'BOOTSTRAP_RESPONSE_MISMATCH');
     const key=`bootstrap:${this.plan.trialId}:${this.batch.id}:${hash(r.step)}`;
     await this.store.create('journal',key,{worker:this.lease.worker,step:r.step},{immutable:true});

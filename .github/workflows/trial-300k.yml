@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote]
+        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -40,7 +40,7 @@ env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
   github-control:
-    if: github.event_name == 'workflow_dispatch' && (inputs.role == 'github-activate' || inputs.role == 'github-validate' || inputs.role == 'github-promote')
+    if: github.event_name == 'workflow_dispatch' && (inputs.role == 'github-activate' || inputs.role == 'github-validate' || inputs.role == 'github-promote' || startsWith(inputs.role, 'optimization-'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -62,6 +62,9 @@ jobs:
             github-activate) node scripts/runner-v2/activation.mjs short ;;
             github-validate) node scripts/runner-v2/validate-migration.mjs ;;
             github-promote) node scripts/runner-v2/activation.mjs formal ;;
+            optimization-short) node scripts/runner-v2/optimization-control.mjs short ;;
+            optimization-validate) node scripts/runner-v2/optimization-control.mjs validate ;;
+            optimization-formal) node scripts/runner-v2/optimization-control.mjs formal ;;
             *) exit 2 ;;
           esac
   github-recover:
@@ -192,7 +195,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: trial
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

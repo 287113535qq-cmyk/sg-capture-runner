@@ -14,6 +14,7 @@ export function connectGateway() {
     '-o','ConnectTimeout=15','-o','ServerAliveInterval=10','-o','ServerAliveCountMax=2',`sgcapture@${host}`],
     {stdio:['pipe','pipe','pipe']});
   let pending=null,closed=false,buffer=Buffer.alloc(0);
+  const metrics={requests:0,elapsedMs:0,byOperation:{}};
   const error=code=>Object.assign(new Error(code),{code});
   function reject(code){if(pending){clearTimeout(pending.timer);pending.reject(error(code));pending=null;}}
   child.stderr.on('data',()=>{});
@@ -28,18 +29,21 @@ export function connectGateway() {
     if(!pending)return;
     let response;try{response=JSON.parse(line);}catch{reject('GATEWAY_RESPONSE_INVALID');return;}
     if(!response.ok){reject(/^[A-Z_]{1,80}$/.test(response.error)?response.error:'GATEWAY_REJECTED');return;}
-    const p=pending;pending=null;clearTimeout(p.timer);p.resolve(response.result);
+    const p=pending;pending=null;clearTimeout(p.timer);
+    const ms=performance.now()-p.started;metrics.elapsedMs+=ms;metrics.byOperation[p.op].elapsedMs+=ms;
+    p.resolve(response.result);
   });
   return {async request(op,fields={}){
     assert(!pending,'Concurrent gateway requests forbidden');
     if(closed)throw error('GATEWAY_DISCONNECTED');
     const input=JSON.stringify({schema:'sg-mongo-only-v2',op,...fields})+'\n';
     assert(Buffer.byteLength(input)<=8*1024*1024);
+    metrics.requests++;metrics.byOperation[op]??={requests:0,elapsedMs:0};metrics.byOperation[op].requests++;
     return new Promise((resolve,rejectPromise)=>{
-      pending={resolve,reject:rejectPromise,timer:setTimeout(()=>{
+      pending={resolve,reject:rejectPromise,op,started:performance.now(),timer:setTimeout(()=>{
         reject('GATEWAY_ACK_UNKNOWN');closed=true;child.kill();
       },60_000)};
       child.stdin.write(input);
     });
-  },close(){closed=true;reject('GATEWAY_CLOSED');child.stdin.end();child.kill();}};
+  },metrics:()=>structuredClone(metrics),close(){closed=true;reject('GATEWAY_CLOSED');child.stdin.end();child.kill();}};
 }

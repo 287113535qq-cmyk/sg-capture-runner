@@ -13,6 +13,6 @@ export function connectLocal(plan){
   const control=new SourceControl({store,transport,gate,plan});
   const controller=new BatchController({store,transport,gate,analyzer:parser,spool,control,plan,
     group:repositories[process.env.GITHUB_REPOSITORY].name});
-  return {rpc:(op,data)=>controller.rpc(op,data),metrics:()=>({processing:'github',resourceGate:gate.status()}),
+  return {rpc:(op,data)=>controller.rpc(op,data),metrics:()=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics()}),
     close(){parser.close();transport.close();spool.close();}};
 }

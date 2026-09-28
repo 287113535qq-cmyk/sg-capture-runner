@@ -7,6 +7,7 @@ function fixture(){
   const docs=new Map();let now=1000;
   const transport={async request(op,r){
     if(op==='resources')return {};
+    if(op==='read_many')return r.keys.filter(k=>docs.has(r.collection+'/'+k)).map(k=>({_id:'primary/'+k,...structuredClone(docs.get(r.collection+'/'+k))}));
     const key=r.collection+'/'+r.key,old=docs.get(key);
     if(op==='read')return old?structuredClone(old):null;
     if(op==='create'){if(old)return {created:false};docs.set(key,{version:0,value:structuredClone(r.value)});return {created:true};}

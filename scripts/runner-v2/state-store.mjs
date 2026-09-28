@@ -27,6 +27,16 @@ export class RunnerState {
     }
   }
   async get(collection,key) {return this.transport.request('read',{collection,key});}
+  async getMany(collection,keys) {
+    assert(Array.isArray(keys) && keys.length>=1 && keys.length<=100 && new Set(keys).size===keys.length);
+    const rows=await this.transport.request('read_many',{collection,keys}),byKey=new Map();
+    for(const row of rows){
+      assert(typeof row._id==='string' && row._id.indexOf('/')>0,'BULK_READ_ID_REQUIRED');
+      const key=row._id.slice(row._id.indexOf('/')+1);
+      assert(keys.includes(key) && !byKey.has(key),'BULK_READ_SCOPE_CONFLICT');byKey.set(key,row);
+    }
+    return keys.map(key=>byKey.get(key)||null);
+  }
   async create(collection,key,value,{immutable=false}={}) {
     await this.writable();
     const result=await this.transport.request('create',{collection,key,value});
@@ -105,7 +115,12 @@ export class RunnerPool {
     });
     return batch;
   }
-  async heartbeat(lease) {
+  async heartbeat(lease,{snapshot}={}) {
+    if(snapshot){
+      const worker=snapshot.value.workers[String(lease.worker)];
+      if(!worker || worker.owner!==lease.owner || worker.epoch!==lease.epoch)throw fail('LEASE_LOST');
+      if(worker.leaseUntil-this.now()>570_000)return;
+    }
     await this.store.update('state',this.key,value=>{
       const worker=value.workers[String(lease.worker)];
       // Resource backpressure can outlast a lease. An active batch cannot be

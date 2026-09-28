@@ -14,6 +14,10 @@ class Collection:
             e=Exception();e.code=11000;raise e
         self.rows[row['_id']] = copy.deepcopy(row)
     def find_one(self, query, **_): return copy.deepcopy(self.rows.get(query['_id']))
+    def find(self, query, **_):
+        class Cursor(list):
+            def limit(self,n):return self[:n]
+        return Cursor(copy.deepcopy([self.rows[k] for k in query['_id']['$in'] if k in self.rows]))
     def replace_one(self, query, row):
         old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
         if matched:self.rows[row['_id']]=copy.deepcopy(row)
@@ -60,6 +64,22 @@ class GatewayTests(unittest.TestCase):
         holds=self.call('global_holds')
         self.assertTrue(holds[0]['value']['active']);self.assertIsNone(holds[1])
         with self.assertRaises(Refused):self.call('global_holds',group='secondary')
+    def test_bulk_reads_are_bounded_and_group_scoped(self):
+        self.call('create',collection='journal',key='receipt:1',value={'private':True})
+        rows=self.call('read_many',collection='journal',keys=['receipt:1','receipt:2'])
+        self.assertEqual([x['_id'] for x in rows],['primary/receipt:1'])
+        for keys in ([],['x']*101,['x','x'],['secondary/private'],[{'$where':'x'}]):
+            with self.assertRaises(Refused):self.call('read_many',collection='state',keys=keys)
+        other=Gateway(self.db,'secondary',self.manifest)
+        self.assertEqual(other.dispatch({'schema':'sg-mongo-only-v2','op':'read_many','collection':'journal','keys':['receipt:1']}),[])
+    def test_control_read_returns_only_fixed_documents_and_checks_trial_scope(self):
+        for key in ('global-hold','campaign','pool:sg_r1_20260928_32723','unrelated'):
+            self.call('create',collection='state',key=key,value={})
+        rows=self.call('control_read',trialId='sg_r1_20260928_32723')
+        self.assertEqual(len(rows),3)
+        self.assertNotIn('primary/unrelated',[x['_id'] for x in rows])
+        with self.assertRaises(Refused):self.call('control_read',trialId='not-approved')
+        with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch({'schema':'sg-mongo-only-v2','op':'control_read','trialId':'sg_r1_20260928_32723'})
 
 
 if __name__=='__main__':unittest.main()
