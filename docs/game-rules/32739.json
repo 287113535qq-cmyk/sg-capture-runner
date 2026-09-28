@@ -138,6 +138,7 @@
     "docs/demon-code-protocol.md",
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
+    "docs/foam-terminal-recovery-20260929.md",
     "docs/panda-network-recovery-20260929.md",
     "docs/protocol-short-session-stop-20260929-result.json",
     "docs/protocol-short-session-stop-20260929.md",
@@ -152,6 +153,7 @@
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
     "docs/demon-code-recovery-operator-result.json": "070888afd97629caa5005b668d29b509df66e845cba0d7cd0ed006f0f85d0f82",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/foam-terminal-recovery-20260929.md": "7e130c9aa117d4ebeee76a00757bf4a29638e25af77a1a29821df551b1d6cf8c",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
@@ -166,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ed54dd677b1fb7b305a28874da0fc545b39c5fa591425df591a26fd47c37a04c"
+  "ruleHash": "7076eec4288667f87c496bef931704418fc5764c64d4bfbecdd2535b32524ed6"
 }

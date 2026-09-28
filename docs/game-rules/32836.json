@@ -140,6 +140,7 @@
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
+    "docs/foam-terminal-recovery-20260929.md",
     "docs/protocol-short-session-stop-20260929-result.json",
     "docs/protocol-short-session-stop-20260929.md",
     "docs/quarterback-foam-adapter-result.json",
@@ -151,6 +152,7 @@
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "984427a5e1a49db6b98495b8019b7a2ed5e2ec6e12ccc106f75479a5fa4938dc",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/foam-terminal-recovery-20260929.md": "7e130c9aa117d4ebeee76a00757bf4a29638e25af77a1a29821df551b1d6cf8c",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-foam-adapter-result.json": "4ffc8db87ca2ad7d101b6a02205105283540d52e25d4e738b1431431edceb5ac",
@@ -166,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1f13cba54067a9215f08a3f2173e159e5b6641bb20b64dbe51631e7548c577a2"
+  "ruleHash": "db772d0ab0570ec35b650a402df210a90d854400cf9a1353046d92a1218d8822"
 }
