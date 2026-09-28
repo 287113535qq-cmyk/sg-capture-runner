@@ -1,0 +1,186 @@
+{
+  "schema": "sg-game-rule-card-v1",
+  "gameId": 32714,
+  "name": "Huff N Puff Money Mansion High Limit",
+  "runtimeGameId": 33114,
+  "scope": "round-one-ordinary-buy0",
+  "captureAuthorization": false,
+  "liveQueueStatus": "read-from-Mongo-not-this-card",
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "huffnpuffmoneymansionhighlimit96-round-one-base-v1",
+  "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+  "parameters": {
+    "trialId": "sg_r1_20260928_32714",
+    "runtimeSlug": "huffnpuffmoneymansionhighlimit96",
+    "buy": 0,
+    "betRaw": 500,
+    "requestParams": {
+      "AP": "false",
+      "BPR": "25",
+      "GN": "huffnpuffmoneymansionhighlimit96",
+      "RB": "5"
+    },
+    "maxSteps": 100
+  },
+  "roundRule": {
+    "family": "huff-hard-hat-v1",
+    "messages": [
+      "BET",
+      "FREE_GAME"
+    ],
+    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
+    "continue": "NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。",
+    "complete": "无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。",
+    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；其他功能仍拒绝。FID清零不等于新触发。",
+    "files": [
+      "service/native_nextgen_fields.py",
+      "service/round_fields.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/huff_fields.py",
+      "service/huff_feature_review.py",
+      "scripts/trial/huff-protocol.mjs"
+    ],
+    "fields": {
+      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
+      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
+      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
+      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
+      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "B / AB": "终帧两个余额必须一致。",
+      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "FID / GSD.PCFID / GSD.FEAT": "当前两槽、前一槽及实际重播玩法分别保留；FID1=HardHat，仅适用于本游戏。",
+      "TFG / CFGG": "免费总次数/当前进度保留；不假设每帧 NFG 必须减1。",
+      "GSD.MMBG / GSD.MMW": "Money Mansion 标记与结果是否存在；MMBG 不是剩余次数。"
+    }
+  },
+  "typeMappings": {
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "huff-hard-hat-v1",
+      "featureTypes": {
+        "hardHat": 2,
+        "hardHatAndMoneyMansion": 3
+      }
+    }
+  },
+  "mappingHashes": {
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1": "2f3815fb664fb7ea891c29078843333a229879a74674349e8f9191e2aa7df7b6",
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-v1": "c13d5523174399353602fdcc794c9ac770485a03486b2b56232cf330fc5315e8"
+  },
+  "configuredNaturalBonusCodes": [
+    1,
+    2,
+    3
+  ],
+  "configuredOutcomeCategoryCount": 3,
+  "allSpecialStageTypesTotal": null,
+  "allSpecialStageTypesCovered": false,
+  "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
+  "codeSources": {
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "1f987729e47bb15439e165b393f25ad75fad1024622c6903551c56543c5a6076",
+    "scripts/runner-v2/record_fields.py": "63f8b1f8c593e3d0f42f7d5b6e970eb3f8fb02331922f2b13e1f903a2c43b20e",
+    "service/huff_fields.py": "f17bb20cfd57e00ff3f73cd210cf7bc81aa9d1e1d0919b321417925c2c695b52",
+    "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
+    "scripts/trial/huff-protocol.mjs": "babec80279caa2f0490a3671faeeefa9430d44d1f6ca6f2cd8b8219d80d9b1f4",
+    "service/game_rule_catalog.py": "c2f65945ae576def48ee75e65fec3ab7f944ee1d0242ec9ffdde03d06dcf8b01"
+  },
+  "reviewDocuments": [
+    "docs/huff-hard-hat-protocol.md",
+    "docs/huff-natural-free-stop-20260928.md"
+  ],
+  "analysisDocuments": [
+    "docs/available-workers-20260928-result.json",
+    "docs/available-workers-20260928.md",
+    "docs/huff-feature-inventory-20260928.json",
+    "docs/huff-goals-client-review-20260928.md",
+    "docs/huff-goals-natural-feature-stop-20260928.md",
+    "docs/huff-group-recovery-20260928-result.json",
+    "docs/huff-group-recovery-20260928.md",
+    "docs/huff-group-recovery.md",
+    "docs/huff-hard-hat-adapter-result.json",
+    "docs/huff-hard-hat-protocol.md",
+    "docs/huff-natural-free-stop-20260928-result.json",
+    "docs/huff-natural-free-stop-20260928.md",
+    "docs/protocol-parking-20260928.md",
+    "docs/protocol-parking-result.json",
+    "docs/secondary-account-diagnostics-20260928.md",
+    "docs/secondary-independent-games-review-20260928.md",
+    "docs/secondary-isolated-runner-check-20260928.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
+    "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
+    "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
+    "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
+    "docs/huff-goals-natural-feature-stop-20260928.md": "e272d8f3461652495c4cab697968d4f81f2f620d795dc3420959e9246300feac",
+    "docs/huff-group-recovery-20260928-result.json": "e307b214a691df3e491bd7bc26aec77c946fc2714896af2194353f9b851caa3c",
+    "docs/huff-group-recovery-20260928.md": "d52fb5098c0f818bd9037829b3963857f4a682465a46483030526c05df44bb20",
+    "docs/huff-group-recovery.md": "72a10f5639cacfc795ca90d60e6210f5e09a53d22694eb02c2b7be130af1f4e1",
+    "docs/huff-hard-hat-adapter-result.json": "5704028e567dda08038ab4c72d48ab23daf133219daae417c9da1f94bbaec01d",
+    "docs/huff-hard-hat-protocol.md": "945815517f89bc4abadc32d97dfab58f82b309d89fdd6ca5066114b64285b68b",
+    "docs/huff-natural-free-stop-20260928-result.json": "7426e09239e8365da21768b709e522ed5c714be5ce47c93ccd8810b46070e24e",
+    "docs/huff-natural-free-stop-20260928.md": "11b154d3f8505ae6ab2185d9518616c4021fb05c50fc81368e5f45361df36730",
+    "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
+    "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
+    "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
+    "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
+    "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
+  },
+  "observations": {
+    "status": "separate-audit-or-parked-evidence",
+    "actualSpecialStageCount": null,
+    "journalKey": "game-rules:<trialId>:<recordsHash>:<archiveHash>",
+    "retroactiveScanPerformed": false
+  },
+  "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
+  "ruleHash": "865b1071add6dfdbcb6baeaa677310f3443e35eac8051194fa9c7ed746d3146d"
+}

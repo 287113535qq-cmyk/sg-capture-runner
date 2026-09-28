@@ -1,0 +1,36 @@
+{
+  "schema": "sg-game-rule-card-v1",
+  "gameId": 32722,
+  "name": "Jinse Dao Tiger",
+  "runtimeGameId": 33122,
+  "scope": "round-one-ordinary-buy0",
+  "captureAuthorization": false,
+  "liveQueueStatus": "read-from-Mongo-not-this-card",
+  "ruleAvailability": "not-documented",
+  "sourceKey": null,
+  "planHash": null,
+  "parameters": null,
+  "roundRule": null,
+  "typeMappings": {},
+  "mappingHashes": {},
+  "configuredNaturalBonusCodes": null,
+  "configuredOutcomeCategoryCount": null,
+  "allSpecialStageTypesTotal": null,
+  "allSpecialStageTypesCovered": false,
+  "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
+  "settlement": null,
+  "codeSources": {
+    "service/game_rule_catalog.py": "c2f65945ae576def48ee75e65fec3ab7f944ee1d0242ec9ffdde03d06dcf8b01"
+  },
+  "reviewDocuments": [],
+  "analysisDocuments": [],
+  "analysisDocumentHashes": {},
+  "observations": {
+    "status": "separate-audit-or-parked-evidence",
+    "actualSpecialStageCount": null,
+    "journalKey": "game-rules:<trialId>:<recordsHash>:<archiveHash>",
+    "retroactiveScanPerformed": false
+  },
+  "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
+  "ruleHash": "efe2a43282e59ea5251ebfdcca1db1584e5015a417f4d9288cd72986c1967df2"
+}

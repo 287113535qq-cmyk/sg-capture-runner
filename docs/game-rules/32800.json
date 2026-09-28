@@ -1,0 +1,36 @@
+{
+  "schema": "sg-game-rule-card-v1",
+  "gameId": 32800,
+  "name": "Raging Rhino Megaways",
+  "runtimeGameId": 33160,
+  "scope": "round-one-ordinary-buy0",
+  "captureAuthorization": false,
+  "liveQueueStatus": "read-from-Mongo-not-this-card",
+  "ruleAvailability": "not-documented",
+  "sourceKey": null,
+  "planHash": null,
+  "parameters": null,
+  "roundRule": null,
+  "typeMappings": {},
+  "mappingHashes": {},
+  "configuredNaturalBonusCodes": null,
+  "configuredOutcomeCategoryCount": null,
+  "allSpecialStageTypesTotal": null,
+  "allSpecialStageTypesCovered": false,
+  "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
+  "settlement": null,
+  "codeSources": {
+    "service/game_rule_catalog.py": "c2f65945ae576def48ee75e65fec3ab7f944ee1d0242ec9ffdde03d06dcf8b01"
+  },
+  "reviewDocuments": [],
+  "analysisDocuments": [],
+  "analysisDocumentHashes": {},
+  "observations": {
+    "status": "separate-audit-or-parked-evidence",
+    "actualSpecialStageCount": null,
+    "journalKey": "game-rules:<trialId>:<recordsHash>:<archiveHash>",
+    "retroactiveScanPerformed": false
+  },
+  "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
+  "ruleHash": "d41e7baa2241019f874d2305b33dd6f8ce41931cc84ecf604917343c91871fd4"
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "sg-game-rule-card-v1",
+  "gameId": 32719,
+  "name": "Hypercharged Inca Jungle",
+  "runtimeGameId": 33119,
+  "scope": "round-one-ordinary-buy0",
+  "captureAuthorization": false,
+  "liveQueueStatus": "read-from-Mongo-not-this-card",
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "hyperchargedincajungle96-round-one-base-v1",
+  "planHash": "efcbb0e41a890f45aaf9492f6107b9d6327a20bcef838126d6e93bc007cd6570",
+  "parameters": {
+    "trialId": "sg_r1_20260928_32719",
+    "runtimeSlug": "hyperchargedincajungle96",
+    "buy": 0,
+    "betRaw": 20,
+    "requestParams": {
+      "BPL": "1",
+      "GN": "hyperchargedincajungle96",
+      "LB": "40"
+    },
+    "maxSteps": 100
+  },
+  "roundRule": {
+    "family": "native-nextgen-v1",
+    "messages": [
+      "BET",
+      "FREE_GAME"
+    ],
+    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
+    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
+    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
+    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "files": [
+      "service/native_nextgen_fields.py",
+      "service/round_fields.py",
+      "scripts/runner-v2/record_fields.py"
+    ],
+    "fields": {
+      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
+      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
+      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
+      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
+      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "B / AB": "终帧两个余额必须一致。",
+      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+    }
+  },
+  "typeMappings": {
+    "hyperchargedincajungle96-round-one-base-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "hyperchargedincajungle96-round-one-base-v1": "7030b553d563ec901fc4435680379cb1b6f44c3a2319d859bcb2c14771e0d4b5"
+  },
+  "configuredNaturalBonusCodes": [
+    1
+  ],
+  "configuredOutcomeCategoryCount": 1,
+  "allSpecialStageTypesTotal": null,
+  "allSpecialStageTypesCovered": false,
+  "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
+  "codeSources": {
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "1f987729e47bb15439e165b393f25ad75fad1024622c6903551c56543c5a6076",
+    "scripts/runner-v2/record_fields.py": "63f8b1f8c593e3d0f42f7d5b6e970eb3f8fb02331922f2b13e1f903a2c43b20e",
+    "service/game_rule_catalog.py": "c2f65945ae576def48ee75e65fec3ab7f944ee1d0242ec9ffdde03d06dcf8b01"
+  },
+  "reviewDocuments": [],
+  "analysisDocuments": [
+    "docs/protocol-parking-20260928.md",
+    "docs/protocol-parking-result.json",
+    "docs/protocol-parking-storage-stop-20260928.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
+    "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
+    "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
+  },
+  "observations": {
+    "status": "separate-audit-or-parked-evidence",
+    "actualSpecialStageCount": null,
+    "journalKey": "game-rules:<trialId>:<recordsHash>:<archiveHash>",
+    "retroactiveScanPerformed": false
+  },
+  "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
+  "ruleHash": "cd001db884057c1cd407d1c8b1353ade175467b43dc8ee0183e2c725ac55e219"
+}

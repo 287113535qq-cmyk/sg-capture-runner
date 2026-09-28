@@ -18,6 +18,7 @@
 
 ## 已提供
 
+- [每游戏分析档案](docs/game-rules/README.md)：178 款独立规则卡，记录大局完成条件、特殊环节字段、映射、已知边界与既有报告版本。新版本终审顺带保留实际观察统计；不增加 SG 请求或历史重扫。详见 [留档机制](docs/game-rule-archive.md)。
 - `config/games.json`：178 款保留游戏的官方 sourceId 映射；`gameId` 为历史采集编号，`runtimeGameId` 为当前运行编号。不能用运行编号直接寻找历史采集文件。
 - `collector/`：上游代码来源和原始文件哈希见 `docs/upstream.json`。该副本仅开放 dry-run，正式采集入口和协议请求入口均硬性拒绝，环境变量不能解除。
 - 安全 dry-run：默认并发 1，禁止共享 session 和无限并发；不回填完成标记、不更新 skip ledger、不覆盖正式报告。报告仅在明确传入 `--preflight-report` 时创建，已有文件一律拒绝覆盖。

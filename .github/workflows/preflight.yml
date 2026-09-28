@@ -32,6 +32,8 @@ jobs:
         run: npm test
       - name: Durable storage and dynamic pool recovery tests
         run: python3 -m unittest discover -s service/tests -q
+      - name: Per-game rule archive matches committed implementation
+        run: python3 scripts/build-game-rule-archive.py --check
       - name: Session and startup checks
         run: node --test scripts/trial/*.test.mjs
       - name: GitHub processing and Mongo write backpressure checks
@@ -41,4 +43,4 @@ jobs:
       - name: Report preparation boundary
         run: |
           echo 'Offline preparation checks passed. No SG source request or database connection was made.' >> "$GITHUB_STEP_SUMMARY"
-          echo 'Capture and scheduled collection remain disabled.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This preflight did not change capture or scheduled collection settings.' >> "$GITHUB_STEP_SUMMARY"

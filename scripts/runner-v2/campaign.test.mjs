@@ -12,17 +12,17 @@ test('idle tail workers release runner capacity without taking a queued worker b
 });
 
 function fixture(){
-  const docs=new Map(),rows=[];
+  const docs=new Map(),rows=[],calls=[];
   const store={get:async(c,k)=>structuredClone(docs.get(c+'/'+k)),writable:async()=>{},
     async create(c,k,value){const key=c+'/'+k;if(!docs.has(key))docs.set(key,{version:0,value:structuredClone(value)});return structuredClone(docs.get(key));},
     async update(c,k,fn){const key=c+'/'+k,before=docs.get(key),value=fn(structuredClone(before.value));if(value)docs.set(key,{version:before.version+1,value});return structuredClone(docs.get(key));}};
   const plans={32723:{gameId:32723,trialId:'sg_r1_20260928_32723',buy:0,phase:1,target:2},
     32726:{gameId:32726,trialId:'sg_r1_20260928_32726',buy:0,phase:1,target:2}};
   const holds=[];const control={allowed:async()=>{},halt:async reason=>holds.push(reason)};
-  const transport={request:async(op,r)=>op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:rows.filter(x=>x.sequence>r.after)};
+  const transport={request:async(op,r)=>{calls.push(op);return op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:rows.filter(x=>x.sequence>r.after);}};
   const c=new GithubCampaign({store,transport,control,analyzer:{call:async()=>({verified:true})},plans,
     group:'primary',owner:'audit-job',now:()=>1000});
-  return {c,store,rows,holds,plans};
+  return {c,store,rows,holds,plans,docs,calls};
 }
 
 test('a group only selects its owned ready games, preserving parked and completed targets',async()=>{
@@ -49,11 +49,18 @@ test('full-game audit requires every actual record and marks completion only wit
   await f.store.create('state','campaign',{enabled:true,activeGame:32723,games:[{game_id:32723,status:'active',baseline:299998}]});
   await f.store.create('state','pool:'+plan.trialId,{confirmed:2,workers:{0:{leaseUntil:0,activeBatch:null,sessionHash:'fixed'}}});
   assert.equal((await f.c.select()).action,'audit');
-  f.rows.push({_id:'id1',contentHash:'hash1',sequence:1,fixtureOnly:false,buy:0,shardId:0,sourceSessionHash:'fixed',raw:{}});
+  f.rows.push({_id:'id1',contentHash:'hash1',sequence:1,fixtureOnly:false,buy:0,shardId:0,sourceSessionHash:'fixed',
+    normalized:{bonus:0},raw:{steps:[{msgId:'BET',responsePayload:'MSGID=BET&NFG=0&IFG=0'}]}});
   await assert.rejects(f.c.audit(plan),/AUDIT_COUNT_INCOMPLETE/);
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'active');
+  assert.equal([...f.docs.keys()].filter(k=>k.startsWith('journal/game-rules:')).length,0);
   f.rows.push({...f.rows[0],_id:'id2',contentHash:'hash2',sequence:2});
+  f.calls.length=0;const unchanged=structuredClone(f.rows);
   assert.equal((await f.c.audit(plan)).fullReadback,2);
+  assert.deepEqual(f.calls,['rounds_scan','rounds_scan']);
+  assert.deepEqual(f.rows,unchanged);
+  const archives=[...f.docs].filter(([k])=>k.startsWith('journal/game-rules:'));
+  assert.equal(archives.length,1);assert.equal(archives[0][1].value.completeRounds,2);
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'complete');
 });
 
@@ -66,4 +73,16 @@ test('late and idle workers cannot continue the next game with a depleted matrix
   assert.equal((await f.store.get('state','campaign')).value.activeGame,null);
   assert.equal((await f.c.selectForRun('capture-run:124:1')).plan.gameId,32726);
   assert.equal((await f.c.selectForRun(key)).reason,'RUN_GAME_FINISHED');
+});
+
+test('failed record verification never produces a coverage archive or completes a game',async()=>{
+  const f=fixture(),plan=f.plans[32723];
+  await f.store.create('state','campaign',{enabled:true,activeGame:32723,
+    games:[{game_id:32723,status:'active',baseline:299998}],audit:{owner:'audit-job',until:2000}});
+  await f.store.create('state','pool:'+plan.trialId,{confirmed:2,workers:{0:{leaseUntil:0,activeBatch:null,sessionHash:'fixed'}}});
+  f.rows.push({_id:'id1',contentHash:'hash1',sequence:1,fixtureOnly:false,buy:0,shardId:0,sourceSessionHash:'fixed',raw:{steps:[]}});
+  f.c.analyzer.call=async()=>{throw new Error('INVALID_ROUND');};
+  await assert.rejects(f.c.audit(plan),/INVALID_ROUND/);
+  assert(![...f.docs.keys()].some(k=>k.startsWith('journal/')));
+  assert.equal((await f.store.get('state','campaign')).value.games[0].status,'active');
 });
