@@ -1,0 +1,13 @@
+{
+  "schema": "sg-github-migration-v2",
+  "snapshot": "github-processing-freeze-20260928",
+  "manifestHash": "a2ed9a77e25a6ef5faa63d6ac29eccd4f262a4e07926c17cf14fe2840409ceb5",
+  "queueSha256": "f93717eb6e80cf5f9bf0286f19250d1ce1923309653e08c39fc01ecdb3e8ddcc",
+  "queueBytes": 131072,
+  "groups": {
+    "primary": 32723,
+    "secondary": 32726
+  },
+  "officialWrites": false,
+  "sourceEnabled": false
+}

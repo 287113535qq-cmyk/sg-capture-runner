@@ -48,3 +48,12 @@ test('missing or unexpected readback never advances checkpoint',async()=>{
   const f=fixture();f.sink.insert=async()=>{};
   await assert.rejects(f.writer().deliver([record(1)]),{code:'MONGO_ACK_UNKNOWN'});assert.equal(f.confirmed.length,0);
 });
+
+test('recovery shrinks a batch even when a larger batch was waiting on a permit',async()=>{
+  const f=fixture();let size=100;const lengths=[];
+  f.gate.status=()=>({allowed:true,maxBatchSize:size});
+  f.permits.acquire=async()=>{size=10;return {assertOwned:async()=>{},release:async()=>{}};};
+  const insert=f.sink.insert;f.sink.insert=async rows=>{lengths.push(rows.length);await insert(rows);};
+  await f.writer().deliver(Array.from({length:25},(_,i)=>record(i+1)));
+  assert.deepEqual(lengths,[10,10,5]);
+});

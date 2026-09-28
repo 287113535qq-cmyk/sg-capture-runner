@@ -1,0 +1,47 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
+import {RunnerState} from './state-store.mjs';
+
+function fixture(){
+  const docs=new Map();let now=1000;
+  const transport={async request(op,r){
+    if(op==='resources')return {};
+    const key=r.collection+'/'+r.key,old=docs.get(key);
+    if(op==='read')return old?structuredClone(old):null;
+    if(op==='create'){if(old)return {created:false};docs.set(key,{version:0,value:structuredClone(r.value)});return {created:true};}
+    if(op==='cas'){
+      if(!old||old.version!==r.version)return {replaced:false};
+      docs.set(key,{version:r.version+1,value:structuredClone(r.value)});return {replaced:true,version:r.version+1};
+    }
+    throw Error('BAD_OP');
+  }};
+  const store=new RunnerState({transport,gate:{observe(){},status:()=>({allowed:true})},now:()=>now,sleep:async()=>{}});
+  return {store,advance:ms=>{now+=ms;},now:()=>now};
+}
+
+test('durable queue rejects content changes and checkpoint gaps after interruption',async()=>{
+  const f=fixture(),plan={trialId:'sg_r1_20260928_32723'},batchKey='batch:x:1';
+  await f.store.create('state',batchKey,{id:1,owner:'job',epoch:2,checkpoint:99,journaled:102});
+  const queue=new DurableQueue({...f,plan,batchKey,owner:'job',epoch:2});
+  const records=[100,101,102].map(sequence=>({trialId:plan.trialId,batchId:1,sequence,payload:'original'}));
+  for(const record of records)await queue.append(record);
+  assert.deepEqual(await queue.outstanding(),records);
+  await assert.rejects(queue.confirm([records[1]]),/CHECKPOINT_GAP/);
+  await assert.rejects(queue.assertDurable([{...records[0],payload:'changed'}]),/DURABLE_QUEUE_CONTENT_MISMATCH/);
+  await queue.confirm(records.slice(0,2));
+  assert.deepEqual(await queue.outstanding(),[records[2]]);
+  await f.store.update('state',batchKey,x=>({...x,epoch:3}));
+  await assert.rejects(queue.confirm([records[2]]),/BATCH_LEASE_LOST/);
+  assert.equal((await f.store.get('journal',receiptKey(plan.trialId,100))).value.payload,'original');
+});
+
+test('writer slots bound concurrency and expired holder cannot release replacement slot',async()=>{
+  const f=fixture();await f.store.create('state','write-permits',{limit:1,slots:{}});
+  const a=new WritePermits({...f,group:'primary',owner:'a'}),b=new WritePermits({...f,group:'primary',owner:'b'});
+  const first=await a.acquire();assert(first);assert.equal(await b.acquire(),null);
+  f.advance(120001);const second=await b.acquire();assert(second);
+  await assert.rejects(first.assertOwned(),/WRITE_PERMIT_LOST/);
+  await first.release();await second.assertOwned();
+  await second.release();assert(await a.acquire());
+});

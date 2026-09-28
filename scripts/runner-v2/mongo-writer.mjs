@@ -59,6 +59,9 @@ export class MongoWriter {
             await permit.assertOwned();
             const latest=this.gate.status();
             if (!latest.allowed) return {confirmed,paused:true,reason:latest.reason};
+            // A pause/recovery can shrink the permitted batch while we wait.
+            // Start a new iteration under the new limit before submitting it.
+            if (missing.length>latest.maxBatchSize) continue;
             try { await this.sink.insert(missing); }
             catch { throw fail('MONGO_ACK_UNKNOWN'); }
           }
