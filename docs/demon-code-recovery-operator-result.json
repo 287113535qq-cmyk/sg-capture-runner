@@ -1,0 +1,21 @@
+{
+  "schema": "sg-demon-protocol-recovery-implementation-v1",
+  "gameId": 32739,
+  "implemented": true,
+  "recoveryApplied": false,
+  "runtimeProofCreated": false,
+  "liveFidOneSettlementVerified": false,
+  "sourceRequests": 0,
+  "liveDatabaseWrites": 0,
+  "oldCompleteAnchor": 164,
+  "oldPendingAnchor": 6,
+  "originalBatchCount": 15,
+  "tests": {
+    "windowsPython": 224,
+    "windowsRunnerNode": 69,
+    "windowsProtocolNode": 34,
+    "linuxPreflight": "pending"
+  },
+  "applicationBoundary": "No primary active/audit/ready game; both GitHub repositories idle except maintenance; target leases expired; global holds false",
+  "profile": "config/protocol-demon-20260929.json"
+}

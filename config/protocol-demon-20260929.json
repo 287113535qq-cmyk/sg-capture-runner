@@ -1,0 +1,106 @@
+{
+  "schema": "sg-parked-protocol-profile-v1",
+  "id": "demon-32739-20260929",
+  "group": "primary",
+  "gameId": 32739,
+  "planHash": "dc3cfcf700417d4b67cadd70569330f6a917419210f3a1f529ef93155d0934c2",
+  "poolHash": "6a7740d968c21b8b506ae7a283ca0274513fc90da0081499e124567ff77db980",
+  "complete": 164,
+  "checkpoint": 0,
+  "pending": 6,
+  "batches": [
+    {
+      "id": 1,
+      "hash": "c1fb6727a0fa45afd4a35de5375d9b9dd5ede8466944f53dce55c1106318c99e",
+      "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f"
+    },
+    {
+      "id": 2,
+      "hash": "b87da4e61b56f053756a5ea885c9aebf53b59e47598a7981ba8db6b8f07cd4df",
+      "pendingHash": "fb04ccfe078a8623bfccd07d46d09f9ae01b1976ef923775b44d991b2119895e"
+    },
+    {
+      "id": 3,
+      "hash": "4693bd69eb6d2fba703a909af1d219c6c07d19b9c0979f670582ba2b73dfd171",
+      "pendingHash": null
+    },
+    {
+      "id": 4,
+      "hash": "c1b42d1c677d0b943af7c469ae0e06cfba357f66c2e59b210120876fa6639ec1",
+      "pendingHash": "85b1c63d28a640af56c7c8cdf152bb3d0608710c876c3994517a0fae9fa7b4fe"
+    },
+    {
+      "id": 5,
+      "hash": "95ac31f4411ee773c336912baea6b96e50783be12096bb518b59f904e29d07b9",
+      "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30"
+    },
+    {
+      "id": 6,
+      "hash": "caa5b6469854a2da8278b64f360c89dee793466060be4bbfe593085adf964560",
+      "pendingHash": null
+    },
+    {
+      "id": 7,
+      "hash": "43b7a562085ea77a2bf614f9ffd3aba1dadd8aa86163bc78463a8745a97d6a45",
+      "pendingHash": null
+    },
+    {
+      "id": 8,
+      "hash": "a7beceb3e514edc0a37761e964cb5098710215d16dfe66f15ac3f841bac0c28b",
+      "pendingHash": null
+    },
+    {
+      "id": 9,
+      "hash": "5f921ea892386904b16b25c2df1925c134b6bab6b25db8eefb1b4f40e8312c6a",
+      "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912"
+    },
+    {
+      "id": 10,
+      "hash": "7bfcb0805ed444f5b51358c8a757f64984c0f688ab4af1659220971f608cc5c9",
+      "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7"
+    },
+    {
+      "id": 11,
+      "hash": "4c2e664ea02860a4ca0f1c051894ee7768644024936b5efa348716a7711e730d",
+      "pendingHash": null
+    },
+    {
+      "id": 12,
+      "hash": "8108251427b515a35038b362d41af0599e7596e9e0d3910a2ce46dd3c8664e19",
+      "pendingHash": null
+    },
+    {
+      "id": 13,
+      "hash": "fc9e05f402886a3d37c64def0c77aa0195ba487ec237aa8c6fa031228fcf7fc8",
+      "pendingHash": null
+    },
+    {
+      "id": 14,
+      "hash": "7c3ff29ee4a8c20c0d0af701396186da5fd06d12c7499cb3771d6b197ecb461c",
+      "pendingHash": null
+    },
+    {
+      "id": 15,
+      "hash": "7fdd9b7aac19deca4855bcfba53ab4e84160a2a2cfbb68df0a0176483527c89e",
+      "pendingHash": null
+    }
+  ],
+  "adapterFiles": {
+    "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "0395321aba246a54b9f1c6d443fff65ed9fb4fada46f23fb602a788fa28d8abc",
+    "service/round_types.json": "304d3c40b0f3a9db841efb1749df23ed6caa0f77e93306f8240d813ebe83477b",
+    "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
+    "scripts/trial/capture-batch.mjs": "041717226e61c45891677042dcd6de60ccf118b037d8f1ce23852c5036caef53",
+    "scripts/runner-v2/record_fields.py": "bfd55c3cae318239d3733aafca5578178a7a77d5618b8381af4f42381b539e4b",
+    "scripts/runner-v2/batch-controller.mjs": "5f55c7e32b7a8a216e7155bcce7527a57292c13a4d6b1373c9cf320d8ab0bc40",
+    "scripts/runner-v2/protocol-resume.mjs": "e89a9103f1d4b8db1feb8881c19906e7de0f33f2f0d64aec1371e43cef737c48",
+    "scripts/runner-v2/protocol-recovery-core.mjs": "cb27b1fdc8c0a59212e509a034a69fc5d96f39e043b2f57526cf36f3c1f85453",
+    "scripts/runner-v2/protocol-recovery.mjs": "69099524693ca965f342a1691932ddf0597c72ffdb9966e92c4678f103322803",
+    "scripts/runner-v2/protocol-control.mjs": "c4f9385dda358f11d2ac487b50d42e2223de4ab226fd6d5f59d3afcc4178ef48",
+    "scripts/runner-v2/campaign.mjs": "085e5be1dd355e9d15df21b9e14d50c8ff27c375ab06ed197a76c43bb5818ecb",
+    "scripts/runner-v2/campaign-worker.mjs": "af8d3b932d4ba3a6f2f0dd76d0377f1acb07c0ee0ac3f92324738a6b2e050439"
+  },
+  "adapterHashFormat": "utf8-lf-sha256",
+  "adapterHash": "6f3df4b6cfa3a73ef3a68fdbf62caeb25cb3c29537353a2a2398519b17a34c04"
+}

@@ -95,8 +95,12 @@
     "service/game_rule_catalog.py": "5ce71e1e3a1484a276a18b04c04a4e4cdf2bc40b7b4951b369d797a6795b5906"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/demon-code-recovery-operator.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/demon-code-recovery-operator.md": "ecf5b3f246242481de0bc21d7eb53a0e3ce3c7c5e8769b585f6d64080d2444ee"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -104,5 +108,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "26879553b77f5cfd2e338cb69f6938fdd6c3b5738335c239eb87d03103f61d78"
+  "ruleHash": "7fdabc7d0d7de12eed4613b78f699ca13a5aac80a1e6fa238705b56f8ba42ef8"
 }

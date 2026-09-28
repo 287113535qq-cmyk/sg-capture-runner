@@ -21,7 +21,7 @@ function fixture(){
   const holds=[];const control={allowed:async()=>{},halt:async reason=>holds.push(reason)};
   const transport={request:async(op,r)=>{calls.push(op);return op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:rows.filter(x=>x.sequence>r.after);}};
   const c=new GithubCampaign({store,transport,control,analyzer:{call:async()=>({verified:true})},plans,
-    group:'primary',owner:'audit-job',now:()=>1000});
+    group:'primary',owner:'audit-job',commit:'d'.repeat(40),now:()=>1000});
   return {c,store,rows,holds,plans,docs,calls};
 }
 
@@ -31,6 +31,17 @@ test('a group only selects its owned ready games, preserving parked and complete
   const next=await f.c.select();assert.equal(next.plan.gameId,32723);
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'parked-protocol');
   assert.equal((await f.c.select()).plan.gameId,32723);
+});
+
+test('protocol short run has one persisted run binding; later runs stop and status cannot auto-continue',async()=>{
+  const f=fixture(),plan=f.plans[32723];
+  await f.store.create('state','campaign',{enabled:true,activeGame:32723,validationLimit:10,
+    protocolValidation:{phase:'short',gameId:32723,commit:'d'.repeat(40),runKey:null},games:[{game_id:32723,status:'active'}]});
+  await f.store.create('state','pool:'+plan.trialId,{enabled:true,confirmed:0,workers:{}});
+  assert.equal((await f.c.selectForRun('capture-run:111:1')).action,'capture');
+  assert.equal((await f.c.selectForRun('capture-run:111:1')).action,'capture');
+  assert.equal((await f.c.selectForRun('capture-run:111:2')).reason,'PROTOCOL_SHORT_REVIEW_REQUIRED');
+  assert.equal((await f.c.status()).status,'paused');
 });
 
 test('parking waits for source owners and refuses to bypass an unknown intent',async()=>{

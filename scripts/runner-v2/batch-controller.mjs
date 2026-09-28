@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {RunnerPool} from './state-store.mjs';
 import {DurableQueue,WritePermits} from './durable-queue.mjs';
 import {MongoWriter,stable} from './mongo-writer.mjs';
+import {reviewProtocolResume} from './protocol-resume.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -46,13 +47,28 @@ export class BatchController {
     this.batch=await this.pool.take(this.lease);
     if(!this.batch){await this.pool.release(this.lease);return {done:true};}
     this.batchKey=`batch:${this.plan.trialId}:${this.batch.id}`;
-    await this.store.create('state',this.batchKey,{...this.batch,owner:null,epoch:0,sessionHash:this.identity.sessionHash,
+    const existing=await this.store.create('state',this.batchKey,{...this.batch,owner:null,epoch:0,sessionHash:this.identity.sessionHash,
       leaseUntil:0,journaled:this.batch.start-1,checkpoint:this.batch.start-1,pending:null,failure:null});
+    const original=existing.value;
+    let grant=null;
+    if(original.pending){
+      assert(original.protocolResume,'PENDING_REQUIRES_REVIEW');
+      grant=(await this.store.get('journal','protocol-resume:'+original.protocolResume.proofHash))?.value;
+      const p=reviewProtocolResume({plan:this.plan,batch:original,grant,worker:this.lease.worker,
+        sessionHash:this.identity.sessionHash,commit:this.identity.commitSha,now:this.now()});
+      const next=await this.analyzer.call({op:'next',plan:this.plan,raw:p.raw});
+      assert(stable(next)===stable({MSGID:'FREE_GAME'}),'RESUME_PROTOCOL_CHANGED');
+    }
     const saved=await this.store.update('state',this.batchKey,value=>{
       assert(value.sessionHash===this.identity.sessionHash,'SESSION_CHANGED');
       assert(!value.pendingOriginal && !value.failure,'BATCH_REVIEW_REQUIRED');
       assert(!value.pending?.awaiting && !value.bootstrapAwaiting,'UNKNOWN_SOURCE_OUTCOME');
-      assert(!value.pending,'PENDING_REQUIRES_REVIEW');
+      if(value.pending){
+        reviewProtocolResume({plan:this.plan,batch:value,grant,worker:this.lease.worker,
+          sessionHash:this.identity.sessionHash,commit:this.identity.commitSha,now:this.now()});
+        assert(hash(value.pending)===hash(original.pending),'RESUME_PENDING_CHANGED');
+        value.protocolResume=null; // One fenced claim; never reuse after a crash.
+      }
       value.owner=this.lease.owner;value.epoch=Math.max(value.epoch+1,this.lease.epoch);
       value.leaseUntil=this.now()+600000;return value;
     });
@@ -67,7 +83,7 @@ export class BatchController {
         insert:records=>this.transport.request('rounds_insert',{trialId:this.plan.trialId,records})}});
     await this.flush();
     return {done:false,batchId:this.batch.id,epoch:this.batchEpoch,durable:saved.value.journaled,
-      checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:null};
+      checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:saved.value.pending};
   }
   async flush(){
     while(true){

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 import {GameRuleEvidence} from './game-rule-evidence.mjs';
+import {requireShortRun} from './protocol-recovery-core.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // Release the hosted-runner slot while the last ranges belong to other workers.
@@ -13,8 +14,8 @@ export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
 }
 
 export class GithubCampaign {
-  constructor({store,transport,control,analyzer,plans,group,owner,now=Date.now}){
-    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,now});
+  constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now}){
+    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now});
   }
   async status(){
     const c=(await this.store.get('state','campaign'))?.value;
@@ -22,12 +23,17 @@ export class GithubCampaign {
     const globalPaused=holds.some(x=>!x||x.value.active);
     if(!c)return {status:'paused',reason:'MIGRATION_REQUIRED',globalPaused:true};
     const counts={};for(const g of c.games)counts[g.status]=(counts[g.status]||0)+1;
-    return {group:this.group,status:!c.enabled||globalPaused?'paused':c.games.every(x=>x.status==='complete')?'complete':'running',
+    return {group:this.group,status:!c.enabled||globalPaused||c.protocolValidation?.runKey?'paused':c.games.every(x=>x.status==='complete')?'complete':'running',
       activeGame:c.activeGame,counts,globalPaused,protocolParkingEnabled:true,
       parkedGames:c.games.filter(x=>x.status==='parked-protocol').map(x=>x.game_id)};
   }
   async selectForRun(runKey){
     assert(/^capture-run:[0-9]+:[0-9]+$/.test(runKey),'RUN_BINDING_REQUIRED');
+    const current=(await this.store.get('state','campaign')).value;
+    if(current.protocolValidation){
+      try{await this.store.update('state','campaign',v=>requireShortRun(v,runKey,this.commit)?v:null);}
+      catch(error){if(error.message==='PROTOCOL_SHORT_REVIEW_REQUIRED')return {action:'stop',reason:error.message};throw error;}
+    }
     const bound=(await this.store.get('state',runKey))?.value;
     const next=await this.select({expectedGame:bound?.gameId});
     if(next.plan){

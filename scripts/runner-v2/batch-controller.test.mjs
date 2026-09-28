@@ -5,6 +5,8 @@ import {RunnerState} from './state-store.mjs';
 import {BatchController} from './batch-controller.mjs';
 import {stable} from './mongo-writer.mjs';
 import {captureBatch} from '../trial/capture-batch.mjs';
+import {protocolHash as hash} from './protocol-resume.mjs';
+import {protocolGrant} from './protocol-recovery-core.mjs';
 
 async function fixture(){
   const docs=new Map(),rounds=new Map();let now=1000,failResponse=false;
@@ -108,4 +110,30 @@ test('same fenced active owner renews after prolonged resource pause using a fre
   const f=await fixture();f.advance(700000);
   await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
   assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending.awaiting,'MSGID=BET');
+});
+
+test('a granted original natural round resumes with FREE_GAME before any BET and consumes its permit',async()=>{
+  const f=await fixture();f.plan.gameId=32739;f.controller.identity.commitSha='d'.repeat(40);
+  const originalParser=f.controller.analyzer.call;
+  f.controller.analyzer.call=async r=>r.op==='next' && r.raw.steps.at(-1).responsePayload==='NFG=1'?{MSGID:'FREE_GAME'}:originalParser(r);
+  const pending={sequence:1,attempt:'00000000-0000-0000-0000-000000000009',awaiting:null,
+    raw:{fixtureOnly:false,protocol:'nextgen',sourceKey:'fixture',roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:100000,
+      steps:[{msgId:'BET',requestPayload:'MSGID=BET',responsePayload:'NFG=1',elapsedMs:1}]}};
+  const proofHash='b'.repeat(64);
+  await f.store.update('state',f.controller.batchKey,b=>({...b,pending,protocolResume:{proofHash,pendingHash:hash(pending)}}));
+  const batch=await f.store.get('state',f.controller.batchKey);
+  await f.store.create('journal','protocol-resume:'+proofHash,protocolGrant({plan:f.plan,batches:[batch],proofHash,commit:'d'.repeat(40),now:1000}));
+  const worker={owner:f.owned.owner,workerEpoch:f.owned.workerEpoch},lease=await f.rpc('next',worker);
+  assert.deepEqual(lease.pendingRound,pending);
+  assert.equal((await f.store.get('state',f.controller.batchKey)).value.protocolResume,null);
+  await assert.rejects(f.rpc('next',worker),/PENDING_REQUIRES_REVIEW/);
+  const calls=[];
+  await captureBatch({...f,lease,owned:{...worker,batchId:lease.batchId,epoch:lease.epoch},evidence:{completedThisRun:0},state:{},
+    prepareRound:raw=>({money:{endBalanceRaw:raw.startBalanceRaw-25}}),
+    post:async(requestPayload,msgId)=>{calls.push(msgId);return {requestPayload,msgId,responsePayload:'NFG=0',elapsedMs:1};},
+    payload:msg=>'MSGID='+msg,bootstrap:async()=>{throw Error('MUST_NOT_REINITIALIZE_PENDING');},shouldStop:()=>false,requestStop(){},
+    deadline:performance.now()+60000,limit:2});
+  assert.deepEqual(calls,['FREE_GAME','BET']);assert.equal(f.rounds.size,2);
+  const original=f.rounds.get(String(1).padStart(64,'0'));
+  assert.deepEqual(original.raw.steps.slice(0,1),pending.raw.steps);
 });
