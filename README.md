@@ -1,5 +1,9 @@
 # SG 采集准备仓库
 
+最新状态（2026-09-28 14:18 UTC）：**玩法暂挂与自动换游戏已实际生效，但随后出现新的存储服务故障，当前两组均已停止。** 原组多分片返回 `TRIAL_INTERNAL_FAILURE`，后续还有 `TRIAL_MONGO_FAILED`、`TRIAL_RPC_TIMEOUT`；管理端读取 campaign 时也实际遇到 SQLite `database is locked`。14:12服务器观测 load average 2476.85、8 GiB swap使用8170/8191 MiB，不能把这个新问题当未适配玩法跳过，也尚不能由这些观测确认唯一根因。两条正式运行和一条已排队定时运行均已取消，两仓库 workflow disabled_manually、SG_TRIAL_ENABLED=false，最终只读核对无活动或排队任务。尝试记录服务端全局停止时SSH超时，是否提交尚未核实，不能宣称已应用。没有删除任何局、重放BET、复用旧proof或改生产游戏服务；正式运行日志已完整私有下载并核验。资源/数据库恢复后必须先审查最新完整记录及pending，再生成新的受控恢复证据。详见 [运行后存储故障](docs/protocol-parking-storage-stop-20260928.md)。
+
+下方14:00为故障前的成功运行快照，不代表现在仍在拉取。
+
 最新状态（2026-09-28 14:00 UTC）：**已按用户授权启用“未适配游戏保留现场暂挂，分片继续领取下一款”。两组正式采集已恢复。** primary 运行 [36432378883](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36432378883)，secondary 运行 [36432385047](https://github.com/287113535qq-cmyk/sg-capture-runner/actions/runs/36432385047)。当时 20+13 个 capture 步骤运行、第二组另 7 个排队，启动后自动领任务。当前分别采 32723、32726，完整日志快照 25931、14124，均非全量终审或整款完成。
 
 当前 complete6、active2、parked-protocol6、ready9、needs-adapter155，总178；暂挂 32714/32717/32718/32719/32720/32721，原始记录、未完成局、单份目标和原账号归属全部保留，未删除或重发 BET。两个采集定时变量为 true；Codex 的 sg-30 提醒仍暂停。Windows/Linux 各199项 Python、30项 Node 测试通过；真实短采验证两组自动切换，210个完整日志复核、199个已落盘全文核验、11个留在暂挂游戏的持久日志。详见 [调度实现](docs/protocol-parking-20260928.md) 和 [实际结果](docs/protocol-parking-result.json)。

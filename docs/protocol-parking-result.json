@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-09-28T14:00:25Z",
+  "observedAt": "2026-09-28T14:18:27Z",
   "runtime": "5cded12564b964ae15535a6a61b1890cb0d7cc0a",
   "policy": "sg-protocol-parking-v1",
   "deployed": true,
@@ -22,6 +22,7 @@
   "formalRuns": {"primary":36432378883,"secondary":36432385047},
   "formalAutomaticParkingObserved": [32720,32721],
   "movingSnapshot": {
+    "observedAt":"2026-09-28T14:00:25Z",
     "primary":{"gameId":32723,"completeJournal":25931,"committed":25473,"liveWorkers":20},
     "secondary":{"gameId":32726,"completeJournal":14124,"committed":13818,"liveWorkers":13,"queuedJobs":7},
     "finalGameAudit":false
@@ -31,8 +32,25 @@
   "targetsPreserved":178,
   "deletedRecords":0,
   "replayedBets":0,
-  "primaryTimerEnabled":true,
-  "secondaryTimerEnabled":true,
+  "primaryTimerEnabled":false,
+  "secondaryTimerEnabled":false,
+  "currentCaptureRunning":false,
+  "currentWorkflows":"disabled_manually",
+  "activeOrQueuedRuns":0,
+  "formalRunConclusions":["cancelled","cancelled"],
+  "additionalScheduledRunCancelled":36433934535,
+  "laterStorageStop":{
+    "errors":["TRIAL_INTERNAL_FAILURE","TRIAL_MONGO_FAILED","TRIAL_RPC_TIMEOUT","database is locked"],
+    "resourceObservedAt":"2026-09-28T14:12:42Z",
+    "loadAverage1m":2476.85,
+    "swapUsedMiB":8170,
+    "swapTotalMiB":8191,
+    "singleRootCauseConfirmed":false,
+    "serverDispatchStopCommitConfirmed":false,
+    "latestTrialAuditCompleted":false,
+    "productionProcessesChanged":false,
+    "formalRunArchiveLocalSha256":"8c839091484ad5a9ffe2c71243a4247f48593c47aee1e66097ef690560ef7242"
+  },
   "codexHeartbeat":"PAUSED",
   "phaseTwoEnabled":false,
   "shortRunArchiveSha256":"aa23691b4e4f45b30c4ccbfc574d7582e11a638028139be7b88b1e43882b06ec"
