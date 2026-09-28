@@ -55,6 +55,11 @@ jobs:
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked offline parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Reconcile only the reviewed invalid-session incident
         env:
           CONTROL_ROLE: ${{ inputs.role }}
