@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {inspectReadiness, READY_STEP} from './runner-readiness.mjs';
+import {inspectReadiness, READY_STEP, readinessTimeoutMs} from './runner-readiness.mjs';
 
 const ready = shard => ({name: `capture-${shard}`, status: 'in_progress', runner_name: `runner-${shard}`,
   steps: [{name: READY_STEP, status: 'in_progress'}]});
@@ -36,4 +36,13 @@ test('verification jobs do not fill missing capture slots', () => {
   const jobs = [...Array.from({length: 19}, (_, i) => ready(i)), {...ready(19), name: 'verify'}];
   assert.equal(inspectReadiness(jobs, 20).allReady, false);
   assert.equal(inspectReadiness([ready(0), ready(1)], 2).allReady, true);
+});
+
+test('normal capture keeps its deadline and diagnostic extension is bounded', () => {
+  assert.equal(readinessTimeoutMs(), 180000);
+  assert.equal(readinessTimeoutMs('180'), 180000);
+  assert.equal(readinessTimeoutMs('600'), 600000);
+  for (const value of ['', '0', '1800', 'Infinity', '600.0', 'NaN']) {
+    assert.throws(() => readinessTimeoutMs(value), /BAD_READINESS_TIMEOUT/);
+  }
 });

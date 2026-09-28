@@ -4,6 +4,12 @@ import {repositories} from './runner-group.mjs';
 
 export const READY_STEP = 'Wait for every capture runner';
 
+export function readinessTimeoutMs(value) {
+  // The longer window is used only by an explicit source-free diagnostic.
+  assert(value === undefined || value === '180' || value === '600', 'BAD_READINESS_TIMEOUT');
+  return Number(value ?? '180') * 1000;
+}
+
 export function inspectReadiness(jobs, expected) {
   assert([2, 4, 20].includes(expected));
   const selected = jobs.filter(job => /^capture-\d+$/.test(job.name));
@@ -34,7 +40,8 @@ async function main() {
   assert(/^\d+$/.test(run) && /^\d+$/.test(attempt));
   const token = process.env.GH_TOKEN;
   assert(token);
-  const deadline = Date.now() + 180000;
+  const timeout = readinessTimeoutMs(process.env.CAPTURE_READINESS_TIMEOUT_SECONDS);
+  const deadline = Date.now() + timeout;
   let last = '';
   while (Date.now() < deadline) {
     const response = await fetch(`https://api.github.com/repos/${repository}/actions/runs/${run}/attempts/${attempt}/jobs?per_page=100`, {
@@ -53,7 +60,8 @@ async function main() {
       console.log(`All ${expected} capture runners reached the startup gate.`);
       return;
     }
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    // Twenty diagnostic jobs share the repository's GITHUB_TOKEN rate budget.
+    await new Promise(resolve => setTimeout(resolve, timeout === 600000 ? 30000 : 10000));
   }
   throw Error('RUNNER_CAPACITY_NOT_READY: no SG requests were made by this runner');
 }
