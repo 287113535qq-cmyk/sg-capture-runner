@@ -34,10 +34,10 @@ try{
     if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`campaign_status=${status.status}\n`);
   }else{
     while(!stop && Date.now()+60000<end){
-      const next=await campaign.select();
+      const next=await campaign.selectForRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`);
       if(next.action==='stop'){console.log(JSON.stringify(next));break;}
       if(next.action==='wait'){await sleep();continue;}
-      if(next.action==='audit'){console.log(JSON.stringify(await campaign.audit(next.plan)));continue;}
+      if(next.action==='audit'){console.log(JSON.stringify(await campaign.audit(next.plan)));break;}
       const code=await capture(next.plan);
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
       if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}

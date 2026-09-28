@@ -223,6 +223,11 @@ jobs:
       - name: Audit every completed round in the selected trial
         if: (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'round-one' && steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
+      - name: Continue next game with a fresh complete matrix
+        if: success() && needs.trial.result == 'success' && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && (inputs.role || 'capture') == 'capture' && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/runner-v2/continue-campaign.mjs
       - name: Stop scheduled continuation when complete or requiring review
         if: always() && (steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted' || steps.state.outputs.campaign_status == 'complete' || steps.state.outputs.campaign_status == 'paused')
         env:

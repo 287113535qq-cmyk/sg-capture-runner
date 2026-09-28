@@ -25,9 +25,20 @@ export class GithubCampaign {
       activeGame:c.activeGame,counts,globalPaused,protocolParkingEnabled:true,
       parkedGames:c.games.filter(x=>x.status==='parked-protocol').map(x=>x.game_id)};
   }
-  async select(){
+  async selectForRun(runKey){
+    assert(/^capture-run:[0-9]+:[0-9]+$/.test(runKey),'RUN_BINDING_REQUIRED');
+    const bound=(await this.store.get('state',runKey))?.value;
+    const next=await this.select({expectedGame:bound?.gameId});
+    if(next.plan){
+      const saved=await this.store.create('state',runKey,{gameId:next.plan.gameId});
+      if(saved.value.gameId!==next.plan.gameId)return {action:'stop',reason:'RUN_GAME_FINISHED'};
+    }
+    return next;
+  }
+  async select({expectedGame}={}){
     await this.control.allowed({newRound:true});
     let c=(await this.store.get('state','campaign')).value;
+    if(expectedGame!==undefined && c.activeGame!==expectedGame)return {action:'stop',reason:'RUN_GAME_FINISHED'};
     if(c.activeGame){
       const game=c.games.find(x=>x.game_id===c.activeGame),plan=this.plans[c.activeGame];assert(game&&plan);
       const pool=(await this.store.get('state','pool:'+plan.trialId))?.value;

@@ -56,3 +56,14 @@ test('full-game audit requires every actual record and marks completion only wit
   assert.equal((await f.c.audit(plan)).fullReadback,2);
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'complete');
 });
+
+test('late and idle workers cannot continue the next game with a depleted matrix',async()=>{
+  const f=fixture();await f.store.create('state','campaign',{enabled:true,activeGame:null,games:[
+    {game_id:32723,status:'ready',baseline:299998},{game_id:32726,status:'ready',baseline:299998}]});
+  const key='capture-run:123:1';assert.equal((await f.c.selectForRun(key)).plan.gameId,32723);
+  await f.store.update('state','campaign',v=>{v.activeGame=null;v.games[0].status='complete';return v;});
+  assert.equal((await f.c.selectForRun(key)).reason,'RUN_GAME_FINISHED');
+  assert.equal((await f.store.get('state','campaign')).value.activeGame,null);
+  assert.equal((await f.c.selectForRun('capture-run:124:1')).plan.gameId,32726);
+  assert.equal((await f.c.selectForRun(key)).reason,'RUN_GAME_FINISHED');
+});
