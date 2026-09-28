@@ -1,6 +1,6 @@
 # SG 采集准备仓库
 
-当前状态（2026-09-28 09:43 UTC 快照）：**已完成 5 款，每款累计 300000 局；活动游戏为 32711 Hoppily Ever After。HTTP 502 后的 4 个异常未完成 attempt 已私有备份并按授权替代，12638 个旧完整记录全部保留。恢复短采新增 200 局，12838 局文件/SQLite/Mongo 全文核验通过，另加 100 条已核验历史。原组正式续采 36405044999 的 20 个采集步骤均在运行。第二账号两次旧失败运行已备份并删除，重启 36403634321 仍仅等到 7 台就绪，20 个采集步骤全部跳过，第二组保持暂停。尚未实现 40 台同时采集。** 队列 complete5、active1、ready17、needs-adapter155；实时进度以 status RPC 为准。每款累计补足 30 万完整普通局，第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [第二组重试报告](docs/secondary-retry-20260928.md) 与 [32711 恢复回执](docs/hoppily-recovery-20260928-result.json)。
+当前状态（2026-09-28 10:16 UTC 快照）：**已完成 6 款，每款累计 300000 局；32711 Hoppily Ever After 已完成全量终审。活动游戏 32714 Huff N Puff Money Mansion High Limit 触发尚未适配的 Hard Hat 自然免费玩法，原组运行 36405044999 已停止，campaign/source 已关闭。现有 2 个完整记录及 1 个未完成局全部保留，私有备份和只读核验已完成。第二组手动入口已恢复，定时采集仍关闭，旧运行 36403634321 仍为 attempt1。尚未实现 40 台同时采集。** 队列 complete6、active1、ready16、needs-adapter155；实时进度以 status RPC 为准。每款累计补足 30 万完整普通局，第二轮关闭。新数据仅写入隔离库 sg_capture_staging_v1.official_rounds，原始数据、凭据和会话仅留在私有存储。详见 [32714 停采审查](docs/huff-natural-free-stop-20260928.md)、[第二组排除检查](docs/secondary-account-diagnostics-20260928.md) 与 [32711 恢复回执](docs/hoppily-recovery-20260928-result.json)。
 
 本仓库已准备 GitHub 授权、脱敏游戏编号映射，以及从最新上游提取的采集器离线预检副本。本次写入限于新建的隔离服务、测试文件和暂存库；原 API 工作区、历史局数据、现有游戏 Mongo 集合和完成标记未由本次测试修改。
 
@@ -35,7 +35,7 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 
 隔离服务已验证 claim/lease/heartbeat、日志恢复、幂等写入、唯一索引和文件/Mongo 一致性。正式启动前仍需将这些机制接入真实游戏队列，完成官方主机级跨运行冷却、独立 session 刷新、Linux WMS/NextGen 完整局采集、正式目标集合的受控导入，以及真实局的单节点续跑验证。测试 RPC 只接受少量夹具，不能直接作为正式采集入库接口。未把历史会清库的上游导入脚本复制进本仓库。隔离验证服务及验收范围见 `docs/link-verification.md`。
 
-唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库矩阵 20 个 `ubuntu-latest` Runner、每会话一个在途请求。服务端共享容量为 40，primary 限制全局 0–19，secondary 限制 20–39；额度和动态分配器共用。原仓库 `SG_TRIAL_ENABLED=true`、`SG_TRIAL_ALLOCATION=round-one`，每 20 分钟续跑；第二仓库因启动容量未满足而禁用 workflow、保持 `SG_TRIAL_ENABLED=false`，不声称第二组已投入采集。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。实时队列通过 campaign `status` RPC 查询，不能把初始 config 标签当成实时状态。
+唯一采集 workflow 仍为每仓库的 `trial-300k.yml`，每仓库矩阵 20 个 `ubuntu-latest` Runner、每会话一个在途请求。服务端共享容量为 40，primary 限制全局 0–19，secondary 限制 20–39；额度和动态分配器共用。两个仓库当前均为 `SG_TRIAL_ENABLED=false`、`SG_TRIAL_ALLOCATION=round-one`；原组 workflow 因协议保护已禁用，第二组 workflow 保留用户要求的手动入口。每 20 分钟的定时定义保留，当前不会自动采集。第二组尚未投入正式采集。旧单款 trial-pool 模板仍未配置，不是第一轮的开关。Mongo 密码仅保留在服务器。实时队列通过 campaign `status` RPC 查询，不能把初始 config 标签当成实时状态。
 
 原工作区还有尚未提交的协议/金额等修改。本副本以最新远端 main 为基线，不擅自合并它们；真实采集前须核对所需的最新已审阅修复。
 

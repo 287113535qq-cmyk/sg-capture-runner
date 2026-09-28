@@ -1,0 +1,31 @@
+{
+  "schema": "sg-huff-stop-review-v1",
+  "trialId": "sg_r1_20260928_32714",
+  "gameId": 32714,
+  "runId": 36405044999,
+  "completePreserved": 2,
+  "durableFileMongoVerified": 1,
+  "journalOnly": 1,
+  "pending": [
+    {
+      "batch": 5,
+      "worker": 14,
+      "sequence": 402,
+      "rawHash": "67d1e0dae3eab7e26ac6d5706798fc1ceef5b10f86d57e14e402e404952b47b7",
+      "pendingHash": "004f77f474cdc5735605abc1825899ac2abce998a2968fb416ff74d665792562",
+      "frames": 1,
+      "awaiting": null
+    }
+  ],
+  "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+  "backupManifestHash": "1259f7472a1a300db78ce98ca53803e361ac02553b7ca36d28ba1fb2d4560917",
+  "sourceRequests": 0,
+  "dataDeleted": 0,
+  "stateMutations": 0,
+  "leaseMutations": 0,
+  "reviewOnly": true,
+  "clientSha256": "67bcebfd2f16477c8c3b2686b6e10b70f41bde3579d929e89e04e321ffa4e93d",
+  "protocolFailure": "UNKNOWN_TRIAL_FEATURE",
+  "observedFeature": "HARD_HAT_FS",
+  "runtimeRelease": "7463e7fd1bf4736c8f5fcdd3280a8a3656d28cc3"
+}
