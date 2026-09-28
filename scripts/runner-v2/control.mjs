@@ -27,6 +27,8 @@ export class SourceControl {
     return poolDoc;
   }
   async halt(reason,details={}) {
-    await this.store.update('state','global-hold',value=>({...value,active:true,reason,details,at:Date.now()}));
+    // Peer shutdown errors must not replace the first durable fault evidence.
+    await this.store.update('state','global-hold',value=>value.active?null:
+      ({...value,active:true,reason,details,at:Date.now()}));
   }
 }

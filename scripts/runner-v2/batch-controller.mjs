@@ -197,7 +197,9 @@ export class BatchController {
       // back up all its pending states before assigning another game.
       if(this.lease)await this.pool.release(this.lease);
     }else await this.control.halt('SOURCE_OR_STORAGE_REQUIRES_REVIEW',{
-      trialId:this.plan.trialId,batchId:this.batch?.id ?? null,category:r.category || 'storage',cooldownUntil:r.cooldownUntil || 0});
+      trialId:this.plan.trialId,batchId:this.batch?.id ?? null,
+      code:/^[A-Z_]{1,100}$/.test(r.code || '')?r.code:'UNCLASSIFIED_STOP',
+      category:r.category || 'storage',cooldownUntil:r.cooldownUntil || 0});
     // No cleanup, replay or ownership transfer is performed here.
     return {status:'halted',reason:protocol?'PROTOCOL_VALIDATION_FAILED':'SOURCE_OR_STORAGE_REQUIRES_REVIEW'};
   }

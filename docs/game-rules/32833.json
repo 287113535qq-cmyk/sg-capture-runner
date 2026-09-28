@@ -95,8 +95,12 @@
     "service/game_rule_catalog.py": "bb5e4607e6c50aaa76fa0768ea9611bb33509696af4c90c327b22f5a0855897a"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/panda-network-recovery-20260929.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/panda-network-recovery-20260929.md": "fa759afb98a0728146fafc71f53ec92cbe42cf97006c193f9f1c43198d173c1c"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -104,5 +108,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e5f8352113b342b86e6604831598ceb233c775fa8652991a8e8e4474c6a841ac"
+  "ruleHash": "df3eea17819757b9c0a5dcaee4e9562937401e3d6db29685ead777ed15478ecc"
 }

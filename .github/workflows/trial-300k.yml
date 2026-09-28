@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal]
+        options: [capture, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -39,6 +39,26 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  incident-control:
+    if: github.event_name == 'workflow_dispatch' && startsWith(inputs.role, 'incident-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Apply exact incident review on GitHub without source requests
+        env:
+          CONTROL_ROLE: ${{ inputs.role }}
+        run: node scripts/runner-v2/incident-control.mjs "${CONTROL_ROLE#incident-}"
   github-control:
     if: github.event_name == 'workflow_dispatch' && (inputs.role == 'github-activate' || inputs.role == 'github-validate' || inputs.role == 'github-promote' || startsWith(inputs.role, 'optimization-'))
     runs-on: ubuntu-latest
@@ -195,7 +215,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: trial
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
