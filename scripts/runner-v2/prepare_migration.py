@@ -4,6 +4,7 @@ import json
 import os
 import pathlib
 import sqlite3
+import hashlib
 import sys
 from record_fields import execute
 from store import digest
@@ -52,11 +53,15 @@ def import_snapshot(directory,group,emit=emit):
         control=dict(c.execute('SELECT * FROM control').fetchone())
         batches=[dict(x) for x in c.execute('SELECT * FROM batches ORDER BY id')]
         workers=[dict(x) for x in c.execute('SELECT * FROM workers ORDER BY id')]
-    assert control['plan_hash']==digest(plan)
+    # The old allocator pins a scope signature, distinct from the full plan.
+    allocator_hash=hashlib.sha256(json.dumps({'trialId':trial,'target':plan['target'],
+        'workers':20,'version':1},sort_keys=True).encode()).hexdigest()
+    assert control['plan_hash']==allocator_hash
     assert all(w['lease_until']<__import__('time').time() for w in workers)
     ranges={x['id']:{k:x[k] for k in ('id','worker','start','end')} for x in batches}
     emit({'kind':'state','key':'pool:'+trial,'value':{'schema':'sg-github-pool-v2','migration':cfg['manifestHash'],
-          'enabled':False,'failure':'LEGACY_STORAGE_REVIEW_REQUIRED','planHash':control['plan_hash'],
+          'enabled':False,'failure':'LEGACY_STORAGE_REVIEW_REQUIRED','planHash':digest(plan),
+          'legacyAllocatorHash':control['plan_hash'],
           'nextSequence':control['next_sequence'],'nextBatchId':max(ranges,default=0)+1,'confirmed':0,
           'legacyBatches':ranges,'workers':{str(w['id']):{'sessionHash':w['session_hash'],'owner':None,
            'epoch':w['epoch'],'leaseUntil':0,'activeBatch':ranges.get(w['active_batch'])} for w in workers}}})
@@ -75,6 +80,7 @@ def import_snapshot(directory,group,emit=emit):
                 unknown+=int(pending_doc['awaiting'] is not None)
             assert state['lease_until']<__import__('time').time()
             count=c.execute('SELECT COUNT(*) FROM receipts').fetchone()[0]
+            assert state['plan_hash']==digest({'plan':plan,'batch':ranges[batch['id']]})
             value={**ranges[batch['id']],'migration':cfg['manifestHash'],'owner':None,'epoch':state['epoch'],
                    'leaseUntil':0,'sessionHash':state['session_hash'],'journaled':batch['start']-1+count,
                    'checkpoint':state['checkpoint'],'legacyDurable':state['durable'],

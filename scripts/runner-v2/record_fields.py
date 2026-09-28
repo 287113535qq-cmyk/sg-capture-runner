@@ -13,15 +13,25 @@ adapters = {}
 
 
 def execute(request):
-    plan = validate_pool_plan(request['plan'])
+    plan = request['plan']
     key = digest(plan)
     if key not in adapters:
+        plan = validate_pool_plan(plan)
         cls = {SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = cls(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']
     if op == 'next':
-        return adapter.next_request(raw)
+        return adapter.next_request(raw) if raw['steps'] else {'MSGID':'BET'}
+    if op == 'intent':
+        next_step=adapter.next_request(raw) if raw['steps'] else {'MSGID':'BET'}
+        assert next_step is not None
+        parsed=adapter.request_params(request['payload'],next_step['MSGID'])
+        assert all(parsed.get(k)==v for k,v in next_step.items())
+        if raw['steps']:
+            from round_fields import params
+            assert parsed['PID']==params(raw['steps'][0]['requestPayload'])['PID']
+        return {'validated':True}
     fields = adapter.settled(raw)
     if op == 'verify':
         old = request['record']
