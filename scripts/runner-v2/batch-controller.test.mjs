@@ -38,7 +38,7 @@ async function fixture(){
   await store.create('state','campaign',{enabled:true,activeGame:32723,games:[{game_id:32723,status:'active'}]});
   await store.create('state','pool:'+plan.trialId,{enabled:true,failure:null,nextSequence:1,nextBatchId:1,confirmed:0,workers:{}});
   await store.create('state','write-permits',{limit:1,slots:{}});
-  const controller=new BatchController({store,transport,gate,analyzer:parser,control,plan,group:'primary',now:()=>now,sleep:async()=>{}});
+  const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,group:'primary',now:()=>now,sleep:async()=>{}});
   const identity={owner:'job',sessionHash:'a'.repeat(64),planHash:createHash('sha256').update(stable(plan)).digest('hex')};
   const rpc=(op,r={})=>controller.rpc(op,{shardId:0,...r});
   const registered=await rpc('register',identity),worker={owner:'job',workerEpoch:registered.workerEpoch};

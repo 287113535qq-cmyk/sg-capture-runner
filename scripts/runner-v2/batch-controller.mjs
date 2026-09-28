@@ -9,8 +9,9 @@ const fail=(code,category='storage')=>Object.assign(new Error(code),{code,catego
 // Local implementation of the capture worker's RPC interface. Every business
 // decision below runs in its GitHub process; transport only performs Mongo I/O.
 export class BatchController {
-  constructor({store,transport,gate,analyzer,control,plan,group,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
-    Object.assign(this,{store,transport,gate,analyzer,control,plan,group,now,sleep});
+  constructor({store,transport,gate,analyzer,spool,control,plan,group,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
+    assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
+    Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep});
     this.pool=new RunnerPool({store,plan,group,now});this.lease=null;this.batch=null;this.identity=null;
   }
   async status(){
@@ -92,6 +93,7 @@ export class BatchController {
     return {intentDurable:true};
   }
   async exchange(r){
+    this.spool.append(r.step);
     await this.owned(r);
     // Persist the complete response BEFORE parsing, normalization, or allowing
     // any following request. Failure leaves the original evidence untouched.
@@ -102,6 +104,7 @@ export class BatchController {
       p.raw.steps.push(r.step);p.awaiting=null;return value;
     });
     const pending=stored.value.pending;let next,record;
+    this.spool.confirmed();
     if(r.step.sourceRejected)throw fail('SOURCE_REJECTED','source_protocol');
     try{
       next=await this.analyzer.call({op:'next',plan:this.plan,raw:pending.raw});
@@ -128,6 +131,7 @@ export class BatchController {
       ...(record?{endBalanceRaw:record.normalized.money.endBalanceRaw}:{})};
   }
   async bootstrap(r,frame=false){
+    if(frame)this.spool.append(r.step);
     await this.owned(r);
     if(!frame){
       await this.control.allowed({newRound:true});
@@ -140,6 +144,7 @@ export class BatchController {
     const key=`bootstrap:${this.plan.trialId}:${this.batch.id}:${hash(r.step)}`;
     await this.store.create('journal',key,{worker:this.lease.worker,step:r.step},{immutable:true});
     await this.update(v=>{assert(stable(v.bootstrapAwaiting)===stable(before.bootstrapAwaiting));v.bootstrapAwaiting=null;return v;});
+    this.spool.confirmed();
     return {responseDurable:true};
   }
   async release(r){
