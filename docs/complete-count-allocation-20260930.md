@@ -9,3 +9,7 @@
 当前没有创建任何线上授权，没有切换池或增加采样预算。生产激活操作器、计数模式的中断清理和再次换代尚待接线；旧清理器会拒绝计数模式，避免只清pending却遗漏预约账本。Python计划许可也没有为此模式开放。不能把当前基础入口当成可正式派发的整套方案。
 
 原Demon446、Beaver137和所有已应用profiles保持。Beaver试点100个新BET已经用完，缺自然FID1完整终局，仍未正式放行。后续先完成统一激活/退休边界及实际入口回归，再按独立授权部署；不因修正计数而给旧试点追加额度。
+
+本机完整501项Runner通过；固定runtime `6d3551e16dda45e3d5eee7f09cab19a007e42cc3` 的Linux预检 `36634838789` 成功，含Python、协议、collector/TypeScript、3000局离线入口和178卡检查。未派任何源采集或状态维护。
+
+下一候选转向32835 Pyramids of Luxor：官方客户端映射FID2为免费、FID0为wild respins、FID1为pyramid respins。直接提取并执行其`readyForNextSpin`方法的8组合控制测试表明：免费剩余为0仍可能因两类respins保持SPIN；`gameEnded`在SPIN和IDLE都触发。该实验使用合成控制状态和界面桩，不是新SG数据，也尚未建立从原始GSD到这两个状态的完整适配，不能标ready。
