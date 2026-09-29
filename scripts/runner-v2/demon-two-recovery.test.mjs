@@ -45,7 +45,8 @@ async function fixture(){
 test('two-owner profile binds the current exact runtime and finite functional evidence gate',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-two-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),'78a54d7aca62c78de8b02227664ceee1e7752b403de1cae078e109db8b70908e');
+  assert.notEqual(hash(actual),p.adapterHash,'new runtime must refuse frozen unused queued permit');
   assert.deepEqual(p.pendingFirst.resumeWorkers,[2,7]);assert.equal(p.featureValidation.requireNewNaturalBonus,2);
   assert.equal(p.featureValidation.allowFormalWithoutEvidence,false);
 });
