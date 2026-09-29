@@ -8,6 +8,7 @@ import {captureBatch} from '../trial/capture-batch.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {protocolGrant} from './protocol-recovery-core.mjs';
 import {spawnSync} from 'node:child_process';
+import {pendingFirstPlan} from './pending-first.mjs';
 
 async function fixture(shardId=0){
   const docs=new Map(),rounds=new Map();let now=1000,failResponse=false;
@@ -152,5 +153,37 @@ test('actual secondary controller claims original FID1 with CFG1, not old Foam C
   const worker={owner:f.owned.owner,workerEpoch:f.owned.workerEpoch};
   if(wrong){await assert.rejects(f.rpc('next',worker),/RESUME_PROTOCOL_CHANGED/);assert((await f.store.get('state',f.controller.batchKey)).value.protocolResume);}
   else{const lease=await f.rpc('next',worker);assert.deepEqual(lease.pendingRound,pending);assert.equal((await f.store.get('state',f.controller.batchKey)).value.protocolResume,null);}
+ }
+});
+
+test('actual continuation stage flushes its one original round and forbids new BET and INIT even if caller asks for more',async()=>{
+ for(const rejected of [false,true]){
+  const f=await fixture();Object.assign(f.plan,{gameId:32739,buy:0,phase:1});
+  const commit='d'.repeat(40),proofHash='b'.repeat(64),identity={...f.identity,commitSha:commit,planHash:hash(f.plan)};
+  const originalParser=f.controller.analyzer.call;
+  f.controller.analyzer.call=async r=>r.op==='next' && r.raw.steps.at(-1).responsePayload==='NFG=1'?{MSGID:'FREE_GAME'}:originalParser(r);
+  const pending={sequence:1,attempt:'00000000-0000-0000-0000-000000000009',awaiting:null,
+   raw:{fixtureOnly:false,protocol:'nextgen',sourceKey:'fixture',roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:100000,
+    steps:[{msgId:'BET',requestPayload:'MSGID=BET',responsePayload:'NFG=1',elapsedMs:1}]}};
+  await f.store.update('state',f.controller.batchKey,b=>({...b,pending,protocolResume:{proofHash,pendingHash:hash(pending)}}));
+  const batch=await f.store.get('state',f.controller.batchKey);
+  const spec=pendingFirstPlan({plan:f.plan,batches:[batch],proofHash,commit,createdAt:1000,expiresAt:7201000});
+  await f.store.create('journal','pending-first:'+proofHash,spec);
+  await f.store.create('journal','protocol-resume:'+proofHash,protocolGrant({plan:f.plan,batches:[batch],proofHash,commit,now:1000}));
+  await f.store.update('state','campaign',c=>({...c,activeGame:32739,validationLimit:10,protocolValidation:{phase:'short',gameId:32739,proofHash,commit,runKey:'capture-run:1:1',pendingFirst:hash(spec)}}));
+  Object.assign(f.controller.pendingFirst,{stage:'resume',runKey:'capture-run:1:1'});
+  const reg=await f.rpc('register',identity),worker={owner:identity.owner,workerEpoch:reg.workerEpoch},lease=await f.rpc('next',worker),owned={...worker,batchId:lease.batchId,epoch:lease.epoch};
+  assert.equal(lease.shortRunLimit,1);
+  await assert.rejects(f.rpc('bootstrap_intent',{...owned,msgId:'INIT',requestPayload:'MSGID=INIT'}),/NEW_REQUEST_FORBIDDEN/);
+  const calls=[];
+  await assert.rejects(captureBatch({...f,lease,owned,evidence:{completedThisRun:0},state:{},
+   prepareRound:raw=>({money:{endBalanceRaw:raw.startBalanceRaw-25}}),
+   post:async(requestPayload,msgId)=>{calls.push(msgId);return {requestPayload,msgId,responsePayload:rejected?'MSGID=ERROR':'NFG=0',sourceRejected:rejected,elapsedMs:1};},
+   payload:msg=>'MSGID='+msg,bootstrap:async()=>{throw Error('UNEXPECTED_INIT');},shouldStop:()=>false,requestStop(){},
+   deadline:performance.now()+60000,limit:10}),rejected?/SOURCE_REJECTED/:/NEW_REQUEST_FORBIDDEN/);
+  assert.deepEqual(calls,['FREE_GAME']);assert.equal(f.rounds.size,rejected?0:1);
+  const b=(await f.store.get('state',f.controller.batchKey)).value;
+  if(rejected){assert.equal(b.pending.raw.steps.length,2);assert.equal(b.pending.awaiting,null);}
+  else{assert.equal(b.checkpoint,1);assert.equal(b.pending,null);}
  }
 });

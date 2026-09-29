@@ -6,16 +6,18 @@ import {MongoWriter,stable} from './mongo-writer.mjs';
 import {reviewProtocolResume} from './protocol-resume.mjs';
 import {protocolPolicy} from './protocol-policy.mjs';
 import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
+import {PendingFirst} from './pending-first.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
 // Local implementation of the capture worker's RPC interface. Every business
 // decision below runs in its GitHub process; transport only performs Mongo I/O.
 export class BatchController {
-  constructor({store,transport,gate,analyzer,spool,control,plan,group,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
+  constructor({store,transport,gate,analyzer,spool,control,plan,group,pendingFirstStage,runKey,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
     assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
     Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep});
     this.pool=new RunnerPool({store,plan,group,now});this.lease=null;this.batch=null;this.identity=null;
+    this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
   }
   async status(){
     const pool=(await this.store.get('state',this.pool.key))?.value;
@@ -46,8 +48,10 @@ export class BatchController {
   }
   async next(r){
     await this.owned(r);await this.control.allowed({newRound:true});
+    if(this.pendingFirst.admission?.limit===0){await this.pool.release(this.lease,{resumeSafe:true});return {done:true};}
     this.batch=await this.pool.take(this.lease);
     if(!this.batch){await this.pool.release(this.lease);return {done:true};}
+    this.pendingFirst.checkLease(this.batch);
     this.batchKey=`batch:${this.plan.trialId}:${this.batch.id}`;
     const existing=await this.store.create('state',this.batchKey,{...this.batch,owner:null,epoch:0,sessionHash:this.identity.sessionHash,
       leaseUntil:0,journaled:this.batch.start-1,checkpoint:this.batch.start-1,pending:null,failure:null});
@@ -86,7 +90,8 @@ export class BatchController {
         insert:records=>this.transport.request('rounds_insert',{trialId:this.plan.trialId,records})}});
     await this.flush();
     return {done:false,batchId:this.batch.id,epoch:this.batchEpoch,durable:saved.value.journaled,
-      checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:saved.value.pending};
+      checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:saved.value.pending,
+      ...(this.pendingFirst.admission?{shortRunLimit:this.pendingFirst.admission.limit}:{})};
   }
   async flush(){
     while(true){
@@ -97,6 +102,7 @@ export class BatchController {
     }
   }
   async intent(r,begin=false){
+    if(begin)this.pendingFirst.beforeNewRequest();
     await this.owned(r,{heartbeat:false});
     const poolSnapshot=await this.control.allowed({newRound:begin});
     await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
@@ -157,7 +163,8 @@ export class BatchController {
         assert(value.pending?.attempt===pending.attempt && value.pending.awaiting===null,'ROUND_COMMIT_CONFLICT');
         value.pending=null;value.journaled=r.sequence;return value;
       });
-      if(r.sequence-stored.value.checkpoint>=100 || r.sequence===this.batch.end)await this.flush();
+      if(this.pendingFirst.admission?.stage==='resume' || r.sequence-stored.value.checkpoint>=100 || r.sequence===this.batch.end)await this.flush();
+      if(this.pendingFirst.admission?.stage==='resume')this.pendingFirst.admission.limit=0;
     }
     // Following intents are intentionally created by the next loop iteration.
     // This avoids pre-reserving another BET when resources or source stop.
@@ -169,6 +176,7 @@ export class BatchController {
     if(frame)this.spool.append(r.step);
     await this.owned(r,{heartbeat:false});
     if(!frame){
+      this.pendingFirst.beforeNewRequest();
       const poolSnapshot=await this.control.allowed({newRound:true});
       await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
       assert(['INIT','REELSTRIP'].includes(r.msgId),'BOOTSTRAP_METHOD');
@@ -226,6 +234,7 @@ export class BatchController {
     if(op==='status')return this.status();
     if(op==='register'){
       await this.control.allowed({newRound:true});assert(r.planHash===hash(this.plan),'PLAN_CHANGED');
+      await this.pendingFirst.admit(r,r.shardId);
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }
     if(op==='next')return this.next(r);

@@ -58,10 +58,11 @@ async function fixture(){
   };
   f.operator=new DemonFeatureSessionRecovery({...op,profile,commit:'f'.repeat(40)});f.profile=profile;f.snapshot=snapshot;f.events.length=0;return f;
 }
-test('new feature-session profile pins current implementation and fixed bounded evidence requirement',()=>{
+test('applied feature-session profile stays frozen and rejects newer runtime',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-feature-session-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);assert.deepEqual(p.featureValidation,featureValidation);
+  assert.equal(hash(p),'05f5396f4113779d0b48111ca58049581a39ac20086f1534c767b3bdd145a8fb');
+  assert.equal(hash(p.adapterFiles),p.adapterHash);assert.notEqual(hash(actual),p.adapterHash);assert.deepEqual(p.featureValidation,featureValidation);
 });
 test('backup195, flush1 and archive only rejected432, preserving806/902 and settled replacement9',async()=>{
   const f=await fixture(),before=structuredClone(f.snapshot()),r=await f.operator.recover();

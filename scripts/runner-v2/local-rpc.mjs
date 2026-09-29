@@ -12,7 +12,8 @@ export function connectLocal(plan){
   const store=new RunnerState({transport,gate,deadline:Date.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000});
   const control=new SourceControl({store,transport,gate,plan});
   const controller=new BatchController({store,transport,gate,analyzer:parser,spool,control,plan,
-    group:repositories[process.env.GITHUB_REPOSITORY].name});
+    group:repositories[process.env.GITHUB_REPOSITORY].name,pendingFirstStage:process.env.SG_PENDING_FIRST_STAGE,
+    runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
   return {rpc:(op,data)=>controller.rpc(op,data),metrics:()=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics()}),
     close(){parser.close();transport.close();spool.close();}};
 }

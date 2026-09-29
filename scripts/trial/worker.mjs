@@ -139,7 +139,7 @@ async function main() {
   const capture=async (currentLease,currentOwned)=>{
     const result=await captureBatch({plan,lease:currentLease,owned:currentOwned,rpc,post,payload,bootstrap,
       prepareRound:prepareNextgenRound,mappingHash,extensionHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
-      deadline,limit,exchangeOperation,onProgress:()=>{
+      deadline,limit:currentLease.shortRunLimit===undefined?limit:Math.min(limit,currentLease.shortRunLimit),exchangeOperation,onProgress:()=>{
         const seconds=(performance.now()-sessionStart)/1000;
         console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,batchId:currentLease.batchId,
           completedThisRun:evidence.completedThisRun,batchCheckpoint:evidence.endCheckpoint,target:plan.target,
