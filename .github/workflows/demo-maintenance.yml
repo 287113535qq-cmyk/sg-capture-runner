@@ -1,6 +1,11 @@
 name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
+    inputs:
+      operation:
+        type: choice
+        options: [rollover, retire-finished]
+        default: rollover
 permissions:
   contents: read
   actions: read
@@ -31,4 +36,8 @@ jobs:
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Fence the unstarted run and activate the bounded fresh generation
+        if: inputs.operation == 'rollover'
         run: node scripts/runner-v2/demo-maintenance-control.mjs
+      - name: Retire the interrupted attempt from the finished pilot without source requests
+        if: inputs.operation == 'retire-finished'
+        run: node scripts/runner-v2/retire-finished-demo-control.mjs

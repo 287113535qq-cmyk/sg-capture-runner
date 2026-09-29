@@ -36,6 +36,13 @@ export async function retireDemoPool({store,transport,gate,parser,plan,boundary,
  const attempts=batches.filter(b=>b.pending||b.pendingOriginal||b.bootstrapAwaiting).map(b=>({batchId:b.id,worker:b.worker,sessionHash:b.sessionHash,disposition:b.pending?.awaiting||b.bootstrapAwaiting?'unknown-abandoned-without-replay':'interrupted-abandoned-without-replay',pending:b.pending,pendingOriginal:b.pendingOriginal??null,bootstrapAwaiting:b.bootstrapAwaiting??null}));
  await save(prefix+':analysis',{attempts,sourceRequests:0});
  for(const b of batches){
+  // Already settled batches may be bound by an immutable generation audit.
+  // Verify their contents without rewriting ownership, epochs or retirement.
+  if(!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&b.checkpoint===b.journaled){
+   const complete=records.filter(r=>r.batchId===b.id);
+   if(complete.length){const actual=await transport.request('rounds_read',{trialId:plan.trialId,ids:complete.map(r=>r._id)});assert(hash(actual.map(hash).sort())===hash(complete.map(hash).sort()),'MONGO_CONTENT_CONFLICT');}
+   continue;
+  }
   await boundary();await store.writable();const key=`batch:${plan.trialId}:${b.id}`,epoch=b.epoch+1;
   await store.update('state',key,v=>{assert(hash(v)===hash(b),'RETIRE_BATCH_CHANGED');return {...v,epoch,owner,leaseUntil:0};});
   const queue=new DurableQueue({store,plan,batchKey:key,owner,epoch});
