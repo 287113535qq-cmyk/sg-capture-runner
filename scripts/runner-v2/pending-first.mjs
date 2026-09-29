@@ -1,3 +1,4 @@
+import {PairResidual} from './demon-pair-residual.mjs';
 import {FreshStart} from './fresh-start.mjs';
 import {loadNestedShort} from './demon-nested-short.mjs';
 import {hasNested,nestedNext,nestedMapping} from '../trial/demon-nested-protocol.mjs';
@@ -25,12 +26,15 @@ export function pendingFirstPlan({plan,batches,proofHash,commit,createdAt,expire
 
 export class PendingFirst {
   constructor({store,transport,analyzer,plan,stage,runKey,now=Date.now}) {
-    Object.assign(this,{store,transport,analyzer,plan,stage,runKey,now});this.admission=null;this.fresh=new FreshStart({store,plan,stage,runKey,now});
+    Object.assign(this,{store,transport,analyzer,plan,stage,runKey,now});this.admission=null;this.fresh=new FreshStart({store,plan,stage,runKey,now});this.pair=new PairResidual({store,plan,stage,runKey,now});
   }
   async load(identity) {
     const c=(await this.store.get('state','campaign'))?.value,p=c?.protocolValidation;
     if(p?.nestedShort)return loadNestedShort(this,identity,c);
-    if(p?.freshStart)return this.fresh.load(identity);
+    if(p?.freshStart){
+      const spec=(await this.store.get('journal','fresh-start:'+p.proofHash))?.value;
+      return spec?.schema==='sg-demon-pair-residual-v1'?this.pair.load(identity):this.fresh.load(identity);
+    }
     if(!p?.pendingFirst){assert(!this.stage,'PENDING_FIRST_NOT_AUTHORIZED');return null;}
     assert(['resume','capture'].includes(this.stage),'PENDING_FIRST_STAGE_REQUIRED');
     assert(c.enabled && c.activeGame===this.plan.gameId && c.validationLimit===10 && p.phase==='short'
@@ -60,6 +64,7 @@ export class PendingFirst {
   }
   async admit(identity,worker) {
     const spec=await this.load(identity);if(!spec)return null;
+    if(spec.schema==='sg-demon-pair-residual-v1'){this.admission=await this.pair.admit(identity,worker);return this.admission;}
     if(spec.schema==='sg-demon-zero-short-v1'){this.admission=await this.fresh.admit(identity,worker);return this.admission;}
     if(['sg-demon-nested-short-v1','sg-demon-nested-rebind-short-v1'].includes(spec.schema)){
       const pool=(await this.store.get('state','pool:'+this.plan.trialId))?.value;
