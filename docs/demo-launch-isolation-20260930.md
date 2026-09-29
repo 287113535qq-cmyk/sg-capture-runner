@@ -1,5 +1,7 @@
 # Demo pilot launch isolation
 
+Execution completed: maintenance36624191303 succeeded, the source pilot36624576401 started in3seconds and added60 complete records. One interrupted attempt was subsequently retired without source requests by36626235799. See [actual results](demo-pilot-result-20260930.md). The preparation paragraphs below describe the implementation before execution.
+
 The previous rollover run 36612306276 remained queued with no jobs. Both normal and force cancellation returned HTTP409. It has not been cancelled. A separate offline preflight, 36620907099, started four seconds after creation and succeeded in the same repository. This rules out a blanket inability to start a hosted runner; it does not establish GitHub's internal queue cause.
 
 The replacement uses one independent, source-free maintenance job. It authenticates its own running workflow and the exact old run with zero jobs and no generation writes, preserves the campaign, and adds a compare-and-swap revocation marker. While maintenance runs, the old runtime rejects the other active run; afterward its frozen snapshot no longer matches. Late jobs, partial writes, changed identity, or conflicting state stop the replacement. Existing profiles remain frozen.

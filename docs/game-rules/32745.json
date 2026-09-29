@@ -92,7 +92,7 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "b79e035aef1b5a356268da0aba6754833949965c032ac189f76755ca74afc56b",
     "scripts/runner-v2/record_fields.py": "8e15ebf138ff6313c2554d266b1b3c4c197828e99f77a655c2f3a81afb65b11b",
-    "service/game_rule_catalog.py": "924fdf3d9e0f28440b37d30ea21a22e305df63e1d99cc5fbf4c96e483af2a674"
+    "service/game_rule_catalog.py": "abfade15a973c4d0439fe27d67974e7b9e6c4385ce0285b18ffeabf767c43f1e"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -101,7 +101,7 @@
     "docs/panda-network-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "dd0f290b387284bbaed1a7a63fbe866d43e0c482d01b774d7544957262dc6f52",
+    "docs/continuous-processing.md": "ed45f888f96cfab4a6e64ce8b3ff214c7d52f4825de02cc0fee4995c0ba56e47",
     "docs/panda-network-recovery-20260929-result.json": "3b62d441b9026d15cfbf9cb6f0694a1d33ae1ff2e0a9fc7875b3de9b53005c64",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
   },
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "81b7ee5934908c069e663d593f671c47f6e1a8884c61a2c60d5ea0c8808d537f"
+  "ruleHash": "cc7d8410dfe4dc4827bda808a52199e3de67467ff78da1a1a0ab7000b2542b24"
 }
