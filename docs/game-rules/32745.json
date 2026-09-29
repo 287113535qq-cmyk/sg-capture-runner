@@ -101,7 +101,7 @@
     "docs/panda-network-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "f111daa2443a669e8dd210de4f940eff306d76a18f7ae3ad989e398bdc8b3e55",
+    "docs/continuous-processing.md": "a678c419fda99ad22e52a6a642ee9e85c04e5f4a4a170f6afc6304657fe9f272",
     "docs/panda-network-recovery-20260929-result.json": "3b62d441b9026d15cfbf9cb6f0694a1d33ae1ff2e0a9fc7875b3de9b53005c64",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd"
   },
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d9357787ef9c5afa860a045b89546d6f0c180400f57be7d9a04c5be39972a98a"
+  "ruleHash": "d4b7ddf5769706c05966f8eb011e0c8e93ab5e4139af15c9859782959b5f1fec"
 }
