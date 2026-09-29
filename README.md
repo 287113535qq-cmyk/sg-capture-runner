@@ -1,10 +1,8 @@
 # SG 第一轮采集
 
-当前状态（2026-09-29 09:25 北京时间）：累计 **13 / 178 款**，实际采集0。32836的独立FID1 Pick A Ball已实现，新1705局真实四帧结算、stake25/TW500/bonus3通过Python、TypeScript和Mongo全文核验。
+当前状态（2026-09-29 10:00:37 北京时间）：累计 **13 / 178 款**。第二账号32836已经通过20分片各10局短采和651条全文验收，正式运行36510315315已实际采集，快照5375完整日志/4631checkpoint、20有效worker；定时续接已开启。
 
-本轮两次精确维护已应用，补齐旧12待写，全部有效记录保留；两次短采共新增261完整。已修正一次Runner把FID1接续误比为旧CFG2的领取检查。随后原1008接续FEATURE_START明确INVALID_SESSION，保留成功BET与拒绝，共同保护停止；尚未执行新的拒绝归档或validate/formal。不能重用已应用proof，也不能以新1705冒充旧1008已结算。
-
-当前primary164/164与4原pending未变；secondary451完整/440Mongo、11待写、唯一pending1008两帧。615完整日志核验、604Mongo全文相等；两变量false，无运行排队。primary入口active、secondary被verify关闭。下一步是新的精确会话异常恢复，见[本轮结果](docs/pick-bonus-recovery-20260929.md)。下方运行数据均为历史。
+原1008的明确会话拒绝已单独私有归档，独立替代attempt已结算；451条旧完整全部保留，旧BET没有重放。Foam20和Pick A Ball1705真实功能证据逐条不变。primary32739仍164/164与4个原pending，变量false、未新采；需要独立恢复。两个global-hold均false，第二轮关闭。详见[本轮实际结果](docs/pick-session-recovery-20260929.md)。下方旧运行数字仅为历史。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 

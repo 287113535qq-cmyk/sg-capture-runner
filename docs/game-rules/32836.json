@@ -33,7 +33,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "普通/FID0 免费保持旧规则；独立 FID2 foam 按 START → 单次 PICK → END。PICK 使用 START 的 CFP_2+1 及 GSD.featureData 首项。",
     "complete": "Foam 必须完整 BET/START/PICK/END。END 的计数组完整时核对 NFR_2-CFR_2 无剩余；整组 CFG/FS_2/NFR_2/CFR_2/CFP_2 缺失仅在完整四帧独立链允许，不能补0，部分缺失拒绝。无后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。",
-    "bounds": "支持独立FID2和独立FID1固定Pick A Ball选择FP=0|1|1；FID1使用独立bonus3，旧映射不变。其他菜单、组合栈、免费中触发和多次选择仍待适配。Foam20已真实结算核验；失效旧113的独立替代attempt已结算。新1705独立FID1真实四帧、stake25/TW500/bonus3已全文核验。原1008接续明确INVALID_SESSION，成功BET和拒绝保留；整组短采/正式验收仍未通过。",
+    "bounds": "支持独立FID2和独立FID1固定Pick A Ball选择FP=0|1|1；FID1使用独立bonus3，旧映射不变。其他菜单、组合栈、免费中触发和多次选择仍待适配。Foam20已真实结算核验；失效旧113的独立替代attempt已结算。新1705独立FID1真实四帧、stake25/TW500/bonus3已全文核验。原1008明确INVALID_SESSION已私有归档，成功BET和拒绝保留；独立替代attempt已结算。20worker各10局与651条全文验收通过并转正式；这不证明其他菜单/组合分支已覆盖。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -158,7 +158,7 @@
     "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
     "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
     "collector/sg.quarterback.ts": "d0adf1af448549c586e1692b83ad93ca2050086ced42ef4b0cd802cdfcfb181f",
-    "service/game_rule_catalog.py": "918d604cb4ba22ae95382c04d390f202dcfa2a17eb4ff6cf26080c86907bbdee"
+    "service/game_rule_catalog.py": "1aaed901e35c40cfcbb0c0f26d9a0902ed8a6bb85d0c519d20517f65fb55c873"
   },
   "reviewDocuments": [
     "docs/quarterback-observation-20260929.md",
@@ -187,12 +187,12 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "383afb70b5878348de93759371495ae1d1d8f1bdb4d9961778e4d694b5d7d7f8",
+    "docs/continuous-processing.md": "fb0764420a890fcb652bb3c4bfa36e2bfe795d6aa15cfef33e1fb7c4289df40c",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/foam-session-recovery-20260929.md": "810f7a6cca6a3d8e6f71e61b5742dc7570ab8dbb92eff23e9ce2db494926bc74",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/pick-bonus-recovery-20260929.md": "91ef1c61726e43b7509357a019969b8819ecdca81451e0a865b0795cfbaf6b6b",
-    "docs/pick-session-recovery-20260929.md": "14d7e10a546f73deabb66736b5b76bb4d103086149d11574613cf8241c65ee73",
+    "docs/pick-session-recovery-20260929.md": "e9a4c6231537996112ecb8762b537b07423c880d99f9cef03cb74e535a55243f",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-foam-adapter-result.json": "1f703c69c056688bcafb537c238c6cecee430458291d7a31c6b38c86ab600375",
@@ -210,5 +210,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ceed3e9e7280d79875527d9cddd2c715d7fc03b21005b2f15edc1fa9c5ed6608"
+  "ruleHash": "226bac16b3a309e7afe4c919d2915892edd617c46bed9300909a9027548d60c6"
 }
