@@ -10,6 +10,7 @@ export async function retireDemoPool({store,transport,gate,parser,plan,boundary,
  assert(typeof boundary==='function'&&plan.buy===0&&plan.phase===1&&typeof owner==='string'&&owner.length>0,'RETIRE_SCOPE');
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
+ assert(!pool?.countAllocation&&!plan.countAllocation,'COUNT_RETIREMENT_OPERATOR_REQUIRED');
  assert(pool&&!pool.enabled&&pool.planHash===hash(plan)&&hash(pool)===expectedPoolHash&&pool.nextBatchId>0&&pool.nextBatchId<=101,'RETIRE_POOL_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'RETIRE_WORKER_ACTIVE');
  const prefix='retired-demo:'+plan.trialId+':'+expectedPoolHash.slice(0,16);

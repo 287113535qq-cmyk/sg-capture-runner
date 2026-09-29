@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {stable} from './mongo-writer.mjs';
+import {loadCountPermission,allocateCountBatch,completeCountBatch,checkLedger} from './complete-count.mjs';
 
 const fail=code=>Object.assign(new Error(code),{code});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -66,20 +67,29 @@ export class RunnerState {
 // Allocation, ownership, and lease arithmetic happen here on GitHub. MongoDB
 // only executes get/create/CAS against documents scoped by the trusted key.
 export class RunnerPool {
-  constructor({store,plan,group,now=Date.now}) {
-    Object.assign(this,{store,plan,group,now});this.key='pool:'+plan.trialId;
+  constructor({store,plan,group,now=Date.now,commit=process.env.GITHUB_SHA}) {
+    Object.assign(this,{store,plan,group,now,commit});this.key='pool:'+plan.trialId;
     assert(['primary','secondary'].includes(group));
   }
   checkWorker(worker) {
     const offset=this.group==='primary'?0:20;
     if(!Number.isInteger(worker) || worker<offset || worker>=offset+20)throw fail('WORKER_GROUP_MISMATCH');
   }
+  async countPermission(){
+    if(this.plan.countAllocation===undefined)return null;
+    const pool=(await this.store.get('state',this.key))?.value;assert(pool,'STATE_MISSING');
+    return loadCountPermission({store:this.store,plan:this.plan,pool,commit:this.commit});
+  }
+  checkCount(value,spec){
+    if(spec)checkLedger(value,this.plan,spec);else assert(!value.countAllocation,'COUNT_PLAN_MISSING');
+  }
   async register(worker,identity) {
     this.checkWorker(worker);
     assert(/^[a-f0-9]{64}$/.test(identity.sessionHash));
     assert(typeof identity.owner==='string' && identity.owner.length>0 && identity.owner.length<=180);
-    let epoch;
+    let epoch;const spec=await this.countPermission();
     await this.store.update('state',this.key,value=>{
+      this.checkCount(value,spec);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       const old=value.workers[String(worker)];
       if(old && old.sessionHash!==identity.sessionHash)throw fail('SESSION_CHANGED');
@@ -101,10 +111,12 @@ export class RunnerPool {
     return worker;
   }
   async take(lease) {
-    this.checkWorker(lease.worker);let batch=null;
+    this.checkWorker(lease.worker);let batch=null;const spec=await this.countPermission();
     await this.store.update('state',this.key,value=>{
       const worker=this.owned(value,lease);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
+      this.checkCount(value,spec);
+      if(spec){const result=allocateCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,now:this.now()});batch=result.batch;return result.changed?value:null;}
       if(worker.activeBatch){batch=worker.activeBatch;return null;}
       if(value.nextSequence>this.plan.target){batch=null;return null;}
       const remaining=this.plan.target-value.nextSequence+1;
@@ -135,8 +147,11 @@ export class RunnerPool {
     // proof must be calculated from the persisted queue and full Mongo readback
     // by the caller on GitHub; never from a workflow log or highest sequence.
     assert(proof.pending===null && proof.confirmed===batch.end-batch.start+1 && proof.fullReadback===true);
+    const spec=await this.countPermission();
     await this.store.update('state',this.key,value=>{
       const worker=this.owned(value,lease);
+      this.checkCount(value,spec);
+      if(spec){completeCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,proof});return value;}
       if(worker.activeBatch?.id!==batch.id)throw fail('BATCH_OWNER_MISMATCH');
       const already=value.legacyConfirmedByBatch?.[String(batch.id)] || 0;
       assert(already<=proof.confirmed);

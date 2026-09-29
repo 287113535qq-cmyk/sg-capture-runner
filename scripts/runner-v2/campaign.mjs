@@ -4,12 +4,16 @@ import {stable} from './mongo-writer.mjs';
 import {GameRuleEvidence} from './game-rule-evidence.mjs';
 import {requireShortRun} from './protocol-recovery-core.mjs';
 import {auditSessionOwner} from './demo-session-audit.mjs';
+import {loadCountPermission,auditAllocatedRecord,auditCountBatch,idleAtCountTail} from './complete-count.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // Release the hosted-runner slot while the last ranges belong to other workers.
 // In particular, a queued stable session may still own a resumable partial batch.
 export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
   const own=pool.workers[String(worker)];
+  // A count-aware pool can have unused capacity beyond target sequence. Its
+  // permission is checked by register/take; do not apply the legacy tail rule.
+  if(pool.countAllocation)return false;
   return pool.nextSequence>target && pool.confirmed<target && own
     && !own.activeBatch && own.leaseUntil<=now;
 }
@@ -17,6 +21,10 @@ export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
 export class GithubCampaign {
   constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now}){
     Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now});
+  }
+  async idleAtTail(plan,pool,worker){
+    const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
+    return spec?idleAtCountTail(pool,plan,spec,worker,this.now()):idleAtAssignedTail(pool,worker,plan.target,this.now());
   }
   async status(){
     const c=(await this.store.get('state','campaign'))?.value;
@@ -98,14 +106,19 @@ export class GithubCampaign {
   async audit(plan){
     const pool=(await this.store.get('state','pool:'+plan.trialId)).value;
     assert(pool.confirmed===plan.target && Object.values(pool.workers).every(x=>!x.activeBatch&&x.leaseUntil<=this.now()));
+    const countSpec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
+    if(countSpec)assert(pool.countAllocation.reserved===0,'COUNT_AUDIT_NOT_READY');
     let after=0,count=0;const digest=createHash('sha256'),rules=new GameRuleEvidence({plan}),sessionAuditCache=new Map();
     while(true){
       await this.store.writable();
       const rows=await this.transport.request('rounds_scan',{trialId:plan.trialId,after});if(!rows.length)break;
       for(const record of rows){
-        assert(record.sequence>after && record.sequence<=plan.target && record.fixtureOnly===false && record.buy===0);
-        await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
-        await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
+        assert(record.sequence>after && record.fixtureOnly===false && record.buy===0);
+        if(countSpec)auditAllocatedRecord({pool,plan,spec:countSpec,record});else assert(record.sequence<=plan.target);
+        if(countSpec)await auditCountBatch({store:this.store,plan,pool,spec:countSpec,record,cache:sessionAuditCache});
+        else await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
+        const verified=await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
+        if(countSpec)assert(verified?.verified===true,'COUNT_AUDIT_UNVERIFIED');
         rules.observeVerified(record);
         digest.update(stable([record._id,record.contentHash])+'\n');after=record.sequence;count++;
       }

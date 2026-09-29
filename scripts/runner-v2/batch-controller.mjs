@@ -14,10 +14,10 @@ const fail=(code,category='storage')=>Object.assign(new Error(code),{code,catego
 // Local implementation of the capture worker's RPC interface. Every business
 // decision below runs in its GitHub process; transport only performs Mongo I/O.
 export class BatchController {
-  constructor({store,transport,gate,analyzer,spool,control,plan,group,pendingFirstStage,runKey,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
+  constructor({store,transport,gate,analyzer,spool,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
     assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
     Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep});
-    this.pool=new RunnerPool({store,plan,group,now});this.lease=null;this.batch=null;this.identity=null;
+    this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
   }
   async status(){
