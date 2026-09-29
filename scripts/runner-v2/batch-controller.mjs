@@ -103,7 +103,7 @@ export class BatchController {
     }
   }
   async intent(r,begin=false){
-    if(begin)this.pendingFirst.beforeNewRequest();
+    if(begin){this.pendingFirst.beforeNewRequest();this.pendingFirst.beforeBegin(r.sequence);}
     await this.owned(r,{heartbeat:false});
     const poolSnapshot=await this.control.allowed({newRound:begin});
     await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});

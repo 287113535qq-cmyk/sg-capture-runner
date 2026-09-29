@@ -2,7 +2,7 @@
 import re
 import json
 from pathlib import Path
-from store import require
+from store import require, digest
 
 POOL_SCHEMA = 'sg-work-pool-v1'
 
@@ -12,7 +12,16 @@ def validate_pool_plan(plan):
     require(plan.get('schema') == POOL_SCHEMA, 'BAD_POOL_SCHEMA')
     if plan.get('campaignId'):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
-        require(plan==plans.get(str(plan.get('gameId'))) and plan.get('phase')==1
+        expected=plans.get(str(plan.get('gameId')))
+        if 'demoGeneration' in plan:
+            profile=json.loads((Path(__file__).resolve().parents[1]/'config/demo-pilot-beaver-20260930.json').read_text(encoding='utf-8'))
+            require(profile.get('schema')=='sg-demo-pilot-v1' and profile.get('gameId')==32820
+                and plan.get('gameId')==32820 and profile.get('oldPlanHash')==digest(expected)
+                and profile.get('generation')==plan['demoGeneration']
+                and isinstance(plan['demoGeneration'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['demoGeneration'])
+                and profile.get('planHash')==digest(plan),'DEMO_PLAN_MISMATCH')
+            expected={**expected,'demoGeneration':profile['generation']}
+        require(plan==expected and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('adapter')=='native-nextgen-v1','CAMPAIGN_PLAN_MISMATCH')
         require(type(plan.get('target')) is int and 20<=plan['target']<=300000,'BAD_POOL_TARGET')
         return dict(plan)

@@ -10,3 +10,5 @@
 完整Runner433及协议57测试通过，专项16项覆盖两代完整局、伪造session/worker/sequence、旧batch或清理回执改变、代际绑定缺失及按batch读取上限。私有真实484条历史记录会话归属回放通过，其中Beaver38在合成未来会话身份下仍可核验，伪造旧记录session被拒绝；代际凭证为内存合成，不是线上授权，不代表新SG样本。
 
 尚需完成：从已清理现场一次性建立新代际与最多100新局（每worker5）许可；保留旧batch、断开旧worker activeBatch并绑定新会话；独立Demon暂挂记录与campaign切换；实际准入/worker/capture完整路径测试和Linux预检。当前Beaver38、Demon446、两个source开关以及全部已应用配置均未改变。不能将本次源码能力当作采集已启动。
+
+后续正式接线已完成，准备统一Linux预检：新增通用demo-rollover、DemoFresh及demo-rollover/demo-fresh-short入口，PendingFirst、BatchController、requireShortRun和campaign-worker均已接入；Python计划校验只接受新配置精确绑定的代际，旧金额/目标不变。实际campaign→controller→会话派生→capture路径合成测试通过，保存BET意图、入库读回、旧batch不动及第6次BET拒绝均覆盖。真实38条Python旧计划与新代际计划校验通过，真实484现场的内存rollover保留所有旧batch/journal/Mongo；没有线上切换或采集声明。独立配置只授权20worker各5，未配置其他新额度。正式300000终审的旧分配区间空洞还需后续验证，本次仅有界试点。

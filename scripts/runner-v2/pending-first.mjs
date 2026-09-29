@@ -1,4 +1,5 @@
 import {PairResidual} from './demon-pair-residual.mjs';
+import {DemoFresh} from './demo-fresh.mjs';
 import {BeaverPendingOnly} from './beaver-pending-only.mjs';
 import {FreshStart} from './fresh-start.mjs';
 import {loadNestedShort} from './demon-nested-short.mjs';
@@ -65,6 +66,7 @@ export class PendingFirst {
     assert(got.length===1 && stable(got[0])===stable(r),'PENDING_FIRST_MONGO_CHANGED');
   }
   async admit(identity,worker) {
+    if(this.plan.demoGeneration!==undefined){this.demo??=new DemoFresh({store:this.store,plan:this.plan,stage:this.stage,runKey:this.runKey,now:this.now});this.admission=await this.demo.admit(identity,worker);return this.admission;}
     const spec=await this.load(identity);if(!spec)return null;
     if(spec.schema==='sg-beaver-pending-only-v1'){this.admission=await this.beaver.admit(identity,worker);return this.admission;}
     if(spec.schema==='sg-demon-pair-residual-v1'){this.admission=await this.pair.admit(identity,worker);return this.admission;}
@@ -97,9 +99,11 @@ export class PendingFirst {
     return this.admission;
   }
   checkLease(batch) {
+    if(this.demo)this.demo.checkLease(batch);
     if(this.admission?.stage==='resume')assert(batch.id===this.admission.entry.batchId && batch.worker===this.admission.entry.worker,'PENDING_FIRST_BATCH_CHANGED');
   }
   beforeNewRequest() {
     assert(this.admission?.stage!=='resume','PENDING_FIRST_NEW_REQUEST_FORBIDDEN');
   }
+  beforeBegin(sequence){if(this.demo)this.demo.beforeBegin(sequence);}
 }

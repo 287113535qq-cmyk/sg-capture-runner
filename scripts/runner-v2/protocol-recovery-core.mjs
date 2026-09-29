@@ -53,6 +53,11 @@ export function protocolGrant({plan,batches,proofHash,commit,now=Date.now()}) {
 
 export function requireShortRun(campaign,runKey,commit) {
   const p=campaign.protocolValidation;if(!p)return false;
+  if(p.demoFresh){
+    assert(p.phase==='short'&&p.gameId===campaign.activeGame&&campaign.validationLimit===5&&/^[a-f0-9]{64}$/.test(p.demoFresh)&&/^[a-f0-9]{64}$/.test(p.generation)&&!p.beaverPending&&!p.pendingFirst&&!p.freshStart&&!p.nestedShort,'DEMO_FRESH_SCOPE_CHANGED');
+    assert(p.commit===commit&&/^[a-f0-9]{40}$/.test(commit)&&/^capture-run:\d+:1$/.test(runKey),'DEMO_FRESH_RUNTIME_CHANGED');
+    assert(p.runKey===null||p.runKey===runKey,'PROTOCOL_SHORT_REVIEW_REQUIRED');if(p.runKey===runKey)return false;p.runKey=runKey;return true;
+  }
   const beaver=p.gameId===32820&&/^[a-f0-9]{64}$/.test(p.beaverPending||'')&&!p.pendingFirst&&!p.freshStart&&!p.nestedShort;
   assert(p.phase==='short' && p.gameId===campaign.activeGame && (beaver?campaign.validationLimit===1:!p.beaverPending&&campaign.validationLimit===10),'PROTOCOL_SHORT_CHANGED');
   assert(/^[a-f0-9]{40}$/.test(p.commit) && p.commit===commit,'RESUME_CODE_CHANGED');
