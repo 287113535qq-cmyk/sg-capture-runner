@@ -1,0 +1,19 @@
+{
+  "schema": "sg-pending-first-candidate-result-v1",
+  "codeRevision": "6f283f8e652e6b630b1da1f73baced99dae00dea",
+  "preflightRun": 36520645452,
+  "preflightConclusion": "success",
+  "implemented": true,
+  "recoveryOperatorFor806Implemented": false,
+  "recoveryApplied": false,
+  "liveStagedShortVerified": false,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "completedGames": 14,
+  "primary": {"gameId": 32739, "journaled": 246, "checkpoint": 225, "pending": 5, "unchangedFromPriorArchive": true},
+  "candidateStages": {"resumeWorkers": [0, 1, 2, 7], "captureWorkers": 20, "perWorkerTotalLimit": 10, "totalNewLimit": 200},
+  "localTests": {"python": 241, "node": 206, "typescript": true},
+  "linuxTests": {"python": 241, "protocolNode": 44, "runnerNode": 162, "collector": 25, "offlineFixtureRounds": 3000, "typescript": true},
+  "privateArchive": {"bytes": 814385, "files": 10, "sha256": "a58505ffa77ae03a9dd36976f4be41ed5c3bed14bd7fc291d1ffec67ba7c14b4"},
+  "remaining": ["Fresh precise806 rejection recovery and private backup", "Flush21 valid complete records and archive only rejected806", "Fresh four-original continuation permits and pending-first specification", "Staged short run, full446-record verification and independent806 replacement", "New genuine natural DemonFID1/bonus2 evidence before formal promotion"]
+}

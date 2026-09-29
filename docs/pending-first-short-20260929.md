@@ -25,3 +25,11 @@ Implement and test a new precise sequence806 recovery operator. It must bind fre
 Recovery, staged short capture, full validation and formal promotion must use one fixed new commit. Full validation must preserve all246 old records, prove an independent806 replacement and the four original continuations, verify each worker's total increment10 and all446 records with no pending. A new genuine natural DemonFID1/bonus2 terminal chain, verified independently and in Mongo, remains an additional required gate. The rejected old432 and bonus0/1 replacements cannot satisfy it. Lack of that evidence does not authorize an unbounded probe or formal capture.
 
 This change does not alter source protocol mappings or the Mongo-only server entry. The server continues to execute only native database reads/writes and system metrics.
+
+## Validation and preservation
+
+Candidate commit `6f283f8e652e6b630b1da1f73baced99dae00dea` passed Windows241 Python tests,206 Node tests and TypeScript checks. GitHub Linux preflight [36520645452](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36520645452) passed241 Python,44 protocol Node,162 Runner Node,25 collector tests, TypeScript,178 rule-card checks and the3000-round offline fixture. This workflow uses no SG requests or database connection.
+
+The actual private incident snapshot was also checked without mutation:246 journaled/225 Mongo records and all5 pending scenes match the prior archived snapshot exactly. The four preserved owners match the workflow matrix and their independent Runner continuation is FREE_GAME. The readonly lease snapshot covered3100 batches and showed no active worker or batch lease. Both repositories were idle after preflight; both source scheduling variables remained false. No recovery or short-capture workflow was dispatched.
+
+Preflight metadata, all jobs and log ZIP were checked with CRC/SHA256 and saved together with the readonly scene, lease snapshot, test logs and frozen previous incident profile in two private copies. Archive:814385 bytes,10 files, SHA256 `a58505ffa77ae03a9dd36976f4be41ed5c3bed14bd7fc291d1ffec67ba7c14b4`. Neither the old proof nor its frozen profile was changed. The next operator must include the new staged runtime/workflow files in its own code binding.
