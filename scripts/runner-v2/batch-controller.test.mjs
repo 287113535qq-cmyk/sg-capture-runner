@@ -7,8 +7,9 @@ import {stable} from './mongo-writer.mjs';
 import {captureBatch} from '../trial/capture-batch.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {protocolGrant} from './protocol-recovery-core.mjs';
+import {spawnSync} from 'node:child_process';
 
-async function fixture(){
+async function fixture(shardId=0){
   const docs=new Map(),rounds=new Map();let now=1000,failResponse=false;
   const plan={trialId:'sg_r1_20260928_32723',gameId:32723,target:400,betRaw:25,maxSteps:100,sourceKey:'fixture'};
   const transport={async request(op,r){
@@ -41,9 +42,9 @@ async function fixture(){
   await store.create('state','campaign',{enabled:true,activeGame:32723,games:[{game_id:32723,status:'active'}]});
   await store.create('state','pool:'+plan.trialId,{enabled:true,failure:null,nextSequence:1,nextBatchId:1,confirmed:0,workers:{}});
   await store.create('state','write-permits',{limit:1,slots:{}});
-  const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,group:'primary',now:()=>now,sleep:async()=>{}});
+  const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,group:shardId>=20?'secondary':'primary',now:()=>now,sleep:async()=>{}});
   const identity={owner:'job',sessionHash:'a'.repeat(64),planHash:createHash('sha256').update(stable(plan)).digest('hex')};
-  const rpc=(op,r={})=>controller.rpc(op,{shardId:0,...r});
+  const rpc=(op,r={})=>controller.rpc(op,{shardId,...r});
   const registered=await rpc('register',identity),worker={owner:'job',workerEpoch:registered.workerEpoch};
   const lease=await rpc('next',worker),owned={...worker,epoch:lease.epoch,batchId:lease.batchId};
   return {controller,store,docs,rounds,plan,rpc,lease,owned,identity,
@@ -136,4 +137,20 @@ test('a granted original natural round resumes with FREE_GAME before any BET and
   assert.deepEqual(calls,['FREE_GAME','BET']);assert.equal(f.rounds.size,2);
   const original=f.rounds.get(String(1).padStart(64,'0'));
   assert.deepEqual(original.raw.steps.slice(0,1),pending.raw.steps);
+});
+
+test('actual secondary controller claims original FID1 with CFG1, not old Foam CFG2',async()=>{
+ const py=spawnSync(process.env.PYTHON||'python',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_quarterback_pick import pick_sample;v=pick_sample();v['steps']=v['steps'][:1];print(json.dumps(v))"],{encoding:'utf8'});
+ assert.equal(py.status,0,py.stderr);
+ for(const wrong of [false,true]){
+  const f=await fixture(38);f.plan.gameId=32836;f.controller.identity.commitSha='d'.repeat(40);
+  f.controller.analyzer.call=async()=>({MSGID:'FEATURE_START',CFG:wrong?'2':'1'});
+  const pending={sequence:1,attempt:'original-fixture',awaiting:null,raw:JSON.parse(py.stdout)},proofHash='b'.repeat(64);
+  await f.store.update('state',f.controller.batchKey,b=>({...b,pending,protocolResume:{proofHash,pendingHash:hash(pending)}}));
+  const batch=await f.store.get('state',f.controller.batchKey);
+  await f.store.create('journal','protocol-resume:'+proofHash,protocolGrant({plan:f.plan,batches:[batch],proofHash,commit:'d'.repeat(40),now:1000}));
+  const worker={owner:f.owned.owner,workerEpoch:f.owned.workerEpoch};
+  if(wrong){await assert.rejects(f.rpc('next',worker),/RESUME_PROTOCOL_CHANGED/);assert((await f.store.get('state',f.controller.batchKey)).value.protocolResume);}
+  else{const lease=await f.rpc('next',worker);assert.deepEqual(lease.pendingRound,pending);assert.equal((await f.store.get('state',f.controller.batchKey)).value.protocolResume,null);}
+ }
 });

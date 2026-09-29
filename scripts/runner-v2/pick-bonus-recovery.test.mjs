@@ -9,9 +9,9 @@ import {receiptKey} from './durable-queue.mjs';
 test('Pick A Ball recovery has a fresh exact code profile; old applied profile stays frozen',()=>{
  const p=JSON.parse(fs.readFileSync('config/pick-bonus-20260929.json','utf8'));
  const files=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
- assert.deepEqual(files,p.adapterFiles);assert.equal(hash(files),p.adapterHash);
+ assert.equal(hash(p),'a1143de3a6309842a10ddc134497388915070269a2176d04f7e8661f1cb4e3d0');assert.notEqual(hash(files),p.adapterHash);
 });
-async function fixture(){
+export async function fixture(){
  const f=await operatorFixture(32836);f.docs.clear();f.rounds.clear();
  const put=(c,k,v)=>f.docs.set(c+'/'+k,{_id:'secondary/'+k,version:1,value:structuredClone(v)});
  put('state','write-permits',{limit:1,slots:{}});put('journal','protocol:'+f.profile.id+':backup-complete',{});

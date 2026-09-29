@@ -5,6 +5,7 @@ import {DurableQueue,WritePermits} from './durable-queue.mjs';
 import {MongoWriter,stable} from './mongo-writer.mjs';
 import {reviewProtocolResume} from './protocol-resume.mjs';
 import {protocolPolicy} from './protocol-policy.mjs';
+import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -58,7 +59,8 @@ export class BatchController {
       const p=reviewProtocolResume({plan:this.plan,batch:original,grant,worker:this.lease.worker,
         sessionHash:this.identity.sessionHash,commit:this.identity.commitSha,now:this.now()});
       const next=await this.analyzer.call({op:'next',plan:this.plan,raw:p.raw});
-      assert(stable(next)===stable(protocolPolicy(this.plan.gameId).next),'RESUME_PROTOCOL_CHANGED');
+      const expected=this.plan.gameId===32836?quarterbackNextRequest(p.raw):protocolPolicy(this.plan.gameId).next;
+      assert(stable(next)===stable(expected),'RESUME_PROTOCOL_CHANGED');
     }
     const saved=await this.store.update('state',this.batchKey,value=>{
       assert(value.sessionHash===this.identity.sessionHash,'SESSION_CHANGED');
