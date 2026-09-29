@@ -158,7 +158,7 @@
     "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
     "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
     "collector/sg.quarterback.ts": "d0adf1af448549c586e1692b83ad93ca2050086ced42ef4b0cd802cdfcfb181f",
-    "service/game_rule_catalog.py": "27dd4e018404d1c80921a65d5e0e7554c5c0959c52a763ec4fc2d3ec814559e5"
+    "service/game_rule_catalog.py": "d80d1ad110e12e93508ce572f3bd293a2166512caa45d5bd12f3d8b4f43cbcbe"
   },
   "reviewDocuments": [
     "docs/quarterback-observation-20260929.md",
@@ -191,7 +191,7 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "912731b482820ceb644a0152dc09ae4735ced9cc8c038b6e1f998729c5f5fe41",
+    "docs/continuous-processing.md": "a22aae0f29e0b814a6c1ffeda0b84863d558ebc3683d7d2c77b77ae002898ade",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/demon-rebind-session-stop-20260929-result.json": "130e861c1348f012a47aa4fcf2017e0dbaf7a0a0430f6c1590b829ed6b1f9022",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
@@ -218,5 +218,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "848d2c49283c68bb4bda8d3c8eab4a36fb05b38301ba24f3af1da46740544882"
+  "ruleHash": "de93fd6e999809213a515177757ed45785040f749bc695bc7df27cdd9256fbb1"
 }

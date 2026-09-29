@@ -23,7 +23,9 @@
 
 本机 256 Python、62 协议、525 Runner、25 collector 与 TypeScript 通过。统一 Linux 36642563664 在固定 runtime b04199db3d7c5bf595c63365b31d950940f2f976 成功，完整 suite 包括上述测试、3000 局离线入口与178档案。Job 64秒。没有线上 maintenance/source 派发，不能把预检称新采开始。
 
-## 下一段最短链路
+## 当时的剩余链路（已由后续试点执行）
+
+2026-09-30后续独立准入、维护和实采已成功，新增100完整，见[实际结果](luxor-next-result-20260930.md)。以下保留适配提交当时的范围。
 
 复用通用 retireDemoPool 将原 82 完整校验补写、读回后更新 checkpoint，把单条中断 BET 私有留样作废。再通过独立受控的新游戏代际许可暂挂 Beaver，保全其 137 及已耗尽 100 BET 证据，给 Luxor 一次有界新会话试点。禁止复用 Beaver 许可、清旧 runKey 或续旧 Luxor 会话。
 

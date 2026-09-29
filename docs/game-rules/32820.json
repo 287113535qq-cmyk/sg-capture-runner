@@ -154,7 +154,7 @@
     "service/beaver_fields.py": "60dfaf941bd7de2c37c7abde442193200d5a2504dc620269540ed23e9c5eb8e2",
     "scripts/trial/beaver-protocol.mjs": "85a7d348079f70fac7b9a461efd0bae2307d800e4518a65fe7008066e228ef48",
     "collector/sg.beaver.ts": "e26c3e4a41aecaa9a6047935cb1f822194a41381a18af2c84999bf28dc0cc57a",
-    "service/game_rule_catalog.py": "27dd4e018404d1c80921a65d5e0e7554c5c0959c52a763ec4fc2d3ec814559e5"
+    "service/game_rule_catalog.py": "d80d1ad110e12e93508ce572f3bd293a2166512caa45d5bd12f3d8b4f43cbcbe"
   },
   "reviewDocuments": [
     "docs/beaver-free-observation-20260929.md",
@@ -185,5 +185,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "02a7865844d44abd025c3b17265a37aa96cf7a7a5b99a0f3ed3ae8ddd57777e1"
+  "ruleHash": "2577b4369b56bf93e75985b564c9c2136bf1da20c2778b75b53fde6c554bbf90"
 }

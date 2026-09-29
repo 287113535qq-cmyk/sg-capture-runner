@@ -1,0 +1,49 @@
+{
+  "at": 1790724359,
+  "newComplete": 100,
+  "luxorComplete": 182,
+  "demonComplete": 446,
+  "beaverComplete": 137,
+  "oldPreserved": true,
+  "pending": 0,
+  "outstanding": 0,
+  "newByWorker": {
+    "6": 5,
+    "19": 5,
+    "10": 5,
+    "0": 5,
+    "3": 5,
+    "17": 5,
+    "9": 5,
+    "7": 5,
+    "12": 5,
+    "4": 5,
+    "18": 5,
+    "1": 5,
+    "2": 5,
+    "16": 5,
+    "11": 5,
+    "5": 5,
+    "15": 5,
+    "14": 5,
+    "8": 5,
+    "13": 5
+  },
+  "bonus": {
+    "0": 98,
+    "1": 2
+  },
+  "frames": {
+    "BET": 100,
+    "FREE_GAME": 2
+  },
+  "snapshotHash": "bf6786080efc8bb68bb5c6bbb9bb689b4ced47a22f4abc7a85dbe8067ef6f7c5",
+  "gameId": 32835,
+  "sourceRun": "36644841969:1",
+  "runtime": "6b7c90b9c394e4dc2d7a6b5fd11dd40f9147942e",
+  "newBetAllowance": 100,
+  "usedBetAllowance": 100,
+  "remainingBetAllowance": 0,
+  "formal": false,
+  "naturalFid2TerminalObserved": false
+}

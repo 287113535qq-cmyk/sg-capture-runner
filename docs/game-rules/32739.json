@@ -160,7 +160,7 @@
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "27dd4e018404d1c80921a65d5e0e7554c5c0959c52a763ec4fc2d3ec814559e5"
+    "service/game_rule_catalog.py": "d80d1ad110e12e93508ce572f3bd293a2166512caa45d5bd12f3d8b4f43cbcbe"
   },
   "reviewDocuments": [
     "docs/demon-pair-recovery-20260929.md",
@@ -191,7 +191,7 @@
     "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "912731b482820ceb644a0152dc09ae4735ced9cc8c038b6e1f998729c5f5fe41",
+    "docs/continuous-processing.md": "a22aae0f29e0b814a6c1ffeda0b84863d558ebc3683d7d2c77b77ae002898ade",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
@@ -210,7 +210,7 @@
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
-    "docs/sg-efficiency-plan-20260929.md": "3293f47dc82693f6078906a2a5ffc93f9367a3357c799c333104fe5ff876ebfc"
+    "docs/sg-efficiency-plan-20260929.md": "4061c09a555ee30e4aff49a87a194e98ecbe58f057a20c19f45b7652e4773b81"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "77bcbf24bb4f4b5a747ca905bdb3b751b4bc036516d96893e6d37e48605308fc"
+  "ruleHash": "b8e189548a575cd8969d38cfb85f4c2446756490c9f8f600b2cc318a6737a344"
 }

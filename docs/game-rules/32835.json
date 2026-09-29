@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "首BET独立FID2且NFG>0时FREE_GAME；完整链保持单FID2，显式TFG=NFG+CFGG且逐帧CFGG加1，允许TFG增加的重触发。旧普通及独立FID0原规则保留。",
     "complete": "FID2完整链至少一帧FREE_GAME，上一帧NFG1到明确NFG0且总次数不变，再核XML、会话、B/AB、TW及实际下注100；NFG0但FID转0/1/10/11不能直接视为结束。",
-    "bounds": "真实旧82完整Python/Runner/TS全文原样；真实BET的FID2/NFG3仅半局，离线next为FREE_GAME但不续接。新终局和重触发仅合成测试，无真实FID2终局，不标ready。",
+    "bounds": "真实旧82保留并已补写Mongo，旧FID2半局私有留样作废。独立新代际实采100完整（98普通+2旧FID0），当前182 Python/Runner/TS及代际审计一致，额度0且pending0。FID2终局和重触发仍仅合成，无真实FID2终局，不标ready。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -127,7 +127,7 @@
     "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
     "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
     "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004",
-    "service/game_rule_catalog.py": "27dd4e018404d1c80921a65d5e0e7554c5c0959c52a763ec4fc2d3ec814559e5"
+    "service/game_rule_catalog.py": "d80d1ad110e12e93508ce572f3bd293a2166512caa45d5bd12f3d8b4f43cbcbe"
   },
   "reviewDocuments": [
     "docs/luxor-free-integration-20260930.md"
@@ -136,15 +136,21 @@
     "docs/complete-count-allocation-20260930.md",
     "docs/continuous-processing.md",
     "docs/luxor-free-integration-20260930.md",
+    "docs/luxor-next-result-20260930.json",
+    "docs/luxor-next-result-20260930.md",
     "docs/primary-natural-parks-20260929.md",
-    "docs/protocol-short-session-stop-20260929.md"
+    "docs/protocol-short-session-stop-20260929.md",
+    "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
     "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
-    "docs/continuous-processing.md": "912731b482820ceb644a0152dc09ae4735ced9cc8c038b6e1f998729c5f5fe41",
-    "docs/luxor-free-integration-20260930.md": "b94ca847354ffa673514573555f178f0787a43a7b939ebbd55ecb562ea1be95f",
+    "docs/continuous-processing.md": "a22aae0f29e0b814a6c1ffeda0b84863d558ebc3683d7d2c77b77ae002898ade",
+    "docs/luxor-free-integration-20260930.md": "3c9545c0a77fa00ccebcbe6e616d23719f4ddd157fa42ce162b47a00c7cc098d",
+    "docs/luxor-next-result-20260930.json": "4ede7a14f709760e8313553daac6714207dba00d424ce81f9cc7f303f9adca4c",
+    "docs/luxor-next-result-20260930.md": "d4fa5d9613c979637add8cf834fabea97d19865fee8850f064e0e6d0b3a0616c",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
-    "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
+    "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
+    "docs/sg-efficiency-plan-20260929.md": "4061c09a555ee30e4aff49a87a194e98ecbe58f057a20c19f45b7652e4773b81"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -153,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "928f6807a7b748c2dc4f09b03b39aeadb62172b6e8ca8c1246462b007bb52328"
+  "ruleHash": "0478d826ff0405ad6d793f4b33aa8463a53347924cfaf290d83c43d2abe1e7d3"
 }
