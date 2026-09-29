@@ -1,12 +1,12 @@
 # SG 第一轮采集
 
-当前状态（2026-09-29 07:56 北京时间）：累计 **13 / 178 款**，实际采集0。本轮已完成两组新的精确恢复：原Foam sequence20已按原identity/attempt/raw结算并Mongo全文核验，补齐原10条待写；第一组164条与4个原pending保留。两个terminal恢复proof已应用，禁止重跑。
+当前状态（2026-09-29 08:29 北京时间）：累计 **13 / 178 款**，实际采集0。本轮32836精确会话恢复已成功：15条旧待写补齐、118条完整全文核验；仅归档明确INVALID_SESSION的旧113，其独立新attempt在后续短采成功结算并Mongo全文核验，没有重发或接管旧局。
 
-随后仅第二组短采36499471583，20个采集步骤启动，64次源请求/45次BET，新增45条完整日志。原pending113接续FEATURE_START明确返回ERROR_INVALID_SESSION，触发共同保护。此新故障不是END计数修正失败，也不能推断其他未请求会话失效。
+短采36502517559新增72条完整日志，随后新batch11/worker38/sequence1008成功BET触发FID1 Pick a Bonus，因尚未适配保留暂停。此次没有会话拒绝或未知请求，两global-hold均false，仅该游戏pool保护；尚未达到318短采验收，未validate/formal。已确认此玩法的三个选择值1/2/3与Foam不同，END还需检查后续功能，详见[新分支证据](docs/quarterback-pick-a-bonus-observation-20260929.md)。
 
-目前primary164完整/164落库、4原pending；secondary118完整/103落库、15条待写、1个有明确拒绝证据的pending113。282条完整原始/标准化/摘要通过，267条Mongo全文相等，恢复后的原237条逐条不变。新Foam20真实结算已核验，但本次短采、validate/formal没有通过。两仓库无活动/排队、租约到期；两个变量false，primary手动入口active，secondary保护关闭。详细proof、归档与下一步见[实际结算恢复结果](docs/foam-terminal-recovery-20260929.md)。
+当前primary164完整/164落库、4原pending完全未变；secondary190完整/178落库、12待写、1pending1008。354条完整原始/规范化/摘要通过，342条Mongo全文一致，原282完整逐条不变。两仓库无活动/排队、两个变量false；primary手动入口active，secondary被verify保护关闭。已应用的新proof不可重跑，1008自然触发不可按会话异常删除。完整恢复/短采/备份结果见[本轮报告](docs/foam-session-recovery-20260929.md)。
 
-Codex sg-30继续推进。下一步为本次明确拒绝建立新的Mongo v2精确恢复，私有备份后仅归档113旧attempt并建立独立新attempt，补齐15条待写；不删除其他原局，不重发旧BET，不直接清开关或重跑已应用恢复。下列速度和运行数据均为历史证据，实时状态仍以Mongo与GitHub为准。
+持续巡检继续推进FID1及其他未完成适配，保留自然功能现场。下方速度与运行数据均为历史，不是当前实时状态。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 

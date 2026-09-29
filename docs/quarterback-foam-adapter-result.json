@@ -1,6 +1,6 @@
 {
   "gameId": 32836,
-  "asOf": "2026-09-28T23:56:41Z",
+  "asOf": "2026-09-29T00:29:00Z",
   "implemented": true,
   "scope": "standalone FID2 foam; ordinary/FID0 unchanged",
   "historicalChainsUnchanged": 100,
@@ -17,11 +17,11 @@
   "shortValidated": false,
   "formalEnabled": false,
   "allNaturalBranchesCovered": false,
-  "currentJournaled": 118,
-  "currentCheckpoint": 103,
+  "currentJournaled": 190,
+  "currentCheckpoint": 178,
   "currentPending": 1,
-  "currentPendingWrites": 15,
-  "blockedBy": "secondary original113 FEATURE_START / ERROR_INVALID_SESSION",
+  "currentPendingWrites": 12,
+  "blockedBy": "new natural FID1 Pick a Bonus / UNKNOWN_TRIAL_FEATURE",
   "latestRecovery": {
     "group": "secondary",
     "run": 36498957876,
@@ -33,22 +33,22 @@
     "sourceRequests": 0
   },
   "latestShort": {
-    "run": 36499471583,
+    "run": 36502517559,
     "attempt": 1,
     "conclusion": "failure",
-    "captureStepsStarted": 20,
-    "sourceRequests": 64,
-    "bets": 45,
-    "newComplete": 45,
-    "firstError": "SOURCE_REJECTED / ERROR_INVALID_SESSION",
-    "rejectedBatch": 2,
-    "rejectedWorker": 21,
-    "rejectedSequence": 113,
-    "message": "FEATURE_START"
+    "sourceRequests": 99,
+    "bets": 73,
+    "newComplete": 72,
+    "firstError": "UNKNOWN_TRIAL_FEATURE",
+    "batch": 11,
+    "worker": 38,
+    "sequence": 1008,
+    "FID": "1|",
+    "sourceRejected": false
   },
-  "pendingHash": "84eb0694a9c4ce4ed60c3e872b20662f407ebbe478fe29217448819961f5d454",
-  "rawHash": "828a3168298640f347f1047cba251d0b9c4f593783a99891e99fd06c5ef56b99",
-  "newSessionRecoveryApplied": false,
+  "pendingHash": "8959351887191370ac8c5b6d9e6b63a56d9620559f68bae6076198ad3bf99405",
+  "rawHash": "77bf564632a3b14fae8af2b4f2e1ac9683356325c6616818ab3a00e563255878",
+  "newSessionRecoveryApplied": true,
   "initialAdapterReview": {
     "gameId": 32836,
     "implemented": true,
@@ -87,5 +87,27 @@
     "blockedBy": "primary SOURCE_REJECTED / ERROR_INVALID_SESSION",
     "resultReport": "docs/protocol-short-session-stop-20260929.md"
   },
-  "resultReport": "docs/foam-terminal-recovery-20260929.md"
+  "resultReport": "docs/foam-session-recovery-20260929.md",
+  "latestSessionRecovery": {
+    "run": 36502255869,
+    "applied": true,
+    "proofHash": "e7f27d5d32f136ee5b53c982d5ea0b887b9b15415f4dc286b4e54e36d32db7f6",
+    "oldCompletePreserved": 118,
+    "fullMongoReadback": 118,
+    "flushed": 15,
+    "archivedRejectedAttempts": 1,
+    "oldPendingSettled": 0,
+    "sourceRequests": 0,
+    "replayedBets": 0,
+    "validCompleteDeleted": 0
+  },
+  "replacement113": {
+    "oldArchived": true,
+    "newDistinctAttemptSettled": true,
+    "mongoFullEqual": true,
+    "oldAttemptSettled": false,
+    "messages": [
+      "BET"
+    ]
+  }
 }

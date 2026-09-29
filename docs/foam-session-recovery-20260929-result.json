@@ -1,0 +1,157 @@
+{
+  "schema": "sg-foam-session-recovery-result-v1",
+  "asOf": "2026-09-29T00:29:00Z",
+  "commit": "e2db5812406de1d962fc495d7c9de066213df290",
+  "completeGames": 13,
+  "actualCaptureWorkers": 0,
+  "preflight": {
+    "run": 36502113492,
+    "conclusion": "success",
+    "python": 236,
+    "nodeRunner": 99,
+    "nodeProtocol": 41,
+    "collector": 25,
+    "typescript": true,
+    "offlineFixtures": 3000
+  },
+  "recovery": {
+    "run": 36502255869,
+    "applied": true,
+    "proofHash": "e7f27d5d32f136ee5b53c982d5ea0b887b9b15415f4dc286b4e54e36d32db7f6",
+    "oldCompletePreserved": 118,
+    "fullMongoReadback": 118,
+    "flushed": 15,
+    "archivedRejectedAttempts": 1,
+    "oldPendingSettled": 0,
+    "sourceRequests": 0,
+    "replayedBets": 0,
+    "validCompleteDeleted": 0
+  },
+  "short": {
+    "run": 36502517559,
+    "attempt": 1,
+    "conclusion": "failure",
+    "sourceRequests": 99,
+    "bets": 73,
+    "newComplete": 72,
+    "firstError": "UNKNOWN_TRIAL_FEATURE",
+    "batch": 11,
+    "worker": 38,
+    "sequence": 1008,
+    "FID": "1|",
+    "sourceRejected": false
+  },
+  "replacement113": {
+    "oldArchived": true,
+    "newDistinctAttemptSettled": true,
+    "mongoFullEqual": true,
+    "oldAttemptSettled": false,
+    "messages": [
+      "BET"
+    ]
+  },
+  "groups": {
+    "primary": {
+      "journaledVerified": 164,
+      "mongoFullEqual": 164,
+      "oldPreserved": 164,
+      "newComplete": 0,
+      "pendingWrites": 0,
+      "pending": [
+        {
+          "batch": 1,
+          "worker": 3,
+          "sequence": 9,
+          "frames": 4,
+          "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f",
+          "rawHash": "050209fff4781264f189656b216b97aa621154e8394048c404385115ab359045",
+          "failure": null
+        },
+        {
+          "batch": 10,
+          "worker": 2,
+          "sequence": 902,
+          "frames": 1,
+          "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7",
+          "rawHash": "fe631a103b1e801e07e59b7047a4d7e6a46f53a08cdfc6a497f3874c362d67b3",
+          "failure": null
+        },
+        {
+          "batch": 5,
+          "worker": 0,
+          "sequence": 432,
+          "frames": 9,
+          "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30",
+          "rawHash": "53a0d3c5b347730a1235a1ceb855d07d30b6d68b519fcdad4a13e88a8308cc00",
+          "failure": null
+        },
+        {
+          "batch": 9,
+          "worker": 13,
+          "sequence": 806,
+          "frames": 3,
+          "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912",
+          "rawHash": "ca10dcaac6ba511a0f9066e31402826d35c158c2660afef2a7c7de74ec971ab9",
+          "failure": null
+        }
+      ]
+    },
+    "secondary": {
+      "journaledVerified": 190,
+      "mongoFullEqual": 178,
+      "oldPreserved": 118,
+      "newComplete": 72,
+      "pendingWrites": 12,
+      "pending": [
+        {
+          "batch": 11,
+          "worker": 38,
+          "sequence": 1008,
+          "frames": 1,
+          "pendingHash": "8959351887191370ac8c5b6d9e6b63a56d9620559f68bae6076198ad3bf99405",
+          "rawHash": "77bf564632a3b14fae8af2b4f2e1ac9683356325c6616818ab3a00e563255878",
+          "failure": "PROTOCOL_VALIDATION_FAILED"
+        }
+      ]
+    }
+  },
+  "snapshotHash": "e11d1b434af9c8458d89e8e64af21a69b75f8e5b1754528703306ab53a3917aa",
+  "newFeatureFields": {
+    "FID": "1|",
+    "CFG": "1",
+    "FS_1": "0",
+    "NFR_1": "1",
+    "CFR_1": "0",
+    "CFP_1": "0",
+    "NFG": null,
+    "TFG": null,
+    "CFGG": null
+  },
+  "unknownInFlight": 0,
+  "primaryUnchanged": true,
+  "validateApplied": false,
+  "formalApplied": false,
+  "liveFoam20SettlementVerified": true,
+  "fidOneAdapterImplemented": false,
+  "boundary": {
+    "activeRuns": 0,
+    "queuedRuns": 0,
+    "activeWorkerLeases": 0,
+    "unexpiredBatchTimestampsAt0028UTC": 13,
+    "primaryWorkflow": "active",
+    "secondaryWorkflow": "disabled_manually",
+    "primaryScheduleEnabled": false,
+    "secondaryScheduleEnabled": false,
+    "primaryGlobalHold": false,
+    "secondaryGlobalHold": false,
+    "secondaryPoolEnabled": false,
+    "secondaryPoolFailure": "PROTOCOL_VALIDATION_FAILED",
+    "diskGiB": 140.66409301757812
+  },
+  "archive": {
+    "serverDirectory": "reviews/foam-session-natural-stop-20260929",
+    "file": "full.tar.gz",
+    "verifiedFiles": 17,
+    "sha256": "a167cc8e345ff8f8aa23b4d82b2cd742348160be84e6569599f96e36d7c202c9"
+  }
+}
