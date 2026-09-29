@@ -4,7 +4,7 @@ import {receiptKey} from './durable-queue.mjs';
 
 // No source requests. A completed retirement is required before a fresh,
 // bounded generation can replace the inactive worker registrations.
-export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,now=Date.now}){
+export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,now=Date.now}){
  assert(typeof boundary==='function'&&/^[a-f0-9]{64}$/.test(plan.demoGeneration)&&/^[a-f0-9]{40}$/.test(commit)
   &&/^\d+:1$/.test(run)&&expiresAt>now()&&expiresAt-now()<=7200000,'ROLLOVER_SCOPE');
  const stripped={...plan};delete stripped.demoGeneration;
@@ -51,6 +51,7 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  const spec={schema:'sg-demo-generation-v1',generation:plan.demoGeneration,trialId:plan.trialId,gameId:plan.gameId,planHash:hash(plan),commit,run,createdAt:now(),expiresAt,firstBatchId:pool.nextBatchId,
   historicalBatches:Object.fromEntries(batches.map(b=>[b.id,hash(b)])),retirement:pool.retiredDemo,retirementHash:hash(retired),beforeHash:hash(before),completePreserved:records.length,perWorker:5,workers:20,newBetAllowance:100,
   oldSessions:Object.values(pool.workers).map(w=>w.sessionHash),
+  ...(activationStage?{activationStage}:{}),
   ...(Object.keys(unchangedRetiredBatches).length?{unchangedRetiredBatches}:{})};
  await save(key+':before',before);await save(key,spec);
  await save(key+':parked-source',{gameId:fromPlan.gameId,plan:fromPlan,campaign,pool:fromPool,at:now()});

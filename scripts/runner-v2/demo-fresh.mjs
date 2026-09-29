@@ -10,6 +10,12 @@ export class DemoFresh{
   const residual=s?.schema==='sg-demo-generation-residual-v1';
   assert((s?.schema==='sg-demo-generation-v1'||residual)&&hash(s)===p.demoFresh&&s.planHash===hash(this.plan)&&s.trialId===this.plan.trialId&&s.gameId===this.plan.gameId&&s.generation===this.plan.demoGeneration&&s.commit===p.commit
    &&s.perWorker===5&&s.workers===20&&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(s)&&done.commit===s.commit&&done.run===s.run,'DEMO_FRESH_NOT_COMPLETE');
+  if(s.activationStage){
+   const a=s.activationStage,expected=`next-demo-game:${this.plan.trialId}:${this.plan.demoGeneration}`,completed=await get('journal',expected+':complete');
+   assert(a.key===expected&&/^[a-f0-9]{64}$/.test(a.profileHash)&&completed?.schema==='sg-next-demo-game-complete-v1'
+    &&completed.profileHash===a.profileHash&&completed.generation===s.generation&&completed.commit===s.commit&&completed.run===s.run
+    &&completed.newBetAllowance===100&&completed.sourceRequests===0,'DEMO_NEXT_GAME_NOT_COMPLETE');
+  }
   if(residual){assert(Array.isArray(s.budgets)&&s.budgets.length===20&&s.budgets.every(n=>Number.isInteger(n)&&n>=0&&n<=5)
     &&s.budgets.reduce((a,b)=>a+b,0)===s.newBetAllowance&&s.newBetAllowance+s.usedBetAllowance===100&&s.usedBetAllowance>0,'DEMO_RESIDUAL_BUDGET');
     const parent=await get('journal',s.parentKey);assert(parent?.schema==='sg-demo-generation-v1'&&hash(parent)===s.parentHash&&parent.newBetAllowance===100,'DEMO_RESIDUAL_PARENT');

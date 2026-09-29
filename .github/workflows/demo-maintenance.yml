@@ -4,7 +4,7 @@ on:
     inputs:
       operation:
         type: choice
-        options: [rollover, retire-finished, residual]
+        options: [rollover, retire-finished, residual, next-game]
         default: rollover
 permissions:
   contents: read
@@ -44,3 +44,9 @@ jobs:
       - name: Activate only the original pilot's unspent BET budget with a new demo generation
         if: inputs.operation == 'residual'
         run: node scripts/runner-v2/demo-residual-control.mjs
+
+      - name: Retire the next game and activate its independent finite demo generation
+        if: inputs.operation == 'next-game'
+        env:
+          SG_DEMO_PILOT_PROFILE: demo-pilot-luxor-20260930.json
+        run: node scripts/runner-v2/demo-next-game-control.mjs
