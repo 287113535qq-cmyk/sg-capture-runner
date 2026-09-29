@@ -9,6 +9,7 @@ import { gameForShard } from './demo-sessions.mjs';
 import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
 import {SQUID_EXTENSION} from './squid-protocol.mjs';
 import {HUFF_SOURCE,HUFF_EXTENSION} from './huff-protocol.mjs';
+import {BEAVER_SOURCE,BEAVER_EXTENSION} from './beaver-protocol.mjs';
 import {DEMON_SOURCE,DEMON_EXTENSION} from './demon-protocol.mjs';
 import {QUARTERBACK_SOURCE,QUARTERBACK_EXTENSION,QUARTERBACK_PICK_EXTENSION} from './quarterback-protocol.mjs';
 import {globalShard} from './runner-group.mjs';
@@ -29,7 +30,7 @@ function canonical(v) {
 }
 const hash = v => createHash('sha256').update(v).digest('hex');
 const mappingHash = hash(canonical(registry.profiles[plan.sourceKey]));
-const extensionHash=plan.sourceKey===DEMON_SOURCE ? {free:hash(canonical(registry.profiles[DEMON_EXTENSION])),nested:hash(canonical(registry.profiles[DEMON_NESTED_EXTENSION]))} : plan.sourceKey===QUARTERBACK_SOURCE ? {foam:hash(canonical(registry.profiles[QUARTERBACK_EXTENSION])),pickBall:hash(canonical(registry.profiles[QUARTERBACK_PICK_EXTENSION]))} : hash(canonical(registry.profiles[plan.sourceKey===QUARTERBACK_SOURCE?QUARTERBACK_EXTENSION:plan.sourceKey===DEMON_SOURCE?DEMON_EXTENSION:plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
+const extensionHash=plan.sourceKey===DEMON_SOURCE ? {free:hash(canonical(registry.profiles[DEMON_EXTENSION])),nested:hash(canonical(registry.profiles[DEMON_NESTED_EXTENSION]))} : plan.sourceKey===QUARTERBACK_SOURCE ? {foam:hash(canonical(registry.profiles[QUARTERBACK_EXTENSION])),pickBall:hash(canonical(registry.profiles[QUARTERBACK_PICK_EXTENSION]))} : hash(canonical(registry.profiles[plan.sourceKey===BEAVER_SOURCE?BEAVER_EXTENSION:plan.sourceKey===QUARTERBACK_SOURCE?QUARTERBACK_EXTENSION:plan.sourceKey===DEMON_SOURCE?DEMON_EXTENSION:plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
 const role = process.argv[2] || 'capture';
 assert(['capture','audit','status'].includes(role));
 const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minRequestIntervalMs);

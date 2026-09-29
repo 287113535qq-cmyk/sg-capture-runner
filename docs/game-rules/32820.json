@@ -23,29 +23,34 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "beaver-independent-free-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "独立FID1必须由首BET触发；NFG>0按原会话和下注参数继续FREE_GAME。免费帧必须保留NFG/TFG/CFGG，缺失不补零。",
+    "complete": "完整序列至少含一次免费响应，显式NFG=0后核对XML、B/AB、TW与实际下注100；独立FID1映射bonus2，旧FID0映射保持。",
+    "bounds": "已接入Python/Runner/TS源码并有离线入口测试，尚未取得真实FID1终局或恢复许可。只支持首BET独立FID1；FID0的历史GSD.CFG=0保持，混合/嵌套/10/11/20/21及中途切入FID1仍拒绝。不能据此标为ready。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/beaver_fields.py",
+      "scripts/trial/beaver-protocol.mjs",
+      "collector/sg.beaver.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
       "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
       "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
       "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "FID": "1=freespins，0=Beaver Bonus；10/11消除与20/21选择仅为客户端观察，未适配。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "NFG / TFG / CFGG": "剩余/总数/当前免费计数必须显式保存；重触发不强制每帧减1。",
+      "GSD.CFG": "旧FID0允许明确CFG=0；与新FID1混合拒绝。"
     }
   },
   "typeMappings": {
@@ -71,15 +76,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "beaverlasvegas96-round-one-base-v1-beaver-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "beaver-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   },
   "mappingHashes": {
-    "beaverlasvegas96-round-one-base-v1": "6db98f6e7320c671cedcb90dafb947ca4908f682945dba8264c2f41f2c86914e"
+    "beaverlasvegas96-round-one-base-v1": "6db98f6e7320c671cedcb90dafb947ca4908f682945dba8264c2f41f2c86914e",
+    "beaverlasvegas96-round-one-base-v1-beaver-free-v1": "d540cb0a5c7b966068664a6ed4b0610f9effee48202a0869a85b34ba3e994f89"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -91,17 +123,25 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "afae527ad24c5287228301b9b858708f4c119e05473054e0be4cbf782a2fb871",
-    "scripts/runner-v2/record_fields.py": "1a2aba8dfe87f50ddb1d7d10f6fe7f28e74d3b16e36503ce8cbe033c3d72b652",
-    "service/game_rule_catalog.py": "05e7a654571c206e6bcc77b044360df11f1d6872dac50d7acbf9ac9cbbbf662c"
+    "service/round_fields.py": "b79e035aef1b5a356268da0aba6754833949965c032ac189f76755ca74afc56b",
+    "scripts/runner-v2/record_fields.py": "8e15ebf138ff6313c2554d266b1b3c4c197828e99f77a655c2f3a81afb65b11b",
+    "service/beaver_fields.py": "66ad822b2637784ea84e7b55bad6e325c485cbb31328a5710c81700e6f7b3b96",
+    "scripts/trial/beaver-protocol.mjs": "30989af1ddd1e378c19269393139b7c2b66868d779ee9c725b8459a8b892476f",
+    "collector/sg.beaver.ts": "e46d88a00b742aa64c1367aaab1e9423ea23ce0f85841eae4fc59cc92fc7ecd2",
+    "service/game_rule_catalog.py": "924fdf3d9e0f28440b37d30ea21a22e305df63e1d99cc5fbf4c96e483af2a674"
   },
-  "reviewDocuments": [],
+  "reviewDocuments": [
+    "docs/beaver-free-observation-20260929.md",
+    "docs/beaver-free-integration-20260929.md"
+  ],
   "analysisDocuments": [
+    "docs/beaver-free-integration-20260929.md",
     "docs/beaver-free-observation-20260929.md",
     "docs/primary-natural-parks-20260929.md",
     "docs/protocol-short-session-stop-20260929.md"
   ],
   "analysisDocumentHashes": {
+    "docs/beaver-free-integration-20260929.md": "95fa680e08794cbf2a18fa8dfe8ed2cafb0dbf16e01524dbd80adaf922ff3606",
     "docs/beaver-free-observation-20260929.md": "5705dfd3a21956514a96bc346c4ce5b15e14563bc07ca8f62ed6ffa9375db754",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
@@ -113,5 +153,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2fd2852c52cd9955d6dddd883850f4df6608ac3c08cd5a8cbd3ca87e00f94227"
+  "ruleHash": "382e96cba17712778da1fff0cc8a813bb6c3d535cc65de74f900ea95601089f1"
 }

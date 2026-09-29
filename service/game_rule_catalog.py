@@ -78,6 +78,17 @@ def contract(game_id):
             'GSD.EVP / RGS / RGSF / SCP / SCMB / SCM / CSF / CSD / ICSD': 'Void、HellGate、HeartStopper、消除和盘面演出证据；不额外发送选择或下注请求。',
             'GSD.IMUL / NMUL / PMUL / CTW / CAPS': '倍率、客户端累计赢奖和封顶显示证据；结算仍独立核对 TW/B/AB。',
         })
+    elif game_id == 32820:
+        native.update({'family': 'beaver-independent-free-v1',
+            'continue': '独立FID1必须由首BET触发；NFG>0按原会话和下注参数继续FREE_GAME。免费帧必须保留NFG/TFG/CFGG，缺失不补零。',
+            'complete': '完整序列至少含一次免费响应，显式NFG=0后核对XML、B/AB、TW与实际下注100；独立FID1映射bonus2，旧FID0映射保持。',
+            'bounds': '已接入Python/Runner/TS源码并有离线入口测试，尚未取得真实FID1终局或恢复许可。只支持首BET独立FID1；FID0的历史GSD.CFG=0保持，混合/嵌套/10/11/20/21及中途切入FID1仍拒绝。不能据此标为ready。'})
+        native['files'] += ['service/beaver_fields.py', 'scripts/trial/beaver-protocol.mjs', 'collector/sg.beaver.ts']
+        native['fields'].update({
+            'FID': '1=freespins，0=Beaver Bonus；10/11消除与20/21选择仅为客户端观察，未适配。',
+            'NFG / TFG / CFGG': '剩余/总数/当前免费计数必须显式保存；重触发不强制每帧减1。',
+            'GSD.CFG': '旧FID0允许明确CFG=0；与新FID1混合拒绝。',
+        })
     elif game_id == 32836:
         native.update({'family': 'quarterback-foam-v1',
             'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
@@ -94,6 +105,7 @@ def contract(game_id):
 
 
 REVIEW_DOCS = {
+    32820: ['docs/beaver-free-observation-20260929.md', 'docs/beaver-free-integration-20260929.md'],
     32739: ['docs/demon-pair-recovery-20260929.md', 'docs/demon-nested-recovery-20260929.md', 'docs/demon-nested-rebind-20260929.md', 'docs/sg-efficiency-plan-20260929.md'],
     32651: ['docs/squid-jackpot-protocol.md'],
     32671: ['docs/natural-feature-review-32671-32736.md'],

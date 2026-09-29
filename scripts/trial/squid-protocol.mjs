@@ -1,3 +1,4 @@
+import {BEAVER_SOURCE,beaverNextRequest,beaverMapping} from './beaver-protocol.mjs';
 import {hasNested,nestedNext,nestedMapping} from './demon-nested-protocol.mjs';
 // Offline mirror of service/squid_fields.py, independently checked by storage.
 import {HUFF_SOURCE,huffNextRequest,huffMapping} from './huff-protocol.mjs';
@@ -17,6 +18,7 @@ function parse(text) {
 }
 function integer(v) {if(!/^\d+$/.test(String(v)) || !Number.isSafeInteger(Number(v)))throw new Error('INVALID_PROTOCOL_COUNTER');return Number(v);}
 export function nextRequest(raw) {
+  if(raw.sourceKey===BEAVER_SOURCE)return beaverNextRequest(raw);
   if(raw.sourceKey===QUARTERBACK_SOURCE)return quarterbackNextRequest(raw);
   if(raw.sourceKey===DEMON_SOURCE)return hasNested(raw)?nestedNext(raw):demonNextRequest(raw);
   if(raw.sourceKey===HUFF_SOURCE)return huffNextRequest(raw);
@@ -45,6 +47,7 @@ export function nextRequest(raw) {
   return next;
 }
 export function roundMapping(raw, baseHash, extensionHash) {
+  if(raw.sourceKey===BEAVER_SOURCE)return beaverMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===QUARTERBACK_SOURCE)return quarterbackMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===DEMON_SOURCE)return hasNested(raw)?nestedMapping(raw,extensionHash.nested):demonMapping(raw,baseHash,typeof extensionHash==='object'?extensionHash.free:extensionHash);
   if(raw.sourceKey===HUFF_SOURCE)return huffMapping(raw,baseHash,extensionHash);

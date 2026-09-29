@@ -153,14 +153,14 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "afae527ad24c5287228301b9b858708f4c119e05473054e0be4cbf782a2fb871",
-    "scripts/runner-v2/record_fields.py": "1a2aba8dfe87f50ddb1d7d10f6fe7f28e74d3b16e36503ce8cbe033c3d72b652",
+    "service/round_fields.py": "b79e035aef1b5a356268da0aba6754833949965c032ac189f76755ca74afc56b",
+    "scripts/runner-v2/record_fields.py": "8e15ebf138ff6313c2554d266b1b3c4c197828e99f77a655c2f3a81afb65b11b",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "service/demon_nested_fields.py": "e8d69cd2fea147406dfb99330ece786542b4f2306a2d14086e9e7db2d2a8219e",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "05e7a654571c206e6bcc77b044360df11f1d6872dac50d7acbf9ac9cbbbf662c"
+    "service/game_rule_catalog.py": "924fdf3d9e0f28440b37d30ea21a22e305df63e1d99cc5fbf4c96e483af2a674"
   },
   "reviewDocuments": [
     "docs/demon-pair-recovery-20260929.md",
@@ -199,7 +199,7 @@
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/demon-nested-rebind-20260929.md": "36e075f38c17e3fd740f4df8596f0efd5af3de069ebcd5307bdd03eef32ff659",
     "docs/demon-nested-recovery-20260929.md": "8785560c885859d140aa747acaef5bedff238cf5c375ef8040624f7a3c6c4fbc",
-    "docs/demon-pair-recovery-20260929.md": "4eead362de4af08fd450f3ae959aba5794134fbfac57e61dcd0f90b0862a1571",
+    "docs/demon-pair-recovery-20260929.md": "306373f7bd247c4067f9a8aa992660be3e76e6f9fb1e4488782cf17cac3009ba",
     "docs/demon-queue-recovery-20260929-result.json": "70c34b9c22b3ff79a566fcf655c0c3ef5692ff4c8b6ceb2faa532337a101f8ab",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
@@ -210,7 +210,7 @@
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
-    "docs/sg-efficiency-plan-20260929.md": "0a67286e535b44d1ee1d3aaf511c2c15606c552902d28fb33987ea0d452a6130"
+    "docs/sg-efficiency-plan-20260929.md": "e11111c7cbd6b4a26457f16b9e1a0b1f3e2358b510ed56410c8d3af4f8fdd998"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "843d63dfaf36ef757bcb5ef0f5ed13526f2bc0fbb746bdccdc3f05a280ff17ef"
+  "ruleHash": "20ab5353ecc9365f34809043f9cf095a48b200b55e252ab04cd60bb12a338f94"
 }

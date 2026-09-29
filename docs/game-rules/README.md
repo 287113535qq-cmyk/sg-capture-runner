@@ -176,7 +176,7 @@
 | [32814](32814.json) | Wild Streets | not-documented | 待确认 |
 | [32815](32815.json) | Zeus God of Thunder | not-documented | 待确认 |
 | [32816](32816.json) | Zeus III | not-documented | 待确认 |
-| [32820](32820.json) | Beaver Las Vegas | implemented-subset | 1 |
+| [32820](32820.json) | Beaver Las Vegas | implemented-subset | 2 |
 | [32821](32821.json) | Book of Fusion | not-documented | 待确认 |
 | [32832](32832.json) | Key To Success | not-documented | 待确认 |
 | [32833](32833.json) | Panda Pow | implemented-subset | 1 |
