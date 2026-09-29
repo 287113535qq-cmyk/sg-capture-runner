@@ -1,0 +1,9 @@
+# Exact434 refusal and three-original continuation
+
+This operator is limited to the explicit FREE_GAME / ERROR_INVALID_SESSION at batch5/worker0/sequence434 in staged short36522161320:1. It binds the previously applied806 proof, failed short attempt, original three successful434 frames, complete rejection XML,246 full records and remaining117/902/1706 originals. It does not infer session lifetime or discard unrequested sessions.
+
+After fresh idle/lease/resource checks and immutable private full backup, it archives only434 as source-invalid-session/abandon_without_replay. No old BET is replayed. All246 valid records and earlier806 archive remain unchanged. Three new single-use permits and a private pending-first specification bind the original owners1/2/7, plan, code, proof and unique short run. Only their successful original settlement permits the dependent20-worker stage to start. This does not require20 hosted runners simultaneously.
+
+The finite short remains10 complete rounds per worker including original continuations,200 total new rounds, expected446 only after measurement. Validation requires all246 older records unchanged, three originals retaining identity and response prefixes, two independent replacements for separately archived806 and434, full Mongo comparison and pending0. A genuine new natural DemonFID1/bonus2 complete chain must also pass independent Python/Runner terminal and money checks and full Mongo equality. Missing evidence does not allow unlimited sampling or formal promotion.
+
+Old applied profiles remain immutable; the earlier806 profile test now fixes its original whole hash and rejects a newer runtime. Source, storage, unknown outcome and resource protections are unchanged. Implementation and offline fixtures do not constitute applied recovery or official new rounds. Actual execution results will be recorded after the controlled runs.

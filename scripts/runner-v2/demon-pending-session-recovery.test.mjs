@@ -10,7 +10,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
 const out=spawnSync(process.env.PYTHON||'python',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_demon_fields import sample;print(json.dumps(sample()))"],{encoding:'utf8'});
 assert.equal(out.status,0,out.stderr);const special=JSON.parse(out.stdout);
-async function fixture(){
+export async function fixture(){
   const f=await baseFixture();await f.operator.recover();
   const put=(c,k,v)=>f.docs.set(c+'/'+k,{_id:'primary/'+k,version:1,value:structuredClone(v)}),get=f.get;
   const oldOp=f.operator,p=get('pool:'+f.plan.trialId),c=get('campaign'),old=structuredClone(f.snapshot());
@@ -61,7 +61,7 @@ async function fixture(){
 test('pending-session profile binds new runtime, finite staged owners and live bonus2 requirement',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-pending-session-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),'90a8277973a652fca8d4a8ab2b430fd37327238902d4e135dc3eab837b2bab2b');assert.notEqual(hash(actual),p.adapterHash);
   assert.deepEqual(p.pendingFirst,{resumeWorkers:[0,1,2,7],captureWorkers:20,newBetsBeforeOriginalSettlement:false});
   assert.equal(p.featureValidation.requireNewNaturalBonus,2);assert.equal(p.featureValidation.allowFormalWithoutEvidence,false);
 });
