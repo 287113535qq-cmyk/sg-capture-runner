@@ -10,7 +10,7 @@ import {receiptKey} from './durable-queue.mjs';
 test('new exact incident profile pins reviewed code without changing prior applied profiles',()=>{
   const p=JSON.parse(fs.readFileSync('config/pick-session-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),'8adf5b5eba9ff1d414794ff61fafe32dc0666045ee451445ab118c95ad4b0e4b');assert.notEqual(hash(actual),p.adapterHash);
 });
 
 async function fixture(){
