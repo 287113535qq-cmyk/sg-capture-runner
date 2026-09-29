@@ -1,4 +1,5 @@
 """Trusted, operator-configured scope for the next Book of Sevens capture."""
+import os
 import re
 import json
 from pathlib import Path
@@ -14,7 +15,9 @@ def validate_pool_plan(plan):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         expected=plans.get(str(plan.get('gameId')))
         if 'demoGeneration' in plan:
-            profile=json.loads((Path(__file__).resolve().parents[1]/'config/demo-pilot-beaver-20260930.json').read_text(encoding='utf-8'))
+            filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
+            require(filename in ('demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json'),'DEMO_PROFILE_PATH')
+            profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             require(profile.get('schema')=='sg-demo-pilot-v1' and profile.get('gameId')==32820
                 and plan.get('gameId')==32820 and profile.get('oldPlanHash')==digest(expected)
                 and profile.get('generation')==plan['demoGeneration']

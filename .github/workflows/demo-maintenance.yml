@@ -1,0 +1,34 @@
+name: Isolated demo maintenance without source requests
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sg-demo-maintenance
+  cancel-in-progress: false
+jobs:
+  maintain:
+    if: github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+      SG_DEMO_PILOT_PROFILE: demo-pilot-replacement-20260930.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Fence the unstarted run and activate the bounded fresh generation
+        run: node scripts/runner-v2/demo-maintenance-control.mjs

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {original} from './expired-run-review.mjs';
 const repos=[original.repository,'287113535qq-cmyk/sg-capture-runner'];
-export function githubBoundary({read,run,commit,now=Date.now}){
+export function githubBoundary({read,run,commit,now=Date.now,workflowPath='.github/workflows/trial-300k.yml'}){
+  assert(['.github/workflows/trial-300k.yml','.github/workflows/demo-maintenance.yml'].includes(workflowPath),'CURRENT_WORKFLOW_CHANGED');
   assert(/^\d+:1$/.test(run) && Number(run.split(':')[0])!==original.id,'NEW_UNIQUE_RUN_REQUIRED');
   return async()=>{
     const start=now(),id=Number(run.split(':')[0]);
@@ -25,7 +26,7 @@ export function githubBoundary({read,run,commit,now=Date.now}){
       for(const item of result.workflow_runs){
         assert(repository===original.repository && (item.id===id || item.id===original.id),'OTHER_RUN_ACTIVE');
         if(item.id===id)assert(item.head_sha===commit && item.run_attempt===1
-          && item.path==='.github/workflows/trial-300k.yml','CURRENT_RUN_CHANGED');
+          && item.path===workflowPath,'CURRENT_RUN_CHANGED');
       }
     }
     // Keep the final identity and jobs reads after all status lists: a job

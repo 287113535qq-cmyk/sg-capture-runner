@@ -1,3 +1,4 @@
+import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
 import fs from 'node:fs';
 import {spawn} from 'node:child_process';
 import {connectGateway} from './transport.mjs';
@@ -13,7 +14,7 @@ const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
 const store=new RunnerState({transport,gate,deadline:end}),control=new SourceControl({store,transport,gate});
 let plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
-if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync('config/demo-pilot-beaver-20260930.json','utf8')));
+if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync(demoPilotProfilePath(),'utf8')));
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
   owner:`${group}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.SG_TRIAL_SHARD||'status'}`});

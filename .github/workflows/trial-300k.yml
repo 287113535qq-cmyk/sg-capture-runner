@@ -34,7 +34,7 @@ permissions:
   contents: read
   actions: write
 concurrency:
-  group: sg-real-single-game-trial
+  group: ${{ github.event_name == 'workflow_dispatch' && inputs.role == 'demo-fresh-short' && 'sg-demo-fresh-capture' || 'sg-real-single-game-trial' }}
   cancel-in-progress: false
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
@@ -797,6 +797,7 @@ jobs:
       SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
       SG_TRIAL_MINUTES: '25'
       SG_DEMO_PILOT: ${{ inputs.role == 'demo-fresh-short' && 'true' || 'false' }}
+      SG_DEMO_PILOT_PROFILE: demo-pilot-replacement-20260930.json
       SG_PENDING_FIRST_STAGE: fresh
       SG_TRIAL_INTERVAL_MS: '0'
       SG_POOL_RUN_LIMIT: ${{ inputs.round_one_limit || '0' }}
