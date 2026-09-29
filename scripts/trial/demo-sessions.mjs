@@ -14,8 +14,15 @@ export function gameForShard(base,shard,trialId='bookofsevens_300k_20260927',pla
   const capacity=plan?.campaignId==='sg_round_one_20260928' ? 40 : 20;
   assert(Number.isInteger(shard) && shard>=0 && shard<capacity);
   assert(/^(bookofsevens_[a-z0-9_]{1,70}|sg_r1_20260928_[0-9]{5})$/.test(trialId));
+  // A generation is part of the reviewed plan, never a process-local random
+  // retry token. Legacy plans retain their byte-for-byte identifier derivation.
+  const generation=plan?.demoGeneration;
+  if(generation!==undefined)assert(plan?.campaignId==='sg_round_one_20260928'
+    && /^[a-f0-9]{64}$/.test(generation),'DEMO_GENERATION_SCOPE');
+  const context=generation===undefined?`sg-real-trial-v1:${trialId}:parallel-shard:${shard}`
+    :`sg-demo-generation-v1:${trialId}:${generation}:parallel-shard:${shard}`;
   const suffix=createHmac('sha256',base.sessionId+'@'+base.operatorId)
-    .update(`sg-real-trial-v1:${trialId}:parallel-shard:${shard}`).digest('hex');
+    .update(context).digest('hex');
   const sessionId=base.sessionId.slice(0,5)+suffix.slice(0,32);
   assert.notEqual(sessionId,base.sessionId);
   return {...base,sessionId};

@@ -3,6 +3,17 @@ import test from 'node:test';
 import {gameForShard} from './demo-sessions.mjs';
 const base={id:32471,runtimeSlug:'bookofsevens96',serverAddress:'ogs-gdm-usnj.nyxop.net/nextgen',mode:'demo',
   operatorId:'explicit-offline-fixture',sessionId:'Free:explicit-offline-fixture',currency:'USD'};
+
+test('reviewed generation creates twenty new stable sessions while legacy derivation stays unchanged',()=>{
+ const plan={campaignId:'sg_round_one_20260928',phase:1,gameId:32471,runtimeSlug:base.runtimeSlug};
+ const old=Array.from({length:20},(_,i)=>gameForShard(base,i,'sg_r1_20260928_32471',plan).sessionId);
+ const next={...plan,demoGeneration:'a'.repeat(64)};
+ const fresh=Array.from({length:20},(_,i)=>gameForShard(base,i,'sg_r1_20260928_32471',next).sessionId);
+ assert.equal(new Set(fresh).size,20);assert(fresh.every(x=>!old.includes(x)));
+ assert.deepEqual(fresh,Array.from({length:20},(_,i)=>gameForShard(base,i,'sg_r1_20260928_32471',next).sessionId));
+ assert.notEqual(gameForShard(base,0,'sg_r1_20260928_32471',{...next,demoGeneration:'b'.repeat(64)}).sessionId,fresh[0]);
+ for(const demoGeneration of ['',null,'../random',1])assert.throws(()=>gameForShard(base,0,'sg_r1_20260928_32471',{...plan,demoGeneration}));
+});
 test('twenty independent stable demo identifiers preserve other configuration',()=>{
   const games=Array.from({length:20},(_,i)=>gameForShard(base,i));
   assert.equal(new Set(games.map(g=>g.sessionId)).size,20);

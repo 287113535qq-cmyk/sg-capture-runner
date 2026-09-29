@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 import {GameRuleEvidence} from './game-rule-evidence.mjs';
 import {requireShortRun} from './protocol-recovery-core.mjs';
+import {auditSessionOwner} from './demo-session-audit.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // Release the hosted-runner slot while the last ranges belong to other workers.
@@ -97,13 +98,13 @@ export class GithubCampaign {
   async audit(plan){
     const pool=(await this.store.get('state','pool:'+plan.trialId)).value;
     assert(pool.confirmed===plan.target && Object.values(pool.workers).every(x=>!x.activeBatch&&x.leaseUntil<=this.now()));
-    let after=0,count=0;const digest=createHash('sha256'),rules=new GameRuleEvidence({plan});
+    let after=0,count=0;const digest=createHash('sha256'),rules=new GameRuleEvidence({plan}),sessionAuditCache=new Map();
     while(true){
       await this.store.writable();
       const rows=await this.transport.request('rounds_scan',{trialId:plan.trialId,after});if(!rows.length)break;
       for(const record of rows){
         assert(record.sequence>after && record.sequence<=plan.target && record.fixtureOnly===false && record.buy===0);
-        assert(pool.workers[String(record.shardId)]?.sessionHash===record.sourceSessionHash,'AUDIT_SESSION_CHANGED');
+        await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
         await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
         rules.observeVerified(record);
         digest.update(stable([record._id,record.contentHash])+'\n');after=record.sequence;count++;
