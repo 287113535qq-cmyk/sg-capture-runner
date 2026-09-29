@@ -172,6 +172,8 @@
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
+    "docs/demon-rebind-session-stop-20260929-result.json",
+    "docs/demon-rebind-session-stop-20260929.md",
     "docs/foam-session-recovery-20260929.md",
     "docs/foam-terminal-recovery-20260929.md",
     "docs/pick-bonus-recovery-20260929.md",
@@ -187,8 +189,10 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "39ba747c812a247adaed7356be80f34f56a7ae8712ca58275ff11ee6d9bee3c9",
+    "docs/continuous-processing.md": "8c641debbcb8f9f1d9b018f16c7fc6cf0a4e52bb113fa2a8de228469073cf6c1",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/demon-rebind-session-stop-20260929-result.json": "130e861c1348f012a47aa4fcf2017e0dbaf7a0a0430f6c1590b829ed6b1f9022",
+    "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
     "docs/foam-session-recovery-20260929.md": "810f7a6cca6a3d8e6f71e61b5742dc7570ab8dbb92eff23e9ce2db494926bc74",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/pick-bonus-recovery-20260929.md": "91ef1c61726e43b7509357a019969b8819ecdca81451e0a865b0795cfbaf6b6b",
@@ -210,5 +214,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "eb671ccd347a09222119f414f30a66d46e063bd284374379b4d5f10ef87a3d1d"
+  "ruleHash": "526f24ba26beaa4a32b52a7b5e217147db307ca5b13421f78a25733eb6f8720f"
 }

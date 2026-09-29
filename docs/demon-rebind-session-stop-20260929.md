@@ -1,0 +1,15 @@
+# 32739 新许可应用与明确会话拒绝
+
+2026-09-29，第二账号的32836先自然完成299900个新局全文终审，加100个已核验历史局达到300000；累计完成14款。正式运行36510315315及原排队运行36512706572均成功结束。真实game-rules观察日志已经生成，代码e111853，终审recordsHash为`2b3643f4e3c54e61bd979eb805b4a20f1cc9a244d7805d6a31b330caef7962b9`。没有取消正常采集或为档案重扫已完成数据。
+
+确认两仓库没有运行/排队、3096个相关批次租约和所有worker租约到期、两个hold均false后，primary维护36513548627成功。固定代码`00b7869e167bcd289af7e41c53b6d27b46006c91`，新proof `cf36d2dc3eba0a9bf5125dba97eb083cefeb5f1c3dae97e119a7458da7ff7315`已经应用，不能重跑。164条原始/标准化/Mongo全文不变，4个原pending逐条保留；维护源请求0、删除0、旧BET重发0。旧过期许可仅作来源证据，新许可已绑定新proof和唯一短采run。
+
+随后同代码短采36513748377:1失败：20个采集步骤启动，但实际只发1个FREE_GAME，新增BET和完整局均0。原batch1/worker3/sequence9明确返回`MSGID=ERROR/EID=ERROR_INVALID_SESSION`，完整拒绝XML追加在原4帧之后，awaiting=null。没有未知在途结果，也没有HTTP失败证据。不能推断确定TTL、网络故障或其他未请求会话失效。
+
+其余原batch5/worker0/sequence432、batch9/worker13/sequence806、batch10/worker2/sequence902完全未请求，原attempt、前缀和续局许可逐条未变。Demon特殊432仍未取得真实FID1结算；没有执行validate/formal。原来已归档的2/115和4/333仍保持归档。
+
+当前primary共同hold为SOURCE_OR_STORAGE_REQUIRES_REVIEW，原因为本次batch1 SOURCE_REJECTED；secondary自身hold为false，但共同保护仍阻止新采。两个SG_TRIAL_ENABLED均false，primary入口被verify保护关闭，secondary入口active。当前队列complete14/active1/parked-protocol8/ready0/needs-adapter155，active标签不代表实际采集。164条完整记录全文再次核验不变，实际源端0。
+
+本次新拒绝尚未生成或应用归档恢复proof。下一步须以新鲜运行/租约/资源和原摘要审查，私有备份后只归档有明确拒绝证据的9旧attempt为source-invalid-session/abandon_without_replay，并建立独立替代attempt；另3个原局仍需原会话接续。不能清runKey、改已应用profile、重用本次proof或把未请求局一并删除。新短采须核验原164不变、独立替代身份、剩余原局真实结算及Demon432奖金，再转正式。
+
+私有备份包含恢复前、恢复后、短采后完整primary现场，32836原终审及观察证据、四个完整运行的metadata/jobs/日志ZIP和冻结profile；原始协议及会话不公开。双份归档核验结果见同名JSON报告。

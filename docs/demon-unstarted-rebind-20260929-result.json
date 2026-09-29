@@ -7,10 +7,46 @@
   "sourceRequestsByCandidate": 0,
   "runtimeMutationsByCandidate": 0,
   "liveDemonFidOneSettlementVerified": false,
-  "reviewedPrimary": {"complete": 164, "mongoFullReadback": 164, "pending": 4, "batches": 15, "workersWithStableBindings": 17, "originalStateUnchanged": true, "runnerAndPythonNext": "FREE_GAME", "oldGrantExpired": true},
-  "validation": {"newDemonRebindTests": 6, "windowsNodeTotal": 173, "linuxPython": 241, "linuxProtocolNode": 44, "linuxRunnerNodeIncludingSharedImports": 129, "collector": 25, "typeScript": true, "offlineFixtureRounds": 3000, "ruleCards": 178, "preflightRun": 36511528799, "preflightConclusion": "success"},
-  "privateArchive": {"copiesReadBack": 2, "bytes": 516293, "files": 8, "sha256": "5bb73fdad2e2c5a9883261d78a8240953bd7d1b7b877b11be737da4554b37a97"},
-  "secondarySnapshot": {"asOfUnixSeconds": 1790648157, "captureRun": 36510315315, "journaled": 171527, "checkpoint": 170500, "activeWorkerLeases": 20, "globalHold": false, "completedAudit": false},
+  "reviewedPrimary": {
+    "complete": 164,
+    "mongoFullReadback": 164,
+    "pending": 4,
+    "batches": 15,
+    "workersWithStableBindings": 17,
+    "originalStateUnchanged": true,
+    "runnerAndPythonNext": "FREE_GAME",
+    "oldGrantExpired": true
+  },
+  "validation": {
+    "newDemonRebindTests": 6,
+    "windowsNodeTotal": 173,
+    "linuxPython": 241,
+    "linuxProtocolNode": 44,
+    "linuxRunnerNodeIncludingSharedImports": 129,
+    "collector": 25,
+    "typeScript": true,
+    "offlineFixtureRounds": 3000,
+    "ruleCards": 178,
+    "preflightRun": 36511528799,
+    "preflightConclusion": "success"
+  },
+  "privateArchive": {
+    "copiesReadBack": 2,
+    "bytes": 516293,
+    "files": 8,
+    "sha256": "5bb73fdad2e2c5a9883261d78a8240953bd7d1b7b877b11be737da4554b37a97"
+  },
+  "secondarySnapshot": {
+    "asOfUnixSeconds": 1790648157,
+    "captureRun": 36510315315,
+    "journaled": 171527,
+    "checkpoint": 170500,
+    "activeWorkerLeases": 20,
+    "globalHold": false,
+    "completedAudit": false
+  },
   "completedGames": 13,
-  "maintenanceBlockedByNormalCapture": true
+  "maintenanceBlockedByNormalCapture": true,
+  "historicalCandidateSnapshot": true,
+  "supersededBy": "docs/demon-rebind-session-stop-20260929-result.json"
 }

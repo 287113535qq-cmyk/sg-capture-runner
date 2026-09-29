@@ -1,5 +1,7 @@
 # Demon 四个未启动续局的新许可
 
+2026-09-29 10:44后续：候选已在自然空闲边界实际应用，固定00b7869、恢复36513548627成功。短采36513748377的原batch1/seq9明确INVALID_SESSION，另3原局未请求；新proof已使用，本文下方“未应用”描述仅保留准备阶段历史。实际证据和下一步见[应用结果](demon-rebind-session-stop-20260929.md)。
+
 primary32739原terminal恢复后一直未启动短采，旧许可绑定9b637908且已过期。164条完整记录和4个原pending均未变；许可过期本身既不证明SG会话失效，也不允许删除原局。
 
 新独立操作器 `demon-rebind-recover` 只接受原terminal proof `1aea9b7064eb4ac5d682c0d6aca5a2a74693b1ebba9a103bbd4ff13d1ed84bef`、runKey仍null、15批/17个稳定worker及全部已绑定摘要。4个原局是batch1/seq9、batch5/seq432、batch9/seq806、batch10/seq902；下一步由Python及独立Runner同时核验为FREE_GAME。原已归档的batch2/115与batch4/333不恢复。
