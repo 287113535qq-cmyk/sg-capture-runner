@@ -7,8 +7,9 @@ import {DemonQueueRecovery} from './demon-queue-recovery.mjs';
 import {RECEIPT_KEY,NEW_PREFIX} from './supersession-receipt.mjs';
 import {original} from './expired-run-review.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
-test('separate candidate binds new adapters while original profile stays frozen',()=>{
+test('applied queue profile stays frozen and binds its reviewed adapters',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-queue-20260929.json','utf8'));
+  assert.equal(hash(p),'933af2a4689c4ea4be7aeabcee62ce0e5842896be12c98118c99c6c6a1b28689');
   const old=JSON.parse(fs.readFileSync('config/demon-two-20260929.json','utf8'));
   assert.equal(hash(old),original.profileHash);
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));

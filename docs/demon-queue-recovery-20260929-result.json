@@ -1,0 +1,50 @@
+{
+  "gameId": 32739,
+  "runtimeCommit": "4b38a0f306e6a3017b0245cd43a014acbc9a51ec",
+  "preflight": 36551003750,
+  "recovery": {
+    "run": 36551302211,
+    "conclusion": "success",
+    "archivedSequence": 117
+  },
+  "short": {
+    "run": 36551698305,
+    "conclusion": "failure",
+    "rejectedSequence": 902,
+    "preservedSequence": 1706,
+    "sourceRequests": {
+      "FREE_GAME": 1,
+      "BET": 0,
+      "INIT": 0
+    },
+    "newComplete": 0
+  },
+  "finalReview": {
+    "at": 1790675667,
+    "complete": 246,
+    "pythonFullVerified": 246,
+    "old246Unchanged": true,
+    "pending": 2,
+    "rejectedSequence": 902,
+    "pendingHash": "d195505eb2c9aa30dd9bdf8db17d11aaadcf15b71aa18f52ce9be9c4d6371bd1",
+    "rawHash": "60bf395f00ef758b6159fd3577ff7e84576191986f51242ccddae93bc3ed3b1e",
+    "preservedSequence": 1706,
+    "preservedHash": "17346abbe7c37869e56d6c83078ba563cbe5aac6c51e27ec8a23d0686ed7b724",
+    "unknownInflight": 0,
+    "newComplete": 0,
+    "newRawFrames": 1,
+    "priorJournalsUnchanged": true,
+    "snapshotHash": "7bdf760a65c1713f49645d615a14327a06913b233145df36057036c6a941ee6c",
+    "fileSha256": "ff8f1a3e84b0780a607b350dd2d2bf148274c410430cdfcb3fda438735552aa9"
+  },
+  "archive": {
+    "bytes": 3175564,
+    "sha256": "66b86cde9a015fcdbffef596252174184d213b07c2d4cbc5674fe8ac111bb47c",
+    "files": 22,
+    "path": ".local\\demon-queue-stop-20260929.tar.gz",
+    "serverReadbackVerified": true,
+    "verifiedFiles": 22
+  },
+  "formal": false,
+  "new902ProofApplied": false
+}

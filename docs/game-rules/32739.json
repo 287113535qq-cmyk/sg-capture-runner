@@ -138,6 +138,7 @@
     "docs/demon-code-protocol.md",
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
+    "docs/demon-queue-recovery-20260929-result.json",
     "docs/demon-rebind-session-stop-20260929.md",
     "docs/foam-terminal-recovery-20260929.md",
     "docs/panda-network-recovery-20260929.md",
@@ -149,12 +150,13 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "a678c419fda99ad22e52a6a642ee9e85c04e5f4a4a170f6afc6304657fe9f272",
+    "docs/continuous-processing.md": "e6a407e649e2da904d7ddd9f0876169321482fbf919d776629d69fe340c7dfd2",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
     "docs/demon-code-recovery-operator-result.json": "070888afd97629caa5005b668d29b509df66e845cba0d7cd0ed006f0f85d0f82",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/demon-queue-recovery-20260929-result.json": "70c34b9c22b3ff79a566fcf655c0c3ef5692ff4c8b6ceb2faa532337a101f8ab",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
@@ -172,5 +174,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "70124d73fa3874d77bbe602203d72390c0349dd9a04c043d88d4f5f106939436"
+  "ruleHash": "ba41dbd1e046dfd540bc6e58d38b04a5cf94c06211f67731dbfdc83008acf137"
 }
