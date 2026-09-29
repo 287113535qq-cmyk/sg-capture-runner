@@ -141,7 +141,7 @@
     "docs/protocol-short-session-stop-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/beaver-free-integration-20260929.md": "95fa680e08794cbf2a18fa8dfe8ed2cafb0dbf16e01524dbd80adaf922ff3606",
+    "docs/beaver-free-integration-20260929.md": "d0c8b3e9ad1afe04ba5be137243e38f5a74ece7a8f71333ccb7eeb519f8cf4a2",
     "docs/beaver-free-observation-20260929.md": "5705dfd3a21956514a96bc346c4ce5b15e14563bc07ca8f62ed6ffa9375db754",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
@@ -153,5 +153,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "382e96cba17712778da1fff0cc8a813bb6c3d535cc65de74f900ea95601089f1"
+  "ruleHash": "491908cda1f19f0cb3dfe910dd2558d44abe001c039be5b637f7c81990d3cd35"
 }
