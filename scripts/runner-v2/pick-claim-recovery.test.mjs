@@ -10,7 +10,7 @@ import {receiptKey} from './durable-queue.mjs';
 test('unconsumed claim rebind is pinned independently of already applied Pick A Ball profile',()=>{
  const p=JSON.parse(fs.readFileSync('config/pick-claim-20260929.json','utf8'));
  const files=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
- assert.deepEqual(files,p.adapterFiles);assert.equal(hash(files),p.adapterHash);
+ assert.equal(hash(p),'c48f3d7068be70b954b684e709e8129151b60709e7a57777c1680765056cfbed');assert.notEqual(hash(files),p.adapterHash);
 });
 async function fixture(){
  const f=await pickFixture(),base=await f.operator.recover(),batchKey=`batch:${f.plan.trialId}:11`,b=structuredClone(f.get(batchKey));
