@@ -16,7 +16,7 @@ Historical FID0 Beaver Bonus with GSD.CFG=0 stays supported. Mixed or nested fea
 FID10/11/20/21, and FID1 entered midway through a round remain rejected.
 
 Local checks: 248 Python, 49 protocol and 419 Runner tests passed; TypeScript type
-checking passed. A private replay through the actual Python, Runner and collector
+checking,25 collector tests and3000 offline end-to-end rounds passed. A private replay through the actual Python, Runner and collector
 entrypoints preserves all normalized fields for100 historical and38 captured
 complete rounds. The saved pending120 hash is unchanged and its offline next
 request remains FREE_GAME. That does not prove its current source session is valid.
@@ -28,4 +28,4 @@ No true FID1 terminal evidence is available yet. A separately reviewed transitio
 must preserve Demon446 and its spent quota, all Beaver records and pending120,
 then bind any continuation to a fresh permission and runtime. Do not clear the
 campaign, mark Beaver ready, reuse a Demon proof, or issue another BET for pending120.
-Linux preflight and the state transition are still pending at this source stage.
+Linux preflight36593781303 succeeded on df4081b716accc39726d88cbec19dfbf20a4ab01, including the concurrent GitHub boundary change. The reviewed state transition and source continuation are still pending; this is not a capture recovery.
