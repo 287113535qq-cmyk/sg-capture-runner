@@ -24,9 +24,18 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  assert(retired?.schema==='sg-retired-demo-result-v1'&&retired.trialId===plan.trialId&&retired.sourceRequests===0&&retired.newBetAllowance===0,'ROLLOVER_RETIREMENT_MISSING');
  assert(Number.isSafeInteger(pool.nextBatchId)&&pool.nextBatchId>=1&&pool.nextBatchId<=101,'ROLLOVER_BATCH_BOUND');
  const keys=Array.from({length:pool.nextBatchId-1},(_,i)=>`batch:${plan.trialId}:${i+1}`),rows=keys.length?await store.getMany('state',keys):[];
- assert(rows.every(Boolean),'ROLLOVER_BATCH_MISSING');const batches=rows.map(x=>x.value),records=[];
+ assert(rows.every(Boolean),'ROLLOVER_BATCH_MISSING');const batches=rows.map(x=>x.value),records=[],unchangedRetiredBatches={};
+ let retirementBefore;
  for(const b of batches){
-  assert(b.retiredDemo===pool.retiredDemo&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&b.checkpoint===b.journaled&&b.leaseUntil<=now(),'ROLLOVER_BATCH_UNSAFE');
+  assert(!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&b.checkpoint===b.journaled&&b.leaseUntil<=now(),'ROLLOVER_BATCH_UNSAFE');
+  if(b.retiredDemo!==pool.retiredDemo){
+   // Already flushed or empty history is preserved verbatim by retirement.
+   retirementBefore??=await get('journal',pool.retiredDemo+':before');
+   assert(retirementBefore?.schema==='sg-retired-demo-v1'&&hash(retirementBefore)===retired.beforeHash
+    &&hash(retirementBefore.plan)===hash(oldPlan)
+    &&hash(retirementBefore.batches.find(x=>x.id===b.id))===hash(b),'ROLLOVER_UNCHANGED_RETIREMENT_PROOF');
+   unchangedRetiredBatches[b.id]=hash(b);
+  }
   const ids=Array.from({length:b.journaled-b.start+1},(_,i)=>receiptKey(plan.trialId,b.start+i));
   const got=ids.length?await store.getMany('journal',ids):[];assert(got.every(Boolean),'ROLLOVER_RECEIPT_MISSING');
   for(const {value:r} of got){assert(r.batchId===b.id&&r.shardId===b.worker&&r.sourceSessionHash===b.sessionHash,'ROLLOVER_SESSION_CHANGED');assert((await parser.call({op:'verify',plan:oldPlan,raw:r.raw,record:r})).verified,'ROLLOVER_INVALID_COMPLETE');records.push(r);}
@@ -41,7 +50,8 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  const before={campaign,pool,fromPool,batches,sourceBatches,oldPlan,fromPlan,recordsHash:hash(records),commit,run,at:now()};
  const spec={schema:'sg-demo-generation-v1',generation:plan.demoGeneration,trialId:plan.trialId,gameId:plan.gameId,planHash:hash(plan),commit,run,createdAt:now(),expiresAt,firstBatchId:pool.nextBatchId,
   historicalBatches:Object.fromEntries(batches.map(b=>[b.id,hash(b)])),retirement:pool.retiredDemo,retirementHash:hash(retired),beforeHash:hash(before),completePreserved:records.length,perWorker:5,workers:20,newBetAllowance:100,
-  oldSessions:Object.values(pool.workers).map(w=>w.sessionHash)};
+  oldSessions:Object.values(pool.workers).map(w=>w.sessionHash),
+  ...(Object.keys(unchangedRetiredBatches).length?{unchangedRetiredBatches}:{})};
  await save(key+':before',before);await save(key,spec);
  await save(key+':parked-source',{gameId:fromPlan.gameId,plan:fromPlan,campaign,pool:fromPool,at:now()});
  await boundary();

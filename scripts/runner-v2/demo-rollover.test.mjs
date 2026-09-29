@@ -44,3 +44,23 @@ test('fifth new BET is allowed, sixth and old or extra batches are refused',asyn
 test('retirement missing or old batch not fully flushed cannot roll over',async()=>{
  for(const kind of ['missing','pending','unflushed']){const f=fixture();if(kind==='missing')f.docs.delete('journal/'+f.batch.retiredDemo+':complete');if(kind==='pending')f.batch.pending={awaiting:'unknown'};if(kind==='unflushed')f.batch.checkpoint=1;await assert.rejects(rolloverDemo(f.args));assert(!f.get('journal',f.key+':before'));}
 });
+
+test('unchanged flushed history requires completed retirement before hash and remains auditable',async()=>{
+ const {auditSessionOwner}=await import('./demo-session-audit.mjs');
+ const f=fixture(),key='batch:'+f.args.plan.trialId+':1',b=f.docs.get('state/'+key).value;
+ delete b.retiredDemo;
+ const pool=f.get('state','pool:'+f.args.plan.trialId).value,before={schema:'sg-retired-demo-v1',plan:f.args.oldPlan,batches:[structuredClone(b)]};
+ const done=f.docs.get('journal/'+pool.retiredDemo+':complete').value;done.beforeHash=hash(before);
+ f.docs.set('journal/'+pool.retiredDemo+':before',{value:before});
+ const original=hash(b);await rolloverDemo(f.args);
+ assert.equal(hash(f.get('state',key).value),original);
+ const record={batchId:1,shardId:7,sequence:1,sourceSessionHash:'old'};
+ await auditSessionOwner({store:f.args.store,plan:f.args.plan,pool:f.get('state','pool:'+f.args.plan.trialId).value,record});
+ before.batches[0].sessionHash='forged';
+ await assert.rejects(auditSessionOwner({store:f.args.store,plan:f.args.plan,pool:f.get('state','pool:'+f.args.plan.trialId).value,record}),/RETIREMENT_PROOF/);
+});
+test('unmarked history without completed immutable before proof cannot roll over',async()=>{
+ const f=fixture();delete f.docs.get('state/batch:'+f.args.plan.trialId+':1').value.retiredDemo;
+ await assert.rejects(rolloverDemo(f.args),/RETIREMENT_PROOF/);
+ assert(![...f.docs.keys()].some(k=>k.startsWith('journal/demo-generation:')));
+});

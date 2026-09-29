@@ -13,6 +13,8 @@ from quarterback_fields import QuarterbackFields, SOURCE as QUARTERBACK_SOURCE
 
 from beaver_fields import BeaverSequence, SOURCE as BEAVER_SOURCE
 
+from luxor_fields import LuxorSequence, SOURCE as LUXOR_SOURCE
+
 adapters = {}
 
 
@@ -21,7 +23,7 @@ def execute(request):
     key = digest(plan)
     if key not in adapters:
         plan = validate_pool_plan(plan)
-        cls = {BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
+        cls = {LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = cls(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']

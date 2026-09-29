@@ -1,3 +1,4 @@
+import {luxorFields} from './sg.luxor';
 import {beaverFields} from './sg.beaver';
 import {validateDemonNestedMapping} from './sg.demon';
 import { buildRoundDoc, SGTrafficEntry } from './sg.round';
@@ -10,6 +11,11 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
   if (raw.protocol !== 'nextgen' || raw.roundFieldsVersion !== ROUND_FIELDS_VERSION) throw new Error('SG_UNSUPPORTED_ROUND_CONTRACT');
   if(raw.sourceKey==='thedemoncodecap250c96-round-one-base-v1' && raw.steps.some((s:any)=>new URLSearchParams(s.responsePayload).get('FID')==='0|1|'))validateDemonNestedMapping(raw,mapping);
+  if(raw.sourceKey === 'pyramidsofluxor96-round-one-base-v1') {
+    const value=luxorFields(raw,mapping.typeMappingHash);
+    if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_LUXOR_MAPPING_MISMATCH');
+    return value;
+  }
   if(raw.sourceKey === 'beaverlasvegas96-round-one-base-v1') {
     const fields = beaverFields(raw, {gameId:32820,sourceKey:raw.sourceKey,betRaw:100,
       requestParams:{AP:'false',BPL:'5',GN:'beaverlasvegas96',LB:'20'}}, mapping.typeMappingHash,mapping.typeMappingHash);

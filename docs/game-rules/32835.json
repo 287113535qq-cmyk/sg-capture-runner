@@ -22,29 +22,34 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "luxor-standalone-free-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "首BET独立FID2且NFG>0时FREE_GAME；完整链保持单FID2，显式TFG=NFG+CFGG且逐帧CFGG加1，允许TFG增加的重触发。旧普通及独立FID0原规则保留。",
+    "complete": "FID2完整链至少一帧FREE_GAME，上一帧NFG1到明确NFG0且总次数不变，再核XML、会话、B/AB、TW及实际下注100；NFG0但FID转0/1/10/11不能直接视为结束。",
+    "bounds": "真实旧82完整Python/Runner/TS全文原样；真实BET的FID2/NFG3仅半局，离线next为FREE_GAME但不续接。新终局和重触发仅合成测试，无真实FID2终局，不标ready。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/luxor_fields.py",
+      "scripts/trial/luxor-protocol.mjs",
+      "collector/sg.luxor.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
       "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
       "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
       "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "FID": "2免费、0wild respin、1pyramid respin、10/11cascade；新增只首BET独立2，混合或切换仍停该游戏。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "NFG / TFG / CFGG": "独立2必须显式提供剩余/总数/当前进度，缺失不沿用客户端补0默认。",
+      "GSD.FID / CFG": "独立2仅接受内层FID缺失或[]；未知CFG拒绝。动画字段保留，不当作源请求指令。"
     }
   },
   "typeMappings": {
@@ -70,15 +75,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "pyramidsofluxor96-round-one-base-v1-luxor-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "luxor-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   },
   "mappingHashes": {
-    "pyramidsofluxor96-round-one-base-v1": "6c451dc606f8818315a31908dec4c6868ddfb74f6115f05b92e1e5b6efcae313"
+    "pyramidsofluxor96-round-one-base-v1": "6c451dc606f8818315a31908dec4c6868ddfb74f6115f05b92e1e5b6efcae313",
+    "pyramidsofluxor96-round-one-base-v1-luxor-free-v1": "67130de00cbba1d7241a4c6f1c69e61687d88c9d6a43ebb4ed539f085c68b4ad"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -90,18 +122,27 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "2e81652660b0948cbd7c3eb990b5f77f05c8f12c17b7c9ca369c5f0f1624957c",
-    "scripts/runner-v2/record_fields.py": "8e15ebf138ff6313c2554d266b1b3c4c197828e99f77a655c2f3a81afb65b11b",
-    "service/game_rule_catalog.py": "454e9a35ac305ed3120bc83943130e5f35f538826734a6ea81dbefe9c126f142"
+    "service/round_fields.py": "9cb969d49cd2f4921da2656205b287850b24e41b4f0332849a824ec3b58dc810",
+    "scripts/runner-v2/record_fields.py": "fca56b37375a66cae37a7d1ae1a7c298167f8239abb5ec119fb681fa10483ce6",
+    "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
+    "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
+    "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004",
+    "service/game_rule_catalog.py": "27dd4e018404d1c80921a65d5e0e7554c5c0959c52a763ec4fc2d3ec814559e5"
   },
-  "reviewDocuments": [],
+  "reviewDocuments": [
+    "docs/luxor-free-integration-20260930.md"
+  ],
   "analysisDocuments": [
     "docs/complete-count-allocation-20260930.md",
+    "docs/continuous-processing.md",
+    "docs/luxor-free-integration-20260930.md",
     "docs/primary-natural-parks-20260929.md",
     "docs/protocol-short-session-stop-20260929.md"
   ],
   "analysisDocumentHashes": {
     "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
+    "docs/continuous-processing.md": "912731b482820ceb644a0152dc09ae4735ced9cc8c038b6e1f998729c5f5fe41",
+    "docs/luxor-free-integration-20260930.md": "28e497af47801f0824bf62e0465deb35f458fbef7f82211c58ff21abaab74117",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
   },
@@ -112,5 +153,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1f2d8977e2ff709a633e42d74b393b2e1375a89665fbda774508516f0a2c48d0"
+  "ruleHash": "547d0b916a5b3699601e361722fd1404b3b1f5cb9020903e1ba1ebe129fa9ea0"
 }

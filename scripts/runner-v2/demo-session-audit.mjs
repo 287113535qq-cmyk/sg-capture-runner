@@ -21,7 +21,7 @@ export async function auditSessionOwner({store,plan,pool,record,cache=new Map()}
   &&record.sequence>=batch.start&&record.sequence<=batch.checkpoint&&batch.checkpoint<=batch.journaled,'AUDIT_BATCH_SESSION_CHANGED');
  if(batch.id<spec.firstBatchId){
   assert(hash(batch)===spec.historicalBatches[String(batch.id)]&&batch.pending===null&&batch.checkpoint===batch.journaled,'AUDIT_HISTORICAL_BATCH_CHANGED');
-  if(spec.schema==='sg-demo-generation-v1')assert(batch.retiredDemo===spec.retirement,'AUDIT_HISTORICAL_BATCH_CHANGED');
+  if(spec.schema==='sg-demo-generation-v1')assert(batch.retiredDemo===spec.retirement||spec.unchangedRetiredBatches?.[String(batch.id)]===hash(batch),'AUDIT_HISTORICAL_BATCH_CHANGED');
   else {
    const before=await read('journal',key+':before');
    assert(before&&hash(before)===spec.beforeHash&&hash(before.batches.find(b=>b.id===batch.id))===hash(batch),'AUDIT_RESIDUAL_HISTORY');
@@ -29,6 +29,12 @@ export async function auditSessionOwner({store,plan,pool,record,cache=new Map()}
   const retired=await read('journal',spec.retirement+':complete');
   assert(retired&&hash(retired)===spec.retirementHash&&retired.trialId===plan.trialId
    &&retired.schema==='sg-retired-demo-result-v1','AUDIT_RETIREMENT_CHANGED');
+  if(spec.schema==='sg-demo-generation-v1'&&batch.retiredDemo!==spec.retirement){
+   const before=await read('journal',spec.retirement+':before');
+   assert(before?.schema==='sg-retired-demo-v1'&&hash(before)===retired.beforeHash
+    &&before.plan?.trialId===plan.trialId&&hash(before.batches.find(b=>b.id===batch.id))===hash(batch),
+    'AUDIT_UNCHANGED_RETIREMENT_PROOF');
+  }
  }else{
   assert(pool.workers[String(record.shardId)]?.sessionHash===record.sourceSessionHash,'AUDIT_SESSION_CHANGED');
  }

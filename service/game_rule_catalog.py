@@ -89,6 +89,15 @@ def contract(game_id):
             'NFG / TFG / CFGG': '剩余/总数/当前免费计数必须显式保存；重触发不强制每帧减1。',
             'GSD.CFG': '官方客户端仅CFG=0激活Beaver Bonus；实际FID1/CFG1/NFG5仍应免费继续。源码仅CFG0判Beaver，CFG1仅在独立FID1允许；新v2核TFG=NFG+CFGG、进度及终局，旧base/free-v1映射不变。',
         })
+    elif game_id == 32835:
+        native.update({'family': 'luxor-standalone-free-v1',
+            'continue': '首BET独立FID2且NFG>0时FREE_GAME；完整链保持单FID2，显式TFG=NFG+CFGG且逐帧CFGG加1，允许TFG增加的重触发。旧普通及独立FID0原规则保留。',
+            'complete': 'FID2完整链至少一帧FREE_GAME，上一帧NFG1到明确NFG0且总次数不变，再核XML、会话、B/AB、TW及实际下注100；NFG0但FID转0/1/10/11不能直接视为结束。',
+            'bounds': '真实旧82完整Python/Runner/TS全文原样；真实BET的FID2/NFG3仅半局，离线next为FREE_GAME但不续接。新终局和重触发仅合成测试，无真实FID2终局，不标ready。'})
+        native['files'] += ['service/luxor_fields.py', 'scripts/trial/luxor-protocol.mjs', 'collector/sg.luxor.ts']
+        native['fields'].update({'FID': '2免费、0wild respin、1pyramid respin、10/11cascade；新增只首BET独立2，混合或切换仍停该游戏。',
+            'NFG / TFG / CFGG': '独立2必须显式提供剩余/总数/当前进度，缺失不沿用客户端补0默认。',
+            'GSD.FID / CFG': '独立2仅接受内层FID缺失或[]；未知CFG拒绝。动画字段保留，不当作源请求指令。'})
     elif game_id == 32836:
         native.update({'family': 'quarterback-foam-v1',
             'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
@@ -105,6 +114,7 @@ def contract(game_id):
 
 
 REVIEW_DOCS = {
+    32835: ['docs/luxor-free-integration-20260930.md'],
     32820: ['docs/beaver-free-observation-20260929.md', 'docs/beaver-free-integration-20260929.md', 'docs/demo-pilot-result-20260930.md', 'docs/beaver-cfg1-20260930.md'],
     32739: ['docs/demon-pair-recovery-20260929.md', 'docs/demon-nested-recovery-20260929.md', 'docs/demon-nested-rebind-20260929.md', 'docs/sg-efficiency-plan-20260929.md'],
     32651: ['docs/squid-jackpot-protocol.md'],

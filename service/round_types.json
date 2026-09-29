@@ -1162,6 +1162,38 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "pyramidsofluxor96-round-one-base-v1-luxor-free-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32835,
+        "runtimeGameId": 33195,
+        "sourceId": "73a4272b-dd88-49dc-b0cf-f3a084ddb0e0"
+      },
+      "featureSelector": "luxor-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   }
 }
