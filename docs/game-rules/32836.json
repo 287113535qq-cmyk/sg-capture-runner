@@ -175,6 +175,7 @@
     "docs/foam-session-recovery-20260929.md",
     "docs/foam-terminal-recovery-20260929.md",
     "docs/pick-bonus-recovery-20260929.md",
+    "docs/pick-session-recovery-20260929.md",
     "docs/protocol-short-session-stop-20260929-result.json",
     "docs/protocol-short-session-stop-20260929.md",
     "docs/quarterback-foam-adapter-result.json",
@@ -191,6 +192,7 @@
     "docs/foam-session-recovery-20260929.md": "810f7a6cca6a3d8e6f71e61b5742dc7570ab8dbb92eff23e9ce2db494926bc74",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/pick-bonus-recovery-20260929.md": "91ef1c61726e43b7509357a019969b8819ecdca81451e0a865b0795cfbaf6b6b",
+    "docs/pick-session-recovery-20260929.md": "14d7e10a546f73deabb66736b5b76bb4d103086149d11574613cf8241c65ee73",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-foam-adapter-result.json": "1f703c69c056688bcafb537c238c6cecee430458291d7a31c6b38c86ab600375",
@@ -208,5 +210,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0b004024c89dbda7a1e6e3cccbb1510f5661cba9751aa8392b339ca86714273a"
+  "ruleHash": "ceed3e9e7280d79875527d9cddd2c715d7fc03b21005b2f15edc1fa9c5ed6608"
 }
