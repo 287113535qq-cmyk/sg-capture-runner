@@ -14,7 +14,7 @@ function retirementFixture(){
  return {args,docs,mongo,get,fail:k=>failAt=k,corrupt:()=>corrupt=true,busy:()=>busy=true,batch};
 }
 
-async function fixture(){
+async function fixture(regular=false){
  const f=retirementFixture(),oldPlan=f.args.plan;oldPlan.gameId=32835;oldPlan.target=300000;
  const generation='a'.repeat(64),sourceGeneration='b'.repeat(64),fromBase={gameId:32820,trialId:'synthetic-source',buy:0,phase:1},fromPlan={...fromBase,demoGeneration:sourceGeneration};
  const plan={...oldPlan,demoGeneration:generation},plans={32835:oldPlan,32820:fromBase};
@@ -24,6 +24,14 @@ async function fixture(){
  f.docs.set('journal/'+parentKey,{value:parent});f.docs.set('journal/'+parentKey+':complete',{value:{schema:'sg-demo-generation-complete-v1',specHash:hash(parent),commit:parent.commit,run:parent.run}});
  f.docs.set('state/pool:'+fromPlan.trialId,{value:{enabled:true,workers:{},nextBatchId:2,planHash:hash(fromPlan),demoGeneration:{specHash:hash(parent)},confirmed:2}});
  f.docs.set('state/batch:'+fromPlan.trialId+':1',{value:{id:1,worker:0,start:1,end:100,journaled:2,checkpoint:2,leaseUntil:0,pending:null}});
+ if(regular){
+  Object.assign(parent,{schema:'sg-demo-generation-v1',workers:20,perWorker:5,newBetAllowance:100});delete parent.budgets;
+  const source=f.docs.get('state/pool:'+fromPlan.trialId).value;source.nextBatchId=21;source.confirmed=100;source.demoGeneration.specHash=hash(parent);
+  f.docs.set('journal/'+parentKey,{value:parent});f.docs.get('journal/'+parentKey+':complete').value.specHash=hash(parent);
+  for(let w=0;w<20;w++){const start=w*100+1,b={id:w+1,worker:w,start,end:start+99,journaled:start+4,checkpoint:start+4,leaseUntil:0,pending:null,sessionHash:'source-'+w};f.docs.set('state/batch:'+fromPlan.trialId+':'+b.id,{value:b});
+   for(let n=start;n<start+5;n++)f.docs.set('journal/'+receiptKey(fromPlan.trialId,n),{value:{trialId:fromPlan.trialId,batchId:b.id,shardId:w,sequence:n,sourceSessionHash:b.sessionHash,raw:{synthetic:true,steps:[{msgId:'BET'}]}}});
+  }
+ }
  f.docs.set('state/campaign',{value:{enabled:true,activeGame:32820,games:[{game_id:32820,status:'active'},{game_id:32835,status:'parked-protocol'}],protocolValidation:{runKey:'capture-run:10:1'}}});
  const profile={schema:'sg-demo-next-game-v1',gameId:32835,fromGameId:32820,generation,sourceGeneration,sourcePlanHash:hash(fromPlan),sourceSpecHash:hash(parent),sourceRunKey:'capture-run:10:1',oldPlanHash:hash(oldPlan),planHash:hash(plan),workers:20,perWorker:5,newBetAllowance:100,completePreserved:2,abandonedAttempts:1,createdAt:0,expiresAt:7200000};
  profile.sceneHash=hash(await nextDemoScene(f.args.store,oldPlan,fromPlan));
@@ -56,4 +64,10 @@ test('Mongo or archive failure never creates a fresh generation or clears the ol
  for(const cause of ['mongo','archive']){const f=await fixture();if(cause==='mongo')f.corrupt();else f.fail('retired-demo:synthetic-demo:'+hash(f.get('state','pool:synthetic-demo').value).slice(0,16)+':analysis');
   await assert.rejects(nextDemoGame(f.args));assert(f.get('state','batch:synthetic-demo:1').value.pending);assert(!f.get('journal',f.key+':complete'));await assert.rejects(f.admit());
  }
+});
+
+test('completed v1 pilot takes actual nextGame retirement, rollover and fresh admission path',async()=>{
+ const f=await fixture(true),sourceBefore=hash([...f.docs].filter(([k])=>k.startsWith('state/batch:synthetic-source:')));
+ const result=await nextDemoGame(f.args);assert.equal(result.newBetAllowance,100);assert.equal(result.sourceRequests,0);assert.equal((await f.admit()).limit,5);
+ assert.equal(hash([...f.docs].filter(([k])=>k.startsWith('state/batch:synthetic-source:'))),sourceBefore);assert.equal(f.get('state','pool:synthetic-source').value.enabled,false);
 });

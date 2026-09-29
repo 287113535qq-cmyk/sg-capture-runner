@@ -3,6 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {retireDemoPool} from './retire-demo-pool.mjs';
 import {rolloverDemo} from './demo-rollover.mjs';
 import {applyDemoPilot} from './demo-pilot-plan.mjs';
+import {reviewSpentDemoGeneration} from './demo-spent-generation.mjs';
 
 export async function nextDemoScene(store,oldPlan,fromPlan){
  const get=async k=>(await store.get('state',k))?.value;
@@ -26,17 +27,7 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  assert(hash(scene)===profile.sceneHash&&!scene.pool.enabled&&!scene.pool.demoGeneration
   &&scene.campaign.activeGame===fromPlan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&scene.fromPool.planHash===hash(fromPlan),'NEXT_GAME_SCENE_CHANGED');
- const parentKey=`demo-generation:${fromPlan.trialId}:${fromPlan.demoGeneration}`;
- const parent=(await store.get('journal',parentKey))?.value,done=(await store.get('journal',parentKey+':complete'))?.value;
- assert(parent&&hash(parent)===profile.sourceSpecHash&&hash(parent)===scene.fromPool.demoGeneration?.specHash
-  &&done?.specHash===hash(parent)&&done.schema==='sg-demo-generation-complete-v1'&&done.commit===parent.commit&&done.run===parent.run
-  &&parent.planHash===hash(fromPlan)&&parent.trialId===fromPlan.trialId&&parent.generation===fromPlan.demoGeneration
-  &&parent.schema==='sg-demo-generation-residual-v1'&&Array.isArray(parent.budgets)&&parent.budgets.length===20,'NEXT_GAME_SOURCE_PROOF');
- for(let worker=0;worker<20;worker++){
-  const rows=scene.sourceBatches.filter(b=>b.id>=parent.firstBatchId&&b.worker===worker);
-  assert(rows.reduce((n,b)=>n+b.journaled-b.start+1,0)===parent.budgets[worker],'NEXT_GAME_SOURCE_QUOTA_NOT_SPENT');
- }
- assert(scene.sourceBatches.every(b=>!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&b.checkpoint===b.journaled&&b.leaseUntil<=now()),'NEXT_GAME_SOURCE_UNSETTLED');
+ await reviewSpentDemoGeneration({store,parser,basePlan:plans[profile.fromGameId],fromPlan,profile,scene,now});
  const key=`next-demo-game:${plan.trialId}:${plan.demoGeneration}`;
  assert(!(await store.get('journal',key+':before')),'NEXT_GAME_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'NEXT_GAME_READBACK');};

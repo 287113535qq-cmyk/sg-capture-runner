@@ -96,11 +96,15 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/continuous-processing.md",
+    "docs/jinzita-next-review-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md"
   ],
   "analysisDocumentHashes": {
+    "docs/continuous-processing.md": "6523b64f28513f4b74cc03da1ba5a49fc83366714a297323baf14a43f32f60ec",
+    "docs/jinzita-next-review-20260930.md": "b0c3a1fc914f7813e128326c150f5470546d08c11139620d9b5dd87da603ea18",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
@@ -112,5 +116,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9a2d6d13b61c1a640b3ed4517f975340d7d036800fae4b03f826c04408a80935"
+  "ruleHash": "4872d375f3ab1cfe2bb4fcb15bb010b78e1f9bf82735a4c06b36cb4d5961c8ab"
 }

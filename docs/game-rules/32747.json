@@ -101,7 +101,7 @@
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "a22aae0f29e0b814a6c1ffeda0b84863d558ebc3683d7d2c77b77ae002898ade",
+    "docs/continuous-processing.md": "6523b64f28513f4b74cc03da1ba5a49fc83366714a297323baf14a43f32f60ec",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2cf7750bb259cb912831f42e386c5ce0ba7d811e371a0d8f04f487533d58c34f"
+  "ruleHash": "29e03684b0892f72ea532c9af5801d6ef933b4f2d34411af75a7530f53b10043"
 }
