@@ -1,5 +1,7 @@
 # Demon continuation-first short capture
 
+Historical candidate report below. The806 recovery and staged failure barrier were subsequently executed; see [actual results](demon-pending-session-recovery-20260929.md). The latest434 rejection has no new recovery proof.
+
 This is an implemented, offline-tested runtime candidate. It has not recovered sequence806, created a runtime proof, resumed any pending round, or sent an SG request. The existing source hold and both scheduling variables remain unchanged.
 
 ## Why separate hosted jobs
