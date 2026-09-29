@@ -190,7 +190,7 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "6553127770686964ce0dc2727d2c11e8e787838b86c25f4a5e5a9b548bc2c0cb",
+    "docs/continuous-processing.md": "2d5537159759bbffcf93f4dbfec7835e8aa68913877257776b45e1e021761e46",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/demon-rebind-session-stop-20260929-result.json": "130e861c1348f012a47aa4fcf2017e0dbaf7a0a0430f6c1590b829ed6b1f9022",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
@@ -216,5 +216,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "37235cf0e788da1486080fa0c1cc188ff00502db8217d4d55cc2ac605b49ccfb"
+  "ruleHash": "17948731888b97fd00dc66ddef6dc83e4cddb3626004ef672a610861e2ddadec"
 }

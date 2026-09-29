@@ -1,0 +1,103 @@
+{
+  "at": 1790653798,
+  "snapshotHash": "9e28a5849ec9b18099cf99741431adcb949a57fe072570f40eef947c9db75158",
+  "complete": 246,
+  "mongoFullEqual": 225,
+  "pendingFlush": 21,
+  "old195Preserved": true,
+  "unknownInFlight": 0,
+  "pending": [
+    {
+      "batch": 2,
+      "worker": 1,
+      "sequence": 117,
+      "frames": 1,
+      "pendingHash": "3de84b8aa42b9bd56e5547e7bc2790ed7591b43ae6303f1aff4bd195a5af2af2",
+      "rawHash": "d3dbc5c0e813ff429e649e6af71bf0f4a3aed93122ce5b4f400d6b5d9bdfc899",
+      "explicitRejection": false,
+      "unrequestedOriginal": false,
+      "unknown": false
+    },
+    {
+      "batch": 5,
+      "worker": 0,
+      "sequence": 434,
+      "frames": 3,
+      "pendingHash": "233431edfeeef6d1eccd6cde928ca29def7db6e286dd3c4085a513050366ad10",
+      "rawHash": "d1dac8acc599f692019be62dc23e044a1586d4f1ba68d107773465f70d34c824",
+      "explicitRejection": false,
+      "unrequestedOriginal": false,
+      "unknown": false
+    },
+    {
+      "batch": 9,
+      "worker": 13,
+      "sequence": 806,
+      "frames": 4,
+      "pendingHash": "e06022696f5e87c90530d27dd976df128cc5e6afe61e11658c1b8f708f278e80",
+      "rawHash": "a19c7c1b00672425f974058bc9ee20c6e9cf7a201738fc03478579d2b251d618",
+      "explicitRejection": true,
+      "unrequestedOriginal": false,
+      "unknown": false
+    },
+    {
+      "batch": 10,
+      "worker": 2,
+      "sequence": 902,
+      "frames": 1,
+      "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7",
+      "rawHash": "fe631a103b1e801e07e59b7047a4d7e6a46f53a08cdfc6a497f3874c362d67b3",
+      "explicitRejection": false,
+      "unrequestedOriginal": true,
+      "unknown": false
+    },
+    {
+      "batch": 18,
+      "worker": 7,
+      "sequence": 1706,
+      "frames": 1,
+      "pendingHash": "17346abbe7c37869e56d6c83078ba563cbe5aac6c51e27ec8a23d0686ed7b724",
+      "rawHash": "07366e8972af1b672622a797e4255fbb50bbe3fc4f307c7f26a4e77d50f1cbcb",
+      "explicitRejection": false,
+      "unrequestedOriginal": false,
+      "unknown": false
+    }
+  ],
+  "replacement432": {
+    "sequence": 432,
+    "distinctAttempt": true,
+    "mongoFullEqual": false,
+    "rawHash": "35179d9d2913f4f7ea6b1df58e242eab90b77f9bfb841e29efc53d7a72c76e5e",
+    "bonus": 0
+  },
+  "newDemonBonus2": [],
+  "short": {
+    "run": 36518623937,
+    "workers": 20,
+    "sourceRequests": 101,
+    "bets": 54,
+    "newComplete": 51,
+    "successfulWorkers": 3,
+    "errors": [
+      {
+        "worker": 13,
+        "error": "SOURCE_REJECTED"
+      }
+    ]
+  },
+  "schema": "sg-demon-feature-session-result-v1",
+  "fixedCommit": "cb56952a820c86e2663a99901fc935b5f9efc3cd",
+  "recoveryRun": 36518251211,
+  "proofHash": "ec23f9e0c9a3e28ef03504cf87e9a952bb0ec63d046d6d00f0c89e5a3f15395f",
+  "recoveryApplied": true,
+  "validationApplied": false,
+  "formalApplied": false,
+  "liveDemonFeatureVerified": false,
+  "completedGames": 14,
+  "archive": {
+    "verifiedFiles": 23,
+    "bytes": 2945326,
+    "sha256": "b36f22f9ae3ae14173d4da8d0dcde93e3a895e34e4f7a77fcdbe5395b45717ec",
+    "snapshotFileSha256": "d1a0b8ce54e2afdd049b7ad85e0a8062c8adcd82925adb997dd5fe337757d23c"
+  }
+}
