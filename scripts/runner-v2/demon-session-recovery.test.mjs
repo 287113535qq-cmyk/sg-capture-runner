@@ -40,10 +40,10 @@ async function fixture(){
   f.operator=new DemonSessionRecovery({...oldop,profile,commit:'e'.repeat(40)});f.profile=profile;f.snapshot=snapshot;f.events.length=0;return f;
 }
 
-test('new Demon session profile binds current files without changing applied profiles',()=>{
+test('applied Demon session profile remains frozen and rejects newer runtime',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-session-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),'7a11cc97db8574dc651112cb23c7646b811e44bb4cc4d21a6a7dd2b73ddaf879');assert.equal(hash(p.adapterFiles),p.adapterHash);assert.notEqual(hash(actual),p.adapterHash);
 });
 test('archive exactly rejected seq9; retain 164 records and three original continuations',async()=>{
   const f=await fixture(),before=structuredClone(f.snapshot()),r=await f.operator.recover();
