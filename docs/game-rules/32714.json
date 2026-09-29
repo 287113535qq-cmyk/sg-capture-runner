@@ -131,7 +131,7 @@
     "service/huff_fields.py": "f17bb20cfd57e00ff3f73cd210cf7bc81aa9d1e1d0919b321417925c2c695b52",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "babec80279caa2f0490a3671faeeefa9430d44d1f6ca6f2cd8b8219d80d9b1f4",
-    "service/game_rule_catalog.py": "6bac7422039867292cbc8b1b5c1e13a937741aafb02f853e941271b17665bb24"
+    "service/game_rule_catalog.py": "454e9a35ac305ed3120bc83943130e5f35f538826734a6ea81dbefe9c126f142"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ee8c7fe54117008aa7c62373b27b887186d50bcca0f85207430ce49a9b59d2b2"
+  "ruleHash": "0310ea261f3faa7eb7714c05feb0d260298cc6e049a378cc24a0b1d921b187e8"
 }

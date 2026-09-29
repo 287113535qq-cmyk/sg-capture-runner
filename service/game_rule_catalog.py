@@ -82,7 +82,7 @@ def contract(game_id):
         native.update({'family': 'beaver-independent-free-cfg1-v2',
             'continue': '独立FID1必须由首BET触发；NFG>0按原会话和下注参数继续FREE_GAME。免费帧必须保留NFG/TFG/CFGG，缺失不补零。',
             'complete': '完整序列至少含一次免费响应，显式NFG=0后核对XML、B/AB、TW与实际下注100；独立FID1映射bonus2，旧FID0映射保持。',
-            'bounds': '新会话试采36624576401新增60完整bonus0并全部Mongo核验，当前trial98；一条FID1免费响应的GSD.CFG=1被本方误判为嵌套，客户端两真实帧均应继续，已精确修正CFG1识别并用新v2映射独立记录；真实两帧离线next为FREE_GAME，不能计完整。该半局已留样作废且pending0，不续接。尚无真实FID1终局，混合/10/11/20/21及中途切FID1仍拒绝，不能标ready。'})
+            'bounds': '新会话试采36624576401新增60完整bonus0并全部Mongo核验，当前trial137（后续36630500660新增39完整：37bonus0/2bonus1），原100 BET预算耗尽；一条FID1免费响应的GSD.CFG=1被本方误判为嵌套，客户端两真实帧均应继续，已精确修正CFG1识别并用新v2映射独立记录；真实两帧离线next为FREE_GAME，不能计完整。该半局已留样作废且pending0，不续接。尚无真实FID1终局，混合/10/11/20/21及中途切FID1仍拒绝，不能标ready。'})
         native['files'] += ['service/beaver_fields.py', 'scripts/trial/beaver-protocol.mjs', 'collector/sg.beaver.ts']
         native['fields'].update({
             'FID': '1=freespins，0=Beaver Bonus；10/11消除与20/21选择仅为客户端观察，未适配。',
