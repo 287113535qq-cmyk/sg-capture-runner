@@ -1,12 +1,10 @@
 # SG 第一轮采集
 
-当前状态（2026-09-29 08:29 北京时间）：累计 **13 / 178 款**，实际采集0。本轮32836精确会话恢复已成功：15条旧待写补齐、118条完整全文核验；仅归档明确INVALID_SESSION的旧113，其独立新attempt在后续短采成功结算并Mongo全文核验，没有重发或接管旧局。
+当前状态（2026-09-29 09:25 北京时间）：累计 **13 / 178 款**，实际采集0。32836的独立FID1 Pick A Ball已实现，新1705局真实四帧结算、stake25/TW500/bonus3通过Python、TypeScript和Mongo全文核验。
 
-短采36502517559新增72条完整日志，随后新batch11/worker38/sequence1008成功BET触发FID1 Pick a Bonus，因尚未适配保留暂停。此次没有会话拒绝或未知请求，两global-hold均false，仅该游戏pool保护；尚未达到318短采验收，未validate/formal。已确认此玩法的三个选择值1/2/3与Foam不同，END还需检查后续功能，详见[新分支证据](docs/quarterback-pick-a-bonus-observation-20260929.md)。
+本轮两次精确维护已应用，补齐旧12待写，全部有效记录保留；两次短采共新增261完整。已修正一次Runner把FID1接续误比为旧CFG2的领取检查。随后原1008接续FEATURE_START明确INVALID_SESSION，保留成功BET与拒绝，共同保护停止；尚未执行新的拒绝归档或validate/formal。不能重用已应用proof，也不能以新1705冒充旧1008已结算。
 
-当前primary164完整/164落库、4原pending完全未变；secondary190完整/178落库、12待写、1pending1008。354条完整原始/规范化/摘要通过，342条Mongo全文一致，原282完整逐条不变。两仓库无活动/排队、两个变量false；primary手动入口active，secondary被verify保护关闭。已应用的新proof不可重跑，1008自然触发不可按会话异常删除。完整恢复/短采/备份结果见[本轮报告](docs/foam-session-recovery-20260929.md)。
-
-持续巡检继续推进FID1及其他未完成适配，保留自然功能现场。下方速度与运行数据均为历史，不是当前实时状态。
+当前primary164/164与4原pending未变；secondary451完整/440Mongo、11待写、唯一pending1008两帧。615完整日志核验、604Mongo全文相等；两变量false，无运行排队。primary入口active、secondary被verify关闭。下一步是新的精确会话异常恢复，见[本轮结果](docs/pick-bonus-recovery-20260929.md)。下方运行数据均为历史。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 

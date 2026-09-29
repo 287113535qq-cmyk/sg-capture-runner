@@ -1,0 +1,205 @@
+{
+  "at": 1790644965,
+  "completeGames": 13,
+  "sourceActive": 0,
+  "adapterCommit": "8f60217767018a79f1fb02f94130ff7c4304b46b",
+  "claimFixCommit": "024f80caf1d63ed812fcdacb444df61216c21936",
+  "preflights": [
+    36505127615,
+    36505289512,
+    36506755181
+  ],
+  "preflightSuccess": true,
+  "pythonTests": 241,
+  "nodeTestsFinal": 160,
+  "recoveries": [
+    {
+      "run": 36505642214,
+      "proof": "9484c5ba3f7e6411e91b23ee120f866101537f4f0a5b18bac6222765ca712136",
+      "complete": 190,
+      "flushed": 12,
+      "pendingPreserved": 1
+    },
+    {
+      "run": 36506986073,
+      "proof": "a03113395a74234cb3dbfec7c5b10ef4df579fdb8095313cf595a1043f659a05",
+      "complete": 380,
+      "flushed": 0,
+      "pendingPreserved": 1
+    }
+  ],
+  "shorts": [
+    {
+      "run": 36505910982,
+      "sourceRequests": 244,
+      "bets": 190,
+      "newComplete": 190,
+      "result": "runner-claim-policy-mismatch-before-source",
+      "original1008Requested": false
+    },
+    {
+      "run": 36507292885,
+      "sourceRequests": 103,
+      "bets": 71,
+      "newComplete": 71,
+      "result": "explicit-invalid-session-original1008",
+      "original1008Requested": true
+    }
+  ],
+  "groups": {
+    "primary": {
+      "complete": 164,
+      "mongo": 164,
+      "oldPreserved": 164,
+      "pending": [
+        {
+          "batch": 1,
+          "worker": 3,
+          "sequence": 9,
+          "frames": 4,
+          "messages": [
+            "BET",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME"
+          ],
+          "awaiting": false,
+          "rejected": false,
+          "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f",
+          "rawHash": "050209fff4781264f189656b216b97aa621154e8394048c404385115ab359045",
+          "failure": null
+        },
+        {
+          "batch": 10,
+          "worker": 2,
+          "sequence": 902,
+          "frames": 1,
+          "messages": [
+            "BET"
+          ],
+          "awaiting": false,
+          "rejected": false,
+          "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7",
+          "rawHash": "fe631a103b1e801e07e59b7047a4d7e6a46f53a08cdfc6a497f3874c362d67b3",
+          "failure": null
+        },
+        {
+          "batch": 5,
+          "worker": 0,
+          "sequence": 432,
+          "frames": 9,
+          "messages": [
+            "BET",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME",
+            "FREE_GAME"
+          ],
+          "awaiting": false,
+          "rejected": false,
+          "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30",
+          "rawHash": "53a0d3c5b347730a1235a1ceb855d07d30b6d68b519fcdad4a13e88a8308cc00",
+          "failure": null
+        },
+        {
+          "batch": 9,
+          "worker": 13,
+          "sequence": 806,
+          "frames": 3,
+          "messages": [
+            "BET",
+            "FREE_GAME",
+            "FREE_GAME"
+          ],
+          "awaiting": false,
+          "rejected": false,
+          "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912",
+          "rawHash": "ca10dcaac6ba511a0f9066e31402826d35c158c2660afef2a7c7de74ec971ab9",
+          "failure": null
+        }
+      ]
+    },
+    "secondary": {
+      "complete": 451,
+      "mongo": 440,
+      "oldPreserved": 190,
+      "pending": [
+        {
+          "batch": 11,
+          "worker": 38,
+          "sequence": 1008,
+          "frames": 2,
+          "messages": [
+            "BET",
+            "FEATURE_START"
+          ],
+          "awaiting": false,
+          "rejected": true,
+          "pendingHash": "fa9d090056af10f01b337b721d29c857a1d8c79b99a521c6186ac1c34b29dd6a",
+          "rawHash": "e4f8704f0b534f52c890bfd5f2b3c492abb35bf81e5a3ea78999a8cc20c074b2",
+          "failure": null
+        }
+      ]
+    }
+  },
+  "liveFeatures": [
+    {
+      "sequence": 20,
+      "rawHash": "14fa77c737adf2cd0e4a705800b2de710464e973a70e69ca8766f23ba3ad7980",
+      "recordHash": "b58e5a5f4a564d4b306b157b4ced6bbcf5612694f83b92b24a6a3375331e6c66",
+      "bonus": 2,
+      "money": {
+        "startBalanceRaw": 99958,
+        "endBalanceRaw": 100283,
+        "totalWinRaw": 350,
+        "betRaw": 25
+      },
+      "fullMongo": true,
+      "independentTypeScript": true
+    },
+    {
+      "sequence": 1705,
+      "rawHash": "a8f54d895e0bcf249badc1d466a99ea277058ce0c35195226aa3941ef6d8bc17",
+      "recordHash": "33a25d092e5ec34c7330de3df4a373344132925d8c2d82bf7b4da5e8dfdc9230",
+      "bonus": 3,
+      "money": {
+        "startBalanceRaw": 99950,
+        "endBalanceRaw": 100425,
+        "totalWinRaw": 500,
+        "betRaw": 25
+      },
+      "fullMongo": true,
+      "independentTypeScript": true
+    }
+  ],
+  "old544Unchanged": true,
+  "unknownInFlight": 0,
+  "newCompleteThisHeartbeat": 261,
+  "validRecordsDeleted": 0,
+  "replayedBets": 0,
+  "validateApplied": false,
+  "formalApplied": false,
+  "holds": {
+    "primary": false,
+    "secondary": true
+  },
+  "switches": {
+    "primary": false,
+    "secondary": false
+  },
+  "workflow": {
+    "primary": "active",
+    "secondary": "disabled_manually"
+  },
+  "privateSnapshotHash": "d92060af49bdc0b95a3c1f4d8ac25621a8e5169f07449f7c8c8b3f8e146bdc68",
+  "archive": {
+    "sha256": "00afc902b5b3f440867f3e923811fa5506a38f8afbfe4caf7fafec794cc8ab3a",
+    "bytes": 5793542,
+    "files": 33
+  },
+  "diskGiB": 137.04754638671875
+}
