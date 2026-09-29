@@ -1,0 +1,72 @@
+{
+  "at": 1790682140,
+  "journaled": 267,
+  "checkpoint": 256,
+  "mongoFullEqual": 256,
+  "pythonFullVerified": 267,
+  "old246Unchanged": true,
+  "newComplete": 21,
+  "newMongo": 10,
+  "unflushed": 11,
+  "pending": 2,
+  "unknownInflight": 0,
+  "newRoundMessages": {
+    "BET": 23,
+    "FREE_GAME": 25
+  },
+  "replacements": {
+    "806": {
+      "complete": true,
+      "mongo": true,
+      "bonus": 0
+    },
+    "434": {
+      "complete": true,
+      "mongo": false,
+      "bonus": 0
+    },
+    "117": {
+      "complete": false,
+      "mongo": false,
+      "bonus": null
+    },
+    "902": {
+      "complete": false,
+      "mongo": false,
+      "bonus": null
+    },
+    "1706": {
+      "complete": false,
+      "mongo": false,
+      "bonus": null
+    }
+  },
+  "pendingSummary": [
+    {
+      "batch": 3,
+      "worker": 14,
+      "sequence": 218,
+      "frames": 8,
+      "pendingHash": "dc2f0ff00f37e340185686681284d60506de87b4a73f98b27a26b68e9adc969f",
+      "rawHash": "142becc66b547cb9b8d2c8c09011aa1f673e14d3e4ffbaffd7a6baa24456d006",
+      "failure": "PROTOCOL_VALIDATION_FAILED"
+    },
+    {
+      "batch": 5,
+      "worker": 0,
+      "sequence": 440,
+      "frames": 1,
+      "pendingHash": "4e736e3a8359f3c7e562d98fbb8b0f02e7f3fadfb350c2e88d724980eb7cba4a",
+      "rawHash": "7a4b824d861b9e4478fbb38fcb0dedb2320c6b10f8907e4bb16dfd27e6c2d1b0",
+      "failure": null
+    }
+  ],
+  "snapshotHash": "c5ad7142da3bc66f7672b6cc4eeb4a0496f5382d06be34beb4d2637723f8fd9f",
+  "fileSha256": "b97cc2cebb52ca565188ce2ccee118020ebfe9374cc08c2da540669e394f5d97",
+  "runtime": "a7f550910c16e7de7bfa2fcb7c44ed73614905da",
+  "recoveryRun": 36562547221,
+  "shortRun": 36562923330,
+  "recoveryProof": "3b1c3bfed941b58dd2aca4201ed700e9c18c2180a50cce08021485f6a20534f8",
+  "formal": false,
+  "stop": "UNKNOWN_TRIAL_FEATURE: nested FID 0|1| after 1|0|"
+}
