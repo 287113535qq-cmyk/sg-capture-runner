@@ -71,11 +71,11 @@ test('ordinary campaigns need no staged barrier; stage alone grants no authority
   assert.equal(await f.gate.admit(f.identity,0),null);
   f.gate.stage='resume';await assert.rejects(f.gate.admit(f.identity,0),/NOT_AUTHORIZED/);
 });
-test('workflow uses a finite three-owner stage before the twenty-worker capture matrix, without occupying waiting runners',()=>{
+test('workflow uses a finite two-owner stage before the twenty-worker capture matrix, without occupying waiting runners',()=>{
   const yaml=createRequire(import.meta.url)('../../collector/node_modules/js-yaml');
   const w=yaml.load(fs.readFileSync('.github/workflows/trial-300k.yml','utf8'));
   const resume=w.jobs['pending-resume'],capture=w.jobs['pending-capture'];
-  assert.deepEqual(resume.strategy.matrix.shard,[1,2,7]);assert.equal(resume.strategy['max-parallel'],3);
+  assert.deepEqual(resume.strategy.matrix.shard,[2,7]);assert.equal(resume.strategy['max-parallel'],2);
   assert.equal(resume.env.SG_PENDING_FIRST_STAGE,'resume');assert.equal(capture.env.SG_PENDING_FIRST_STAGE,'capture');
   assert.equal(capture.needs,'pending-resume');assert.match(capture.if,/needs.pending-resume.result == 'success'/);
   assert.equal(capture.strategy['max-parallel'],20);assert.match(resume.if,/inputs.round_one_limit == '10'/);

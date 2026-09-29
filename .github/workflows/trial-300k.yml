@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -39,6 +39,31 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  demon-two-control:
+    if: github.event_name == 'workflow_dispatch' && startsWith(inputs.role, 'demon-two-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked offline parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Archive only the rejected117 before staged original continuations after full backup
+        env:
+          CONTROL_ROLE: ${{ inputs.role }}
+        run: node scripts/runner-v2/demon-two-control.mjs "${CONTROL_ROLE#demon-two-}"
   demon-three-control:
     if: github.event_name == 'workflow_dispatch' && startsWith(inputs.role, 'demon-three-')
     runs-on: ubuntu-latest
@@ -465,9 +490,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 2
       matrix:
-        shard: [1, 2, 7]
+        shard: [2, 7]
     timeout-minutes: 35
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
@@ -611,7 +636,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: [trial, pending-resume, pending-capture]
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
