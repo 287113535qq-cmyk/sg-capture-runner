@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
-const plans=Object.fromEntries(Array.from({length:178},(_,i)=>[i,{gameId:i,trialId:'trial'+i}]));
+const plans=Object.fromEntries(Array.from({length:24},(_,i)=>[i,{gameId:i,trialId:'trial'+i}]));
+test('real configured plan inventory matches lease coverage',()=>{
+  const actual=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
+  assert.equal(new Set(Object.values(actual).map(p=>p.trialId)).size,24);
+});
 function fake(mode){
   return {get:async()=>({value:{games:[{game_id:0,status:'active'},{game_id:1,status:'complete'}]}}),
     getMany:async(c,keys)=>keys.map(k=>{
