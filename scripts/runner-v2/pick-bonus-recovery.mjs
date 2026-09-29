@@ -16,7 +16,7 @@ export function reviewPickBonus({plan,profile,s,now=Date.now()}){
   assert(c.enabled && !c.reason && !c.audit && c.activeGame===32836 && c.validationLimit===10
     && c.protocolValidation?.phase==='short' && c.protocolValidation.proofHash===k.previousProof
     && c.protocolValidation.commit===k.previousCommit && c.protocolValidation.runKey===k.runKey
-    && c.games.find(g=>g.game_id===32836)?.status==='active' && !c.games.some(g=>g.status==='ready'),'SHORT_STATE_CHANGED');
+    && c.games.find(g=>g.game_id===32836)?.status==='parking-protocol' && !c.games.some(g=>g.status==='ready'),'SHORT_STATE_CHANGED');
   assert(!p.enabled && p.failure==='PROTOCOL_VALIDATION_FAILED' && p.planHash===profile.planHash
     && p.protocolRecovery===k.previousProof,'POOL_CHANGED');
   assert(Object.values(p.workers).every(w=>w.leaseUntil<=now),'WORKERS_ACTIVE');
@@ -37,6 +37,7 @@ export function reviewPickBonus({plan,profile,s,now=Date.now()}){
     assert(b.id===11 && b.worker===38 && b.failure==='PROTOCOL_VALIDATION_FAILED' && q.sequence===1008
       && q.sequence===b.journaled+1 && q.awaiting===null && q.raw.steps.length===1
       && q.raw.steps[0].msgId==='BET' && !q.raw.steps[0].sourceRejected && hash(q)===profile.pendingHash,'UNREVIEWED_PENDING');
+    assert(stable(c.games.find(g=>g.game_id===32836).pendingReview)===stable({batchId:11,sequence:1008,rawHash:hash(q.raw)}),'PARKING_EVIDENCE_CHANGED');
   }
   assert(end+1===p.nextSequence && count===190 && checkpoint===178 && pending===1,'COUNTS_CHANGED');
 }

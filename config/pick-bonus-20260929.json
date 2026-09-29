@@ -3,7 +3,7 @@
   "id": "pick-bonus-36502517559",
   "group": "secondary",
   "gameId": 32836,
-  "createdAt": 1790643048318,
+  "createdAt": 1790643194535,
   "complete": 190,
   "checkpoint": 178,
   "pending": 1,
@@ -117,9 +117,9 @@
     "scripts/runner-v2/foam-session-control.mjs": "b157ee607741adf32671ff3a5f8d5bb80efdd4d0ac05233132da31d7b639eb42",
     "scripts/runner-v2/foam-session-recovery.mjs": "796cbd415a9c5142b817371a9ef2df6e649ecb3501cf126d62c028f105f3d9f0",
     "scripts/runner-v2/pick-bonus-control.mjs": "94bf89c454dd880b856e7bf7a55a610bc978b9176c9fdaf895c12a66e6c4cc19",
-    "scripts/runner-v2/pick-bonus-recovery.mjs": "11c481533b9f8c5408015cca9677be46041f5fdbd2aef39f00a0f67967aaa393",
+    "scripts/runner-v2/pick-bonus-recovery.mjs": "d0750de8257be0bf6c69af982dd69a353783e02d95cb4ca83651227e3214b703",
     "scripts/trial/worker.mjs": "8d64058e0c74c33ba0e2bf664d2153c316fad6394fc56628f2311a66b7406534",
     "scripts/trial/squid-protocol.mjs": "d626021bb2e1747392e535c6187d2690aff3d9070c44012f1668da30a46dd97c"
   },
-  "adapterHash": "fefe2ab25999182768c14b8f57a3ca71ca4ee31502d381c371bff8171cf82a8d"
+  "adapterHash": "d346c438b1eeb7db361cf6aec5be29609098ff1d8712df1fde05a0a0028204f9"
 }

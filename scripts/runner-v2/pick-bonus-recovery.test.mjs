@@ -29,7 +29,7 @@ async function fixture(){
   }
   put('state',`batch:${f.plan.trialId}:${id}`,b);return f.docs.get('state/'+`batch:${f.plan.trialId}:${id}`);
  });
- f.campaign={enabled:true,reason:null,audit:null,activeGame:32836,validationLimit:10,games:[{game_id:32836,status:'active'}],protocolValidation:{phase:'short',proofHash:K.previousProof,commit:K.previousCommit,runKey:K.runKey}};
+ f.campaign={enabled:true,reason:null,audit:null,activeGame:32836,validationLimit:10,games:[{game_id:32836,status:'parking-protocol',pendingReview:{batchId:11,sequence:1008,rawHash:hash(f.batches[10].value.pending.raw)}}],protocolValidation:{phase:'short',proofHash:K.previousProof,commit:K.previousCommit,runKey:K.runKey}};
  put('state','campaign',f.campaign);put('state','pool:'+f.plan.trialId,f.pool);
  put('journal','foam-session:foam-session-36499471583:reconciled',{proofHash:K.previousProof,count:118,committed:118});
  f.profile={schema:'sg-pick-bonus-resume-v1',id:K.id,group:'secondary',gameId:32836,createdAt:f.now,complete:190,checkpoint:178,pending:1,
