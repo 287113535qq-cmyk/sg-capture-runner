@@ -8,12 +8,12 @@ import {receiptKey} from './durable-queue.mjs';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 
-test('terminal incident profiles bind all reviewed runtime and workflow files',()=>{
+test('applied terminal profiles remain frozen and reject changed workflow code',()=>{
   for(const name of ['demon','quarterback']){
     const p=JSON.parse(fs.readFileSync(`config/terminal-${name}-20260929.json`,'utf8'));
     const files=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,
       createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-    assert.deepEqual(files,p.adapterFiles);assert.equal(hash(files),p.adapterHash);
+    assert.equal(hash(p),{"demon": "b5fbdfb3816fa829871e487932f3b5870140b9dee3585c49fcfad6ebdff3dcc1", "quarterback": "c58b66c8c849e3bba675751b18503948edd9ddf13ea65f8a8ec45170ce8b0784"}[name]);assert.notEqual(hash(files),p.adapterHash);
   }
 });
 

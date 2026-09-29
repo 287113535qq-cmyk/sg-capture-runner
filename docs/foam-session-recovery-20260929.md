@@ -1,0 +1,11 @@
+# 32836 原113会话拒绝的独立恢复
+
+仅适用于短采 `36499471583:1`：原batch2/worker21/sequence113的FEATURE_START返回明确ERROR_INVALID_SESSION。旧BET和拒绝已保存；新完整118条、Mongo103条，其他pending为0。primary32739的164完整及4个原pending不在本操作器修改范围。
+
+`foam-session-recover/validate/formal`在GitHub执行，测试服只执行现有Mongo原生读写。固定profile绑定16个batch、campaign/pool、原终局恢复proof、原113前缀与拒绝、真实Foam20的完整record及Mongo全文、代码文件摘要；仅两小时有效。运行前两仓库必须无其他任务，租约到期、资源/磁盘允许、共同hold精确为此SOURCE_REJECTED/batch2。任何未知请求、其他拒绝、XML/PAYLOAD不一致、其他hold或数据库内容冲突都拒绝恢复。
+
+先保存新proof、完整当前现场、旧备份、逐批118条完整记录、被拒绝113的完整原文；备份确认后补齐15条待写并118条全文readback，再清除原113待处理状态，归档为`source-invalid-session/abandon_without_replay`。旧局永不重发BET或交给其他会话接管；下次原worker创建独立新attempt与INIT。最后重置当前组租约、绑定新唯一短采run/固定commit，并仅解除精确已审查的secondaryhold。部分执行失败不能盲目重跑。
+
+短采必须20worker各新增10，共318条完整记录，全部Mongo全文一致、118旧记录不变、pending0；替代sequence113必须不同attempt、BET时间晚于恢复，并保持原worker/batch归属。真实Foam20原record/raw/奖金及Mongo内容不变。验收明确记录旧113已归档、旧局结算0、独立替代attempt结算1；不能把新Foam20称作旧113接续成功。15分钟内同代码同pool/campaign摘要才可formal，随后另行开启正式采集。
+
+此文件目前记录实现与验收条件，实际proof和运行结果另行补充。旧terminal/session/protocol/Panda操作器及其profiles全部保留冻结，不复用、不修改。
