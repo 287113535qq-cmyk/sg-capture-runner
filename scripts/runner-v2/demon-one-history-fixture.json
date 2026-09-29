@@ -1,0 +1,83 @@
+{
+  "queued-supersession:36525403196": {
+    "schema": "sg-queued-supersession-v1",
+    "oldRun": 36525403196,
+    "oldCommit": "7296147c426188d2ca0bd4a7738471e062a8b2da",
+    "oldProfileHash": "78a54d7aca62c78de8b02227664ceee1e7752b403de1cae078e109db8b70908e",
+    "oldExpiresAt": 1790665996989,
+    "newPrefix": "demon-queue:demon-two-36525403196",
+    "newCommit": "4b38a0f306e6a3017b0245cd43a014acbc9a51ec",
+    "newRun": "36551302211:1",
+    "newProfileHash": "933af2a4689c4ea4be7aeabcee62ce0e5842896be12c98118c99c6c6a1b28689",
+    "snapshotHash": "5e26d416c4bd4e90bf941efd16011d05fe5a7565c71976332d9a8fecf4c15310",
+    "verified": {
+      "count": 246,
+      "committed": 246,
+      "recordsHash": "755db1d65dea6bd8ebac4f4c0e1e98ee6714acbfdb584d58079f2612323cb929",
+      "workerCounts": {
+        "0": 33,
+        "1": 16,
+        "2": 1,
+        "3": 28,
+        "4": 10,
+        "5": 1,
+        "6": 40,
+        "7": 5,
+        "10": 20,
+        "11": 1,
+        "12": 1,
+        "13": 5,
+        "14": 12,
+        "15": 2,
+        "16": 13,
+        "17": 36,
+        "18": 10,
+        "19": 12
+      }
+    },
+    "createdAt": 1790675266512,
+    "expiresAt": 1790681958490
+  },
+  "queued-supersession:36525403196:complete": {
+    "receiptHash": "4b1d08614ec79660babc1d72a10dc2a8a3d2b98bf70a117e06137ad95ae3d6e2",
+    "proofHash": "5ac6d9068bf7b1c8d52f0ed7f8f17bf8a91f2b6265c58fb312701ccf7abbed26",
+    "commit": "4b38a0f306e6a3017b0245cd43a014acbc9a51ec",
+    "run": "36551302211:1",
+    "at": 1790675313838
+  },
+  "demon-queue:demon-two-36525403196:proof": {
+    "proof": {
+      "schema": "sg-demon-two-proof-v1",
+      "profileHash": "933af2a4689c4ea4be7aeabcee62ce0e5842896be12c98118c99c6c6a1b28689",
+      "snapshotHash": "5e26d416c4bd4e90bf941efd16011d05fe5a7565c71976332d9a8fecf4c15310",
+      "verified": {
+        "count": 246,
+        "committed": 246,
+        "recordsHash": "755db1d65dea6bd8ebac4f4c0e1e98ee6714acbfdb584d58079f2612323cb929",
+        "workerCounts": {
+          "0": 33,
+          "1": 16,
+          "2": 1,
+          "3": 28,
+          "4": 10,
+          "5": 1,
+          "6": 40,
+          "7": 5,
+          "10": 20,
+          "11": 1,
+          "12": 1,
+          "13": 5,
+          "14": 12,
+          "15": 2,
+          "16": 13,
+          "17": 36,
+          "18": 10,
+          "19": 12
+        }
+      },
+      "commit": "4b38a0f306e6a3017b0245cd43a014acbc9a51ec",
+      "createdAt": 1790675279581
+    },
+    "proofHash": "5ac6d9068bf7b1c8d52f0ed7f8f17bf8a91f2b6265c58fb312701ccf7abbed26"
+  }
+}
