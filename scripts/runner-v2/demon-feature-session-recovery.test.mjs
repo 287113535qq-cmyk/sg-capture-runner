@@ -12,7 +12,7 @@ const out=spawnSync(process.env.PYTHON||'python',['-c',"import sys,json;sys.path
 assert.equal(out.status,0,out.stderr);const special=JSON.parse(out.stdout);
 const featureValidation={shortPerWorker:10,newComplete:200,requireNewNaturalBonus:2,allowFormalWithoutEvidence:false,allowUnboundedProbe:false};
 
-async function fixture(){
+export async function fixture(){
   const f=await baseFixture(),put=(c,k,v)=>f.docs.set(c+'/'+k,{_id:'primary/'+k,version:1,value:structuredClone(v)}),get=f.get;
   const p=get('pool:'+f.plan.trialId),c=get('campaign'),old=structuredClone(f.batches);
   put('journal',K.oldPrefix+':before',{batches:old});put('journal',K.oldPrefix+':proof',{proofHash:K.previousProof});
