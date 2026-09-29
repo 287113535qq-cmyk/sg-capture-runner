@@ -23,7 +23,7 @@ export function fixture(){
  const now=Date.parse('2026-09-29T12:55:00Z');
  const layouts=[[3,28,28],[1,16,16],[14,17,12],[6,40,40],[0,39,33],[17,36,36],[16,13,13],[19,12,12],[13,15,15],[2,1,1],[15,2,2],[12,1,1],[11,1,1],[9,0,0],[10,20,20],[4,10,10],[5,1,1],[7,5,5],[18,10,10]];
  const pool={enabled:false,failure:'PROTOCOL_VALIDATION_FAILED',protocolRecovery:ZERO.proof,planHash:hash(plan),nextBatchId:20,nextSequence:1901,workers:Object.fromEntries(Array.from({length:20},(_,i)=>[i,{sessionHash:hash('synthetic-session-'+i),owner:null,leaseUntil:0,activeBatch:null}]))};
- const c={enabled:true,reason:null,audit:null,activeGame:32739,validationLimit:10,games:[{gameId:32739,status:'active'}],protocolValidation:{phase:'short',proofHash:ZERO.proof,commit:ZERO.commit,runKey:'capture-run:36562923330:1'}};
+ const c={enabled:true,reason:null,audit:null,activeGame:32739,validationLimit:10,games:[{game_id:32739,status:'active'}],protocolValidation:{phase:'short',proofHash:ZERO.proof,commit:ZERO.commit,runKey:'capture-run:36562923330:1'}};
  const makeRecord=(b,sequence,raw=terminalSample,attempt='synthetic-new-'+sequence)=>({_id:hash(plan.trialId+':'+sequence),trialId:plan.trialId,sequence,batchId:b.id,shardId:b.worker,sourceSessionHash:b.sessionHash,attempt,fixtureOnly:false,buy:0,bonus:2,contentHash:hash('synthetic-record-'+sequence),raw:structuredClone(raw)});
  for(const [i,[worker,n,cp]] of layouts.entries()){
   const id=i+1,start=i*100+1,b={id,worker,start,end:start+99,journaled:start+n-1,checkpoint:start+cp-1,sessionHash:pool.workers[worker].sessionHash,owner:null,leaseUntil:0,epoch:1,failure:id===3?'PROTOCOL_VALIDATION_FAILED':null,pending:null,protocolResume:null,pendingOriginal:null};

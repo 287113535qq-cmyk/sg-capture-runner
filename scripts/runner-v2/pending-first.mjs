@@ -61,7 +61,7 @@ export class PendingFirst {
   async admit(identity,worker) {
     const spec=await this.load(identity);if(!spec)return null;
     if(spec.schema==='sg-demon-zero-short-v1'){this.admission=await this.fresh.admit(identity,worker);return this.admission;}
-    if(spec.schema==='sg-demon-nested-short-v1'){
+    if(['sg-demon-nested-short-v1','sg-demon-nested-rebind-short-v1'].includes(spec.schema)){
       const pool=(await this.store.get('state','pool:'+this.plan.trialId))?.value;
       assert(Number.isInteger(worker)&&worker>=0&&worker<20&&identity.shardId===worker
         &&pool?.enabled&&!pool.failure&&pool.protocolRecovery===spec.proofHash

@@ -1,0 +1,11 @@
+# Demon32739 campaign state correction
+
+Nested recovery36574038011 succeeded on bc0348918dc6d79c347cb84cd582928b9a77a6aa:267 original complete records are Mongo full-equal,11 outstanding complete records were flushed, and originals218/440 were preserved. Its applied profile is frozen at9ab103f94fff55ef74c5f59a01c70891e8829e2b9a1b31d25fa4ecbb1d5504a7 and proofde6ad5f8d8a469ac8afec5206afbd939e8ff85d0139b782a8214fa989737a968 cannot be reused.
+
+The subsequent pending-first run36574646755 failed before starting the capture child. Both campaign workers reported JOURNAL_CONTENT_CONFLICT. Recovery had restored the pool and continuation permissions but omitted the game's parking-protocol to active transition. Campaign selection therefore attempted the old immutable parked archive path against a different current batch. No new SG exchange occurred; all267 complete records, both pending prefixes and all journals are unchanged. This is an implementation error, not a new session rejection or GitHub capacity problem.
+
+A separate rebind operator reviews the completed nested recovery, binds the precise failed run and full current snapshot, verifies267 Mongo records and both unconsumed originals, and writes its own private backup, proof, stage and finite continuation permission. It changes the reviewed game's status to active. Old archives, profiles, run binding and receipts remain immutable history. The new run receives a separate binding; the failed run is never cleared or replayed. No complete record needs another insert, and no original attempt is abandoned.
+
+The quota remains179 total, including both original resumptions, with worker0=4, worker13=0, worker14=5 and the other17 workers=10. Formal acceptance remains446 full-equal records, original267 unchanged, both original prefixes settled, five independent replacements and actual new bonus2 evidence at218. Regression coverage now includes the real GithubCampaign.select/selectForRun route, reproduces the pre-fix archive conflict, and verifies capture selection after correction. Seven private tests use the actual267-record Python analyzer; portable control fixtures remain synthetic.
+
+This preparation document does not claim the rebind or subsequent capture has executed. Record actual Linux and live results separately.

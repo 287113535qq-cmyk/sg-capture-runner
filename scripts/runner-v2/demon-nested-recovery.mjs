@@ -89,7 +89,7 @@ export class DemonNestedRecovery extends ProtocolRecovery{
  async validate(){
   const {s,base}=await this.reviewedShort();assert(!(await this.store.get('journal',this.prefix+':validation')),'VALIDATION_ALREADY_APPLIED');await this.archives();
   const pf=new PendingFirst({store:this.store,transport:this.transport,analyzer:this.parser,plan:this.plan,stage:'capture',runKey:s.campaign.value.protocolValidation.runKey,now:this.now});
-  const spec=await pf.load({commitSha:this.commit});assert(spec.schema==='sg-demon-nested-short-v1','NESTED_PROOF_CHANGED');for(const e of spec.entries)await pf.settled(e);
+  const spec=await pf.load({commitSha:this.commit});assert(['sg-demon-nested-short-v1','sg-demon-nested-rebind-short-v1'].includes(spec.schema),'NESTED_PROOF_CHANGED');for(const e of spec.entries)await pf.settled(e);
   const full=await this.verifyRecords(s,{allCommitted:true});assert(full.count===446&&Object.keys(full.workerCounts).length===20,'SHORT_COUNT_CHANGED');
   for(let w=0;w<20;w++)assert(full.workerCounts[w]-(spec.baseline[w]||0)===10,'SHORT_WORKER_COUNT_CHANGED');
   const before=(await this.store.get('journal',this.prefix+':before')).value;

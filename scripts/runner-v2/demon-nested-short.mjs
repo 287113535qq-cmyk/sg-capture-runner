@@ -28,19 +28,22 @@ export async function loadNestedShort(o,identity,c){
   &&p.commit===identity.commitSha&&/^capture-run:\d+:1$/.test(o.runKey||'')&&p.runKey===o.runKey,'NESTED_RUN_CHANGED');
  const spec=(await o.store.get('journal','pending-first:'+p.proofHash))?.value;
  const original=(await o.store.get('journal','fresh-start:'+ZERO_PROOF))?.value;
- assert(spec&&spec.schema==='sg-demon-nested-short-v1'&&hash(spec)===p.nestedShort&&spec.proofHash===p.proofHash&&spec.commit===p.commit
-  &&spec.planHash===hash(o.plan)&&spec.trialId===o.plan.trialId&&spec.perWorker===10&&spec.stageKey===NESTED_STAGE
+ const rebound=spec?.schema==='sg-demon-nested-rebind-short-v1';
+ const stageKey=rebound?'demon-nested-rebind-stage:36574646755':NESTED_STAGE;
+ const prefix=rebound?'demon-nested-rebind:demon-nested-rebind-36574646755':'demon-nested:demon-nested-36562923330';
+ assert(spec&&(rebound||spec.schema==='sg-demon-nested-short-v1')&&hash(spec)===p.nestedShort&&spec.proofHash===p.proofHash&&spec.commit===p.commit
+  &&spec.planHash===hash(o.plan)&&spec.trialId===o.plan.trialId&&spec.perWorker===10&&spec.stageKey===stageKey
   &&hash(original)===ZERO_SPEC_HASH&&spec.originalSpecHash===ZERO_SPEC_HASH&&hash(spec.baseline)===hash(original.baseline),'NESTED_PROOF_CHANGED');
  assert(o.now()>=spec.createdAt&&o.now()<spec.expiresAt&&spec.expiresAt-spec.createdAt<=7200000,'NESTED_PROOF_STALE');
- const stage=(await o.store.get('journal',NESTED_STAGE))?.value,done=(await o.store.get('journal',NESTED_STAGE+':complete'))?.value;
- const proof=(await o.store.get('journal','demon-nested:demon-nested-36562923330:proof'))?.value;
- const result=(await o.store.get('journal','demon-nested:demon-nested-36562923330:reconciled'))?.value;
+ const stage=(await o.store.get('journal',stageKey))?.value,done=(await o.store.get('journal',stageKey+':complete'))?.value;
+ const proof=(await o.store.get('journal',prefix+':proof'))?.value;
+ const result=(await o.store.get('journal',prefix+':reconciled'))?.value;
  assert(stage&&done&&stage.commit===p.commit&&done.stageHash===hash(stage)&&done.run===stage.run&&done.commit===stage.commit
   &&done.proofHash===p.proofHash&&proof?.proofHash===p.proofHash&&hash(proof.proof)===p.proofHash
   &&proof.proof.run===stage.run&&proof.proof.commit===stage.commit&&hash(proof.profile)===stage.profileHash
   &&done.at>=stage.createdAt&&done.at<stage.expiresAt&&o.now()<stage.expiresAt
   &&proof.proof.profileHash===stage.profileHash&&result?.proofHash===p.proofHash&&result.count===267&&result.committed===267
-  &&result.originalPendingPreserved===2&&result.flushed===11&&result.oldPreserved===267
+  &&result.originalPendingPreserved===2&&result.flushed===(rebound?0:11)&&result.oldPreserved===267
   &&result.abandonedAttempts===0&&result.sourceRequests===0&&result.replayedBets===0&&result.validRecordsDeleted===0,'NESTED_RECOVERY_NOT_COMPLETE');
  assert(hash(spec.entries.map(e=>e.worker).sort((a,b)=>a-b))===hash([0,14])&&spec.entries.every(e=>e.pending.awaiting===null),'NESTED_OWNERS_CHANGED');
  return spec;
