@@ -65,13 +65,13 @@ def contract(game_id):
             'GSD.MMBG / GSD.MMW': 'Money Mansion 标记与结果是否存在；MMBG 不是剩余次数。',
         })
     elif game_id == 32739:
-        native.update({'family': 'demon-free-v1',
-            'continue': 'NFG>0 继续 FREE_GAME；FID0 reaction 与 FID1|0| 免费模式均使用原下注参数。次数可以增长或重置，不固定循环。',
-            'complete': '最终显式 NFG=0；FID1 触发后必须实际取得一次后续 FREE_GAME 响应。再核对终帧 B/AB、TW 和实际下注100。',
-            'bounds': '仅支持 FID 缺失/空/0/0| 与官方客户端明确的 1|0|；其他栈和选择协议仍暂挂。代码测试通过不表示暂挂现场已恢复或 FID1 已真实结算。'})
-        native['files'] += ['service/demon_fields.py', 'scripts/trial/demon-protocol.mjs']
+        native.update({'family': 'demon-nested-v1',
+            'continue': '旧FID0 reaction与FID1|0|保留原规则；已审核FID0|1|内层reaction要求明确NFG>0、外层保存计数守恒及原FREE_GAME参数。未知返回或内层NFG0拒绝审查，不根据SNFG猜测追加请求。',
+            'complete': '旧分支显式NFG=0；嵌套需完整历史及受约束的显式外层返回/终态，再核对B/AB、TW和实际下注100。合成终态通过不能代替真实自然免费终局证据。',
+            'bounds': 'Python/Runner/TS嵌套入口已部署；明确支持的0|1|前缀及27合成边界已测试。未知计数转换、最大赢额提前退出及其他栈仍拒绝；真实218和440接续均被会话拒绝，尚无新自然bonus2完整证据，正式采集未恢复。'})
+        native['files'] += ['service/demon_fields.py', 'service/demon_nested_fields.py', 'scripts/trial/demon-protocol.mjs', 'scripts/trial/demon-nested-protocol.mjs', 'collector/sg.demon.ts']
         native['fields'].update({
-            'FID': '首槽0为 reaction，含1表示免费模式；本候选仅放行已明确的1|0|，保留完整槽位。',
+            'FID': '首槽0为reaction，含1表示免费模式；1|0|为外层免费，受约束的0|1|为免费内部reaction，保留完整槽位。',
             'TFG / CFGG / FGT': '总数、当前免费进度和新触发数；模式转换会重置计数，不要求逐帧 NFG 减1。',
             'GSD.SNFG / STFG / EFG / EFGS / SBEFG': '客户端保存/显示的免费次数及新增次数信息，不取代 NFG 终局判定。',
             'GSD.DST / DFFP / DDDP / DCCS / DAAP / DAAS': '客户端四种 Demon 演出及其结果字段；保留原始证据，归档只存有界类型/存在统计。',
@@ -94,6 +94,7 @@ def contract(game_id):
 
 
 REVIEW_DOCS = {
+    32739: ['docs/demon-nested-recovery-20260929.md', 'docs/demon-nested-rebind-20260929.md', 'docs/sg-efficiency-plan-20260929.md'],
     32651: ['docs/squid-jackpot-protocol.md'],
     32671: ['docs/natural-feature-review-32671-32736.md'],
     32736: ['docs/natural-feature-review-32671-32736.md'],

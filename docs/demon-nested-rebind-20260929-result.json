@@ -1,0 +1,51 @@
+{
+  "at": 1790689867,
+  "fullVerified": 267,
+  "mongoFullEqual": 267,
+  "completeAwaitingFlush": 0,
+  "old267Unchanged": true,
+  "allOldJournalsUnchanged": true,
+  "newComplete": 0,
+  "totalNewFrom246": 21,
+  "remaining": 179,
+  "pending": [
+    {
+      "worker": 14,
+      "batch": 3,
+      "sequence": 218,
+      "frames": 9,
+      "awaiting": false,
+      "sourceRejected": true,
+      "pendingHash": "495b091a024a515452615f15f034a69f7352ed0054a36201e58890e63b2f9a5a",
+      "rawHash": "b03232d43b577f7b07be35f5fbb7e09834d4dcc87ed61497c547f0bc53e8c90b"
+    },
+    {
+      "worker": 0,
+      "batch": 5,
+      "sequence": 440,
+      "frames": 2,
+      "awaiting": false,
+      "sourceRejected": true,
+      "pendingHash": "b5aa2887208a75e0fb1fa791ee0f8b39c30a0cea7e33d11eeb81f290db156bf0",
+      "rawHash": "78e342accaa6619e1113ebaef9f28853ef9a92461a20bc693a3d9158b5e56935"
+    }
+  ],
+  "originalSettled": [],
+  "replacementSequencesComplete": [
+    806,
+    434
+  ],
+  "newBonus2": [],
+  "snapshotHash": "6f5631f10875980fb56aefcd21f6b042324f2ee3d5aca329b53b86a8cb5e5dcd",
+  "runtime": "dc0f7288a22d88ba30f736a1fe2f64cf5de0aa99",
+  "recoveryRun": 36576758603,
+  "shortRun": 36577344185,
+  "shortConclusion": "failure",
+  "error": "ERROR_INVALID_SESSION",
+  "sourceRequests": 2,
+  "initRequests": 0,
+  "betRequests": 0,
+  "formalResumed": false,
+  "appliedProof": "bd59c9591a5e00da90e0ee9909eb9a44bb280295563138f2e1403ec3f12850c9",
+  "frozenProfileHash": "620b0e95839a85dba3ee6a9827d2275089040c89b9980259f637dcbd7749ba52"
+}

@@ -22,28 +22,31 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "demon-free-v1",
+    "family": "demon-nested-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "NFG>0 继续 FREE_GAME；FID0 reaction 与 FID1|0| 免费模式均使用原下注参数。次数可以增长或重置，不固定循环。",
-    "complete": "最终显式 NFG=0；FID1 触发后必须实际取得一次后续 FREE_GAME 响应。再核对终帧 B/AB、TW 和实际下注100。",
-    "bounds": "仅支持 FID 缺失/空/0/0| 与官方客户端明确的 1|0|；其他栈和选择协议仍暂挂。代码测试通过不表示暂挂现场已恢复或 FID1 已真实结算。",
+    "continue": "旧FID0 reaction与FID1|0|保留原规则；已审核FID0|1|内层reaction要求明确NFG>0、外层保存计数守恒及原FREE_GAME参数。未知返回或内层NFG0拒绝审查，不根据SNFG猜测追加请求。",
+    "complete": "旧分支显式NFG=0；嵌套需完整历史及受约束的显式外层返回/终态，再核对B/AB、TW和实际下注100。合成终态通过不能代替真实自然免费终局证据。",
+    "bounds": "Python/Runner/TS嵌套入口已部署；明确支持的0|1|前缀及27合成边界已测试。未知计数转换、最大赢额提前退出及其他栈仍拒绝；真实218和440接续均被会话拒绝，尚无新自然bonus2完整证据，正式采集未恢复。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
       "service/demon_fields.py",
-      "scripts/trial/demon-protocol.mjs"
+      "service/demon_nested_fields.py",
+      "scripts/trial/demon-protocol.mjs",
+      "scripts/trial/demon-nested-protocol.mjs",
+      "collector/sg.demon.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
       "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
       "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
       "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "首槽0为 reaction，含1表示免费模式；本候选仅放行已明确的1|0|，保留完整槽位。",
+      "FID": "首槽0为reaction，含1表示免费模式；1|0|为外层免费，受约束的0|1|为免费内部reaction，保留完整槽位。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
       "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
@@ -153,10 +156,17 @@
     "service/round_fields.py": "afae527ad24c5287228301b9b858708f4c119e05473054e0be4cbf782a2fb871",
     "scripts/runner-v2/record_fields.py": "1a2aba8dfe87f50ddb1d7d10f6fe7f28e74d3b16e36503ce8cbe033c3d72b652",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
+    "service/demon_nested_fields.py": "e8d69cd2fea147406dfb99330ece786542b4f2306a2d14086e9e7db2d2a8219e",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
-    "service/game_rule_catalog.py": "1aaed901e35c40cfcbb0c0f26d9a0902ed8a6bb85d0c519d20517f65fb55c873"
+    "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
+    "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
+    "service/game_rule_catalog.py": "52a8d52c3b785f34dbcd251ca1c306da251b8bad9e3f3e02e05159078989acf0"
   },
-  "reviewDocuments": [],
+  "reviewDocuments": [
+    "docs/demon-nested-recovery-20260929.md",
+    "docs/demon-nested-rebind-20260929.md",
+    "docs/sg-efficiency-plan-20260929.md"
+  ],
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/demon-code-adapter-result.json",
@@ -164,6 +174,8 @@
     "docs/demon-code-protocol.md",
     "docs/demon-code-recovery-operator-result.json",
     "docs/demon-code-recovery-operator.md",
+    "docs/demon-nested-rebind-20260929.md",
+    "docs/demon-nested-recovery-20260929.md",
     "docs/demon-queue-recovery-20260929-result.json",
     "docs/demon-rebind-session-stop-20260929.md",
     "docs/foam-terminal-recovery-20260929.md",
@@ -173,15 +185,18 @@
     "docs/protocol-short-session-stop-20260929.md",
     "docs/quarterback-foam-recovery.md",
     "docs/quarterback-observation-20260929.md",
-    "docs/session-recovery-20260929.md"
+    "docs/session-recovery-20260929.md",
+    "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "9b1348e2225643e5254d46b12a779143f32309a338125a7e93a9ad971774e6c7",
+    "docs/continuous-processing.md": "3d813ed9a5a7a87199e43baf5d088b5fcf1e766a56ea5ee6d3dc7d0bdec164bf",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
     "docs/demon-code-recovery-operator-result.json": "070888afd97629caa5005b668d29b509df66e845cba0d7cd0ed006f0f85d0f82",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
+    "docs/demon-nested-rebind-20260929.md": "36e075f38c17e3fd740f4df8596f0efd5af3de069ebcd5307bdd03eef32ff659",
+    "docs/demon-nested-recovery-20260929.md": "8785560c885859d140aa747acaef5bedff238cf5c375ef8040624f7a3c6c4fbc",
     "docs/demon-queue-recovery-20260929-result.json": "70c34b9c22b3ff79a566fcf655c0c3ef5692ff4c8b6ceb2faa532337a101f8ab",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
@@ -191,7 +206,8 @@
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
-    "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3"
+    "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
+    "docs/sg-efficiency-plan-20260929.md": "bc11e5ef128edc92274746da29683f4b1a3f7e8c87cef431e1cf2c68c741ce14"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -200,5 +216,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "89f28a614879b196c5c6c55659ef3da9daee82d8e6d1fad81c3835a056227e10"
+  "ruleHash": "e60bd065903a43f0ae90b1e37e4cb6d2a4bfb69fa8b034f588f63231a08f1e82"
 }
