@@ -101,6 +101,9 @@ export class SessionRecovery extends ProtocolRecovery {
     }
     return holds;
   }
+  reviewIncident(snapshot,previous) {
+    return reviewSessionIncident({profile:this.profile,plan:this.plan,snapshot,previous,now:this.now()});
+  }
   async recover() {
     this.recovering=true;
     try {
@@ -110,7 +113,7 @@ export class SessionRecovery extends ProtocolRecovery {
       const previous=(await this.store.get('journal',this.originalPrefix+':before'))?.value;
       assert(oldProof?.proofHash===this.session.previousProof && previous,'PREVIOUS_PROOF_CHANGED');
       assert(hash(previous)===this.profile.previousSnapshotHash,'PREVIOUS_BACKUP_CHANGED');
-      const review=x=>reviewSessionIncident({profile:this.profile,plan:this.plan,snapshot:x,previous,now:this.now()});
+      const review=x=>this.reviewIncident(x,previous);
       const reviewed=review(s);
       for(const {value:b} of s.batches)if(b.pending) {
         const raw=this.session.abandon.includes(b.id)?previous.batches.find(x=>x.value.id===b.id).value.pending.raw:b.pending.raw;

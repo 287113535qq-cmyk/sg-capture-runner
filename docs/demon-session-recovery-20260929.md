@@ -1,0 +1,13 @@
+# Demon 第9局会话拒绝的精确恢复
+
+本次事故仅为短采36513748377的batch1/worker3/sequence9：原成功BET及3次免费响应之后，FREE_GAME明确返回ERROR_INVALID_SESSION。其余batch5/9/10未请求，不能按等待时长推断失效。
+
+新操作器DemonSessionRecovery以原cf36恢复proof、失败run/attempt、原164条完整记录、15批次、17个稳定会话绑定及完整现场摘要为入口。先保存私有proof、全部批次与逐条完整记录并核验Mongo全文，再只归档第9局旧attempt为source-invalid-session/abandon_without_replay；原BET和拒绝XML永久保留。该序号由独立新INIT/newattempt补足，不重放旧BET，不接管旧会话中的原局。
+
+其他3个pending保留原identity、会话与协议前缀，获得绑定新commit/proof/唯一短采run的两小时一次性许可，从FREE_GAME接续。维护没有SG请求。两仓库空闲、租约到期、资源与磁盘正常、共同hold精确匹配本次拒绝，才可解除本次hold。部分失败拒绝盲目重跑。
+
+验收必须实际达到364条全文一致记录：164旧记录不变，20worker各新增10，第9局独立替代身份成立，另外3局原identity和原前缀正确接续结算，特殊第432局bonus2，pending0。15分钟内池和campaign未变化才能转正式。
+
+此前所有已应用profile保持冻结；新代码不接受旧许可。新角色是原trial-300k.yml中的demon-session-recover/validate/formal，算法只在GitHub运行，服务器继续仅提供原生Mongo读写及指标。
+
+当前为实现与验证阶段，尚未应用新proof或发送新的源请求。实际运行结果将在同一文档追加，离线通过不代表Demon特殊玩法已经真实结算。

@@ -12,13 +12,14 @@ import {receiptKey} from './durable-queue.mjs';
 const output=spawnSync(process.env.PYTHON||'python',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_demon_fields import sample;print(json.dumps(sample()))"],{encoding:'utf8'});
 assert.equal(output.status,0,output.stderr);const raw=JSON.parse(output.stdout);
 
-test('new unstarted Demon profile independently pins code and all applied profiles stay frozen',()=>{
+test('applied Demon rebind profile remains frozen and rejects newer runtime',()=>{
   const p=JSON.parse(fs.readFileSync('config/demon-rebind-20260929.json','utf8'));
   const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(f=>[f,createHash('sha256').update(fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
-  assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+  assert.equal(hash(p),'58107696d60afd756f2f7bc4b6665b421a6440e0ce271e6b5d489b0db02e12d3');
+  assert.equal(hash(p.adapterFiles),p.adapterHash);assert.notEqual(hash(actual),p.adapterHash);
 });
 
-async function fixture(){
+export async function fixture(){
   const f=await operatorFixture(32739),put=(c,k,v)=>f.docs.set(c+'/'+k,{_id:'primary/'+k,version:1,value:structuredClone(v)});
   // The shared fake transport also checks its original fixture backup marker.
   put('journal','protocol:demon-32739-20260929:backup-complete',{});
