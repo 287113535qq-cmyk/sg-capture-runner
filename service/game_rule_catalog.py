@@ -94,7 +94,7 @@ def contract(game_id):
 
 
 REVIEW_DOCS = {
-    32739: ['docs/demon-nested-recovery-20260929.md', 'docs/demon-nested-rebind-20260929.md', 'docs/sg-efficiency-plan-20260929.md'],
+    32739: ['docs/demon-pair-recovery-20260929.md', 'docs/demon-nested-recovery-20260929.md', 'docs/demon-nested-rebind-20260929.md', 'docs/sg-efficiency-plan-20260929.md'],
     32651: ['docs/squid-jackpot-protocol.md'],
     32671: ['docs/natural-feature-review-32671-32736.md'],
     32736: ['docs/natural-feature-review-32671-32736.md'],

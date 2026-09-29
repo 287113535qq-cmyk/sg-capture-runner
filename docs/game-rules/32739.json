@@ -160,9 +160,10 @@
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "52a8d52c3b785f34dbcd251ca1c306da251b8bad9e3f3e02e05159078989acf0"
+    "service/game_rule_catalog.py": "05e7a654571c206e6bcc77b044360df11f1d6872dac50d7acbf9ac9cbbbf662c"
   },
   "reviewDocuments": [
+    "docs/demon-pair-recovery-20260929.md",
     "docs/demon-nested-recovery-20260929.md",
     "docs/demon-nested-rebind-20260929.md",
     "docs/sg-efficiency-plan-20260929.md"
@@ -176,6 +177,7 @@
     "docs/demon-code-recovery-operator.md",
     "docs/demon-nested-rebind-20260929.md",
     "docs/demon-nested-recovery-20260929.md",
+    "docs/demon-pair-recovery-20260929.md",
     "docs/demon-queue-recovery-20260929-result.json",
     "docs/demon-rebind-session-stop-20260929.md",
     "docs/foam-terminal-recovery-20260929.md",
@@ -189,7 +191,7 @@
     "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "3d813ed9a5a7a87199e43baf5d088b5fcf1e766a56ea5ee6d3dc7d0bdec164bf",
+    "docs/continuous-processing.md": "c18a443d4373b8885370faff7622422e955e3479c064ca8cab4d4f3b61311b1f",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
@@ -197,6 +199,7 @@
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/demon-nested-rebind-20260929.md": "36e075f38c17e3fd740f4df8596f0efd5af3de069ebcd5307bdd03eef32ff659",
     "docs/demon-nested-recovery-20260929.md": "8785560c885859d140aa747acaef5bedff238cf5c375ef8040624f7a3c6c4fbc",
+    "docs/demon-pair-recovery-20260929.md": "4eead362de4af08fd450f3ae959aba5794134fbfac57e61dcd0f90b0862a1571",
     "docs/demon-queue-recovery-20260929-result.json": "70c34b9c22b3ff79a566fcf655c0c3ef5692ff4c8b6ceb2faa532337a101f8ab",
     "docs/demon-rebind-session-stop-20260929.md": "2e4de6941c3186cf1e6ecffe4144898ea912546986a06c27e43a2360c8dc6905",
     "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
@@ -207,7 +210,7 @@
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
-    "docs/sg-efficiency-plan-20260929.md": "bc11e5ef128edc92274746da29683f4b1a3f7e8c87cef431e1cf2c68c741ce14"
+    "docs/sg-efficiency-plan-20260929.md": "0a67286e535b44d1ee1d3aaf511c2c15606c552902d28fb33987ea0d452a6130"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -216,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e60bd065903a43f0ae90b1e37e4cb6d2a4bfb69fa8b034f588f63231a08f1e82"
+  "ruleHash": "843d63dfaf36ef757bcb5ef0f5ed13526f2bc0fbb746bdccdc3f05a280ff17ef"
 }
