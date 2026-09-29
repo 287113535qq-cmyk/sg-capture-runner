@@ -82,8 +82,8 @@ def contract(game_id):
         native.update({'family': 'quarterback-foam-v1',
             'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
             'continue': '普通/FID0 免费保持旧规则；独立 FID2 foam 按 START → 单次 PICK → END。PICK 使用 START 的 CFP_2+1 及 GSD.featureData 首项。',
-            'complete': 'Foam 必须成功 END，NFR_2-CFR_2 没有剩余、没有后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。缺失 NFG 不能使触发帧提前结束。',
-            'bounds': '仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。离线通过不表示原暂挂已恢复或真实 foam 已结算。'})
+            'complete': 'Foam 必须完整 BET/START/PICK/END。END 的计数组完整时核对 NFR_2-CFR_2 无剩余；整组 CFG/FS_2/NFR_2/CFR_2/CFP_2 缺失仅在完整四帧独立链允许，不能补0，部分缺失拒绝。无后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。',
+            'bounds': '仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。sequence20已真实完整结算并Mongo全文核验，但原113接续明确会话失效，短采/正式验收尚未通过。'})
         native['files'] += ['service/quarterback_fields.py', 'scripts/trial/quarterback-protocol.mjs', 'collector/sg.quarterback.ts']
         native['fields'].update({
             'CFG / FS_2 / NFR_2 / CFR_2 / CFP_2': 'CFG2 为 foam；NFR 是获赠轮数，CFR 为已完成轮数，CFP 为已选次数；单看 NFR>0 不能认定 END 后仍未完成。',
@@ -99,7 +99,7 @@ REVIEW_DOCS = {
     32736: ['docs/natural-feature-review-32671-32736.md'],
     32714: ['docs/huff-hard-hat-protocol.md', 'docs/huff-natural-free-stop-20260928.md'],
     32717: ['docs/huff-goals-client-review-20260928.md'],
-    32836: ['docs/quarterback-observation-20260929.md', 'docs/quarterback-foam-protocol.md'],
+    32836: ['docs/quarterback-observation-20260929.md', 'docs/quarterback-foam-protocol.md', 'docs/foam-terminal-recovery-20260929.md'],
 }
 
 

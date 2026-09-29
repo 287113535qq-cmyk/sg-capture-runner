@@ -1,0 +1,167 @@
+{
+  "schema": "sg-foam-terminal-recovery-result-v1",
+  "asOf": "2026-09-28T23:56:41Z",
+  "commit": "9b637908d7a5ef00f146d435b41e42ace9b7c447",
+  "completeGames": 13,
+  "actualCaptureWorkers": 0,
+  "preflight": {
+    "run": 36498630144,
+    "conclusion": "success",
+    "python": 236,
+    "nodeRunner": 92,
+    "nodeProtocol": 41,
+    "collector": 25,
+    "typescript": true,
+    "offlineFixtures": 3000
+  },
+  "appliedRecoveries": [
+    {
+      "group": "secondary",
+      "run": 36498957876,
+      "proofHash": "4b60c3a4e187ac1e5dedd0465404416a6a52a19f1fb54768f37482b43abcbece",
+      "completeReadback": 73,
+      "oldPreserved": 72,
+      "oldWritesFlushed": 10,
+      "receivedTerminalSettled": 1,
+      "sourceRequests": 0
+    },
+    {
+      "group": "primary",
+      "run": 36499203054,
+      "proofHash": "1aea9b7064eb4ac5d682c0d6aca5a2a74693b1ebba9a103bbd4ff13d1ed84bef",
+      "completeReadback": 164,
+      "oldPreserved": 164,
+      "pendingPreserved": 4,
+      "sourceRequests": 0
+    }
+  ],
+  "secondaryShort": {
+    "run": 36499471583,
+    "attempt": 1,
+    "conclusion": "failure",
+    "captureStepsStarted": 20,
+    "sourceRequests": 64,
+    "bets": 45,
+    "newComplete": 45,
+    "firstError": "SOURCE_REJECTED / ERROR_INVALID_SESSION",
+    "rejectedBatch": 2,
+    "rejectedWorker": 21,
+    "rejectedSequence": 113,
+    "message": "FEATURE_START"
+  },
+  "primaryShortDispatched": false,
+  "validateApplied": false,
+  "formalApplied": false,
+  "liveFoamSettlement": {
+    "sequence": 20,
+    "bonus": 2,
+    "stake": 25,
+    "win": 350,
+    "mongoFullVerified": true,
+    "rawHash": "14fa77c737adf2cd0e4a705800b2de710464e973a70e69ca8766f23ba3ad7980"
+  },
+  "snapshotHash": "d10ab17a791d2c9e72efab96ee5b208de16c2dacbe69c1545d6eea3645de92e0",
+  "groups": {
+    "primary": {
+      "completeVerified": 164,
+      "mongoFullEqual": 164,
+      "oldCompletePreserved": 164,
+      "newComplete": 0,
+      "pendingWrites": 0,
+      "pending": [
+        {
+          "batch": 1,
+          "worker": 3,
+          "sequence": 9,
+          "frames": 4,
+          "pendingHash": "331a3f8cda3101b3838f0dc2dfa9fe1b2dc5ef00e35e4baa3c2d6b074a203b9f",
+          "rawHash": "050209fff4781264f189656b216b97aa621154e8394048c404385115ab359045",
+          "next": {
+            "MSGID": "FREE_GAME"
+          }
+        },
+        {
+          "batch": 10,
+          "worker": 2,
+          "sequence": 902,
+          "frames": 1,
+          "pendingHash": "ad59f0bfe025b86c6126dd2c860b0a8d733557a5921cdcf7527e2822445dcbb7",
+          "rawHash": "fe631a103b1e801e07e59b7047a4d7e6a46f53a08cdfc6a497f3874c362d67b3",
+          "next": {
+            "MSGID": "FREE_GAME"
+          }
+        },
+        {
+          "batch": 5,
+          "worker": 0,
+          "sequence": 432,
+          "frames": 9,
+          "pendingHash": "a1413020a467c8d7e91fdc7f00cc1aae7e8d5d899c47b5020a4870073bd14b30",
+          "rawHash": "53a0d3c5b347730a1235a1ceb855d07d30b6d68b519fcdad4a13e88a8308cc00",
+          "next": {
+            "MSGID": "FREE_GAME"
+          }
+        },
+        {
+          "batch": 9,
+          "worker": 13,
+          "sequence": 806,
+          "frames": 3,
+          "pendingHash": "af9ba6b2e56aeba0bd0f97b5288ece82d8b3feb38d4bfba3cb7f0c63a85a5912",
+          "rawHash": "ca10dcaac6ba511a0f9066e31402826d35c158c2660afef2a7c7de74ec971ab9",
+          "next": {
+            "MSGID": "FREE_GAME"
+          }
+        }
+      ],
+      "activeWorkerLeases": 0,
+      "activeBatchLeases": 0
+    },
+    "secondary": {
+      "completeVerified": 118,
+      "mongoFullEqual": 103,
+      "oldCompletePreserved": 73,
+      "newComplete": 45,
+      "pendingWrites": 15,
+      "pending": [
+        {
+          "batch": 2,
+          "worker": 21,
+          "sequence": 113,
+          "frames": 2,
+          "pendingHash": "84eb0694a9c4ce4ed60c3e872b20662f407ebbe478fe29217448819961f5d454",
+          "rawHash": "828a3168298640f347f1047cba251d0b9c4f593783a99891e99fd06c5ef56b99",
+          "explicitRejection": "ERROR_INVALID_SESSION",
+          "originalPrefixAndAttemptUnchanged": true
+        }
+      ],
+      "activeWorkerLeases": 8,
+      "activeBatchLeases": 11
+    }
+  },
+  "unknownInFlight": 0,
+  "replayedBets": 0,
+  "validCompleteDeleted": 0,
+  "latestBoundary": {
+    "activeRuns": 0,
+    "queuedRuns": 0,
+    "activeWorkerLeases": 0,
+    "activeBatchLeases": 0,
+    "primaryWorkflow": "active",
+    "secondaryWorkflow": "disabled_manually",
+    "primaryScheduleEnabled": false,
+    "secondaryScheduleEnabled": false,
+    "primaryGlobalHold": false,
+    "secondaryGlobalHold": true,
+    "diskGiB": 140.80198669433594
+  },
+  "archive": {
+    "privateServerDirectory": "reviews/terminal-end-session-stop-20260929",
+    "file": "full.tar.gz",
+    "verifiedFiles": 21,
+    "sha256": "0ecc19021f9ea61f6f2bf2f3a420d21447be7a7631adac300401c1a14b91c247"
+  },
+  "newSessionRecoveryApplied": false,
+  "newSessionRecoveryImplemented": false,
+  "next": "Back up and precisely archive only rejected old113, flush15complete, new independent attempt and new pinned validation; preserve primary4 originals."
+}

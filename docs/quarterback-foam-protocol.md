@@ -12,7 +12,7 @@
 
 仅独立 `FID2| / CFG2 / FS_2=0 / NFR_2=1 / CFR_2=0 / CFP_2=0` 的成功 BET 进入此路径。之后为 FEATURE_START、一次 FEATURE_PICK、FEATURE_END。START 的 `GSD.featureData` 以分号分段，客户端保存首项 `this.val`；`sendFeaturePick` 忽略按钮位置参数，提交 `FP=0|CFP_2+1|this.val`。不能选择最高奖值、把按钮索引或别的游戏 FP 代入。
 
-START 必须提供可校验的 CFP_2 和 featureData；成功 START 可以缺 FS_2，但不能伪造缺失内容。PICK 响应必须保留当前 FID2、CFG2 且 CFP_2=1。END 必须成功，若 FID2 保留，则必须能核对 NFR_2/CFR_2；获赠一轮、已完成一轮允许 NFR_2=1/CFR_2=1。此含义来自平台 `picksRemaining = numberOfPicksWon - index`，并由 foam controller 收到 PICK 后请求 END、收到 END 后返回 readyForNextSpin 的路径限定。其他游戏的 NFR 完成保护不变。
+START 必须提供可校验的 CFP_2 和 featureData；成功 START 可以缺 FS_2，但不能伪造缺失内容。PICK 响应必须保留当前 FID2、CFG2 且 CFP_2=1。END 必须成功，若保留完整计数组，则核对 NFR_2/CFR_2；获赠一轮、已完成一轮允许 NFR_2=1/CFR_2=1。真实sequence20的END保留FID2但整组CFG/FS_2/NFR_2/CFR_2/CFP_2缺失；仅完整四帧独立Foam链允许该形式，不填0，部分缺失仍拒绝。依据平台 `picksRemaining = numberOfPicksWon - index` 及 foam controller 的 `receivedFeatureEnd → panelEnd → readyForNextSpin` 路径；其他游戏的完成保护不变。
 
 整局只允许一次 BET、同一 PID、准确普通请求参数；每帧成功 XML 与保存 PAYLOAD 一致。最终 B=AB，TW 与初始/最终余额核算 stake25。NFG/TFG/CFGG 缺失仍原样保留；本独立路径若发现正值、其他 FID 栈或其他功能字段则继续暂挂，不能按缺 NFG 提前记完整。没有响应的请求不重放。
 
@@ -22,4 +22,4 @@ START 必须提供可校验的 CFP_2 和 featureData；成功 START 可以缺 FS
 
 规则卡保存请求、完成识别、字段和证据版本；终审顺带统计 FS_2/NFR_2/CFR_2/CFP_2 与功能字段存在次数。featureData、FTV/FPM、BVAL、display 原文仅留私有证据，不进入公开观察值。没有为留档增加 SG 请求或重扫已完成的30万局。
 
-FID1 pickABonus、`2|0|`/`1|2|` 等复合栈、免费途中触发、二次选择仍未覆盖。历史只有普通/FID0；合成完整链用于测试，不是官方真实结算证据。原 batch2/worker21/sequence113 的成功 BET 必须由新证据绑定恢复后沿原会话接续。
+FID1 pickABonus、`2|0|`/`1|2|` 等复合栈、免费途中触发、二次选择仍未覆盖。历史只有普通/FID0；合成链不算官方数据。2026-09-29 sequence20已真实完成四帧，并以原attempt/raw生成receipt、Mongo全文核验（stake25/TW350/bonus2）。原batch2/worker21/sequence113接续FEATURE_START明确返回ERROR_INVALID_SESSION；该拒绝已保存，不能跨会话接管旧局或重发BET。新精确归档/替代attempt恢复尚未应用，本次短采与正式验收仍未通过。见[实际结果及证据](foam-terminal-recovery-20260929.md)。

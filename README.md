@@ -1,12 +1,12 @@
 # SG 第一轮采集
 
-当前状态（2026-09-29 07:20 北京时间）：累计 **13 / 178 款**。两次新的session恢复已成功，32739原164条与32836原42条完整记录全部保留；仅归档了两个已有明确INVALID_SESSION证据的异常attempt，其余原局未删除。
+当前状态（2026-09-29 07:56 北京时间）：累计 **13 / 178 款**，实际采集0。本轮已完成两组新的精确恢复：原Foam sequence20已按原identity/attempt/raw结算并Mongo全文核验，补齐原10条待写；第一组164条与4个原pending保留。两个terminal恢复proof已应用，禁止重跑。
 
-第二组单独短采 `36495948701` 新增30条完整日志，并首次真实走完新局Foam的BET→START→PICK→END。END保留FID2但省略整组结束计数，被原适配器拦截并共同停采。此结束形式已按客户端修正，真实原始链Python/独立TypeScript回放结算通过（stake25、TW350、bonus2），Windows/Linux全量预检通过；尚未执行本次END现场的受控补写、重新短采或正式恢复。
+随后仅第二组短采36499471583，20个采集步骤启动，64次源请求/45次BET，新增45条完整日志。原pending113接续FEATURE_START明确返回ERROR_INVALID_SESSION，触发共同保护。此新故障不是END计数修正失败，也不能推断其他未请求会话失效。
 
-当前32739为164完整/164落库、4原pending；32836为72完整/62落库、2pending（其中新sequence20已经收齐四帧，旧sequence113仍原BET）。原206条逐条保留，新增30条已核验；10条待补落库。两个变量false，primary手动入口active、secondary被短采verify关闭；secondary共同hold仍生效，实际源端分片0。已应用的旧protocol/session/Panda恢复proof均不可重跑。详见[实际恢复与END修正](docs/session-recovery-20260929.md)及[结构化结果](docs/session-recovery-20260929-result.json)。
+目前primary164完整/164落库、4原pending；secondary118完整/103落库、15条待写、1个有明确拒绝证据的pending113。282条完整原始/标准化/摘要通过，267条Mongo全文相等，恢复后的原237条逐条不变。新Foam20真实结算已核验，但本次短采、validate/formal没有通过。两仓库无活动/排队、租约到期；两个变量false，primary手动入口active，secondary保护关闭。详细proof、归档与下一步见[实际结算恢复结果](docs/foam-terminal-recovery-20260929.md)。
 
-Codex sg-30继续推进，下一步需新的Mongo v2证据绑定操作器无源重发地结算已完成四帧、补待写记录，并更新原局接续许可。不能直接重跑旧短采或清开关。下列速度和运行数据均为历史证据，实时状态仍以Mongo与GitHub为准。
+Codex sg-30继续推进。下一步为本次明确拒绝建立新的Mongo v2精确恢复，私有备份后仅归档113旧attempt并建立独立新attempt，补齐15条待写；不删除其他原局，不重发旧BET，不直接清开关或重跑已应用恢复。下列速度和运行数据均为历史证据，实时状态仍以Mongo与GitHub为准。
 
 优化减少重复控制/租约/批次查询，将最多 100 条日志批量读回；每次 SG 意图和完整响应持久化、CAS 防冲突、Mongo 全文读回及未知结果不重发均保留。离线 100 局夹具的数据库调用由 1220 次降至 518 次，该数字不等于官方采集提速百分比。详见 [优化报告](docs/runner-io-optimization-20260928.md) 和 [验收结果](docs/runner-io-optimization-20260928-result.json)。
 

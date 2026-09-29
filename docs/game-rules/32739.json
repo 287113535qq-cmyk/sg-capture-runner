@@ -128,7 +128,7 @@
     "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
-    "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
+    "service/game_rule_catalog.py": "f249e874b264ae91dfc1304bcaadd574f29b15265652db8a81a287d0b06e1df8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -147,13 +147,13 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "984427a5e1a49db6b98495b8019b7a2ed5e2ec6e12ccc106f75479a5fa4938dc",
+    "docs/continuous-processing.md": "065cfb9fa91ed5bdd4e8e60248ecd74f537380fa0aa8b547b98cd10c48f1d643",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
     "docs/demon-code-recovery-operator-result.json": "070888afd97629caa5005b668d29b509df66e845cba0d7cd0ed006f0f85d0f82",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
-    "docs/foam-terminal-recovery-20260929.md": "7e130c9aa117d4ebeee76a00757bf4a29638e25af77a1a29821df551b1d6cf8c",
+    "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
@@ -168,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7076eec4288667f87c496bef931704418fc5764c64d4bfbecdd2535b32524ed6"
+  "ruleHash": "8ebb75e407389e4ed573b768148dfa6c27d6bddb422221852a66541640d8cbd7"
 }

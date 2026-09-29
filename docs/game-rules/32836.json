@@ -32,8 +32,8 @@
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "普通/FID0 免费保持旧规则；独立 FID2 foam 按 START → 单次 PICK → END。PICK 使用 START 的 CFP_2+1 及 GSD.featureData 首项。",
-    "complete": "Foam 必须成功 END，NFR_2-CFR_2 没有剩余、没有后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。缺失 NFG 不能使触发帧提前结束。",
-    "bounds": "仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。离线通过不表示原暂挂已恢复或真实 foam 已结算。",
+    "complete": "Foam 必须完整 BET/START/PICK/END。END 的计数组完整时核对 NFR_2-CFR_2 无剩余；整组 CFG/FS_2/NFR_2/CFR_2/CFP_2 缺失仅在完整四帧独立链允许，不能补0，部分缺失拒绝。无后续免费/其他功能，再核对 XML、同会话、TW/B/AB 与实际下注25。",
+    "bounds": "仅支持独立 FID2；FID1、组合栈、免费中触发和多次选择仍待适配。sequence20已真实完整结算并Mongo全文核验，但原113接续明确会话失效，短采/正式验收尚未通过。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -131,11 +131,12 @@
     "service/quarterback_fields.py": "838fbefcda35c2438d462374e3d15317ccf827b86504dcc89fac572a0fbdd89d",
     "scripts/trial/quarterback-protocol.mjs": "9bcd1b1c6ffe0d6b45e2f12d589799867c161292e2f418f14143fd3148366c0f",
     "collector/sg.quarterback.ts": "9d1b28f902ed3245ccbbde3fad54d77e4ed96ff0e140a7db9b12c86283e24ebe",
-    "service/game_rule_catalog.py": "c993bb5a1b56138a7060a5d474b0c6c1186e45fc7a0d611a69da9d10f35fc175"
+    "service/game_rule_catalog.py": "f249e874b264ae91dfc1304bcaadd574f29b15265652db8a81a287d0b06e1df8"
   },
   "reviewDocuments": [
     "docs/quarterback-observation-20260929.md",
-    "docs/quarterback-foam-protocol.md"
+    "docs/quarterback-foam-protocol.md",
+    "docs/foam-terminal-recovery-20260929.md"
   ],
   "analysisDocuments": [
     "docs/continuous-processing.md",
@@ -150,13 +151,13 @@
     "docs/session-recovery-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "984427a5e1a49db6b98495b8019b7a2ed5e2ec6e12ccc106f75479a5fa4938dc",
+    "docs/continuous-processing.md": "065cfb9fa91ed5bdd4e8e60248ecd74f537380fa0aa8b547b98cd10c48f1d643",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
-    "docs/foam-terminal-recovery-20260929.md": "7e130c9aa117d4ebeee76a00757bf4a29638e25af77a1a29821df551b1d6cf8c",
+    "docs/foam-terminal-recovery-20260929.md": "e44b6cedc0217111f657d3014f7e43776cb1550d6ef222c1145e04f5c10d8a8e",
     "docs/protocol-short-session-stop-20260929-result.json": "58492b5713b23e4d1d74d49276cdd7295334f9c3f5361e18443af2b440ff0a55",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
-    "docs/quarterback-foam-adapter-result.json": "4ffc8db87ca2ad7d101b6a02205105283540d52e25d4e738b1431431edceb5ac",
-    "docs/quarterback-foam-protocol.md": "4ddb5418c73ff1d96a275dc565495d18561eeb0b617cb04647401ce2f3e2a896",
+    "docs/quarterback-foam-adapter-result.json": "513b9a69cacd51f3c8e47d2f39592789fb744d6f938c32fe1e1e4a85a1577688",
+    "docs/quarterback-foam-protocol.md": "d7b605b785da8bc32ea7c22bc9aaed8be1e6c2fcc38ffd56c5c62899ab7cd350",
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3"
@@ -168,5 +169,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "db772d0ab0570ec35b650a402df210a90d854400cf9a1353046d92a1218d8822"
+  "ruleHash": "ff4664027062ceebbe2f51961ffb9acc4702952539b54382b4f22c1a22a8ea5c"
 }
