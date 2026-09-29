@@ -1,4 +1,5 @@
 import {PairResidual} from './demon-pair-residual.mjs';
+import {BeaverPendingOnly} from './beaver-pending-only.mjs';
 import {FreshStart} from './fresh-start.mjs';
 import {loadNestedShort} from './demon-nested-short.mjs';
 import {hasNested,nestedNext,nestedMapping} from '../trial/demon-nested-protocol.mjs';
@@ -30,6 +31,7 @@ export class PendingFirst {
   }
   async load(identity) {
     const c=(await this.store.get('state','campaign'))?.value,p=c?.protocolValidation;
+    if(p?.beaverPending){this.beaver??=new BeaverPendingOnly({store:this.store,transport:this.transport,analyzer:this.analyzer,plan:this.plan,stage:this.stage,runKey:this.runKey,now:this.now});return this.beaver.load(identity);}
     if(p?.nestedShort)return loadNestedShort(this,identity,c);
     if(p?.freshStart){
       const spec=(await this.store.get('journal','fresh-start:'+p.proofHash))?.value;
@@ -64,6 +66,7 @@ export class PendingFirst {
   }
   async admit(identity,worker) {
     const spec=await this.load(identity);if(!spec)return null;
+    if(spec.schema==='sg-beaver-pending-only-v1'){this.admission=await this.beaver.admit(identity,worker);return this.admission;}
     if(spec.schema==='sg-demon-pair-residual-v1'){this.admission=await this.pair.admit(identity,worker);return this.admission;}
     if(spec.schema==='sg-demon-zero-short-v1'){this.admission=await this.fresh.admit(identity,worker);return this.admission;}
     if(['sg-demon-nested-short-v1','sg-demon-nested-rebind-short-v1'].includes(spec.schema)){

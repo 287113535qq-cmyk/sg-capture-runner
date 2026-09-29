@@ -34,3 +34,11 @@
 方案在已有样本上的分局可行性成立；预期收益是复用分组和恢复基础设施、缩小每款游戏适配范围，而非节省亚毫秒解析。开发耗时没有等条件对照，不能宣称已经缩短若干倍。下一步线上有限试点须记录源请求/控制查询/Mongo/健康等待/解析/总时长及完整局数；同一数据双路径结果一致才考虑替换旧入口，特殊样本不足必须标记未覆盖。
 
 当前状态：离线试点完成，线上试点未执行；原Demon446和Beaver38+pending120不变。实际首测事件总线桩少了一层函数，修正桩的调用形状后完成回放，没有改原客户端函数或放宽结束条件。
+
+## Beaver 原局优先入口接线
+
+正式源码已接入独立 `sg-beaver-pending-only-v1`：PendingFirst 验证新的 stage/proof/complete 与原局，BatchController 的原局恢复走独立 Beaver 校验，campaign 只允许该分支使用 limit1。旧 Demon/Quarterback 许可和原10局规则保持，不能将旧许可用于 Beaver。仅 worker7、batch2、sequence120、原会话/attempt/完整前缀匹配可续；禁止新BET，完成一次即停止。
+
+私有离线测试实际调用生产 campaign.selectForRun → PendingFirst → BatchController → captureBatch → Python record/verify → MongoWriter → settled：保留真实原BET，用一条明确合成的FREE终态完成内存演练，未发送源请求。通用投注窗口对相同完成帧集分组一致。该合成终态不是官方自然免费证据，也不是线上恢复成功。4项portable控制测试和完整423项Runner通过。
+
+切换操作器仍为私有隔离候选，真实GitHub控制入口、workflow及最终profile尚未集成，尚无本次Linux预检或派发。不能仅凭这些源码接线启用采集；下一步将操作器和入口统一完成后预检、保全、唯一受控切换及原局接续。

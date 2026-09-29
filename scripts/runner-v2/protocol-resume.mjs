@@ -2,12 +2,14 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 import {protocolPolicy} from './protocol-policy.mjs';
+import {reviewBeaverResume} from './beaver-resume.mjs';
 
 export const protocolHash=value=>createHash('sha256').update(stable(value)).digest('hex');
 
 // A grant is issued only by the offline-reviewed GitHub maintenance operator.
 // Expired leases alone, or an awaiting source response, never allow resumption.
 export function reviewProtocolResume({plan,batch,grant,worker,sessionHash,commit,now=Date.now()}) {
+  if(plan.gameId===32820)return reviewBeaverResume({plan,batch,grant,worker,sessionHash,commit,now});
   const marker=batch.protocolResume,p=batch.pending;
   assert(marker && grant?.schema==='sg-protocol-resume-v1','PENDING_REQUIRES_REVIEW');
   const policy=protocolPolicy(plan.gameId);

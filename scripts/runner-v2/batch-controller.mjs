@@ -6,6 +6,7 @@ import {MongoWriter,stable} from './mongo-writer.mjs';
 import {reviewProtocolResume} from './protocol-resume.mjs';
 import {protocolPolicy} from './protocol-policy.mjs';
 import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
+import {beaverSequence} from '../trial/beaver-protocol.mjs';
 import {PendingFirst} from './pending-first.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
@@ -63,7 +64,7 @@ export class BatchController {
       const p=reviewProtocolResume({plan:this.plan,batch:original,grant,worker:this.lease.worker,
         sessionHash:this.identity.sessionHash,commit:this.identity.commitSha,now:this.now()});
       const next=await this.analyzer.call({op:'next',plan:this.plan,raw:p.raw});
-      const expected=this.plan.gameId===32836?quarterbackNextRequest(p.raw):protocolPolicy(this.plan.gameId).next;
+      const expected=this.plan.gameId===32820?(beaverSequence(p.raw,this.plan).next==='FREE_GAME'?{MSGID:'FREE_GAME'}:null):this.plan.gameId===32836?quarterbackNextRequest(p.raw):protocolPolicy(this.plan.gameId).next;
       assert(stable(next)===stable(expected),'RESUME_PROTOCOL_CHANGED');
     }
     const saved=await this.store.update('state',this.batchKey,value=>{

@@ -53,7 +53,8 @@ export function protocolGrant({plan,batches,proofHash,commit,now=Date.now()}) {
 
 export function requireShortRun(campaign,runKey,commit) {
   const p=campaign.protocolValidation;if(!p)return false;
-  assert(p.phase==='short' && p.gameId===campaign.activeGame && campaign.validationLimit===10,'PROTOCOL_SHORT_CHANGED');
+  const beaver=p.gameId===32820&&/^[a-f0-9]{64}$/.test(p.beaverPending||'')&&!p.pendingFirst&&!p.freshStart&&!p.nestedShort;
+  assert(p.phase==='short' && p.gameId===campaign.activeGame && (beaver?campaign.validationLimit===1:!p.beaverPending&&campaign.validationLimit===10),'PROTOCOL_SHORT_CHANGED');
   assert(/^[a-f0-9]{40}$/.test(p.commit) && p.commit===commit,'RESUME_CODE_CHANGED');
   assert(p.runKey===null || p.runKey===runKey,'PROTOCOL_SHORT_REVIEW_REQUIRED');
   if(p.runKey===runKey)return false;
