@@ -10,4 +10,18 @@
 
 此前所有已应用profile保持冻结；新代码不接受旧许可。新角色是原trial-300k.yml中的demon-session-recover/validate/formal，算法只在GitHub运行，服务器继续仅提供原生Mongo读写及指标。
 
-当前为实现与验证阶段，尚未应用新proof或发送新的源请求。实际运行结果将在同一文档追加，离线通过不代表Demon特殊玩法已经真实结算。
+## 2026-09-29 11:25 北京时间实际结果
+
+固定代码 `be26e76e21d5c1e0827fb6132fbe9c84f998832b` 的维护36516431135成功，proof `12e4e8f69c229fa92ff2dc730cb5ef0a29b41ee4a7d0135040711a84a50728d8` 已应用，不得重跑。164条完整记录原始/规范化/Mongo全文相同，仅第9局旧失效attempt归档，其他3个原局保留。维护源请求0、旧BET重发0、有效完整删除0。`config/demon-session-20260929.json` 已冻结，整体摘要 `7a11cc97db8574dc651112cb23c7646b811e44bb4cc4d21a6a7dd2b73ddaf879`；之后代码变化不能重生成此profile摘要来接受旧许可。
+
+同版本短采36516662912:1已结束failure。20个采集步骤启动，实际67个源请求、31次BET、31个新增完整局，3个worker各完成10局。第9局的新独立attempt已完成自然免费大局（bonus1）并Mongo全文核验，原第9局仅归档，不能称原局接续成功。
+
+新的首错是原batch5/worker0/sequence432接续FREE_GAME返回完整 `ERROR_INVALID_SESSION`。原9帧前缀保留，追加明确拒绝后10帧，awaiting=null，没有未知在途请求。其余batch9/seq806及batch10/seq902均未发源请求，原attempt、前缀和许可未变；不能按等待时间推断其失效。此次Demon特殊原局仍没有成功结算，不能把第9局普通免费结算当作bonus2验收。
+
+当前195条完整日志均经原始/规范化/摘要核验，194条Mongo全文相同，1条完整待写，原164条逐条不变。3个pending中仅432有新明确拒绝。validate/formal均未执行，本次364条验收未通过，不转正式。primary共同hold为SOURCE_REJECTED/batch5，secondary自身hold=false；两变量false，primary工作流被verify保护关闭，secondary保留手动入口。11:25核对两仓库无活动/排队，仍有2个worker及5个batch租约时间戳未到期；不把这些时间戳当实际采集。累计14款，32836已完成，不再采集。
+
+下一次需要新鲜核对全部运行、租约和摘要，使用本次432明确拒绝的独立proof：先全量备份并补写唯一完整待写，仅归档432旧attempt，保留另外两个未请求原局。不可复用本次第9局操作器或修改已应用profile。后续验收必须区分432独立替代和Demon自然FID1真实结算证据，不能将被拒绝旧局标为完成，亦不能降低专用bonus2验证要求。
+
+Windows241 Python与185 Node通过；Linux预检36516084158成功，包含241 Python、44协议Node、141 Runner（含共享导入）、25 collector、TypeScript及3000离线夹具。新操作器还通过真实旧164记录及4pending只读核验，离线测试不计官方新增。
+
+三次运行的全部metadata/jobs/logZIP已CRC/SHA核验，连同前后现场、逐条核验、冻结profile保存本机和服务器私有归档 `reviews/demon-session-stop-20260929/full.tar.gz`：21文件、2393588字节、SHA256 `139ce9933fcf08ca03563cd528276b993e5e4433481400e95e8ca62d899123e8`。Mongo私有journal前缀 `primary/demon-session:demon-session-36513748377` 保留proof/before/15批records/abandoned:1/backup-complete/reconciled，新许可保存在protocol-resume对应proof。GitHub运行全部保留。
