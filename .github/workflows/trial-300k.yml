@@ -27,7 +27,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -39,6 +39,31 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  demon-zero-control:
+    if: github.event_name == 'workflow_dispatch' && startsWith(inputs.role, 'demon-zero-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked offline parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Recover exact1706 and authorize finite zero-original short capture
+        env:
+          CONTROL_ROLE: ${{ inputs.role }}
+        run: node scripts/runner-v2/demon-zero-control.mjs "${CONTROL_ROLE#demon-zero-}"
   demon-one-control:
     if: github.event_name == 'workflow_dispatch' && startsWith(inputs.role, 'demon-one-')
     runs-on: ubuntu-latest
@@ -635,6 +660,56 @@ jobs:
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
+  fresh-capture:
+    name: fresh-capture-${{ matrix.shard }}
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'fresh-short' && inputs.allocation == 'round-one' && inputs.round_one_limit == '10'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON((inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed' && inputs.active_shards == '2' && '[0,1]' || (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed' && inputs.active_shards == '4' && '[0,1,2,3]' || '[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]') }}
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_TRIAL_SHARD: ${{ matrix.shard }}
+      SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
+      SG_TRIAL_MINUTES: '25'
+      SG_PENDING_FIRST_STAGE: fresh
+      SG_TRIAL_INTERVAL_MS: '0'
+      SG_POOL_RUN_LIMIT: ${{ inputs.round_one_limit || '0' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Wait for every capture runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CAPTURE_RUNNERS: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'legacy-fixed' && '20' || inputs.active_shards || '20' }}
+          CAPTURE_STARTUP_MODE: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && 'available-workers' || '' }}
+          SG_CAPTURE_ALLOCATION: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
+        run: node scripts/trial/runner-readiness.mjs
+      - name: Capture complete rounds with independent sessions
+        env:
+          SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+        run: |
+          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
+            node scripts/runner-v2/campaign-worker.mjs capture
+          else
+            unset SG_POOL_RUN_LIMIT
+            node scripts/trial/worker.mjs capture
+          fi
+      - name: Audit this shard
+        if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
+        run: node scripts/trial/worker.mjs audit
   trial:
     name: capture-${{ matrix.shard }}
     if: github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true' || github.event_name == 'workflow_dispatch' && inputs.role == 'capture'
@@ -685,8 +760,8 @@ jobs:
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
   verify:
-    needs: [trial, pending-resume, pending-capture]
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    needs: [trial, pending-resume, pending-capture, fresh-capture]
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') && !startsWith(inputs.role, 'demon-zero-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

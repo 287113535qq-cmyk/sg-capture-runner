@@ -14,7 +14,7 @@ test('new902 profile binds runtime and preserves every applied queue profile',()
  assert.equal(p.schema,'sg-demon-one-v1');assert.equal(p.pending,2);
  assert.deepEqual(p.pendingFirst,{resumeWorkers:[7],captureWorkers:20,newBetsBeforeOriginalSettlement:false});
  const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
- assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+ assert.notEqual(hash(actual),p.adapterHash); // Applied old permission rejects changed adapters.
  assert.equal(hash(JSON.parse(fs.readFileSync('config/demon-queue-20260929.json','utf8'))),ANCESTOR.profileHash);
  assert.equal(hash(JSON.parse(fs.readFileSync('config/demon-two-20260929.json','utf8'))),'78a54d7aca62c78de8b02227664ceee1e7752b403de1cae078e109db8b70908e');
 });

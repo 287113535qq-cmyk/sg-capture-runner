@@ -1,3 +1,4 @@
+import {FreshStart} from './fresh-start.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
@@ -22,10 +23,11 @@ export function pendingFirstPlan({plan,batches,proofHash,commit,createdAt,expire
 
 export class PendingFirst {
   constructor({store,transport,analyzer,plan,stage,runKey,now=Date.now}) {
-    Object.assign(this,{store,transport,analyzer,plan,stage,runKey,now});this.admission=null;
+    Object.assign(this,{store,transport,analyzer,plan,stage,runKey,now});this.admission=null;this.fresh=new FreshStart({store,plan,stage,runKey,now});
   }
   async load(identity) {
     const c=(await this.store.get('state','campaign'))?.value,p=c?.protocolValidation;
+    if(p?.freshStart)return this.fresh.load(identity);
     if(!p?.pendingFirst){assert(!this.stage,'PENDING_FIRST_NOT_AUTHORIZED');return null;}
     assert(['resume','capture'].includes(this.stage),'PENDING_FIRST_STAGE_REQUIRED');
     assert(c.enabled && c.activeGame===this.plan.gameId && c.validationLimit===10 && p.phase==='short'
@@ -54,6 +56,7 @@ export class PendingFirst {
   }
   async admit(identity,worker) {
     const spec=await this.load(identity);if(!spec)return null;
+    if(spec.schema==='sg-demon-zero-short-v1'){this.admission=await this.fresh.admit(identity,worker);return this.admission;}
     const entry=spec.entries.find(x=>x.worker===worker);
     if(this.stage==='resume') {
       assert(entry && entry.sessionHash===identity.sessionHash,'PENDING_FIRST_WRONG_WORKER');
