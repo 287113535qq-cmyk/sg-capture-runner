@@ -5,7 +5,7 @@ const fail=code=>Object.assign(new Error(code),{code,category:'storage'});
 // running on GitHub, decides whether a new source request may be sent.
 export class SourceControl {
   constructor({store,transport,gate,plan}){Object.assign(this,{store,transport,gate,plan});}
-  async allowed({newRound=false}={}) {
+  async allowed({newRound=false,continuation=false}={}) {
     await this.store.writable();
     const rows=await this.transport.request('control_read',this.plan?{trialId:this.plan.trialId}:{});
     const holds=['primary/global-hold','secondary/global-hold'].map(id=>rows.find(x=>x._id===id));
@@ -17,7 +17,9 @@ export class SourceControl {
     const poolDoc=this.plan?rows.find(x=>x._id.endsWith('/pool:'+this.plan.trialId)):null;
     if(this.plan){
       const pool=poolDoc?.value;
-      if(!pool?.enabled || pool.failure)throw fail('POOL_PAUSED');
+      const draining=continuation && !newRound && pool?.drainingProtocol===true
+        && pool.failure==='PROTOCOL_VALIDATION_FAILED';
+      if((!pool?.enabled || pool.failure) && !draining)throw fail('POOL_PAUSED');
     }
     const disk=this.gate.status().metrics?.diskFreeBytes;
     assert(Number.isSafeInteger(disk),'DISK_SAMPLE_REQUIRED');

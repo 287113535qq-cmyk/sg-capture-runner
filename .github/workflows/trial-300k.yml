@@ -34,7 +34,7 @@ permissions:
   contents: read
   actions: write
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && inputs.role == 'demo-fresh-short' && 'sg-demo-fresh-capture' || 'sg-real-single-game-trial' }}
+  group: ${{ github.event_name == 'workflow_dispatch' && inputs.role == 'demo-fresh-short' && 'sg-demo-fresh-capture' || (github.event_name == 'schedule' || inputs.role == 'capture') && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && 'sg-round-one-capture-v2' || 'sg-real-single-game-trial' }}
   cancel-in-progress: false
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
@@ -905,7 +905,11 @@ jobs:
         id: state
         run: |
           if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/runner-v2/campaign-worker.mjs status
+            if [ "${{ inputs.role || 'capture' }}" = capture ] && [ "${{ inputs.round_one_limit || '0' }}" = 0 ]; then
+              node scripts/runner-v2/campaign-worker.mjs finalize
+            else
+              node scripts/runner-v2/campaign-worker.mjs status
+            fi
           else
             node scripts/trial/worker.mjs status
           fi
@@ -913,7 +917,7 @@ jobs:
         if: (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'round-one' && steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
       - name: Continue next game with a fresh complete matrix
-        if: success() && needs.trial.result == 'success' && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && (inputs.role || 'capture') == 'capture' && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
+        if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure') && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && (inputs.role || 'capture') == 'capture' && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/continue-campaign.mjs

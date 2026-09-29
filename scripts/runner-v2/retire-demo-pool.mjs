@@ -2,15 +2,16 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter} from './mongo-writer.mjs';
+import {loadCountPermission,checkLedger} from './complete-count.mjs';
 
 // Retire an idle demo pool without attempting source-session recovery. Complete
 // records are verified/flushed; interrupted attempts are retained only in the
 // private analysis journal and removed from active batches. No source transport.
-export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,now=Date.now}){
+export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,now=Date.now}){
  assert(typeof boundary==='function'&&plan.buy===0&&plan.phase===1&&typeof owner==='string'&&owner.length>0,'RETIRE_SCOPE');
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
- assert(!pool?.countAllocation&&!plan.countAllocation,'COUNT_RETIREMENT_OPERATOR_REQUIRED');
+ const countSpec=pool?await loadCountPermission({store,plan,pool,commit}):null;
  assert(pool&&!pool.enabled&&pool.planHash===hash(plan)&&hash(pool)===expectedPoolHash&&pool.nextBatchId>0&&pool.nextBatchId<=101,'RETIRE_POOL_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'RETIRE_WORKER_ACTIVE');
  const prefix='retired-demo:'+plan.trialId+':'+expectedPoolHash.slice(0,16);
@@ -54,7 +55,26 @@ export async function retireDemoPool({store,transport,gate,parser,plan,boundary,
   await boundary();
   await store.update('state',key,v=>{assert(v.owner===owner&&v.epoch===epoch&&v.checkpoint===v.journaled&&v.journaled===b.journaled&&hash(v.pending)===hash(b.pending),'RETIRE_PROGRESS_CHANGED');return {...v,owner:null,leaseUntil:0,pending:null,pendingOriginal:null,bootstrapAwaiting:null,protocolResume:null,failure:null,retiredDemo:prefix};});
  }
- await boundary();await store.update('state',poolKey,v=>{assert(hash(v)===expectedPoolHash,'RETIRE_POOL_CHANGED');return {...v,enabled:false,retiredDemo:prefix};});
+ await boundary();await store.update('state',poolKey,v=>{
+  assert(hash(v)===expectedPoolHash,'RETIRE_POOL_CHANGED');
+  if(countSpec){
+   checkLedger(v,plan,countSpec);
+   for(const b of batches){
+    const item=v.countAllocation.batches[b.id];
+    assert(item&&item.worker===b.worker&&item.sessionHash===b.sessionHash&&item.start===b.start&&item.end===b.end,'COUNT_RETIRE_BATCH_CHANGED');
+    const complete=b.journaled-b.start+1;
+    if(item.closed){assert(item.complete===complete,'COUNT_RETIRE_CLOSED_CHANGED');continue;}
+    item.closed=true;item.complete=complete;
+    item.evidenceHash=hash({retirement:prefix,beforeBatchHash:hash(b),complete});
+    v.countAllocation.reserved-=b.end-b.start+1;v.confirmed+=complete;
+   }
+   // Detach only now, after the full readback and private analysis archive.
+   // Keep the session identities: fresh generation activation is separate.
+   for(const w of Object.values(v.workers)){w.activeBatch=null;w.resumeSafe=false;}
+   checkLedger(v,plan,countSpec);
+  }
+  return {...v,enabled:false,retiredDemo:prefix};
+ });
  const result={schema:'sg-retired-demo-result-v1',trialId:plan.trialId,completePreserved:records.length,abandonedAttempts:attempts.length,sourceRequests:0,newBetAllowance:0,beforeHash:hash(before),at:now()};
  await save(prefix+':complete',result);return result;
 }

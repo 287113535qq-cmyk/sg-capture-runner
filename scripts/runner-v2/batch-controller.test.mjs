@@ -9,6 +9,8 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {protocolGrant} from './protocol-recovery-core.mjs';
 import {spawnSync} from 'node:child_process';
 import {pendingFirstPlan} from './pending-first.mjs';
+import {GithubCampaign} from './campaign.mjs';
+import {SourceControl} from './control.mjs';
 
 async function fixture(shardId=0){
   const docs=new Map(),rounds=new Map();let now=1000,failResponse=false;
@@ -83,7 +85,8 @@ test('natural unknown feature is retained and parked; explicit source rejection 
     await assert.rejects(f.rpc('exchange_journal',{...f.owned,sequence:1,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'FID=2',sourceRejected:rejected}}));
     await f.rpc('fail',{...f.owned,category:'source_protocol'});
     const b=(await f.store.get('state',f.controller.batchKey)).value;
-    assert.equal(b.pending.raw.steps.length,1);assert.equal(b.pending.awaiting,null);
+    if(rejected){assert.equal(b.pending.raw.steps.length,1);assert.equal(b.pending.awaiting,null);}
+    else {assert.equal(b.pending,null);assert.equal((await f.store.get('journal',b.abandonedDemo)).value.pending.raw.steps.length,1);}
     assert.equal((await f.store.get('state','global-hold')).value.active,rejected);
     assert.equal((await f.store.get('state','campaign')).value.games[0].status,rejected?'active':'parking-protocol');
   }
@@ -138,6 +141,80 @@ test('a granted original natural round resumes with FREE_GAME before any BET and
   assert.deepEqual(calls,['FREE_GAME','BET']);assert.equal(f.rounds.size,2);
   const original=f.rounds.get(String(1).padStart(64,'0'));
   assert.deepEqual(original.raw.steps.slice(0,1),pending.raw.steps);
+});
+
+test('AG-style actual capture failure archives only the half round and queues repair while a fresh run selects B',async()=>{
+  const f=await fixture();let posted=0;
+  const original=f.controller.analyzer.call;
+  f.controller.analyzer.call=async r=>{
+    if(r.op==='next' && r.raw.steps.at(-1)?.responsePayload==='FID=2')
+      throw Object.assign(Error('UNSUPPORTED_BEAVER_NESTED_FEATURE'),{code:'UNSUPPORTED_BEAVER_NESTED_FEATURE'});
+    return original(r);
+  };
+  await assert.rejects(captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},
+    prepareRound:raw=>({money:{endBalanceRaw:raw.startBalanceRaw-25}}),
+    post:async(requestPayload,msgId)=>({requestPayload,msgId,responsePayload:++posted===1?'NFG=0':'FID=2',elapsedMs:1}),
+    payload:()=> 'MSGID=BET',bootstrap:async()=>100000,shouldStop:()=>false,requestStop(){},
+    deadline:performance.now()+60000,limit:10}),{code:'UNSUPPORTED_BEAVER_NESTED_FEATURE'});
+  await f.rpc('fail',{...f.owned,code:'UNSUPPORTED_BEAVER_NESTED_FEATURE'});
+  assert.equal(posted,2);assert.equal(f.rounds.size,1);
+  const b=(await f.store.get('state',f.controller.batchKey)).value;
+  assert.equal(b.pending,null);assert.equal(b.checkpoint,1);
+  assert.equal((await f.store.get('state','global-hold')).value.active,false);
+  const old={frozen:true};await f.store.create('journal','parked-pool:'+f.plan.trialId,old,{immutable:true});
+  const nextPlan={gameId:32726,trialId:'synthetic-next-game',buy:0,phase:1,target:2};
+  await f.store.update('state','campaign',v=>{v.games.push({game_id:32726,status:'ready',baseline:299998});return v;});
+  await f.store.create('state','capture-run:123:1',{gameId:f.plan.gameId});
+  const campaign=new GithubCampaign({store:f.store,control:f.controller.control,plans:{[f.plan.gameId]:f.plan,32726:nextPlan},now:()=>1000});
+  await campaign.finalizeStoppedRun('capture-run:123:1');
+  const parked=(await f.store.get('state','campaign')).value.games[0];
+  assert.equal(parked.status,'parked-protocol');
+  assert.equal((await f.store.get('state',parked.repairKey)).value.status,'pending-adapter');
+  assert.deepEqual((await f.store.get('journal','parked-pool:'+f.plan.trialId)).value,old);
+  assert.equal((await campaign.selectForRun('capture-run:123:1')).reason,'RUN_GAME_FINISHED');
+  assert.equal((await campaign.selectForRun('capture-run:124:1')).plan.gameId,32726);
+});
+
+test('failed private abandonment write keeps the partial and stops shared writes',async()=>{
+  const f=await fixture();
+  await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  await assert.rejects(f.rpc('exchange_journal',{...f.owned,sequence:1,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'FID=2'}}));
+  const create=f.store.create.bind(f.store);f.store.create=async(c,k,...rest)=>{if(k.startsWith('abandoned-demo:'))throw Error('STORE_FAILED');return create(c,k,...rest);};
+  await assert.rejects(f.rpc('fail',{...f.owned}),/STORE_FAILED/);
+  assert((await f.store.get('state',f.controller.batchKey)).value.pending);
+  assert.equal((await f.store.get('state','global-hold')).value.active,true);
+});
+
+test('a healthy peer finishes its in-flight feature after adapter parking but cannot start another BET',async()=>{
+  const f=await fixture();
+  const transport={request:async(op,r)=>op==='control_read'?[
+    {_id:'primary/global-hold',value:(await f.store.get('state','global-hold')).value},
+    {_id:'secondary/global-hold',value:{active:false}},
+    {_id:'primary/campaign',value:(await f.store.get('state','campaign')).value},
+    {_id:'primary/pool:'+f.plan.trialId,value:(await f.store.get('state','pool:'+f.plan.trialId)).value},
+  ]:f.controller.transport.request(op,r)};
+  const gate={status:()=>({allowed:true,maxBatchSize:100,metrics:{diskFreeBytes:100*1024**3}})};
+  const peer=new BatchController({store:f.store,transport,gate,plan:f.plan,group:'primary',now:()=>1000,
+    spool:{append(){},confirmed(){}},control:new SourceControl({store:f.store,transport,gate,plan:f.plan}),
+    analyzer:{call:async r=>r.op==='next'?(r.raw.steps.length===1?{MSGID:'FREE_GAME'}:null):f.controller.analyzer.call(r)}});
+  const identity={...f.identity,owner:'peer',sessionHash:'b'.repeat(64)};
+  const registration=await peer.rpc('register',{...identity,shardId:1});
+  const worker={shardId:1,owner:'peer',workerEpoch:registration.workerEpoch};
+  const lease=await peer.rpc('next',worker),owned={...worker,batchId:lease.batchId,epoch:lease.epoch},sequence=lease.durable+1;
+  await peer.rpc('begin',{...owned,sequence,attempt:'00000000-0000-0000-0000-000000000002',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  await peer.rpc('exchange_journal',{...owned,sequence,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'NFG=1'}});
+  await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  await assert.rejects(f.rpc('exchange_journal',{...f.owned,sequence:1,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'FID=2'}}));
+  await f.rpc('fail',{...f.owned});
+  await peer.rpc('intent',{...owned,sequence,requestPayload:'MSGID=FREE_GAME'});
+  const result=await peer.rpc('exchange_journal',{...owned,sequence,normalized:{money:{endBalanceRaw:99975}},
+    step:{requestPayload:'MSGID=FREE_GAME',msgId:'FREE_GAME',responsePayload:'NFG=0'}});
+  assert.equal(result.complete,true);
+  await assert.rejects(peer.rpc('begin',{...owned,sequence:sequence+1,attempt:'00000000-0000-0000-0000-000000000003',startBalanceRaw:99975,requestPayload:'MSGID=BET'}),{code:'POOL_PAUSED'});
+  await peer.rpc('fail',{...owned,code:'POOL_PAUSED'});
+  assert.equal(f.rounds.size,1);
+  assert.equal((await f.store.get('state','global-hold')).value.active,false);
+  assert.equal((await f.store.get('state',peer.batchKey)).value.pending,null);
 });
 
 test('actual secondary controller claims original FID1 with CFG1, not old Foam CFG2',async()=>{

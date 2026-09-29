@@ -191,7 +191,7 @@
     "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "a6a10b7e5f2448d4f34a932a04a0d3e032803d4b7a96b1a60632af63735dcfe2",
+    "docs/continuous-processing.md": "147b3653dd76d4f4927379d65dd944e460b50873fb00bc9d4522ddae2c71c256",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
@@ -210,7 +210,7 @@
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
-    "docs/sg-efficiency-plan-20260929.md": "c6fd89da7628c44474bb6ee77bbe67b41a3429511b89d71ab03e69bf8f7200ae"
+    "docs/sg-efficiency-plan-20260929.md": "3293f47dc82693f6078906a2a5ffc93f9367a3357c799c333104fe5ff876ebfc"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "73dde2e689f1d0beb6f730f00698080876006c5c3d52a393847e2ead45d8b148"
+  "ruleHash": "7d2a39c7a402acd160ca795f57ff97cfe399aebc2a8017ad8446c6240c13496b"
 }

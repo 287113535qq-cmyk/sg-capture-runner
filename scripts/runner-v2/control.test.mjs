@@ -20,4 +20,10 @@ test('a protocol-paused pool blocks further requests even while the group remain
   await control.allowed({newRound:true});pool={enabled:false,failure:'PROTOCOL_VALIDATION_FAILED'};
   await assert.rejects(control.allowed({newRound:true}),{code:'POOL_PAUSED'});
   await assert.rejects(control.allowed(),{code:'POOL_PAUSED'});
+  pool.drainingProtocol=true;
+  await control.allowed({continuation:true});
+  await assert.rejects(control.allowed({newRound:true,continuation:true}),{code:'POOL_PAUSED'});
+  await assert.rejects(control.allowed(),{code:'POOL_PAUSED'});
+  pool.failure='STORAGE_ERROR';
+  await assert.rejects(control.allowed({continuation:true}),{code:'POOL_PAUSED'});
 });

@@ -18,3 +18,44 @@ test('incomplete archive preserves active pending and refuses blind rerun',async
 test('Mongo conflict does not erase pending or advance checkpoint',async()=>{const f=fixture();f.corrupt();await assert.rejects(retireDemoPool(f.args),/MONGO_CONTENT_CONFLICT/);const b=f.get('state','batch:synthetic-demo:1').value;assert(b.pending);assert.equal(b.checkpoint,0);});
 test('active boundary refuses before archival or mutation',async()=>{const f=fixture();f.busy();const old=hash([...f.docs]);await assert.rejects(retireDemoPool(f.args),/BUSY/);assert.equal(hash([...f.docs]),old);});
 test('already settled historical batch retains the exact generation audit hash',async()=>{const f=fixture();f.batch.pending=null;f.batch.checkpoint=2;f.batch.retiredDemo='earlier-generation';for(const [k,r] of f.docs)if(k.startsWith('journal/receipt:'))f.mongo.set(r.value._id,r.value);const before=hash(f.batch);const r=await retireDemoPool(f.args);assert.equal(r.abandonedAttempts,0);assert.equal(hash(f.get('state','batch:synthetic-demo:1').value),before);});
+
+function countedFixture(){
+ const f=fixture(),plan=f.args.plan,pool=f.docs.get('state/pool:'+plan.trialId).value;
+ plan.target=200;plan.countAllocation='a'.repeat(64);f.args.commit='b'.repeat(40);
+ f.batch.sessionHash='c'.repeat(64);pool.workers[7].sessionHash=f.batch.sessionHash;
+ pool.workers[7].activeBatch={id:1,worker:7,start:1,end:100};pool.nextSequence=101;pool.confirmed=0;
+ for(const [key,row] of f.docs)if(key.startsWith('journal/receipt:'))row.value.sourceSessionHash=f.batch.sessionHash;
+ pool.planHash=hash(plan);
+ const spec={schema:'sg-complete-count-v1',activation:plan.countAllocation,planHash:hash(plan),commit:f.args.commit,trialId:plan.trialId,gameId:plan.gameId,target:200,maxSequence:300,firstSequence:1,baselineBatchCount:0,baselineHash:hash([])};
+ pool.countAllocation={specHash:hash(spec),reserved:100,batches:{1:{id:1,worker:7,start:1,end:100,sessionHash:f.batch.sessionHash,closed:false,complete:0,evidenceHash:null}}};
+ const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+ f.docs.set('journal/'+key,{value:spec});f.docs.set('journal/'+key+':complete',{value:{schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit:f.args.commit}});
+ f.args.expectedPoolHash=hash(pool);return {...f,pool,key};
+}
+
+test('count-mode retirement flushes two complete records and releases unused reservation only once',async()=>{
+ const f=countedFixture();const result=await retireDemoPool(f.args),pool=f.get('state','pool:synthetic-demo').value;
+ assert.equal(result.completePreserved,2);assert.equal(pool.confirmed,2);assert.equal(pool.countAllocation.reserved,0);
+ assert.equal(pool.countAllocation.batches[1].complete,2);assert.equal(pool.countAllocation.batches[1].closed,true);
+ assert.equal(pool.nextSequence,101);assert.equal(pool.workers[7].activeBatch,null);assert.equal(pool.enabled,false);
+ const after=hash(pool);await assert.rejects(retireDemoPool(f.args));assert.equal(hash(f.get('state','pool:synthetic-demo').value),after);
+});
+
+test('count-mode Mongo conflict cannot release reservation or erase pending',async()=>{
+ const f=countedFixture();f.corrupt();await assert.rejects(retireDemoPool(f.args),/MONGO_CONTENT_CONFLICT/);
+ const p=f.get('state','pool:synthetic-demo').value;assert.equal(p.confirmed,0);assert.equal(p.countAllocation.reserved,100);
+ assert(f.get('state','batch:synthetic-demo:1').value.pending);
+});
+
+test('count-mode archive failure cannot release reservation or allocate new source quota',async()=>{
+ const f=countedFixture();f.fail('retired-demo:synthetic-demo:'+f.args.expectedPoolHash.slice(0,16)+':analysis');
+ await assert.rejects(retireDemoPool(f.args),/INJECTED/);assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,100);
+ assert.equal(f.mongo.size,0);
+});
+
+test('count-mode retirement requires current runtime and completed activation',async()=>{
+ for(const cause of ['runtime','stage']){
+  const f=countedFixture();if(cause==='runtime')f.args.commit='d'.repeat(40);else f.docs.delete('journal/'+f.key+':complete');
+  const before=hash([...f.docs]);await assert.rejects(retireDemoPool(f.args));assert.equal(hash([...f.docs]),before);
+ }
+});

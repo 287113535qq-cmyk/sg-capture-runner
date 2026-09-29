@@ -8,6 +8,7 @@ import {protocolPolicy} from './protocol-policy.mjs';
 import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
 import {beaverSequence} from '../trial/beaver-protocol.mjs';
 import {PendingFirst} from './pending-first.mjs';
+import {isAdapterGap} from './game-failure-policy.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -105,7 +106,7 @@ export class BatchController {
   async intent(r,begin=false){
     if(begin){this.pendingFirst.beforeNewRequest();this.pendingFirst.beforeBegin(r.sequence);}
     await this.owned(r,{heartbeat:false});
-    const poolSnapshot=await this.control.allowed({newRound:begin});
+    const poolSnapshot=await this.control.allowed({newRound:begin,continuation:!begin});
     await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
     let raw;
     if(begin){
@@ -154,8 +155,9 @@ export class BatchController {
         normalized:r.normalized,sequence:r.sequence,attempt:pending.attempt,
         sessionHash:this.identity.sessionHash,worker:this.lease.worker,batchId:this.batch.id});
     }catch(error){
-      const unsupported=/^(UNKNOWN_TRIAL_FEATURE|UNKNOWN_JACKPOT_FEATURE|HUFF_FEATURE_NOT_ADAPTED)$/.test(error.code || '');
-      await this.update(value=>({...value,failure:unsupported?'PROTOCOL_VALIDATION_FAILED':'RESPONSE_VALIDATION_REQUIRES_REVIEW'}));
+      const unsupported=isAdapterGap(error.code);
+      await this.update(value=>({...value,failure:unsupported?'PROTOCOL_VALIDATION_FAILED':'RESPONSE_VALIDATION_REQUIRES_REVIEW',
+        ...(unsupported?{adapterFailureCode:error.code}:{})}));
       error.category='source_protocol';throw error;
     }
     if(record){
@@ -213,7 +215,7 @@ export class BatchController {
       && !b?.pending?.awaiting && !b?.bootstrapAwaiting;
     const protocol=b?.failure==='PROTOCOL_VALIDATION_FAILED' && b.pending?.awaiting===null || peerStop;
     if(protocol){
-      await this.store.update('state',this.pool.key,v=>({...v,enabled:false,failure:'PROTOCOL_VALIDATION_FAILED'}));
+      await this.store.update('state',this.pool.key,v=>({...v,enabled:false,failure:'PROTOCOL_VALIDATION_FAILED',drainingProtocol:true}));
       await this.store.update('state','campaign',v=>{
         if(v.activeGame===this.plan.gameId){
           const game=v.games.find(x=>x.game_id===this.plan.gameId);assert(game);game.status='parking-protocol';
@@ -221,9 +223,34 @@ export class BatchController {
         }
         return v;
       });
-      // The campaign will wait until every old source owner has stopped and
-      // back up all its pending states before assigning another game.
-      if(this.lease)await this.pool.release(this.lease);
+      // Finish storage before releasing ownership. The interrupted attempt is
+      // private analysis only, never resumed or counted as a completed round.
+      try{
+        if(this.batchKey){
+          await this.owned(r,{heartbeat:false});await this.flush();
+          const current=(await this.store.get('state',this.batchKey)).value;this.batchOwned(current);
+          assert(!current.bootstrapAwaiting && !current.pending?.awaiting,'UNKNOWN_SOURCE_OUTCOME');
+          assert(current.checkpoint===current.journaled,'UNCONFIRMED_QUEUE');
+          let abandoned=null;
+          if(current.pending){
+            const key=`abandoned-demo:${this.plan.trialId}:${current.id}:${hash(current.pending)}`;
+            const evidence={schema:'sg-abandoned-demo-v1',trialId:this.plan.trialId,batchId:current.id,
+              reason:current.adapterFailureCode || 'PROTOCOL_VALIDATION_FAILED',
+              disposition:'interrupted-abandoned-without-replay',pending:current.pending,
+              pendingOriginal:current.pendingOriginal??null,sourceRequests:0};
+            await this.store.create('journal',key,evidence,{immutable:true});
+            assert(hash((await this.store.get('journal',key))?.value)===hash(evidence),'ABANDON_READBACK_FAILED');
+            abandoned=key;
+          }
+          await this.update(v=>{assert(hash(v)===hash(current),'BATCH_VERSION_CHANGED');
+            return {...v,pending:null,pendingOriginal:null,protocolResume:null,leaseUntil:0,
+              ...(abandoned?{abandonedDemo:abandoned}:{})};});
+        }
+        if(this.lease)await this.pool.release(this.lease);
+      }catch(error){
+        await this.control.halt('SOURCE_OR_STORAGE_REQUIRES_REVIEW',{trialId:this.plan.trialId,
+          batchId:this.batch?.id??null,code:'PROTOCOL_PARK_STORAGE_FAILED'});throw error;
+      }
     }else await this.control.halt('SOURCE_OR_STORAGE_REQUIRES_REVIEW',{
       trialId:this.plan.trialId,batchId:this.batch?.id ?? null,
       code:/^[A-Z_]{1,100}$/.test(r.code || '')?r.code:'UNCLASSIFIED_STOP',

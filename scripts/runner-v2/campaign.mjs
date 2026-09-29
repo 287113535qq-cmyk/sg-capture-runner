@@ -51,6 +51,15 @@ export class GithubCampaign {
     }
     return next;
   }
+  async finalizeStoppedRun(runKey){
+    assert(/^capture-run:[0-9]+:[0-9]+$/.test(runKey),'RUN_BINDING_REQUIRED');
+    const c=(await this.store.get('state','campaign')).value;
+    const bound=(await this.store.get('state',runKey))?.value;
+    // Finalizer never allocates another game or extends a short-run grant.
+    if(c.validationLimit || c.protocolValidation || !bound || c.activeGame!==bound.gameId
+      || c.games.find(g=>g.game_id===bound.gameId)?.status!=='parking-protocol')return;
+    return this.select({expectedGame:bound.gameId});
+  }
   async select({expectedGame}={}){
     await this.control.allowed({newRound:true});
     let c=(await this.store.get('state','campaign')).value;
@@ -60,18 +69,27 @@ export class GithubCampaign {
       const pool=(await this.store.get('state','pool:'+plan.trialId))?.value;
       if(game.status==='parking-protocol'){
         if(!pool||Object.values(pool.workers).some(x=>x.leaseUntil>this.now()))return {action:'wait'};
-        const evidence=[];
+        const evidence=[],generation=hash(pool),modern=pool.drainingProtocol===true;
+        const prefix=modern?`parked-v2:${plan.trialId}:${generation}`:'parked-pool:'+plan.trialId;
         for(const w of Object.values(pool.workers)){
           if(!w.activeBatch)continue;
           const b=(await this.store.get('state',`batch:${plan.trialId}:${w.activeBatch.id}`))?.value;assert(b);
           if(b.pending?.awaiting||b.bootstrapAwaiting){await this.control.halt('UNKNOWN_SOURCE_OUTCOME',{trialId:plan.trialId});return {action:'stop'};}
-          const key=`parked:${plan.trialId}:${b.id}`;
+          if(b.leaseUntil>this.now())return {action:'wait'};
+          assert(b.checkpoint===b.journaled,'PARK_UNCONFIRMED_COMPLETE');
+          const key=modern?`${prefix}:batch:${b.id}`:`parked:${plan.trialId}:${b.id}`;
           await this.store.create('journal',key,{batch:b,poolPlanHash:pool.planHash},{immutable:true});evidence.push({key,hash:hash(b)});
         }
-        await this.store.create('journal','parked-pool:'+plan.trialId,{pool,evidence},{immutable:true});
+        await this.store.create('journal',prefix,{pool,evidence},{immutable:true});
+        assert(hash((await this.store.get('journal',prefix))?.value)===hash({pool,evidence}),'PARK_BACKUP_READBACK');
+        const repairKey=`game-repair:${plan.trialId}:${generation}`;
+        await this.store.create('state',repairKey,{schema:'sg-game-repair-v1',gameId:game.game_id,
+          trialId:plan.trialId,status:'pending-adapter',archiveKey:prefix,evidence,
+          sourceAllowance:0,requiresNewSession:true});
         await this.store.update('state','campaign',v=>{
-          if(v.activeGame!==game.game_id)return null;
-          v.games.find(x=>x.game_id===game.game_id).status='parked-protocol';v.activeGame=null;return v;
+          if(v.activeGame!==game.game_id || v.games.find(x=>x.game_id===game.game_id)?.status!=='parking-protocol')return null;
+          const parked=v.games.find(x=>x.game_id===game.game_id);
+          parked.status='parked-protocol';parked.repairKey=repairKey;v.activeGame=null;return v;
         });
         return {action:'wait'};
       }

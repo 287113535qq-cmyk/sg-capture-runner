@@ -21,3 +21,12 @@ test('uncertain dispatch is not resent automatically',async()=>{
   const f=fixture();let calls=0;f.args.github.dispatch=async()=>{calls++;throw Error('ACK_UNKNOWN');};
   await assert.rejects(continueAfterGame(f.args));assert.equal((await continueAfterGame(f.args)).continued,false);assert.equal(calls,1);
 });
+
+test('a parked protocol game continues once to the next ready game without reopening its source grant',async()=>{
+  const f=fixture();f.campaign.games[0].status='parked-protocol';
+  assert.equal((await continueAfterGame(f.args)).continued,true);
+  assert.equal(f.campaign.games[0].status,'parked-protocol');
+  assert.equal((await continueAfterGame(f.args)).continued,false);
+  const short=fixture();short.campaign.games[0].status='parked-protocol';short.campaign.validationLimit=5;
+  assert.equal((await continueAfterGame(short.args)).continued,false);
+});

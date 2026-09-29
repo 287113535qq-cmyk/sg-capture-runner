@@ -4,6 +4,8 @@ import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
 import {continueAfterGame} from './continue-core.mjs';
 import {repositories} from '../trial/runner-group.mjs';
+import {continuationHasOtherRun} from './continuation-boundary.mjs';
+import {authenticatedRead} from './github-boundary.mjs';
 
 const repo=process.env.GITHUB_REPOSITORY,runId=process.env.GITHUB_RUN_ID,attempt=process.env.GITHUB_RUN_ATTEMPT;
 assert(repositories[repo] && process.env.GH_TOKEN);
@@ -16,14 +18,7 @@ async function api(suffix,options={}){
 }
 try{
   const result=await continueAfterGame({store,transport,runId,attempt,github:{
-    async hasOtherRun(){
-      for(const status of ['queued','pending','waiting','requested','in_progress']){
-        const result=await api(`runs?status=${status}&per_page=100`);
-        assert(result.total_count<100,'RUN_LIST_INCOMPLETE');
-        if(result.workflow_runs.some(r=>String(r.id)!==runId))return true;
-      }
-      return false;
-    },
+    hasOtherRun:()=>continuationHasOtherRun({read:authenticatedRead(process.env.GH_TOKEN),store,repository:repo,runId}),
     dispatch:()=>api('dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs:{role:'capture',allocation:'round-one',round_one_limit:'0',active_shards:'20'}})})
   }});
   console.log(JSON.stringify(result));

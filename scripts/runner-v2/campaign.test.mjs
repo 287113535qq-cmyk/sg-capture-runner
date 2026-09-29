@@ -97,3 +97,16 @@ test('failed record verification never produces a coverage archive or completes 
   assert(![...f.docs.keys()].some(k=>k.startsWith('journal/')));
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'active');
 });
+
+test('matrix finalizer cannot extend short scope, park another run or move past a live owner',async()=>{
+  for(const mode of ['short','other-run','live']){
+    const f=fixture(),trial=f.plans[32723].trialId;
+    await f.store.create('state','campaign',{enabled:true,activeGame:32723,validationLimit:mode==='short'?5:0,
+      games:[{game_id:32723,status:'parking-protocol'},{game_id:32726,status:'ready',baseline:299998}]});
+    await f.store.create('state','capture-run:111:1',{gameId:mode==='other-run'?32726:32723});
+    await f.store.create('state','pool:'+trial,{enabled:false,drainingProtocol:true,workers:{0:{leaseUntil:2000}}});
+    await f.c.finalizeStoppedRun('capture-run:111:1');
+    assert.equal((await f.store.get('state','campaign')).value.activeGame,32723);
+    assert(![...f.docs.keys()].some(k=>k.startsWith('state/game-repair:')));
+  }
+});

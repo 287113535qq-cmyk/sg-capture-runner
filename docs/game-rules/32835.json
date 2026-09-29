@@ -96,10 +96,12 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/complete-count-allocation-20260930.md",
     "docs/primary-natural-parks-20260929.md",
     "docs/protocol-short-session-stop-20260929.md"
   ],
   "analysisDocumentHashes": {
+    "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
   },
@@ -110,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4b6a68680614a5eb60b12cd76567548eb6dcaf64eb4302f665feed068a1c3a1b"
+  "ruleHash": "1f2d8977e2ff709a633e42d74b393b2e1375a89665fbda774508516f0a2c48d0"
 }
