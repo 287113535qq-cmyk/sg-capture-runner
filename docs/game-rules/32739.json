@@ -124,11 +124,11 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "89930178a3ac3c63aa9c3d169b36572a566809d7fb348a4e2744630f442c81bf",
+    "service/round_fields.py": "d1840ccb542673f411f5cc53c1e0dc5b0ab0bc943deace4c7098a454d08fb1a0",
     "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
-    "service/game_rule_catalog.py": "8e88e7490ff8ee0ca9543a947d6fe177d5bd5c7c6e0bf1d9cbb6fdf2c22c34fd"
+    "service/game_rule_catalog.py": "9e92a6d8eabedf427ee3cd0726ea856caaccb45e5bad808ab8aa16880f8c15cc"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -168,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7ebc9df1f454a94e503b7ae36d5eeea614217d4021a7682b83467acebe3f0e8c"
+  "ruleHash": "686c583ac0f320c22446589a06f3eec6a6b035aa8c57564ff608b6cffa70ffd9"
 }

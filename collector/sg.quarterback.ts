@@ -14,14 +14,19 @@ export function settledQuarterbackFoam(source: string, entries: any[]): boolean 
     }
     return out;
   };
+  const feature = entries.some(e => ['1', '1|'].includes(parse(e.responsePayload).FID)) ? '1' : '2';
   const p = entries.map(e => parse(e.responsePayload)), r = entries.map(e => parse(e.requestPayload));
-  if (p.some((v, i) => v.MSGID !== entries[i].msgId || !['', '0', '0|', '2', '2|'].includes(v.FID ?? '')
+  if (p.some((v, i) => v.MSGID !== entries[i].msgId || !['', '0', '0|', feature, feature+'|'].includes(v.FID ?? '')
+      || ![undefined, '0', feature].includes(v.CFG) || ![undefined, '0'].includes(v.IFG) || v.ABPM !== undefined
       || ['NFG', 'TFG', 'CFGG'].some(k => v[k] !== undefined && v[k] !== '0')
-      || Object.keys(v).some(k => /^(NFR|FS|CFP|CFR|FTV|FPM)_/.test(k) && !k.endsWith('_2')))
+      || Object.keys(v).some(k => /^(NFR|FS|CFP|CFR|FTV|FPM)_/.test(k) && !k.endsWith('_'+feature)))
       || r.some((v, i) => v.MSGID !== entries[i].msgId || v.PID !== r[0].PID || v.GN !== 'quarterbackfieldsofglory96'
-        || (i > 0 && v.CFG !== '2'))) return false;
-  if (!['2', '2|'].includes(p[0].FID) || p[0].FS_2 !== '0' || p[0].NFR_2 !== '1' || p[0].CFP_2 !== '0'
-      || p[1].CFP_2 !== '0' || p[2].CFP_2 !== '1') return false;
+        || (i > 0 && v.CFG !== feature))) return false;
+  if (![feature, feature+'|'].includes(p[0].FID) || p[0]['FS_'+feature] !== '0' || p[0]['NFR_'+feature] !== '1' || p[0]['CFP_'+feature] !== '0'
+      || p[1]['CFP_'+feature] !== '0' || p[2]['CFP_'+feature] !== '1') return false;
+  if(feature === '1') {
+    if(r[2].FP !== '0|1|1') return false;
+  } else {
   const gsd: Record<string, string> = Object.create(null);
   for (const part of (p[1].GSD ?? '').split('#').filter(Boolean)) {
     const pair = part.split('~');
@@ -31,9 +36,14 @@ export function settledQuarterbackFoam(source: string, entries: any[]): boolean 
   const data = (gsd.featureData ?? '').split(';');
   if (data.length > 5 || data.some(v => !/^\d+$/.test(v) || !Number.isSafeInteger(Number(v)))
       || r[2].FP !== `0|1|${data[0]}`) return false;
+  }
   const end = p[3];
-  if (['2', '2|'].includes(end.FID) && (end.NFR_2 === undefined || end.CFR_2 === undefined)
-      && !['CFG', 'FS_2', 'NFR_2', 'CFR_2', 'CFP_2'].every(k => end[k] === undefined)) return false;
-  return (end.NFR_2 === undefined || end.NFR_2 === '0' || end.NFR_2 === '1' && end.CFR_2 === '1')
-    && (end.CFP_2 === undefined || end.CFP_2 === '1');
+  if ([feature, feature+'|'].includes(end.FID) && (end['NFR_'+feature] === undefined || end['CFR_'+feature] === undefined)
+      && !['CFG', 'FS_'+feature, 'NFR_'+feature, 'CFR_'+feature, 'CFP_'+feature].every(k => end[k] === undefined)) return false;
+  return (end['NFR_'+feature] === undefined || end['NFR_'+feature] === '0' || end['NFR_'+feature] === '1' && end['CFR_'+feature] === '1')
+    && (end['CFP_'+feature] === undefined || end['CFP_'+feature] === '1');
+}
+
+export function quarterbackFeatureBonus(entries: any[]): number {
+  return entries.some(e => /(?:^|&)FID=1(?:\||&|$)/.test(e.responsePayload)) ? 3 : 2;
 }

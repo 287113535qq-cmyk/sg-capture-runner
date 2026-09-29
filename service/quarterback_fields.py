@@ -1,8 +1,8 @@
-"""32836 standalone Foam Finger: successful BET -> START -> one PICK -> END.
+"""32836 standalone Foam Finger and fixed Pick A Ball selection.
 
 The cached client sends GSD.featureData[0], not the clicked finger index.
-Only the standalone FID2 path is covered; stacked or free-triggered features
-remain reviewable unknown protocols. NFR_2 is awarded rounds, not remaining.
+FID1 instead sends the client-defined constant 1. Stacked or free-triggered
+features remain reviewable unknown protocols; they cannot settle as standalone.
 """
 import re
 import xml.etree.ElementTree as ET
@@ -12,14 +12,21 @@ from round_fields import VERSION, FieldError, amount, check, derive, params
 
 SOURCE = 'quarterbackfieldsofglory96-round-one-base-v1'
 EXTENSION = SOURCE + '-foam-pick-v1'
+PICK_EXTENSION = SOURCE + '-pick-a-ball-v1'
+
+def is_pick(raw):
+    return any(params(s['responsePayload']).get('FID') in {'1', '1|'} or
+               (s['msgId'].startswith('FEATURE_') and params(s['requestPayload']).get('CFG') == '1')
+               for s in raw['steps'])
 CLIENT_SHA256 = '43c79de4ffeeebec57ab1a0c7765b47a310d489f82a589bd69be4a495be233a2'
 GAME_CLIENT_SHA256 = '789a750fbcc2e3539d1257a3926908c04f5d478cf957b5464b691f06d79fb3ec'
 REQUEST = {'GN': 'quarterbackfieldsofglory96', 'BPR': '1', 'RB': '5'}
 
 
 def is_foam(raw):
+    # Historical internal name; now detects either reviewed natural pick path.
     return any(step.get('msgId', '').startswith('FEATURE_') or
-               params(step['responsePayload']).get('FID') in {'2', '2|'} for step in raw['steps'])
+               params(step['responsePayload']).get('FID') in {'1', '1|', '2', '2|'} for step in raw['steps'])
 
 
 def gsd(text):
@@ -45,37 +52,39 @@ class QuarterbackFields(NativeNextgenFields):
         if msg in {'BET', 'FREE_GAME'}:
             return super().request_params(payload, msg)
         p = params(payload)
-        expected = {'GN': REQUEST['GN'], 'MSGID': msg, 'CFG': '2'}
+        check(p.get('CFG') in {'1', '2'}, 'UNKNOWN_TRIAL_FEATURE')
+        expected = {'GN': REQUEST['GN'], 'MSGID': msg, 'CFG': p['CFG']}
         check(msg in {'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'}, 'TRIAL_MESSAGE_NOT_ALLOWED')
         if msg == 'FEATURE_PICK':
             fp = p.get('FP', '').split('|')
             check(len(fp) == 3 and fp[0] == '0' and amount(fp[1]) == 1,
                   'FOAM_INVALID_PICK')
             amount(fp[2])
+            check(p['CFG'] != '1' or p['FP'] == '0|1|1', 'PICK_BALL_INVALID_CHOICE')
             expected['FP'] = p['FP']
         check({k: v for k, v in p.items() if k != 'PID'} == expected, 'FIRST_ROUND_REQUEST_MODE')
         check(p.get('PID', '').startswith('gdmgcm') and 6 < len(p['PID']) < 512, 'TRIAL_SESSION_REQUIRED')
         return p
 
-    def _frame(self, step):
+    def _frame(self, step, feature='2'):
         check(isinstance(step, dict), 'INVALID_TRIAL_FRAME')
         r = self.request_params(step.get('requestPayload'), step.get('msgId'))
         p = params(step.get('responsePayload'))
         check(p.get('MSGID') == step['msgId'], 'MESSAGE_ID_MISMATCH')
-        check(p.get('FID', '') in {'', '0', '0|', '2', '2|'} and 'ABPM' not in p,
+        check(p.get('FID', '') in {'', '0', '0|', feature, feature + '|'} and 'ABPM' not in p,
               'UNKNOWN_TRIAL_FEATURE')
-        check(all(not re.match(r'^(FS|NFR|CFR|CFP|FTV|FPM)_', k) or k.endswith('_2') for k in p),
+        check(all(not re.match(r'^(FS|NFR|CFR|CFP|FTV|FPM)_', k) or k.endswith('_' + feature) for k in p),
               'UNKNOWN_TRIAL_FEATURE')
-        check(p.get('CFG') in {None, '0', '2'}, 'UNKNOWN_TRIAL_FEATURE')
+        check(p.get('CFG') in {None, '0', feature}, 'UNKNOWN_TRIAL_FEATURE')
         check(p.get('IFG') in {None, '0'}, 'UNKNOWN_TRIAL_FEATURE')
         # No free continuation or second feature has been reviewed in this path.
         check(all(amount(p[k]) == 0 for k in ('NFG', 'TFG', 'CFGG') if k in p), 'UNKNOWN_TRIAL_FEATURE')
         for k in ('B', 'AB', 'TW'):
             amount(p.get(k))
-        for k in ('NFR_2', 'CFR_2', 'CFP_2'):
+        for k in ('NFR_' + feature, 'CFR_' + feature, 'CFP_' + feature):
             if k in p:
                 check(amount(p[k]) <= 1, 'UNKNOWN_TRIAL_FEATURE')
-        check(p.get('FS_2') in {None, '0', '1'}, 'UNKNOWN_TRIAL_FEATURE')
+        check(p.get('FS_' + feature) in {None, '0', '1'}, 'UNKNOWN_TRIAL_FEATURE')
         text = step.get('responseXml')
         check(isinstance(text, str) and len(text) < 262144 and '<!DOCTYPE' not in text.upper()
               and '<!ENTITY' not in text.upper(), 'INVALID_TRIAL_XML')
@@ -104,46 +113,52 @@ class QuarterbackFields(NativeNextgenFields):
                 player = pid
             return ({'MSGID': 'FREE_GAME'} if prior else None), False
         check(len(steps) <= 4, 'FOAM_SEQUENCE_MISMATCH')
+        feature = '1' if is_pick(raw) else '2'
         next_step, player, picked_value = {'MSGID': 'BET'}, None, None
         for i, step in enumerate(steps):
-            r, p = self._frame(step)
+            r, p = self._frame(step, feature)
             check(next_step is not None and all(r.get(k) == v for k, v in next_step.items()), 'FOAM_SEQUENCE_MISMATCH')
             check(player is None or player == r['PID'], 'SESSION_CHANGED_MID_ROUND')
             player = r['PID']
             if i == 0:
-                check(p.get('FID') in {'2', '2|'} and p.get('CFG') == '2' and p.get('IFG') == '0'
-                      and p.get('FS_2') == '0' and p.get('NFR_2') == '1'
-                      and p.get('CFR_2') == '0' and p.get('CFP_2') == '0' and p.get('FPM_2') == '|',
+                check(p.get('FID') in {feature, feature + '|'} and p.get('CFG') == feature and p.get('IFG') == '0'
+                      and p.get('FS_' + feature) == '0' and p.get('NFR_' + feature) == '1'
+                      and p.get('CFR_' + feature) == '0' and p.get('CFP_' + feature) == '0' and p.get('FPM_' + feature) == '|',
                       'UNKNOWN_TRIAL_FEATURE')
-                next_step = {'MSGID': 'FEATURE_START', 'CFG': '2'}
+                next_step = {'MSGID': 'FEATURE_START', 'CFG': feature}
             elif i == 1:
                 # The client reads CFP and featureData from START, even if FS
                 # is omitted. Do not substitute BET data or choose a prize.
-                check(p.get('CFG') == '2' and p.get('CFP_2') == '0', 'UNKNOWN_TRIAL_FEATURE')
-                fields = gsd(p.get('GSD'))
-                check('featureData' in fields, 'UNKNOWN_TRIAL_FEATURE')
-                data = fields['featureData'].split(';')
-                check(1 <= len(data) <= 5 and all(re.fullmatch(r'[0-9]+', v) for v in data), 'FOAM_INVALID_FEATURE_DATA')
-                for value in data:
-                    amount(value)
-                picked_value = data[0]  # Preserve the exact server-provided string.
-                next_step = {'MSGID': 'FEATURE_PICK', 'CFG': '2', 'FP': '0|1|' + picked_value}
+                check(p.get('CFG') == feature and p.get('CFP_' + feature) == '0', 'UNKNOWN_TRIAL_FEATURE')
+                if feature == '1':
+                    # Official Pick A Ball: all three visual buttons send 1.
+                    # This fixed choice never reads prize/result fields.
+                    picked_value = '1'
+                else:
+                    fields = gsd(p.get('GSD'))
+                    check('featureData' in fields, 'UNKNOWN_TRIAL_FEATURE')
+                    data = fields['featureData'].split(';')
+                    check(1 <= len(data) <= 5 and all(re.fullmatch(r'[0-9]+', v) for v in data), 'FOAM_INVALID_FEATURE_DATA')
+                    for value in data:
+                        amount(value)
+                    picked_value = data[0]  # Preserve the exact server-provided string.
+                next_step = {'MSGID': 'FEATURE_PICK', 'CFG': feature, 'FP': '0|1|' + picked_value}
             elif i == 2:
-                check(p.get('FID') in {'2', '2|'} and p.get('CFG') == '2' and p.get('CFP_2') == '1',
+                check(p.get('FID') in {feature, feature + '|'} and p.get('CFG') == feature and p.get('CFP_' + feature) == '1',
                       'UNKNOWN_TRIAL_FEATURE')
-                next_step = {'MSGID': 'FEATURE_END', 'CFG': '2'}
+                next_step = {'MSGID': 'FEATURE_END', 'CFG': feature}
             else:
                 # The client's receivedFeatureEnd -> panelEnd returns to spin
                 # even with retained FID. Live END omits the entire feature
                 # counter group; this is not a zero-filled counter response.
-                if p.get('FID') in {'2', '2|'}:
-                    counters = ('CFG', 'FS_2', 'NFR_2', 'CFR_2', 'CFP_2')
+                if p.get('FID') in {feature, feature + '|'}:
+                    counters = ('CFG', 'FS_' + feature, 'NFR_' + feature, 'CFR_' + feature, 'CFP_' + feature)
                     check(all(k not in p for k in counters) or
-                          (p.get('NFR_2') is not None and p.get('CFR_2') is not None),
+                          (p.get('NFR_' + feature) is not None and p.get('CFR_' + feature) is not None),
                           'FOAM_MISSING_END_COUNTERS')
-                if 'NFR_2' in p:
-                    check(amount(p['NFR_2']) == 0 or p.get('CFR_2') == p['NFR_2'], 'INCOMPLETE_ROUND')
-                check(p.get('CFP_2') in {None, '1'}, 'INCOMPLETE_ROUND')
+                if 'NFR_' + feature in p:
+                    check(amount(p['NFR_' + feature]) == 0 or p.get('CFR_' + feature) == p['NFR_' + feature], 'INCOMPLETE_ROUND')
+                check(p.get('CFP_' + feature) in {None, '1'}, 'INCOMPLETE_ROUND')
                 next_step = None
         return next_step, True
 

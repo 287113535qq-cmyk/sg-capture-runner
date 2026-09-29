@@ -57,9 +57,7 @@ export class ProtocolRecovery {
     assert(seen===committed,'EXTRA_OFFICIAL_RECORDS');
     return {count,committed,recordsHash:d.digest('hex'),workerCounts};
   }
-  async recover(){
-    const holds=await this.boundary(),s=await this.snapshots();
-    assert(!(await this.store.get('journal',this.prefix+':proof')),'RECOVERY_ALREADY_STARTED');
+  async reviewRecovery(s,holds){
     const parked=(await this.store.get('journal','parked-pool:'+this.plan.trialId))?.value;assert(parked,'PARKED_BACKUP_MISSING');
     const review=x=>reviewParkedProtocol({profile:this.profile,plan:this.plan,campaign:x.campaign.value,pool:x.pool.value,
       batches:x.batches,parked,holds,now:this.now()});
@@ -69,6 +67,12 @@ export class ProtocolRecovery {
       assert(old?.poolPlanHash===this.profile.planHash && hash(old.batch)===hash(b),'PARKED_BATCH_CHANGED');
       if(b.pending)assert(stable(await this.parser.call({op:'next',plan:this.plan,raw:b.pending.raw}))===stable(this.policy.next),'CONTINUATION_NOT_VERIFIED');
     }
+    return {review,parked};
+  }
+  async recover(){
+    const holds=await this.boundary(),s=await this.snapshots();
+    assert(!(await this.store.get('journal',this.prefix+':proof')),'RECOVERY_ALREADY_STARTED');
+    const {review,parked}=await this.reviewRecovery(s,holds);
     const verified=await this.verifyRecords(s);
     assert(verified.count===this.profile.complete && verified.committed===this.profile.checkpoint,'COUNTS_CHANGED');
     await this.boundary();const fresh=await this.snapshots();review(fresh);assert(hash(fresh)===hash(s),'STATE_CHANGED');
@@ -158,7 +162,7 @@ export class ProtocolRecovery {
         && stable(r.raw.steps.slice(0,b.pending.raw.steps.length))===stable(b.pending.raw.steps),'PENDING_PREFIX_CHANGED');
       assert(r.raw.steps.filter(x=>x.msgId==='BET').length===1,'BET_REPLAYED');
       if(b.id===this.policy.specialBatch && b.pending.sequence===this.policy.specialSequence){
-        assert(r.bonus===2,'NATURAL_FEATURE_SETTLEMENT_MISSING');
+        assert(r.bonus===(this.policy.specialBonus||2),'NATURAL_FEATURE_SETTLEMENT_MISSING');
         if(this.plan.gameId===32836)assert(r.raw.steps.map(x=>x.msgId).join(',')==='BET,FEATURE_START,FEATURE_PICK,FEATURE_END','FOAM_SETTLEMENT_MISSING');
         specialSettled=true;
       }
@@ -168,7 +172,7 @@ export class ProtocolRecovery {
     await this.boundary();assert(hash(await this.snapshots())===hash(s),'STATE_CHANGED');
     const result={proofHash:base.proofHash,fullReadback:full.count,oldPreserved:this.profile.complete,newComplete:200,
       originalPendingSettled:resumed,liveNaturalFeatureSettlementVerified:true,
-      ...(this.plan.gameId===32739?{liveFidOneSettlementVerified:true}:{liveFoamSettlementVerified:true}),
+      ...(this.plan.gameId===32739?{liveFidOneSettlementVerified:true}:this.policy.specialBonus===3?{livePickABallSettlementVerified:true}:{liveFoamSettlementVerified:true}),
       pending:0,poolHash:hash(s.pool.value),campaignHash:hash(s.campaign.value),at:this.now()};
     await this.store.create('journal',this.prefix+':validation',result,{immutable:true});return result;
   }

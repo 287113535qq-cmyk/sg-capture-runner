@@ -1,0 +1,125 @@
+{
+  "schema": "sg-pick-bonus-resume-v1",
+  "id": "pick-bonus-36502517559",
+  "group": "secondary",
+  "gameId": 32836,
+  "createdAt": 1790643048318,
+  "complete": 190,
+  "checkpoint": 178,
+  "pending": 1,
+  "planHash": "0e231e8bc532d6b869f4530399ac9b52821c2c7a216e2749a265eed238780a73",
+  "campaignHash": "768ab0c49b2917546e56ff8f9ba39f18d428630c569066aa4a7aa9f6b8296a8b",
+  "poolHash": "d4330836c474c79b4d7b74e16428410a6f2ff076f9f1bd8f2fbd6ac23c560617",
+  "pendingHash": "8959351887191370ac8c5b6d9e6b63a56d9620559f68bae6076198ad3bf99405",
+  "primaryReadOnlySnapshotHash": "c8b12d146e43a758d1eb545c21af8158d66e38765b90538c448ac34a3c30e3b5",
+  "privateSnapshotHash": "23696eb52fe2bd66b79a0710e0de05bd4f5a27d7a97d68a211fa25ed4a0d9a1b",
+  "batches": [
+    {
+      "id": 1,
+      "hash": "693bb9411c1f81ff8b720d88c0d7d9a7ce289d58ab6df2550dce2803cfac22ae"
+    },
+    {
+      "id": 2,
+      "hash": "15072167a7e6aae7e9c4e177cf86f9aebce0b3a637256407f5806596589da0cb"
+    },
+    {
+      "id": 3,
+      "hash": "b28d9fce1928215b7fa38c202c86c9d00730e2af7581bd268fc563053657dd13"
+    },
+    {
+      "id": 4,
+      "hash": "25d69deda9dad54b9091313fd9dd23bdb63d16adbb4d472bab8acc06d8ed9c64"
+    },
+    {
+      "id": 5,
+      "hash": "ecccf8390232c1a39745cb1607aea7469c5f5273cf781aec09cabfc99f570624"
+    },
+    {
+      "id": 6,
+      "hash": "eb7afdb70a9ea9c17a2e9b2fa78ef3dda7fc83632d4a27465862a7f05e7ee1a5"
+    },
+    {
+      "id": 7,
+      "hash": "e8106e184e55c692536d05f746c8b945f071af0eb72d703843909ad651c9c8fc"
+    },
+    {
+      "id": 8,
+      "hash": "c7ccd875e4e0e96658e5f549a0ec5a683b1ea732bba5f031a7d229c74dcf5ecd"
+    },
+    {
+      "id": 9,
+      "hash": "8fbefc4ec985ad69aa9e345ebaa5250894d83eb587171c7d02ed9e882dc9c116"
+    },
+    {
+      "id": 10,
+      "hash": "4c05fc8b7c320217b6fca335e456ff6bd7f6b2a5ae5a7a7bfe98b7e71baea65e"
+    },
+    {
+      "id": 11,
+      "hash": "6966c91929ccefb66287e1cec240ca53b243cfc0e80356dfe73d6c6f1dbbac7f"
+    },
+    {
+      "id": 12,
+      "hash": "6e50a06307d3e6e79eaf5097f20f320eaf4733ff3f6ebe43c2e3a8447f97b7a4"
+    },
+    {
+      "id": 13,
+      "hash": "21351d6f98ca70b98d1a652c230ed1a568ceffa49e1a1cb626f7de7f7b170ac1"
+    },
+    {
+      "id": 14,
+      "hash": "2055bb116a67f3113367c04f7056fb47ccdbdb7d995e35ea696da15e5b708941"
+    },
+    {
+      "id": 15,
+      "hash": "7189bd2654a837ea173b548205368c2c5b47da19e22906159e27424c86ad4b40"
+    },
+    {
+      "id": 16,
+      "hash": "797d2037f147bbc92495fef0a65fe047ebed5217c108b84a1d0a573966da0342"
+    },
+    {
+      "id": 17,
+      "hash": "e175aa90d58a5e0715625089459f5dfb7bd7f03e14f0232f6f8d148ae66496c5"
+    },
+    {
+      "id": 18,
+      "hash": "6eb682ee34a6a3422795e30a8a6914c6e7ae306b69bf1638aeab59c57a3c1958"
+    }
+  ],
+  "adapterHashFormat": "utf8-lf-sha256",
+  "adapterFiles": {
+    "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
+    "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
+    "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
+    "scripts/runner-v2/protocol-policy.mjs": "e7d4a5f4689eb638df92c91fa011f0df682837e7af1cf2e90d9cbf0f82649ef7",
+    "scripts/runner-v2/protocol-github-boundary.mjs": "02a8cc2b42c7793e2d5989845fcf3de46e660ac00f44ff67d270edda8a32ddb0",
+    "collector/sg.quarterback.ts": "d0adf1af448549c586e1692b83ad93ca2050086ced42ef4b0cd802cdfcfb181f",
+    "collector/sg.round.ts": "76160af8028bd296139c41693eae106fe358f2105ffb1b4ca65c2f3bcdb568c8",
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "d1840ccb542673f411f5cc53c1e0dc5b0ab0bc943deace4c7098a454d08fb1a0",
+    "service/round_types.json": "83c3c9bd04de3f5e85fe72512c266f9e0b55e430a94a2513180695aaeeb754fc",
+    "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
+    "scripts/trial/capture-batch.mjs": "041717226e61c45891677042dcd6de60ccf118b037d8f1ce23852c5036caef53",
+    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
+    "scripts/runner-v2/batch-controller.mjs": "86fd581e2e3377239526c64e8e6964d2832560d9862582935d1cc6b6c32f8f27",
+    "scripts/runner-v2/protocol-resume.mjs": "cea05f78d7cecfae1891e6cf86d2b544d8d88f052939d5bfdf845f250ff1b52d",
+    "scripts/runner-v2/protocol-recovery-core.mjs": "8ef8400e823c9da1886fe66e8ac34e40ee86936fd89ba084e8df8cedd8a8043f",
+    "scripts/runner-v2/protocol-recovery.mjs": "9d3a6d87611f939337ffb2ec0370023b3bc06fa3e2c5bb3b6bb51eeede580973",
+    "scripts/runner-v2/protocol-control.mjs": "a675f4eef4adbba781580be0dfcb26561b7ea8e71c488c5079fc79b2a18e0307",
+    "scripts/runner-v2/campaign.mjs": "085e5be1dd355e9d15df21b9e14d50c8ff27c375ab06ed197a76c43bb5818ecb",
+    "scripts/runner-v2/campaign-worker.mjs": "af8d3b932d4ba3a6f2f0dd76d0377f1acb07c0ee0ac3f92324738a6b2e050439",
+    "scripts/runner-v2/session-control.mjs": "cece226ca31eb9597e9710c92da73503a117988009745790a2024544b80ec605",
+    "scripts/runner-v2/session-recovery.mjs": "ddc2835c3f9ba662737a090fbc0bdfd030493bff171115f713e0e8d05754759d",
+    ".github/workflows/trial-300k.yml": "99a5fa6b1ed9ab887cd44e29ab6b8ae809b25c238fe37eab2aa12bd2b0eea202",
+    "scripts/runner-v2/terminal-control.mjs": "bdecd5096b3b67a98fa6c865da5cefe5ba197a769b92435bf1306310f898f84f",
+    "scripts/runner-v2/terminal-recovery.mjs": "177cc8f470ff5fbd2d05a2f950499ef7ad2b68da4cb3cab6a529d2c4ee7be301",
+    "scripts/runner-v2/foam-session-control.mjs": "b157ee607741adf32671ff3a5f8d5bb80efdd4d0ac05233132da31d7b639eb42",
+    "scripts/runner-v2/foam-session-recovery.mjs": "796cbd415a9c5142b817371a9ef2df6e649ecb3501cf126d62c028f105f3d9f0",
+    "scripts/runner-v2/pick-bonus-control.mjs": "94bf89c454dd880b856e7bf7a55a610bc978b9176c9fdaf895c12a66e6c4cc19",
+    "scripts/runner-v2/pick-bonus-recovery.mjs": "11c481533b9f8c5408015cca9677be46041f5fdbd2aef39f00a0f67967aaa393",
+    "scripts/trial/worker.mjs": "8d64058e0c74c33ba0e2bf664d2153c316fad6394fc56628f2311a66b7406534",
+    "scripts/trial/squid-protocol.mjs": "d626021bb2e1747392e535c6187d2690aff3d9070c44012f1668da30a46dd97c"
+  },
+  "adapterHash": "fefe2ab25999182768c14b8f57a3ca71ca4ee31502d381c371bff8171cf82a8d"
+}
