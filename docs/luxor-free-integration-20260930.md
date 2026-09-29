@@ -21,7 +21,7 @@
 
 合成测试覆盖完整免费、重触发、错误计数/会话/金额/XML、终态误判，以及实际 captureBatch 的 BET→3 FREE、每请求前 intent 和一次完整提交。合成终局不是官方自然终局样本。
 
-本机 256 Python、62 协议、525 Runner、25 collector 与 TypeScript 通过。Linux 预检结果另记实际运行结果，未成功前不作部署声明。
+本机 256 Python、62 协议、525 Runner、25 collector 与 TypeScript 通过。统一 Linux 36642563664 在固定 runtime b04199db3d7c5bf595c63365b31d950940f2f976 成功，完整 suite 包括上述测试、3000 局离线入口与178档案。Job 64秒。没有线上 maintenance/source 派发，不能把预检称新采开始。
 
 ## 下一段最短链路
 

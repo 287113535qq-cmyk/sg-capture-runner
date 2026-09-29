@@ -142,7 +142,7 @@
   "analysisDocumentHashes": {
     "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
     "docs/continuous-processing.md": "912731b482820ceb644a0152dc09ae4735ced9cc8c038b6e1f998729c5f5fe41",
-    "docs/luxor-free-integration-20260930.md": "28e497af47801f0824bf62e0465deb35f458fbef7f82211c58ff21abaab74117",
+    "docs/luxor-free-integration-20260930.md": "b94ca847354ffa673514573555f178f0787a43a7b939ebbd55ecb562ea1be95f",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b"
   },
@@ -153,5 +153,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "547d0b916a5b3699601e361722fd1404b3b1f5cb9020903e1ba1ebe129fa9ea0"
+  "ruleHash": "928f6807a7b748c2dc4f09b03b39aeadb62172b6e8ca8c1246462b007bb52328"
 }
