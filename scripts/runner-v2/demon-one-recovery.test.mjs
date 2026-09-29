@@ -10,6 +10,7 @@ import {reviewQueueAncestor,ANCESTOR} from './demon-one-ancestor.mjs';
 
 test('new902 profile binds runtime and preserves every applied queue profile',()=>{
  const p=JSON.parse(fs.readFileSync('config/demon-one-20260929.json','utf8'));
+ assert.equal(hash(p),'7624f15c9bc09064b8a3b233f982115f44013f1f5b00c26c958f14151a75e64a');
  assert.equal(p.schema,'sg-demon-one-v1');assert.equal(p.pending,2);
  assert.deepEqual(p.pendingFirst,{resumeWorkers:[7],captureWorkers:20,newBetsBeforeOriginalSettlement:false});
  const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
