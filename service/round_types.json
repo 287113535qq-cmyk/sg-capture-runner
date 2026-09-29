@@ -1062,6 +1062,42 @@
       "featureTypes": {
         "pickABall": 3
       }
+    },
+    "thedemoncodecap250c96-round-one-base-v1-demon-nested-free-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "demon-nested-free-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32739,
+        "runtimeGameId": 33139,
+        "sourceId": "17e48a9a-fe9d-46b2-a419-591c43cbc333",
+        "clientSha256": "c3327610020e409155c59cd19ff22d3aec5251f4a1f57d478d2ac80baf14295c",
+        "featureFid": "0|1|",
+        "protocolReview": "docs/demon-nested-protocol.md",
+        "scope": "Conservative nested reaction continuation; unproved exits reject"
+      },
+      "featureSelector": "demon-nested-free-v1",
+      "featureTypes": {
+        "demonNestedFreeGames": 2
+      }
     }
   }
 }

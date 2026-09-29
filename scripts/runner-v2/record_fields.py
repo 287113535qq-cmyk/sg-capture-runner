@@ -8,7 +8,7 @@ from pool_plan import validate_pool_plan
 from native_nextgen_fields import NativeNextgenFields
 from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
 from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
-from demon_fields import DemonFields, SOURCE as DEMON_SOURCE
+from demon_nested_fields import DemonNestedFields as DemonFields, SOURCE as DEMON_SOURCE
 from quarterback_fields import QuarterbackFields, SOURCE as QUARTERBACK_SOURCE
 
 adapters = {}

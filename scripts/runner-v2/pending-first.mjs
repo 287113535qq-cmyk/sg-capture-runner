@@ -1,4 +1,6 @@
 import {FreshStart} from './fresh-start.mjs';
+import {loadNestedShort} from './demon-nested-short.mjs';
+import {hasNested,nestedNext,nestedMapping} from '../trial/demon-nested-protocol.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
@@ -27,6 +29,7 @@ export class PendingFirst {
   }
   async load(identity) {
     const c=(await this.store.get('state','campaign'))?.value,p=c?.protocolValidation;
+    if(p?.nestedShort)return loadNestedShort(this,identity,c);
     if(p?.freshStart)return this.fresh.load(identity);
     if(!p?.pendingFirst){assert(!this.stage,'PENDING_FIRST_NOT_AUTHORIZED');return null;}
     assert(['resume','capture'].includes(this.stage),'PENDING_FIRST_STAGE_REQUIRED');
@@ -50,13 +53,20 @@ export class PendingFirst {
       && r.raw.startBalanceRaw===e.pending.raw.startBalanceRaw && r.raw.steps.length>e.pending.raw.steps.length
       && stable(r.raw.steps.slice(0,e.pending.raw.steps.length))===stable(e.pending.raw.steps),'PENDING_FIRST_UNSETTLED');
     await this.analyzer.call({op:'verify',plan:this.plan,raw:r.raw,record:r});
-    assert(demonNextRequest(r.raw)===null && demonMapping(r.raw,'base','extension').bonus===r.bonus,'PENDING_FIRST_PROTOCOL_CHANGED');
+    assert((hasNested(r.raw)?nestedNext(r.raw):demonNextRequest(r.raw))===null
+      && (hasNested(r.raw)?nestedMapping(r.raw,'a'.repeat(64)):demonMapping(r.raw,'base','extension')).bonus===r.bonus,'PENDING_FIRST_PROTOCOL_CHANGED');
     const got=await this.transport.request('rounds_read',{trialId:this.plan.trialId,ids:[r._id]});
     assert(got.length===1 && stable(got[0])===stable(r),'PENDING_FIRST_MONGO_CHANGED');
   }
   async admit(identity,worker) {
     const spec=await this.load(identity);if(!spec)return null;
     if(spec.schema==='sg-demon-zero-short-v1'){this.admission=await this.fresh.admit(identity,worker);return this.admission;}
+    if(spec.schema==='sg-demon-nested-short-v1'){
+      const pool=(await this.store.get('state','pool:'+this.plan.trialId))?.value;
+      assert(Number.isInteger(worker)&&worker>=0&&worker<20&&identity.shardId===worker
+        &&pool?.enabled&&!pool.failure&&pool.protocolRecovery===spec.proofHash
+        &&pool.workers[worker]?.sessionHash===identity.sessionHash,'NESTED_WORKER_IDENTITY_CHANGED');
+    }
     const entry=spec.entries.find(x=>x.worker===worker);
     if(this.stage==='resume') {
       assert(entry && entry.sessionHash===identity.sessionHash,'PENDING_FIRST_WRONG_WORKER');

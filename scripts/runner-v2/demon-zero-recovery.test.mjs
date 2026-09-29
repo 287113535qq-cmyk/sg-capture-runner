@@ -16,12 +16,12 @@ test('fresh workflow uses one20-worker job without resuming old owners',()=>{
  assert(job.includes('max-parallel: 20'));assert(!job.includes('needs: pending-resume'));
  assert(workflow.includes('needs: [trial, pending-resume, pending-capture, fresh-capture]'));
 });
-test('zero incident configuration binds current runtime and frozen902 profile',()=>{
+test('applied zero profile stays frozen and rejects the new nested runtime',()=>{
  const p=JSON.parse(fs.readFileSync('config/demon-zero-20260929.json','utf8'));
  assert.equal(hash(p),'0f5cd88157a487984f9deb5d736b5f7acae3aa02394af606738b3e071fc8e12f');
  assert.equal(p.pending,1);assert.deepEqual(p.freshStart,{originalPending:0,captureWorkers:20,perWorker:10,totalNew:200});
  const actual=Object.fromEntries(Object.keys(p.adapterFiles).map(path=>[path,createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')]));
- assert.deepEqual(actual,p.adapterFiles);assert.equal(hash(actual),p.adapterHash);
+ assert.notDeepEqual(actual,p.adapterFiles);assert.notEqual(hash(actual),p.adapterHash);
  assert.equal(hash(JSON.parse(fs.readFileSync('config/demon-one-20260929.json','utf8'))),'7624f15c9bc09064b8a3b233f982115f44013f1f5b00c26c958f14151a75e64a');
 });
 

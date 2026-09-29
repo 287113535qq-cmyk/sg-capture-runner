@@ -102,11 +102,37 @@
       "featureTypes": {
         "demonFreeGames": 2
       }
+    },
+    "thedemoncodecap250c96-round-one-base-v1-demon-nested-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "demon-nested-free-v1",
+      "featureTypes": {
+        "demonNestedFreeGames": 2
+      }
     }
   },
   "mappingHashes": {
     "thedemoncodecap250c96-round-one-base-v1": "744b3027fe9ad7763c41c599e3beadfe7ebbe347dd1ac0a73fb53d2433eb5634",
-    "thedemoncodecap250c96-round-one-base-v1-demon-free-v1": "c7df4bddc93f318845dd5d8136a9422aafeae60f3bac516b925da7802b0d8b3e"
+    "thedemoncodecap250c96-round-one-base-v1-demon-free-v1": "c7df4bddc93f318845dd5d8136a9422aafeae60f3bac516b925da7802b0d8b3e",
+    "thedemoncodecap250c96-round-one-base-v1-demon-nested-free-v1": "12c59bdd3965f67a2ae9c320999ccb437b727db94913dbbb6a520ba6785f232a"
   },
   "configuredNaturalBonusCodes": [
     1,
@@ -124,8 +150,8 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "d1840ccb542673f411f5cc53c1e0dc5b0ab0bc943deace4c7098a454d08fb1a0",
-    "scripts/runner-v2/record_fields.py": "ba0a6808389172688249aca7fb79d50136d8bfecbfc8e0fd02d7f00187850d49",
+    "service/round_fields.py": "afae527ad24c5287228301b9b858708f4c119e05473054e0be4cbf782a2fb871",
+    "scripts/runner-v2/record_fields.py": "1a2aba8dfe87f50ddb1d7d10f6fe7f28e74d3b16e36503ce8cbe033c3d72b652",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "service/game_rule_catalog.py": "1aaed901e35c40cfcbb0c0f26d9a0902ed8a6bb85d0c519d20517f65fb55c873"
@@ -174,5 +200,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "978f0ee98c55e4a4f05f6cb057a049a6b4451e0806ceca1485522252143ab754"
+  "ruleHash": "89f28a614879b196c5c6c55659ef3da9daee82d8e6d1fad81c3835a056227e10"
 }
