@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / 'service'), str(ROOT / 'scripts/runner-v2')]
-from beaver_fields import BeaverSequence, SOURCE, EXTENSION
+from beaver_fields import BeaverSequence, SOURCE, EXTENSION, CFG1_EXTENSION
 from native_nextgen_fields import NativeNextgenFields
 from round_fields import FieldError, VERSION, type_profile
 from record_fields import execute
@@ -41,7 +41,37 @@ def sample(clear=False):
                       TW=500, B=100400, AB=100400)])
 
 
+def cfg1_sample(clear=False):
+    # Synthetic full chain; the two real observed frames only reach NFG=5.
+    return raw([frame('BET', 6, '1|')] + [
+        frame('FREE_GAME', n, '0|' if clear and n == 0 else '1|',
+              GSD='' if clear and n == 0 else 'CFG~1') for n in range(5, -1, -1)])
+
+
 class BeaverFieldsTests(unittest.TestCase):
+    def test_cfg1_free_continuation_new_mapping_and_synthetic_terminal(self):
+        self.assertEqual(type_profile(SOURCE)[1], '6db98f6e7320c671cedcb90dafb947ca4908f682945dba8264c2f41f2c86914e')
+        self.assertEqual(type_profile(EXTENSION)[1], 'd540cb0a5c7b966068664a6ed4b0610f9effee48202a0869a85b34ba3e994f89')
+        for clear in (False, True):
+            value = cfg1_sample(clear)
+            for size in range(1, len(value['steps'])):
+                partial = {**value, 'steps': value['steps'][:size]}
+                self.assertEqual(execute(dict(op='next', plan=PLAN, raw=partial)), {'MSGID': 'FREE_GAME'})
+                with self.assertRaises(FieldError): BeaverSequence(PLAN).settled(partial)
+            fields = BeaverSequence(PLAN).settled(value)
+            self.assertEqual(fields['typeMappingHash'], type_profile(CFG1_EXTENSION)[1])
+            self.assertNotEqual(fields['typeMappingHash'], type_profile(EXTENSION)[1])
+            self.assertEqual(fields['bonus'], 2)
+
+    def test_cfg1_uncertain_returns_and_counters_still_rejected(self):
+        for altered in [frame('FREE_GAME', 5, '0|', GSD='CFG~1'),
+                        frame('FREE_GAME', 5, '1|', GSD='CFG~0'),
+                        frame('FREE_GAME', 5, '1|', GSD='CFG~2'),
+                        frame('FREE_GAME', 0, '1|', GSD='CFG~1'),
+                        frame('FREE_GAME', 5, '1|', GSD='CFG~1', CFGG=0),
+                        frame('FREE_GAME', 5, '1|', GSD='CFG~1', TFG=7)]:
+            with self.assertRaises(FieldError):
+                execute(dict(op='next', plan=PLAN, raw=raw([frame('BET', 6, '1|'), altered])))
     def test_analyzer_intent_and_same_identity_record_readback(self):
         for clear in [False, True]:
             value = sample(clear)

@@ -10,10 +10,16 @@ from round_fields import FieldError, VERSION, amount, check, nextgen, params, de
 
 SOURCE = 'beaverlasvegas96-round-one-base-v1'
 EXTENSION = SOURCE + '-beaver-free-v1'
+CFG1_EXTENSION = SOURCE + '-beaver-free-cfg1-v2'
 
 
 def feature_type(raw):
     return any(params(step['responsePayload']).get('FID') in {'1', '1|'} for step in raw['steps'])
+
+
+def cfg1_type(raw):
+    return any(gsd_parts(params(step['responsePayload']).get('GSD', '')).get('CFG') == '1'
+               for step in raw['steps'])
 
 
 def gsd_parts(text):
@@ -48,7 +54,8 @@ class BeaverSequence(NativeNextgenFields):
         gsd = gsd_parts(p.get('GSD', ''))
         # Historical FID0 Beaver Bonus replays already use GSD.CFG=0.
         # Keep that old branch, but never combine it with the new FID1 branch.
-        check('CFG' not in gsd or (gsd['CFG'] == '0' and fid in {'0', '0|'}),
+        check('CFG' not in gsd or (gsd['CFG'] == '0' and fid in {'0', '0|'})
+              or (gsd['CFG'] == '1' and fid in {'1', '1|'}),
               'UNSUPPORTED_BEAVER_NESTED_FEATURE')
         for key in ('B', 'AB', 'TW'):
             amount(p.get(key))
@@ -68,7 +75,8 @@ class BeaverSequence(NativeNextgenFields):
         check(root.tag.upper() == 'GDMRESPONSE' and str(root.findtext('SUCCESS')).lower() == 'true'
               and root.findtext('PAYLOAD') == step['responsePayload'], 'TRIAL_XML_EVIDENCE_MISMATCH')
         check(amount(step.get('elapsedMs')) <= 300000, 'INVALID_TRIAL_TIMING')
-        return {'fid': fid, 'pid': request['PID'], 'beaverActive': 'CFG' in gsd, **counts}
+        return {'fid': fid, 'pid': request['PID'], 'beaverActive': gsd.get('CFG') == '0',
+                'cfg1': gsd.get('CFG') == '1', **counts}
 
     def sequence(self, raw):
         check(raw.get('protocol') == 'nextgen' and raw.get('sourceKey') == SOURCE,
@@ -77,6 +85,7 @@ class BeaverSequence(NativeNextgenFields):
         check(isinstance(steps, list) and 0 < len(steps) <= 100, 'INVALID_ROUND_STEPS')
         next_msg, player, special, replay = 'BET', None, False, False
         saw_beaver = False
+        saw_cfg1 = False
         previous = None
         for step in steps:
             check(next_msg is not None and step.get('msgId') == next_msg, 'BEAVER_SEQUENCE_MISMATCH')
@@ -84,6 +93,14 @@ class BeaverSequence(NativeNextgenFields):
             check(player is None or current['pid'] == player, 'SESSION_CHANGED_MID_ROUND')
             player = current['pid']
             active = current['fid'] in {'1', '1|'}
+            saw_cfg1 |= current['cfg1']
+            if saw_cfg1:
+                n, t, c = (current[k] for k in ('NFG', 'TFG', 'CFGG'))
+                check(None not in (n, t, c) and t == n + c, 'BEAVER_CFG1_COUNTERS')
+                if previous is not None:
+                    check(c == previous['CFGG'] + 1 and t >= previous['TFG'], 'BEAVER_CFG1_PROGRESS')
+                    if n == 0:
+                        check(previous['NFG'] == 1 and t == previous['TFG'], 'BEAVER_CFG1_TERMINAL')
             saw_beaver |= current['beaverActive']
             check(not ((special or active) and saw_beaver), 'UNSUPPORTED_BEAVER_NESTED_FEATURE')
             if active and (previous is None or previous['fid'] not in {'1', '1|'}):

@@ -2,6 +2,7 @@
 const source='beaverlasvegas96-round-one-base-v1';
 export const BEAVER_SOURCE=source;
 export const BEAVER_EXTENSION=source+'-beaver-free-v1';
+export const BEAVER_CFG1_EXTENSION=source+'-beaver-free-cfg1-v2';
 const plan={gameId:32820,sourceKey:source,betRaw:100,
   requestParams:{AP:'false',BPL:'5',GN:'beaverlasvegas96',LB:'20'}};
 export function beaverNextRequest(raw){
@@ -10,9 +11,11 @@ export function beaverNextRequest(raw){
 }
 export function beaverMapping(raw,baseHash,extensionHash){
   const e=beaverEvidence(raw,plan);
-  requireValue(!e.independentFid1 || extensionHash,'BEAVER_MAPPING_REQUIRED');
+  const cfg1=raw.steps.some(s=>parameters(parameters(s.responsePayload).GSD??'','#','~').CFG==='1');
+  const selected=cfg1?extensionHash?.cfg1:(typeof extensionHash==='string'?extensionHash:extensionHash?.free);
+  requireValue(!e.independentFid1 || typeof selected==='string','BEAVER_MAPPING_REQUIRED');
   return {buy:0,bonus:e.independentFid1?2:e.kind==='freeGame'?1:0,
-    typeMappingHash:e.independentFid1?extensionHash:baseHash};
+    typeMappingHash:e.independentFid1?selected:baseHash};
 }
 const requireValue=(yes,code)=>{if(!yes)throw Error(code);};
 const integer=x=>{requireValue(typeof x==='string' && /^\d+$/.test(x) && Number.isSafeInteger(Number(x)),'INVALID_NUMBER');return Number(x);};
@@ -29,7 +32,7 @@ function parameters(text,separator='&',equals='='){
 export function beaverSequence(raw,plan){
   requireValue(plan.gameId===32820 && plan.sourceKey===source && raw.sourceKey===source
     && raw.protocol==='nextgen' && raw.steps?.length>0 && raw.steps.length<=100,'BEAVER_PROFILE_REQUIRED');
-  let next='BET',player,previous,special=false,replay=false,last,sawBeaver=false;
+  let next='BET',player,previous,special=false,replay=false,last,sawBeaver=false,sawCfg1=false,priorCounts;
   for(const frame of raw.steps){
     requireValue(next!==null && frame.msgId===next,'BEAVER_SEQUENCE_MISMATCH');
     const request=parameters(frame.requestPayload),response=parameters(frame.responsePayload);
@@ -42,8 +45,9 @@ export function beaverSequence(raw,plan){
     const fid=response.FID??'',active=['1','1|'].includes(fid);
     requireValue(['','0','0|','1','1|'].includes(fid) && !Object.keys(response).some(k=>/^(FS_|NFR_|CFR_|CFP_)/.test(k))
       && !['CFG','ABPM','SB'].some(k=>Object.hasOwn(response,k)),'UNKNOWN_TRIAL_FEATURE');
-    const gsd=parameters(response.GSD??'','#','~'),beaver=Object.hasOwn(gsd,'CFG');
-    requireValue(!beaver || gsd.CFG==='0' && ['0','0|'].includes(fid),'UNSUPPORTED_BEAVER_NESTED_FEATURE');
+    const gsd=parameters(response.GSD??'','#','~'),beaver=gsd.CFG==='0';
+    requireValue(!Object.hasOwn(gsd,'CFG') || beaver && ['0','0|'].includes(fid)
+      || gsd.CFG==='1' && active,'UNSUPPORTED_BEAVER_NESTED_FEATURE');
     sawBeaver ||= beaver;
     requireValue(!((special||active) && sawBeaver),'UNSUPPORTED_BEAVER_NESTED_FEATURE');
     for(const k of ['B','AB','TW'])integer(response[k]);
@@ -51,13 +55,19 @@ export function beaverSequence(raw,plan){
     const counters=['NFG','TFG','CFGG'].map(k=>Object.hasOwn(response,k)?integer(response[k]):null);
     requireValue(counters.every(x=>x===null || x<=100),'FREE_LIMIT');
     if(frame.msgId==='FREE_GAME' || active || counters[0])requireValue(counters.every(x=>x!==null),'MISSING_FREE_COUNTER');
+    sawCfg1 ||= gsd.CFG==='1';
+    if(sawCfg1){
+      const [n,t,c]=counters;requireValue(counters.every(x=>x!==null)&&t===n+c,'BEAVER_CFG1_COUNTERS');
+      if(priorCounts){requireValue(c===priorCounts[2]+1&&t>=priorCounts[1],'BEAVER_CFG1_PROGRESS');
+        if(n===0)requireValue(priorCounts[0]===1&&t===priorCounts[1],'BEAVER_CFG1_TERMINAL');}
+    }
     if(active && !previous){
       requireValue(previous===undefined,'UNSUPPORTED_BEAVER_NESTED_FEATURE');
       requireValue(counters[0]>0,'EMPTY_TRIGGER');
     }
     if(special && !active)requireValue(counters[0]===0,'UNSUPPORTED_BEAVER_NESTED_FEATURE');
     replay ||= previous===true && frame.msgId==='FREE_GAME';special ||= active;
-    previous=active;last=response;next=counters[0]?'FREE_GAME':null;
+    previous=active;last=response;priorCounts=counters;next=counters[0]?'FREE_GAME':null;
   }
   return {next,special,replay,last};
 }

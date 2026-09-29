@@ -27,6 +27,7 @@ export function beaverFields(raw: Raw, plan: Plan, baseHash: string, extensionHa
   check(raw.steps.length > 0 && raw.steps.length <= 100, 'INVALID_STEPS');
   let previousRemaining = 0, special = false, hasReplay = false, beaver = false;
   let firstPlayer: string | undefined, previousFid: string | undefined;
+  let sawCfg1 = false, priorCounts: Array<number | null> | undefined;
   let last: Record<string, string> = {};
   for (let i = 0; i < raw.steps.length; i++) {
     const step = raw.steps[i], request = pairs(step.requestPayload), p = pairs(step.responsePayload);
@@ -42,19 +43,30 @@ export function beaverFields(raw: Raw, plan: Plan, baseHash: string, extensionHa
       && !Object.keys(p).some(k => /^(FS_|NFR_|CFR_|CFP_)/.test(k))
       && ['CFG', 'ABPM', 'SB'].every(k => p[k] === undefined), 'UNSUPPORTED_FEATURE');
     const gsd = pairs(p.GSD ?? '', '#', '~');
-    check(gsd.CFG === undefined || gsd.CFG === '0' && ['0', '0|'].includes(fid), 'UNSUPPORTED_BEAVER');
-    beaver ||= gsd.CFG !== undefined;
+    check(gsd.CFG === undefined || gsd.CFG === '0' && ['0', '0|'].includes(fid)
+      || gsd.CFG === '1' && active, 'UNSUPPORTED_BEAVER');
+    beaver ||= gsd.CFG === '0';
     check(!((special || active) && beaver), 'MIXED_FEATURE');
     check(['0', '1'].includes(p.IFG) && (i === 0 || p.IFG === '1'), 'INVALID_FREE_STATE');
     for (const k of ['B', 'AB', 'TW']) integer(p[k]);
     const counters = ['NFG', 'TFG', 'CFGG'].map(k => p[k] === undefined ? null : integer(p[k]));
     check(counters.every(n => n === null || n <= 100), 'COUNTER_LIMIT');
     if (i > 0 || active || counters[0]) check(counters.every(n => n !== null), 'MISSING_COUNTER');
+    sawCfg1 ||= gsd.CFG === '1';
+    if (sawCfg1) {
+      const [n,t,c] = counters;
+      check(n !== null && t !== null && c !== null && t === n + c, 'BEAVER_CFG1_COUNTERS');
+      if (priorCounts) {
+        check(c === priorCounts[2]! + 1 && t! >= priorCounts[1]!, 'BEAVER_CFG1_PROGRESS');
+        if (n === 0) check(priorCounts[0] === 1 && t === priorCounts[1], 'BEAVER_CFG1_TERMINAL');
+      }
+    }
     if (active && !['1', '1|'].includes(previousFid ?? '')) check(i === 0 && (counters[0] ?? 0) > 0, 'NONINDEPENDENT_TRIGGER');
     if (special && !active) check(counters[0] === 0, 'MIXED_FEATURE');
     hasReplay ||= i > 0 && ['1', '1|'].includes(previousFid ?? '');
     special ||= active;
     previousRemaining = counters[0] ?? 0;
+    priorCounts = counters;
     previousFid = fid;
     last = p;
   }

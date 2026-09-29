@@ -1130,6 +1130,38 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "beaverlasvegas96-round-one-base-v1-beaver-free-cfg1-v2": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32820,
+        "runtimeGameId": 33180,
+        "sourceId": "ede88245-8362-44c7-aaed-a09352f41804"
+      },
+      "featureSelector": "beaver-free-cfg1-v2",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   }
 }

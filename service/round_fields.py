@@ -182,10 +182,11 @@ def types(raw, kind):
     nested_type = has_nested(raw) if source_key == DEMON_SOURCE else False
     demon_type = ('demonNestedFreeGames' if nested_type else demon_feature_type(raw)) if source_key == DEMON_SOURCE else None
     from quarterback_fields import SOURCE as QUARTERBACK_SOURCE, EXTENSION as QUARTERBACK_EXTENSION, PICK_EXTENSION, is_pick, is_foam
-    from beaver_fields import SOURCE as BEAVER_SOURCE, EXTENSION as BEAVER_EXTENSION, feature_type as beaver_feature_type
+    from beaver_fields import SOURCE as BEAVER_SOURCE, EXTENSION as BEAVER_EXTENSION, CFG1_EXTENSION, cfg1_type, feature_type as beaver_feature_type
     beaver_type = source_key == BEAVER_SOURCE and beaver_feature_type(raw)
     foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
-    profile, mapping_hash = type_profile(BEAVER_EXTENSION if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    beaver_cfg1 = beaver_type and cfg1_type(raw)
+    profile, mapping_hash = type_profile((CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -214,7 +215,7 @@ def types(raw, kind):
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
     if beaver_type:
-        check(kind == 'freeGame' and profile.get('featureSelector') == 'beaver-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        check(kind == 'freeGame' and profile.get('featureSelector') == ('beaver-free-cfg1-v2' if beaver_cfg1 else 'beaver-free-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['independentFreeGames']
     elif foam_type:
         check(kind == 'feature' and profile.get('featureSelector') == ('quarterback-pick-a-ball-v1' if is_pick(raw) else 'quarterback-foam-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')

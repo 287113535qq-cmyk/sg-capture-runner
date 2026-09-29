@@ -4,7 +4,7 @@ on:
     inputs:
       operation:
         type: choice
-        options: [rollover, retire-finished]
+        options: [rollover, retire-finished, residual]
         default: rollover
 permissions:
   contents: read
@@ -41,3 +41,6 @@ jobs:
       - name: Retire the interrupted attempt from the finished pilot without source requests
         if: inputs.operation == 'retire-finished'
         run: node scripts/runner-v2/retire-finished-demo-control.mjs
+      - name: Activate only the original pilot's unspent BET budget with a new demo generation
+        if: inputs.operation == 'residual'
+        run: node scripts/runner-v2/demo-residual-control.mjs
