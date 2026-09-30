@@ -158,10 +158,54 @@
   "implementation": {
     "offlineTimingSummaryTests": 2,
     "fetchStagePrototypeTests": 3,
-    "liveTimingHookDeployed": false,
+    "liveTimingHookDeployed": true,
     "multiSessionDeployed": false,
     "fullStageAutomationDeployed": false,
-    "measuredSpeedup": null
+    "measuredSpeedup": null,
+    "runtime": "6ee2a619acc11702211b130563a5625be5806a54",
+    "preflight": 36781663548,
+    "maintenance": 36782016861,
+    "sourceRun": 36782298458,
+    "faultCapsuleDeployed": true,
+    "observedTraitMatchingImplemented": true,
+    "stageEventsDeployed": true,
+    "completePreservedAtRuntimeChange": 166376,
+    "remainingComplete": 133624,
+    "newBetAllowance": 0,
+    "runtimeRefreshTests": 18,
+    "runtimeProfileFreezeTests": 1,
+    "preflightToDispatchSeconds": 268,
+    "preflightToFirstCaptureJobSeconds": 363,
+    "linuxChecks": {
+      "runner": 729,
+      "python": 330,
+      "trial": 132,
+      "collector": 28,
+      "timing": 2,
+      "reuse": 6,
+      "ruleCards": 178
+    },
+    "privateArchive": {
+      "verifiedFiles": 40,
+      "bytes": 721106,
+      "sha256": "19d54368ee9ba9f5c7474817f8875ba4349e6d3b8529ae6caffd50eed4270e12",
+      "name": "sg-observation-applied-20261001"
+    },
+    "firstLiveSnapshot": {
+      "at": 1790805491,
+      "mongo": 166376,
+      "newMongo": 0,
+      "confirmed": 166376,
+      "activeWorkers": 20,
+      "activeBatches": 20,
+      "durableUnsettled": 240,
+      "enabled": true,
+      "failure": null,
+      "holds": [
+        false,
+        false
+      ]
+    }
   },
   "sourceRequestsForAnalysis": 0,
   "mongoWritesForAnalysis": 0,
@@ -171,9 +215,17 @@
     "millisecondsPerRoundFor300kIn30minAt20Sessions": 120
   },
   "nextActions": [
-    "Add live stage metrics at a natural runtime boundary",
-    "Investigate request tails before transport/concurrency changes",
-    "Review Pyramids free-trigger BGCL/CL differences without resuming the abandoned attempt",
+    "Measure two stable windows of the deployed per-stage metrics",
+    "Separate HTTP header tails from body and nested local work before transport changes",
+    "Finish independent Pyramids coin-prefix mapping and reentry checks",
     "Prepare next candidate independently of repairs"
-  ]
+  ],
+  "repairIncrement": {
+    "realPrefixNext": "FREE_GAME",
+    "realComplete": false,
+    "syntheticTerminal": true,
+    "negativeCases": 8,
+    "productionImported": false,
+    "sourceRequests": 0
+  }
 }

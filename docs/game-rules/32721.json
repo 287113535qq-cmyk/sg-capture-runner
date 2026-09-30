@@ -154,7 +154,7 @@
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
     "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1",
-    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "556ff2e68a3cf694c8c103d0015f998f6961100784b9cded3fb341f4e18be8c4"
+    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "50a8494586cda05981f565d449e21a77aa5dc3a8c3d8725bcbbd492fcc25193d"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -163,5 +163,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8acad79867ed0e7f479bc17c4eef4192c97cb67c54bcf463af5f8694cb6c9f40"
+  "ruleHash": "6d09b521b538bbf46501d6304a7be238c8e047c8107ad67dbb6e67e22b5e9560"
 }
