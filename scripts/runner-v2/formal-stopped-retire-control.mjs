@@ -6,8 +6,15 @@ import {checkPrimaryLeases} from './lease-boundary.mjs';import {applyFormalCount
 import {retireStoppedFormal} from './formal-stopped-retire.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),basePlans=readFile('config/round-one-plans.json');
-const profile=readFile('config/formal-retire-pearl-20260930.json');
-const plan=applyFormalCount(basePlans,readFile('config/formal-count-pearl-20260930.json'))[32795];
+const names={
+ 'formal-retire-pearl-20260930.json':'formal-count-pearl-20260930.json',
+ 'formal-retire-pearl-repair-20260930.json':'formal-repair-pearl-20260930.json',
+};
+const name=process.env.SG_FORMAL_RETIRE_PROFILE??'formal-retire-pearl-20260930.json';
+assert(Object.hasOwn(names,name),'FORMAL_RETIRE_PROFILE_SCOPE');
+process.env.SG_FORMAL_COUNT_PROFILE=names[name];
+const profile=readFile('config/'+name);
+const plan=applyFormalCount(basePlans,readFile('config/'+names[name]))[32795];
 const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 assert(profile.files&&Object.keys(profile.files).length>=300,'FORMAL_RETIRE_MANIFEST');
 for(const [p,h] of Object.entries(profile.files)){

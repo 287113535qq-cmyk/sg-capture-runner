@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      retire_profile:
+        description: 'Exact stopped-count retirement; grants no source requests'
+        type: choice
+        default: formal-retire-pearl-20260930.json
+        options: [formal-retire-pearl-20260930.json, formal-retire-pearl-repair-20260930.json]
       pilot_profile:
         description: 'Independent finite next-game profile; applied profiles remain frozen'
         type: choice
@@ -58,7 +63,7 @@ jobs:
       - name: Settle a parked formal pool without new source permission
         if: inputs.operation == 'retire-stopped-formal'
         env:
-          SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+          SG_FORMAL_RETIRE_PROFILE: ${{ inputs.retire_profile || 'formal-retire-pearl-20260930.json' }}
         run: node scripts/runner-v2/formal-stopped-retire-control.mjs
       - name: Return a repaired game with preserved complete counts and fresh session admission
         if: inputs.operation == 'activate-formal-repair'

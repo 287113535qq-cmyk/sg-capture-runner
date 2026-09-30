@@ -1,0 +1,3573 @@
+{
+  "schema": "sg-offline-feature-reuse-index-v1",
+  "captureAuthorization": false,
+  "limitations": "Suggestions only. No profile/quota/queue changes. Unknown games require evidence before matching.",
+  "games": [
+    {
+      "gameId": 32749,
+      "name": "5 Treasures",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32750,
+      "name": "88 Fortunes",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32751,
+      "name": "88 Fortunes Megaways",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32752,
+      "name": "Acorn Pixie",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32753,
+      "name": "Action Bank Plus",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32754,
+      "name": "Arthur and the Round Table",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32755,
+      "name": "Blazing X Asia",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32756,
+      "name": "Celestial King",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32757,
+      "name": "Cheshire Cat",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32758,
+      "name": "Cool Jewels",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32759,
+      "name": "Crystal Forest",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32760,
+      "name": "Dancing Drums",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32761,
+      "name": "Dancing Drums Explosion",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32762,
+      "name": "Desert Cats",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32763,
+      "name": "Dr. Jekyll Goes Wild",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32764,
+      "name": "Dragon Spin",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32765,
+      "name": "Drop and Lock Deep Sea Magic",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32766,
+      "name": "Eureka Blast Superlock",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32767,
+      "name": "Fire Queen",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32768,
+      "name": "Frozen Inferno",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32769,
+      "name": "Fu Dao Le",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32770,
+      "name": "Giant's Gold",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32771,
+      "name": "Golden Chief",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32772,
+      "name": "Heidi's Bier Haus",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32773,
+      "name": "Hercules High & Mighty",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32774,
+      "name": "Himalayas - Roof of the World",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32775,
+      "name": "Hula Hula Nights",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32776,
+      "name": "Invaders of Planet Moolah",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32777,
+      "name": "Jin Ji Bao Xi Endless Treasure Megaways",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32778,
+      "name": "Jin Ji Bao Xi Endless Treasures",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32779,
+      "name": "Jinse Dao Dragon",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32780,
+      "name": "King of Babylon Action Spins",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32781,
+      "name": "Kings Honour",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32782,
+      "name": "Knight's Keep",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32783,
+      "name": "Kronos",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32784,
+      "name": "Kronos Unleashed",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32785,
+      "name": "Lady Of Egypt",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32786,
+      "name": "Legend of Fortune",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32787,
+      "name": "Legend of the Pharaohs",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32788,
+      "name": "Lock It Link Night Life",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32441,
+      "name": "300 Shields Extreme",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32442,
+      "name": "7s on Fire Power Mix",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32443,
+      "name": "A Hot Hot Blazing Christmas",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32464,
+      "name": "Big Spinner",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32471,
+      "name": "Book of Sevens",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32474,
+      "name": "Carnival Cow Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32476,
+      "name": "Chain Reactors Deluxe",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32477,
+      "name": "Cherry 8",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32486,
+      "name": "Colossal Splash Ink & Win",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32489,
+      "name": "Dancing Drums Link",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32497,
+      "name": "Dragon Jin Long Jin Bao",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32500,
+      "name": "Dragon Spin Cross Link Fire",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32501,
+      "name": "Dragon Spin Cross Link Water",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32502,
+      "name": "Dragon Unleashed - Prosperity Packets",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32503,
+      "name": "Dragon Unleashed Three Legends",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32504,
+      "name": "Dragon Unleashed Treasured Happiness",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32514,
+      "name": "Ever After",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32529,
+      "name": "Gold Fish Feeding Time Deluxe Treasure",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32530,
+      "name": "Gold Fish Feeding Time! Treasure",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32532,
+      "name": "Golden Fire Link Dragon Song",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32536,
+      "name": "Gorilla Go Wilder",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32544,
+      "name": "Huff N' Lots of Puff",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32545,
+      "name": "Huff N' More Puff",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32547,
+      "name": "Huff N' Puff High Rise",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32548,
+      "name": "Huff N' Puff Money Mansion",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32550,
+      "name": "Hurricane Horse Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32555,
+      "name": "Hypercharged Temple of Atlantis",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32588,
+      "name": "Merlin's Money Burst",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32590,
+      "name": "Mighty Monkey Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32595,
+      "name": "Money Raid Wapiti",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32614,
+      "name": "Quick Hit Blitz Blue",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32615,
+      "name": "Quick Hit Blitz Gold",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32616,
+      "name": "Quick Hit Blitz Purple",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32617,
+      "name": "Quick Hit Blitz Red",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32618,
+      "name": "Quick Hit Link Fire",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32620,
+      "name": "Quick Hit Ultra Pays Monkey's Fortune",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32621,
+      "name": "Quick Hit Ultra Pays Wolf Mountain",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32626,
+      "name": "Reign of The Mountain King",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32629,
+      "name": "Rich Little Hens Founding Feathers",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32630,
+      "name": "Rich Little Hens Rule of the Roost",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32631,
+      "name": "Rich Little Hens World Class",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32632,
+      "name": "Rich Little Hens World Class Christmas Edition",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32633,
+      "name": "Rich Little Piggies Hog Wild",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32634,
+      "name": "Rich Little Piggies Meal Ticket",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32635,
+      "name": "Rich Little Piggies Meal Ticket Christmas Edition",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32636,
+      "name": "Rich Little Piggies World Class",
+      "status": "reviewed-traits",
+      "group": "nextgen-independent-free",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG",
+        "terminal": "explicit-NFG0-and-game-exits"
+      },
+      "references": {
+        "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
+        "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
+        "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32720,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32637,
+      "name": "Rich Little Piggies World Class Halloween Edition",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32641,
+      "name": "Rockets! Red Glare",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32644,
+      "name": "Shields of the Wild",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32651,
+      "name": "Squid Game One More Game",
+      "status": "reviewed-traits",
+      "group": "nextgen-pick-features",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-START-PICK-END",
+        "counters": "feature-specific",
+        "terminal": "feature-END-and-followups"
+      },
+      "references": {
+        "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
+        "scripts/trial/squid-protocol.mjs": "dad9061da2e68bba7eb733c1d5dff42261581b2f0a18df34776bb20b305c103f"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32836,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "requests": "BET-START-PICK-END",
+            "session": "same-PID",
+            "terminal": "feature-END-and-followups"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32636,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32666,
+      "name": "The Wild 3",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32671,
+      "name": "Thunder Drums Samurai Storm",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32681,
+      "name": "Trinity Pots Rising Wilds",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32686,
+      "name": "Ultimate Fire Link Cash Falls Olvera Street",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32687,
+      "name": "Ultimate Fire Link China Street",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32689,
+      "name": "Ultimate Fire Link Olvera Street",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32691,
+      "name": "Ultimate Fire Link Rue Royale",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32703,
+      "name": "Blazin Hot 7s Big Bonus",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32704,
+      "name": "Blazin' Hot 7s Bigger Bonus",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32705,
+      "name": "Dancing Drums Link Fortune",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32706,
+      "name": "Dancing Drums Link High Limit",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32707,
+      "name": "Dancing Drums Prosperity",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32708,
+      "name": "Direct Hit featuring Money Zone",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32709,
+      "name": "Duo Fu Duo Cai Grand Dragons",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32711,
+      "name": "Hoppily Ever After",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32712,
+      "name": "Hot Hot Blazing Lock",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32713,
+      "name": "Huff N Even More Puff High Limit",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32714,
+      "name": "Huff N Puff Money Mansion High Limit",
+      "status": "reviewed-traits",
+      "group": "nextgen-mansion-features",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "feature-specific",
+        "terminal": "client-feature-exits"
+      },
+      "references": {
+        "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
+        "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
+        "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "client-feature-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32636,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32715,
+      "name": "Huff N' Even More Puff",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32716,
+      "name": "Huff N’ Even More Puff Grand",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32717,
+      "name": "Huff N' Lots of Goals!",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32718,
+      "name": "Huff N' More Puff High Limit",
+      "status": "reviewed-traits",
+      "group": "nextgen-wheel-features",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "feature-specific",
+        "terminal": "client-feature-exits"
+      },
+      "references": {
+        "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
+        "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
+        "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "client-feature-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32636,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32719,
+      "name": "Hypercharged Inca Jungle",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32720,
+      "name": "Hypercharged Jinzita",
+      "status": "reviewed-traits",
+      "group": "nextgen-independent-free",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG",
+        "terminal": "explicit-NFG0-and-game-exits"
+      },
+      "references": {
+        "service/jinzita_fields.py": "89b465920919742d40c73667469edd4c0438e7fb554bb0fb27082a10b7ee246b",
+        "scripts/trial/jinzita-protocol.mjs": "9c1584cd4fc5c21e38698e40cda0e472453d90fdca152fef780899509c5c63ae",
+        "collector/sg.jinzita.ts": "1b57f42a8b5db35a297371642af0f4ea4ae6a9ba0739145a08217c615fc24cf8"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32636,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32721,
+      "name": "Hypercharged Pyramids of Ra",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32722,
+      "name": "Jinse Dao Tiger",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32723,
+      "name": "La Bomba",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32724,
+      "name": "Lock It Link Diamonds",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32725,
+      "name": "Medusa",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32726,
+      "name": "Medusa 2",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32727,
+      "name": "Medusa Megaways",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32728,
+      "name": "Money Raid Kodiak",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32729,
+      "name": "Perfect Peacock Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32730,
+      "name": "Pillars of Asgard",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32731,
+      "name": "Polterheist",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32732,
+      "name": "Quick Hit Ultra Pays Eagle's Peak",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32733,
+      "name": "Raging Rhino Rampage",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32734,
+      "name": "Rise of the Mountain King",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32735,
+      "name": "Squid Game Gganbu",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32736,
+      "name": "Squid Game One Lucky Day",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32737,
+      "name": "Starmania",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32738,
+      "name": "Terrific Tiger Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32739,
+      "name": "The Demon Code",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32740,
+      "name": "Ultimate Fire Link Cash Falls By The Bay",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32741,
+      "name": "Ultimate Fire Link Cash Falls China Street",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32742,
+      "name": "Ultimate Fire Link Cash Falls Glacier Gold",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32743,
+      "name": "Ultimate Fire Link Country Lights",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32744,
+      "name": "Ultimate Fire Link River Walk",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32745,
+      "name": "Wonderhounds",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32746,
+      "name": "Xiao Fu Bao",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32747,
+      "name": "Xiao Fu Bao 2",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32748,
+      "name": "Zeus II",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32789,
+      "name": "Lucky Tree",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32790,
+      "name": "Marvelous Mouse Coin Combo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32791,
+      "name": "Mighty Black Knight",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32792,
+      "name": "Montezuma",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32793,
+      "name": "Nemo's Voyage",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32794,
+      "name": "OMG Kittens",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32795,
+      "name": "Pearl of the Caribbean",
+      "status": "reviewed-traits",
+      "group": "wms-free-retrigger",
+      "traits": {
+        "protocol": "wms-xml",
+        "session": "response-rotation",
+        "requests": "Logic-EndGame",
+        "counters": "total-progress-remaining",
+        "terminal": "readyForEndGame-EndGame",
+        "initialFree": 8,
+        "retriggerAward": 8
+      },
+      "references": {
+        "scripts/trial/pearl-retrigger-protocol.mjs": "09090fa8bf7ca630a121000a8449466d5e53e02689e3125160e73273a8c0967f",
+        "service/pearl_retrigger_fields.py": "c0ac626577bbf7e4fcbf6e2f97172992e0deb338cc65f3a62cd880647b9b0509",
+        "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32799,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "total-progress-remaining",
+            "initialFree": 8,
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "retriggerAward": {
+              "target": 8,
+              "reference": 5
+            },
+            "terminal": {
+              "target": "readyForEndGame-EndGame",
+              "reference": "lastFreeSpin-EndGame"
+            }
+          },
+          "referenceFiles": [],
+          "requiredReview": [
+            "New retrigger terminal was synthetic at repair activation; inspect subsequent natural observations.",
+            "Stake encoding, feature XML, maximum-win exits and session identity are game-specific.",
+            "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
+            "No readyForEndGame in this client; do not copy the Pearl terminal condition."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32796,
+      "name": "Pharaoh's Dream",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32797,
+      "name": "Quick Hit Super Wheel Wild Red",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32798,
+      "name": "Quick Hit Ultra Pays - Sun Dragon",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32799,
+      "name": "Raging Rhino",
+      "status": "reviewed-traits",
+      "group": "wms-free-retrigger",
+      "traits": {
+        "protocol": "wms-xml",
+        "session": "response-rotation",
+        "requests": "Logic-EndGame",
+        "counters": "total-progress-remaining",
+        "terminal": "lastFreeSpin-EndGame",
+        "initialFree": 8,
+        "retriggerAward": 5
+      },
+      "references": {},
+      "candidates": [
+        {
+          "referenceGameId": 32795,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "total-progress-remaining",
+            "initialFree": 8,
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "retriggerAward": {
+              "target": 5,
+              "reference": 8
+            },
+            "terminal": {
+              "target": "lastFreeSpin-EndGame",
+              "reference": "readyForEndGame-EndGame"
+            }
+          },
+          "referenceFiles": [
+            "scripts/trial/pearl-retrigger-protocol.mjs",
+            "service/pearl_retrigger_fields.py",
+            "collector/sg.pearl-retrigger.ts"
+          ],
+          "requiredReview": [
+            "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
+            "No readyForEndGame in this client; do not copy the Pearl terminal condition.",
+            "New retrigger terminal was synthetic at repair activation; inspect subsequent natural observations.",
+            "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32800,
+      "name": "Raging Rhino Megaways",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32801,
+      "name": "Road to Riches Free Spins",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32802,
+      "name": "Road to Riches Gold Pots",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32803,
+      "name": "Road to Riches Race Day",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32804,
+      "name": "Road to Riches Twilight Dream",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32805,
+      "name": "Soldier of Rome",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32806,
+      "name": "Spartacus Gladiator of Rome",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32807,
+      "name": "Spartacus Megaways",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32808,
+      "name": "Spirit of the River",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32809,
+      "name": "Sword of Destiny",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32810,
+      "name": "The Legend of Big Foot",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32811,
+      "name": "Triple Cash Wheel",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32812,
+      "name": "Very Fruity",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32813,
+      "name": "Volts and Bolts",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32814,
+      "name": "Wild Streets",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32815,
+      "name": "Zeus God of Thunder",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32816,
+      "name": "Zeus III",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32820,
+      "name": "Beaver Las Vegas",
+      "status": "reviewed-traits",
+      "group": "nextgen-independent-free",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG",
+        "terminal": "explicit-NFG0-and-game-exits"
+      },
+      "references": {
+        "service/beaver_fields.py": "60dfaf941bd7de2c37c7abde442193200d5a2504dc620269540ed23e9c5eb8e2",
+        "scripts/trial/beaver-protocol.mjs": "85a7d348079f70fac7b9a461efd0bae2307d800e4518a65fe7008066e228ef48",
+        "collector/sg.beaver.ts": "e26c3e4a41aecaa9a6047935cb1f822194a41381a18af2c84999bf28dc0cc57a"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32636,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32821,
+      "name": "Book of Fusion",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32832,
+      "name": "Key To Success",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32833,
+      "name": "Panda Pow",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32835,
+      "name": "Pyramids of Luxor",
+      "status": "reviewed-traits",
+      "group": "nextgen-independent-free",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG",
+        "terminal": "explicit-NFG0-and-game-exits"
+      },
+      "references": {
+        "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
+        "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
+        "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32636,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32836,
+      "name": "Quarterback Fields of Glory",
+      "status": "reviewed-traits",
+      "group": "nextgen-pick-features",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-START-PICK-END",
+        "counters": "feature-specific",
+        "terminal": "feature-END-and-followups"
+      },
+      "references": {
+        "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
+        "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32651,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "requests": "BET-START-PICK-END",
+            "session": "same-PID",
+            "terminal": "feature-END-and-followups"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "counters": "feature-specific",
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Cash-only exit does not support mixed wheel/free branches."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32636,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        }
+      ],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32837,
+      "name": "Road Trip 66",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    },
+    {
+      "gameId": 32839,
+      "name": "The Green Machine Bingo",
+      "status": "unclassified",
+      "group": null,
+      "traits": {},
+      "references": {},
+      "candidates": [],
+      "captureAuthorization": false
+    }
+  ]
+}

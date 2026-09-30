@@ -192,6 +192,7 @@
     "docs/mansion-touchup-integration-20260930-result.json",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-mixed-repair-20260930.md",
+    "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-next-preparation-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
     "docs/piggies-zero-source-rebind-20260930.md",
@@ -224,12 +225,13 @@
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
+    "docs/pearl-repair-reentry-20260930.md": "322466a0758b5c6cf331d403f492d2117a34c3e741435e1fbec9b49dd0f1d219",
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0",
+    "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -241,5 +243,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d5f84bca20ddcf5fdd12c60dac2ea37a44545671a20fc79d115a64b4e57144a1"
+  "ruleHash": "d47577ea4d53e2557e7ccec43c66b02d5031a80b3f5441c6e83c9ceec1324b95"
 }

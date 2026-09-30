@@ -31,7 +31,7 @@
   "analysisDocumentHashes": {
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
-    "docs/pearl-repair-reentry-20260930.md": "55222999a4248dd9232d4a3dc19dac0cb16c5751a36807f757d5590701444ebe"
+    "docs/pearl-repair-reentry-20260930.md": "322466a0758b5c6cf331d403f492d2117a34c3e741435e1fbec9b49dd0f1d219"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -40,5 +40,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1ebb179435e0a01b06860bc3be9005684b69925955a63865036981037bfd6767"
+  "ruleHash": "76a77e78f9b89ea12c13b3dcadef84627cd441173a531a890fdb14b37dc12c18"
 }

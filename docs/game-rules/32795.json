@@ -106,9 +106,9 @@
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
-    "docs/pearl-repair-reentry-20260930.md": "55222999a4248dd9232d4a3dc19dac0cb16c5751a36807f757d5590701444ebe",
+    "docs/pearl-repair-reentry-20260930.md": "322466a0758b5c6cf331d403f492d2117a34c3e741435e1fbec9b49dd0f1d219",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
-    "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0"
+    "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -117,5 +117,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a66f6665fca6cff3067cc9bfbf00f36247145b3acd5e49918c7f3638cbb853e7"
+  "ruleHash": "b9425fd4a31953a516662e22d68ae30f090b1e1ce841562b60a2dba8376c477a"
 }
