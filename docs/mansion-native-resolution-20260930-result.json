@@ -23,10 +23,9 @@
     "futureLeases": 0
   },
   "archivePrepare": {
-    "verifiedFiles": 6,
-    "bytes": 3119,
-    "sha256": "14449dd390e05fd9c8ebf0940ce166de812f3d1d42dea7e6378ab9d852168dc5",
-    "baselinesVerified": 2
+    "verifiedFiles": 19,
+    "bytes": 571124,
+    "sha256": "0faddb32779b94eb4fd5a0c73156d753ed3cc9d392875fdd9c78024547f776db"
   },
   "maintenance": {
     "id": 36700501914,
@@ -62,15 +61,16 @@
     "conclusion": "failure",
     "completedAt": "2026-09-30T10:16:44Z",
     "newComplete": 26,
-    "newAbandoned": 0,
-    "interrupted": 1,
+    "newAbandoned": 1,
+    "interrupted": 0,
     "used": 27,
     "unused": 73,
     "completeReceipts": 129,
-    "mongoComplete": 118,
-    "backlog": 11,
+    "mongoComplete": 129,
+    "backlog": 0,
     "code": "HUFF_UNREVIEWED_FEATURE_SLOTS",
-    "sharedHold": true
+    "sharedHold": false,
+    "unusedClosed": true
   },
   "profileHash": "f7d70be05456a74883a1adc1b0d691d27be07d79f2845d5b799d681afed04741",
   "profileApplied": true,
@@ -79,18 +79,119 @@
   "completeGames": 14,
   "allGames": 178,
   "sharedStopRepair": {
-    "offlineMemoryOnly": true,
-    "completeVerified": 129,
-    "newComplete": 26,
-    "flushedInMemory": 11,
-    "abandonedInMemory": 1,
-    "used": 27,
-    "foregoneInMemory": 73,
-    "oldJournalsUnchanged": true,
-    "oldBatchesUnchanged": true,
-    "holdReleasedOnlyAfterClosure": true,
-    "sourceRequests": 0,
-    "profileHash": "1f94b656fab3532778344074807d08e3de5f1fbf7b5f016cdb9778229a611cb6",
-    "files": 371
+    "runtime": "2b6f219152a321e3c0e855bac79e096696c21772",
+    "linuxRun": 36702722255,
+    "linuxConclusion": "success",
+    "runnerTests": 579,
+    "pythonTests": 278,
+    "maintenanceRun": 36703044229,
+    "maintenanceConclusion": "success",
+    "startedAt": "2026-09-30T10:32:28Z",
+    "completedAt": "2026-09-30T10:35:52Z",
+    "durationSeconds": 204,
+    "audit": {
+      "at": 1790764597,
+      "newComplete": 26,
+      "oldCompletePreserved": 103,
+      "totalComplete": 129,
+      "newAbandoned": 1,
+      "used": 27,
+      "unused": 73,
+      "unusedClosed": true,
+      "closeHash": "88e2975a2c0a011c73e6b2cb9475dd297059f410570808c1f3e2ae5878895ca5",
+      "usedByWorker": [
+        0,
+        0,
+        3,
+        0,
+        2,
+        5,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        5,
+        2,
+        4,
+        5,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pending": 0,
+      "outstanding": 0,
+      "activeLeases": 0,
+      "poolEnabled": false,
+      "poolFailure": "PROTOCOL_VALIDATION_FAILED",
+      "gameStatus": "parking-protocol",
+      "features": [
+        {
+          "worker": 13,
+          "reason": "HUFF_UNREVIEWED_FEATURE_SLOTS",
+          "frames": 3,
+          "messages": [
+            "BET",
+            "FREE_GAME",
+            "FREE_GAME"
+          ],
+          "fields": [
+            {
+              "NFG": "6",
+              "TFG": "6",
+              "CFGG": "0",
+              "IFG": "0",
+              "FID": "1|"
+            },
+            {
+              "NFG": "5",
+              "TFG": "6",
+              "CFGG": "1",
+              "IFG": "1",
+              "FID": "1|"
+            },
+            {
+              "NFG": "5",
+              "TFG": "7",
+              "CFGG": "2",
+              "IFG": "1",
+              "FID": "1|"
+            }
+          ],
+          "rawHash": "09f26e70d76f8ca68f579e8fb5b40c7eef1d99add23c8cff0800d16b2650e3e2"
+        }
+      ],
+      "bonus": {
+        "0": 26
+      },
+      "snapshotHash": "39818b6878f4d55153011575c891670a195c946b53fb8a454204a9abdaec819f"
+    },
+    "independentRunner": {
+      "profileHash": "1f94b656fab3532778344074807d08e3de5f1fbf7b5f016cdb9778229a611cb6",
+      "derivedCloseProfileHash": "47d2e98a9bf3aca075ea57c7981f717115bb8c4889034286b0025d9b6c00e0fe",
+      "closeHash": "88e2975a2c0a011c73e6b2cb9475dd297059f410570808c1f3e2ae5878895ca5",
+      "repairKey": "game-repair:sg_r1_20260928_32714:5fdf8176e3e509055cf642aae40a3676e3c91efc90e442ef87a4206a9525de81",
+      "repairAllowance": 0,
+      "complete": 129,
+      "used": 27,
+      "foregone": 73,
+      "holds": false,
+      "sourceRequests": 0,
+      "snapshotHash": "39818b6878f4d55153011575c891670a195c946b53fb8a454204a9abdaec819f"
+    },
+    "sourceRequests": 0
+  },
+  "nativeReadyArchive": {
+    "verifiedFiles": 6,
+    "bytes": 3119,
+    "sha256": "14449dd390e05fd9c8ebf0940ce166de812f3d1d42dea7e6378ab9d852168dc5",
+    "baselinesVerified": 2
+  },
+  "archiveFinal": {
+    "verifiedFiles": 15,
+    "bytes": 363473,
+    "sha256": "993ecdc662143f896beb3fe119d3ef3ede595d10b7e6e6a049b9308bb6077f47"
   }
 }

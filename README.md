@@ -107,3 +107,6 @@ node scripts/build-source-catalog.cjs <当前运行目录清单> <本地历史la
 - [完整链路通过](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36311422228)
 - [同批次重跑通过，新增 0 条](https://github.com/zyzuoyang/sg-capture-runner/actions/runs/36311817903)
 - 脱敏回执、部署代码哈希和任务时间见 `docs/link-verification-result.json`。官方取数和现有游戏库写入未包含在本次验收中。
+# 2026-09-30 最新执行结果
+
+32714固定native范围阻塞已解决，AG已真实切换至下一款并采得26条新完整局。新发现的Hard Hat重触发隔离分类漏项已修正，无源维护完成11条补写、1局留样作废和27已用/73注销；32714共129完整，pending/待写0，修复队列零源额度。累计仍14/178，不代表整款玩法或正式规模全部就绪。见[本轮结果](docs/mansion-native-resolution-20260930.md)。
