@@ -14,6 +14,12 @@ class ReuseIndexTests(unittest.TestCase):
         self.assertEqual(match['scope'], 'transport-only')
         self.assertIn('terminal', match['differences'])
 
+    def test_inca_reuses_only_independently_reviewed_free_traits(self):
+        match=next(x for x in recommend(32719) if x['referenceGameId']==32720)
+        self.assertEqual(match['scope'],'family-candidate')
+        self.assertFalse(match['captureAuthorization'])
+        self.assertTrue(any('synthetic' in x for x in match['requiredReview']))
+
     def test_unknown_does_not_inherit_generic_ready(self):
         self.assertEqual(recommend(32441), [])
         result = build()

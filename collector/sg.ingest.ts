@@ -1,3 +1,4 @@
+import {incaFields} from './sg.inca';
 import {hasHuffRetrigger,huffRetriggerFields} from './sg.huff-retrigger';
 import {validatePiggies} from './sg.piggies';
 import {hasMorepuffWheel,morepuffFields} from './sg.morepuff';
@@ -30,6 +31,11 @@ export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: num
   if(hasMorepuffWheel(raw)){
     const value=morepuffFields(raw,mapping.typeMappingHash);
     if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_MOREPUFF_MAPPING_MISMATCH');
+    return value;
+  }
+  if(raw.sourceKey === 'hyperchargedincajungle96-round-one-base-v1') {
+    const value=incaFields(raw,mapping.typeMappingHash);
+    if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_INCA_MAPPING_MISMATCH');
     return value;
   }
   if(raw.sourceKey === 'hyperchargedjinzita96-round-one-base-v1') {

@@ -186,8 +186,8 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "68d7698a9ae64adb75d3181c6395e261678831eb1434e9e9b5f6f08d3fe947de",
-    "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
+    "service/round_fields.py": "557fd5cc579adb8ba3eca36d68f2d0156db9a80598bbd0653f178e0994607806",
+    "scripts/runner-v2/record_fields.py": "d71bf92dec8c4539ad9e8617cbe0e5dd68c025103ed7635e9c223f048d60d54a",
     "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
@@ -198,7 +198,7 @@
     "scripts/trial/huff-retrigger-review.mjs": "24ffb6d2a00929f9c5d953d00e1dd9fd13f4ef06d057da42a56c8c6f92e4b8ad",
     "collector/huff-retrigger-review.cjs": "3aa693e07ea5bc33cf914b33240e1422543fa0b52969e0e8c6f8906d2a27c377",
     "collector/sg.huff-retrigger.ts": "f1630e29b7146738968e64f40eb499978d6a1595fb45b3fc5e597a044309cb1c",
-    "service/game_rule_catalog.py": "91b8c37b0aac5c698a453f5b5205aaaacef58444f2dd846b221f34731931c4e0"
+    "service/game_rule_catalog.py": "e06d6af7b03a4c818e7232375c122ce3cf91dfa5cd2f68998c49827fbe251d71"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -285,5 +285,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9a3c29d95a2f8be83c00ab140ed1c512f882ee0ac989b38831e1aaf4959f2a3c"
+  "ruleHash": "93fc5de0c1cd4e349ae2c2dc4b463cb6c4a63d18c8dde2d70dc1fd3d5798c104"
 }

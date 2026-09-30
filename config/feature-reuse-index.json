@@ -872,6 +872,32 @@
       },
       "candidates": [
         {
+          "referenceGameId": 32719,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+          ],
+          "captureAuthorization": false
+        },
+        {
           "referenceGameId": 32720,
           "scope": "family-candidate",
           "common": {
@@ -994,12 +1020,15 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -1112,7 +1141,7 @@
       },
       "references": {
         "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
-        "scripts/trial/squid-protocol.mjs": "ea4fa3f656ced31ccf563140fccc61b7dea654e777d231e4387cab50d81c553a"
+        "scripts/trial/squid-protocol.mjs": "39985758f335e6bf4834894fca70ee7712adf47e1ecf1b6177cce202a8c356c0"
       },
       "candidates": [
         {
@@ -1190,12 +1219,15 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -1228,6 +1260,42 @@
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1538,13 +1606,16 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -1604,6 +1675,40 @@
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1775,9 +1880,12 @@
         "terminal": "client-feature-exits"
       },
       "references": {
-        "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
-        "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
-        "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3"
+        "service/morepuff_fields.py": "5daa6e78402db09326710e1abfa2560e8fc8e5ba5dec2ffaed6a6c8b638292d1",
+        "scripts/trial/morepuff-protocol.mjs": "cd9baab5dc7ce8a7484a91f253d8a3eadfc655e6899d1a2bb61e79745b484b5f",
+        "collector/sg.morepuff.ts": "d30882d2952b36ec5b9a4bedf6055934679d90f2d1c4a5a75217bcba20811648",
+        "service/morepuff_megahat_review.py": "163cba04ae5598931914750dd5ec6afc97f9aa13f5be307b285bfccc86ae7378",
+        "scripts/trial/morepuff-megahat-review.mjs": "2709cbda6ebe4a6c613d3dab1afb2707980e5b5fc5f8377c3ca94f1e93a14451",
+        "collector/sg.morepuff-megahat.ts": "145184c91f927a5944452dfdc66dab02c13d6dc6a1b64e1fc1f2b6ac3d947a4b"
       },
       "candidates": [
         {
@@ -1801,7 +1909,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
@@ -1832,7 +1940,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
@@ -1861,8 +1969,42 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1891,7 +2033,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
           ],
@@ -1922,7 +2064,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -1953,7 +2095,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -1983,7 +2125,7 @@
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
           ],
           "captureAuthorization": false
@@ -1994,11 +2136,259 @@
     {
       "gameId": 32719,
       "name": "Hypercharged Inca Jungle",
-      "status": "unclassified",
-      "group": null,
-      "traits": {},
-      "references": {},
-      "candidates": [],
+      "status": "reviewed-traits",
+      "group": "nextgen-independent-free",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG",
+        "terminal": "explicit-NFG0-and-game-exits"
+      },
+      "references": {
+        "service/inca_free_review.py": "85e711e5016fc1bd854a9c7ec66e256d40f0b5bf837bcb6aa4a7c6938ba635b4",
+        "service/inca_fields.py": "a31d2cd2aadfd7a705ed27a1f41f2d517b63b280b890d96494e39953d579192b",
+        "scripts/trial/inca-free-review.mjs": "f51436a1f3503607d52ec78b3ac5530cae00bcd097823d21ff197ae731412bed",
+        "scripts/trial/inca-protocol.mjs": "76b424856673904fe0125847b93a9a9d7f99f8ebf5ef532dcfe69bab93c7e54c",
+        "collector/sg.inca.ts": "daec02fa961564bfbab912e2e9644953c4c5cfbbd4c85384e4837dc33810673e"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32636,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
       "captureAuthorization": false
     },
     {
@@ -2039,6 +2429,33 @@
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -2145,13 +2562,16 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -2922,6 +3342,33 @@
           "captureAuthorization": false
         },
         {
+          "referenceGameId": 32719,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+          ],
+          "captureAuthorization": false
+        },
+        {
           "referenceGameId": 32720,
           "scope": "family-candidate",
           "common": {
@@ -3024,13 +3471,16 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -3173,6 +3623,33 @@
           "captureAuthorization": false
         },
         {
+          "referenceGameId": 32719,
+          "scope": "family-candidate",
+          "common": {
+            "counters": "TFG=NFG+CFGG",
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID",
+            "terminal": "explicit-NFG0-and-game-exits"
+          },
+          "differences": {},
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+          ],
+          "captureAuthorization": false
+        },
+        {
           "referenceGameId": 32720,
           "scope": "family-candidate",
           "common": {
@@ -3275,13 +3752,16 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -3444,12 +3924,15 @@
           "referenceFiles": [
             "service/morepuff_fields.py",
             "scripts/trial/morepuff-protocol.mjs",
-            "collector/sg.morepuff.ts"
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
           ],
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
-            "Cash-only exit does not support mixed wheel/free branches."
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
           "captureAuthorization": false
         },
@@ -3482,6 +3965,42 @@
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
+            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
           ],
           "captureAuthorization": false
         },

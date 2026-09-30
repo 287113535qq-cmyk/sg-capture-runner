@@ -1,0 +1,13 @@
+# 第二账号Inca有限免费接线
+
+主线32795继续使用原5c513a6采集。本轮准备32719 Hypercharged Inca Jungle，不等待主线结束才做适配；没有改变线上队列、Mongo记录、开关或许可。
+
+鲜读第二账号activeGame为空、32719 parked/native状态和journal均0/Mongo60。旧固定档案39文件74009字节，SHA2d815dffe1185deb4b13d180744f8eec69364956297efc122cd1858f9b6c01f2，两端逐文件核验；本机解码67完整、60Mongo全文匹配、7待补写、12batch、1中断BET/未知0。解码器增加显式worker_offset20，默认仍0，拒绝其他offset和跨账号worker/batch；CLI和生产导入尚保持原primary范围，不自动开放secondary。
+
+固定官方app.js SHA7897950e66d862f5823a13f9a2ce56f0973d4d40391ed429502fe9fef16d03c2，执行原fZa/LXa/EM/isFinal/KM/factory/free xH及异步l/t helpers。FID1=FreeSpins、FID0=HoldNSpin；NFG/CFGG分别映射Vb.pi/lu及features.Vb.We/ui，FGRS/CFGC可覆盖后者，FGRS正值阻止isFinal。真实trigger为FID1/NFG10/TFG10/CFGG0，实际出口FREE_GAME且不完整。合成NFG10/1继续Spin，NFG0关闭免费面板、结算并返回BET。UI/wallet/transport均桩，不代表完整浏览器或真实自然终局。
+
+按已审查特征复用Jinzita的请求/计数分析，独立Inca范围严格10次免费、无重触发、单FID1、同session、GSD白名单、额外计数相等、非零FRBAL/GCT拒绝。补齐Python/Runner/collector规范化和capture入口，独立bonus2映射，旧普通67逐条不变。FID0续玩/混合HoldNSpin仍拒绝，不把正常NFG0单BET与完整HoldNSpin适配混为一谈。
+
+本机3项Python候选（10前缀及27负例）、2项独立JS候选、3项Python/Runner/collector及实际captureBatch、2项secondary/shard20真实BatchController测试通过；另6项旧档案路径/身份范围测试及4项复用索引测试通过。响应先保存，未知GSD局部隔离、计数矛盾共同保护。所有免费续帧及终局仅合成，没有新源请求。
+
+尚需固定版本Linux、第二账号独立profile/native固定范围及导入/retire/新会话准入；旧7补写/1作废尚未在线执行。没有授予正式或有限源额度，不称整款ready/formal。主线下一款仍32799 Rhino。

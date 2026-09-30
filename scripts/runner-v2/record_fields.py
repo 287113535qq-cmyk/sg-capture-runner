@@ -18,6 +18,7 @@ from quarterback_fields import QuarterbackFields, SOURCE as QUARTERBACK_SOURCE
 
 from beaver_fields import BeaverSequence, SOURCE as BEAVER_SOURCE
 
+from inca_fields import IncaFields, SOURCE as INCA_SOURCE
 from jinzita_fields import JinzitaSequence, SOURCE as JINZITA_SOURCE
 from morepuff_fields import MorepuffSequence, SOURCE as MOREPUFF_SOURCE
 from luxor_fields import LuxorSequence, SOURCE as LUXOR_SOURCE
@@ -30,7 +31,7 @@ def execute(request):
     key = digest(plan)
     if key not in adapters:
         plan = validate_pool_plan(plan)
-        cls = {RHINO_SOURCE: RhinoFields, MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
+        cls = {INCA_SOURCE: IncaFields, RHINO_SOURCE: RhinoFields, MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = ((PearlAwardFields if plan.get('featureProfile') == 'additive-free-awards-v2' else PearlRetriggerFields if plan.get('featureProfile') == 'eight-free-retrigger-v1' else PearlFields) if plan['sourceKey'] == PEARL_SOURCE else PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']

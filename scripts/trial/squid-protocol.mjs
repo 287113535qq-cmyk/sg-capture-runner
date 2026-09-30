@@ -1,3 +1,4 @@
+import {INCA_SOURCE,incaNextRequest,incaMapping} from './inca-protocol.mjs';
 import {PIGGIES_SOURCE,piggiesNext,piggiesMapping} from './piggies-protocol.mjs';
 import {hasMorepuffWheel,morepuffNext,morepuffMapping} from './morepuff-protocol.mjs';
 import {JINZITA_SOURCE,jinzitaNextRequest,jinzitaMapping} from './jinzita-protocol.mjs';
@@ -24,6 +25,7 @@ function integer(v) {if(!/^\d+$/.test(String(v)) || !Number.isSafeInteger(Number
 export function nextRequest(raw) {
   if(raw.sourceKey===PIGGIES_SOURCE)return piggiesNext(raw);
   if(hasMorepuffWheel(raw))return morepuffNext(raw);
+  if(raw.sourceKey===INCA_SOURCE)return incaNextRequest(raw);
   if(raw.sourceKey===JINZITA_SOURCE)return jinzitaNextRequest(raw);
   if(raw.sourceKey===LUXOR_SOURCE)return luxorNextRequest(raw);
   if(raw.sourceKey===BEAVER_SOURCE)return beaverNextRequest(raw);
@@ -57,6 +59,7 @@ export function nextRequest(raw) {
 export function roundMapping(raw, baseHash, extensionHash) {
   if(raw.sourceKey===PIGGIES_SOURCE)return piggiesMapping(raw,baseHash,extensionHash);
   if(hasMorepuffWheel(raw))return morepuffMapping(raw,extensionHash);
+  if(raw.sourceKey===INCA_SOURCE)return incaMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===JINZITA_SOURCE)return jinzitaMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===LUXOR_SOURCE)return luxorMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===BEAVER_SOURCE)return beaverMapping(raw,baseHash,extensionHash);

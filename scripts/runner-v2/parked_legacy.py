@@ -11,7 +11,8 @@ from record_fields import execute
 from store import digest
 
 
-def convert_directory(base, plan, mongo_records, archive_hash, checked_at):
+def convert_directory(base, plan, mongo_records, archive_hash, checked_at, worker_offset=0):
+    assert type(worker_offset) is int and worker_offset in (0, 20)
     def ro(p):
      c=sqlite3.connect(p.resolve().as_uri()+'?mode=ro',uri=True);c.row_factory=sqlite3.Row;return c
     with contextlib.closing(ro(base/'work-pool.sqlite3')) as c:
@@ -20,8 +21,8 @@ def convert_directory(base, plan, mongo_records, archive_hash, checked_at):
     assert 0 < len(batches) <= 100
     assert [b['id'] for b in batches]==list(range(1,len(batches)+1))
     assert all(w['lease_until']<checked_at for w in workers)
-    assert len({w['id'] for w in workers}) == len(workers) and all(0 <= w['id'] < 20 for w in workers)
-    assert all(0 <= b['worker'] < 20 and b['start'] == i*100+1 and b['end'] == (i+1)*100 for i,b in enumerate(batches))
+    assert len({w['id'] for w in workers}) == len(workers) and all(worker_offset <= w['id'] < worker_offset + 20 for w in workers)
+    assert all(worker_offset <= b['worker'] < worker_offset + 20 and b['start'] == i*100+1 and b['end'] == (i+1)*100 for i,b in enumerate(batches))
     assert control['next_sequence'] == batches[-1]['end']+1
     ranges={b['id']:{k:b[k] for k in ['id','worker','start','end']} for b in batches}
     pool={'schema':'sg-github-pool-v2','enabled':False,'failure':'LEGACY_IMPORT_REQUIRES_RETIREMENT','planHash':digest(plan),'legacyArchiveHash':archive_hash,'nextSequence':control['next_sequence'],'nextBatchId':len(batches)+1,'confirmed':0,'legacyBatches':ranges,'workers':{str(w['id']):{'sessionHash':w['session_hash'],'owner':None,'epoch':w['epoch'],'leaseUntil':0,'activeBatch':ranges.get(w['active_batch'])} for w in workers}}
@@ -48,7 +49,8 @@ def convert_directory(base, plan, mongo_records, archive_hash, checked_at):
     return {"states":states,"records":records,"pending":pending,"committed":committed,"mongoMatched":matched,"missingMongo":missing,"archiveHash":archive_hash}
 
 
-def decode_archive(data, plan, mongo_records, expected_hash, checked_at):
+def decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker_offset=0):
+    assert type(worker_offset) is int and worker_offset in (0, 20)
     import tarfile
     assert len(data) <= 40 * 1024 * 1024 and hashlib.sha256(data).hexdigest() == expected_hash
     assert plan['phase'] == 1 and plan['buy'] == 0 and len(mongo_records) <= 1000
@@ -68,7 +70,7 @@ def decode_archive(data, plan, mongo_records, expected_hash, checked_at):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 with target.open('xb') as output:
                     output.write(archive.extractfile(member).read())
-        return convert_directory(base, plan, mongo_records, expected_hash, checked_at)
+        return convert_directory(base, plan, mongo_records, expected_hash, checked_at, worker_offset)
 
 
 if __name__ == '__main__':

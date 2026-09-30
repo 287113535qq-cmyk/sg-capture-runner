@@ -1447,6 +1447,38 @@
       "featureTypes": {
         "wheelMegaHatSingle": 3
       }
+    },
+    "hyperchargedincajungle96-round-one-base-v1-inca-ten-free-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32719,
+        "runtimeGameId": 33119,
+        "sourceId": "5da1d29f-9b3b-4c51-ae41-9972e9bbe9f0"
+      },
+      "featureSelector": "inca-ten-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   }
 }
