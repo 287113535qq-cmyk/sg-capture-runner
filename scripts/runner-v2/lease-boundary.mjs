@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 export async function checkPrimaryLeases({store,plans,now=Date.now}) {
   const keys=[...new Set(Object.values(plans).map(p=>'pool:'+p.trialId))];
-  // The 178-game catalog currently has 25 configured runnable/parked plans.
-  assert(keys.length===25,'PLAN_COVERAGE_CHANGED');
+  // Cover every configured plan; adding a candidate must not require a new fixed count.
+  assert(keys.length>0&&keys.length<=178&&keys.length===Object.values(plans).length
+    &&Object.values(plans).every(p=>typeof p.trialId==='string'&&p.trialId.length>0),'PLAN_COVERAGE_CHANGED');
   const pools=[];
   for(let i=0;i<keys.length;i+=100)pools.push(...await store.getMany('state',keys.slice(i,i+100)));
   let workers=0,batches=0;

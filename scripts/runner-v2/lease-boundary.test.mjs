@@ -3,10 +3,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
 const plans=Object.fromEntries(Array.from({length:25},(_,i)=>[i,{gameId:i,trialId:'trial'+i}]));
-test('real configured plan inventory matches lease coverage',()=>{
-  const actual=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
-  assert.equal(new Set(Object.values(actual).map(p=>p.trialId)).size,25);
+test('real configured plan inventory is completely inspected without a fixed plan count',async()=>{
+  const actual=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8')),seen=[];
+  await checkPrimaryLeases({plans:actual,store:{getMany:async(c,keys)=>{seen.push(...keys);return keys.map(()=>null);}}});
+  assert.deepEqual(seen.sort(),Object.values(actual).map(p=>'pool:'+p.trialId).sort());
+  assert.equal(new Set(seen).size,Object.keys(actual).length);
 });
+test('duplicate or empty plan scope cannot silently omit lease checks',async()=>{
+  for(const bad of [{},{1:{trialId:'same'},2:{trialId:'same'}},{1:{}}])
+    await assert.rejects(checkPrimaryLeases({plans:bad,store:{getMany(){throw Error('UNEXPECTED_READ');}}}),/PLAN_COVERAGE_CHANGED/);
+});
+
 function fake(mode){
   return {get:async()=>({value:{games:[{game_id:0,status:'active'},{game_id:1,status:'complete'}]}}),
     getMany:async(c,keys)=>keys.map(k=>{
