@@ -9,7 +9,10 @@ import {localSpool} from './local-spool.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),spool=localSpool();
-  const store=new RunnerState({transport,gate,deadline:Date.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000});
+  // Source stops opening rounds at the worker deadline. Its already issued
+  // natural feature still needs durable responses and final Mongo readback.
+  const tailMs=plan.countAllocation?10*60000:0;
+  const store=new RunnerState({transport,gate,deadline:Date.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000+tailMs});
   const control=new SourceControl({store,transport,gate,plan});
   const controller=new BatchController({store,transport,gate,analyzer:parser,spool,control,plan,
     group:repositories[process.env.GITHUB_REPOSITORY].name,pendingFirstStage:process.env.SG_PENDING_FIRST_STAGE,

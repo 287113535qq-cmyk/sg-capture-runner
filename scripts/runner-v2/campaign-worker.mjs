@@ -13,7 +13,7 @@ import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
-const store=new RunnerState({transport,gate,deadline:end}),control=new SourceControl({store,transport,gate});
+const store=new RunnerState({transport,gate,deadline:end+(process.env.SG_FORMAL_COUNT_PROFILE?25*60000:0)}),control=new SourceControl({store,transport,gate});
 let plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
 if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync(demoPilotProfilePath(),'utf8')));
 if(process.env.SG_FORMAL_COUNT_PROFILE){
