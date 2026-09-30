@@ -6,7 +6,7 @@
     "pyramidsPython": 8,
     "pyramidsProtocol": 4
   },
-  "linux": "pending",
+  "linux": "success",
   "onlineApplied": false,
   "sourceRequestsByThisChange": 0,
   "pearlRuntime": "6ee2a619acc11702211b130563a5625be5806a54",
@@ -51,5 +51,73 @@
     "conclusion": "failure",
     "reason": "RunnerState introduced releaseHold requirement incompatible with existing gate test doubles; moved handoff release into ResourceGate.observe, original RunnerState interface restored"
   },
-  "localRegressionTests": 34
+  "localRegressionTests": 34,
+  "preflightAttempts": [
+    {
+      "repository": "zyzuoyang/sg-capture-runner",
+      "id": 36784391358,
+      "outcome": "cancelled queued before runner assignment; moved to idle secondary"
+    },
+    {
+      "repository": "287113535qq-cmyk/sg-capture-runner",
+      "id": 36784521776,
+      "outcome": "failed legacy test-double interface regression, fixed"
+    },
+    {
+      "repository": "287113535qq-cmyk/sg-capture-runner",
+      "id": 36784778985,
+      "outcome": "cancelled after local RULE_ARCHIVE_STALE; regenerate before replacement"
+    },
+    {
+      "repository": "287113535qq-cmyk/sg-capture-runner",
+      "id": 36784816565,
+      "outcome": "success"
+    }
+  ],
+  "latestPearl": {
+    "at": 1790806741,
+    "mongo": 178376,
+    "confirmed": 178376,
+    "enabled": true,
+    "failure": null
+  },
+  "timingByMessage": {
+    "Logic": {
+      "frames": 100,
+      "meanMs": 873.87,
+      "p50": 75,
+      "p95": 4591,
+      "gte1000": 23,
+      "gte4000": 10
+    },
+    "EndGame": {
+      "frames": 92,
+      "meanMs": 346.30434782608694,
+      "p50": 64,
+      "p95": 3145,
+      "gte1000": 8,
+      "gte4000": 2
+    }
+  },
+  "linuxRun": 36784816565,
+  "runtime": "b8e52fe51e551ab35a68a4ace12f714e406eede8",
+  "linuxTests": {
+    "preflight/6_Offline fixture tests only.txt": 28,
+    "preflight/7_Durable storage and dynamic pool recovery tests.txt": [
+      331
+    ],
+    "preflight/9_Offline timing and evidence-based reuse checks.txt": [
+      2,
+      6
+    ],
+    "preflight/10_Session and startup checks.txt": 133,
+    "preflight/11_GitHub processing and Mongo write backpressure checks.txt": 734
+  },
+  "linuxLogSha256": "bb7bddad2c33d778335bae142188f6654f25b76842e3450eb5361b1dc984167f",
+  "privateBackup": {
+    "verifiedFiles": 25,
+    "bytes": 451978,
+    "sha256": "4e14d625d3797179d32022cbbcd428269c5aea39ea1390679630b9e43cbf1b0e",
+    "name": "sg-resource-handoff-20261001"
+  }
 }
