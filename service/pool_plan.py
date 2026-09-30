@@ -34,9 +34,36 @@ def validate_pool_plan(plan):
                 expected.update(maxSteps=1026,featureProfile=feature)
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
-            require(filename in ('demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
+            repair_scopes = {'demo-repair-mansion-20261001.json': (32714, 129, 'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2'),
+                'demo-repair-piggies-20261001.json': (32636, 33, 'richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1'),
+                'demo-repair-morepuff-20261001.json': (32718, 91, 'huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1')}
+            require(filename in repair_scopes or filename in ('demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             next_scope = {'demo-pilot-rhino-20261001.json': (32799, 32795), 'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
+            if filename in repair_scopes:
+                game, preserved, extension = repair_scopes[filename]
+                candidate = profile.get('repairedCandidate', {})
+                registry = json.loads((Path(__file__).resolve().parent/'round_types.json').read_text(encoding='utf-8'))
+                require(profile.get('fromGameId') in (32795, 32799, 32714, 32636, 32718)
+                    and profile['fromGameId'] != game and not profile.get('legacyImport') and not profile.get('emptyCandidate')
+                    and profile.get('completePreserved') == preserved and profile.get('abandonedAttempts') == 0
+                    and candidate.get('schema') == 'sg-repaired-demo-candidate-v1' and candidate.get('extension') == extension
+                    and candidate.get('basePlanHash') == digest(expected) and candidate.get('completePreserved') == preserved
+                    and candidate.get('oldGeneration') != profile.get('generation')
+                    and isinstance(candidate.get('oldGeneration'), str) and re.fullmatch(r'[a-f0-9]{64}', candidate['oldGeneration'])
+                    and candidate.get('oldPlanHash') == digest({**expected, 'demoGeneration': candidate['oldGeneration']})
+                    and candidate.get('mappingHash') == digest(registry['profiles'][extension])
+                    and candidate.get('closureKey') == f"closed-demo-pilot:{expected['trialId']}:{candidate['oldGeneration']}"
+                    and candidate.get('repairKey') == f"game-repair:{expected['trialId']}:{candidate['oldGeneration']}"
+                    and all(isinstance(candidate.get(k), str) and re.fullmatch(r'[a-f0-9]{64}', candidate[k])
+                            for k in ('mappingHash','closureHash','repairHash','poolHash','campaignHash','batchesHash','recordsHash')),
+                    'REPAIR_CANDIDATE_PLAN')
+                ref = profile.get('sourceFormal', {})
+                require((ref.get('schema') == 'sg-formal-source-boundary-v1' and ref.get('kind') in ('complete','retired')
+                         and isinstance(ref.get('proofHash'), str) and re.fullmatch(r'[a-f0-9]{64}', ref['proofHash']))
+                    or (isinstance(profile.get('sourceClosureHash'), str) and re.fullmatch(r'[a-f0-9]{64}', profile['sourceClosureHash'])),
+                    'REPAIR_SOURCE_BOUNDARY_REQUIRED')
+                next_scope = (game, profile['fromGameId'])
             require((profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == next_scope[0]
                      and plan.get('gameId') == next_scope[0] and profile.get('fromGameId') == next_scope[1]
                      and profile.get('newBetAllowance') == 100 and profile.get('perWorker') == 5 and profile.get('workers') == 20

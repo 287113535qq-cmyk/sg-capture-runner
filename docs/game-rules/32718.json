@@ -179,6 +179,7 @@
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md",
+    "docs/repair-reentry-20261001.md",
     "docs/rules.md"
   ],
   "analysisDocumentHashes": {
@@ -188,7 +189,7 @@
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-latency-audit-20260930-result.json": "12e09c154229fb93f671313b77bc7889edaf0e168a91260d9986bfa1ccc03311",
-    "docs/morepuff-megahat-integration-20261001.md": "3237daadc76eb87a44ead9c813aae57da700dfa74fbcfd72a16ff9519310019e",
+    "docs/morepuff-megahat-integration-20261001.md": "da9fbafa091bff57e05d007102889262c31e68330e85f2c6e0abe51837cecf6b",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
     "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
     "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
@@ -196,6 +197,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
+    "docs/repair-reentry-20261001.md": "2730cc818ebdaabd733e1a03276666959739cff7caac89a25f9756aae515ee16",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
   "observations": {
@@ -205,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "58c3c344f48429af5ffd21fe4223648f061bdf4854946eaf8b06f4fe28172205"
+  "ruleHash": "ca700114e5ad5d62c1bef558daa13e3dd13e07118e1cc9441fc6759a56038b79"
 }

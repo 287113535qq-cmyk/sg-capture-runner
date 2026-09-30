@@ -111,13 +111,14 @@
     "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
     "docs/piggies-size2-integration-20261001.md",
+    "docs/repair-reentry-20261001.md",
     "docs/rhino-integration-20261001.md",
     "docs/rules.md"
   ],
   "analysisDocumentHashes": {
     "docs/formal-next-candidate-20261001.md": "8b10b1ee6f06e44874632af761ebf5bc1d3c8957797e40c49fe510f0d3cf85bc",
     "docs/mansion-retrigger-integration-20261001.md": "512799d3c5765b7731ff6ebd8506ae92b00c32f2a144e4fdcd879e81a9e7e1d6",
-    "docs/morepuff-megahat-integration-20261001.md": "3237daadc76eb87a44ead9c813aae57da700dfa74fbcfd72a16ff9519310019e",
+    "docs/morepuff-megahat-integration-20261001.md": "da9fbafa091bff57e05d007102889262c31e68330e85f2c6e0abe51837cecf6b",
     "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
@@ -127,6 +128,7 @@
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/piggies-size2-integration-20261001.md": "5917f2f45cf3f6acf9ec7ed5229735f7cfa1ca3ff962e1f25b7b25cccc170cec",
+    "docs/repair-reentry-20261001.md": "2730cc818ebdaabd733e1a03276666959739cff7caac89a25f9756aae515ee16",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
@@ -137,5 +139,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "29b14740d0ef8db1e396336a698bcb9135f2af802322cf52e5bb750d964fa1f6"
+  "ruleHash": "1d6055249bfaf558ed8a1203c89fe78411876dbe9352bc684001a960e1adb051"
 }

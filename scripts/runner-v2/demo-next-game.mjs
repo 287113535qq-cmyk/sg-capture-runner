@@ -26,6 +26,18 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  if(profile.sourceFormal)assert(fromPlan?.gameId===profile.fromGameId&&fromPlan.trialId===plans[profile.fromGameId].trialId,'NEXT_GAME_FORMAL_SOURCE_SCOPE');
  assert(hash(fromPlan)===profile.sourcePlanHash,'NEXT_GAME_SOURCE_PLAN');
  await boundary();const scene=await nextDemoScene(store,oldPlan,fromPlan);
+ assert(!!profile.repairedCandidate===!!scene.pool.repairedCandidate,'NEXT_GAME_REPAIR_PROFILE_REQUIRED');
+ if(profile.repairedCandidate){
+  const p=profile.repairedCandidate,key=`repaired-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,
+   ready=(await store.get('journal',key+':complete'))?.value,before=(await store.get('journal',key+':before'))?.value;
+  assert(ready?.schema==='sg-repaired-demo-candidate-complete-v1'&&ready.profileHash===hash(profile)
+   &&ready.specHash===hash(p)&&ready.planHash===hash(oldPlan)&&ready.commit===commit&&ready.run===run
+   &&ready.poolHash===hash(scene.pool)&&ready.repairHash===hash((await store.get('state',p.repairKey))?.value)
+   &&ready.completePreserved===profile.completePreserved&&ready.recordsHash===p.recordsHash
+   &&ready.sourceRequests===0&&ready.newBetAllowance===0&&before?.profileHash===hash(profile)
+   &&hash(before.scene.campaign)===hash(scene.campaign)&&scene.pool.repairedCandidate?.key===key
+   &&scene.pool.repairedCandidate.specHash===hash(p)&&!profile.emptyCandidate&&!profile.legacyImport,'NEXT_GAME_REPAIR_INCOMPLETE');
+ }
  if(profile.emptyCandidate){
   const key=`empty-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,ready=(await store.get('journal',key+':complete'))?.value;
   assert(ready?.schema==='sg-empty-demo-candidate-complete-v1'&&ready.profileHash===hash(profile)
@@ -57,6 +69,13 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  const result=await rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,
   expected:hash({campaign:after.campaign,pool:after.pool,fromPool:after.fromPool}),commit,run,expiresAt:profile.expiresAt,activationStage:{key,profileHash:hash(profile)},formalSource:profile.sourceFormal,now});
  assert(result.completePreserved===profile.completePreserved,'NEXT_GAME_COUNT_CHANGED');
+ if(profile.repairedCandidate){
+  const p=profile.repairedCandidate;
+  await store.update('state',p.repairKey,v=>{assert(hash(v)===p.repairHash&&v.sourceAllowance===0&&v.requiresNewSession===true,'NEXT_GAME_REPAIR_CHANGED');
+   return {...v,status:'repaired-returned',returnedProofKey:key+':complete',returnedGeneration:plan.demoGeneration,returnedCommit:commit,returnedRun:run,returnedAt:now()};});
+  const repair=(await store.get('state',p.repairKey))?.value;
+  assert(repair?.status==='repaired-returned'&&repair.returnedGeneration===plan.demoGeneration&&repair.sourceAllowance===0,'NEXT_GAME_REPAIR_READBACK');
+ }
  const complete={schema:'sg-next-demo-game-complete-v1',profileHash:hash(profile),generation:plan.demoGeneration,commit,run,
   completePreserved:retired.completePreserved,abandonedAttempts:retired.abandonedAttempts,newBetAllowance:100,sourceRequests:0,at:now()};
  await save(key+':complete',complete);return complete;

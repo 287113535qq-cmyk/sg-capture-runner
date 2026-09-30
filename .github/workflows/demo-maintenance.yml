@@ -16,7 +16,7 @@ on:
         description: 'Independent finite next-game profile; applied profiles remain frozen'
         type: choice
         default: demo-pilot-morepuff-20260930.json
-        options: [demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
+        options: [demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
         options: [close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
