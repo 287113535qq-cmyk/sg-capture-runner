@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。",
     "complete": "Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。",
-    "bounds": "1262旧完整三方规范化不变，含15自然Hold终局；4旧半局未完成。独立10免费终局仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。真实旧档案import-retire-rollover-fresh已内存验证160补写4作废，尚未线上转换；不称整款ready/formal。",
+    "bounds": "1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。第二账号正式计数准入正在独立验证，未激活，不称整款玩法覆盖。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -135,7 +135,7 @@
     "scripts/trial/pyramids-free-review.mjs": "7ebeb1ff7cb67d640385d1c4856b7a9dfd4bb064235eed2c784df7c04937a811",
     "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
     "collector/sg.pyramids.ts": "d332820c8fa5927523985e470fe7cded8edb9e1b503ed59ad7bb1aa67f0be35c",
-    "service/game_rule_catalog.py": "f01b0fc85974067e518f7a08583432bf91aa41373fd3b125874e426cc9851ddf"
+    "service/game_rule_catalog.py": "e080adbe8f646c579b78887b8a33459bfa4023e65537794fa643ff41f2dcec12"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -143,14 +143,16 @@
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md",
-    "docs/pyramids-next-review-20261001.md"
+    "docs/pyramids-next-review-20261001.md",
+    "docs/pyramids-pilot-result-20261001.md"
   ],
   "analysisDocumentHashes": {
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
-    "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856"
+    "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
+    "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -159,5 +161,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "290ea4b5759845e7ffb99e6d3ae21f29b4c6353446ae8fba81679bf741cf040e"
+  "ruleHash": "db8c3264fb9117221320112c27e31622cfeeb2ccc2065924f07d1b2863436232"
 }

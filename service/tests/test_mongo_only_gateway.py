@@ -114,5 +114,17 @@ class GatewayTests(unittest.TestCase):
             with self.subTest(key=key),self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':trial})
             scope[key]=original
 
+    def test_pyramids_secondary_ceiling_preserves_separate_historical_baseline(self):
+        trial='sg_r1_20260928_32721'
+        scope={'group':'secondary','gameId':32721,'runtimeGameId':33121,'target':299850,'maxSequence':600000}
+        self.manifest['trials'][trial]=scope
+        secondary=Gateway(self.db,'secondary',self.manifest)
+        self.assertEqual(secondary.scope({'trialId':trial})[1]['target'],299850)
+        with self.assertRaisesRegex(Refused,'GROUP_SCOPE_DENIED'):self.g.scope({'trialId':trial})
+        for key,value in [('gameId',32719),('runtimeGameId',33119),('target',300000),('maxSequence',600001)]:
+            before=scope[key];scope[key]=value
+            with self.subTest(key=key),self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):secondary.scope({'trialId':trial})
+            scope[key]=before
+
 
 if __name__=='__main__':unittest.main()

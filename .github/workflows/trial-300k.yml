@@ -6,7 +6,7 @@ on:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
+        options: [formal-count-pyramids-20261001.json, formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       pilot_profile:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
@@ -854,6 +854,69 @@ jobs:
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
         run: node scripts/runner-v2/campaign-worker.mjs capture
+  pyramids-formal-admit:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.formal_profile == 'formal-count-pyramids-20261001.json'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+      SG_FORMAL_COUNT_PROFILE: formal-count-pyramids-20261001.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Admit one fresh formal run after complete resource and ownership checks
+        # The admission module loads the XML receipt validator before main().
+        # Install its locked dependency even though this job sends no SG requests.
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify the independent formal run admission
+        run: node scripts/runner-v2/pyramids-count-control.mjs admit
+  pyramids-formal-capture:
+    needs: pyramids-formal-admit
+    name: capture-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 270
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_TRIAL_SHARD: ${{ matrix.shard }}
+      SG_TRIAL_MINUTES: '240'
+      SG_POOL_RUN_LIMIT: '0'
+      SG_FORMAL_COUNT_PROFILE: formal-count-pyramids-20261001.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Wait for every capture runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CAPTURE_RUNNERS: '20'
+          CAPTURE_STARTUP_MODE: available-workers
+          SG_CAPTURE_ALLOCATION: round-one
+        run: node scripts/trial/runner-readiness.mjs
+      - name: Capture against the independently activated complete-count ledger
+        env:
+          SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+        run: node scripts/runner-v2/campaign-worker.mjs capture
   secondary-admit:
     if: github.event_name == 'workflow_dispatch' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.role == 'demo-fresh-short' && inputs.allocation == 'round-one' && inputs.round_one_limit == '5' && (inputs.pilot_profile == 'demo-pilot-inca-20261001.json' || inputs.pilot_profile == 'demo-pilot-pyramids-20261001.json')
     runs-on: ubuntu-latest
@@ -985,7 +1048,7 @@ jobs:
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
   verify:
-    needs: [trial, pending-resume, pending-capture, fresh-capture, formal-capture]
+    needs: [trial, pending-resume, pending-capture, fresh-capture, formal-capture, pyramids-formal-capture]
     if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'demo-retire' && inputs.role != 'demo-rollover' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') && !startsWith(inputs.role, 'demon-zero-') && !startsWith(inputs.role, 'demon-nested-') && !startsWith(inputs.role, 'demon-pair-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30

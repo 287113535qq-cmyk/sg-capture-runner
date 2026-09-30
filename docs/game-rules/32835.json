@@ -127,7 +127,7 @@
     "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
     "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
     "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004",
-    "service/game_rule_catalog.py": "f01b0fc85974067e518f7a08583432bf91aa41373fd3b125874e426cc9851ddf"
+    "service/game_rule_catalog.py": "e080adbe8f646c579b78887b8a33459bfa4023e65537794fa643ff41f2dcec12"
   },
   "reviewDocuments": [
     "docs/luxor-free-integration-20260930.md"
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fec9738cf9a0b54c9bef80c420053fd72fbefb0a557c55c300b4329df6597079"
+  "ruleHash": "62770ceca7a146d1da2dc1c0b7a2eae355132c8fd234388a1442c3e9ab54ba2e"
 }

@@ -196,6 +196,7 @@ async function main() {
   if(isPool){
     await runDynamicBatches({rpc,identity,capture,shouldStop:()=>stop,deadline,
       onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;}});
+    if(plan.countAllocation&&leaseOwned)await rpc('finish_run',owned());
     evidence.result=await rpc('status');
   }else{
     for(let i=0;i<10;i++)await rpc('ping');
