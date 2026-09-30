@@ -132,7 +132,7 @@ def contract(game_id):
         native.update({'family':'pyramids-isolated-hold-and-ten-free-v1',
             'continue':'FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。',
             'complete':'Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。',
-            'bounds':'1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。第二账号正式计数准入正在独立验证，未激活，不称整款玩法覆盖。'})
+            'bounds':'1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。后续正式计数新增296完整，共1658；首FID1触发BGCL/CL缺口已隔离，196完整待计数结清。BGCL/CL仅首BET非负三元坐标显示字段已接三方校验，拒绝重复/越界/负JP码及后续帧；未重新准入。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝，不称整款玩法覆盖。'})
         native['files'] += ['service/pyramids_hold_review.py','service/pyramids_free_review.py','service/pyramids_fields.py','scripts/trial/pyramids-hold-review.mjs','scripts/trial/pyramids-free-review.mjs','scripts/trial/pyramids-protocol.mjs','collector/sg.pyramids.ts']
         native['fields'].update({'FID':'固定官方客户端0=HoldNSpin、1=FreeSpins；独立审查后使用。',
             'GSD.HNSTW / HVA / HVABT':'Hold累计奖励与首BET赢奖相加核TW；5x3盘面拒绝Grand标记。',

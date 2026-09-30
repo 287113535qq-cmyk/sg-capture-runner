@@ -11,6 +11,7 @@ import {repositories} from '../trial/runner-group.mjs';
 import {applyDemoPilot} from './demo-pilot-plan.mjs';
 import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 import {createStageProgress} from './stage-progress.mjs';
+import {exportResourceHistory} from './resource-handoff.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
@@ -32,9 +33,12 @@ async function capture(plan){
   const validationLimit=(await store.get('state','campaign')).value.validationLimit || 0;
   fs.writeFileSync('config/round-one-active.json',JSON.stringify(plan)+'\n');
   return new Promise((resolve,reject)=>{
-    const child=spawn(process.execPath,['scripts/trial/worker.mjs','capture'],{stdio:'inherit',env:{...process.env,
+    const child=spawn(process.execPath,['scripts/trial/worker.mjs','capture'],{stdio:['inherit','inherit','inherit','pipe'],env:{...process.env,
+      SG_RESOURCE_HANDOFF:'pipe-v1',
       SG_PROCESSING_MODE:'github-v2',SG_POOL_RUN_LIMIT:String(validationLimit || Number(process.env.SG_POOL_RUN_LIMIT||'0')),
       SG_TRIAL_PLAN:'config/round-one-active.json',SG_TRIAL_MINUTES:String(Math.max(1,(end-Date.now())/60000))}});
+    child.stdio[3].on('error',()=>{}); // Closed pipe falls back to a cold gate.
+    child.stdio[3].end(JSON.stringify(exportResourceHistory(gate)));
     child.on('error',()=>reject(Error('CAPTURE_CHILD_FAILED')));child.on('exit',resolve);
   });
 }

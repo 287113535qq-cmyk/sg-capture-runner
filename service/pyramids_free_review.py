@@ -22,7 +22,24 @@ class PyramidsFreeSequence(NativeNextgenFields):
         super().__init__(plan)
 
     def validate_gsd(self, gsd, index):
-        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN'}, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
+        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL'}, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
+        # Official rC maps trigger-only [column,row,value] display entries.
+        # Negative jackpot codes and subsequent free-frame coin fields are unreviewed.
+        for key in ('BGCL','CL'):
+            if key not in gsd:
+                continue
+            check(index == 0, 'PYRAMIDS_FREE_COIN_PREFIX_ONLY')
+            rows = gsd[key].split('|')
+            if rows[-1] == '': rows.pop()
+            check(0 < len(rows) <= 15, 'PYRAMIDS_FREE_COIN')
+            seen = set()
+            for row in rows:
+                cells = row.split(';')
+                if cells[-1] == '': cells.pop()
+                check(len(cells) == 3 and all(v.isascii() and v.isdigit() for v in cells), 'PYRAMIDS_FREE_COIN')
+                x,y,value = map(int,cells)
+                check(0 <= x < 3 and 0 <= y < 5 and value <= 9007199254740991 and (x,y) not in seen, 'PYRAMIDS_FREE_COIN')
+                seen.add((x,y))
         if 'FGVABN' in gsd:
             from pyramids_hold_review import rows
             grid=rows(gsd['FGVABN'])

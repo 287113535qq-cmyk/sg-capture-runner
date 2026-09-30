@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。",
     "complete": "Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。",
-    "bounds": "1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。第二账号正式计数准入正在独立验证，未激活，不称整款玩法覆盖。",
+    "bounds": "1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。后续正式计数新增296完整，共1658；首FID1触发BGCL/CL缺口已隔离，196完整待计数结清。BGCL/CL仅首BET非负三元坐标显示字段已接三方校验，拒绝重复/越界/负JP码及后续帧；未重新准入。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝，不称整款玩法覆盖。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -129,13 +129,13 @@
     "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
     "scripts/runner-v2/record_fields.py": "c8e9b1eb84932266886626fb3756e735b4c9af5391870b11618cb475e8bef887",
     "service/pyramids_hold_review.py": "cebbb5ce4587d018634d4112ef2fc370aa3dcd016686e41e55c0f29d6a1d89f9",
-    "service/pyramids_free_review.py": "0cf69dac1a00098ae1571a7bde93a07475405f981100ba43b2daad198477b983",
+    "service/pyramids_free_review.py": "f1d74e935fc9118e1668f81730f40121c3ac3db7694102d6eaf06aac431a8472",
     "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
     "scripts/trial/pyramids-hold-review.mjs": "b24fe93f4f9246eb4d71ccbd2ab9d619aa1012bd7196547387db11ad495ab370",
-    "scripts/trial/pyramids-free-review.mjs": "7ebeb1ff7cb67d640385d1c4856b7a9dfd4bb064235eed2c784df7c04937a811",
+    "scripts/trial/pyramids-free-review.mjs": "a6eb3367aa7c8b57b0c23e1f0008c6fec58190178b319654ac48b0c180f8348f",
     "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
-    "collector/sg.pyramids.ts": "d332820c8fa5927523985e470fe7cded8edb9e1b503ed59ad7bb1aa67f0be35c",
-    "service/game_rule_catalog.py": "e080adbe8f646c579b78887b8a33459bfa4023e65537794fa643ff41f2dcec12"
+    "collector/sg.pyramids.ts": "c3704d58be3b33e1fe8fafa33fb1dfb53294b4123e13a18dd07a5deeb61f2df4",
+    "service/game_rule_catalog.py": "def659746e44ab931dc4e4a8a99a44714c906b8cd8440ba3599ca33bff89cd6c"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -154,7 +154,7 @@
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
     "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1",
-    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "50a8494586cda05981f565d449e21a77aa5dc3a8c3d8725bcbbd492fcc25193d"
+    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "a125a4f986e3bb989276e1ec0b2f82739a30e7a50101f7c1ec633d7095d277b9"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -163,5 +163,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6d09b521b538bbf46501d6304a7be238c8e047c8107ad67dbb6e67e22b5e9560"
+  "ruleHash": "79414d147e6604d9c3fb178051abd96146e17fcf82f9037f38de6ef5dc2c2e1b"
 }

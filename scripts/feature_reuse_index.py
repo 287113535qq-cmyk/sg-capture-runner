@@ -42,7 +42,7 @@ REVIEWED = {
         requests='BET-FREE_GAME', counters='TFG=NFG+CFGG-plus-2-or-4', terminal='isolated-hold-outro-and-request-BET'),
         ['service/pyramids_hold_review.py','scripts/trial/pyramids-hold-review.mjs','service/pyramids_free_review.py','scripts/trial/pyramids-free-review.mjs','service/pyramids_fields.py','scripts/trial/pyramids-protocol.mjs','collector/sg.pyramids.ts'],
         ['Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.',
-         'Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.']),
+         'Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Trigger-only nonnegative BGCL/CL display triples independently validated; later free-frame fields, negative jackpot codes and mixed free/external jackpot remain unsupported.']),
     32720: entry('nextgen-independent-free', dict(protocol='nextgen-payload', session='same-PID',
         requests='BET-FREE_GAME', counters='TFG=NFG+CFGG', terminal='explicit-NFG0-and-game-exits'),
         ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts'],

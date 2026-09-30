@@ -46,7 +46,23 @@ def sample():
     return raw([frame('BET',10)] + [frame('FREE_GAME',n) for n in range(9,-1,-1)])
 
 
+def coin_sample():
+    value=sample()
+    rewrite(value['steps'][0],GSD='BGRS~1;2;3;4;5;#IIFS~1#BGCL~0;1;20;|2;4;0;|#CL~0;1;20;|2;4;0;|')
+    return value
+
+
 class PyramidsFreeTests(unittest.TestCase):
+    def test_trigger_coin_display_preserves_mapping_and_rejects_unreviewed_values(self):
+        parser=PyramidsFreeSequence(PLAN)
+        self.assertEqual(parser.settled(coin_sample()),parser.settled(sample()))
+        for bad in ('','3;0;20;|','0;5;20;|','0;0;-1;|','0;0;-0;|','0;0;9007199254740992;|',
+                    '0;0;20;|0;0;30;|','0;0;|','0;0;20;99;|','0;0;1e2;|','0;0;２０;|'):
+            value=sample();rewrite(value['steps'][0],GSD='CL~'+bad)
+            with self.subTest(bad=bad),self.assertRaises(FieldError):parser.settled(value)
+        value=sample();rewrite(value['steps'][1],GSD='CL~0;0;20;|')
+        with self.assertRaises(FieldError):parser.settled(value)
+
     def test_all_prefixes_and_synthetic_terminal(self):
         value=sample();parser=PyramidsFreeSequence(PLAN)
         for i in range(1,11):

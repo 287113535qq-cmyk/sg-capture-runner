@@ -33,7 +33,17 @@ export function pyramidsFreeSequence(raw){
     let t,c;
     if(special){
       const gsd=pairs(p.GSD??'','#','~');
-      check(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','FGRS','CFGC','FGVABN'].includes(k)),'PYRAMIDS_FREE_UNREVIEWED_GSD');
+      check(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL'].includes(k)),'PYRAMIDS_FREE_UNREVIEWED_GSD');
+      for(const key of ['BGCL','CL'])if(gsd[key]!==undefined){
+        check(index===0,'PYRAMIDS_FREE_COIN_PREFIX_ONLY');
+        const rows=gsd[key].split('|');if(rows.at(-1)==='')rows.pop();
+        check(rows.length>0&&rows.length<=15,'PYRAMIDS_FREE_COIN');const seen=new Set();
+        for(const row of rows){
+          const cells=row.split(';');if(cells.at(-1)==='')cells.pop();
+          check(cells.length===3,'PYRAMIDS_FREE_COIN');const [x,y,value]=cells.map(integer),pos=x+','+y;
+          check(x<3&&y<5&&!seen.has(pos),'PYRAMIDS_FREE_COIN');seen.add(pos);
+        }
+      }
       if(gsd.FGVABN!==undefined){
        const rs=gsd.FGVABN.split('|');if(rs.at(-1)==='')rs.pop();
        check(rs.length===5&&rs.every(row=>{const cells=row.split(';');if(cells.at(-1)==='')cells.pop();return cells.length===3&&cells.every(v=>/^\d+$/.test(v)&&+v<=15);}), 'PYRAMIDS_FREE_GRID');

@@ -8,7 +8,7 @@ import {captureBatch} from './capture-batch.mjs';
 const require=createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const {prepareNextgenRound}=require('../../collector/sg.ingest.ts');
-const result=spawnSync(process.env.PYTHON??'python',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_pyramids_free_review import sample;from test_pyramids_hold_review import sample as hold_sample;from pyramids_fields import PyramidsFields,SOURCE,EXTENSION;from test_pyramids_free_review import PLAN;from round_fields import type_profile;print(json.dumps({'base':type_profile(SOURCE)[1],'extension':type_profile(EXTENSION)[1],'cases':[{'raw':r,'fields':PyramidsFields(PLAN).settled(r)} for r in [sample(),hold_sample()]]}))"],{encoding:'utf8'});
+const result=spawnSync(process.env.PYTHON??'python',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_pyramids_free_review import sample,coin_sample;from test_pyramids_hold_review import sample as hold_sample;from pyramids_fields import PyramidsFields,SOURCE,EXTENSION;from test_pyramids_free_review import PLAN;from round_fields import type_profile;print(json.dumps({'base':type_profile(SOURCE)[1],'extension':type_profile(EXTENSION)[1],'cases':[{'raw':r,'fields':PyramidsFields(PLAN).settled(r)} for r in [sample(),hold_sample(),coin_sample()]]}))"],{encoding:'utf8'});
 assert.equal(result.status,0,result.stderr);const fixture=JSON.parse(result.stdout);
 
 test('Pyramids Python, Runner and independent collector agree on isolated ten-free and Hold extensions',()=>{
@@ -43,4 +43,16 @@ test('fresh actual captureBatch records BET then ten FREE intents and a single c
     mappingHash:fixture.base,extensionHash:fixture.extension,evidence,state:{balance:100000},
     shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
   assert.deepEqual(messages,['BET',...Array(raw.steps.length-1).fill('FREE_GAME')]);assert.equal(evidence.completedThisRun,1);}
+});
+
+
+test('trigger-only coin display rejects unreviewed coordinates, jackpot values, duplicates and later frames in both validators',()=>{
+ for(const bad of ['', '3;0;20;|','0;5;20;|','0;0;-1;|','0;0;-0;|','0;0;9007199254740992;|','0;0;20;|0;0;30;|','0;0;|','0;0;20;99;|','0;0;1e2;|','0;0;２０;|']){
+  const raw=structuredClone(fixture.cases[0].raw);raw.steps[0].responsePayload=raw.steps[0].responsePayload.replace('GSD=BGRS~1;2;3;4;5;','GSD=CL~'+bad);
+  assert.throws(()=>roundMapping(raw,fixture.base,fixture.extension));
+  assert.throws(()=>prepareNextgenRound(raw,{buy:0,bonus:2,typeMappingHash:fixture.extension}));
+ }
+ const raw=structuredClone(fixture.cases[0].raw);raw.steps[1].responsePayload+='\x23CL~0;0;20;|';
+ assert.throws(()=>roundMapping(raw,fixture.base,fixture.extension));
+ assert.throws(()=>prepareNextgenRound(raw,{buy:0,bonus:2,typeMappingHash:fixture.extension}));
 });

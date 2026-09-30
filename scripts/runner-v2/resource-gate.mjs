@@ -7,7 +7,7 @@ export class ResourceGate {
   constructor({now=Date.now}={}) {
     this.now=now; this.previous=null; this.latest=null;
     this.paused=true; this.reason='RESOURCE_SAMPLE_REQUIRED';
-    this.lowSince=null; this.resumedAt=null; this.holds=new Set();
+    this.lowSince=null; this.resumedAt=null; this.holds=new Set();this.history=[];
   }
   hold(reason) { this.holds.add(reason); }
   releaseHold(reason) { this.holds.delete(reason); }
@@ -25,24 +25,29 @@ export class ResourceGate {
       && sample.memAvailableKiB<=sample.memTotalKiB
       && Number.isSafeInteger(sample.diskFreeBytes) && sample.diskFreeBytes>=0;
     if (!valid) {
+      this.history=[];
       this.previous=null; this.latest=null; this.pause('RESOURCE_SAMPLE_INVALID'); return this.status();
     }
     const previous=this.previous;
     if (previous && sample.sampledAtMs<=previous.sampledAtMs) {
+      this.history=[];
       this.pause('RESOURCE_SAMPLE_NOT_ADVANCING'); this.previous=null; this.latest=null;
       return this.status();
     }
     if (!previous || previous.bootId!==sample.bootId
         || sample.sampledAtMs-previous.sampledAtMs>resourcePolicy.maxAgeMs) {
+      this.history=[structuredClone(sample)];
       this.previous=sample; this.latest=null; this.pause('RESOURCE_BASELINE_REQUIRED'); return this.status();
     }
     const delta=sample.cpuTicks.map((x,i)=>x-previous.cpuTicks[i]);
     this.previous=sample;
     const total=delta.reduce((a,b)=>a+b,0);
     if (delta.some(x=>x<0) || !Number.isSafeInteger(total) || total<=0) {
+      this.history=[];
       this.latest=null; this.pause('RESOURCE_COUNTER_INVALID'); return this.status();
     }
     const cpu=100*(total-delta[3]-delta[4])/total;
+    this.history.push(structuredClone(sample));this.history=this.history.slice(-16);
     const memory=100*(sample.memTotalKiB-sample.memAvailableKiB)/sample.memTotalKiB;
     this.latest={sampledAtMs:sample.sampledAtMs,cpuPercent:cpu,memoryPercent:memory,
       diskFreeBytes:sample.diskFreeBytes};

@@ -1,0 +1,49 @@
+{
+  "schema": "sg-followup-optimization-v1",
+  "implementation": "resource-history-private-pipe-and-pyramids-trigger-coins",
+  "localTests": {
+    "resource": 10,
+    "pyramidsPython": 8,
+    "pyramidsProtocol": 4
+  },
+  "linux": "pending",
+  "onlineApplied": false,
+  "sourceRequestsByThisChange": 0,
+  "pearlRuntime": "6ee2a619acc11702211b130563a5625be5806a54",
+  "pyramidsReentered": false,
+  "timing": {
+    "schema": "sg-offline-source-timing-v1",
+    "records": 92,
+    "frames": 192,
+    "framesPerRound": 2.0869565217391304,
+    "sourceTotalMs": 119247,
+    "sourceMeanMs": 621.078125,
+    "sourceMsPerRound": 1296.1630434782608,
+    "p50Ms": 68,
+    "p95Ms": 4260,
+    "p99Ms": 4709,
+    "maxMs": 4735,
+    "thresholds": [
+      {
+        "atLeastMs": 1000,
+        "frames": 31,
+        "timeShare": 0.8952342616585742
+      },
+      {
+        "atLeastMs": 4000,
+        "frames": 12,
+        "timeShare": 0.45368856239569966
+      },
+      {
+        "atLeastMs": 8000,
+        "frames": 0,
+        "timeShare": 0.0
+      }
+    ],
+    "sourceRequests": 0,
+    "captureAuthorization": false,
+    "limitation": "Sample only; elapsed time cannot distinguish network from remote processing.",
+    "at": 1790806327,
+    "selection": "last up to 5 persisted rounds from each current worker batch; bounded at 100"
+  }
+}
