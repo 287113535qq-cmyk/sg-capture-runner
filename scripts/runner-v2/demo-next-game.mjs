@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {reviewFormalSource,readPoolBatches} from './formal-source-review.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {retireDemoPool} from './retire-demo-pool.mjs';
 import {rolloverDemo} from './demo-rollover.mjs';
@@ -13,7 +14,7 @@ export async function nextDemoScene(store,oldPlan,fromPlan){
   const keys=Array.from({length:p.nextBatchId-1},(_,i)=>`batch:${plan.trialId}:${i+1}`);
   const rows=keys.length?await store.getMany('state',keys):[];assert(rows.every(Boolean),'NEXT_GAME_BATCH_MISSING');return rows.map(r=>r.value);
  };
- return {campaign,pool,fromPool,batches:await batches(pool,oldPlan),sourceBatches:await batches(fromPool,fromPlan)};
+ return {campaign,pool,fromPool,batches:await batches(pool,oldPlan),sourceBatches:fromPlan.countAllocation?await readPoolBatches(store,fromPlan,fromPool):await batches(fromPool,fromPlan)};
 }
 
 // This operation never owns a source transport. The subsequent capture run
@@ -21,7 +22,8 @@ export async function nextDemoScene(store,oldPlan,fromPlan){
 export async function nextDemoGame({store,transport,gate,parser,plans,profile,boundary,commit,run,now=Date.now}){
  assert(profile.schema==='sg-demo-next-game-v1'&&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt===7200000&&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'NEXT_GAME_SCOPE');
- const oldPlan=plans[profile.gameId],plan=applyDemoPilot(plans,profile)[profile.gameId],fromPlan={...plans[profile.fromGameId],demoGeneration:profile.sourceGeneration};
+ const oldPlan=plans[profile.gameId],plan=applyDemoPilot(plans,profile)[profile.gameId],fromPlan=profile.sourceFormal?profile.sourceFormal.plan:{...plans[profile.fromGameId],demoGeneration:profile.sourceGeneration};
+ if(profile.sourceFormal)assert(fromPlan?.gameId===profile.fromGameId&&fromPlan.trialId===plans[profile.fromGameId].trialId,'NEXT_GAME_FORMAL_SOURCE_SCOPE');
  assert(hash(fromPlan)===profile.sourcePlanHash,'NEXT_GAME_SOURCE_PLAN');
  await boundary();const scene=await nextDemoScene(store,oldPlan,fromPlan);
  if(profile.emptyCandidate){
@@ -39,9 +41,10 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
    &&imported.commit===commit&&imported.run===run&&imported.newBetAllowance===0&&imported.sourceRequests===0,'NEXT_GAME_IMPORT_INCOMPLETE');
  }
  assert(hash(scene)===profile.sceneHash&&!scene.pool.enabled&&!scene.pool.demoGeneration
-  &&scene.campaign.activeGame===fromPlan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey
+  &&(profile.sourceFormal?scene.campaign.activeGame===null:scene.campaign.activeGame===fromPlan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey)
   &&scene.fromPool.planHash===hash(fromPlan),'NEXT_GAME_SCENE_CHANGED');
- await reviewSpentDemoGeneration({store,parser,basePlan:plans[profile.fromGameId],fromPlan,profile,scene,now});
+ if(profile.sourceFormal)await reviewFormalSource({store,plan:fromPlan,profile,scene,now});
+ else await reviewSpentDemoGeneration({store,parser,basePlan:plans[profile.fromGameId],fromPlan,profile,scene,now});
  const key=`next-demo-game:${plan.trialId}:${plan.demoGeneration}`;
  assert(!(await store.get('journal',key+':before')),'NEXT_GAME_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'NEXT_GAME_READBACK');};
@@ -52,7 +55,7 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  assert(hash(after.campaign)===hash(scene.campaign)&&hash(after.fromPool)===hash(scene.fromPool)
   &&hash(after.sourceBatches)===hash(scene.sourceBatches),'NEXT_GAME_SOURCE_CHANGED');
  const result=await rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,
-  expected:hash({campaign:after.campaign,pool:after.pool,fromPool:after.fromPool}),commit,run,expiresAt:profile.expiresAt,activationStage:{key,profileHash:hash(profile)},now});
+  expected:hash({campaign:after.campaign,pool:after.pool,fromPool:after.fromPool}),commit,run,expiresAt:profile.expiresAt,activationStage:{key,profileHash:hash(profile)},formalSource:profile.sourceFormal,now});
  assert(result.completePreserved===profile.completePreserved,'NEXT_GAME_COUNT_CHANGED');
  const complete={schema:'sg-next-demo-game-complete-v1',profileHash:hash(profile),generation:plan.demoGeneration,commit,run,
   completePreserved:retired.completePreserved,abandonedAttempts:retired.abandonedAttempts,newBetAllowance:100,sourceRequests:0,at:now()};

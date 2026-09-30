@@ -14,7 +14,7 @@ export async function prepareEmptyCandidate({store,transport,plan,profile,bounda
   &&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'EMPTY_CANDIDATE_SCOPE');
  await boundary();
  const campaign=(await store.get('state','campaign'))?.value,g=campaign?.games.find(g=>g.game_id===plan.gameId);
- assert(campaign&&hash(campaign)===spec.campaignHash&&campaign.activeGame===profile.fromGameId
+ assert(campaign&&hash(campaign)===spec.campaignHash&&(profile.sourceFormal?campaign.activeGame===null:campaign.activeGame===profile.fromGameId)
   &&g?.status==='needs-adapter'&&g.baseline===0&&g.confirmed===0&&!g.pendingReview,'EMPTY_CANDIDATE_CAMPAIGN');
  const absent=async()=>{
   assert(!(await store.get('state','pool:'+plan.trialId))&&(await store.getMany('state',Array.from({length:100},(_,i)=>`batch:${plan.trialId}:${i+1}`))).every(r=>!r),'EMPTY_CANDIDATE_STATE_EXISTS');

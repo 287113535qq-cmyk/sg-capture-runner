@@ -85,6 +85,7 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/formal-next-candidate-20261001.md",
     "docs/pearl-award-repair-20261001.md",
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
@@ -92,11 +93,12 @@
     "docs/rhino-integration-20261001.md"
   ],
   "analysisDocumentHashes": {
+    "docs/formal-next-candidate-20261001.md": "8b10b1ee6f06e44874632af761ebf5bc1d3c8957797e40c49fe510f0d3cf85bc",
     "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
-    "docs/rhino-integration-20261001.md": "9efbc9d922461af29fe7c4a73d5cb5ecc13bcc040174ca41c7852b5ddf34b212"
+    "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -105,5 +107,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "02dcb2ba020f1870df5755d8785acf978419173d41252b85639922461d59c4c6"
+  "ruleHash": "b5ab7786016e60b4c0fb752b06eac0ebddb76a5b0bc771f957dfe7084e954d08"
 }

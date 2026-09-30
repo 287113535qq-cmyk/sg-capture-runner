@@ -10,5 +10,9 @@ export function checkDemoSourceEnded({ended,jobs,profile,closing=false}){
   assert(workers.length===20&&new Set(workers.map(j=>j.name)).size===20,'PILOT_CLOSE_SOURCE_JOBS');
   for(let w=0;w<20;w++){const job=workers.find(j=>j.name===`fresh-capture-${w}`);
    assert(job&&job.conclusion===(profile.usedByWorker[w]===5?'success':'failure'),'PILOT_CLOSE_SOURCE_JOBS');}
+ }else if(profile.sourceFormal){
+  assert(['success','failure'].includes(ended.conclusion)&&['formal-admit','verify'].every(name=>jobs.jobs.some(j=>j.name===name&&j.conclusion==='success')),'FORMAL_SOURCE_NOT_AUDITED');
+  const workers=jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name));
+  assert(workers.length===20&&new Set(workers.map(j=>j.name)).size===20&&Array.from({length:20},(_,i)=>`capture-${i}`).every(name=>workers.some(j=>j.name===name)),'FORMAL_SOURCE_JOBS');
  }else assert(ended.conclusion==='success'||profile.sourceClosureHash&&ended.conclusion==='failure','NEXT_GAME_SOURCE_NOT_FINISHED');
 }

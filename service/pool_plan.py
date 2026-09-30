@@ -34,9 +34,9 @@ def validate_pool_plan(plan):
                 expected.update(maxSteps=1026,featureProfile=feature)
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
-            require(filename in ('demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
+            require(filename in ('demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
-            next_scope = {'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
+            next_scope = {'demo-pilot-rhino-20261001.json': (32799, 32795), 'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
             require((profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == next_scope[0]
                      and plan.get('gameId') == next_scope[0] and profile.get('fromGameId') == next_scope[1]
                      and profile.get('newBetAllowance') == 100 and profile.get('perWorker') == 5 and profile.get('workers') == 20
@@ -48,6 +48,12 @@ def validate_pool_plan(plan):
                 and profile.get('planHash')==digest(plan),'DEMO_PLAN_MISMATCH')
             if filename in ('demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json'):
                 require(isinstance(profile.get('sourceClosureHash'),str) and re.fullmatch(r'[a-f0-9]{64}',profile['sourceClosureHash']), 'NEXT_GAME_SOURCE_CLOSE_REQUIRED')
+            if filename == 'demo-pilot-rhino-20261001.json':
+                ref=profile.get('sourceFormal',{})
+                require(ref.get('schema')=='sg-formal-source-boundary-v1' and ref.get('kind') in ('complete','retired')
+                    and isinstance(ref.get('proofHash'),str) and re.fullmatch(r'[a-f0-9]{64}',ref['proofHash'])
+                    and profile.get('emptyCandidate',{}).get('schema')=='sg-empty-demo-candidate-v1'
+                    and profile.get('completePreserved')==0 and profile.get('abandonedAttempts')==0, 'RHINO_SOURCE_BOUNDARY_REQUIRED')
             expected={**expected,'demoGeneration':profile['generation']}
         require(plan==expected and plan.get('phase')==1
             and plan.get('buy')==0 and (plan.get('adapter')=='native-nextgen-v1'

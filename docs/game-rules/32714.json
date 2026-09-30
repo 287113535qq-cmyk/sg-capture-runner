@@ -258,7 +258,7 @@
     "docs/mansion-native-resolution-20260930.md": "ef8e014dab9edb61f1e6f9d4b6174be6cc493b0ebf60668fe612d498ebbb5cee",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
-    "docs/mansion-retrigger-integration-20261001.md": "e9c2deb1954baae97479f4569f59115cbadd640481473051de046111ba245148",
+    "docs/mansion-retrigger-integration-20261001.md": "512799d3c5765b7731ff6ebd8506ae92b00c32f2a144e4fdcd879e81a9e7e1d6",
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
@@ -268,7 +268,7 @@
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/rhino-integration-20261001.md": "9efbc9d922461af29fe7c4a73d5cb5ecc13bcc040174ca41c7852b5ddf34b212",
+    "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
@@ -281,5 +281,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9a8acde080a1173a7b7823f976b874e8c309ab869fbe04559b23e47118bcb91b"
+  "ruleHash": "c1d3d7acac65820944bfcf5f2f66319f0862a72f4330dfbeb70c562b704240bd"
 }
