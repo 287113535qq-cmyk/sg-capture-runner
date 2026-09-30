@@ -134,6 +134,7 @@
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/morepuff-next-review-20260930.md",
+    "docs/morepuff-wheel-integration-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md"
@@ -141,6 +142,7 @@
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "38b0a83a2f3be0d6e62352c903429ade1548be233de7b0e4ddae585705ee7fc3",
     "docs/morepuff-next-review-20260930.md": "4a52908204cbdbee21248c083e7e8188978640039872411cbe016109de795016",
+    "docs/morepuff-wheel-integration-20260930.md": "2f63aa4b93107dfdd989143b62240bc28bfd05a09873a74f01cc5f3e6a0b9d99",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
@@ -152,5 +154,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d7fd7035da37ac2088ab7b65b10236ec948f5b1f724553b9ed1fd15208476d21"
+  "ruleHash": "e58c269202e3f5f35fa69bad861e131d5c6f85ed1c1b3efd3842f40cc6cd00e0"
 }
