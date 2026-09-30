@@ -1,3 +1,4 @@
+import {JINZITA_SOURCE,jinzitaNextRequest,jinzitaMapping} from './jinzita-protocol.mjs';
 import {LUXOR_SOURCE,luxorNextRequest,luxorMapping} from './luxor-protocol.mjs';
 import {BEAVER_SOURCE,beaverNextRequest,beaverMapping} from './beaver-protocol.mjs';
 import {hasNested,nestedNext,nestedMapping} from './demon-nested-protocol.mjs';
@@ -19,6 +20,7 @@ function parse(text) {
 }
 function integer(v) {if(!/^\d+$/.test(String(v)) || !Number.isSafeInteger(Number(v)))throw new Error('INVALID_PROTOCOL_COUNTER');return Number(v);}
 export function nextRequest(raw) {
+  if(raw.sourceKey===JINZITA_SOURCE)return jinzitaNextRequest(raw);
   if(raw.sourceKey===LUXOR_SOURCE)return luxorNextRequest(raw);
   if(raw.sourceKey===BEAVER_SOURCE)return beaverNextRequest(raw);
   if(raw.sourceKey===QUARTERBACK_SOURCE)return quarterbackNextRequest(raw);
@@ -49,6 +51,7 @@ export function nextRequest(raw) {
   return next;
 }
 export function roundMapping(raw, baseHash, extensionHash) {
+  if(raw.sourceKey===JINZITA_SOURCE)return jinzitaMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===LUXOR_SOURCE)return luxorMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===BEAVER_SOURCE)return beaverMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===QUARTERBACK_SOURCE)return quarterbackMapping(raw,baseHash,extensionHash);

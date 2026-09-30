@@ -79,7 +79,7 @@
 | [32717](32717.json) | Huff N' Lots of Goals! | implemented-subset | 1 |
 | [32718](32718.json) | Huff N' More Puff High Limit | implemented-subset | 1 |
 | [32719](32719.json) | Hypercharged Inca Jungle | implemented-subset | 1 |
-| [32720](32720.json) | Hypercharged Jinzita | implemented-subset | 1 |
+| [32720](32720.json) | Hypercharged Jinzita | implemented-subset | 2 |
 | [32721](32721.json) | Hypercharged Pyramids of Ra | implemented-subset | 1 |
 | [32722](32722.json) | Jinse Dao Tiger | not-documented | 待确认 |
 | [32723](32723.json) | La Bomba | implemented-subset | 1 |

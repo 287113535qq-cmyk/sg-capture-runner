@@ -22,29 +22,34 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "jinzita-standalone-free-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。",
+    "complete": "上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。",
+    "bounds": "旧320完整离线Python/Runner/TS全文一致，314已Mongo、6旧待补写，两旧半局只分析不续接。新FID1终局和重触发目前仅合成，混合FID0/1及未知嵌套拒绝，不标ready。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/jinzita_fields.py",
+      "scripts/trial/jinzita-protocol.mjs",
+      "collector/sg.jinzita.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
       "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
       "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
       "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "FID": "1=FreeSpins，0=HoldNSpin；新适配仅首BET独立1。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "GSD.FGRS / CFGC": "客户端免费剩余和进度可由这两个内层字段驱动；独立路径要求与外层计数一致，不能只看NFG0。",
+      "GCT": "客户端强制结束会影响请求出口，未确认时拒绝而不猜测完整。"
     }
   },
   "typeMappings": {
@@ -70,15 +75,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "hyperchargedjinzita96-round-one-base-v1-jinzita-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "jinzita-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   },
   "mappingHashes": {
-    "hyperchargedjinzita96-round-one-base-v1": "b8c2ad67152633870401788d541b21624b54a03f7140ba6757505039f9bb56b5"
+    "hyperchargedjinzita96-round-one-base-v1": "b8c2ad67152633870401788d541b21624b54a03f7140ba6757505039f9bb56b5",
+    "hyperchargedjinzita96-round-one-base-v1-jinzita-free-v1": "6ad07b593661eabd066cc211a7c39ba1192f5aa1ce47621afc768d3c3c6643ae"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -90,9 +122,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "9cb969d49cd2f4921da2656205b287850b24e41b4f0332849a824ec3b58dc810",
-    "scripts/runner-v2/record_fields.py": "fca56b37375a66cae37a7d1ae1a7c298167f8239abb5ec119fb681fa10483ce6",
-    "service/game_rule_catalog.py": "d80d1ad110e12e93508ce572f3bd293a2166512caa45d5bd12f3d8b4f43cbcbe"
+    "service/round_fields.py": "9413c18f8eaac8d67af8d92a7f71b293aec7e4d6dd4cb96a90e849b6fdf9790a",
+    "scripts/runner-v2/record_fields.py": "e0171b5f6100da4203d6da7c442e485d10918622c430a46e14954ea1ce0e94b9",
+    "service/jinzita_fields.py": "89b465920919742d40c73667469edd4c0438e7fb554bb0fb27082a10b7ee246b",
+    "scripts/trial/jinzita-protocol.mjs": "9c1584cd4fc5c21e38698e40cda0e472453d90fdca152fef780899509c5c63ae",
+    "collector/sg.jinzita.ts": "1b57f42a8b5db35a297371642af0f4ea4ae6a9ba0739145a08217c615fc24cf8",
+    "service/game_rule_catalog.py": "18fea9f85b9cf2d576e88c8e5ef0ef620d5a2a54a89b062e03600af3a377d380"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -104,7 +139,7 @@
   ],
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "6523b64f28513f4b74cc03da1ba5a49fc83366714a297323baf14a43f32f60ec",
-    "docs/jinzita-next-review-20260930.md": "b0c3a1fc914f7813e128326c150f5470546d08c11139620d9b5dd87da603ea18",
+    "docs/jinzita-next-review-20260930.md": "ef90f6b7cd056be0aff7936579d8f65a6a596d7e0dd92a1d6b32eab6f81aa1eb",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
@@ -116,5 +151,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4872d375f3ab1cfe2bb4fcb15bb010b78e1f9bf82735a4c06b36cb4d5961c8ab"
+  "ruleHash": "a5c9f6c9b460145ded2f46813c9750bef8eb7aecbfc1fa783a3fdd7cc3bfb50b"
 }

@@ -89,6 +89,15 @@ def contract(game_id):
             'NFG / TFG / CFGG': '剩余/总数/当前免费计数必须显式保存；重触发不强制每帧减1。',
             'GSD.CFG': '官方客户端仅CFG=0激活Beaver Bonus；实际FID1/CFG1/NFG5仍应免费继续。源码仅CFG0判Beaver，CFG1仅在独立FID1允许；新v2核TFG=NFG+CFGG、进度及终局，旧base/free-v1映射不变。',
         })
+    elif game_id == 32720:
+        native.update({'family': 'jinzita-standalone-free-v1',
+            'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',
+            'complete': '上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。',
+            'bounds': '旧320完整离线Python/Runner/TS全文一致，314已Mongo、6旧待补写，两旧半局只分析不续接。新FID1终局和重触发目前仅合成，混合FID0/1及未知嵌套拒绝，不标ready。'})
+        native['files'] += ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts']
+        native['fields'].update({'FID': '1=FreeSpins，0=HoldNSpin；新适配仅首BET独立1。',
+            'GSD.FGRS / CFGC': '客户端免费剩余和进度可由这两个内层字段驱动；独立路径要求与外层计数一致，不能只看NFG0。',
+            'GCT': '客户端强制结束会影响请求出口，未确认时拒绝而不猜测完整。'})
     elif game_id == 32835:
         native.update({'family': 'luxor-standalone-free-v1',
             'continue': '首BET独立FID2且NFG>0时FREE_GAME；完整链保持单FID2，显式TFG=NFG+CFGG且逐帧CFGG加1，允许TFG增加的重触发。旧普通及独立FID0原规则保留。',

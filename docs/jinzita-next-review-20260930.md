@@ -25,3 +25,14 @@
 本款除NFG外还检查GSD.FGRS；合成NFG0/FGRS1仍判未结束。因此不能照搬“NFG0就是结束”。本次只执行响应方法，wallet/UI是桩，未运行完整请求路由或浏览器；FID1只有旧触发帧，尚无新适配及真实终局，不标ready。
 
 下一步复用现有通用作废/切换流程补齐旧现场导入及本款最低必要适配。三款已耗尽的试点不重复派发，全部已应用profile保持冻结。
+
+
+## 本次完整入口实现（尚未在线导入）
+
+Jinzita的Python、Runner和TypeScript已接首BET独立FID1。逐帧核对TFG=NFG+CFGG和进度，允许重触发增加TFG；终局要求上一NFG1到0且TFG不变。GSD.FGRS/CFGC存在时必须与外层一致，GCT强制关闭和混合/嵌套仍拒绝。旧base映射不变，独立jinzita-free-v1为6ad07b593661eabd066cc211a7c39ba1192f5aa1ce47621afc768d3c3c6643ae。真实320完整三套解析全文一致；旧单FID1触发仅证明需要FREE，未证明终局，也不续旧局。
+
+客户端边界对照增加了实际request dN及嵌套lN/jN方法，对352真实帧执行响应与请求出口。wallet、UI和基础BET回退为桩，不是完整浏览器；新的FID1完整终局仍是合成测试。
+
+新增受控parked legacy导入：只允许固定私有备份的SHA和字节数，GitHub解码SQLite/WAL并验证记录，写入禁用native池后才生成完整回执；nextGame要求回执与同一profile/runtime/run一致。部分导入不能自动重跑或采集。正常retire负责6条补写及2半局作废，再以新代际切换。真实320通过实际decoder/import/retire/rollover内存链，原Luxor182及全部旧batch、journal保持，320历史会话审计通过；模拟存储不代表线上执行。
+
+测试服新增入口只传输root配置的固定备份字节，不接受客户端路径或hash，不执行SQLite或玩法。此源码尚未部署，当前native范围仍未包含本款；上线还需完整检查、新scope/profile、鲜读租约及唯一维护和有限采样。已耗尽的三款额度保持0。

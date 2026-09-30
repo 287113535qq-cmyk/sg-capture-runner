@@ -5,6 +5,7 @@ candidate is not selected by the existing capture entry point.
 """
 import json
 import base64
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -14,6 +15,7 @@ import time
 LIMIT = 8 * 1024 * 1024
 DATABASE = 'sg_capture_staging_v1'
 COLLECTIONS = {'state': 'capture_state_v2', 'journal': 'capture_journal_v2'}
+BACKUP_ROOT = Path('/var/lib/sg-capture-runner/reviews')
 
 
 class Refused(Exception):
@@ -79,6 +81,32 @@ class Gateway:
                  and len(set(keys)) == len(keys), 'BAD_KEYS')
             ids = [self.group + '/' + k for k in keys]
             return list(self.db[COLLECTIONS[alias]].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(100))
+        if op == 'frozen_trial_bytes':
+            # Fixed, root-configured private backup bytes only. The Runner
+            # decodes SQLite/WAL and performs every game/record comparison.
+            trial, _ = self.scope(r)
+            entry = self.manifest.get('frozenTrialArchives', {}).get(trial)
+            need(isinstance(entry, dict), 'FROZEN_ARCHIVE_NOT_ALLOWED')
+            relative = entry.get('path')
+            need(isinstance(relative, str) and re.fullmatch(r'[a-z0-9-]{1,100}/full\.tar\.gz', relative), 'FROZEN_ARCHIVE_PATH')
+            need('path' not in r and 'sha256' not in r, 'FROZEN_ARCHIVE_NOT_CLIENT_INPUT')
+            path = BACKUP_ROOT / relative
+            need(path.is_file() and not path.is_symlink() and not path.parent.is_symlink()
+                 and path.resolve().is_relative_to(BACKUP_ROOT.resolve()), 'FROZEN_ARCHIVE_PATH')
+            size, digest = entry.get('bytes'), entry.get('sha256')
+            need(type(size) is int and 0 < size <= 40 * 1024 * 1024
+                 and isinstance(digest, str) and re.fullmatch(r'[a-f0-9]{64}', digest), 'FROZEN_ARCHIVE_MANIFEST')
+            need(path.stat().st_size == size, 'FROZEN_ARCHIVE_CHANGED')
+            offset = r.get('offset', 0)
+            need(type(offset) is int and 0 <= offset < size, 'BAD_OFFSET')
+            # Bound the read and bind it to one open descriptor. The whole
+            # downloaded file must additionally match this hash on the Runner.
+            with path.open('rb') as stream:
+                need(hashlib.file_digest(stream, 'sha256').hexdigest() == digest, 'FROZEN_ARCHIVE_CHANGED')
+                stream.seek(offset)
+                chunk = stream.read(min(256 * 1024, size - offset))
+            return {'offset': offset, 'size': size, 'sha256': digest,
+                    'data': base64.b64encode(chunk).decode()}
         if op in ('legacy_manifest', 'legacy_bytes'):
             # Temporary, read-only transfer of the already frozen archive.
             # SQLite decoding/validation/migration happens on GitHub, never here.

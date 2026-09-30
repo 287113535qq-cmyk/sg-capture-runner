@@ -71,3 +71,15 @@ test('completed v1 pilot takes actual nextGame retirement, rollover and fresh ad
  const result=await nextDemoGame(f.args);assert.equal(result.newBetAllowance,100);assert.equal(result.sourceRequests,0);assert.equal((await f.admit()).limit,5);
  assert.equal(hash([...f.docs].filter(([k])=>k.startsWith('state/batch:synthetic-source:'))),sourceBefore);assert.equal(f.get('state','pool:synthetic-source').value.enabled,false);
 });
+
+test('imported pool requires same profile runtime run and final import receipt before retirement',async()=>{
+ for(const cause of ['missing','commit','run','profile','spec','pool']){
+  const f=await fixture(true),p=f.args.profile,pool=f.docs.get('state/pool:'+f.plan.trialId).value;
+  p.legacyImport={schema:'sg-parked-import-v1',fixture:true};pool.legacyImport={key:'import-fixture',specHash:hash(p.legacyImport)};
+  p.sceneHash=hash(await nextDemoScene(f.args.store,f.args.plans[32835],f.args.plans[32820]));
+  const receipt={schema:'sg-parked-import-complete-v1',specHash:hash(p.legacyImport),profileHash:hash(p),commit:f.args.commit,run:f.args.run,newBetAllowance:0,sourceRequests:0};
+  if(cause!=='missing')f.docs.set('journal/import-fixture:complete',{value:receipt});
+  if(cause==='commit')receipt.commit='f'.repeat(40);if(cause==='run')receipt.run='999:1';if(cause==='profile')receipt.profileHash='0'.repeat(64);if(cause==='spec')receipt.specHash='0'.repeat(64);if(cause==='pool')delete pool.legacyImport;
+  const before=hash([...f.docs]);await assert.rejects(nextDemoGame(f.args),/NEXT_GAME_IMPORT_INCOMPLETE/);assert.equal(hash([...f.docs]),before);
+ }
+});

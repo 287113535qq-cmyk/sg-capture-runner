@@ -24,6 +24,13 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  const oldPlan=plans[profile.gameId],plan=applyDemoPilot(plans,profile)[profile.gameId],fromPlan={...plans[profile.fromGameId],demoGeneration:profile.sourceGeneration};
  assert(hash(fromPlan)===profile.sourcePlanHash,'NEXT_GAME_SOURCE_PLAN');
  await boundary();const scene=await nextDemoScene(store,oldPlan,fromPlan);
+ if(profile.legacyImport||scene.pool.legacyImport){
+  assert(profile.legacyImport&&scene.pool.legacyImport,'NEXT_GAME_IMPORT_INCOMPLETE');
+  const imported=(await store.get('journal',scene.pool.legacyImport.key+':complete'))?.value;
+  assert(imported?.schema==='sg-parked-import-complete-v1'&&imported.specHash===hash(profile.legacyImport)
+   &&imported.specHash===scene.pool.legacyImport.specHash&&imported.profileHash===hash(profile)
+   &&imported.commit===commit&&imported.run===run&&imported.newBetAllowance===0&&imported.sourceRequests===0,'NEXT_GAME_IMPORT_INCOMPLETE');
+ }
  assert(hash(scene)===profile.sceneHash&&!scene.pool.enabled&&!scene.pool.demoGeneration
   &&scene.campaign.activeGame===fromPlan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&scene.fromPool.planHash===hash(fromPlan),'NEXT_GAME_SCENE_CHANGED');

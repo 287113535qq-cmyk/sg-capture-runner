@@ -2,9 +2,13 @@ import fs from 'node:fs';import assert from 'node:assert/strict';import {createH
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
 import {authenticatedRead} from './github-boundary.mjs';import {maintenanceBoundary} from './demo-run-fence.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {nextDemoGame} from './demo-next-game.mjs';
+import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
+import {importParkedDemo} from './parked-import.mjs';import {decodeParkedArchive} from './parked-decoder.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load('config/demo-pilot-luxor-20260930.json'),plans=load('config/round-one-plans.json');
-assert(profile.gameId===32835&&profile.fromGameId===32820&&profile.completePreserved===82&&profile.abandonedAttempts===1,'NEXT_GAME_PROFILE_SCOPE');
+const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),path=demoPilotProfilePath(),profile=load(path),plans=load('config/round-one-plans.json');
+const scope={'config/demo-pilot-luxor-20260930.json':[32835,32820,82,1], 'config/demo-pilot-jinzita-20260930.json':[32720,32835,320,2]}[path];
+assert(scope&&profile.gameId===scope[0]&&profile.fromGameId===scope[1]&&profile.completePreserved===scope[2]&&profile.abandonedAttempts===scope[3],'NEXT_GAME_PROFILE_SCOPE');
+assert((profile.gameId===32720)===!!profile.legacyImport,'NEXT_GAME_IMPORT_SCOPE');
 for(const [path,expected] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..'),'NEXT_GAME_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===expected,'NEXT_GAME_RUNTIME_CHANGED');
@@ -21,6 +25,7 @@ try{
   await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');await checkPrimaryLeases({store,plans});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r.value.active===false),'GLOBAL_HOLD');
  };
+ if(profile.legacyImport)await importParkedDemo({store,transport,decode:decodeParkedArchive,plan:plans[profile.gameId],profile,boundary,commit,run});
  console.log(JSON.stringify(await nextDemoGame({store,transport,gate,parser,plans,profile,boundary,commit,run})));
 }catch(error){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(error.message)?error.message:'NEXT_GAME_REQUIRES_REVIEW',sourceRequests:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

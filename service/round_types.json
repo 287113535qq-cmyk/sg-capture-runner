@@ -1194,6 +1194,38 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "hyperchargedjinzita96-round-one-base-v1-jinzita-free-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32720,
+        "runtimeGameId": 33120,
+        "sourceId": "a9d24652-8cd8-490b-9421-929a164ccafa"
+      },
+      "featureSelector": "jinzita-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   }
 }

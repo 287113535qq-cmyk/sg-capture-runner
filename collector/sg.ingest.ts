@@ -1,3 +1,4 @@
+import {jinzitaFields} from './sg.jinzita';
 import {luxorFields} from './sg.luxor';
 import {beaverFields} from './sg.beaver';
 import {validateDemonNestedMapping} from './sg.demon';
@@ -11,6 +12,11 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
   if (raw.protocol !== 'nextgen' || raw.roundFieldsVersion !== ROUND_FIELDS_VERSION) throw new Error('SG_UNSUPPORTED_ROUND_CONTRACT');
   if(raw.sourceKey==='thedemoncodecap250c96-round-one-base-v1' && raw.steps.some((s:any)=>new URLSearchParams(s.responsePayload).get('FID')==='0|1|'))validateDemonNestedMapping(raw,mapping);
+  if(raw.sourceKey === 'hyperchargedjinzita96-round-one-base-v1') {
+    const value=jinzitaFields(raw,mapping.typeMappingHash);
+    if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_JINZITA_MAPPING_MISMATCH');
+    return value;
+  }
   if(raw.sourceKey === 'pyramidsofluxor96-round-one-base-v1') {
     const value=luxorFields(raw,mapping.typeMappingHash);
     if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_LUXOR_MAPPING_MISMATCH');

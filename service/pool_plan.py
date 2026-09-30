@@ -16,13 +16,13 @@ def validate_pool_plan(plan):
         expected=plans.get(str(plan.get('gameId')))
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
-            require(filename in ('demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
+            require(filename in ('demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
-            next_game = filename == 'demo-pilot-luxor-20260930.json'
-            require((profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == 32835
-                     and plan.get('gameId') == 32835 and profile.get('fromGameId') == 32820
+            next_scope = {'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
+            require((profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == next_scope[0]
+                     and plan.get('gameId') == next_scope[0] and profile.get('fromGameId') == next_scope[1]
                      and profile.get('newBetAllowance') == 100 and profile.get('perWorker') == 5 and profile.get('workers') == 20
-                     if next_game else profile.get('schema') in ('sg-demo-pilot-v1','sg-demo-residual-pilot-v1')
+                     if next_scope else profile.get('schema') in ('sg-demo-pilot-v1','sg-demo-residual-pilot-v1')
                      and profile.get('gameId') == 32820 and plan.get('gameId') == 32820)
                 and profile.get('oldPlanHash') == digest(expected)
                 and profile.get('generation')==plan['demoGeneration']
