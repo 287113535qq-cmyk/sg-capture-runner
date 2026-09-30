@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      runtime_profile:
+        description: 'Reviewed healthy-run runtime update without additional quota'
+        type: choice
+        default: ''
+        options: ['', count-runtime-pearl-observation-20261001.json]
       formal_profile:
         description: Independent reviewed complete-count profile
         type: choice
@@ -24,7 +29,7 @@ on:
         options: [demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -58,6 +63,12 @@ jobs:
       - name: Close reviewed unknown count request without replay or new source permission
         if: inputs.operation == 'close-count-network'
         run: node scripts/runner-v2/count-network-close-control.mjs
+      - name: Preserve healthy count allocation and bind reviewed runtime
+        if: inputs.operation == 'refresh-count-runtime'
+        env:
+          SG_FORMAL_COUNT_PROFILE: ${{ inputs.repair_profile }}
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
+        run: node scripts/runner-v2/formal-count-control.mjs refresh
       - name: Isolate interrupted pilot and close its unused allowance without source requests
         if: inputs.operation == 'close-interrupted-pilot'
         env:

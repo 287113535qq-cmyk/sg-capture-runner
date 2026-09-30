@@ -6,21 +6,27 @@ import {checkPrimaryLeases} from './lease-boundary.mjs';import {checkDemoSourceE
 import {formalCountProfilePath,applyFormalCount} from './formal-count-plan.mjs';
 import {activateFormalCount} from './formal-count-activation.mjs';import {loadCountPermission,checkLedger} from './complete-count.mjs';
 import {amendFormalRuntime} from './formal-count-runtime.mjs';
+import {refreshCountRuntime} from './count-runtime-refresh.mjs';
 import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const mode=process.argv[2];assert(['activate','admit','amend','repair'].includes(mode),'FORMAL_COUNT_OPERATION');
+const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const isRhino=profile.schema==='sg-formal-count-rhino-v1';
 assert(!isRhino||['activate','admit'].includes(mode),'RHINO_FORMAL_OPERATION');
 const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
 assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
-assert(!isRepair||['repair','admit'].includes(mode),'FORMAL_REPAIR_OPERATION');
-const revision=mode==='activate'||isRepair||isRhino?null:readFile('config/formal-runtime-pearl-20260930.json');
+assert(!isRepair||['repair','admit','refresh'].includes(mode),'FORMAL_REPAIR_OPERATION');
+const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
+assert(!runtimeProfile||runtimeProfile==='count-runtime-pearl-observation-20261001.json','COUNT_RUNTIME_PROFILE_PATH');
+assert(!runtimeProfile||(['refresh','admit'].includes(mode)&&profile.schema==='sg-formal-repair-profile-v2'),'COUNT_RUNTIME_REFRESH_SCOPE');
+assert(mode!=='refresh'||runtimeProfile,'COUNT_RUNTIME_PROFILE_REQUIRED');
+const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 const files=revision?.files??profile.files;
 assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
+if(runtimeProfile)assert(Object.keys(profile.files).every(p=>Object.hasOwn(files,p)),'COUNT_RUNTIME_FILES_MISSING');
 for(const [p,h] of Object.entries(files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(p)&&!p.includes('..'),'FORMAL_COUNT_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'FORMAL_COUNT_RUNTIME_CHANGED');
@@ -42,6 +48,10 @@ try{
    &&`${ended.id}:${ended.run_attempt}`===profile.retirementRun&&ended.path==='.github/workflows/demo-maintenance.yml','FORMAL_REPAIR_RETIREMENT_RUN');
   console.log(JSON.stringify(await activateFormalRepair({store,transport,parser,plans:basePlans,profile,
    oldProfile:readFile(profile.schema==='sg-formal-repair-profile-v2'?'config/formal-repair-pearl-20260930.json':'config/formal-count-pearl-20260930.json'),boundary,commit,run})));
+ }else if(mode==='refresh'){
+  const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0];
+  const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
+  console.log(JSON.stringify(await refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);
@@ -55,6 +65,10 @@ try{
   await boundary();
   const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
   const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
+  if(runtimeProfile){
+   const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${commit}`))?.value;
+   assert(receipt?.schema==='sg-count-runtime-v2'&&receipt.revisionHash===hash(revision),'COUNT_RUNTIME_REFRESH_NOT_APPLIED');
+  }
   assert(pool.enabled&&!pool.failure&&ledger.reserved===0&&pool.confirmed<plan.target
    &&Object.values(pool.workers).every(w=>!w.activeBatch)&&c.enabled&&c.activeGame===plan.gameId&&!c.protocolValidation&&!c.validationLimit
    &&c.formalCount?.activation===profile.activation,'FORMAL_COUNT_NOT_READY');

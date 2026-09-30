@@ -4,7 +4,7 @@ import {captureBatch,runDynamicBatches,fail} from './capture-batch.mjs';
 import {rhinoNext,rhinoMapping} from './rhino-protocol.mjs';
 import {rhinoSession,rhinoPayload,rhinoResponse,rhinoInit,RHINO_ENDPOINT} from './rhino-session.mjs';
 
-export async function runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash,prepareRound,evidence,shouldStop,requestStop,onLease,
+export async function runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash,prepareRound,evidence,shouldStop,requestStop,onLease,telemetry,onProgress=()=>{},
  commitSha,planHash,fetchImpl=fetch,deadline=performance.now()+240*60000,limit=5,runId,runAttempt,job}){
  const formal=plan.countAllocation!==undefined;
  assert(plan.schema==='sg-work-pool-v1'&&Number.isSafeInteger(limit)&&limit>0
@@ -18,8 +18,9 @@ export async function runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,extens
   if(msgId==='Logic'&&!currentLease)throw fail('RHINO_LEASE_REQUIRED','storage');
   const start=performance.now();evidence.sourceRequests++;
   if(msgId==='Logic'&&paidIntent){evidence.paidRoundRequests++;paidIntent=false;}
+  const sourceFetch=telemetry?(...args)=>telemetry.fetch(fetchImpl,msgId,...args):fetchImpl;
   let response;
-  try{response=await fetchImpl(RHINO_ENDPOINT,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(30000),headers:{'Content-Type':'text/xml; charset=utf-8',
+  try{response=await sourceFetch(RHINO_ENDPOINT,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(30000),headers:{'Content-Type':'text/xml; charset=utf-8',
    ...(cookies.size?{Cookie:[...cookies].map(([k,v])=>k+'='+v).join('; ')}:{})},body:requestPayload});}
   catch{throw fail('SOURCE_NETWORK_OUTCOME_UNKNOWN','source_network');}
   for(const c of response.headers.getSetCookie?.()??[]){const part=c.split(';')[0],at=part.indexOf('=');if(at>0)cookies.set(part.slice(0,at),part.slice(at+1));}
@@ -55,7 +56,7 @@ export async function runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,extens
    if(formal)assert(lease.countAllocation===plan.countAllocation&&lease.shortRunLimit===undefined,'RHINO_FORMAL_LEASE_REQUIRED');
    else assert(Number.isSafeInteger(lease.shortRunLimit)&&lease.shortRunLimit>0&&lease.shortRunLimit<=5,'RHINO_PILOT_ONLY');
    const result=await captureBatch({plan,lease,owned:owner,rpc:trackedRpc,post,payload,bootstrap,prepareRound,mappingHash,extensionHash,
-    evidence,state,shouldStop:stopped,requestStop,deadline,limit:formal?limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:rhinoNext,mapping:rhinoMapping});
+    evidence,state,onProgress,shouldStop:stopped,requestStop,deadline,limit:formal?limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:rhinoNext,mapping:rhinoMapping});
    evidence.result=result;return result;
   }});
  if(formal)await rpc('finish_run');

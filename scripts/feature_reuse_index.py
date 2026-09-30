@@ -99,6 +99,42 @@ def recommend(game_id):
     return sorted(output, key=lambda x: (x['scope'] != 'family-candidate', -len(x['common']), x['referenceGameId']))
 
 
+def recommend_observed(document):
+    """Match independently observed traits for a previously unclassified game.
+
+    Evidence references are mandatory. This never updates REVIEWED or grants readiness.
+    """
+    allowed = {'protocol', 'session', 'requests', 'counters', 'terminal', 'initialFree', 'retriggerAward'}
+    traits = document.get('traits', {})
+    evidence = document.get('evidence', {})
+    if not isinstance(evidence, dict):
+        raise ValueError('TRAIT_EVIDENCE_REQUIRED')
+    if not isinstance(traits, dict) or not traits or set(traits) - allowed or traits.get('protocol') not in {'wms-xml', 'nextgen-payload'}:
+        raise ValueError('OBSERVED_PROTOCOL_TRAITS_REQUIRED')
+    for key, value in traits.items():
+        if isinstance(value, bool) or not isinstance(value, (str, int)) or (isinstance(value, str) and (not value or len(value) > 120)):
+            raise ValueError('INVALID_OBSERVED_TRAIT')
+        ref = evidence.get(key, {})
+        if not isinstance(ref, dict):
+            raise ValueError('TRAIT_EVIDENCE_REQUIRED')
+        digest = ref.get('sha256', '')
+        if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest) or ref.get('kind') not in {'official-client', 'private-capture', 'independent-review'}:
+            raise ValueError('TRAIT_EVIDENCE_REQUIRED')
+    result = []
+    for game_id, reference in REVIEWED.items():
+        if reference['traits']['protocol'] != traits['protocol']:
+            continue
+        common = {k: v for k, v in traits.items() if reference['traits'].get(k) == v}
+        differences = {k: {'observed': traits.get(k), 'reference': reference['traits'].get(k)}
+                       for k in sorted(set(traits) | set(reference['traits'])) if k not in common}
+        result.append(dict(referenceGameId=game_id, referenceGroup=reference['group'],
+            scope='observed-trait-candidate', common=common, differences=differences,
+            missingTraits=sorted(set(reference['traits']) - set(traits)),
+            referenceFiles=reference['files'], requiredReview=reference['requiredReview'],
+            captureAuthorization=False, ready=False))
+    return sorted(result, key=lambda x: (-len(x['common']), len(x['differences']), x['referenceGameId']))
+
+
 def build():
     games = json.loads((ROOT / 'config/games.json').read_text(encoding='utf-8'))
     result = []
@@ -117,7 +153,13 @@ def build():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(); parser.add_argument('--game', type=int); parser.add_argument('--output', type=Path)
-    args = parser.parse_args(); result = build() if args.game is None else dict(gameId=args.game, candidates=recommend(args.game), captureAuthorization=False)
+    parser.add_argument('--observed-traits', type=Path)
+    args = parser.parse_args()
+    if args.observed_traits:
+        result = dict(gameId=args.game, candidates=recommend_observed(json.loads(args.observed_traits.read_text(encoding='utf-8'))),
+                      captureAuthorization=False, ready=False)
+    else:
+        result = build() if args.game is None else dict(gameId=args.game, candidates=recommend(args.game), captureAuthorization=False)
     text = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
     if args.output:
         args.output.write_text(text, encoding='utf-8')

@@ -13,6 +13,7 @@ import {MOREPUFF_MEGAHAT_EXTENSION} from './morepuff-megahat-review.mjs';
 import {MOREPUFF_SOURCE,MOREPUFF_EXTENSION} from './morepuff-protocol.mjs';
 import {JINZITA_SOURCE,JINZITA_EXTENSION} from './jinzita-protocol.mjs';
 import {failureCode} from './failure-code.mjs';
+import {createCaptureTelemetry,businessOutcome} from './capture-telemetry.mjs';
 import {LUXOR_SOURCE,LUXOR_EXTENSION} from './luxor-protocol.mjs';
 import {DEMON_NESTED_EXTENSION} from './demon-nested-protocol.mjs';
 import assert from 'node:assert/strict';
@@ -60,11 +61,14 @@ assert(['exchange','exchange_journal'].includes(exchangeOperation));
 if(isPool){assert.equal(requestIntervalMs,0);assert.equal(exchangeOperation,'exchange_journal');}
 const shard=process.env.SG_TRIAL_SHARD===undefined ? null : globalShard(
   Number(process.env.SG_TRIAL_SHARD), plan, process.env.GITHUB_REPOSITORY);
-const transport = connect(plan), rpc = (op,data={})=>transport.rpc(op,{...(shard===null?{}:{shardId:shard}),...data});
+const transport = connect(plan), rpc = (op,data={})=>telemetry.rpc((operation,request)=>transport.rpc(operation,request),op,{...(shard===null?{}:{shardId:shard}),...data});
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
   target:plan.target,shardId:shard,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
 let lease, leaseOwned, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
+let workerError;
+const telemetry=createCaptureTelemetry({gameId:plan.gameId,shardId:shard,evidence,metrics:()=>transport.metrics(),emit:row=>console.log(JSON.stringify(row))});
+if(role==='capture')telemetry.start();
 process.on('SIGTERM', () => {stop=true;});
 process.on('SIGINT', () => {stop=true;});
 function owned() {return leaseOwned || {owner,epoch:lease.epoch};}
@@ -85,7 +89,7 @@ async function main() {
     assert(isPool&&shard!==null&&process.env.SG_PROCESSING_MODE==='github-v2','RHINO_GITHUB_POOL_REQUIRED');
     const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');
     assert(plan.countAllocation?requested===0:requested===5,'RHINO_CAPTURE_PERMISSION');
-    return runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,prepareRound:rhinoFields,evidence,
+    return runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,prepareRound:telemetry.sync('normalize',rhinoFields),evidence,telemetry,onProgress:()=>telemetry.progress(),
       shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
       commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
       runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,
@@ -96,7 +100,7 @@ async function main() {
     const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');
     assert(plan.countAllocation?requested===0:requested===5,'PEARL_CAPTURE_PERMISSION');
     const awards=plan.featureProfile==='additive-free-awards-v2';
-    return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash:awards?{retrigger:hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])),awards:hash(canonical(registry.profiles[PEARL_AWARD_EXTENSION]))}:plan.featureProfile==='eight-free-retrigger-v1'?hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])):null,prepareRound:awards?pearlAwardFields:plan.featureProfile==='eight-free-retrigger-v1'?pearlRetriggerFields:pearlFields,evidence,
+    return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash:awards?{retrigger:hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])),awards:hash(canonical(registry.profiles[PEARL_AWARD_EXTENSION]))}:plan.featureProfile==='eight-free-retrigger-v1'?hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])):null,prepareRound:telemetry.sync('normalize',awards?pearlAwardFields:plan.featureProfile==='eight-free-retrigger-v1'?pearlRetriggerFields:pearlFields),evidence,telemetry,onProgress:()=>telemetry.progress(),
       shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
       commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
       runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,
@@ -130,7 +134,7 @@ async function main() {
     let response;
     const start=performance.now();
     try {
-      response=await fetch(`https://${game.serverAddress}/`,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(30000),
+      response=await telemetry.fetch(fetch,msgId,`https://${game.serverAddress}/`,{method:'POST',redirect:'manual',signal:AbortSignal.timeout(30000),
         headers:{'Content-Type':'text/xml; charset=utf-8',...(cookies.size?{Cookie:[...cookies].map(([k,v])=>`${k}=${v}`).join('; ')}:{})},body});
     }catch{throw fail('SOURCE_NETWORK_OUTCOME_UNKNOWN','source_network');}
     for(const c of response.headers.getSetCookie()) {const part=c.split(';')[0],at=part.indexOf('=');if(at>0)cookies.set(part.slice(0,at),part.slice(at+1));}
@@ -181,14 +185,8 @@ async function main() {
   const state={};
   const capture=async (currentLease,currentOwned)=>{
     const result=await captureBatch({plan,lease:currentLease,owned:currentOwned,rpc,post,payload,bootstrap,
-      prepareRound:prepareNextgenRound,mappingHash,extensionHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
-      deadline,limit:currentLease.shortRunLimit===undefined?limit:Math.min(limit,currentLease.shortRunLimit),exchangeOperation,onProgress:()=>{
-        const seconds=(performance.now()-sessionStart)/1000;
-        console.log(JSON.stringify({trialId:plan.trialId,shardId:shard,batchId:currentLease.batchId,
-          completedThisRun:evidence.completedThisRun,batchCheckpoint:evidence.endCheckpoint,target:plan.target,
-          roundsPerSecond:Number((evidence.completedThisRun/seconds).toFixed(3)),sourceRequests:evidence.sourceRequests,
-          ...(evidence.completedThisRun%1000===0?{rpcMetrics:transport.metrics(),sourceElapsedMs:evidence.sourceElapsedMs}: {})}));
-      }});
+      prepareRound:telemetry.sync('normalize',prepareNextgenRound),mappingHash,extensionHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
+      deadline,limit:currentLease.shortRunLimit===undefined?limit:Math.min(limit,currentLease.shortRunLimit),exchangeOperation,onProgress:()=>telemetry.progress()});
     evidence.result=result;
     if(isPool && result.status==='complete')evidence.completedBatches=(evidence.completedBatches || 0)+1;
     return result;
@@ -207,7 +205,7 @@ async function main() {
 try {
   await main();evidence.outcome='success';
 } catch(error) {
-  evidence.outcome='stopped';evidence.error=failureCode(error);
+  workerError=error;evidence.outcome='stopped';evidence.error=failureCode(error);
   if(error.httpStatus)evidence.httpStatus=error.httpStatus;
   if(lease){
     try{evidence.result=await rpc('fail',{...owned(),category:error.category || 'storage',code:evidence.error,cooldownUntil:error.cooldownUntil || 0});}
@@ -223,11 +221,14 @@ try {
     // natural round; relinquish only our fenced leases, never its attempt.
     try{await rpc('yield_protocol_stop',owned());}catch{}
   }
+  telemetry.stop();evidence.performance=telemetry.snapshot();
+  evidence.businessOutcome=businessOutcome(evidence.result,workerError);
   evidence.rpcMetrics=transport.metrics();
   evidence.elapsedSeconds=Number(((performance.now()-sessionStart)/1000).toFixed(3));
   if(evidence.completedThisRun)evidence.roundsPerSecond=evidence.completedThisRun/evidence.elapsedSeconds;
   if(process.env.GITHUB_OUTPUT && ['pending','claimed','complete','halted'].includes(evidence.result?.status))
     fs.appendFileSync(process.env.GITHUB_OUTPUT,`trial_status=${evidence.result.status}\n`);
+  if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`business_outcome=${evidence.businessOutcome}\n`);
   console.log(JSON.stringify(evidence));
   if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
     `### ${plan.name}: ${plan.target ?? 'unconfigured'} complete rounds\n\n\`\`\`json\n${JSON.stringify(evidence,null,2)}\n\`\`\`\n`);

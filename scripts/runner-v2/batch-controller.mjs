@@ -9,6 +9,7 @@ import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
 import {beaverSequence} from '../trial/beaver-protocol.mjs';
 import {PendingFirst} from './pending-first.mjs';
 import {isAdapterGap} from './game-failure-policy.mjs';
+import {faultCapsule} from './fault-capsule.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -256,6 +257,7 @@ export class BatchController {
             const evidence={schema:'sg-abandoned-demo-v1',trialId:this.plan.trialId,batchId:current.id,
               reason:current.adapterFailureCode || 'PROTOCOL_VALIDATION_FAILED',
               disposition:'interrupted-abandoned-without-replay',pending:current.pending,
+              diagnostic:faultCapsule({plan:this.plan,raw:current.pending.raw,code:current.adapterFailureCode}),
               pendingOriginal:current.pendingOriginal??null,sourceRequests:0};
             await this.store.create('journal',key,evidence,{immutable:true});
             assert(hash((await this.store.get('journal',key))?.value)===hash(evidence),'ABANDON_READBACK_FAILED');

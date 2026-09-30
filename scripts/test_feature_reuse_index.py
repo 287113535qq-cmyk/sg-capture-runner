@@ -1,7 +1,17 @@
 import unittest
-from feature_reuse_index import build, recommend
+from feature_reuse_index import build, recommend, recommend_observed
 
 class ReuseIndexTests(unittest.TestCase):
+    def test_unknown_can_match_evidenced_traits_without_becoming_ready(self):
+        traits={'protocol':'wms-xml','session':'response-rotation','requests':'Logic-EndGame'}
+        evidence={key:dict(kind='official-client',sha256='a'*64) for key in traits}
+        rows=recommend_observed(dict(traits=traits,evidence=evidence))
+        self.assertEqual({r['referenceGameId'] for r in rows},{32795,32799})
+        self.assertTrue(all('terminal' in r['missingTraits'] and not r['ready'] and not r['captureAuthorization'] for r in rows))
+        with self.assertRaises(ValueError):recommend_observed(dict(traits=traits,evidence={}))
+        with self.assertRaises(ValueError):recommend_observed(dict(traits={**traits,'FID':2},evidence=evidence))
+        self.assertEqual(recommend(32441),[])
+
     def test_wms_reuse_keeps_terminal_and_award_differences(self):
         match = recommend(32799)[0]
         self.assertEqual(match['referenceGameId'], 32795)

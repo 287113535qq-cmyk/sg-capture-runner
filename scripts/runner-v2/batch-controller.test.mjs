@@ -65,7 +65,7 @@ test('Pyramids and Inca explicit feature gaps isolate the game while validation 
   await f.rpc('fail',{...f.owned});
   const b=(await f.store.get('state',f.controller.batchKey)).value;
   assert.equal((await f.store.get('state','global-hold')).value.active,!local,code);
-  if(local){assert.equal(b.pending,null);assert(b.abandonedDemo);assert.equal((await f.store.get('journal',b.abandonedDemo)).value.reason,code);}
+  if(local){assert.equal(b.pending,null);assert(b.abandonedDemo);assert.equal((await f.store.get('journal',b.abandonedDemo)).value.reason,code);const diagnostic=(await f.store.get('journal',b.abandonedDemo)).value.diagnostic;assert.equal(diagnostic.code,code);assert.equal(diagnostic.captureAuthorization,false);assert.equal(diagnostic.stepCount,1);}
   else assert(b.pending);
  }
 });

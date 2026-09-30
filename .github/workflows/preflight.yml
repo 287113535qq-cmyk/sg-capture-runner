@@ -34,6 +34,10 @@ jobs:
         run: python3 -m unittest discover -s service/tests -q
       - name: Per-game rule archive matches committed implementation
         run: python3 scripts/build-game-rule-archive.py --check
+      - name: Offline timing and evidence-based reuse checks
+        run: |
+          python3 -m unittest discover -s scripts -p 'test_analyze_capture_timing.py' -q
+          python3 -m unittest discover -s scripts -p 'test_feature_reuse_index.py' -q
       - name: Session and startup checks
         run: node --test scripts/trial/*.test.mjs
       - name: GitHub processing and Mongo write backpressure checks

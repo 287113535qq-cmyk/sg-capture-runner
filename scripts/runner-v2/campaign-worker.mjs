@@ -10,6 +10,7 @@ import {analyzer} from './analyzer.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 import {applyDemoPilot} from './demo-pilot-plan.mjs';
 import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
+import {createStageProgress} from './stage-progress.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
@@ -26,6 +27,7 @@ const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans
 let stop=false;
 process.on('SIGTERM',()=>{stop=true;});process.on('SIGINT',()=>{stop=true;});
 const sleep=()=>new Promise(r=>setTimeout(r,10000));
+const stages=createStageProgress({emit:row=>console.log(JSON.stringify(row))});
 async function capture(plan){
   const validationLimit=(await store.get('state','campaign')).value.validationLimit || 0;
   fs.writeFileSync('config/round-one-active.json',JSON.stringify(plan)+'\n');
@@ -38,16 +40,16 @@ async function capture(plan){
 }
 try{
   if(['status','finalize'].includes(process.argv[2])){
-    if(process.argv[2]==='finalize')await campaign.finalizeStoppedRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`);
+    if(process.argv[2]==='finalize')await stages.run('finalize',()=>campaign.finalizeStoppedRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`));
     const status=await campaign.status();console.log(JSON.stringify(status));
     if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`campaign_status=${status.status}\n`);
   }else{
     while(!stop && Date.now()+60000<end){
-      const next=await campaign.selectForRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`);
+      const next=await stages.run('select',()=>campaign.selectForRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`));
       if(next.action==='stop'){console.log(JSON.stringify(next));break;}
       if(next.action==='wait'){await sleep();continue;}
-      if(next.action==='audit'){console.log(JSON.stringify(await campaign.audit(next.plan)));break;}
-      const code=await capture(next.plan);
+      if(next.action==='audit'){console.log(JSON.stringify(await stages.run('audit',()=>campaign.audit(next.plan))));break;}
+      const code=await stages.run('capture',()=>capture(next.plan));
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
       if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}
       if(code===0){

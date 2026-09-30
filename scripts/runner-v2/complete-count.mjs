@@ -18,9 +18,14 @@ export async function loadCountPermission({store,plan,pool,commit}){
   &&complete.trialId===plan.trialId&&complete.planHash===hash(plan)&&complete.commit===spec.commit,'COUNT_ACTIVATION_INCOMPLETE');
  if(spec.commit!==commit){
   const revision=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${commit}`))?.value;
-  assert(revision?.schema==='sg-count-runtime-v1'&&revision.commit===commit&&revision.fromCommit===spec.commit
+  const oldRevision=revision?.schema==='sg-count-runtime-v1'&&revision.completePreserved===100&&revision.remainingComplete===299900;
+  const refreshed=revision?.schema==='sg-count-runtime-v2'&&revision.planHash===hash(plan)&&revision.newBetAllowance===0
+   &&Number.isSafeInteger(revision.completePreserved)&&revision.completePreserved>=0&&revision.completePreserved<=pool.confirmed
+   &&revision.remainingComplete===plan.target-revision.completePreserved&&revision.remainingComplete>0
+   &&/^[a-f0-9]{64}$/.test(revision.revisionHash??'');
+  assert((oldRevision||refreshed)&&revision.commit===commit&&revision.fromCommit===spec.commit
    &&revision.specHash===hash(spec)&&revision.profileHash===spec.profileHash&&revision.activation===spec.activation
-   &&revision.sourceRequests===0&&revision.completePreserved===100&&revision.remainingComplete===299900,'COUNT_AUTHORIZATION');
+   &&revision.sourceRequests===0,'COUNT_AUTHORIZATION');
  }
  checkLedger(pool,plan,spec);return spec;
 }
