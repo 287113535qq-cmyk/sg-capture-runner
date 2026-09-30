@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
+import {sessionLayout,sessionWorkerAllowed} from './session-layout.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // This opt-in path is dormant without a separately created immutable activation
@@ -40,7 +41,8 @@ export function allocateCountBatch({pool,plan,spec,worker,now}){
  }
  const capacity=spec.maxSequence-pool.nextSequence+1;
  if(!available||capacity<=0)return {batch:null,changed:false};
- const size=Math.min(100,Math.ceil(available/20),available,capacity);
+ const layout=sessionLayout(plan,spec);
+ const size=Math.min(100,Math.ceil(available/(20*(layout?.lanesPerHost??1))),available,capacity);
  const batch={id:pool.nextBatchId,worker,start:pool.nextSequence,end:pool.nextSequence+size-1};
  pool.countAllocation.batches[batch.id]={...batch,sessionHash:w.sessionHash,closed:false,complete:0,evidenceHash:null};
  pool.countAllocation.reserved+=size;pool.nextBatchId++;pool.nextSequence=batch.end+1;
@@ -95,6 +97,7 @@ export function allowCountSessionRotation({pool,plan,spec,worker,sessionHash,now
 
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 export function checkLedger(pool,plan,spec){
+ const layout=sessionLayout(plan,spec);
  assert(spec.schema==='sg-complete-count-v1'&&spec.trialId===plan.trialId&&spec.target===plan.target,'COUNT_SCOPE');
  assert(integer(plan.target)&&plan.target>0&&integer(pool.nextBatchId)&&pool.nextBatchId>0,'COUNT_TARGET');
  assert(integer(spec.maxSequence)&&spec.maxSequence>=spec.firstSequence&&integer(spec.firstSequence)&&spec.firstSequence>0,'COUNT_CEILING');
@@ -109,7 +112,8 @@ export function checkLedger(pool,plan,spec){
  for(let id=1;id<pool.nextBatchId;id++){
   const b=ledger[id];
   assert(b&&b.id===id&&integer(b.start)&&b.start===next&&integer(b.end)&&b.end>=b.start,'COUNT_RANGE');
-  assert(integer(b.worker)&&b.worker<40&&/^[a-f0-9]{64}$/.test(b.sessionHash),'COUNT_IDENTITY');
+  assert(integer(b.worker)&&(layout?sessionWorkerAllowed(plan,b.worker,layout.group):b.worker<40)
+   &&/^[a-f0-9]{64}$/.test(b.sessionHash),'COUNT_IDENTITY');
   const size=b.end-b.start+1;
   if(b.closed){assert(integer(b.complete)&&b.complete<=size&&/^[a-f0-9]{64}$/.test(b.evidenceHash),'COUNT_CLOSED');completed+=b.complete;}
   else {assert(b.complete===0&&b.evidenceHash===null,'COUNT_OPEN');reserved+=size;}

@@ -51,6 +51,12 @@ test('parked formal retirement settles records without enabling pool or altering
  assert.equal(hash(f.get('state','campaign')),oldCampaign);assert.equal(hash(f.get('state',f.args.profile.repairKey)),oldRepair);
  await assert.rejects(retireStoppedFormal(f.args),/ALREADY_COMPLETE/);
 });
+test('secondary retirement cannot reuse primary schema or admission jobs',async()=>{
+ const f=stopped();f.args.ended.repository.full_name='287113535qq-cmyk/sg-capture-runner';
+ await assert.rejects(retireStoppedFormal(f.args),/FORMAL_RETIRE_SOURCE/);
+ f.args.profile.schema='sg-formal-stopped-retire-pyramids-v1';f.args.profile.group='secondary';
+ await assert.rejects(retireStoppedFormal(f.args),/FORMAL_RETIRE_SECONDARY_SCOPE/);
+});
 for(const cause of ['expired','active-game','records','source','repair','pending','jobs'])test('parked formal retirement rejects '+cause+' before writes',async()=>{
  const f=stopped();
  if(cause==='expired')f.args.profile.expiresAt=99;

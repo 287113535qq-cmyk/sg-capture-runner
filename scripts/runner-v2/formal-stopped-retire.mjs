@@ -8,18 +8,22 @@ import {receiptKey} from './durable-queue.mjs';
 // The historical commit authenticates old records, never this runtime's source permission.
 export async function retireStoppedFormal({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
  const stamp=now();
- assert(profile?.schema==='sg-formal-stopped-retire-profile-v1'&&profile.trialId===plan.trialId
+ const secondary=profile?.schema==='sg-formal-stopped-retire-pyramids-v1';
+ assert(!secondary||(profile.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
+  &&profile.group==='secondary'&&plan.target===299850),'FORMAL_RETIRE_SECONDARY_SCOPE');
+ assert(secondary||profile.closedBatchDecorations===undefined,'FORMAL_RETIRE_DECORATION_SCOPE');
+ assert((secondary||profile?.schema==='sg-formal-stopped-retire-profile-v1')&&profile.trialId===plan.trialId
   &&profile.gameId===plan.gameId&&profile.planHash===hash(plan)&&profile.sourceAllowance===0
   &&Number.isSafeInteger(profile.createdAt)&&profile.createdAt<=stamp&&stamp<profile.expiresAt
   &&profile.expiresAt-profile.createdAt<=7200000&&/^[a-f0-9]{40}$/.test(commit??'')
   &&/^\d+:1$/.test(run??''),'FORMAL_RETIRE_PROFILE');
- assert(ended?.repository?.full_name==='zyzuoyang/sg-capture-runner'&&ended.status==='completed'
+ assert(ended?.repository?.full_name===(secondary?'287113535qq-cmyk/sg-capture-runner':'zyzuoyang/sg-capture-runner')&&ended.status==='completed'
   &&ended.conclusion==='success'&&ended.head_sha===profile.sourceCommit
   &&`${ended.id}:${ended.run_attempt}`===profile.sourceRun,'FORMAL_RETIRE_SOURCE');
  assert(jobs?.total_count===jobs.jobs?.length&&jobs.jobs.every(j=>j.status==='completed')
   &&jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)).length===20
   &&Array.from({length:20},(_,i)=>`capture-${i}`).every(name=>jobs.jobs.some(j=>j.name===name&&j.conclusion==='success'))
-  &&['formal-admit','verify'].every(name=>jobs.jobs.some(j=>j.name===name&&j.conclusion==='success')),'FORMAL_RETIRE_JOBS');
+  &&[secondary?'pyramids-formal-admit':'formal-admit','verify'].every(name=>jobs.jobs.some(j=>j.name===name&&j.conclusion==='success')),'FORMAL_RETIRE_JOBS');
  const key=`formal-stopped-retire:${plan.trialId}:${hash(profile)}`;
  assert(!(await store.get('journal',key+':complete')),'FORMAL_RETIRE_ALREADY_COMPLETE');
  await boundary();
@@ -51,7 +55,8 @@ export async function retireStoppedFormal({store,transport,gate,parser,plan,prof
  const guarded=async()=>{await boundary();assert(hash((await store.get('state','campaign'))?.value)===profile.campaignHash
   &&hash((await store.get('state',profile.repairKey))?.value)===profile.repairHash,'FORMAL_RETIRE_SCENE_CHANGED');};
  const result=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
-  expectedPoolHash:profile.poolHash,commit:profile.sourceCommit,now});
+  expectedPoolHash:profile.poolHash,commit:profile.sourceCommit,group:secondary?'secondary':'primary',
+  closedBatchDecorations:profile.closedBatchDecorations??[],now});
  assert(result.completePreserved===profile.completePreserved&&result.abandonedAttempts===0
   &&result.sourceRequests===0&&result.newBetAllowance===0,'FORMAL_RETIRE_RESULT');
  const out={schema:'sg-formal-stopped-retire-v1',profileHash:hash(profile),trialId:plan.trialId,

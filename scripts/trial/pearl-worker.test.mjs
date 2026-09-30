@@ -68,6 +68,8 @@ async function run({failDurability=false,unknown=false,formal=false,repair=false
 test('WMS worker uses persisted Init, one paid Logic, eight free Logic and EndGame with Python readback',async()=>{
  const r=await run();assert.equal(r.error,undefined);assert.equal(r.posts,11);assert.equal(r.saved.length,11);
  assert.equal(r.evidence.paidRoundRequests,1);assert.equal(r.evidence.completedThisRun,1);assert.equal(r.record.normalized.bonus,1);
+ assert(r.record.raw.steps.every(s=>s.sourceTiming?.schema==='sg-source-timing-v1'
+  &&s.sourceTiming.headersMs>=0&&s.sourceTiming.bodyMs>=0&&s.sourceTiming.totalMs>=0));
 });
 
 test('count-driven worker persists initial15 plus8 and EndGame through Python and collector',async()=>{

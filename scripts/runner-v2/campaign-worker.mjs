@@ -1,6 +1,7 @@
 import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
 import fs from 'node:fs';
-import {spawn} from 'node:child_process';
+import {captureSessionLanes} from './session-lanes.mjs';
+import {sessionLayout,sessionWorker} from './session-layout.mjs';
 import {connectGateway} from './transport.mjs';
 import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
@@ -26,20 +27,18 @@ const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
   owner:`${group}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.SG_TRIAL_SHARD||'status'}`});
 let stop=false;
-process.on('SIGTERM',()=>{stop=true;});process.on('SIGINT',()=>{stop=true;});
+const childStop=new AbortController();
+process.on('SIGTERM',()=>{stop=true;childStop.abort();});process.on('SIGINT',()=>{stop=true;childStop.abort();});
 const sleep=()=>new Promise(r=>setTimeout(r,10000));
 const stages=createStageProgress({emit:row=>console.log(JSON.stringify(row))});
 async function capture(plan){
   const validationLimit=(await store.get('state','campaign')).value.validationLimit || 0;
   fs.writeFileSync('config/round-one-active.json',JSON.stringify(plan)+'\n');
-  return new Promise((resolve,reject)=>{
-    const child=spawn(process.execPath,['scripts/trial/worker.mjs','capture'],{stdio:['inherit','inherit','inherit','pipe'],env:{...process.env,
+  return captureSessionLanes({plan,host:Number(process.env.SG_TRIAL_SHARD),group,history:exportResourceHistory(gate),signal:childStop.signal,
+    env:{...process.env,
       SG_RESOURCE_HANDOFF:'pipe-v1',
       SG_PROCESSING_MODE:'github-v2',SG_POOL_RUN_LIMIT:String(validationLimit || Number(process.env.SG_POOL_RUN_LIMIT||'0')),
-      SG_TRIAL_PLAN:'config/round-one-active.json',SG_TRIAL_MINUTES:String(Math.max(1,(end-Date.now())/60000))}});
-    child.stdio[3].on('error',()=>{}); // Closed pipe falls back to a cold gate.
-    child.stdio[3].end(JSON.stringify(exportResourceHistory(gate)));
-    child.on('error',()=>reject(Error('CAPTURE_CHILD_FAILED')));child.on('exit',resolve);
+      SG_TRIAL_PLAN:'config/round-one-active.json',SG_TRIAL_MINUTES:String(Math.max(1,(end-Date.now())/60000))}
   });
 }
 try{
@@ -58,8 +57,9 @@ try{
       if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}
       if(code===0){
         const pool=(await store.get('state','pool:'+next.plan.trialId)).value;
-        const worker=Number(process.env.SG_TRIAL_SHARD)+(group==='secondary'?20:0);
-        if(await campaign.idleAtTail(next.plan,pool,worker)){
+        const workers=Array.from({length:sessionLayout(next.plan)?.lanesPerHost??1},(_,lane)=>sessionWorker(next.plan,Number(process.env.SG_TRIAL_SHARD),group,lane));
+        const idle=await Promise.all(workers.map(worker=>campaign.idleAtTail(next.plan,pool,worker)));
+        if(idle.every(Boolean)){
           console.log(JSON.stringify({action:'yield-runner',reason:'REMAINING_RANGES_OWNED_BY_OTHER_WORKERS'}));break;
         }
       }

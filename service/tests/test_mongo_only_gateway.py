@@ -44,6 +44,19 @@ class GatewayTests(unittest.TestCase):
         for extra in ({'keys':['primary/private']},{'trialId':'other'},{'query':{}},{'path':'x'}):
             with self.assertRaises(Refused):g.dispatch({**request,**extra})
 
+    def test_observation_boundary_is_additive_fixed_readonly_not_client_selected(self):
+        g=Gateway(self.db,'secondary',self.manifest)
+        for run in (36753473985,36782298458,999):
+            key=f'primary/capture-run:{run}:1'
+            self.db['capture_state_v2'].rows[key]={'_id':key,'value':{'fixture':run}}
+        request={'schema':'sg-mongo-only-v2','op':'parallel_primary_observation_boundary'}
+        result=g.dispatch(request)
+        self.assertEqual([r['value']['fixture'] for r in result['state']],[36782298458])
+        self.assertEqual([r['value']['fixture'] for r in g.dispatch({**request,'op':'parallel_primary_boundary'})['state']],[36753473985])
+        for extra in ({'runId':999},{'keys':['primary/private']},{'trialId':'anything'}):
+            with self.assertRaises(Refused):g.dispatch({**request,**extra})
+        with self.assertRaises(Refused):self.g.dispatch(request)
+
     def test_cas_excludes_stale_update(self):
         self.assertTrue(self.call('create',collection='state',key='worker:0',value={'a':1})['created'])
         self.assertFalse(self.call('create',collection='state',key='worker:0',value={'a':99})['created'])

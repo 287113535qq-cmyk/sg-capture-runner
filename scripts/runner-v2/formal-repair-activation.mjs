@@ -7,10 +7,11 @@ import {receiptKey} from './durable-queue.mjs';
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
- const stamp=now(),plan=applyFormalCount(plans,profile)[32795],oldPlan=applyFormalCount(plans,oldProfile)[32795];
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=awards?2596:961,remaining=300000-preserved;
- assert(oldProfile.schema===(awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const pyramids=profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -20,7 +21,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  const repair=(await store.get('state',profile.repairKey))?.value,retired=(await store.get('journal',profile.retirementKey))?.value;
  assert(pool&&campaign&&hash(pool)===profile.poolHash&&hash(campaign)===profile.campaignHash
   &&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.confirmed===preserved&&campaign.activeGame===null,'FORMAL_REPAIR_SCENE');
- const entry=campaign.games.find(g=>g.game_id===32795);
+ assert(!pyramids||campaign.group==='secondary','FORMAL_REPAIR_GROUP');
+ const entry=campaign.games.find(g=>g.game_id===gameId);
  assert(entry?.status==='parked-protocol'&&entry.repairKey===profile.repairKey&&repair
   &&hash(repair)===profile.repairHash&&repair.sourceAllowance===0&&repair.requiresNewSession===true,'FORMAL_REPAIR_QUEUE');
  assert(retired?.schema==='sg-formal-stopped-retire-v1'&&hash(retired)===profile.retirementHash
@@ -34,8 +36,13 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
   const rows=await store.getMany('state',Array.from({length:Math.min(100,pool.nextBatchId-start)},(_,i)=>`batch:${plan.trialId}:${start+i}`));
   assert(rows.every(Boolean),'FORMAL_REPAIR_BATCH_MISSING');
   for(const {value:b} of rows){
-   assert(!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.failure&&b.leaseUntil<=stamp&&b.checkpoint===b.journaled,'FORMAL_REPAIR_PENDING');
    const count=b.journaled-b.start+1,old=pool.countAllocation.batches[b.id];
+   // Already admitted legacy baselines retain their original marker verbatim.
+   // Only their immutable old-spec hash can prove that this is historical.
+   const frozenLegacy=pyramids&&b.id<=oldSpec.baselineBatchCount&&old?.closed
+    &&old.evidenceHash===hash(b)&&b.failure==='LEGACY_IMPORT_REQUIRES_RETIREMENT';
+   assert(!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&(!b.failure||frozenLegacy)
+    &&b.leaseUntil<=stamp&&b.checkpoint===b.journaled,'FORMAL_REPAIR_PENDING');
    assert(old?.closed&&old.complete===count&&count>=0&&count<=100,'FORMAL_REPAIR_BATCH_COUNT');
    const rs=count?(await store.getMany('journal',Array.from({length:count},(_,i)=>receiptKey(plan.trialId,b.start+i)))).map(r=>r?.value):[];
    assert(rs.every(Boolean),'FORMAL_REPAIR_RECEIPT');
@@ -46,8 +53,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
   }
  }
  assert(records.length===preserved&&hash(records)===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
- const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId:32795,
-  target:300000,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,
+ const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId,
+  target:plan.target,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,
   sessionRotation:'closed-batches-v1',runAdmission:'unique-github-run-v1',profileHash:hash(profile),parentActivation:oldSpec.activation,
   parentSpecHash:hash(oldSpec),sourceRecordsHash:profile.recordsHash,repairKey:profile.repairKey};
  await boundary();
@@ -63,8 +70,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  });
  await store.update('state',profile.repairKey,v=>{assert(hash(v)===profile.repairHash,'FORMAL_REPAIR_QUEUE_CHANGED');return {...v,status:'repaired-returned',sourceAllowance:0,requiresNewSession:true,returnedActivation:profile.activation,returnedCommit:commit,returnedRun:run,returnedAt:now()};});
  await store.update('state','campaign',v=>{
-  assert(hash(v)===profile.campaignHash,'FORMAL_REPAIR_CAMPAIGN_CHANGED');const e=v.games.find(g=>g.game_id===32795);e.status='active';
-  v.activeGame=32795;v.enabled=true;v.validationLimit=0;delete v.protocolValidation;
+  assert(hash(v)===profile.campaignHash,'FORMAL_REPAIR_CAMPAIGN_CHANGED');const e=v.games.find(g=>g.game_id===gameId);e.status='active';
+  v.activeGame=gameId;v.enabled=true;v.validationLimit=0;delete v.protocolValidation;
   v.formalCount={activation:profile.activation,trialId:plan.trialId,profileHash:hash(profile)};return v;
  });
  const out={schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit,run,

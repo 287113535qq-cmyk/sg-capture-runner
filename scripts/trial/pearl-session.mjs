@@ -1,4 +1,5 @@
 import {createHmac} from 'node:crypto';
+import {sessionWorkerAllowed} from '../runner-v2/session-layout.mjs';
 import {PEARL_SOURCE,parseXml,one,children,need,uint} from './pearl-protocol.mjs';
 export const PEARL_ENDPOINT='https://gls.atc.casinarena.com/gls.rgsx';
 export const escapeXml=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
@@ -7,7 +8,7 @@ export function pearlSession(base,plan,worker,run){
  need(!formal||(!plan.demoGeneration&&/^[a-f0-9]{64}$/.test(plan.countAllocation)&&/^\d+:1:[a-f0-9-]{36}$/.test(run??'')),'PEARL_FORMAL_SESSION_SCOPE');
  need(plan.gameId===32795&&plan.runtimeGameId===33155&&plan.sourceKey===PEARL_SOURCE&&plan.adapter==='pearl-wms-v1'
   &&plan.trialId==='sg_r1_20260930_32795'&&plan.mode==='demo'&&plan.buy===0&&plan.betRaw===200
-  &&/^[a-f0-9]{64}$/.test((formal?plan.countAllocation:plan.demoGeneration)??'')&&Number.isInteger(worker)&&worker>=0&&worker<20,'PEARL_SESSION_SCOPE');
+  &&/^[a-f0-9]{64}$/.test((formal?plan.countAllocation:plan.demoGeneration)??'')&&sessionWorkerAllowed(plan,worker,'primary'),'PEARL_SESSION_SCOPE');
  need(base.mode==='demo'&&/^Free:/i.test(base.sessionId??'')&&typeof base.operatorId==='string'&&base.operatorId.length>0,'PEARL_DEMO_REQUIRED');
  return base.sessionId.slice(0,5)+createHmac('sha256',base.sessionId+'@'+base.operatorId)
   .update(`sg-pearl-wms-v1:${plan.trialId}:${formal?plan.countAllocation+':'+run:plan.demoGeneration}:${worker}`).digest('hex').slice(0,32);

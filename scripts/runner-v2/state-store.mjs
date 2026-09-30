@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {stable} from './mongo-writer.mjs';
+import {sessionWorkerAllowed,sessionLayout} from './session-layout.mjs';
 import {loadCountPermission,allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
 
 const fail=code=>Object.assign(new Error(code),{code});
@@ -72,8 +73,10 @@ export class RunnerPool {
     assert(['primary','secondary'].includes(group));
   }
   checkWorker(worker) {
-    const offset=this.group==='primary'?0:20;
-    if(!Number.isInteger(worker) || worker<offset || worker>=offset+20)throw fail('WORKER_GROUP_MISMATCH');
+    if(!sessionWorkerAllowed(this.plan,worker,this.group))throw fail('WORKER_GROUP_MISMATCH');
+  }
+  updatePool(change){
+    return this.store.update('state',this.key,change,{tries:40*(sessionLayout(this.plan)?.lanesPerHost??1)});
   }
   async countPermission(){
     if(this.plan.countAllocation===undefined)return null;
@@ -88,7 +91,7 @@ export class RunnerPool {
     assert(/^[a-f0-9]{64}$/.test(identity.sessionHash));
     assert(typeof identity.owner==='string' && identity.owner.length>0 && identity.owner.length<=180);
     let epoch;const spec=await this.countPermission();
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       this.checkCount(value,spec);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       const old=value.workers[String(worker)];
@@ -119,7 +122,7 @@ export class RunnerPool {
   }
   async take(lease) {
     this.checkWorker(lease.worker);let batch=null;const spec=await this.countPermission();
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       const worker=this.owned(value,lease);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       this.checkCount(value,spec);
@@ -140,7 +143,7 @@ export class RunnerPool {
       if(!worker || worker.owner!==lease.owner || worker.epoch!==lease.epoch)throw fail('LEASE_LOST');
       if(worker.leaseUntil-this.now()>570_000)return;
     }
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       const worker=value.workers[String(lease.worker)];
       // Resource backpressure can outlast a lease. An active batch cannot be
       // reassigned while resumeSafe is false; renew only the same fenced owner.
@@ -155,7 +158,7 @@ export class RunnerPool {
     // by the caller on GitHub; never from a workflow log or highest sequence.
     assert(proof.pending===null && proof.confirmed===batch.end-batch.start+1 && proof.fullReadback===true);
     const spec=await this.countPermission();
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       const worker=this.owned(value,lease);
       this.checkCount(value,spec);
       if(spec){completeCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,proof});return value;}
@@ -166,14 +169,14 @@ export class RunnerPool {
     });
   }
   async release(lease,{resumeSafe=false}={}) {
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       const worker=this.owned(value,lease);
       worker.resumeSafe=resumeSafe;worker.leaseUntil=0;return value;
     });
   }
   async settle(lease,batch,evidence,key){
     const spec=await this.countPermission();assert(spec,'COUNT_PERMISSION_REQUIRED');
-    await this.store.update('state',this.key,value=>{
+    await this.updatePool(value=>{
       this.owned(value,lease);
       settleCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,evidence,key});
       return value;

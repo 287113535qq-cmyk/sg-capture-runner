@@ -263,7 +263,9 @@ export class BatchController {
             assert(hash((await this.store.get('journal',key))?.value)===hash(evidence),'ABANDON_READBACK_FAILED');
             abandoned=key;
           }
-          await this.update(v=>{assert(hash(v)===hash(current),'BATCH_VERSION_CHANGED');
+          // A lane can discover a sibling's protocol stop just after its own
+          // batch settled. Do not decorate that immutable snapshot with nulls.
+          if(current.pending||current.pendingOriginal||current.protocolResume||current.leaseUntil!==0||abandoned)await this.update(v=>{assert(hash(v)===hash(current),'BATCH_VERSION_CHANGED');
             return {...v,pending:null,pendingOriginal:null,protocolResume:null,leaseUntil:0,
               ...(abandoned?{abandonedDemo:abandoned}:{})};});
         }

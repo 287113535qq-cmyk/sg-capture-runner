@@ -1,3 +1,4 @@
+import {completedResponseTiming} from './capture-telemetry.mjs';
 import assert from 'node:assert/strict';
 import {createHash,randomUUID} from 'node:crypto';
 import {captureBatch,runDynamicBatches,fail} from './capture-batch.mjs';
@@ -33,7 +34,8 @@ export async function runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extens
   if(!response.ok){const retry=response.headers.get('retry-after'),seconds=/^\d+$/.test(retry??'')?Number(retry):Math.max(0,(Date.parse(retry??'')-Date.now())/1000);
    throw fail('SOURCE_HTTP_REJECTED','source_http',{httpStatus:response.status,cooldownUntil:response.status===429?Date.now()/1000+Math.max(600,Number.isFinite(seconds)?seconds:0):0});}
   let text;try{text=await response.text();}catch{throw fail('SOURCE_NETWORK_OUTCOME_UNKNOWN','source_network');}
-  const step={ts:new Date().toISOString(),methodName:'wms',msgId,requestPayload,responsePayload:text,responseXml:text,elapsedMs:Math.round(performance.now()-start)};
+  const step={ts:new Date().toISOString(),methodName:'wms',msgId,requestPayload,responsePayload:text,responseXml:text,elapsedMs:Math.round(performance.now()-start),
+   ...(completedResponseTiming(response)?{sourceTiming:completedResponseTiming(response)}:{})};
   // Preserve even rejected/malformed replies through exchange before stopping.
   try{const parsed=pearlResponse(text,msgId);step.responseBalance=parsed.balance;session=parsed.session;}
   catch{step.sourceRejected=true;}

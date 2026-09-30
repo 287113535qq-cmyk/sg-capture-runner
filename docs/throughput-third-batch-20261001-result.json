@@ -1,0 +1,17 @@
+{
+  "localRunnerTests": 752,
+  "linux": "pending",
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "liveRuntimeUnchanged": true,
+  "multiSessionOnline": false,
+  "pyramidsOnlineReentry": false,
+  "memoryPreserved": 1658,
+  "inventory": {
+    "games": 178,
+    "completedSkipped": 14,
+    "candidates": 68,
+    "unmapped": 96
+  },
+  "allOptimizationsComplete": false
+}

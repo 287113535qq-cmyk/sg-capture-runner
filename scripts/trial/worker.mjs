@@ -13,7 +13,7 @@ import {MOREPUFF_MEGAHAT_EXTENSION} from './morepuff-megahat-review.mjs';
 import {MOREPUFF_SOURCE,MOREPUFF_EXTENSION} from './morepuff-protocol.mjs';
 import {JINZITA_SOURCE,JINZITA_EXTENSION} from './jinzita-protocol.mjs';
 import {failureCode} from './failure-code.mjs';
-import {createCaptureTelemetry,businessOutcome} from './capture-telemetry.mjs';
+import {createCaptureTelemetry,businessOutcome,completedResponseTiming} from './capture-telemetry.mjs';
 import {LUXOR_SOURCE,LUXOR_EXTENSION} from './luxor-protocol.mjs';
 import {DEMON_NESTED_EXTENSION} from './demon-nested-protocol.mjs';
 import assert from 'node:assert/strict';
@@ -60,7 +60,7 @@ assert([0,50].includes(requestIntervalMs));
 assert(['exchange','exchange_journal'].includes(exchangeOperation));
 if(isPool){assert.equal(requestIntervalMs,0);assert.equal(exchangeOperation,'exchange_journal');}
 const shard=process.env.SG_TRIAL_SHARD===undefined ? null : globalShard(
-  Number(process.env.SG_TRIAL_SHARD), plan, process.env.GITHUB_REPOSITORY);
+  Number(process.env.SG_TRIAL_SHARD), plan, process.env.GITHUB_REPOSITORY,Number(process.env.SG_SESSION_LANE??'0'));
 const transport = connect(plan), rpc = (op,data={})=>telemetry.rpc((operation,request)=>transport.rpc(operation,request),op,{...(shard===null?{}:{shardId:shard}),...data});
 const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:plan.gameId,runtimeGameId:plan.runtimeGameId,
   target:plan.target,shardId:shard,role,requestIntervalMs,exchangeOperation,sourceRequests:0,paidRoundRequests:0,completedThisRun:0,productionGamePoolWrites:false};
@@ -150,7 +150,8 @@ async function main() {
     let root;
     try{const d=parser.parse(text);root=d.GDMRESPONSE || d.gdmresponse || {};}catch{throw fail('SOURCE_XML_REJECTED');}
     const result={ts:new Date().toISOString(),methodName:'processGameMessage',msgId,requestPayload:payload,
-      responsePayload:String(root.PAYLOAD || ''),responseXml:text,elapsedMs:Math.round(performance.now()-start)};
+      responsePayload:String(root.PAYLOAD || ''),responseXml:text,elapsedMs:Math.round(performance.now()-start),
+   ...(completedResponseTiming(response)?{sourceTiming:completedResponseTiming(response)}:{})};
     if(String(root.SUCCESS).toLowerCase()!=='true') {
       // Preserve rejection as a frame when a paid/continuation intent exists.
       return {...result,sourceRejected:true};

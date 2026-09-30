@@ -11,7 +11,7 @@ on:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-count-pyramids-20261001.json, formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
+        options: [formal-repair-pyramids-coins-20261001.json, formal-count-pyramids-20261001.json, formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       pilot_profile:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
@@ -861,13 +861,13 @@ jobs:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
         run: node scripts/runner-v2/campaign-worker.mjs capture
   pyramids-formal-admit:
-    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.formal_profile == 'formal-count-pyramids-20261001.json'
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && (inputs.formal_profile == 'formal-count-pyramids-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
-      SG_FORMAL_COUNT_PROFILE: formal-count-pyramids-20261001.json
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -882,8 +882,12 @@ jobs:
         # Install its locked dependency even though this job sends no SG requests.
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Verify the independent formal run admission
+      - name: Verify the original formal run admission
+        if: inputs.formal_profile == 'formal-count-pyramids-20261001.json'
         run: node scripts/runner-v2/pyramids-count-control.mjs admit
+      - name: Verify repaired Pyramids admission alongside the fixed primary run
+        if: inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json'
+        run: node scripts/runner-v2/pyramids-repair-control.mjs admit
   pyramids-formal-capture:
     needs: pyramids-formal-admit
     name: capture-${{ matrix.shard }}
@@ -899,7 +903,7 @@ jobs:
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'
       SG_POOL_RUN_LIMIT: '0'
-      SG_FORMAL_COUNT_PROFILE: formal-count-pyramids-20261001.json
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

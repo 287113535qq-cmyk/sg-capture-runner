@@ -2,6 +2,13 @@
 const bounds=[1,5,10,25,50,100,250,500,1000,2000,4000,8000,16000,30000,60000];
 const messages=new Set(['INIT','REELSTRIP','BET','FREE_GAME','FEATURE_START','FEATURE_PICK','FEATURE_END','Init','Logic','EndGame']);
 const operations=new Set(['status','audit','register','next','claim','begin','intent','exchange','exchange_journal','bootstrap_intent','bootstrap_frame','release','finish_run','fail','ping','yield_protocol_stop']);
+const responseTimings=new WeakMap();
+// Persist only completed response timings alongside the already durable frame.
+// No additional RPC, credentials, request data, or admission decisions.
+export function completedResponseTiming(response){
+ const value=responseTimings.get(response);
+ return value?.complete?{schema:'sg-source-timing-v1',headersMs:value.headersMs,bodyMs:value.bodyMs,totalMs:value.totalMs}:null;
+}
 const histogram=()=>({count:0,totalMs:0,maxMs:0,buckets:Array(bounds.length+1).fill(0)});
 function add(map,key,ms){
  if(!Number.isFinite(ms)||ms<0)return;
@@ -53,14 +60,18 @@ export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=
   async fetch(call,message,...args){
    const name=messages.has(message)?message:'other',at=now();let response;
    try{response=await call(...args);}catch(error){errors++;observe('source.'+name+'.headersError',now()-at);throw error;}
-   observe('source.'+name+'.headers',now()-at);
+   const headersMs=rounded(now()-at);
+   observe('source.'+name+'.headers',headersMs);
    if(!response.ok){errors++;observe('source.'+name+'.httpRejected',now()-at);}
-   return new Proxy(response,{get(target,key){
-    if(key==='text')return async()=>{const bodyAt=now();try{return await target.text();}
+   const timing={headersMs,complete:false};
+   const wrapped=new Proxy(response,{get(target,key){
+    if(key==='text')return async()=>{const bodyAt=now();try{const text=await target.text();
+     timing.bodyMs=rounded(now()-bodyAt);timing.totalMs=rounded(now()-at);timing.complete=true;return text;}
      catch(error){errors++;observe('source.'+name+'.bodyError',now()-bodyAt);throw error;}
      finally{observe('source.'+name+'.body',now()-bodyAt);observe('source.'+name+'.total',now()-at);}};
     const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;
    }});
+   responseTimings.set(wrapped,timing);return wrapped;
   }
  };
 }

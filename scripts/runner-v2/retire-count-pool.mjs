@@ -3,10 +3,13 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter} from './mongo-writer.mjs';
 import {checkLedger,settleCountBatch,auditCountBatch} from './complete-count.mjs';
+import {reviewClosedBatchDecoration} from './closed-batch-decoration.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
 // private snapshots in bounded pages; retain immutable closed batches verbatim.
-export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,now=Date.now}){
+export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],now=Date.now}){
+ assert(Array.isArray(closedBatchDecorations)&&closedBatchDecorations.length<=1
+  &&(!closedBatchDecorations.length||(group==='secondary'&&plan.gameId===32721&&closedBatchDecorations[0].batchId===50)), 'COUNT_DECORATION_SCOPE');
  assert(spec.sessionRotation==='closed-batches-v1'&&!pool.enabled&&hash(pool)===expectedPoolHash
   &&pool.planHash===hash(plan)&&Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'COUNT_RETIRE_POOL_UNSAFE');
  checkLedger(pool,plan,spec);
@@ -43,7 +46,13 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
     assert(count===item.complete&&b.pending===null&&!b.pendingOriginal&&!b.bootstrapAwaiting
      &&b.checkpoint===b.journaled,'COUNT_RETIRE_CLOSED_CHANGED');
     // Even a zero-record closed batch must preserve its immutable evidence.
-    await auditCountBatch({store,pool,plan,spec,record:{batchId:b.id},cache:new Map()});
+    const cache=new Map(),proof=closedBatchDecorations.find(p=>p.batchId===b.id);
+    if(proof){
+     const receipt=(await store.get('journal',item.settlementKey))?.value;
+     cache.set(key,reviewClosedBatchDecoration(b,receipt,proof));
+     await save(prefix+`:closed-decoration:${b.id}`,{...proof,settlementKey:item.settlementKey,sourceRequests:0});
+    }
+    await auditCountBatch({store,pool,plan,spec,record:{batchId:b.id},cache});
    }else{
     const beforeKey=prefix+`:batch:${b.id}`;
     await save(beforeKey,{schema:'sg-retired-count-batch-v1',batch:b,recordsHash:hash(records),sourceRequests:0,
@@ -52,7 +61,7 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
      assert(hash(v)===hash(b),'COUNT_RETIRE_BATCH_CHANGED');return {...v,owner,epoch:b.epoch+1,leaseUntil:0};
     });
     const queue=new DurableQueue({store,plan,batchKey:key,owner,epoch:b.epoch+1}),writer=new MongoWriter({gate,queue,
-     permits:new WritePermits({store,group:'primary',owner,now}),sink:{read:ids=>transport.request('rounds_read',{trialId:plan.trialId,ids}),
+     permits:new WritePermits({store,group,owner,now}),sink:{read:ids=>transport.request('rounds_read',{trialId:plan.trialId,ids}),
       insert:records=>transport.request('rounds_insert',{trialId:plan.trialId,records})}});
     const waiting=await queue.outstanding();if(waiting.length){const r=await writer.deliver(waiting);assert(!r.paused&&r.confirmed===waiting.length,'COUNT_RETIRE_FLUSH');}
     assert((await queue.outstanding()).length===0,'COUNT_RETIRE_FLUSH');

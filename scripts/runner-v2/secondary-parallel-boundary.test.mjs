@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {parallelPrimary as p,secondaryRepository,secondaryParallelBoundary,checkPrimaryReadonlyEvidence} from './secondary-parallel-boundary.mjs';
+import {parallelPrimary,observationPrimary,secondaryRepository,secondaryParallelBoundary,checkPrimaryReadonlyEvidence} from './secondary-parallel-boundary.mjs';
 import {original} from './expired-run-review.mjs';import {stalled,revokedMarker} from './demo-run-fence.mjs';
-function fixture(){
+function fixture(p=parallelPrimary){
  const id=123,commit='a'.repeat(40),path='.github/workflows/demo-maintenance.yml',runs=[{repository:secondaryRepository,id,commit,path,status:'in_progress'},
   ...[p,original,stalled].map(x=>({...x,path:'.github/workflows/trial-300k.yml',status:x===p?'in_progress':'queued'}))].map(x=>({...x,head_sha:x.commit,run_attempt:1,event:'workflow_dispatch',conclusion:null,repository:{full_name:x.repository}}));
  const evidence={journal:[],state:[{_id:'primary/campaign',value:{group:'primary',enabled:true,activeGame:32795,validationLimit:0,formalCount:{activation:p.activation,trialId:p.trialId,profileHash:p.profileHash},demoRunRevoked:revokedMarker}},
@@ -12,8 +12,8 @@ function fixture(){
  const read=async q=>{const repo=q.split('/actions/')[0].slice(6);if(q.includes('runs?')){const status=new URL('https://test/'+q).searchParams.get('status'),found=runs.filter(r=>r.repository.full_name===repo&&r.status===status);
   if(other&&repo===secondaryRepository&&status==='queued')found.push({...runs[0],id:456,status});return {total_count:truncated?100:found.length,workflow_runs:found};}
   const rid=Number(q.match(/runs\/(\d+)/)[1]);if(q.includes('/jobs?')){const list=rid===p.id?jobs:oldJob?[{name:'old'}]:[];return {total_count:list.length,jobs:list};}return runs.find(r=>r.id===rid);};
- const transport={request:async op=>op==='parallel_primary_boundary'?evidence:[{value:{active:hold}},{value:{active:false}}]};
- return {args:{read,transport,run:id+':1',commit,now:()=>late?40000:100},evidence,jobs,runs,set:k=>{if(k==='other')other=true;if(k==='oldJob')oldJob=true;if(k==='truncated')truncated=true;if(k==='hold')hold=true;}};
+ const transport={request:async op=>op===(p.operation??'parallel_primary_boundary')?evidence:[{value:{active:hold}},{value:{active:false}}]};
+ return {args:{read,transport,run:id+':1',commit,primaryRun:p,now:()=>late?40000:100},evidence,jobs,runs,set:k=>{if(k==='other')other=true;if(k==='oldJob')oldJob=true;if(k==='truncated')truncated=true;if(k==='hold')hold=true;}};
 }
 test('secondary boundary admits only pinned healthy primary and exact old queued jobs0',async()=>{await secondaryParallelBoundary(fixture().args)();});
 test('other activity old jobs truncation main failure or wrong identity all refuse',async()=>{
@@ -31,4 +31,12 @@ test('cross-group evidence rejects omissions duplicate ids and unrelated pool/ru
 test('GitHub display names are capture-N while owners retain the formal-capture job id',async()=>{
  const f=fixture();assert.equal(f.jobs[1].name,'capture-0');assert.match(f.evidence.state[1].value.workers[0].owner,/:formal-capture:/);
  await secondaryParallelBoundary(f.args)();f.jobs[1].name='formal-capture-0';await assert.rejects(secondaryParallelBoundary(f.args)(),/PRIMARY_JOBS_CHANGED/);
+});
+
+test('reviewed observation run has a distinct fixed readonly scope',async()=>{
+ const f=fixture(observationPrimary);await secondaryParallelBoundary(f.args)();
+ assert.throws(()=>secondaryParallelBoundary({...f.args,primaryRun:{...observationPrimary}}),/REVIEWED_RUN_REQUIRED/);
+ await assert.rejects(secondaryParallelBoundary({...f.args,primaryRun:parallelPrimary})());
+ checkPrimaryReadonlyEvidence(f.evidence,100,observationPrimary);
+ assert.throws(()=>checkPrimaryReadonlyEvidence(f.evidence,100),/EVIDENCE_SCOPE/);
 });

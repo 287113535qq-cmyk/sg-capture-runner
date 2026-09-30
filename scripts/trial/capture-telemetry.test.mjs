@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {createCaptureTelemetry,businessOutcome} from './capture-telemetry.mjs';
+import {createCaptureTelemetry,businessOutcome,completedResponseTiming} from './capture-telemetry.mjs';
 test('timing keeps one fetch, exact arguments, cookies and Response semantics',async()=>{
  let now=0,calls=0;const rows=[],options={body:'PRIVATE',signal:new AbortController().signal};
  const t=createCaptureTelemetry({gameId:32795,shardId:0,evidence:{completedThisRun:0,sourceRequests:1},now:()=>now,emit:x=>rows.push(x)});
@@ -37,4 +37,16 @@ test('business outcome cannot mistake graceful protocol isolation or partial run
  assert.equal(businessOutcome({status:'complete'}),'complete');
  assert.equal(businessOutcome({status:'halted'},{category:'source_network'}),'source-paused');
  assert.equal(businessOutcome({status:'complete'},Error('failure')),'requires-review');
+});
+test('durable timing is response-local, complete-only and does not expose payload or cookies',async()=>{
+ let now=0;const t=createCaptureTelemetry({evidence:{},now:()=>now});
+ const response=await t.fetch(async()=>{now=40;return {ok:true,text:async()=>{now=75;return 'private';}};},'Logic');
+ assert.equal(completedResponseTiming(response),null);now=50;assert.equal(await response.text(),'private');
+ const timing=completedResponseTiming(response);
+ assert.deepEqual(timing,{schema:'sg-source-timing-v1',headersMs:40,bodyMs:25,totalMs:75});
+ timing.bodyMs=999;assert.equal(completedResponseTiming(response).bodyMs,25);
+ assert.equal(completedResponseTiming(new Response('x')),null);
+ const bad=await t.fetch(async()=>({ok:true,text:async()=>{throw Error('private');}}),'EndGame');
+ await assert.rejects(bad.text());assert.equal(completedResponseTiming(bad),null);
+ assert.equal(completedResponseTiming(response).totalMs,75);
 });
