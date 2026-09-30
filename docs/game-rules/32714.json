@@ -151,6 +151,8 @@
     "docs/huff-hard-hat-protocol.md",
     "docs/huff-natural-free-stop-20260928-result.json",
     "docs/huff-natural-free-stop-20260928.md",
+    "docs/mansion-next-review-20260930-result.json",
+    "docs/mansion-next-review-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/secondary-account-diagnostics-20260928.md",
@@ -171,6 +173,8 @@
     "docs/huff-hard-hat-protocol.md": "945815517f89bc4abadc32d97dfab58f82b309d89fdd6ca5066114b64285b68b",
     "docs/huff-natural-free-stop-20260928-result.json": "7426e09239e8365da21768b709e522ed5c714be5ce47c93ccd8810b46070e24e",
     "docs/huff-natural-free-stop-20260928.md": "11b154d3f8505ae6ab2185d9518616c4021fb05c50fc81368e5f45361df36730",
+    "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
+    "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
@@ -184,5 +188,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a0efa443b2934c4a42773262a5465620a824faf4fee899104ecee7359361f687"
+  "ruleHash": "d6f54fad62b7bb2dd21725603f1c19fab42abcb2cfb4d1e0779c76fa11e5bcba"
 }
