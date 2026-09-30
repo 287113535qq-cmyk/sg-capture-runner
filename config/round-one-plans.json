@@ -783,5 +783,38 @@
       "GN": "richlittlepiggiesworldclass96",
       "LB": "25"
     }
+  },
+  "32795": {
+    "schema": "sg-work-pool-v1",
+    "configured": true,
+    "trialId": "sg_r1_20260930_32795",
+    "target": 300000,
+    "workers": 20,
+    "gameId": 32795,
+    "runtimeGameId": 33155,
+    "name": "Pearl of the Caribbean",
+    "runtimeSlug": "pearlofthecaribbean",
+    "sourceKey": "pearlofthecaribbean-wms-v1",
+    "mode": "demo",
+    "buy": 0,
+    "betRaw": 200,
+    "betPerLine": 4,
+    "lineBet": 50,
+    "maxSteps": 10,
+    "mongoBatchSize": 100,
+    "minRequestIntervalMs": 0,
+    "database": "sg_capture_staging_v1",
+    "collection": "official_rounds",
+    "productionGamePoolWrites": false,
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "adapter": "pearl-wms-v1",
+    "requestParams": {
+      "gameID": "20327",
+      "isBigBet": "0",
+      "stakeTotal": "200",
+      "currencyMultiplier": "1"
+    },
+    "protocol": "wms"
   }
 }

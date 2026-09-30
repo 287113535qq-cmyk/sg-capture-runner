@@ -46,6 +46,14 @@ def contract(game_id):
             'complete': '官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。',
             'bounds': '历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，PGS2/GE2未知分支1局作废，34已用/66注销；不代表整款玩法覆盖或正式300000准入。'})
         native['files'] += ['service/piggies_fields.py', 'scripts/trial/piggies-protocol.mjs', 'collector/sg.piggies.ts']
+    elif game_id == 32795:
+        native.update({'family': 'pearl-wms-eight-free-v1', 'messages': ['Init', 'Logic', 'EndGame'],
+            'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
+            'continue': '首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。',
+            'complete': '末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。',
+            'bounds': '历史100局含1自然8免费已核，历史credit0。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。',
+            'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/paid-round-evidence.mjs'],
+            'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '总数8、进度0至8、首次授予8后续0。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
     elif game_id == 32651:
         native.update({'family': 'squid-jackpot-v1', 'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
             'start': '首帧 BET；其后按完整历史执行自然免费或 Jackpot 功能，不能再次 BET；一大局内会话不变。',

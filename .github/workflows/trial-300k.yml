@@ -6,7 +6,7 @@ on:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
         default: demo-pilot-morepuff-20260930.json
-        options: [demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
+        options: [demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       allocation:
         description: 'Dynamic batches for a configured new trial, or the preserved legacy trial'
         default: round-one

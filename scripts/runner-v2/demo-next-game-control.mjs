@@ -9,10 +9,10 @@ import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
 import {importParkedDemo} from './parked-import.mjs';import {decodeParkedArchive} from './parked-decoder.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),path=demoPilotProfilePath(),profile=load(path),plans=load('config/round-one-plans.json');
-const scope={'config/demo-pilot-piggies-20260930.json':[32636,32714,0,0], 'config/demo-pilot-mansion-20260930.json':[32714,32718,103,2], 'config/demo-pilot-morepuff-20260930.json':[32718,32720,53,1], 'config/demo-pilot-luxor-20260930.json':[32835,32820,82,1], 'config/demo-pilot-jinzita-20260930.json':[32720,32835,320,2]}[path];
+const scope={'config/demo-pilot-pearl-20260930.json':[32795,32636,0,0], 'config/demo-pilot-piggies-20260930.json':[32636,32714,0,0], 'config/demo-pilot-mansion-20260930.json':[32714,32718,103,2], 'config/demo-pilot-morepuff-20260930.json':[32718,32720,53,1], 'config/demo-pilot-luxor-20260930.json':[32835,32820,82,1], 'config/demo-pilot-jinzita-20260930.json':[32720,32835,320,2]}[path];
 assert(scope&&profile.gameId===scope[0]&&profile.fromGameId===scope[1]&&profile.completePreserved===scope[2]&&profile.abandonedAttempts===scope[3],'NEXT_GAME_PROFILE_SCOPE');
 assert(([32720,32718,32714].includes(profile.gameId))===!!profile.legacyImport,'NEXT_GAME_IMPORT_SCOPE');
-if([32636,32718,32714].includes(profile.gameId))assert(/^[a-f0-9]{64}$/.test(profile.sourceClosureHash??''),'NEXT_GAME_SOURCE_CLOSE_REQUIRED');
+if([32795,32636,32718,32714].includes(profile.gameId))assert(/^[a-f0-9]{64}$/.test(profile.sourceClosureHash??''),'NEXT_GAME_SOURCE_CLOSE_REQUIRED');
 for(const [path,expected] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..'),'NEXT_GAME_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===expected,'NEXT_GAME_RUNTIME_CHANGED');
@@ -33,7 +33,7 @@ try{
   await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');await checkPrimaryLeases({store,plans});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r.value.active===false),'GLOBAL_HOLD');
  };
- if(profile.gameId===32636){assert(profile.emptyCandidate&&!profile.legacyImport,'NEXT_GAME_EMPTY_SCOPE');await prepareEmptyCandidate({store,transport,plan:plans[profile.gameId],profile,boundary,commit,run});}
+ if([32636,32795].includes(profile.gameId)){assert(profile.emptyCandidate&&!profile.legacyImport,'NEXT_GAME_EMPTY_SCOPE');await prepareEmptyCandidate({store,transport,plan:plans[profile.gameId],profile,boundary,commit,run});}
  if(profile.legacyImport)await importParkedDemo({store,transport,decode:decodeParkedArchive,plan:plans[profile.gameId],profile,boundary,commit,run});
  console.log(JSON.stringify(await nextDemoGame({store,transport,gate,parser,plans,profile,boundary,commit,run})));
 }catch(error){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(error.message)?error.message:'NEXT_GAME_REQUIRES_REVIEW',sourceRequests:0}));process.exitCode=2;}

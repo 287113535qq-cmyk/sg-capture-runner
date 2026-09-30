@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {onePaidRound} from './paid-round-evidence.mjs';
 import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
@@ -23,7 +24,7 @@ async function abandonedEvidence(store,plan,b){
   &&a.disposition==='interrupted-abandoned-without-replay'&&a.sourceRequests===0&&!a.pendingOriginal
   &&q&&q.awaiting===null&&q.sequence===b.journaled+1&&q.sequence<=b.end
   &&b.abandonedDemo===`abandoned-demo:${plan.trialId}:${b.id}:${hash(q)}`
-  &&Array.isArray(steps)&&steps.length>0&&steps[0].msgId==='BET'&&steps.filter(s=>s.msgId==='BET').length===1
+  &&onePaidRound(plan,q?.raw,{abandoned:true})
   &&steps.every(s=>typeof s.responseXml==='string'&&s.responseXml.length>0
    &&typeof s.responsePayload==='string'&&s.responsePayload.length>0),'AG_CLOSE_ABANDONMENT_INVALID');
  return {key:b.abandonedDemo,hash:hash(a),batchId:b.id,worker:b.worker,sequence:q.sequence,rawHash:hash(q.raw)};
@@ -56,7 +57,7 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
   assert(rows.length===keys.length&&rows.every(Boolean),'AG_CLOSE_RECEIPT_MISSING');
   for(const [i,{value:r}] of rows.entries()){
    assert(r.trialId===plan.trialId&&r.batchId===b.id&&r.shardId===b.worker&&r.sequence===b.start+i&&r.sourceSessionHash===b.sessionHash
-    &&r.raw?.steps?.[0]?.msgId==='BET'&&r.raw.steps.filter(s=>s.msgId==='BET').length===1,'AG_CLOSE_RECEIPT_CHANGED');
+    &&onePaidRound(plan,r.raw),'AG_CLOSE_RECEIPT_CHANGED');
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'AG_CLOSE_RECORD_INVALID');records.push(r);
    if(b.id>=spec.firstBatchId)complete[b.worker]++;
   }

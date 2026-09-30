@@ -154,7 +154,7 @@
 | [32792](32792.json) | Montezuma | not-documented | 待确认 |
 | [32793](32793.json) | Nemo's Voyage | not-documented | 待确认 |
 | [32794](32794.json) | OMG Kittens | not-documented | 待确认 |
-| [32795](32795.json) | Pearl of the Caribbean | not-documented | 待确认 |
+| [32795](32795.json) | Pearl of the Caribbean | implemented-subset | 0 |
 | [32796](32796.json) | Pharaoh's Dream | not-documented | 待确认 |
 | [32797](32797.json) | Quick Hit Super Wheel Wild Red | not-documented | 待确认 |
 | [32798](32798.json) | Quick Hit Ultra Pays - Sun Dragon | not-documented | 待确认 |

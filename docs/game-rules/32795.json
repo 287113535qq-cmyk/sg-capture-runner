@@ -6,27 +6,90 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "pearlofthecaribbean-wms-v1",
+  "planHash": "85358bf2bb69979fdbf50ecc638848e22ad33cab408e9835d89ff0d1c707d309",
+  "parameters": {
+    "trialId": "sg_r1_20260930_32795",
+    "runtimeSlug": "pearlofthecaribbean",
+    "buy": 0,
+    "betRaw": 200,
+    "requestParams": {
+      "gameID": "20327",
+      "isBigBet": "0",
+      "stakeTotal": "200",
+      "currencyMultiplier": "1"
+    },
+    "maxSteps": 10
+  },
+  "roundRule": {
+    "family": "pearl-wms-eight-free-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。",
+    "continue": "首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。",
+    "complete": "末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。",
+    "bounds": "历史100局含1自然8免费已核，历史credit0。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。",
+    "files": [
+      "service/pearl_fields.py",
+      "scripts/trial/pearl-protocol.mjs",
+      "collector/sg.pearl.ts",
+      "scripts/trial/pearl-session.mjs",
+      "scripts/trial/pearl-worker.mjs",
+      "scripts/runner-v2/paid-round-evidence.mjs"
+    ],
+    "fields": {
+      "Header.sessionID": "按响应轮换，会话值私有。",
+      "FSInfo": "总数8、进度0至8、首次授予8后续0。",
+      "BGInfo.totalWagerWin": "等于逐Logic累加totalWin。",
+      "Balances": "唯一CASH_BALANCE，初值-200+累计奖。",
+      "EndGame": "必须收到确认，不用额外Logic探测终态。"
+    }
+  },
+  "typeMappings": {
+    "pearlofthecaribbean-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": null,
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "pearlofthecaribbean-wms-v1": "263b33a1614e17495ba2f2d98b160834d5d6a982ff92e5bb5dbe7bf81d69ad8b"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "344520ae163e142cce6947598793f532bdbd6f18bd0ab9b0c1780d7dfa7402e5"
+    "service/pearl_fields.py": "d748c35b515677feb72c9e90ae920b4cafb675e2485dfd9f5bc1bc5c83ec438c",
+    "scripts/trial/pearl-protocol.mjs": "ea89d19ebf2507d199d3a7b462ec56b1157ac265be9520a2b1cc8255dd9b8161",
+    "collector/sg.pearl.ts": "62f86f3ffe023686711bf3c4e3728f9b699c0f879b9a8ea19aa660d46d73e3a5",
+    "scripts/trial/pearl-session.mjs": "20c826a9775566aaf1a5751b64895ad00c0df7db03b4bda9b402b2ce044e507c",
+    "scripts/trial/pearl-worker.mjs": "c6473c4e8652035e4f294d6f8719c650fc3d906b9a5806705c42cf69e4931028",
+    "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
+    "service/game_rule_catalog.py": "de5d9d6b64a6f3175a7f5ce654b9ff01ea5bb57ce8596aacf7abccb37a3d2f58"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/pearl-integration-20260930.md",
     "docs/piggies-pilot-result-20260930.md"
   ],
   "analysisDocumentHashes": {
+    "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0"
   },
   "observations": {
@@ -36,5 +99,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "956600437c9447eaf9d5de9e9b83bb94816b14a3ce801e70875586481b7ba266"
+  "ruleHash": "7d58819e3a37c3394db348d0ba2e24be5acef705a9487f05c3ab18fb234bfa44"
 }

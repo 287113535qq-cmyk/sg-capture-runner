@@ -1314,6 +1314,17 @@
         "runtimeGameId": 33085,
         "sourceId": "d2e64f21-31b0-4390-bb85-24bab61a5d94"
       }
+    },
+    "pearlofthecaribbean-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "pearl-wms-v1",
+      "gameId": 32795,
+      "betRaw": 200,
+      "buy": 0,
+      "ordinaryBonus": 0,
+      "freeBonus": 1,
+      "feature": "eight-free-no-retrigger-v1"
     }
   }
 }

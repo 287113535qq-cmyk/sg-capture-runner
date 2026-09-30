@@ -112,7 +112,7 @@ export class BatchController {
     if(begin){
       assert(Number.isSafeInteger(r.startBalanceRaw)&&r.startBalanceRaw>=this.plan.betRaw);
       assert(/^[0-9a-f-]{36}$/.test(r.attempt),'INVALID_ATTEMPT');
-      raw={fixtureOnly:false,protocol:'nextgen',sourceKey:this.plan.sourceKey,
+      raw={fixtureOnly:false,protocol:this.plan.adapter==='pearl-wms-v1'?'wms':'nextgen',sourceKey:this.plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:r.startBalanceRaw,steps:[]};
     }else{
       assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
@@ -182,7 +182,7 @@ export class BatchController {
       this.pendingFirst.beforeNewRequest();
       const poolSnapshot=await this.control.allowed({newRound:true});
       await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
-      assert(['INIT','REELSTRIP'].includes(r.msgId),'BOOTSTRAP_METHOD');
+      assert((this.plan.adapter==='pearl-wms-v1'?['Init']:['INIT','REELSTRIP']).includes(r.msgId),'BOOTSTRAP_METHOD');
       await this.update(v=>{assert(!v.pending && !v.bootstrapAwaiting,'BOOTSTRAP_PENDING');v.bootstrapAwaiting={msgId:r.msgId,payload:r.requestPayload};return v;});
       return {intentDurable:true};
     }
@@ -191,6 +191,7 @@ export class BatchController {
     assert(before.bootstrapAwaiting?.payload===r.step.requestPayload,'BOOTSTRAP_RESPONSE_MISMATCH');
     const key=`bootstrap:${this.plan.trialId}:${this.batch.id}:${hash(r.step)}`;
     await this.store.create('journal',key,{worker:this.lease.worker,step:r.step},{immutable:true});
+    if(this.plan.adapter==='pearl-wms-v1')await this.analyzer.call({op:'bootstrap',plan:this.plan,raw:{},step:r.step});
     await this.update(v=>{assert(stable(v.bootstrapAwaiting)===stable(before.bootstrapAwaiting));v.bootstrapAwaiting=null;return v;});
     this.spool.confirmed();
     return {responseDurable:true};

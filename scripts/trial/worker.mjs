@@ -1,4 +1,6 @@
 import {HUFF_TOUCHUP_EXTENSION} from './huff-touchup-review.mjs';
+import {PEARL_SOURCE} from './pearl-protocol.mjs';
+import {runPearlWorker} from './pearl-worker.mjs';
 import {MOREPUFF_SOURCE,MOREPUFF_EXTENSION} from './morepuff-protocol.mjs';
 import {JINZITA_SOURCE,JINZITA_EXTENSION} from './jinzita-protocol.mjs';
 import {failureCode} from './failure-code.mjs';
@@ -21,6 +23,7 @@ import {globalShard} from './runner-group.mjs';
 const require = createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
+const {pearlFields}=require('../../collector/sg.pearl.ts');
 const { XMLParser } = require('../../collector/node_modules/fast-xml-parser');
 const parser = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseTagValue:false});
 const planFile = process.env.SG_TRIAL_PLAN || 'config/trial-300k.json';
@@ -35,7 +38,7 @@ function canonical(v) {
 }
 const hash = v => createHash('sha256').update(v).digest('hex');
 const mappingHash = hash(canonical(registry.profiles[plan.sourceKey]));
-const extensionHash=plan.sourceKey===HUFF_SOURCE ? {hardHat:hash(canonical(registry.profiles[HUFF_EXTENSION])),touchup:hash(canonical(registry.profiles[HUFF_TOUCHUP_EXTENSION]))} : plan.sourceKey===MOREPUFF_SOURCE ? hash(canonical(registry.profiles[MOREPUFF_EXTENSION])) : plan.sourceKey===JINZITA_SOURCE ? hash(canonical(registry.profiles[JINZITA_EXTENSION])) : plan.sourceKey===LUXOR_SOURCE ? hash(canonical(registry.profiles[LUXOR_EXTENSION])) : plan.sourceKey===BEAVER_SOURCE ? {free:hash(canonical(registry.profiles[BEAVER_EXTENSION])),cfg1:hash(canonical(registry.profiles[BEAVER_CFG1_EXTENSION]))} : plan.sourceKey===DEMON_SOURCE ? {free:hash(canonical(registry.profiles[DEMON_EXTENSION])),nested:hash(canonical(registry.profiles[DEMON_NESTED_EXTENSION]))} : plan.sourceKey===QUARTERBACK_SOURCE ? {foam:hash(canonical(registry.profiles[QUARTERBACK_EXTENSION])),pickBall:hash(canonical(registry.profiles[QUARTERBACK_PICK_EXTENSION]))} : hash(canonical(registry.profiles[plan.sourceKey===BEAVER_SOURCE?BEAVER_EXTENSION:plan.sourceKey===QUARTERBACK_SOURCE?QUARTERBACK_EXTENSION:plan.sourceKey===DEMON_SOURCE?DEMON_EXTENSION:plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
+const extensionHash=plan.sourceKey===PEARL_SOURCE ? null : plan.sourceKey===HUFF_SOURCE ? {hardHat:hash(canonical(registry.profiles[HUFF_EXTENSION])),touchup:hash(canonical(registry.profiles[HUFF_TOUCHUP_EXTENSION]))} : plan.sourceKey===MOREPUFF_SOURCE ? hash(canonical(registry.profiles[MOREPUFF_EXTENSION])) : plan.sourceKey===JINZITA_SOURCE ? hash(canonical(registry.profiles[JINZITA_EXTENSION])) : plan.sourceKey===LUXOR_SOURCE ? hash(canonical(registry.profiles[LUXOR_EXTENSION])) : plan.sourceKey===BEAVER_SOURCE ? {free:hash(canonical(registry.profiles[BEAVER_EXTENSION])),cfg1:hash(canonical(registry.profiles[BEAVER_CFG1_EXTENSION]))} : plan.sourceKey===DEMON_SOURCE ? {free:hash(canonical(registry.profiles[DEMON_EXTENSION])),nested:hash(canonical(registry.profiles[DEMON_NESTED_EXTENSION]))} : plan.sourceKey===QUARTERBACK_SOURCE ? {foam:hash(canonical(registry.profiles[QUARTERBACK_EXTENSION])),pickBall:hash(canonical(registry.profiles[QUARTERBACK_PICK_EXTENSION]))} : hash(canonical(registry.profiles[plan.sourceKey===BEAVER_SOURCE?BEAVER_EXTENSION:plan.sourceKey===QUARTERBACK_SOURCE?QUARTERBACK_EXTENSION:plan.sourceKey===DEMON_SOURCE?DEMON_EXTENSION:plan.sourceKey===HUFF_SOURCE?HUFF_EXTENSION:SQUID_EXTENSION]));
 const role = process.argv[2] || 'capture';
 assert(['capture','audit','status'].includes(role));
 const requestIntervalMs=Number(process.env.SG_TRIAL_INTERVAL_MS ?? plan.minRequestIntervalMs);
@@ -66,6 +69,15 @@ async function main() {
   if (status.status === 'halted') throw fail('TRIAL_HALTED','storage');
   let baseGame=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG || '{}');
   if(plan.campaignId)baseGame={...baseGame,id:plan.gameId,runtimeSlug:plan.runtimeSlug};
+  if(plan.sourceKey===PEARL_SOURCE){
+    assert(isPool&&shard!==null&&process.env.SG_PROCESSING_MODE==='github-v2','PEARL_GITHUB_POOL_REQUIRED');
+    const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');assert(requested===5,'PEARL_PILOT_ONLY');
+    return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,prepareRound:pearlFields,evidence,
+      shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
+      commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
+      runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:requested,
+      deadline:performance.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000});
+  }
   const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId,plan);
   if(isPool)assert(shard!==null);
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');

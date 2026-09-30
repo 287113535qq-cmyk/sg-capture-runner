@@ -1,3 +1,4 @@
+import {onePaidRound} from './paid-round-evidence.mjs';
 import assert from 'node:assert/strict';
 import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
@@ -46,7 +47,7 @@ export async function reviewClosablePilot({store,transport,parser,basePlan,plan,
   assert(rows.length===keys.length&&rows.every(Boolean),'PILOT_CLOSE_RECEIPT_MISSING');
   for(const [i,{value:r}] of rows.entries()){
    assert(r.trialId===plan.trialId&&r.batchId===b.id&&r.shardId===b.worker&&r.sequence===b.start+i
-    &&r.sourceSessionHash===b.sessionHash&&r.raw?.steps?.[0]?.msgId==='BET'&&r.raw.steps.filter(s=>s.msgId==='BET').length===1,'PILOT_CLOSE_RECEIPT_CHANGED');
+    &&r.sourceSessionHash===b.sessionHash&&onePaidRound(plan,r.raw),'PILOT_CLOSE_RECEIPT_CHANGED');
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'PILOT_CLOSE_RECORD_INVALID');records.push(r);
    if(b.id>=spec.firstBatchId)used[b.worker]++;
   }

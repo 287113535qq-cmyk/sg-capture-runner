@@ -10,5 +10,6 @@ const adapterGaps = new Set([
   'HUFF_TOUCHUP_AWARD_REQUIRED', 'HUFF_MISSING_FRAME_AWARDS',
   'HUFF_UNREVIEWED_FEATURE_SLOTS',
   'PIGGIES_FEATURE_NOT_ADAPTED',
+  'PEARL_FEATURE_NOT_ADAPTED',
 ]);
 export const isAdapterGap = code => adapterGaps.has(code);

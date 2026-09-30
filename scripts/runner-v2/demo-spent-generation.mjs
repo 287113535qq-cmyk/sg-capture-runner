@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {onePaidRound} from './paid-round-evidence.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import {readClosedPilot} from './demo-pilot-close.mjs';
@@ -40,7 +41,7 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
   const records=keys.length?await store.getMany('journal',keys):[];assert(records.length===keys.length&&records.every(Boolean),'NEXT_GAME_SOURCE_RECEIPT_MISSING');
   for(const [i,{value:r}] of records.entries()){
    assert(r.trialId===fromPlan.trialId&&r.batchId===b.id&&r.shardId===b.worker&&r.sequence===b.start+i&&r.sourceSessionHash===b.sessionHash
-    &&r.raw?.steps?.[0]?.msgId==='BET'&&r.raw.steps.filter(s=>s.msgId==='BET').length===1,'NEXT_GAME_SOURCE_RECEIPT_CHANGED');
+    &&onePaidRound(fromPlan,r.raw),'NEXT_GAME_SOURCE_RECEIPT_CHANGED');
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'NEXT_GAME_SOURCE_RECORD_INVALID');verified++;
   }
  }

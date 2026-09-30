@@ -24,7 +24,8 @@ export function integer(value) {
 // The caller provides the only source transport. There are no network calls here.
 export async function captureBatch({plan, lease, owned, rpc, post, payload, bootstrap,
   prepareRound, mappingHash, extensionHash, evidence, state, shouldStop, requestStop, deadline, limit,
-  onProgress=()=>{}, exchangeOperation='exchange_journal'}) {
+  onProgress=()=>{}, exchangeOperation='exchange_journal',
+  protocol='nextgen', startMessage='BET', route=nextRequest, mapping=roundMapping}) {
   const sequenceTarget = lease.sequenceTarget ?? plan.target;
   if (lease.durable >= sequenceTarget) return rpc('release', owned);
   let pending = lease.pendingRound;
@@ -48,19 +49,19 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
         if (state.balance <= previous) throw fail('DEMO_BALANCE_REFRESH_FAILED');
         evidence.demoBalanceRefreshes = (evidence.demoBalanceRefreshes || 0) + 1;
       }
-      raw = {fixtureOnly:false, protocol:'nextgen', sourceKey:plan.sourceKey,
+      raw = {fixtureOnly:false, protocol, sourceKey:plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1', startBalanceRaw:state.balance, steps:[]};
       if (prepared) {
         assert.equal(prepared.sequence, sequence); assert.equal(prepared.startBalanceRaw, state.balance);
         attempt = prepared.attempt; prepared = null;
       } else {
         attempt = randomUUID();
-        await rpc('begin', {...owned, sequence, attempt, startBalanceRaw:state.balance, requestPayload:payload('BET')});
+        await rpc('begin', {...owned, sequence, attempt, startBalanceRaw:state.balance, requestPayload:payload(startMessage)});
       }
       intentReady = true;
     }
     while (true) {
-      const next = nextRequest(raw);
+      const next = route(raw);
       if(!next)throw fail('ROUND_ALREADY_SETTLED');
       const msg=next.MSGID, requestPayload=payload(msg,next);
       if (raw.steps.length >= plan.maxSteps) throw fail('ROUND_STEP_LIMIT');
@@ -69,9 +70,9 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       evidence.sourceElapsedMs = (evidence.sourceElapsedMs || 0) + step.elapsedMs;
       raw.steps.push(step);
       let normalized, following, continuation, remaining = null;
-      try { if(!step.sourceRejected){continuation=nextRequest(raw);remaining=continuation?1:0;} } catch {}
+      try { if(!step.sourceRejected){continuation=route(raw);remaining=continuation?1:0;} } catch {}
       if (remaining === 0) {
-        try { normalized = prepareRound(raw, roundMapping(raw,mappingHash,extensionHash)); }
+        try { normalized = prepareRound(raw, mapping(raw,mappingHash,extensionHash)); }
         catch { /* Preserve the original response before server validation rejects it. */ }
       }
       if (remaining > 0 && raw.steps.length < plan.maxSteps) {
@@ -79,7 +80,7 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       } else if (normalized && sequence < sequenceTarget && evidence.completedThisRun + 1 < limit
           && !shouldStop() && performance.now() + 2000 < deadline && normalized.money.endBalanceRaw >= 2500) {
         following = {sequence:sequence + 1, attempt:randomUUID(), startBalanceRaw:normalized.money.endBalanceRaw,
-          requestPayload:payload('BET')};
+          requestPayload:payload(startMessage)};
       }
       const result = await rpc(exchangeOperation, {...owned, sequence, step,
         ...(normalized ? {normalized} : {}), ...(following ? {following} : {})});
