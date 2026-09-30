@@ -79,7 +79,7 @@ if __name__ == '__main__':
     try:
         request = json.loads(sys.stdin.buffer.read(64 * 1024 * 1024 + 1))
         result = decode_archive(base64.b64decode(request['archive'], validate=True),
-            request['plan'], request['rounds'], request['archiveHash'], request['checkedAt'])
+            request['plan'], request['rounds'], request['archiveHash'], request['checkedAt'], request.get('workerOffset', 0))
         print(json.dumps({'ok': True, 'result': result}, separators=(',', ':')))
     except Exception:
         # Original records and connection/session fields must never enter logs.

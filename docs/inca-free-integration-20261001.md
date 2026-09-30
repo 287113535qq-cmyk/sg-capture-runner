@@ -10,4 +10,4 @@
 
 本机3项Python候选（10前缀及27负例）、2项独立JS候选、3项Python/Runner/collector及实际captureBatch、2项secondary/shard20真实BatchController测试通过；另6项旧档案路径/身份范围测试及4项复用索引测试通过。响应先保存，未知GSD局部隔离、计数矛盾共同保护。所有免费续帧及终局仅合成，没有新源请求。
 
-尚需固定版本Linux、第二账号独立profile/native固定范围及导入/retire/新会话准入；旧7补写/1作废尚未在线执行。没有授予正式或有限源额度，不称整款ready/formal。主线下一款仍32799 Rhino。
+固定版本f2f5315的Linux36761293256成功（18:49:16Z→18:51:15Z，119秒），完整日志SHA d88c10a3070911f117bc7df97e236835dc09aa8b0ebe0d477cda95cc38a30c22。私有增量211文件267792字节SHA12c8061500659d58fa751092a1fa6e3baebaed28e815ae3b0641a756bfceadbf，两端逐文件readback；旧67条引用原档案，未重复上传。尚需第二账号独立profile/native固定范围及导入/retire/新会话准入；旧7补写/1作废尚未在线执行。没有授予正式或有限源额度，不称整款ready/formal。主线下一款仍32799 Rhino。

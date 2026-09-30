@@ -39,7 +39,7 @@ def validate_pool_plan(plan):
             repair_scopes = {'demo-repair-mansion-20261001.json': (32714, 129, 'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2'),
                 'demo-repair-piggies-20261001.json': (32636, 33, 'richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1'),
                 'demo-repair-morepuff-20261001.json': (32718, 91, 'huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1')}
-            require(filename in repair_scopes or filename in ('demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
+            require(filename in repair_scopes or filename in ('demo-pilot-inca-20261001.json','demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             next_scope = {'demo-pilot-rhino-20261001.json': (32799, 32795), 'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
             if filename in repair_scopes:
@@ -66,11 +66,24 @@ def validate_pool_plan(plan):
                     or (isinstance(profile.get('sourceClosureHash'), str) and re.fullmatch(r'[a-f0-9]{64}', profile['sourceClosureHash'])),
                     'REPAIR_SOURCE_BOUNDARY_REQUIRED')
                 next_scope = (game, profile['fromGameId'])
-            require((profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == next_scope[0]
+            idle = filename == 'demo-pilot-inca-20261001.json'
+            if idle:
+                legacy=profile.get('legacyImport',{})
+                require(profile.get('schema')=='sg-demo-secondary-idle-pilot-v1' and profile.get('group')=='secondary'
+                    and type(profile.get('workerOffset')) is int and profile['workerOffset']==20
+                    and profile.get('gameId')==plan.get('gameId')==32719 and profile.get('fromGameId') is None
+                    and profile.get('newBetAllowance')==100 and profile.get('perWorker')==5 and profile.get('workers')==20
+                    and profile.get('completePreserved')==67 and profile.get('abandonedAttempts')==1
+                    and legacy.get('schema')=='sg-parked-import-v1' and legacy.get('mongoCount')==60
+                    and legacy.get('complete')==67 and legacy.get('pending')==1 and legacy.get('bytes')==74009
+                    and legacy.get('archiveHash')=='2d815dffe1185deb4b13d180744f8eec69364956297efc122cd1858f9b6c01f2'
+                    and not any(profile.get(k) for k in ('sourceFormal','sourceGeneration','sourceRunKey','repairedCandidate','emptyCandidate')),
+                    'SECONDARY_IDLE_PROFILE_SCOPE')
+            require((idle or (profile.get('schema') == 'sg-demo-next-game-v1' and profile.get('gameId') == next_scope[0]
                      and plan.get('gameId') == next_scope[0] and profile.get('fromGameId') == next_scope[1]
                      and profile.get('newBetAllowance') == 100 and profile.get('perWorker') == 5 and profile.get('workers') == 20
                      if next_scope else profile.get('schema') in ('sg-demo-pilot-v1','sg-demo-residual-pilot-v1')
-                     and profile.get('gameId') == 32820 and plan.get('gameId') == 32820)
+                     and profile.get('gameId') == 32820 and plan.get('gameId') == 32820))
                 and profile.get('oldPlanHash') == digest(expected)
                 and profile.get('generation')==plan['demoGeneration']
                 and isinstance(plan['demoGeneration'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['demoGeneration'])

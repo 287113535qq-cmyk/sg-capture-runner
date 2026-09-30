@@ -31,6 +31,19 @@ class GatewayTests(unittest.TestCase):
                        'trials':{'sg_r1_20260928_32723':{'group':'primary','gameId':32723,'runtimeGameId':33123,'target':299900}}}
         self.g=Gateway(self.db,'primary',self.manifest,sample=lambda:{'rawCounters':True})
     def call(self,op,**kw):return self.g.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+    def test_parallel_primary_read_is_fixed_secondary_readonly(self):
+        request={'schema':'sg-mongo-only-v2','op':'parallel_primary_boundary'}
+        with self.assertRaisesRegex(Refused,'GROUP_SCOPE_DENIED'):self.g.dispatch(request)
+        g=Gateway(self.db,'secondary',self.manifest)
+        self.db['capture_state_v2'].rows['primary/campaign']={'_id':'primary/campaign','value':{'fixture':1}}
+        self.db['capture_state_v2'].rows['primary/private']={'_id':'primary/private','value':{'unrelated':1}}
+        before=copy.deepcopy(self.db['capture_state_v2'].rows)
+        result=g.dispatch(request)
+        self.assertEqual(result['state'],[before['primary/campaign']]);self.assertEqual(result['journal'],[])
+        self.assertEqual(before,self.db['capture_state_v2'].rows)
+        for extra in ({'keys':['primary/private']},{'trialId':'other'},{'query':{}},{'path':'x'}):
+            with self.assertRaises(Refused):g.dispatch({**request,**extra})
+
     def test_cas_excludes_stale_update(self):
         self.assertTrue(self.call('create',collection='state',key='worker:0',value={'a':1})['created'])
         self.assertFalse(self.call('create',collection='state',key='worker:0',value={'a':99})['created'])

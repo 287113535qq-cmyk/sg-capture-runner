@@ -4,13 +4,15 @@ export class DemoFresh{
  constructor({store,plan,stage,runKey,now=Date.now,sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms))}){Object.assign(this,{store,plan,stage,runKey,now,sleep});}
  async admit(identity,worker){
   const get=async(c,k)=>(await this.store.get(c,k))?.value,c=await get('state','campaign'),p=c?.protocolValidation;
-  assert(this.stage==='fresh'&&Number.isInteger(worker)&&worker>=0&&worker<20&&identity.shardId===worker
+  const secondary=c?.group==='secondary',offset=secondary?20:0;
+  assert(this.stage==='fresh'&&Number.isInteger(worker)&&worker>=offset&&worker<offset+20&&identity.shardId===worker
    &&c?.enabled&&c.activeGame===this.plan.gameId&&c.games.find(g=>g.game_id===this.plan.gameId)?.status==='active'&&c.validationLimit===5
    &&p?.phase==='short'&&p.generation===this.plan.demoGeneration&&p.commit===identity.commitSha&&p.runKey===this.runKey&&/^capture-run:\d+:1$/.test(this.runKey||''),'DEMO_FRESH_RUN_CHANGED');
   const key=`demo-generation:${this.plan.trialId}:${this.plan.demoGeneration}`,s=await get('journal',key),done=await get('journal',key+':complete');
   const residual=s?.schema==='sg-demo-generation-residual-v1';
   assert((s?.schema==='sg-demo-generation-v1'||residual)&&hash(s)===p.demoFresh&&s.planHash===hash(this.plan)&&s.trialId===this.plan.trialId&&s.gameId===this.plan.gameId&&s.generation===this.plan.demoGeneration&&(await demoRuntimeCommit({store:this.store,plan:this.plan,spec:s,campaign:c}))===p.commit
    &&s.perWorker===5&&s.workers===20&&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(s)&&done.commit===s.commit&&done.run===s.run,'DEMO_FRESH_NOT_COMPLETE');
+  assert(secondary?(s.group==='secondary'&&s.workerOffset===20&&this.plan.gameId===32719&&s.activationStage):(!s.group&&!s.workerOffset),'DEMO_FRESH_GROUP_CHANGED');
   if(s.activationStage){
    const a=s.activationStage,expected=`next-demo-game:${this.plan.trialId}:${this.plan.demoGeneration}`,completed=await get('journal',expected+':complete');
    assert(a.key===expected&&/^[a-f0-9]{64}$/.test(a.profileHash)&&completed?.schema==='sg-next-demo-game-complete-v1'
@@ -21,7 +23,7 @@ export class DemoFresh{
     &&s.budgets.reduce((a,b)=>a+b,0)===s.newBetAllowance&&s.newBetAllowance+s.usedBetAllowance===100&&s.usedBetAllowance>0,'DEMO_RESIDUAL_BUDGET');
     const parent=await get('journal',s.parentKey);assert(parent?.schema==='sg-demo-generation-v1'&&hash(parent)===s.parentHash&&parent.newBetAllowance===100,'DEMO_RESIDUAL_PARENT');
   }else assert(s.newBetAllowance===100,'DEMO_FRESH_BUDGET');
-  const quota=residual?s.budgets[worker]:5;
+  const quota=residual?s.budgets[worker-offset]:5;
   assert(this.now()>=s.createdAt&&this.now()<s.expiresAt&&s.expiresAt-s.createdAt<=7200000&&!s.oldSessions.includes(identity.sessionHash),'DEMO_FRESH_STALE_OR_OLD_SESSION');
   const pool=await get('state','pool:'+this.plan.trialId);assert(pool?.enabled&&!pool.failure&&pool.planHash===hash(this.plan)&&pool.demoGeneration?.specHash===hash(s)&&pool.nextBatchId>=s.firstBatchId&&pool.nextBatchId<=s.firstBatchId+20,'DEMO_FRESH_POOL_CHANGED');
   const keys=Array.from({length:pool.nextBatchId-s.firstBatchId},(_,i)=>`batch:${this.plan.trialId}:${s.firstBatchId+i}`);

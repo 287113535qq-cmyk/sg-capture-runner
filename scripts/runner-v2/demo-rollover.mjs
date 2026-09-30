@@ -1,3 +1,4 @@
+import {checkIdleSecondaryCampaign,checkSecondaryIdleProfile} from './secondary-idle-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
@@ -5,14 +6,16 @@ import {reviewFormalSource,readPoolBatches} from './formal-source-review.mjs';
 
 // No source requests. A completed retirement is required before a fresh,
 // bounded generation can replace the inactive worker registrations.
-export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,now=Date.now}){
+export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,idleProfile,now=Date.now}){
  assert(typeof boundary==='function'&&/^[a-f0-9]{64}$/.test(plan.demoGeneration)&&/^[a-f0-9]{40}$/.test(commit)
   &&/^\d+:1$/.test(run)&&expiresAt>now()&&expiresAt-now()<=7200000,'ROLLOVER_SCOPE');
+ const idle=!!idleProfile;if(idle){checkSecondaryIdleProfile(idleProfile,oldPlan);assert(!fromPlan&&!formalSource&&activationStage?.profileHash===hash(idleProfile),'ROLLOVER_IDLE_SCOPE');}
  const stripped={...plan};delete stripped.demoGeneration;
- assert(hash(stripped)===hash(oldPlan)&&plan.buy===0&&plan.phase===1&&fromPlan.gameId!==plan.gameId,'ROLLOVER_PLAN_CHANGED');
+ assert(hash(stripped)===hash(oldPlan)&&plan.buy===0&&plan.phase===1&&(idle||fromPlan.gameId!==plan.gameId),'ROLLOVER_PLAN_CHANGED');
  const get=async(c,k)=>(await store.get(c,k))?.value;
  await boundary();
- const campaign=await get('state','campaign'),pool=await get('state','pool:'+plan.trialId),fromPool=await get('state','pool:'+fromPlan.trialId);
+ const campaign=await get('state','campaign'),pool=await get('state','pool:'+plan.trialId),fromPool=idle?null:await get('state','pool:'+fromPlan.trialId);
+ if(idle)checkIdleSecondaryCampaign(campaign);
  const candidate=campaign.games.find(g=>g.game_id===plan.gameId);
  if(pool.emptyCandidate){
   const key=`empty-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,ready=await get('journal',key+':complete'),before=await get('journal',key+':before');
@@ -22,11 +25,11 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
    &&ready.sourceRequests===0&&ready.newBetAllowance===0&&ready.historicalCredit===0
    &&before?.profileHash===ready.profileHash&&hash(before.campaign)===hash(campaign),'ROLLOVER_EMPTY_CANDIDATE_INCOMPLETE');
  }
- assert(hash({campaign,pool,fromPool})===expected&&(formalSource?campaign.activeGame===null:campaign.activeGame===fromPlan.gameId)
+ assert(hash({campaign,pool,fromPool})===expected&&((formalSource||idle)?campaign.activeGame===null:campaign.activeGame===fromPlan.gameId)
   &&(candidate?.status==='parked-protocol'||(candidate?.status==='needs-adapter'&&pool.emptyCandidate))&&!pool.enabled&&!pool.demoGeneration
   &&pool.planHash===hash(oldPlan)&&pool.retiredDemo,'ROLLOVER_SNAPSHOT_CHANGED');
- assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now())&&Object.values(fromPool.workers).every(w=>w.leaseUntil<=now()),'ROLLOVER_LEASE_ACTIVE');
- const sourceBatches=await readPoolBatches(store,fromPlan,fromPool,{limit:formalSource?600001:101});
+ assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now())&&(idle||Object.values(fromPool.workers).every(w=>w.leaseUntil<=now())),'ROLLOVER_LEASE_ACTIVE');
+ const sourceBatches=idle?[]:await readPoolBatches(store,fromPlan,fromPool,{limit:formalSource?600001:101});
  assert(sourceBatches.every(b=>!b.pending&&!b.bootstrapAwaiting&&!b.pendingOriginal&&b.checkpoint===b.journaled&&b.leaseUntil<=now()),'ROLLOVER_SOURCE_BATCH_UNSAFE');
  if(formalSource)await reviewFormalSource({store,plan:fromPlan,profile:{sourceFormal:formalSource},scene:{campaign,fromPool,sourceBatches},now});
  const retired=await get('journal',pool.retiredDemo+':complete');
@@ -52,23 +55,24 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  assert(records.length===retired.completePreserved,'ROLLOVER_COUNT_CHANGED');
  for(let i=0;i<records.length;i+=100){const wanted=records.slice(i,i+100),actual=await transport.request('rounds_read',{trialId:plan.trialId,ids:wanted.map(r=>r._id)});assert(hash(actual.map(hash).sort())===hash(wanted.map(hash).sort()),'ROLLOVER_MONGO_CHANGED');}
  const key=`demo-generation:${plan.trialId}:${plan.demoGeneration}`;assert(!await get('journal',key+':before'),'ROLLOVER_ALREADY_STARTED');
- await boundary();assert(hash({campaign:await get('state','campaign'),pool:await get('state','pool:'+plan.trialId),fromPool:await get('state','pool:'+fromPlan.trialId)})===expected,'ROLLOVER_SNAPSHOT_CHANGED');
+ await boundary();assert(hash({campaign:await get('state','campaign'),pool:await get('state','pool:'+plan.trialId),fromPool:idle?null:await get('state','pool:'+fromPlan.trialId)})===expected,'ROLLOVER_SNAPSHOT_CHANGED');
  assert(hash((keys.length?await store.getMany('state',keys):[]).map(x=>x?.value))===hash(batches),'ROLLOVER_BATCH_CHANGED');
- assert(hash(await readPoolBatches(store,fromPlan,fromPool,{limit:formalSource?600001:101}))===hash(sourceBatches),'ROLLOVER_SOURCE_BATCH_CHANGED');
+ assert(hash(idle?[]:await readPoolBatches(store,fromPlan,fromPool,{limit:formalSource?600001:101}))===hash(sourceBatches),'ROLLOVER_SOURCE_BATCH_CHANGED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash(await get('journal',k))===hash(v),'ROLLOVER_READBACK');};
- const before={campaign,pool,fromPool,batches,sourceBatches,oldPlan,fromPlan,recordsHash:hash(records),commit,run,at:now()};
+ const before={campaign,pool,fromPool,batches,sourceBatches,oldPlan,fromPlan:fromPlan??null,recordsHash:hash(records),commit,run,at:now()};
  const spec={schema:'sg-demo-generation-v1',generation:plan.demoGeneration,trialId:plan.trialId,gameId:plan.gameId,planHash:hash(plan),commit,run,createdAt:now(),expiresAt,firstBatchId:pool.nextBatchId,
   historicalBatches:Object.fromEntries(batches.map(b=>[b.id,hash(b)])),retirement:pool.retiredDemo,retirementHash:hash(retired),beforeHash:hash(before),completePreserved:records.length,perWorker:5,workers:20,newBetAllowance:100,
-  oldSessions:Object.values(pool.workers).map(w=>w.sessionHash),
+  oldSessions:[...new Set([...Object.values(pool.workers).map(w=>w.sessionHash),...batches.map(b=>b.sessionHash)].filter(Boolean))],
+  ...(idle?{group:'secondary',workerOffset:20}:{}),
   ...(activationStage?{activationStage}:{}),
   ...(Object.keys(unchangedRetiredBatches).length?{unchangedRetiredBatches}:{})};
  await save(key+':before',before);await save(key,spec);
- await save(key+':parked-source',{gameId:fromPlan.gameId,plan:fromPlan,campaign,pool:fromPool,at:now()});
+ if(!idle)await save(key+':parked-source',{gameId:fromPlan.gameId,plan:fromPlan,campaign,pool:fromPool,at:now()});
  await boundary();
- await store.update('state','pool:'+fromPlan.trialId,v=>{assert(hash(v)===hash(fromPool),'ROLLOVER_SOURCE_CHANGED');return {...v,enabled:false};});
+ if(!idle)await store.update('state','pool:'+fromPlan.trialId,v=>{assert(hash(v)===hash(fromPool),'ROLLOVER_SOURCE_CHANGED');return {...v,enabled:false};});
  await store.update('state','pool:'+plan.trialId,v=>{assert(hash(v)===hash(pool),'ROLLOVER_POOL_CHANGED');return {...v,enabled:true,failure:null,planHash:hash(plan),workers:{},confirmed:records.length,demoGeneration:{id:plan.demoGeneration,specHash:hash(spec)},legacyConfirmedByBatch:{...v.legacyConfirmedByBatch,...Object.fromEntries(batches.map(b=>[b.id,b.journaled-b.start+1]))}};});
  await boundary();
- await store.update('state','campaign',v=>{assert(hash(v)===hash(campaign),'ROLLOVER_CAMPAIGN_CHANGED');const sourceGame=v.games.find(g=>g.game_id===fromPlan.gameId);if(!formalSource||formalSource.kind==='retired')sourceGame.status='parked-protocol';if(fromPool.demoPilotClosed?.repairKey)sourceGame.repairKey=fromPool.demoPilotClosed.repairKey;v.games.find(g=>g.game_id===plan.gameId).status='active';v.activeGame=plan.gameId;if(formalSource)delete v.formalCount;v.enabled=true;v.audit=null;v.validationLimit=5;v.protocolValidation={phase:'short',gameId:plan.gameId,commit,runKey:null,demoFresh:hash(spec),generation:plan.demoGeneration};return v;});
+ await store.update('state','campaign',v=>{assert(hash(v)===hash(campaign),'ROLLOVER_CAMPAIGN_CHANGED');if(!idle){const sourceGame=v.games.find(g=>g.game_id===fromPlan.gameId);if(!formalSource||formalSource.kind==='retired')sourceGame.status='parked-protocol';if(fromPool.demoPilotClosed?.repairKey)sourceGame.repairKey=fromPool.demoPilotClosed.repairKey;}v.games.find(g=>g.game_id===plan.gameId).status='active';v.activeGame=plan.gameId;if(formalSource)delete v.formalCount;v.enabled=true;v.audit=null;v.validationLimit=5;v.protocolValidation={phase:'short',gameId:plan.gameId,commit,runKey:null,demoFresh:hash(spec),generation:plan.demoGeneration};return v;});
  const result={schema:'sg-demo-generation-complete-v1',specHash:hash(spec),commit,run,completePreserved:records.length,sourceRequests:0,at:now()};
  await save(key+':complete',result);return result;
 }

@@ -8,8 +8,9 @@ import {retireCountPool} from './retire-count-pool.mjs';
 // Retire an idle demo pool without attempting source-session recovery. Complete
 // records are verified/flushed; interrupted attempts are retained only in the
 // private analysis journal and removed from active batches. No source transport.
-export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,now=Date.now}){
+export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,group='primary',now=Date.now}){
  assert(typeof boundary==='function'&&plan.buy===0&&plan.phase===1&&typeof owner==='string'&&owner.length>0,'RETIRE_SCOPE');
+ assert(group==='primary'||(group==='secondary'&&plan.gameId===32719&&plan.trialId==='sg_r1_20260928_32719'),'RETIRE_GROUP_SCOPE');
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
  const countSpec=pool?await loadCountPermission({store,plan,pool,commit}):null;
@@ -50,7 +51,7 @@ export async function retireDemoPool({store,transport,gate,parser,plan,boundary,
   await boundary();await store.writable();const key=`batch:${plan.trialId}:${b.id}`,epoch=b.epoch+1;
   await store.update('state',key,v=>{assert(hash(v)===hash(b),'RETIRE_BATCH_CHANGED');return {...v,epoch,owner,leaseUntil:0};});
   const queue=new DurableQueue({store,plan,batchKey:key,owner,epoch});
-  const writer=new MongoWriter({gate,queue,permits:new WritePermits({store,group:'primary',owner,now}),sink:{read:ids=>transport.request('rounds_read',{trialId:plan.trialId,ids}),insert:rs=>transport.request('rounds_insert',{trialId:plan.trialId,records:rs})}});
+  const writer=new MongoWriter({gate,queue,permits:new WritePermits({store,group,owner,now}),sink:{read:ids=>transport.request('rounds_read',{trialId:plan.trialId,ids}),insert:rs=>transport.request('rounds_insert',{trialId:plan.trialId,records:rs})}});
   const outstanding=await queue.outstanding();if(outstanding.length){const r=await writer.deliver(outstanding);assert(!r.paused&&r.confirmed===outstanding.length,'RETIRE_FLUSH_INCOMPLETE');}
   assert((await queue.outstanding()).length===0,'RETIRE_FLUSH_INCOMPLETE');
   const complete=records.filter(r=>r.batchId===b.id);if(complete.length)writer.compare(complete,await transport.request('rounds_read',{trialId:plan.trialId,ids:complete.map(r=>r._id)}));

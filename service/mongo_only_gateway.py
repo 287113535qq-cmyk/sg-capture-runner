@@ -71,6 +71,17 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'parallel_primary_boundary':
+            # Fixed read-only documents for the reviewed two-account boundary.
+            # The GitHub runner performs identity/lease/permission decisions.
+            need(self.group == 'secondary', 'GROUP_SCOPE_DENIED')
+            need(set(r) == {'schema','op'}, 'BOUNDARY_SCOPE_DENIED')
+            state_ids = ['primary/campaign', 'primary/pool:sg_r1_20260930_32795',
+                         'primary/capture-run:36753473985:1']
+            prefix = 'primary/demo-generation:sg_r1_20260928_32820:53448c2a8f711899004d05c065f947cd8fb737f9da8152f69ccd7f4da7d53ed2'
+            journal_ids = [prefix, prefix+':before', prefix+':complete', prefix+':parked-source']
+            return {'state': list(self.db[COLLECTIONS['state']].find({'_id': {'$in': state_ids}}, max_time_ms=10000).limit(3)),
+                    'journal': list(self.db[COLLECTIONS['journal']].find({'_id': {'$in': journal_ids}}, max_time_ms=10000).limit(4))}
         if op == 'control_read':
             # Fixed document reads only; all source/lease decisions remain on GitHub.
             ids = ['primary/global-hold', 'secondary/global-hold', self.group + '/campaign']

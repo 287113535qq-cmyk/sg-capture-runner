@@ -41,16 +41,18 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
  assert(spec.activationStage?.key===`next-demo-game:${plan.trialId}:${plan.demoGeneration}`&&spec.activationStage.profileHash===profile.sourceProfileHash
   &&top?.schema==='sg-next-demo-game-complete-v1'&&top.profileHash===profile.sourceProfileHash&&top.generation===plan.demoGeneration
   &&top.commit===spec.commit&&top.run===spec.run&&top.newBetAllowance===100&&top.sourceRequests===0,'AG_CLOSE_ACTIVATION');
+ const secondary=campaign?.group==='secondary',offset=secondary?20:0;
+ assert(secondary?(spec.group==='secondary'&&spec.workerOffset===20&&plan.gameId===32719):(!spec.group&&!spec.workerOffset),'AG_CLOSE_GROUP_SCOPE');
  const game=campaign?.games.find(g=>g.game_id===plan.gameId);
  assert(campaign.activeGame===plan.gameId&&game?.status==='parking-protocol'&&campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&campaign.protocolValidation.commit===profile.sourceCommit&&campaign.protocolValidation.demoFresh===hash(spec)&&campaign.protocolValidation.generation===plan.demoGeneration
   &&pool.planHash===hash(plan)&&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true&&!pool.demoPilotClosed,'AG_CLOSE_BINDING');
  assert(Number.isSafeInteger(spec.firstBatchId)&&spec.firstBatchId>=1&&spec.firstBatchId<=pool.nextBatchId
   &&budget(profile.usedByWorker)&&budget(profile.completeByWorker),'AG_CLOSE_BUDGET');
- assert(Object.entries(pool.workers).every(([w,v])=>/^(?:[0-9]|1[0-9])$/.test(w)&&Number.isFinite(v.leaseUntil)&&v.leaseUntil<=now()),'AG_CLOSE_LEASE');
+ assert(Object.entries(pool.workers).every(([w,v])=>(secondary?/^(?:2[0-9]|3[0-9])$/:/^(?:[0-9]|1[0-9])$/).test(w)&&Number.isFinite(v.leaseUntil)&&v.leaseUntil<=now()),'AG_CLOSE_LEASE');
  const records=[],complete=Array(20).fill(0),abandoned=Array(20).fill(0),evidence=[];
  for(const b of batches){
-  assert(Number.isInteger(b.worker)&&b.worker>=0&&b.worker<20&&Number.isSafeInteger(b.start)&&Number.isSafeInteger(b.end)
+  assert(Number.isInteger(b.worker)&&b.worker>=offset&&b.worker<offset+20&&Number.isSafeInteger(b.start)&&Number.isSafeInteger(b.end)
    &&Number.isSafeInteger(b.journaled)&&b.start>=1&&b.start-1<=b.journaled&&b.journaled<=b.end&&b.end-b.start<100
    &&b.checkpoint===b.journaled&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&Number.isFinite(b.leaseUntil)&&b.leaseUntil<=now(),'AG_CLOSE_UNSETTLED');
   const keys=Array.from({length:b.journaled-b.start+1},(_,i)=>receiptKey(plan.trialId,b.start+i)),rows=keys.length?await store.getMany('journal',keys):[];
@@ -59,16 +61,16 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
    assert(r.trialId===plan.trialId&&r.batchId===b.id&&r.shardId===b.worker&&r.sequence===b.start+i&&r.sourceSessionHash===b.sessionHash
     &&onePaidRound(plan,r.raw),'AG_CLOSE_RECEIPT_CHANGED');
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'AG_CLOSE_RECORD_INVALID');records.push(r);
-   if(b.id>=spec.firstBatchId)complete[b.worker]++;
+   if(b.id>=spec.firstBatchId)complete[b.worker-offset]++;
   }
-  if(b.id>=spec.firstBatchId&&b.abandonedDemo){evidence.push(await abandonedEvidence(store,plan,b));abandoned[b.worker]++;}
+  if(b.id>=spec.firstBatchId&&b.abandonedDemo){evidence.push(await abandonedEvidence(store,plan,b));abandoned[b.worker-offset]++;}
  }
  const used=complete.map((n,w)=>n+abandoned[w]),newBatches=batches.filter(b=>b.id>=spec.firstBatchId);
  assert(records.length===profile.completePreserved&&new Set(records.map(r=>r._id)).size===records.length&&new Set(records.map(r=>r.sequence)).size===records.length
   &&budget(used)&&hash(used)===hash(profile.usedByWorker)&&hash(complete)===hash(profile.completeByWorker)
   &&sum(abandoned)>0&&sum(used)<100,'AG_CLOSE_COUNTS');
  for(let w=0;w<20;w++){
-  const own=newBatches.filter(b=>b.worker===w),registered=pool.workers[w];
+  const own=newBatches.filter(b=>b.worker===w+offset),registered=pool.workers[w+offset];
   assert(own.length<=1&&(!own.length||registered?.sessionHash===own[0].sessionHash)
    &&(!registered?.activeBatch||own.length===1&&registered.activeBatch.id===own[0].id),'AG_CLOSE_WORKER');
  }

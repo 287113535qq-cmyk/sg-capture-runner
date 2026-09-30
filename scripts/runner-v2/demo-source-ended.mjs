@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
-export function checkDemoSourceEnded({ended,jobs,profile,closing=false}){
+export function checkDemoSourceEnded({ended,jobs,profile,closing=false,repository='zyzuoyang/sg-capture-runner'}){
+ assert(repository==='zyzuoyang/sg-capture-runner'||(closing&&repository==='287113535qq-cmyk/sg-capture-runner'&&profile.group==='secondary'&&profile.gameId===32719&&profile.workerOffset===20),'SOURCE_REPOSITORY_SCOPE');
  assert('capture-run:'+ended.id+':'+ended.run_attempt===profile.sourceRunKey&&ended.run_attempt===1
   &&ended.head_sha===profile.sourceCommit&&ended.status==='completed'
-  &&ended.path==='.github/workflows/trial-300k.yml'&&ended.repository?.full_name==='zyzuoyang/sg-capture-runner'
+  &&ended.path==='.github/workflows/trial-300k.yml'&&ended.repository?.full_name===repository
   &&jobs.total_count===jobs.jobs.length&&jobs.total_count>0&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed'),'NEXT_GAME_SOURCE_NOT_FINISHED');
  if(closing){
   assert(ended.conclusion===profile.sourceConclusion&&['success','failure'].includes(ended.conclusion),'PILOT_CLOSE_SOURCE_CONCLUSION');
