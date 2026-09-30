@@ -122,12 +122,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "6c441390b0bbb97d1479ab45210f5e6966e559010095de27d1b1f7efa782c11f",
-    "scripts/runner-v2/record_fields.py": "c07450bea64f7905cdb48d746e1b0b3d1f1d4bbe7fac3f283cd8db68541d3f04",
+    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
     "service/jinzita_fields.py": "89b465920919742d40c73667469edd4c0438e7fb554bb0fb27082a10b7ee246b",
     "scripts/trial/jinzita-protocol.mjs": "9c1584cd4fc5c21e38698e40cda0e472453d90fdca152fef780899509c5c63ae",
     "collector/sg.jinzita.ts": "1b57f42a8b5db35a297371642af0f4ea4ae6a9ba0739145a08217c615fc24cf8",
-    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
+    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -151,5 +151,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a7c70211eded19ff0948ba299bb89293761a1d8bf0db905ff7f31d0b8aa2764a"
+  "ruleHash": "75405d45b1f00d8dc067baa3078a2980ff2b90a9cdb9afde6b1d536577e5d4ca"
 }

@@ -122,12 +122,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "6c441390b0bbb97d1479ab45210f5e6966e559010095de27d1b1f7efa782c11f",
-    "scripts/runner-v2/record_fields.py": "c07450bea64f7905cdb48d746e1b0b3d1f1d4bbe7fac3f283cd8db68541d3f04",
+    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
     "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
     "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
     "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004",
-    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
+    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
   },
   "reviewDocuments": [
     "docs/luxor-free-integration-20260930.md"
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a1345e0058488597261d0f9e70605cfaf3cfd894dc401c7a5907f04ba52364ef"
+  "ruleHash": "3486172761c4c9980f274ee3ecae2eae187b659e8e76e5fd268c8cbc0e5d7d3d"
 }

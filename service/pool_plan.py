@@ -51,7 +51,8 @@ def validate_pool_plan(plan):
             expected={**expected,'demoGeneration':profile['generation']}
         require(plan==expected and plan.get('phase')==1
             and plan.get('buy')==0 and (plan.get('adapter')=='native-nextgen-v1'
-                or plan.get('gameId')==32795 and plan.get('adapter')=='pearl-wms-v1'), 'CAMPAIGN_PLAN_MISMATCH')
+                or plan.get('gameId')==32795 and plan.get('adapter')=='pearl-wms-v1'
+                or plan.get('gameId')==32799 and plan.get('adapter')=='rhino-wms-v1'), 'CAMPAIGN_PLAN_MISMATCH')
         require(type(plan.get('target')) is int and 20<=plan['target']<=300000,'BAD_POOL_TARGET')
         return dict(plan)
     trial = plan.get('trialId')

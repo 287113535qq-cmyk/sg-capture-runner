@@ -6,34 +6,97 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "ragingrhino-wms-v1",
+  "planHash": "3c4551347d0128ce0c649173c2f02c9f8701647a8e42daa780c08091cb540ef8",
+  "parameters": {
+    "trialId": "sg_r1_20261001_32799",
+    "runtimeSlug": "ragingrhino_prt",
+    "buy": 0,
+    "betRaw": 40,
+    "requestParams": {
+      "gameID": "20124",
+      "betMultiplier": "1",
+      "creditBet": "40",
+      "currencyMultiplier": "1"
+    },
+    "maxSteps": 1026
+  },
+  "roundRule": {
+    "family": "rhino-wms-free-retrigger-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "独立新会话Init核验BetMultipliers/CreditBets，首Logic实际下注40，WagerInfo固定betMultiplier1。",
+    "continue": "免费总数按首次授予和后续追加守恒；进度、remainingFreeSpins、bonusAwarded及金额共同匹配，响应session轮换。",
+    "complete": "最后免费lastFreeSpin=Y且计数清零后发送一次EndGame，确认余额和完整XML才完成；普通局也需EndGame。",
+    "bounds": "接线和本机独立检查通过，100历史响应含自然8+5链；其他计数完整链合成。历史只作离线证据，目标不抵扣。未知BonusGuarantee/MaxWin拒绝，1024为运行上限。尚无独立native许可或线上准入。",
+    "files": [
+      "scripts/trial/rhino-protocol.mjs",
+      "scripts/trial/rhino-session.mjs",
+      "scripts/trial/rhino-worker.mjs",
+      "service/rhino_fields.py",
+      "collector/rhino-review.cjs",
+      "collector/sg.rhino.ts"
+    ],
+    "fields": {
+      "WagerInfo": "betMultiplier1；响应creditBet40、waysCount4096。",
+      "Feature1": "FreeSpins计数与进度守恒；不按固定8或5循环。",
+      "Feature2": "WildInfo只在免费中接受已审倍数2/3及唯一位置。",
+      "BaseGameRecoveryInfo": "可选的首局引用，必须与首局属性及ReelResults相同。",
+      "EndGame": "完整确认之前不计完成。"
+    }
+  },
+  "typeMappings": {
+    "ragingrhino-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": null,
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "ragingrhino-wms-v1": "c4e63d96bb289d0e7da14a584c91b98ee40349042504527e8910a50509e0a282"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
+    "scripts/trial/rhino-protocol.mjs": "ca941d0668211d235b48b7c8c1862372d2d83e992ed9cc8a7c42af7f6a38a856",
+    "scripts/trial/rhino-session.mjs": "5c3656dfa0add9777e6e57bda5c487d540bb178899d729d355c2ff4d5a4b51a9",
+    "scripts/trial/rhino-worker.mjs": "817683b4e502e50cafc7cb1346930d8beab929bd4078ecd6e41bfccf03433129",
+    "service/rhino_fields.py": "e83c1dc9b6ee6546bd3791826a380f1047a41d65e51e90bf69cf95d6ce7da61c",
+    "collector/rhino-review.cjs": "1f6b7205419c26bc54e7bdbce26f900772cb0e457317c2c85c04ccbad922b8d7",
+    "collector/sg.rhino.ts": "6601b2ccd0acd2a04b85f57c4f3e8efe1d0991bc2103721cf6c8782e7db807aa",
+    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
     "docs/pearl-award-repair-20261001.md",
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
-    "docs/pearl-repair-reentry-20260930.md"
+    "docs/pearl-repair-reentry-20260930.md",
+    "docs/rhino-integration-20261001.md"
   ],
   "analysisDocumentHashes": {
-    "docs/pearl-award-repair-20261001.md": "0070764f873fb940d53f738a64e830c4d5fb3065c031a5775880e411b7f20733",
+    "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
-    "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546"
+    "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
+    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -42,5 +105,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0c1a9ef61d05da5ec27e88e17073e3b4e2e8b9981d610b9d31687b73daf9618b"
+  "ruleHash": "8a9130b4559f7728855ebf5ea01c1e886e4260ee3febaacb9932a7d621bb2b8e"
 }

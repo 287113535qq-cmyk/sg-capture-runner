@@ -2589,11 +2589,16 @@
               "reference": "lastFreeSpin-EndGame"
             }
           },
-          "referenceFiles": [],
+          "referenceFiles": [
+            "scripts/trial/rhino-protocol.mjs",
+            "service/rhino_fields.py",
+            "collector/sg.rhino.ts"
+          ],
           "requiredReview": [
-            "The applied v1 scope was8; a real initial15 trigger is now observed. New counter-driven v2 needs separate admission, and natural15/retrigger terminal is still absent.",
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; natural15/retrigger terminals from the ongoing run have not yet been independently audited.",
+            "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific.",
-            "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
+            "Independent modules and worker/controller offline checks passed; natural historical 8+5 chain reviewed, production entry not yet admitted.",
             "No readyForEndGame in this client; do not copy the Pearl terminal condition."
           ],
           "captureAuthorization": false
@@ -2645,7 +2650,11 @@
         "initialFree": 8,
         "retriggerAward": 5
       },
-      "references": {},
+      "references": {
+        "scripts/trial/rhino-protocol.mjs": "ca941d0668211d235b48b7c8c1862372d2d83e992ed9cc8a7c42af7f6a38a856",
+        "service/rhino_fields.py": "e83c1dc9b6ee6546bd3791826a380f1047a41d65e51e90bf69cf95d6ce7da61c",
+        "collector/sg.rhino.ts": "6601b2ccd0acd2a04b85f57c4f3e8efe1d0991bc2103721cf6c8782e7db807aa"
+      },
       "candidates": [
         {
           "referenceGameId": 32795,
@@ -2675,9 +2684,10 @@
             "scripts/trial/pearl-award-protocol.mjs"
           ],
           "requiredReview": [
-            "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
+            "Independent modules and worker/controller offline checks passed; natural historical 8+5 chain reviewed, production entry not yet admitted.",
             "No readyForEndGame in this client; do not copy the Pearl terminal condition.",
-            "The applied v1 scope was8; a real initial15 trigger is now observed. New counter-driven v2 needs separate admission, and natural15/retrigger terminal is still absent.",
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; natural15/retrigger terminals from the ongoing run have not yet been independently audited.",
+            "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
           ],
           "captureAuthorization": false

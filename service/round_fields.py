@@ -264,6 +264,9 @@ def types(raw, kind):
 
 def derive(raw):
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
+    from rhino_fields import RhinoFields, SOURCE as RHINO_SOURCE
+    if raw.get('sourceKey') == RHINO_SOURCE:
+        return RhinoFields({'gameId':32799,'runtimeGameId':33159,'sourceKey':RHINO_SOURCE,'betRaw':40}).settled(raw)
     from pearl_fields import PearlFields, SOURCE as PEARL_SOURCE
     if raw.get('sourceKey') == PEARL_SOURCE:
         from pearl_award_fields import PearlAwardFields

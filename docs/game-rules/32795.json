@@ -32,7 +32,7 @@
     "start": "新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。",
     "continue": "旧固定8许可不变；新v2独立许可按官方授予计数累加，首次正数、后续非负，总数/逐帧进度/bonusAwarded严格匹配；1024为运行上限，不是奖表。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。",
     "complete": "末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。",
-    "bounds": "累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新重入尚未应用。",
+    "bounds": "累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新v2已在独立冻结许可下完成重入，源任务36744028113正在采集；当前自然15及多次授予终局尚未另行审计。",
     "files": [
       "service/pearl_fields.py",
       "scripts/trial/pearl-protocol.mjs",
@@ -91,11 +91,11 @@
     "scripts/trial/pearl-session.mjs": "c3474c3a7d58c775c7bb60e43d9c4036de9678406d688dc444c9d7284b86bb12",
     "scripts/trial/pearl-worker.mjs": "1de958770c5ebf3c8d090cdd09ec254357b1abfec468803b9e283d2d52e246a2",
     "scripts/runner-v2/formal-repair-activation.mjs": "6435bc11d7ca4bcfda5acd1cfa9482170222efd782971f051e261e2205303252",
-    "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
+    "scripts/runner-v2/paid-round-evidence.mjs": "ce1fa52cd84f34cae15b5fd366a979948e62a32fa5b45b8c66dad97df820a703",
     "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
     "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
     "collector/sg.pearl-award.ts": "28124369ee49cf0794df8351aa76c83f763ef83bb64d7eb9eb74542a27c4802b",
-    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
+    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -106,16 +106,18 @@
     "docs/pearl-pilot-result-20260930.md",
     "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
+    "docs/rhino-integration-20261001.md",
     "docs/rules.md"
   ],
   "analysisDocumentHashes": {
-    "docs/pearl-award-repair-20261001.md": "0070764f873fb940d53f738a64e830c4d5fb3065c031a5775880e411b7f20733",
+    "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
+    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
   "observations": {
@@ -125,5 +127,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e3310112b42018b8f2f42c82324e39a38c6687cf83b4aaacc062a1a23fefe62e"
+  "ruleHash": "3aae01053a7d6f7acaafc16784241ea8d0587ffa27d0f88c8b2a2235167112be"
 }

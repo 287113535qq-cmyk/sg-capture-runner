@@ -1347,6 +1347,17 @@
       "ordinaryBonus": 0,
       "freeBonus": 1,
       "feature": "counter-driven-additive-free-v2"
+    },
+    "ragingrhino-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "rhino-wms-v1",
+      "gameId": 32799,
+      "betRaw": 40,
+      "buy": 0,
+      "ordinaryBonus": 0,
+      "freeBonus": 1,
+      "feature": "counter-driven-free-retrigger-v1"
     }
   }
 }

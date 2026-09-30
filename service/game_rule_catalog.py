@@ -51,9 +51,17 @@ def contract(game_id):
             'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
             'continue': '旧固定8许可不变；新v2独立许可按官方授予计数累加，首次正数、后续非负，总数/逐帧进度/bonusAwarded严格匹配；1024为运行上限，不是奖表。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。',
             'complete': '末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。',
-            'bounds': '累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新重入尚未应用。',
+            'bounds': '累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新v2已在独立冻结许可下完成重入，源任务36744028113正在采集；当前自然15及多次授予终局尚未另行审计。',
             'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'service/pearl_retrigger_fields.py', 'scripts/trial/pearl-retrigger-protocol.mjs', 'collector/sg.pearl-retrigger.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/formal-repair-activation.mjs', 'scripts/runner-v2/paid-round-evidence.mjs', 'service/pearl_award_fields.py', 'scripts/trial/pearl-award-protocol.mjs', 'collector/sg.pearl-award.ts'],
             'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '旧v1仍首次8/后续0或8；新v2独立许可按授予计数守恒，与总数、进度、bonusAwarded及完整终局共同验证。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
+    elif game_id == 32799:
+        native.update({'family':'rhino-wms-free-retrigger-v1','messages':['Init','Logic','EndGame'],
+            'start':'独立新会话Init核验BetMultipliers/CreditBets，首Logic实际下注40，WagerInfo固定betMultiplier1。',
+            'continue':'免费总数按首次授予和后续追加守恒；进度、remainingFreeSpins、bonusAwarded及金额共同匹配，响应session轮换。',
+            'complete':'最后免费lastFreeSpin=Y且计数清零后发送一次EndGame，确认余额和完整XML才完成；普通局也需EndGame。',
+            'bounds':'接线和本机独立检查通过，100历史响应含自然8+5链；其他计数完整链合成。历史只作离线证据，目标不抵扣。未知BonusGuarantee/MaxWin拒绝，1024为运行上限。尚无独立native许可或线上准入。',
+            'files':['scripts/trial/rhino-protocol.mjs','scripts/trial/rhino-session.mjs','scripts/trial/rhino-worker.mjs','service/rhino_fields.py','collector/rhino-review.cjs','collector/sg.rhino.ts'],
+            'fields':{'WagerInfo':'betMultiplier1；响应creditBet40、waysCount4096。','Feature1':'FreeSpins计数与进度守恒；不按固定8或5循环。','Feature2':'WildInfo只在免费中接受已审倍数2/3及唯一位置。','BaseGameRecoveryInfo':'可选的首局引用，必须与首局属性及ReelResults相同。','EndGame':'完整确认之前不计完成。'}})
     elif game_id == 32651:
         native.update({'family': 'squid-jackpot-v1', 'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
             'start': '首帧 BET；其后按完整历史执行自然免费或 Jackpot 功能，不能再次 BET；一大局内会话不变。',

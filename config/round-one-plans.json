@@ -816,5 +816,36 @@
       "currencyMultiplier": "1"
     },
     "protocol": "wms"
+  },
+  "32799": {
+    "schema": "sg-work-pool-v1",
+    "configured": true,
+    "trialId": "sg_r1_20261001_32799",
+    "target": 300000,
+    "workers": 20,
+    "gameId": 32799,
+    "runtimeGameId": 33159,
+    "name": "Raging Rhino",
+    "runtimeSlug": "ragingrhino_prt",
+    "sourceKey": "ragingrhino-wms-v1",
+    "mode": "demo",
+    "buy": 0,
+    "betRaw": 40,
+    "maxSteps": 1026,
+    "mongoBatchSize": 100,
+    "minRequestIntervalMs": 0,
+    "database": "sg_capture_staging_v1",
+    "collection": "official_rounds",
+    "productionGamePoolWrites": false,
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "adapter": "rhino-wms-v1",
+    "requestParams": {
+      "gameID": "20124",
+      "betMultiplier": "1",
+      "creditBet": "40",
+      "currencyMultiplier": "1"
+    },
+    "protocol": "wms"
   }
 }

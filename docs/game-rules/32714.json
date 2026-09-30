@@ -156,15 +156,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "6c441390b0bbb97d1479ab45210f5e6966e559010095de27d1b1f7efa782c11f",
-    "scripts/runner-v2/record_fields.py": "c07450bea64f7905cdb48d746e1b0b3d1f1d4bbe7fac3f283cd8db68541d3f04",
+    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
     "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
+    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -198,6 +198,7 @@
     "docs/piggies-zero-source-rebind-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
+    "docs/rhino-integration-20261001.md",
     "docs/rules.md",
     "docs/secondary-account-diagnostics-20260928.md",
     "docs/secondary-independent-games-review-20260928.md",
@@ -231,6 +232,7 @@
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
+    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
@@ -243,5 +245,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "af4455b14a2df45b5889b52f941e46a46c61fe2fe8b85680ae21e6f4bcb26f41"
+  "ruleHash": "d1f784916d238f97f1565e0f9f9642a17953822beba65c1db1e067ad55ab211a"
 }

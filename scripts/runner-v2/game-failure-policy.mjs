@@ -11,5 +11,6 @@ const adapterGaps = new Set([
   'HUFF_UNREVIEWED_FEATURE_SLOTS',
   'PIGGIES_FEATURE_NOT_ADAPTED',
   'PEARL_FEATURE_NOT_ADAPTED',
+  'RHINO_UNKNOWN_FEATURE', 'RHINO_FEATURE', 'RHINO_WILD_MULTIPLIER',
 ]);
 export const isAdapterGap = code => adapterGaps.has(code);

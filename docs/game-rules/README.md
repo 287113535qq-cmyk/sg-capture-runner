@@ -158,7 +158,7 @@
 | [32796](32796.json) | Pharaoh's Dream | not-documented | 待确认 |
 | [32797](32797.json) | Quick Hit Super Wheel Wild Red | not-documented | 待确认 |
 | [32798](32798.json) | Quick Hit Ultra Pays - Sun Dragon | not-documented | 待确认 |
-| [32799](32799.json) | Raging Rhino | not-documented | 待确认 |
+| [32799](32799.json) | Raging Rhino | implemented-subset | 0 |
 | [32800](32800.json) | Raging Rhino Megaways | not-documented | 待确认 |
 | [32801](32801.json) | Road to Riches Free Spins | not-documented | 待确认 |
 | [32802](32802.json) | Road to Riches Gold Pots | not-documented | 待确认 |
