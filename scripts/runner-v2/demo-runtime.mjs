@@ -12,6 +12,10 @@ export async function demoRuntimeCommit({store,plan,spec,campaign}){
   &&before?.schema==='sg-demo-zero-source-rebind-before-v1'&&hash(before)===done.beforeHash
   &&before.profileHash===a.profileHash&&before.commit===done.commit&&before.run===done.run
   &&hash(before.spec)===hash(spec)&&before.campaign.protocolValidation.commit===spec.commit
-  &&before.pool.nextBatchId===1&&before.pool.confirmed===0&&Object.keys(before.pool.workers).length===0,'DEMO_RUNTIME_REBIND_INVALID');
+  &&(campaign.group==='secondary'?
+   (plan.gameId===32719&&spec.group==='secondary'&&spec.workerOffset===20&&before.group==='secondary'&&done.group==='secondary'
+    &&before.sourceRunKey==='capture-run:36764738887:1'&&before.campaign.protocolValidation.runKey===null
+    &&spec.completePreserved===67&&done.completePreserved===67&&before.pool.nextBatchId===spec.firstBatchId&&before.pool.confirmed===67):
+   (before.pool.nextBatchId===1&&before.pool.confirmed===0))&&Object.keys(before.pool.workers).length===0,'DEMO_RUNTIME_REBIND_INVALID');
  return done.commit;
 }
