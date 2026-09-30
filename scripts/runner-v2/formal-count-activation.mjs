@@ -33,7 +33,11 @@ export async function activateFormalCount({store,transport,parser,plans,profile,
   const mongo=await transport.request('rounds_read',{trialId:base.trialId,ids:rs.map(r=>r._id)});
   assert(hash(mongo.map(hash).sort())===hash(rs.map(hash).sort()),'FORMAL_COUNT_MONGO_CHANGED');records.push(...rs);
  }
- assert(hash(records)===profile.recordsHash&&records.filter(r=>r.normalized.bonus===1).length>=2,'FORMAL_COUNT_NATURAL_FREE_REQUIRED');
+ // Rhino already has independently reviewed historical 8+5 continuation
+ // evidence. Its new pilot must still observe a complete free round; it need
+ // not reproduce the same rare retrigger twice. Preserve applied Pearl rules.
+ const requiredFree=profile.schema==='sg-formal-count-rhino-v1'?1:2;
+ assert(hash(records)===profile.recordsHash&&records.filter(r=>r.normalized.bonus===1).length>=requiredFree,'FORMAL_COUNT_NATURAL_FREE_REQUIRED');
  const baseline=batches.map(b=>({id:b.id,worker:b.worker,start:b.start,end:b.end,sessionHash:b.sessionHash,
   closed:true,complete:b.journaled-b.start+1,evidenceHash:hash(b)}));
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,

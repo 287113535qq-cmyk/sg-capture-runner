@@ -24,7 +24,7 @@ async function fixture(gameId=32795){
   const b={id:w+1,worker:w,start,end:start+99,checkpoint:start+4,journaled:start+4,sessionHash,pending:null,leaseUntil:0};
   put('state',`batch:${base.trialId}:${b.id}`,b);pool.workers[w]={sessionHash,leaseUntil:0,activeBatch:{id:b.id}};
   for(let n=0;n<5;n++){
-   const r={_id:String(start+n),trialId:base.trialId,batchId:b.id,shardId:w,sequence:start+n,sourceSessionHash:sessionHash,raw:gameId===32799?rhinoFixture(w===0&&n<2?8:0):pearlFixture(),normalized:{bonus:w===0&&n<2?1:0},fixtureOnly:false,buy:0};
+   const r={_id:String(start+n),trialId:base.trialId,batchId:b.id,shardId:w,sequence:start+n,sourceSessionHash:sessionHash,raw:gameId===32799?rhinoFixture(w===0&&n<1?8:0):pearlFixture(),normalized:{bonus:w===0&&n<(gameId===32799?1:2)?1:0},fixtureOnly:false,buy:0};
    put('journal',receiptKey(base.trialId,r.sequence),r);mongo.set(r._id,r);records.push(r);
   }
  }
