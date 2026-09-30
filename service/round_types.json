@@ -1386,6 +1386,35 @@
       "featureTypes": {
         "hardHatRetrigger": 2
       }
+    },
+    "richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32636,
+        "runtimeGameId": 33085,
+        "sourceId": "d2e64f21-31b0-4390-bb85-24bab61a5d94"
+      },
+      "featureSelector": "piggies-size2-free-v1"
     }
   }
 }

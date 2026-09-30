@@ -55,7 +55,7 @@ export function nextRequest(raw) {
   return next;
 }
 export function roundMapping(raw, baseHash, extensionHash) {
-  if(raw.sourceKey===PIGGIES_SOURCE)return piggiesMapping(raw,baseHash);
+  if(raw.sourceKey===PIGGIES_SOURCE)return piggiesMapping(raw,baseHash,extensionHash);
   if(hasMorepuffWheel(raw))return morepuffMapping(raw,extensionHash);
   if(raw.sourceKey===JINZITA_SOURCE)return jinzitaMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===LUXOR_SOURCE)return luxorMapping(raw,baseHash,extensionHash);

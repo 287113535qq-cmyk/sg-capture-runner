@@ -31,7 +31,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "独立免费 NFG>0，TFG=NFG+CFGG；每次进度加1，重触发按TFG增量核对剩余次数。",
     "complete": "官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。",
-    "bounds": "历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，PGS2/GE2未知分支1局作废，34已用/66注销；不代表整款玩法覆盖或正式300000准入。",
+    "bounds": "历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，34已用/66注销。PGS2/GE2已独立size2映射接入三方与capture；33旧全文不变，真实仅触发帧、十帧终局合成，尚未重新准入，不代表整款玩法覆盖或正式300000准入。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -74,10 +74,34 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "piggies-size2-free-v1",
+      "featureTypes": null
     }
   },
   "mappingHashes": {
-    "richlittlepiggiesworldclass96-round-one-base-v1": "07c350822c376506d0df9d99885ebe3b547711684f6eec6eb4a4c115cfbb00c3"
+    "richlittlepiggiesworldclass96-round-one-base-v1": "07c350822c376506d0df9d99885ebe3b547711684f6eec6eb4a4c115cfbb00c3",
+    "richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1": "6c17c2d472217069fffe7f29694f5152a292859a62ae692a9eb72852ada92154"
   },
   "configuredNaturalBonusCodes": [
     1
@@ -94,12 +118,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "20b787a07cc4db6d930707873c84b14040638baaf05a3deb5e77473381ca525e",
+    "service/round_fields.py": "77adc41e81c35e760b431253e5ce38f65f4884d349a0138b7fdc251465bae9a7",
     "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
-    "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
-    "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
-    "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d",
-    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
+    "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
+    "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
+    "collector/sg.piggies.ts": "874141a07df1df4c3674ec5217b4e0340f46c58d5cccff30d72fbde1f001ba51",
+    "service/game_rule_catalog.py": "a57a37441267af2c6995bf15158099b36d55494d046e3dc876b862f83fce4780"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -110,6 +134,7 @@
     "docs/piggies-next-preparation-20260930.md",
     "docs/piggies-pilot-result-20260930-result.json",
     "docs/piggies-pilot-result-20260930.md",
+    "docs/piggies-size2-integration-20261001.md",
     "docs/piggies-zero-source-rebind-20260930.md",
     "docs/rules.md"
   ],
@@ -121,6 +146,7 @@
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
     "docs/piggies-pilot-result-20260930-result.json": "5678b55244bac2e45f56e6647e43c7c91d1d937ca2cd5fc649c82c3e63c7a7f6",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
+    "docs/piggies-size2-integration-20261001.md": "75a03fe31aaa08cf76293f907f7ef2567003128f5958c68da523f807fc73837f",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
@@ -131,5 +157,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7f4b8361ce579bbd5bd14a495a6332e5baf266019050293aeb2bb13a3bfac43c"
+  "ruleHash": "fd8aea94b5321b63e4910db0663e019e4052e8b94722eeecd99a41f6ea7753ad"
 }

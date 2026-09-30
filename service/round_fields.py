@@ -171,6 +171,11 @@ def type_profile(source_key):
 
 def types(raw, kind):
     source_key = raw.get('sourceKey')
+    from piggies_fields import SIZE2_EXTENSION, has_size2, PiggiesFields
+    piggies_size2 = has_size2(raw)
+    if piggies_size2:
+        plan=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text())['32636']
+        check(PiggiesFields(plan).sequence(raw) is None,'INCOMPLETE_ROUND')
     # An additive feature profile leaves every previously accepted native-only
     # record and mapping hash unchanged, including partially saved old rounds.
     from squid_fields import SOURCE as SQUID_SOURCE, EXTENSION
@@ -200,7 +205,7 @@ def types(raw, kind):
     luxor_type = source_key == LUXOR_SOURCE and luxor_feature_type(raw)
     foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
     beaver_cfg1 = beaver_type and cfg1_type(raw)
-    profile, mapping_hash = type_profile(MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    profile, mapping_hash = type_profile(SIZE2_EXTENSION if piggies_size2 else MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -228,7 +233,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if morepuff_type:
+    if piggies_size2:
+        check(kind=='freeGame' and profile.get('featureSelector')=='piggies-size2-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus=profile['freeTypes']['native-free-game']
+    elif morepuff_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == 'morepuff-wheel-cash-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['wheelCash']
     elif jinzita_type:

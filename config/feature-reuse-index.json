@@ -866,9 +866,9 @@
         "terminal": "explicit-NFG0-and-game-exits"
       },
       "references": {
-        "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
-        "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
-        "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d"
+        "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
+        "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
+        "collector/sg.piggies.ts": "874141a07df1df4c3674ec5217b4e0340f46c58d5cccff30d72fbde1f001ba51"
       },
       "candidates": [
         {
@@ -888,7 +888,7 @@
             "collector/sg.jinzita.ts"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
           ],
@@ -911,7 +911,7 @@
             "collector/sg.beaver.ts"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -934,7 +934,7 @@
             "collector/sg.luxor.ts"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -967,7 +967,7 @@
             "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
@@ -997,7 +997,7 @@
             "collector/sg.morepuff.ts"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Cash-only exit does not support mixed wheel/free branches."
           ],
@@ -1029,7 +1029,7 @@
             "scripts/trial/squid-protocol.mjs"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
           ],
           "captureAuthorization": false
@@ -1060,7 +1060,7 @@
             "scripts/trial/quarterback-protocol.mjs"
           ],
           "requiredReview": [
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
           ],
           "captureAuthorization": false
@@ -1112,7 +1112,7 @@
       },
       "references": {
         "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
-        "scripts/trial/squid-protocol.mjs": "dad9061da2e68bba7eb733c1d5dff42261581b2f0a18df34776bb20b305c103f"
+        "scripts/trial/squid-protocol.mjs": "ea4fa3f656ced31ccf563140fccc61b7dea654e777d231e4387cab50d81c553a"
       },
       "candidates": [
         {
@@ -1227,7 +1227,7 @@
           ],
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -1574,7 +1574,7 @@
           "requiredReview": [
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -1833,7 +1833,7 @@
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Cash-only exit does not support mixed wheel/free branches.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -2038,7 +2038,7 @@
           "requiredReview": [
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -2610,7 +2610,7 @@
             "collector/sg.rhino.ts"
           ],
           "requiredReview": [
-            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; natural15/retrigger terminals from the ongoing run have not yet been independently audited.",
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; The ended run now has25392 independently verified complete records including a natural17-frame free chain; current continuation preserves its original target.",
             "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific.",
             "Independent modules and worker/controller offline checks passed; natural historical 8+5 chain reviewed, production entry not yet admitted.",
@@ -2701,7 +2701,7 @@
           "requiredReview": [
             "Independent modules and worker/controller offline checks passed; natural historical 8+5 chain reviewed, production entry not yet admitted.",
             "No readyForEndGame in this client; do not copy the Pearl terminal condition.",
-            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; natural15/retrigger terminals from the ongoing run have not yet been independently audited.",
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; The ended run now has25392 independently verified complete records including a natural17-frame free chain; current continuation preserves its original target.",
             "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
           ],
@@ -2917,7 +2917,7 @@
           "requiredReview": [
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -3168,7 +3168,7 @@
           "requiredReview": [
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
@@ -3481,7 +3481,7 @@
           ],
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
-            "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
         },
