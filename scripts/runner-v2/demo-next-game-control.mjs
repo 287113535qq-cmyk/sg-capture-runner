@@ -8,10 +8,10 @@ import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
 import {importParkedDemo} from './parked-import.mjs';import {decodeParkedArchive} from './parked-decoder.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),path=demoPilotProfilePath(),profile=load(path),plans=load('config/round-one-plans.json');
-const scope={'config/demo-pilot-morepuff-20260930.json':[32718,32720,53,1], 'config/demo-pilot-luxor-20260930.json':[32835,32820,82,1], 'config/demo-pilot-jinzita-20260930.json':[32720,32835,320,2]}[path];
+const scope={'config/demo-pilot-mansion-20260930.json':[32714,32718,103,2], 'config/demo-pilot-morepuff-20260930.json':[32718,32720,53,1], 'config/demo-pilot-luxor-20260930.json':[32835,32820,82,1], 'config/demo-pilot-jinzita-20260930.json':[32720,32835,320,2]}[path];
 assert(scope&&profile.gameId===scope[0]&&profile.fromGameId===scope[1]&&profile.completePreserved===scope[2]&&profile.abandonedAttempts===scope[3],'NEXT_GAME_PROFILE_SCOPE');
-assert(([32720,32718].includes(profile.gameId))===!!profile.legacyImport,'NEXT_GAME_IMPORT_SCOPE');
-if(profile.gameId===32718)assert(/^[a-f0-9]{64}$/.test(profile.sourceClosureHash??''),'NEXT_GAME_SOURCE_CLOSE_REQUIRED');
+assert(([32720,32718,32714].includes(profile.gameId))===!!profile.legacyImport,'NEXT_GAME_IMPORT_SCOPE');
+if([32718,32714].includes(profile.gameId))assert(/^[a-f0-9]{64}$/.test(profile.sourceClosureHash??''),'NEXT_GAME_SOURCE_CLOSE_REQUIRED');
 for(const [path,expected] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..'),'NEXT_GAME_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===expected,'NEXT_GAME_RUNTIME_CHANGED');

@@ -176,7 +176,12 @@ def types(raw, kind):
     from squid_fields import SOURCE as SQUID_SOURCE, EXTENSION
     has_jackpot = source_key == SQUID_SOURCE and any(s['msgId'].startswith('FEATURE_') for s in raw['steps'])
     from huff_fields import SOURCE as HUFF_SOURCE, EXTENSION as HUFF_EXTENSION, feature_type
+    from huff_touchup_review import EXTENSION as HUFF_TOUCHUP_EXTENSION, review_touchup
     huff_type = feature_type(raw) if source_key == HUFF_SOURCE else None
+    if huff_type == 'moneyMansionTouchUp':
+        plan = json.loads((Path(__file__).resolve().parents[1] / 'config/round-one-plans.json').read_text())['32714']
+        check(review_touchup(plan, raw)['candidateComplete'], 'INCOMPLETE_ROUND')
+        HUFF_EXTENSION = HUFF_TOUCHUP_EXTENSION
     from demon_fields import SOURCE as DEMON_SOURCE, EXTENSION as DEMON_EXTENSION, feature_type as demon_feature_type
     from demon_nested_fields import has_nested, EXTENSION as NESTED_EXTENSION
     nested_type = has_nested(raw) if source_key == DEMON_SOURCE else False
@@ -239,7 +244,7 @@ def types(raw, kind):
         check(kind == 'freeGame' and profile.get('featureSelector') == ('demon-nested-free-v1' if nested_type else 'demon-free-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes'][demon_type]
     elif huff_type:
-        check(kind == 'freeGame' and profile.get('featureSelector') == 'huff-hard-hat-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        check(kind == 'freeGame' and profile.get('featureSelector') == ('huff-touchup-cash-v1' if huff_type == 'moneyMansionTouchUp' else 'huff-hard-hat-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes'][huff_type]
     elif has_jackpot:
         check(kind in {'feature','freeFeature'} and profile.get('featureSelector') == 'squid-jackpot-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')

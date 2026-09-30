@@ -23,7 +23,7 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "huff-hard-hat-v1",
+    "family": "huff-hard-hat-and-touchup-cash-v1",
     "messages": [
       "BET",
       "FREE_GAME"
@@ -31,14 +31,17 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。",
     "complete": "无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。",
-    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；其他功能仍拒绝。FID清零不等于新触发。",
+    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；混合、重触发、负FRAMEWINS及组合后续仍拒绝。TouchUp自然终局尚未观察。FID清零不等于新触发。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
       "service/huff_fields.py",
       "service/huff_feature_review.py",
-      "scripts/trial/huff-protocol.mjs"
+      "scripts/trial/huff-protocol.mjs",
+      "service/huff_touchup_review.py",
+      "scripts/trial/huff-touchup-review.mjs",
+      "collector/sg.huff-touchup.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -103,18 +106,45 @@
         "hardHat": 2,
         "hardHatAndMoneyMansion": 3
       }
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-touchup-cash-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "huff-touchup-cash-v1",
+      "featureTypes": {
+        "moneyMansionTouchUp": 4
+      }
     }
   },
   "mappingHashes": {
     "huffnpuffmoneymansionhighlimit96-round-one-base-v1": "2f3815fb664fb7ea891c29078843333a229879a74674349e8f9191e2aa7df7b6",
-    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-v1": "c13d5523174399353602fdcc794c9ac770485a03486b2b56232cf330fc5315e8"
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-v1": "c13d5523174399353602fdcc794c9ac770485a03486b2b56232cf330fc5315e8",
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-touchup-cash-v1": "b0ea06891367c14a66ed24f63de3a5f1ce75f118df622e6f095a3bc24c4aec67"
   },
   "configuredNaturalBonusCodes": [
     1,
     2,
-    3
+    3,
+    4
   ],
-  "configuredOutcomeCategoryCount": 3,
+  "configuredOutcomeCategoryCount": 4,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -126,12 +156,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "8fddfff0193a0ad28f977789a30fa3e231231a2d9bba56666e3515cd9d5ed951",
+    "service/round_fields.py": "9ddb90182bba1fa0b977109d67e48624cbfe1f86126da871d49a7a6f87df2b58",
     "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
-    "service/huff_fields.py": "f17bb20cfd57e00ff3f73cd210cf7bc81aa9d1e1d0919b321417925c2c695b52",
+    "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
-    "scripts/trial/huff-protocol.mjs": "babec80279caa2f0490a3671faeeefa9430d44d1f6ca6f2cd8b8219d80d9b1f4",
-    "service/game_rule_catalog.py": "b2bba346b53735d9f5dcf7153f8a55ef137bed113fa6fe39fe666a12cc715b28"
+    "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
+    "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
+    "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
+    "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
+    "service/game_rule_catalog.py": "e29e82bb2748d28898a1cc0849e40103eb6f5c357b023c27fe9cb6ea950bdb5e"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -153,6 +186,7 @@
     "docs/huff-natural-free-stop-20260928.md",
     "docs/mansion-next-review-20260930-result.json",
     "docs/mansion-next-review-20260930.md",
+    "docs/mansion-touchup-integration-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/secondary-account-diagnostics-20260928.md",
@@ -175,6 +209,7 @@
     "docs/huff-natural-free-stop-20260928.md": "11b154d3f8505ae6ab2185d9518616c4021fb05c50fc81368e5f45361df36730",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
+    "docs/mansion-touchup-integration-20260930.md": "7ed87e63f44540311d3821f58a34141b19a5269af71fb446a2b74dcad5f05b61",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
@@ -188,5 +223,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d6f54fad62b7bb2dd21725603f1c19fab42abcb2cfb4d1e0779c76fa11e5bcba"
+  "ruleHash": "4debe7880944b7a4a4fd125d14e0c4e886606ebef0fbff20fa553807b19d41f0"
 }

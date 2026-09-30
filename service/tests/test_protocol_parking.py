@@ -23,11 +23,11 @@ class ParkingTests(unittest.TestCase):
         fixture.HuffRecoveryTests.setUp(self)
         self.queue=self.root/'campaigns/sg_round_one_20260928/queue.sqlite3'
         self.change(self.queue,'UPDATE dispatch_control SET enabled=1,reason=NULL')
-        # The original fixture's FID1 is now supported. This natural FID2 is not.
+        # FID1 and the restricted FID2 cash chain are supported. FID3 is not.
         path=self.batch_paths['primary']
         with closing(sqlite3.connect(path)) as db:
             raw=json.loads(db.execute('SELECT raw FROM pending').fetchone()[0]);s=raw['steps'][0]
-            s['responsePayload']=s['responsePayload'].replace('FID=1|','FID=2|')
+            s['responsePayload']=s['responsePayload'].replace('FID=1|','FID=3|')
             xml=ET.fromstring(s['responseXml']);xml.find('PAYLOAD').text=s['responsePayload']
             s['responseXml']=ET.tostring(xml,encoding='unicode')
             db.execute('UPDATE pending SET raw=?',(canonical(raw).decode(),));db.commit()

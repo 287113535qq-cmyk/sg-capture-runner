@@ -123,18 +123,19 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "8fddfff0193a0ad28f977789a30fa3e231231a2d9bba56666e3515cd9d5ed951",
+    "service/round_fields.py": "9ddb90182bba1fa0b977109d67e48624cbfe1f86126da871d49a7a6f87df2b58",
     "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
     "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
     "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
     "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
-    "service/game_rule_catalog.py": "b2bba346b53735d9f5dcf7153f8a55ef137bed113fa6fe39fe666a12cc715b28"
+    "service/game_rule_catalog.py": "e29e82bb2748d28898a1cc0849e40103eb6f5c357b023c27fe9cb6ea950bdb5e"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
     "docs/ag-pilot-transition-20260930.md",
     "docs/continuous-processing.md",
     "docs/mansion-next-review-20260930.md",
+    "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-latency-audit-20260930-result.json",
     "docs/morepuff-next-review-20260930.md",
     "docs/morepuff-pilot-result-20260930.md",
@@ -147,6 +148,7 @@
     "docs/ag-pilot-transition-20260930.md": "38d924d12f961f3c2d868058b909821e089dd9345d258941f18fca78f6236611",
     "docs/continuous-processing.md": "e8146b628752b5a2d4f9a2268060edb739201fc638480f27ee1a2b39ddc4be66",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
+    "docs/mansion-touchup-integration-20260930.md": "7ed87e63f44540311d3821f58a34141b19a5269af71fb446a2b74dcad5f05b61",
     "docs/morepuff-latency-audit-20260930-result.json": "12e09c154229fb93f671313b77bc7889edaf0e168a91260d9986bfa1ccc03311",
     "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
     "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
@@ -162,5 +164,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e8ca44fd6ab1cfc9841deb739138037ad6517d35357c0ed1ffc65e7a6d5fca61"
+  "ruleHash": "b1c16723559f84f6b320a8d626c2c03595cbebfd7c944b1fe3209008918bc2fc"
 }

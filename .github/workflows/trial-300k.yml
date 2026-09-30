@@ -2,6 +2,11 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      pilot_profile:
+        description: 'Profile for demo-fresh-short only; requires completed independent activation'
+        type: choice
+        default: demo-pilot-morepuff-20260930.json
+        options: [demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json]
       allocation:
         description: 'Dynamic batches for a configured new trial, or the preserved legacy trial'
         default: round-one
@@ -797,7 +802,7 @@ jobs:
       SG_TRIAL_LIMIT: ${{ inputs.round_limit || '300000' }}
       SG_TRIAL_MINUTES: '25'
       SG_DEMO_PILOT: ${{ inputs.role == 'demo-fresh-short' && 'true' || 'false' }}
-      SG_DEMO_PILOT_PROFILE: demo-pilot-morepuff-20260930.json
+      SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile || 'demo-pilot-morepuff-20260930.json' }}
       SG_PENDING_FIRST_STAGE: fresh
       SG_TRIAL_INTERVAL_MS: '0'
       SG_POOL_RUN_LIMIT: ${{ inputs.round_one_limit || '0' }}

@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      pilot_profile:
+        description: 'Independent finite next-game profile; applied profiles remain frozen'
+        type: choice
+        default: demo-pilot-morepuff-20260930.json
+        options: [demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json]
       operation:
         type: choice
         options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot]
@@ -54,5 +59,5 @@ jobs:
       - name: Retire the next game and activate its independent finite demo generation
         if: inputs.operation == 'next-game'
         env:
-          SG_DEMO_PILOT_PROFILE: demo-pilot-morepuff-20260930.json
+          SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile || 'demo-pilot-morepuff-20260930.json' }}
         run: node scripts/runner-v2/demo-next-game-control.mjs

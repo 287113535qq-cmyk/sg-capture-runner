@@ -1258,6 +1258,34 @@
       "featureTypes": {
         "wheelCash": 2
       }
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-touchup-cash-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": "docs/mansion-touchup-integration-20260930.md",
+      "featureSelector": "huff-touchup-cash-v1",
+      "featureTypes": {
+        "moneyMansionTouchUp": 4
+      }
     }
   }
 }

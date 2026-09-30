@@ -8,12 +8,17 @@ The field inventory alone never authorizes a continuation or settlement.
 from huff_feature_review import SOURCE, inspect_frame, game_state, feature_ids
 from native_nextgen_fields import NativeNextgenFields
 from round_fields import VERSION, amount, check, derive, params
+from huff_touchup_review import has_touchup, review_touchup
 
 EXTENSION = SOURCE + '-hard-hat-v1'
 
 
 def feature_type(raw):
     """Add a type only to newly supported Hard Hat chains; keep old hashes."""
+    if has_touchup(raw):
+        # Sequence validation is performed before settlement. This separate
+        # mapping never rewrites historical ordinary/Hard Hat receipts.
+        return 'moneyMansionTouchUp'
     hard_hat = mansion = False
     for step in raw['steps']:
         p = params(step['responsePayload'])
@@ -46,6 +51,9 @@ class HuffFields(NativeNextgenFields):
         return state['counters']['NFG'] or 0
 
     def next_request(self, raw):
+        if has_touchup(raw):
+            result = review_touchup(self.plan, raw)
+            return {'MSGID': result['clientNext']} if result['clientNext'] else None
         check(isinstance(raw, dict) and raw.get('sourceKey') == SOURCE
               and raw.get('protocol') == 'nextgen', 'HUFF_PROFILE_REQUIRED')
         steps = raw.get('steps')
@@ -72,7 +80,7 @@ class HuffFields(NativeNextgenFields):
               'TRIAL_PROFILE_REQUIRED')
         check(self.next_request(raw) is None, 'INCOMPLETE_ROUND')
         kind = feature_type(raw)
-        if kind:
+        if kind in {'hardHat', 'hardHatAndMoneyMansion'}:
             check(any(step['msgId'] == 'FREE_GAME'
                       and game_state(params(step['responsePayload']).get('GSD', '')).get('FEAT') == 'HARDHAT'
                       for step in raw['steps']), 'HUFF_MISSING_HARD_HAT_REPLAY')

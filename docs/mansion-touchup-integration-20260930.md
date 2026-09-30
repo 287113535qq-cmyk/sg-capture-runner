@@ -1,0 +1,11 @@
+# 32714有限Touch Up现金链与AG下一款接线
+
+本轮沿用固定官方客户端和已有两帧证据，接入HuffFields、Runner续步/映射、worker映射选择及collector独立规范化。新增touchup-cash-v1，只支持Money Mansion首BET→FREE授予6次Touch Up→6个严格倒数PAINT现金响应。旧普通、Money Mansion和Hard Hat映射保持不变，新类型moneyMansionTouchUp使用bonus4。
+
+NFG0必须同时满足完整8帧、FID/FEAT/PCFID、TFG/CFGG进度、同session、无重触发或后续Mansion、无组合符号和负FRAMEWINS、完整金额及XML检查；未知GSD和明确未适配的续玩形状进入AG游戏隔离，金额、session、格式或存储异常仍走共同保护。不能用字段白名单扩容代替终局适配。6个PAINT响应及现金终局目前只有合成证据，尚无自然Touch Up终局，不称整款ready或formal。
+
+实际Python analyzer子进程、Runner每个前缀和collector完整字段一致；实际campaign/controller/new-session/capture入口使用合成传输验证32714新旧会话分离、5 BET上限和第6次拒绝。真实旧103条规范化保留。真实91条32718关闭现场与103条32714旧数据在内存运行正式import→retire→rollover→session audit，补6完整、作废2中断，旧91及旧journal/batch不变；32718修复记录独立保留，未重关、未借61注销额度。内存测试不是线上迁移。
+
+新增32714独立profile路径及Python许可范围，固定32714←32718、103保留/2旧中断、20×5且总100。工作流增加受限pilot_profile选择，维护与有限源入口使用同一明确profile，减少每款修改硬编码入口；默认仍为旧profile，不自动新增权限。生产profile、native固定范围、Linux和fresh验收各自通过后才可派发。本报告初始版本记录接线准备，线上结果另行追加。
+
+本机验证：574 Runner、72 protocol、41 Huff Python专项、collector TypeScript通过；全Python发现旧parking测试用FID2假冒未知功能，现改为仍未适配FID3，9项parking专项通过，统一Linux复核全量。独立profile专项通过，profile尚未应用。

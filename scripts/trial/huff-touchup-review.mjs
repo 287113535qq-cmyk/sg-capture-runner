@@ -1,7 +1,9 @@
-// Independent offline candidate, not imported by the capture worker.
+// Pure independent sequence validation; source admission is separately scoped.
 import assert from 'node:assert/strict';
 const need=(ok,code)=>assert(ok,code);
 const source='huffnpuffmoneymansionhighlimit96-round-one-base-v1';
+export const HUFF_TOUCHUP_EXTENSION=source+'-touchup-cash-v1';
+export const hasTouchup=raw=>raw?.sourceKey===source&&raw.steps.some(s=>(parts(s.responsePayload,'&','=').FID??'').split('|').includes('2'));
 const known=new Set(['MMBG','BRS','BGHHPOS','BMS','VA','HHPOS','BWC','BWS','FEAT','NEXTFRAMES','MMW','PCFID','FRAMES','PREVFRAMES','FRAMEWINS']);
 function parts(s,sep,delim){
   need(typeof s==='string','HUFF_INVALID_PAYLOAD');const out={};

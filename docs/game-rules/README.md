@@ -73,7 +73,7 @@
 | [32711](32711.json) | Hoppily Ever After | implemented-subset | 1 |
 | [32712](32712.json) | Hot Hot Blazing Lock | not-documented | 待确认 |
 | [32713](32713.json) | Huff N Even More Puff High Limit | not-documented | 待确认 |
-| [32714](32714.json) | Huff N Puff Money Mansion High Limit | implemented-subset | 3 |
+| [32714](32714.json) | Huff N Puff Money Mansion High Limit | implemented-subset | 4 |
 | [32715](32715.json) | Huff N' Even More Puff | not-documented | 待确认 |
 | [32716](32716.json) | Huff N’ Even More Puff Grand | not-documented | 待确认 |
 | [32717](32717.json) | Huff N' Lots of Goals! | implemented-subset | 1 |

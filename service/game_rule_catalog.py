@@ -54,11 +54,11 @@ def contract(game_id):
             'FEATURE_START': '成功响应可能不含 FS/CFG；开始状态由完整已持久化历史维护。',
         })
     elif game_id == 32714:
-        native.update({'family': 'huff-hard-hat-v1',
+        native.update({'family': 'huff-hard-hat-and-touchup-cash-v1',
             'continue': 'NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。',
             'complete': '无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。',
-            'bounds': '仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；其他功能仍拒绝。FID清零不等于新触发。'})
-        native['files'] += ['service/huff_fields.py', 'service/huff_feature_review.py', 'scripts/trial/huff-protocol.mjs']
+            'bounds': '仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；混合、重触发、负FRAMEWINS及组合后续仍拒绝。TouchUp自然终局尚未观察。FID清零不等于新触发。'})
+        native['files'] += ['service/huff_fields.py', 'service/huff_feature_review.py', 'scripts/trial/huff-protocol.mjs', 'service/huff_touchup_review.py', 'scripts/trial/huff-touchup-review.mjs', 'collector/sg.huff-touchup.ts']
         native['fields'].update({
             'FID / GSD.PCFID / GSD.FEAT': '当前两槽、前一槽及实际重播玩法分别保留；FID1=HardHat，仅适用于本游戏。',
             'TFG / CFGG': '免费总次数/当前进度保留；不假设每帧 NFG 必须减1。',

@@ -1,15 +1,24 @@
-"""Offline, fail-closed Touch Up candidate. Never grants capture permission.
+"""Pure, fail-closed Touch Up sequence validation. No source permission.
 
 Pinned client 67bcebfd...ffa4e93d: FID2 is Touch Up, NFG maps to ib.Ye,
 CFGG to ib.Jd. FreegameTransitionOut can enter MansionIntro via VY
 (FRAMEWINS=-100), or re-enter free games via Dj (Deed/HardHat combination).
 This candidate rejects both exits and every unreviewed feature transition.
+HuffFields may consume this validation; independent finite profile admission
+still controls whether a live source request is allowed.
 """
 from huff_feature_review import SOURCE, inspect_frame, game_state
 from round_fields import check, params, amount
 
 KNOWN_GSD = {'MMBG', 'BRS', 'BGHHPOS', 'BMS', 'VA', 'HHPOS', 'BWC', 'BWS',
              'FEAT', 'NEXTFRAMES', 'MMW', 'PCFID', 'FRAMES', 'PREVFRAMES', 'FRAMEWINS'}
+
+EXTENSION = SOURCE + '-touchup-cash-v1'
+
+
+def has_touchup(raw):
+    return raw.get('sourceKey') == SOURCE and any(
+        '2' in params(s['responsePayload']).get('FID', '').split('|') for s in raw['steps'])
 
 
 def _numbers(value, separator, signed=False):
