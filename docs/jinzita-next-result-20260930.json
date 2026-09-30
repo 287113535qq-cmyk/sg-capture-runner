@@ -1,0 +1,101 @@
+{
+  "at": 1790728534,
+  "newComplete": 95,
+  "jinzitaComplete": 415,
+  "luxorComplete": 182,
+  "oldCompletePreserved": 320,
+  "oldHalfAbandoned": 2,
+  "pending": 0,
+  "outstanding": 0,
+  "newByWorker": {
+    "13": 5,
+    "17": 5,
+    "6": 5,
+    "11": 5,
+    "14": 5,
+    "0": 5,
+    "16": 5,
+    "12": 5,
+    "19": 5,
+    "4": 5,
+    "5": 5,
+    "15": 5,
+    "9": 5,
+    "1": 5,
+    "8": 5,
+    "3": 5,
+    "10": 5,
+    "7": 5,
+    "2": 5
+  },
+  "bonus": {
+    "0": 95
+  },
+  "frames": {
+    "BET": 95
+  },
+  "snapshotHash": "3ad6c5253751213936f4e16cb32e5e33fc2a187de3b921f12e042d20b18eb88f",
+  "runtime": "82d0489664d867a1111d8c092cdfab08f12de10e",
+  "linuxRun": 36649982638,
+  "maintenanceRun": 36650424423,
+  "captureRun": 36650768164,
+  "captureConclusion": "failure",
+  "successfulWorkers": 19,
+  "failedWorker": 18,
+  "failedWorkerSourceRequests": 0,
+  "remainingBudget": 5,
+  "remainingWorker": 18,
+  "realFID1TerminalObserved": false,
+  "formalAuthorized": false,
+  "demonComplete": 446,
+  "beaverComplete": 137,
+  "allFourPythonVerified": 1180,
+  "profileHash": "203435ad5507c7196d6596d95a8590583df234c37051b42eaf86e45780eafbbf",
+  "timing": {
+    "linux": {
+      "run": 36649982638,
+      "status": "success",
+      "queueSeconds": 3.0,
+      "totalSeconds": 97.0
+    },
+    "maintenance": {
+      "run": 36650424423,
+      "status": "success",
+      "queueSeconds": 5.0,
+      "totalSeconds": 132.0
+    },
+    "capture": {
+      "run": 36650768164,
+      "status": "failure",
+      "queueSeconds": 4.0,
+      "totalSeconds": 189.0,
+      "successfulWorkers": 19,
+      "failedWorker": 18,
+      "failedBeforeSource": true,
+      "BET": 95,
+      "remainingByWorker": {
+        "18": 5
+      },
+      "jobMedianSeconds": 158.0,
+      "internalMedianSeconds": 74.174,
+      "gatewayMedianMs": 3369.704460499969
+    }
+  },
+  "ab": {
+    "officialNewComplete": 95,
+    "sessions": 19,
+    "terminalFrames": 95,
+    "intermediateFrames": 0,
+    "identicalGrouping": true,
+    "additionalSG": 0,
+    "oldValidator": {
+      "medianMs": 0.5131999999999991,
+      "p95Ms": 0.55169
+    },
+    "newBoundary": {
+      "medianMs": 1.077789999999999,
+      "p95Ms": 1.2546449999999993
+    },
+    "limitation": "Same data offline. Actual response XM, game request dN and nesting predicates; wallet/UI/base request fallback stubs. Different work, no network/Mongo/health, not online throughput."
+  }
+}

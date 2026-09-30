@@ -1,4 +1,5 @@
 import {JINZITA_SOURCE,JINZITA_EXTENSION} from './jinzita-protocol.mjs';
+import {failureCode} from './failure-code.mjs';
 import {LUXOR_SOURCE,LUXOR_EXTENSION} from './luxor-protocol.mjs';
 import {DEMON_NESTED_EXTENSION} from './demon-nested-protocol.mjs';
 import assert from 'node:assert/strict';
@@ -167,7 +168,7 @@ async function main() {
 try {
   await main();evidence.outcome='success';
 } catch(error) {
-  evidence.outcome='stopped';evidence.error=/^[A-Z_]{1,80}$/.test(error.code || '')?error.code:'TRIAL_RUN_FAILED';
+  evidence.outcome='stopped';evidence.error=failureCode(error);
   if(error.httpStatus)evidence.httpStatus=error.httpStatus;
   if(lease){
     try{evidence.result=await rpc('fail',{...owned(),category:error.category || 'storage',code:evidence.error,cooldownUntil:error.cooldownUntil || 0});}

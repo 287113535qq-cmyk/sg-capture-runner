@@ -127,7 +127,7 @@
     "service/luxor_fields.py": "def598608b113cfeba9717cabef764b19a820ad8778530282785c6fdbf49e57a",
     "scripts/trial/luxor-protocol.mjs": "80871b60587ed087659fa9947a7e3ac3d5faf175f953e646a574c2e56e2e97e6",
     "collector/sg.luxor.ts": "efadadb0a3a850829736a8883652198aeea22f66eeef1f6166956fc20b0ae004",
-    "service/game_rule_catalog.py": "18fea9f85b9cf2d576e88c8e5ef0ef620d5a2a54a89b062e03600af3a377d380"
+    "service/game_rule_catalog.py": "9d6ea30a1fa98fb6b5d28877419717f19a32036dad3117bdd5cc42eac1aa5f57"
   },
   "reviewDocuments": [
     "docs/luxor-free-integration-20260930.md"
@@ -144,7 +144,7 @@
   ],
   "analysisDocumentHashes": {
     "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
-    "docs/continuous-processing.md": "6523b64f28513f4b74cc03da1ba5a49fc83366714a297323baf14a43f32f60ec",
+    "docs/continuous-processing.md": "1faf9ac05e56db2b6a5bb7e699307bf79383751766e4e0b8181cf27ccf5ed4df",
     "docs/luxor-free-integration-20260930.md": "3c9545c0a77fa00ccebcbe6e616d23719f4ddd157fa42ce162b47a00c7cc098d",
     "docs/luxor-next-result-20260930.json": "4ede7a14f709760e8313553daac6714207dba00d424ce81f9cc7f303f9adca4c",
     "docs/luxor-next-result-20260930.md": "d4fa5d9613c979637add8cf834fabea97d19865fee8850f064e0e6d0b3a0616c",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "838dadcdfdc943699727fda6139570e639f869202370199983d0e824badd609c"
+  "ruleHash": "70c348fe4b8272f1df6e5b41dbbe1016cbd7516a550ddff82a1021c910f4d002"
 }

@@ -92,7 +92,7 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "9413c18f8eaac8d67af8d92a7f71b293aec7e4d6dd4cb96a90e849b6fdf9790a",
     "scripts/runner-v2/record_fields.py": "e0171b5f6100da4203d6da7c442e485d10918622c430a46e14954ea1ce0e94b9",
-    "service/game_rule_catalog.py": "18fea9f85b9cf2d576e88c8e5ef0ef620d5a2a54a89b062e03600af3a377d380"
+    "service/game_rule_catalog.py": "9d6ea30a1fa98fb6b5d28877419717f19a32036dad3117bdd5cc42eac1aa5f57"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -101,7 +101,7 @@
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "6523b64f28513f4b74cc03da1ba5a49fc83366714a297323baf14a43f32f60ec",
+    "docs/continuous-processing.md": "1faf9ac05e56db2b6a5bb7e699307bf79383751766e4e0b8181cf27ccf5ed4df",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
   },
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f900912d738e607a7457462c282e0a74c4cf27e4e4418c3aa78c13d23870b464"
+  "ruleHash": "cb99484baa710bb4c7902fb2a9e22157fdc4043540d1ac451130b8799df4d120"
 }

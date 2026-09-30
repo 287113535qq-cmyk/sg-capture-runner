@@ -93,7 +93,7 @@ def contract(game_id):
         native.update({'family': 'jinzita-standalone-free-v1',
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',
             'complete': '上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。',
-            'bounds': '旧320完整离线Python/Runner/TS全文一致，314已Mongo、6旧待补写，两旧半局只分析不续接。新FID1终局和重触发目前仅合成，混合FID0/1及未知嵌套拒绝，不标ready。'})
+            'bounds': '旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片准入失败且源0，原100还剩其独占5，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。'})
         native['files'] += ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts']
         native['fields'].update({'FID': '1=FreeSpins，0=HoldNSpin；新适配仅首BET独立1。',
             'GSD.FGRS / CFGC': '客户端免费剩余和进度可由这两个内层字段驱动；独立路径要求与外层计数一致，不能只看NFG0。',
