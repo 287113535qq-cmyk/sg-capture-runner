@@ -1325,6 +1325,17 @@
       "ordinaryBonus": 0,
       "freeBonus": 1,
       "feature": "eight-free-no-retrigger-v1"
+    },
+    "pearlofthecaribbean-wms-v1:eight-free-retrigger-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "pearl-wms-v1",
+      "gameId": 32795,
+      "betRaw": 200,
+      "buy": 0,
+      "ordinaryBonus": 0,
+      "freeBonus": 1,
+      "feature": "eight-free-additive-retrigger-v1"
     }
   }
 }

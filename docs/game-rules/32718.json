@@ -144,11 +144,12 @@
     "docs/morepuff-wheel-integration-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
-    "docs/protocol-parking-storage-stop-20260928.md"
+    "docs/protocol-parking-storage-stop-20260928.md",
+    "docs/rules.md"
   ],
   "analysisDocumentHashes": {
     "docs/ag-pilot-transition-20260930.md": "38d924d12f961f3c2d868058b909821e089dd9345d258941f18fca78f6236611",
-    "docs/continuous-processing.md": "031ba70f322e789ddeeca5baf1217ff583098d2f51f6bc89802313b79588d97a",
+    "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/mansion-native-resolution-20260930.md": "ef8e014dab9edb61f1e6f9d4b6174be6cc493b0ebf60668fe612d498ebbb5cee",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
@@ -159,7 +160,8 @@
     "docs/morepuff-wheel-integration-20260930.md": "012af068b0e8fbd9c6936662380d32fddcf6d470ca074e37398a0b48cce216c2",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
+    "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
+    "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -168,5 +170,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f3dbbcf8e895b92efbbdab1787db39bf873e936742cf5c9d291cfaa0bf2c544a"
+  "ruleHash": "9c205b9b2698725e78f8c3c18d54d06bdefea2448a1ef2d23b80b938492c5c9d"
 }

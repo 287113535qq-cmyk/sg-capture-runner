@@ -197,6 +197,7 @@
     "docs/piggies-zero-source-rebind-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
+    "docs/rules.md",
     "docs/secondary-account-diagnostics-20260928.md",
     "docs/secondary-independent-games-review-20260928.md",
     "docs/secondary-isolated-runner-check-20260928.md"
@@ -204,7 +205,7 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/continuous-processing.md": "031ba70f322e789ddeeca5baf1217ff583098d2f51f6bc89802313b79588d97a",
+    "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
@@ -228,6 +229,7 @@
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
+    "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -239,5 +241,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e987955abc95ee6f3feca3c01aa0dd021d35c010a16f9da8e2f8a3e85dec862b"
+  "ruleHash": "a4c7a135dec6bdf6e184bb4184c41926a70c83c8d5e3a8ae7390092a572de4f7"
 }

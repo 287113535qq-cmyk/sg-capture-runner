@@ -85,16 +85,20 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
     "docs/pearl-integration-20260930.md",
     "docs/pearl-pilot-result-20260930.md",
-    "docs/piggies-pilot-result-20260930.md"
+    "docs/piggies-pilot-result-20260930.md",
+    "docs/rules.md"
   ],
   "analysisDocumentHashes": {
-    "docs/pearl-formal-count-20260930.md": "7586b1f1e8005e46466c7160f7a5df99f71fb1c59737e2cc0dc5a46bb8155cd7",
+    "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
+    "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
-    "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0"
+    "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
+    "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -103,5 +107,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f5372a10c9fe4a22f4cfeeccac6f1e53dfde4478f9c0bb55ee8edac45c614dd5"
+  "ruleHash": "012a59b1b3ad0b4d5a370842d4d9471be9487762c563a3afcf3b637d44f42037"
 }
