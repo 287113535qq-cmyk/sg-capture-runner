@@ -23,6 +23,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { connect } from './rpc.mjs';
 import { gameForShard } from './demo-sessions.mjs';
+import {nextgenCountGame} from './nextgen-count-session.mjs';
 import {captureBatch, runDynamicBatches, fail, params, integer} from './capture-batch.mjs';
 import {SQUID_EXTENSION} from './squid-protocol.mjs';
 import {HUFF_SOURCE,HUFF_EXTENSION} from './huff-protocol.mjs';
@@ -106,12 +107,13 @@ async function main() {
       runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,
       deadline:performance.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000});
   }
-  const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId,plan);
+  owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}:${randomUUID()}`;
+  const game=plan.countAllocation?nextgenCountGame(baseGame,plan,shard,owner)
+    :shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId,plan);
   if(isPool)assert(shard!==null);
   assert.equal(game.id,plan.gameId);assert.equal(game.runtimeSlug,plan.runtimeSlug);assert.equal(game.mode,'demo');
   assert.equal(game.serverAddress,'ogs-gdm-usnj.nyxop.net/nextgen');
   assert(game.sessionId && game.operatorId);
-  owner=`${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.GITHUB_JOB}:${randomUUID()}`;
   const identity={owner,sessionHash:hash(game.sessionId+'@'+game.operatorId),commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan))};
   if(!isPool){
     lease=await rpc('claim',identity);leaseOwned={owner,epoch:lease.epoch};

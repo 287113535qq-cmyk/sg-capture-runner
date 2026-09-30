@@ -54,7 +54,9 @@ try{
       if(next.action==='audit'){console.log(JSON.stringify(await stages.run('audit',()=>campaign.audit(next.plan))));break;}
       const code=await stages.run('capture',()=>capture(next.plan));
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
-      if(code!==0 && (await campaign.status()).globalPaused){process.exitCode=2;break;}
+      // A failed child is evidence requiring review. Repeating its startup can
+      // otherwise loop forever before registration without producing any data.
+      if(code!==0){process.exitCode=2;break;}
       if(code===0){
         const pool=(await store.get('state','pool:'+next.plan.trialId)).value;
         const workers=Array.from({length:sessionLayout(next.plan)?.lanesPerHost??1},(_,lane)=>sessionWorker(next.plan,Number(process.env.SG_TRIAL_SHARD),group,lane));

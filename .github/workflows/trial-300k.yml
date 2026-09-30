@@ -6,7 +6,7 @@ on:
         description: 'Reviewed runtime update; requires immutable no-source refresh receipt'
         type: choice
         default: ''
-        options: ['', count-runtime-pearl-observation-20261001.json]
+        options: ['', count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
       formal_profile:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
@@ -886,8 +886,13 @@ jobs:
         if: inputs.formal_profile == 'formal-count-pyramids-20261001.json'
         run: node scripts/runner-v2/pyramids-count-control.mjs admit
       - name: Verify repaired Pyramids admission alongside the fixed primary run
-        if: inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json'
+        if: inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' && inputs.runtime_profile == ''
         run: node scripts/runner-v2/pyramids-repair-control.mjs admit
+      - name: Admit corrected new-session runtime without resetting allocation
+        if: inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' && inputs.runtime_profile == 'count-runtime-pyramids-session-20261001.json'
+        env:
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
+        run: node scripts/runner-v2/pyramids-zero-runtime-control.mjs admit
   pyramids-formal-capture:
     needs: pyramids-formal-admit
     name: capture-${{ matrix.shard }}
