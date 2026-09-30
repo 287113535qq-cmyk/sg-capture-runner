@@ -81,5 +81,15 @@ class GatewayTests(unittest.TestCase):
         with self.assertRaises(Refused):self.call('control_read',trialId='not-approved')
         with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch({'schema':'sg-mongo-only-v2','op':'control_read','trialId':'sg_r1_20260928_32723'})
 
+    def test_separate_sequence_ceiling_is_fixed_to_reviewed_pearl_storage_scope(self):
+        trial='sg_r1_20260930_32795'
+        self.manifest['trials'][trial]={'group':'primary','gameId':32795,'runtimeGameId':33155,'target':300000,'maxSequence':600000}
+        self.assertEqual(self.g.scope({'trialId':trial})[1]['target'],300000)
+        for value in (600001, True, 300000):
+            self.manifest['trials'][trial]['maxSequence']=value
+            with self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':trial})
+        self.manifest['trials']['sg_r1_20260928_32723']['maxSequence']=600000
+        with self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':'sg_r1_20260928_32723'})
+
 
 if __name__=='__main__':unittest.main()

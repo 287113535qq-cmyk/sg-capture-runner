@@ -14,6 +14,18 @@ def validate_pool_plan(plan):
     if plan.get('campaignId'):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         expected=plans.get(str(plan.get('gameId')))
+        if 'countAllocation' in plan:
+            require('demoGeneration' not in plan and plan.get('gameId') == 32795, 'FORMAL_COUNT_SCOPE')
+            filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')
+            require(filename == 'formal-count-pearl-20260930.json', 'FORMAL_COUNT_PROFILE_PATH')
+            profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
+            require(profile.get('schema') == 'sg-formal-count-profile-v1' and profile.get('gameId') == 32795
+                and profile.get('basePlanHash') == digest(expected) and profile.get('activation') == plan['countAllocation']
+                and isinstance(plan['countAllocation'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['countAllocation'])
+                and profile.get('completePreserved') == 100 and profile.get('remainingComplete') == 299900
+                and profile.get('maxSequence') == 600000 and profile.get('sessionRotation') == 'closed-batches-v1'
+                and profile.get('planHash') == digest(plan), 'FORMAL_COUNT_PLAN_CHANGED')
+            expected={**expected,'countAllocation':profile['activation']}
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
             require(filename in ('demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')

@@ -48,6 +48,40 @@ export function completeCountBatch({pool,plan,spec,worker,batch,proof}){
  checkLedger(pool,plan,spec);
 }
 
+// A graceful run boundary discards only the unused suffix. Completed records
+// remain bound to the old session; a later process must allocate a new range.
+export function settleCountBatch({pool,plan,spec,worker,batch,evidence,key}){
+ checkLedger(pool,plan,spec);
+ assert(spec.sessionRotation==='closed-batches-v1','COUNT_ROTATION_NOT_AUTHORIZED');
+ const w=pool.workers[String(worker)],item=pool.countAllocation.batches[batch.id];
+ assert(item&&!item.closed&&w?.activeBatch?.id===batch.id&&item.worker===worker
+  &&item.sessionHash===w.sessionHash&&item.start===batch.start&&item.end===batch.end,'COUNT_OWNER_CHANGED');
+ assert(evidence.schema==='sg-count-batch-settlement-v1'&&evidence.activation===spec.activation
+  &&evidence.trialId===plan.trialId&&evidence.fullReadback===true,'COUNT_SETTLEMENT_SCOPE');
+ const b=evidence.batch,complete=b.checkpoint-b.start+1;
+ assert(b.id===item.id&&b.worker===worker&&b.sessionHash===item.sessionHash
+  &&b.start===item.start&&b.end===item.end&&b.pending===null&&!b.pendingOriginal&&!b.bootstrapAwaiting
+  &&!b.failure&&b.leaseUntil===0&&b.checkpoint===b.journaled
+  &&Number.isSafeInteger(complete)&&complete>=0&&complete<=b.end-b.start+1,'COUNT_SETTLEMENT_UNFINISHED');
+ assert(key===`count-settlement:${plan.trialId}:${spec.activation}:${b.id}`,'COUNT_SETTLEMENT_KEY');
+ Object.assign(item,{closed:true,complete,evidenceHash:hash(evidence),settlementKey:key});
+ pool.confirmed+=complete;pool.countAllocation.reserved-=item.end-item.start+1;
+ w.activeBatch=null;w.resumeSafe=false;
+ checkLedger(pool,plan,spec);
+}
+
+export function allowCountSessionRotation({pool,plan,spec,worker,sessionHash,now}){
+ checkLedger(pool,plan,spec);
+ const old=pool.workers[String(worker)];
+ assert(spec.sessionRotation==='closed-batches-v1'&&old&&!old.activeBatch&&old.leaseUntil<=now,
+  'COUNT_SESSION_STILL_ACTIVE');
+ for(const b of Object.values(pool.countAllocation.batches)){
+  assert(b.sessionHash!==sessionHash,'COUNT_SESSION_REUSED');
+  if(b.worker===worker)assert(b.closed&&(b.id<=spec.baselineBatchCount||b.settlementKey),
+   'COUNT_SESSION_UNSETTLED');
+ }
+}
+
 const integer=n=>Number.isSafeInteger(n)&&n>=0;
 export function checkLedger(pool,plan,spec){
  assert(spec.schema==='sg-complete-count-v1'&&spec.trialId===plan.trialId&&spec.target===plan.target,'COUNT_SCOPE');
@@ -93,7 +127,15 @@ export async function auditCountBatch({store,pool,plan,spec,record,cache}){
   &&b.start===item.start&&b.end===item.end&&b.pending===null&&!b.bootstrapAwaiting
   &&b.checkpoint===b.journaled&&b.journaled===b.start+item.complete-1,'COUNT_AUDIT_BATCH_CHANGED');
  if(b.id<=spec.baselineBatchCount)assert(hash(b)===item.evidenceHash,'COUNT_AUDIT_HISTORY_CHANGED');
- else assert(pool.workers[String(b.worker)]?.sessionHash===b.sessionHash,'COUNT_AUDIT_SESSION_CHANGED');
+ else if(spec.sessionRotation==='closed-batches-v1'){
+  assert(item.settlementKey===`count-settlement:${plan.trialId}:${spec.activation}:${b.id}`,'COUNT_AUDIT_SETTLEMENT');
+  const receiptKey='journal/'+item.settlementKey;
+  if(!cache.has(receiptKey))cache.set(receiptKey,(await store.get('journal',item.settlementKey))?.value);
+  const receipt=cache.get(receiptKey);
+  assert(receipt?.schema==='sg-count-batch-settlement-v1'&&receipt.activation===spec.activation
+   &&receipt.trialId===plan.trialId&&receipt.fullReadback===true
+   &&hash(receipt)===item.evidenceHash&&hash(receipt.batch)===hash(b),'COUNT_AUDIT_SETTLEMENT_CHANGED');
+ }else assert(pool.workers[String(b.worker)]?.sessionHash===b.sessionHash,'COUNT_AUDIT_SESSION_CHANGED');
 }
 
 export function idleAtCountTail(pool,plan,spec,worker,now){

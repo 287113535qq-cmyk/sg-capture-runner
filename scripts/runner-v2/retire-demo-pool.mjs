@@ -3,6 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter} from './mongo-writer.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
+import {retireCountPool} from './retire-count-pool.mjs';
 
 // Retire an idle demo pool without attempting source-session recovery. Complete
 // records are verified/flushed; interrupted attempts are retained only in the
@@ -12,6 +13,7 @@ export async function retireDemoPool({store,transport,gate,parser,plan,boundary,
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
  const countSpec=pool?await loadCountPermission({store,plan,pool,commit}):null;
+ if(countSpec?.sessionRotation==='closed-batches-v1')return retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec:countSpec,now});
  assert(pool&&!pool.enabled&&pool.planHash===hash(plan)&&hash(pool)===expectedPoolHash&&pool.nextBatchId>0&&pool.nextBatchId<=101,'RETIRE_POOL_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'RETIRE_WORKER_ACTIVE');
  const prefix='retired-demo:'+plan.trialId+':'+expectedPoolHash.slice(0,16);

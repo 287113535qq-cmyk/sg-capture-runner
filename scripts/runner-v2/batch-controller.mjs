@@ -17,7 +17,7 @@ const fail=(code,category='storage')=>Object.assign(new Error(code),{code,catego
 export class BatchController {
   constructor({store,transport,gate,analyzer,spool,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
     assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
-    Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep});
+    Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep,runKey});
     this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
   }
@@ -93,6 +93,7 @@ export class BatchController {
     await this.flush();
     return {done:false,batchId:this.batch.id,epoch:this.batchEpoch,durable:saved.value.journaled,
       checkpoint:saved.value.checkpoint,sequenceBase:this.batch.start-1,sequenceTarget:this.batch.end,pendingRound:saved.value.pending,
+      ...(this.plan.countAllocation?{countAllocation:this.plan.countAllocation}:{}),
       ...(this.pendingFirst.admission?{shortRunLimit:this.pendingFirst.admission.limit}:{})};
   }
   async flush(){
@@ -201,6 +202,19 @@ export class BatchController {
     const b=(await this.store.get('state',this.batchKey)).value;this.batchOwned(b);
     assert(!b.pending && !b.pendingOriginal && !b.bootstrapAwaiting,'UNFINISHED_ROUND');
     assert(b.checkpoint===b.journaled,'UNCONFIRMED_QUEUE');
+    const countSpec=await this.pool.countPermission();
+    if(countSpec?.sessionRotation==='closed-batches-v1'){
+      // Freeze the batch before closing its reservation. A failed write leaves
+      // the worker fenced and cannot grant another session or count capacity.
+      const frozen=(await this.update(v=>{assert(hash(v)===hash(b),'BATCH_VERSION_CHANGED');return {...v,leaseUntil:0};})).value;
+      const key=`count-settlement:${this.plan.trialId}:${countSpec.activation}:${b.id}`;
+      const evidence={schema:'sg-count-batch-settlement-v1',activation:countSpec.activation,
+        trialId:this.plan.trialId,batch:frozen,fullReadback:true};
+      await this.store.create('journal',key,evidence,{immutable:true});
+      assert(hash((await this.store.get('journal',key))?.value)===hash(evidence),'COUNT_SETTLEMENT_READBACK');
+      await this.pool.settle(this.lease,this.batch,evidence,key);
+      return {status:'complete',checkpoint:b.checkpoint,discarded:b.end-b.checkpoint};
+    }
     if(b.journaled===b.end){
       await this.pool.complete(this.lease,this.batch,{pending:null,confirmed:b.end-b.start+1,fullReadback:true});
       return {status:'complete',checkpoint:b.checkpoint};
@@ -265,8 +279,29 @@ export class BatchController {
   }
   async rpc(op,r={}){
     if(op==='status')return this.status();
+    if(op==='finish_run'){
+      assert(this.plan.countAllocation&&this.lease,'COUNT_FINISH_SCOPE');
+      await this.pool.countPermission();
+      await this.store.update('state',this.pool.key,v=>{
+        const w=v.workers[String(this.lease.worker)];
+        assert(w&&w.owner===this.lease.owner&&w.epoch===this.lease.epoch&&!w.activeBatch,'COUNT_FINISH_UNSETTLED');
+        w.leaseUntil=0;w.resumeSafe=false;return v;
+      });return {released:true};
+    }
     if(op==='register'){
       await this.control.allowed({newRound:true});assert(r.planHash===hash(this.plan),'PLAN_CHANGED');
+      const spec=await this.pool.countPermission();
+      if(spec?.runAdmission==='unique-github-run-v1'){
+        assert(/^capture-run:[0-9]+:1$/.test(this.runKey??''),'COUNT_RUN_REQUIRED');
+        const run=this.runKey.slice('capture-run:'.length);
+        const permit=(await this.store.get('journal',`count-run:${this.plan.trialId}:${run}`))?.value;
+        assert(permit?.schema==='sg-count-run-v1'&&permit.run===run&&permit.activation===spec.activation
+          &&permit.profileHash===spec.profileHash&&permit.commit===this.pool.commit&&r.commitSha===this.pool.commit
+          &&permit.createdAt<=this.now()&&this.now()<permit.expiresAt
+          &&permit.expiresAt-permit.createdAt<=270*60000,'COUNT_RUN_NOT_ADMITTED');
+        const old=(await this.store.get('state',this.pool.key))?.value.workers[String(r.shardId)];
+        assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':'),'COUNT_INITIAL_WORKER_LATE');
+      }
       await this.pendingFirst.admit(r,r.shardId);
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }

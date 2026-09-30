@@ -9,12 +9,15 @@ const basePlan=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))
 const plan={...basePlan,demoGeneration:'f'.repeat(64)};
 const profile=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[plan.sourceKey];
 
-async function run({failDurability=false,unknown=false}={}){
+async function run({failDurability=false,unknown=false,formal=false}={}){
+ const plan={...basePlan,...(formal?{countAllocation:'b'.repeat(64)}:{demoGeneration:'f'.repeat(64)})};
  const parser=analyzer({python:process.env.PYTHON||'python3'});let posts=0,pending=null,raw=null,record=null,bootAwaiting=null;
- const saved=[],fixture=pearlFixture(),evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
+ const saved=[],fixture=pearlFixture(!formal),evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
+ if(formal)for(const s of fixture.steps){s.responseXml=s.responseXml.replaceAll('="400"','="0"').replace('value="100200"','value="2400"');s.responsePayload=s.responseXml;}
  const baseGame={mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'};
- const rawBase={fixtureOnly:false,protocol:'wms',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:100000,steps:[]};
- const lease={durable:0,sequenceTarget:100,batchId:1,epoch:1,shortRunLimit:1,pendingRound:null};
+ const rawBase={fixtureOnly:false,protocol:'wms',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:formal?2600:100000,steps:[]};
+ const lease={durable:0,sequenceTarget:100,batchId:1,epoch:1,...(formal?{countAllocation:plan.countAllocation}:{shortRunLimit:1}),pendingRound:null};
+ let finished=false;
  const rpc=async(op,data)=>{
   if(op==='register')return {workerEpoch:1};if(op==='next')return lease;
   if(op==='bootstrap_intent'){bootAwaiting=data.requestPayload;return {};}
@@ -31,14 +34,16 @@ async function run({failDurability=false,unknown=false}={}){
    if(!next){record=await parser.call({op:'record',plan:basePlan,raw,normalized:data.normalized,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',sessionHash:'b'.repeat(64),worker:0,batchId:1});}
    return {complete:!next,followingIntentDurable:false,checkpoint:0,...(record?{endBalanceRaw:record.normalized.money.endBalanceRaw}:{})};
   }
-  if(op==='release'){assert(record);return {status:'partial',checkpoint:1};}
+  if(op==='release'){assert(record);return {status:formal?'complete':'partial',checkpoint:1};}
+  if(op==='finish_run'){finished=true;return {released:true};}
   if(op==='status')return {confirmed:record?1:0};throw Error('UNEXPECTED_RPC');
  };
  const fetchImpl=async(url,options)=>{
   assert.equal(url,PEARL_ENDPOINT);assert.equal(options.redirect,'manual');assert.equal(bootAwaiting??pending,options.body,'Every source call requires the durable matching intent');
   let text;
-  if(posts===0){assert.equal(options.body,pearlPayload('Init',pearlSession(baseGame,plan,0)));
+  if(posts===0){if(!formal)assert.equal(options.body,pearlPayload('Init',pearlSession(baseGame,plan,0)));
    text='<GameResponse type="Init"><Header gameID="20327" versionID="1_0" isRecovering="N" readyForEndGame="N" sessionID="synthetic-0"/><Stakes defaultIndex="0">200|400</Stakes><Balances><Balance name="CASH_BALANCE" value="100000"/></Balances></GameResponse>';
+   if(formal)text=text.replace('value="100000"','value="2600"');
   }else{const step=fixture.steps[posts-1];assert(step);assert.equal(options.body,pearlPayload(step.msgId,'synthetic-'+(posts-1)));text=step.responseXml;
    if(unknown&&posts===1)text=text.replace('<BGInfo','<BGInfo NEWFEATURE="1"');}
   posts++;return {ok:true,headers:{getSetCookie:()=>[],get:()=>null},text:async()=>text};
@@ -46,7 +51,7 @@ async function run({failDurability=false,unknown=false}={}){
  let error;
  try{await runPearlWorker({plan,baseGame,shard:0,rpc,mappingHash:hash(profile),prepareRound:pearlFields,evidence,shouldStop:()=>false,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
  catch(e){error=e;}finally{parser.close();}
- return {posts,error,saved,record,evidence,pending};
+ return {posts,error,saved,record,evidence,pending,finished};
 }
 test('WMS worker uses persisted Init, one paid Logic, eight free Logic and EndGame with Python readback',async()=>{
  const r=await run();assert.equal(r.error,undefined);assert.equal(r.posts,11);assert.equal(r.saved.length,11);
@@ -57,4 +62,19 @@ test('WMS response durability failure never sends another request or retries',as
 });
 test('WMS unknown feature is saved before adapter rejection and never continued',async()=>{
  const r=await run({unknown:true});assert.equal(r.error.code,'PEARL_FEATURE_NOT_ADAPTED');assert.equal(r.posts,2);assert.equal(r.saved.length,2);assert.equal(r.record,null);
+});
+
+test('formal session identity changes per process and cannot reuse a pilot generation',()=>{
+ const base={mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'},formal={...basePlan,countAllocation:'b'.repeat(64)};
+ const a=pearlSession(base,formal,0,'11:1:00000000-0000-0000-0000-000000000001');
+ const b=pearlSession(base,formal,0,'11:1:00000000-0000-0000-0000-000000000002');
+ assert.notEqual(a,b);assert.notEqual(a,pearlSession(base,plan,0));
+ assert.throws(()=>pearlSession(base,{...formal,demoGeneration:plan.demoGeneration},0,'11:1:00000000-0000-0000-0000-000000000001'));
+ assert.throws(()=>pearlSession(base,formal,0,'11:2:00000000-0000-0000-0000-000000000001'));
+});
+
+test('formal worker finishes EndGame and releases before rotating a low demo balance',async()=>{
+ const r=await run({formal:true});assert.equal(r.error,undefined);assert.equal(r.posts,3);
+ assert.equal(r.evidence.completedThisRun,1);assert.equal(r.record.normalized.money.endBalanceRaw,2400);
+ assert.equal(r.evidence.sessionBoundary,'settled-low-demo-balance');assert.equal(r.finished,true);
 });

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {stable} from './mongo-writer.mjs';
-import {loadCountPermission,allocateCountBatch,completeCountBatch,checkLedger} from './complete-count.mjs';
+import {loadCountPermission,allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
 
 const fail=code=>Object.assign(new Error(code),{code});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -92,7 +92,14 @@ export class RunnerPool {
       this.checkCount(value,spec);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       const old=value.workers[String(worker)];
-      if(old && old.sessionHash!==identity.sessionHash)throw fail('SESSION_CHANGED');
+      if(spec?.sessionRotation==='closed-batches-v1'&&old&&old.owner!==identity.owner
+        &&old.sessionHash===identity.sessionHash)throw fail('COUNT_NEW_SESSION_REQUIRED');
+      if(spec?.sessionRotation==='closed-batches-v1'&&!old
+        &&Object.values(value.countAllocation.batches).some(b=>b.sessionHash===identity.sessionHash))throw fail('COUNT_SESSION_REUSED');
+      if(old && old.sessionHash!==identity.sessionHash){
+        if(!spec)throw fail('SESSION_CHANGED');
+        allowCountSessionRotation({pool:value,plan:this.plan,spec,worker,sessionHash:identity.sessionHash,now:this.now()});
+      }
       if(Object.entries(value.workers).some(([id,w])=>id!==String(worker)&&w.sessionHash===identity.sessionHash))throw fail('SHARED_SESSION');
       if(old && old.owner===identity.owner && old.leaseUntil>this.now()){epoch=old.epoch;return null;}
       if(old && old.leaseUntil>this.now())throw fail('WORKER_BUSY');
@@ -162,6 +169,14 @@ export class RunnerPool {
     await this.store.update('state',this.key,value=>{
       const worker=this.owned(value,lease);
       worker.resumeSafe=resumeSafe;worker.leaseUntil=0;return value;
+    });
+  }
+  async settle(lease,batch,evidence,key){
+    const spec=await this.countPermission();assert(spec,'COUNT_PERMISSION_REQUIRED');
+    await this.store.update('state',this.key,value=>{
+      this.owned(value,lease);
+      settleCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,evidence,key});
+      return value;
     });
   }
 }

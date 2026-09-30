@@ -59,3 +59,43 @@ test('count-mode retirement requires current runtime and completed activation',a
   const before=hash([...f.docs]);await assert.rejects(retireDemoPool(f.args));assert.equal(hash([...f.docs]),before);
  }
 });
+
+function largeCountFixture(){
+ const f=countedFixture(),plan=f.args.plan,pool=f.pool,old=f.batch,baseline=[];
+ f.docs.delete('state/batch:'+plan.trialId+':1');
+ for(let id=1;id<=105;id++){
+  const b={id,worker:7,start:(id-1)*100+1,end:id*100,sessionHash:'d'.repeat(64),checkpoint:(id-1)*100,journaled:(id-1)*100,pending:null,leaseUntil:0};
+  f.docs.set(`state/batch:${plan.trialId}:${id}`,{value:b});
+  baseline.push({...Object.fromEntries(['id','worker','start','end','sessionHash'].map(k=>[k,b[k]])),closed:true,complete:0,evidenceHash:hash(b)});
+ }
+ Object.assign(old,{id:106,start:10501,end:10600,checkpoint:10500,journaled:10502});
+ f.docs.set(`state/batch:${plan.trialId}:106`,{value:old});
+ for(let n=1;n<=2;n++){
+  const r=f.docs.get('journal/'+receiptKey(plan.trialId,n)).value;
+  f.docs.delete('journal/'+receiptKey(plan.trialId,n));r.sequence+=10500;r.batchId=106;
+  f.docs.set('journal/'+receiptKey(plan.trialId,r.sequence),{value:r});
+ }
+ pool.workers[7].activeBatch={id:106,worker:7,start:10501,end:10600};pool.nextBatchId=107;pool.nextSequence=10601;
+ const spec=f.docs.get('journal/'+f.key).value;
+ Object.assign(spec,{maxSequence:20000,firstSequence:10501,baselineBatchCount:105,baselineHash:hash(baseline),sessionRotation:'closed-batches-v1'});
+ pool.countAllocation={specHash:hash(spec),reserved:100,batches:Object.fromEntries(baseline.map(b=>[b.id,b]))};
+ pool.countAllocation.batches[106]={...pool.workers[7].activeBatch,sessionHash:old.sessionHash,closed:false,complete:0,evidenceHash:null};
+ f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);f.args.expectedPoolHash=hash(pool);
+ const getMany=f.args.store.getMany;f.args.store.getMany=async(c,ks)=>{assert(ks.length<=100);return getMany(c,ks);};
+ return f;
+}
+test('formal retirement pages over 100 batches, preserves closed history and settles only verified records',async()=>{
+ const f=largeCountFixture(),before=hash(f.get('state','batch:synthetic-demo:1').value);
+ f.batch.pending.awaiting='unknown-synthetic-request';
+ const r=await retireDemoPool(f.args),pool=f.get('state','pool:synthetic-demo').value;
+ assert.equal(r.completePreserved,2);assert.equal(r.abandonedAttempts,1);assert.equal(pool.confirmed,2);assert.equal(pool.countAllocation.reserved,0);
+ assert.equal(hash(f.get('state','batch:synthetic-demo:1').value),before);assert.equal(pool.workers[7].activeBatch,null);
+ const archive=[...f.docs.values()].find(r=>r.value.schema==='sg-retired-count-batch-v1').value;
+ assert.equal(archive.disposition,'unknown-abandoned-without-replay');assert.equal(archive.batch.pending.awaiting,'unknown-synthetic-request');
+ assert.equal([...f.docs.values()].filter(r=>r.value.schema==='sg-retired-count-page-v1').length,2);
+});
+test('formal retirement Mongo conflict retains reservation and original private attempt',async()=>{
+ const f=largeCountFixture();f.corrupt();await assert.rejects(retireDemoPool(f.args),/MONGO_CONTENT_CONFLICT/);
+ assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,100);
+ assert(f.get('state','batch:synthetic-demo:106').value.pending);
+});

@@ -3,12 +3,13 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {githubBoundary} from './github-boundary.mjs';
 export const stalled=Object.freeze({id:36612306276,repository:'zyzuoyang/sg-capture-runner',commit:'c433f74c5ef4bda1cbe3cbde9ec17fffe0122b44',profileHash:'9a4d0db5fa18564d9cee14c1b6c7891217b23dd77027d5c656b9328831deee22',generation:'53448c2a8f711899004d05c065f947cd8fb737f9da8152f69ccd7f4da7d53ed2'});
 export const revokedMarker=Object.freeze({schema:'sg-demo-run-revoked-v1',run:stalled.id+':1',commit:stalled.commit,profileHash:stalled.profileHash});
-export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.now}){
+export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.now,workflowPath='.github/workflows/demo-maintenance.yml'}){
+ assert(['.github/workflows/demo-maintenance.yml','.github/workflows/trial-300k.yml'].includes(workflowPath),'CURRENT_WORKFLOW_CHANGED');
  assert(hash(oldProfile)===stalled.profileHash&&run!==stalled.id+':1'&&commit!==stalled.commit,'FENCE_BINDING_CHANGED');
  const key='demo-generation:sg_r1_20260928_32820:'+stalled.generation;
  const review=async()=>{
   const self=await read(`repos/${stalled.repository}/actions/runs/${run.split(':')[0]}`);
-  assert(self.id===Number(run.split(':')[0])&&self.run_attempt===1&&self.head_sha===commit&&self.status==='in_progress'&&self.path==='.github/workflows/demo-maintenance.yml'&&self.repository?.full_name===stalled.repository,'MAINTENANCE_NOT_ACTIVE');
+  assert(self.id===Number(run.split(':')[0])&&self.run_attempt===1&&self.head_sha===commit&&self.status==='in_progress'&&self.path===workflowPath&&self.repository?.full_name===stalled.repository,'MAINTENANCE_NOT_ACTIVE');
   const r=await read(`repos/${stalled.repository}/actions/runs/${stalled.id}`),jobs=await read(`repos/${stalled.repository}/actions/runs/${stalled.id}/jobs?filter=all&per_page=100`);
   assert(r.id===stalled.id&&r.run_attempt===1&&r.head_sha===stalled.commit&&r.repository?.full_name===stalled.repository&&r.event==='workflow_dispatch'&&r.path==='.github/workflows/trial-300k.yml'&&r.status==='queued'&&r.conclusion===null,'STALLED_RUN_CHANGED');
   assert(jobs.total_count===0&&Array.isArray(jobs.jobs)&&jobs.jobs.length===0,'STALLED_JOB_EXISTS');
@@ -22,7 +23,7 @@ export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.n
   if(found.length)assert(path.includes('status=queued')&&found[0].head_sha===stalled.commit&&found[0].run_attempt===1&&found[0].path==='.github/workflows/trial-300k.yml','STALLED_LIST_CHANGED');
   return {...r,total_count:r.total_count-found.length,workflow_runs:r.workflow_runs.filter(x=>x.id!==stalled.id)};
  };
- const base=githubBoundary({read:filtered,run,commit,now,workflowPath:'.github/workflows/demo-maintenance.yml'});
+ const base=githubBoundary({read:filtered,run,commit,now,workflowPath});
  return async()=>{const start=now();await review();await base();await review();assert(now()-start<=30000,'GITHUB_EVIDENCE_STALE');};
 }
 // Only changes a campaign fence. Completed data, sessions and quota are untouched.

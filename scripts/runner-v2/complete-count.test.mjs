@@ -7,7 +7,7 @@ import {BatchController} from './batch-controller.mjs';
 import {captureBatch} from '../trial/capture-batch.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
-async function fixture({target=3,baseline=true,ceiling=400}={}){
+async function fixture({target=3,baseline=true,ceiling=400,rotation=false}={}){
  const docs=new Map(),rounds=new Map();let failCAS=0,time=100000;
  const commit='c'.repeat(40),activation='d'.repeat(64),session='e'.repeat(64);
  const plan={trialId:'sg_r1_20260928_32723',gameId:32723,buy:0,phase:1,target,betRaw:25,maxSteps:100,sourceKey:'fixture',countAllocation:activation};
@@ -30,6 +30,7 @@ async function fixture({target=3,baseline=true,ceiling=400}={}){
  const old={id:1,worker:0,start:1,end:300,sessionHash:'a'.repeat(64),checkpoint:1,journaled:1,pending:null,leaseUntil:0};
  const entries=baseline?[{id:1,worker:0,start:1,end:300,sessionHash:old.sessionHash,closed:true,complete:1,evidenceHash:hash(old)}]:[];
  const spec={schema:'sg-complete-count-v1',activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId:plan.gameId,target,maxSequence:ceiling,baselineBatchCount:entries.length,baselineHash:hash(entries),firstSequence:baseline?301:1};
+ if(rotation)spec.sessionRotation='closed-batches-v1';
  const key=`complete-count:${plan.trialId}:${activation}`;
  await store.create('journal',key,spec,{immutable:true});
  await store.create('journal',key+':complete',{schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit},{immutable:true});
@@ -103,4 +104,41 @@ test('parent worker yields when allocation ceiling is reached without claiming t
  await f.pool.complete(l,b,{pending:null,confirmed:1,fullReadback:true});await f.pool.release(l);
  assert.equal(await f.campaign.idleAtTail(f.plan,await f.read(),0),true);
  assert.equal((await f.read()).confirmed,2);
+});
+
+test('count controller settles a partial range, rotates session and audits the old immutable batch',async()=>{
+ const f=await fixture({target:41,baseline:false,rotation:true});
+ const rpc=(op,r={})=>f.ctl.rpc(op,{shardId:0,...r});
+ const identity={owner:'first',sessionHash:f.session,commitSha:f.commit,planHash:hash(f.plan)};
+ const registered=await rpc('register',identity),owner={owner:identity.owner,workerEpoch:registered.workerEpoch};
+ const lease=await rpc('next',owner),owned={...owner,batchId:lease.batchId,epoch:lease.epoch};
+ assert.equal(lease.sequenceTarget,3);
+ const result=await captureBatch({plan:f.plan,lease,owned,rpc,evidence:{completedThisRun:0},state:{balance:10000},
+  prepareRound:()=>({bonus:0,money:{endBalanceRaw:9975}}),payload:()=> 'MSGID=BET',bootstrap:async()=>10000,
+  post:async(requestPayload,msgId)=>({requestPayload,msgId,responsePayload:'MSGID=BET&NFG=0',elapsedMs:1}),
+  shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
+ assert.equal(result.status,'complete');assert.equal(result.discarded,2);
+ const p=await f.read();assert.equal(p.confirmed,1);assert.equal(p.countAllocation.reserved,0);
+ assert.equal(p.workers[0].activeBatch,null);assert.equal(p.nextSequence,4);
+ await assert.rejects(f.pool.register(0,{owner:'second',sessionHash:'f'.repeat(64)}),/COUNT_SESSION_STILL_ACTIVE/);
+ await f.pool.release(f.ctl.lease);
+ await assert.rejects(f.pool.register(0,{owner:'second',sessionHash:f.session}),/COUNT_NEW_SESSION_REQUIRED/);
+ const next=await f.pool.register(0,{owner:'second',sessionHash:'f'.repeat(64)});
+ assert.equal((await f.pool.take(next)).start,4);
+ const {auditCountBatch}=await import('./complete-count.mjs');
+ const args={store:f.store,pool:await f.read(),plan:f.plan,spec:f.spec,record:[...f.rounds.values()][0],cache:new Map()};
+ await auditCountBatch(args);
+ await f.store.update('state',f.ctl.batchKey,b=>({...b,checkpoint:0}));
+ await assert.rejects(auditCountBatch({...args,cache:new Map()}),/COUNT_AUDIT_BATCH_CHANGED/);
+});
+
+for(const dirty of ['pending','bootstrapAwaiting','pendingOriginal','checkpoint'])test('count settlement rejects '+dirty+' without releasing capacity',async()=>{
+ const f=await fixture({target:41,baseline:false,rotation:true}),rpc=(op,r={})=>f.ctl.rpc(op,{shardId:0,...r});
+ const reg=await rpc('register',{owner:'first',sessionHash:f.session,commitSha:f.commit,planHash:hash(f.plan)});
+ const owner={owner:'first',workerEpoch:reg.workerEpoch},lease=await rpc('next',owner);
+ // An external write must fail the controller fence even if a caller tries to release.
+ await f.store.update('state',f.ctl.batchKey,b=>({...b,[dirty]:dirty==='checkpoint'?-1:{unknown:true}}));
+ await assert.rejects(rpc('release',{...owner,batchId:lease.batchId,epoch:lease.epoch}));
+ assert.equal((await f.read()).confirmed,0);assert.equal((await f.read()).countAllocation.reserved,3);
+ assert.equal((await f.read()).workers[0].activeBatch.id,lease.batchId);
 });

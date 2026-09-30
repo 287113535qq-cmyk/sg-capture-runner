@@ -32,7 +32,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -786,6 +786,64 @@ jobs:
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
+  formal-admit:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+      SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Admit one fresh formal run after complete resource and ownership checks
+        run: node scripts/runner-v2/formal-count-control.mjs admit
+  formal-capture:
+    needs: formal-admit
+    name: capture-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 270
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_TRIAL_SHARD: ${{ matrix.shard }}
+      SG_TRIAL_MINUTES: '240'
+      SG_POOL_RUN_LIMIT: '0'
+      SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted SSH
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Wait for every capture runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CAPTURE_RUNNERS: '20'
+          CAPTURE_STARTUP_MODE: available-workers
+          SG_CAPTURE_ALLOCATION: round-one
+        run: node scripts/trial/runner-readiness.mjs
+      - name: Capture against the independently activated complete-count ledger
+        env:
+          SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+        run: node scripts/runner-v2/campaign-worker.mjs capture
   fresh-capture:
     name: fresh-capture-${{ matrix.shard }}
     if: github.event_name == 'workflow_dispatch' && ((inputs.role == 'fresh-short' || inputs.role == 'pair-residual-short') && inputs.round_one_limit == '10' || inputs.role == 'demo-fresh-short' && inputs.round_one_limit == '5') && inputs.allocation == 'round-one'
@@ -888,12 +946,13 @@ jobs:
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
   verify:
-    needs: [trial, pending-resume, pending-capture, fresh-capture]
+    needs: [trial, pending-resume, pending-capture, fresh-capture, formal-capture]
     if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'demo-retire' && inputs.role != 'demo-rollover' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') && !startsWith(inputs.role, 'demon-zero-') && !startsWith(inputs.role, 'demon-nested-') && !startsWith(inputs.role, 'demon-pair-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.role == 'formal-count' && 'formal-count-pearl-20260930.json' || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -910,7 +969,7 @@ jobs:
         id: state
         run: |
           if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            if [ "${{ inputs.role || 'capture' }}" = capture ] && [ "${{ inputs.round_one_limit || '0' }}" = 0 ]; then
+            if { [ "${{ inputs.role || 'capture' }}" = capture ] || [ "${{ inputs.role }}" = formal-count ]; } && [ "${{ inputs.round_one_limit || '0' }}" = 0 ]; then
               node scripts/runner-v2/campaign-worker.mjs finalize
             else
               node scripts/runner-v2/campaign-worker.mjs status

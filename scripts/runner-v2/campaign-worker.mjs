@@ -9,12 +9,17 @@ import {GithubCampaign} from './campaign.mjs';
 import {analyzer} from './analyzer.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 import {applyDemoPilot} from './demo-pilot-plan.mjs';
+import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
 const store=new RunnerState({transport,gate,deadline:end}),control=new SourceControl({store,transport,gate});
 let plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
 if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync(demoPilotProfilePath(),'utf8')));
+if(process.env.SG_FORMAL_COUNT_PROFILE){
+ if(process.env.SG_DEMO_PILOT==='true')throw Error('FORMAL_COUNT_DEMO_CONFLICT');
+ plans=applyFormalCount(plans,JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')));
+}
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
   owner:`${group}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.SG_TRIAL_SHARD||'status'}`});

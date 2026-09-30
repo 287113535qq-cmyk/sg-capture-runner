@@ -9,9 +9,11 @@ import {pearlNext,pearlMapping} from '../trial/pearl-protocol.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 const require=createRequire(import.meta.url);require('../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json'});
 const {pearlFields}=require('../../collector/sg.pearl.ts');
-async function fixture(parser,shardId=0){
+async function fixture(parser,shardId=0,formal=false){
   const docs=new Map(),rounds=new Map();let now=1000,failResponse=false;
   const plan=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32795'];
+  const commit='f'.repeat(40);
+  if(formal)plan.countAllocation=JSON.parse(fs.readFileSync('config/formal-count-pearl-20260930.json','utf8')).activation;
   const transport={async request(op,r){
     if(op==='resources')return {};
     if(op==='read_many')return r.keys.filter(k=>docs.has(r.collection+'/'+k)).map(k=>({_id:'primary/'+k,...structuredClone(docs.get(r.collection+'/'+k))}));
@@ -33,8 +35,15 @@ async function fixture(parser,shardId=0){
   await store.create('state','global-hold',{active:false});
   await store.create('state','campaign',{enabled:true,activeGame:32795,games:[{game_id:32795,status:'active'}]});
   await store.create('state','pool:'+plan.trialId,{enabled:true,failure:null,nextSequence:1,nextBatchId:1,confirmed:0,workers:{}});
+  if(formal){
+   const spec={schema:'sg-complete-count-v1',activation:plan.countAllocation,planHash:hash(plan),commit,trialId:plan.trialId,gameId:plan.gameId,
+    target:plan.target,maxSequence:600000,firstSequence:1,baselineBatchCount:0,baselineHash:hash([]),sessionRotation:'closed-batches-v1'};
+   const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+   await store.create('journal',key,spec);await store.create('journal',key+':complete',{schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit});
+   await store.update('state','pool:'+plan.trialId,p=>({...p,countAllocation:{specHash:hash(spec),reserved:0,batches:{}}}));
+  }
   await store.create('state','write-permits',{limit:1,slots:{}});
-  const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,group:shardId>=20?'secondary':'primary',now:()=>now,sleep:async()=>{}});
+  const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,commit,group:shardId>=20?'secondary':'primary',now:()=>now,sleep:async()=>{}});
   const identity={owner:'job',sessionHash:'a'.repeat(64),planHash:createHash('sha256').update(stable(plan)).digest('hex')};
   const rpc=(op,r={})=>controller.rpc(op,{shardId,...r});
   const registered=await rpc('register',identity),worker={owner:'job',workerEpoch:registered.workerEpoch};
@@ -43,10 +52,12 @@ async function fixture(parser,shardId=0){
     failResponse(){failResponse=true;},advance(ms){now+=ms;}};
 }
 
-for(const mode of ['complete','unknown','durability'])test('WMS actual durable controller '+mode,async()=>{
+for(const mode of ['complete','unknown','durability','formal'])test('WMS actual durable controller '+mode,async()=>{
+ const previous=process.env.SG_FORMAL_COUNT_PROFILE;
+ if(mode==='formal')process.env.SG_FORMAL_COUNT_PROFILE='formal-count-pearl-20260930.json';
  const parser=analyzer({python:process.env.PYTHON||'python3'});
  try{
- const f=await fixture(parser),raw=pearlFixture(),profile=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[f.plan.sourceKey];let posted=0,session='synthetic-0';
+ const f=await fixture(parser,0,mode==='formal'),raw=pearlFixture(),profile=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[f.plan.sourceKey];let posted=0,session='synthetic-0';
  if(mode==='durability')f.failResponse();
  const capture=()=>captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},
   protocol:'wms',startMessage:'Logic',route:pearlNext,mapping:pearlMapping,mappingHash:hash(profile),prepareRound:pearlFields,
@@ -57,11 +68,16 @@ for(const mode of ['complete','unknown','durability'])test('WMS actual durable c
    session='synthetic-'+posted;return step;
   },payload:msg=>{assert.equal(raw.steps[posted].msgId,msg);return raw.steps[posted].requestPayload;},bootstrap:async()=>{throw Error('UNEXPECTED_INIT');},
   shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
- if(mode==='complete'){
+ if(mode==='complete'||mode==='formal'){
   await capture();assert.equal(posted,10);assert.equal(f.rounds.size,1);
   const record=[...f.rounds.values()][0];assert.equal(record.normalized.bonus,1);assert.equal(record.raw.steps.length,10);
   assert((await parser.call({op:'verify',plan:f.plan,raw:record.raw,record})).verified);
   const b=(await f.store.get('state',f.controller.batchKey)).value;assert.equal(b.pending,null);assert.equal(b.checkpoint,1);assert.equal(b.journaled,1);assert.equal(b.leaseUntil,0);
+  if(mode==='formal'){
+   const p=(await f.store.get('state',f.controller.pool.key)).value;
+   assert.equal(p.confirmed,1);assert.equal(p.countAllocation.reserved,0);assert.equal(p.workers[0].activeBatch,null);
+   await f.rpc('finish_run');assert.equal((await f.store.get('state',f.controller.pool.key)).value.workers[0].leaseUntil,0);
+  }
  }else if(mode==='unknown'){
   await assert.rejects(capture(),{code:'PEARL_FEATURE_NOT_ADAPTED'});await f.rpc('fail',{...f.owned,code:'PEARL_FEATURE_NOT_ADAPTED'});
   assert.equal(posted,1);assert.equal(f.rounds.size,0);const b=(await f.store.get('state',f.controller.batchKey)).value;
@@ -69,5 +85,5 @@ for(const mode of ['complete','unknown','durability'])test('WMS actual durable c
   assert.equal((await f.store.get('state','global-hold')).value.active,false);assert.equal((await f.store.get('state','campaign')).value.games[0].status,'parking-protocol');
  }else{await assert.rejects(capture(),{code:'ACK_UNKNOWN'});assert.equal(posted,1);assert.equal(f.rounds.size,0);
   const b=(await f.store.get('state',f.controller.batchKey)).value;assert(b.pending.awaiting);assert.equal(b.pending.raw.steps.length,0);}
- }finally{parser.close();}
+ }finally{parser.close();if(previous===undefined)delete process.env.SG_FORMAL_COUNT_PROFILE;else process.env.SG_FORMAL_COUNT_PROFILE=previous;}
 });

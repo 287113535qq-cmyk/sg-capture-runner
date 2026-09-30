@@ -18,7 +18,8 @@ export async function checkPrimaryLeases({store,plans,now=Date.now}) {
     assert(plan && campaign,'LEASE_SCOPE_CHANGED');
     // Completed games are not reread. Active/parked pool batches are checked in full.
     if(campaign.games.find(g=>g.game_id===plan.gameId)?.status==='complete')continue;
-    assert(Number.isSafeInteger(pool.nextBatchId) && pool.nextBatchId>=1 && pool.nextBatchId<=4001,'LEASE_SCOPE_CHANGED');
+    const ceiling=plan.gameId===32795&&pool.countAllocation?600001:4001;
+    assert(Number.isSafeInteger(pool.nextBatchId) && pool.nextBatchId>=1 && pool.nextBatchId<=ceiling,'LEASE_SCOPE_CHANGED');
     for(let start=1;start<pool.nextBatchId;start+=100){
       const wanted=Array.from({length:Math.min(100,pool.nextBatchId-start)},(_,i)=>`batch:${trialId}:${start+i}`);
       const rows=await store.getMany('state',wanted);assert(rows.every(Boolean),'LEASE_BATCH_MISSING');

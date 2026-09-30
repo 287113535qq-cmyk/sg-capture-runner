@@ -9,7 +9,7 @@ on:
         options: [demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source]
+        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count]
         default: rollover
 permissions:
   contents: read
@@ -45,6 +45,11 @@ jobs:
         env:
           SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile || 'demo-pilot-morepuff-20260930.json' }}
         run: node scripts/runner-v2/demo-interrupted-close-control.mjs
+      - name: Activate independently reviewed complete-count permission without source requests
+        if: inputs.operation == 'activate-formal-count'
+        env:
+          SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+        run: node scripts/runner-v2/formal-count-control.mjs activate
       - name: Retire a reviewed adapter-only shared stop and close its unused allowance
         if: inputs.operation == 'close-reviewed-adapter-stop'
         env:

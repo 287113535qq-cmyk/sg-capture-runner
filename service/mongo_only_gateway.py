@@ -48,6 +48,11 @@ class Gateway:
         need(isinstance(trial, str) and trial in self.manifest['trials'], 'TRIAL_NOT_ALLOWED')
         scope = self.manifest['trials'][trial]
         need(scope['group'] == self.group, 'GROUP_SCOPE_DENIED')
+        if 'maxSequence' in scope:
+            need(trial == 'sg_r1_20260930_32795' and scope['group'] == 'primary'
+                 and scope['gameId'] == 32795 and scope['runtimeGameId'] == 33155
+                 and scope['target'] == 300000 and type(scope['maxSequence']) is int
+                 and scope['maxSequence'] == 600000, 'SEQUENCE_SCOPE_DENIED')
         return trial, scope
 
     def dispatch(self, r):
@@ -167,7 +172,7 @@ class Gateway:
             collection = self.db['official_rounds']
             if op == 'rounds_scan':
                 after=r.get('after',0)
-                need(type(after) is int and 0<=after<=scope['target'],'BAD_CURSOR')
+                need(type(after) is int and 0<=after<=scope.get('maxSequence',scope['target']),'BAD_CURSOR')
                 return list(collection.find({'trialId':trial,'sequence':{'$gt':after}},max_time_ms=10000)
                             .sort('sequence',1).limit(100))
             if op == 'rounds_read':
@@ -182,7 +187,7 @@ class Gateway:
                 need(isinstance(row, dict) and row.get('trialId') == trial
                      and row.get('gameId') == scope['gameId'] and row.get('runtimeGameId') == scope['runtimeGameId']
                      and row.get('fixtureOnly') is False and row.get('buy') == 0
-                     and type(row.get('sequence')) is int and 1 <= row['sequence'] <= scope['target']
+                     and type(row.get('sequence')) is int and 1 <= row['sequence'] <= scope.get('maxSequence',scope['target'])
                      and isinstance(row.get('_id'), str) and re.fullmatch('[a-f0-9]{64}', row['_id'])
                      and isinstance(row.get('contentHash'), str) and re.fullmatch('[a-f0-9]{64}', row['contentHash']),
                      'ROUND_SCOPE_DENIED')

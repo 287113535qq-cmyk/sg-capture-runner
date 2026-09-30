@@ -71,11 +71,12 @@ async function main() {
   if(plan.campaignId)baseGame={...baseGame,id:plan.gameId,runtimeSlug:plan.runtimeSlug};
   if(plan.sourceKey===PEARL_SOURCE){
     assert(isPool&&shard!==null&&process.env.SG_PROCESSING_MODE==='github-v2','PEARL_GITHUB_POOL_REQUIRED');
-    const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');assert(requested===5,'PEARL_PILOT_ONLY');
+    const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');
+    assert(plan.countAllocation?requested===0:requested===5,'PEARL_CAPTURE_PERMISSION');
     return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,prepareRound:pearlFields,evidence,
       shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
       commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
-      runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:requested,
+      runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,
       deadline:performance.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000});
   }
   const game=shard===null?baseGame:gameForShard(baseGame,shard,plan.trialId,plan);

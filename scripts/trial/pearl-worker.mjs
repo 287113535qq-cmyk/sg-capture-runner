@@ -6,9 +6,12 @@ import {pearlSession,pearlPayload,pearlResponse,pearlInit,PEARL_ENDPOINT} from '
 
 export async function runPearlWorker({plan,baseGame,shard,rpc,mappingHash,prepareRound,evidence,shouldStop,requestStop,onLease,
  commitSha,planHash,fetchImpl=fetch,deadline=performance.now()+240*60000,limit=5,runId,runAttempt,job}){
- assert(plan.schema==='sg-work-pool-v1'&&Number.isSafeInteger(limit)&&limit>0&&limit<=5,'PEARL_PILOT_ONLY');
- const initial=pearlSession(baseGame,plan,shard);
- let session=initial,owned,currentLease,paidIntent=false;
+ const formal=plan.countAllocation!==undefined;
+ assert(plan.schema==='sg-work-pool-v1'&&Number.isSafeInteger(limit)&&limit>0
+  &&(formal?limit<=plan.target:limit<=5),'PEARL_CAPTURE_LIMIT');
+ const initial=pearlSession(baseGame,plan,shard,formal?`${runId}:${runAttempt}:${randomUUID()}`:undefined);
+ let session=initial,owned,currentLease,paidIntent=false,rotate=false;
+ const stopped=()=>shouldStop()||rotate;
  const identity={owner:`${runId}:${runAttempt}:${job}:${randomUUID()}`,sessionHash:createHash('sha256').update(initial+'@'+baseGame.operatorId).digest('hex'),commitSha,planHash};
  const cookies=new Map();
  async function post(requestPayload,msgId){
@@ -41,15 +44,20 @@ export async function runPearlWorker({plan,baseGame,shard,rpc,mappingHash,prepar
  const trackedRpc=async(op,data)=>{
   const result=await rpc(op,data);
   if(op==='begin')paidIntent=true;
+  if(formal&&op==='exchange_journal'&&result.complete&&result.endBalanceRaw<2500){
+   rotate=true;evidence.sessionBoundary='settled-low-demo-balance';
+  }
   return result;
  };
- await runDynamicBatches({rpc,identity,shouldStop,deadline,onLease:(lease,owner)=>{currentLease=lease;owned=owner;onLease(lease,owner);},
+ await runDynamicBatches({rpc,identity,shouldStop:stopped,deadline,onLease:(lease,owner)=>{currentLease=lease;owned=owner;onLease(lease,owner);},
   capture:async(lease,owner)=>{
    assert.equal(lease.pendingRound??null,null,'PEARL_INTERRUPTED_NO_RESUME');
-   assert(Number.isSafeInteger(lease.shortRunLimit)&&lease.shortRunLimit>0&&lease.shortRunLimit<=5,'PEARL_PILOT_ONLY');
+   if(formal)assert(lease.countAllocation===plan.countAllocation&&lease.shortRunLimit===undefined,'PEARL_FORMAL_LEASE_REQUIRED');
+   else assert(Number.isSafeInteger(lease.shortRunLimit)&&lease.shortRunLimit>0&&lease.shortRunLimit<=5,'PEARL_PILOT_ONLY');
    const result=await captureBatch({plan,lease,owned:owner,rpc:trackedRpc,post,payload,bootstrap,prepareRound,mappingHash,
-    evidence,state,shouldStop,requestStop,deadline,limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:pearlNext,mapping:pearlMapping});
+    evidence,state,shouldStop:stopped,requestStop,deadline,limit:formal?limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:pearlNext,mapping:pearlMapping});
    evidence.result=result;return result;
   }});
+ if(formal)await rpc('finish_run');
  evidence.result=await rpc('status');
 }

@@ -78,18 +78,20 @@
     "service/pearl_fields.py": "d748c35b515677feb72c9e90ae920b4cafb675e2485dfd9f5bc1bc5c83ec438c",
     "scripts/trial/pearl-protocol.mjs": "ea89d19ebf2507d199d3a7b462ec56b1157ac265be9520a2b1cc8255dd9b8161",
     "collector/sg.pearl.ts": "62f86f3ffe023686711bf3c4e3728f9b699c0f879b9a8ea19aa660d46d73e3a5",
-    "scripts/trial/pearl-session.mjs": "20c826a9775566aaf1a5751b64895ad00c0df7db03b4bda9b402b2ce044e507c",
-    "scripts/trial/pearl-worker.mjs": "c6473c4e8652035e4f294d6f8719c650fc3d906b9a5806705c42cf69e4931028",
+    "scripts/trial/pearl-session.mjs": "c3474c3a7d58c775c7bb60e43d9c4036de9678406d688dc444c9d7284b86bb12",
+    "scripts/trial/pearl-worker.mjs": "078020c3b1b2aa55ac25b5d022a1415dd83678dab2a58d32cf9002957e3dcf4d",
     "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
     "service/game_rule_catalog.py": "0e0cc10ecd4328be49bb44d8d5fb383a07e78b156b9b8a83241cf09c5efd0f61"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/pearl-formal-count-20260930.md",
     "docs/pearl-integration-20260930.md",
     "docs/pearl-pilot-result-20260930.md",
     "docs/piggies-pilot-result-20260930.md"
   ],
   "analysisDocumentHashes": {
+    "docs/pearl-formal-count-20260930.md": "7586b1f1e8005e46466c7160f7a5df99f71fb1c59737e2cc0dc5a46bb8155cd7",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0"
@@ -101,5 +103,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "882e1f2ba793c3f912b3737154207394c662efb1fcaeaa30fee75629a3fe1c1e"
+  "ruleHash": "f5372a10c9fe4a22f4cfeeccac6f1e53dfde4478f9c0bb55ee8edac45c614dd5"
 }
