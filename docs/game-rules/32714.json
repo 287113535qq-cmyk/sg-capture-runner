@@ -156,15 +156,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "29d3b935fca9166a61f9b20fdf941e584bc8690d26484d38098267d6b38ea0b6",
-    "scripts/runner-v2/record_fields.py": "b9f8784d585aa02effd82c02ff58368c28a8da98798ce935e6f484b08191e1e5",
+    "service/round_fields.py": "307138fb1a1e9825b5e3b51caf623b514d7877c673cc7776e1749561232ae221",
+    "scripts/runner-v2/record_fields.py": "dd68003c3504ff94ce0b0848417900075188f70db201b1b08ab81b4d7a29533b",
     "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/game_rule_catalog.py": "0e0cc10ecd4328be49bb44d8d5fb383a07e78b156b9b8a83241cf09c5efd0f61"
+    "service/game_rule_catalog.py": "e0cd3792df7647c60d88f55d28f24fbfa8a61f03dace07fba3c19ac19281192a"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -241,5 +241,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a4c7a135dec6bdf6e184bb4184c41926a70c83c8d5e3a8ae7390092a572de4f7"
+  "ruleHash": "d5f84bca20ddcf5fdd12c60dac2ea37a44545671a20fc79d115a64b4e57144a1"
 }

@@ -49,11 +49,11 @@ def contract(game_id):
     elif game_id == 32795:
         native.update({'family': 'pearl-wms-eight-free-v1', 'messages': ['Init', 'Logic', 'EndGame'],
             'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
-            'continue': '首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。',
+            'continue': '原许可固定8免费不变；独立修复许可支持后续每次增加8免费，总数/进度/bonusAwarded严格匹配，最多1024免费。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。',
             'complete': '末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。',
-            'bounds': '历史100局含1自然8免费已核、credit0；新试点100完整含2自然8免费，全部EndGame及Mongo全文核验。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。',
-            'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/paid-round-evidence.mjs'],
-            'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '总数8、进度0至8、首次授予8后续0。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
+            'bounds': '当前961完整含8自然免费；真实第7免费重触发8→16造成1局作废。修复独立三方校验及官方方法回放支持重复加8，但重触发完整终局目前仅合成；旧局不续接，MaxWin/BigBet/未知分支拒绝。961计数已结清，重入须独立许可，非整款玩法覆盖。',
+            'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'service/pearl_retrigger_fields.py', 'scripts/trial/pearl-retrigger-protocol.mjs', 'collector/sg.pearl-retrigger.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/formal-repair-activation.mjs', 'scripts/runner-v2/paid-round-evidence.mjs'],
+            'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '首次8；修复许可后续0或8，与总数逐帧累加、进度和bonusAwarded一致。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
     elif game_id == 32651:
         native.update({'family': 'squid-jackpot-v1', 'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
             'start': '首帧 BET；其后按完整历史执行自然免费或 Jackpot 功能，不能再次 BET；一大局内会话不变。',

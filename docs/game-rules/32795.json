@@ -30,20 +30,24 @@
       "EndGame"
     ],
     "start": "新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。",
-    "continue": "首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。",
+    "continue": "原许可固定8免费不变；独立修复许可支持后续每次增加8免费，总数/进度/bonusAwarded严格匹配，最多1024免费。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。",
     "complete": "末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。",
-    "bounds": "历史100局含1自然8免费已核、credit0；新试点100完整含2自然8免费，全部EndGame及Mongo全文核验。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。",
+    "bounds": "当前961完整含8自然免费；真实第7免费重触发8→16造成1局作废。修复独立三方校验及官方方法回放支持重复加8，但重触发完整终局目前仅合成；旧局不续接，MaxWin/BigBet/未知分支拒绝。961计数已结清，重入须独立许可，非整款玩法覆盖。",
     "files": [
       "service/pearl_fields.py",
       "scripts/trial/pearl-protocol.mjs",
       "collector/sg.pearl.ts",
+      "service/pearl_retrigger_fields.py",
+      "scripts/trial/pearl-retrigger-protocol.mjs",
+      "collector/sg.pearl-retrigger.ts",
       "scripts/trial/pearl-session.mjs",
       "scripts/trial/pearl-worker.mjs",
+      "scripts/runner-v2/formal-repair-activation.mjs",
       "scripts/runner-v2/paid-round-evidence.mjs"
     ],
     "fields": {
       "Header.sessionID": "按响应轮换，会话值私有。",
-      "FSInfo": "总数8、进度0至8、首次授予8后续0。",
+      "FSInfo": "首次8；修复许可后续0或8，与总数逐帧累加、进度和bonusAwarded一致。",
       "BGInfo.totalWagerWin": "等于逐Logic累加totalWin。",
       "Balances": "唯一CASH_BALANCE，初值-200+累计奖。",
       "EndGame": "必须收到确认，不用额外Logic探测终态。"
@@ -78,10 +82,14 @@
     "service/pearl_fields.py": "d748c35b515677feb72c9e90ae920b4cafb675e2485dfd9f5bc1bc5c83ec438c",
     "scripts/trial/pearl-protocol.mjs": "ea89d19ebf2507d199d3a7b462ec56b1157ac265be9520a2b1cc8255dd9b8161",
     "collector/sg.pearl.ts": "62f86f3ffe023686711bf3c4e3728f9b699c0f879b9a8ea19aa660d46d73e3a5",
+    "service/pearl_retrigger_fields.py": "c0ac626577bbf7e4fcbf6e2f97172992e0deb338cc65f3a62cd880647b9b0509",
+    "scripts/trial/pearl-retrigger-protocol.mjs": "09090fa8bf7ca630a121000a8449466d5e53e02689e3125160e73273a8c0967f",
+    "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254",
     "scripts/trial/pearl-session.mjs": "c3474c3a7d58c775c7bb60e43d9c4036de9678406d688dc444c9d7284b86bb12",
-    "scripts/trial/pearl-worker.mjs": "078020c3b1b2aa55ac25b5d022a1415dd83678dab2a58d32cf9002957e3dcf4d",
+    "scripts/trial/pearl-worker.mjs": "51a1538a2b30ccfd1a4d752e4d832c6b6d7d5484a2cdbe87a9facfad2b8630a0",
+    "scripts/runner-v2/formal-repair-activation.mjs": "e2fe0a03663b0b9a93e39dcccd426ab9846c4117ab0b760f23f1d63c4399568f",
     "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
-    "service/game_rule_catalog.py": "0e0cc10ecd4328be49bb44d8d5fb383a07e78b156b9b8a83241cf09c5efd0f61"
+    "service/game_rule_catalog.py": "e0cd3792df7647c60d88f55d28f24fbfa8a61f03dace07fba3c19ac19281192a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -89,6 +97,7 @@
     "docs/pearl-formal-count-20260930.md",
     "docs/pearl-integration-20260930.md",
     "docs/pearl-pilot-result-20260930.md",
+    "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
     "docs/rules.md"
   ],
@@ -97,6 +106,7 @@
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
+    "docs/pearl-repair-reentry-20260930.md": "55222999a4248dd9232d4a3dc19dac0cb16c5751a36807f757d5590701444ebe",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/rules.md": "f73fba01a9e692b87d7fa1554163f356018605359c87c1da0ffcfcbc975c85e0"
   },
@@ -107,5 +117,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "012a59b1b3ad0b4d5a370842d4d9471be9487762c563a3afcf3b637d44f42037"
+  "ruleHash": "a66f6665fca6cff3067cc9bfbf00f36247145b3acd5e49918c7f3638cbb853e7"
 }

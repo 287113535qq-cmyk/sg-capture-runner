@@ -2,6 +2,11 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      formal_profile:
+        description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
+        type: choice
+        default: formal-count-pearl-20260930.json
+        options: [formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json]
       pilot_profile:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
@@ -793,7 +798,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
-      SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile || 'formal-count-pearl-20260930.json' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -825,7 +830,7 @@ jobs:
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'
       SG_POOL_RUN_LIMIT: '0'
-      SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile || 'formal-count-pearl-20260930.json' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -957,7 +962,7 @@ jobs:
     timeout-minutes: 30
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
-      SG_FORMAL_COUNT_PROFILE: ${{ inputs.role == 'formal-count' && 'formal-count-pearl-20260930.json' || '' }}
+      SG_FORMAL_COUNT_PROFILE: ${{ inputs.role == 'formal-count' && (inputs.formal_profile || 'formal-count-pearl-20260930.json') || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

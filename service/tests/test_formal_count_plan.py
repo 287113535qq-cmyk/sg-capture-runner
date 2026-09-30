@@ -20,9 +20,10 @@ class FormalPlanTests(unittest.TestCase):
             'sessionRotation':'closed-batches-v1','planHash':digest(self.plan)}
 
     def check(self,plan):
+        filename='formal-repair-pearl-20260930.json' if self.profile['schema']=='sg-formal-repair-profile-v1' else 'formal-count-pearl-20260930.json'
         def read(path,*a,**kw):
-            return json.dumps(self.profile if path.name=='formal-count-pearl-20260930.json' else self.plans)
-        with patch.dict(os.environ,{'SG_FORMAL_COUNT_PROFILE':'formal-count-pearl-20260930.json'}),patch.object(pathlib.Path,'read_text',read):
+            return json.dumps(self.profile if path.name==filename else self.plans)
+        with patch.dict(os.environ,{'SG_FORMAL_COUNT_PROFILE':filename}),patch.object(pathlib.Path,'read_text',read):
             return validate_pool_plan(plan)
 
     def test_independent_formal_plan_preserves_base_and_complete_target(self):
@@ -37,3 +38,16 @@ class FormalPlanTests(unittest.TestCase):
             self.profile[key]=value
             with self.subTest(key=key),self.assertRaises(Exception):self.check(self.plan)
             self.profile=old
+
+    def test_repair_plan_retains_remaining_target_and_requires_exact_feature_limit(self):
+        self.plan.update(maxSteps=1026,featureProfile='eight-free-retrigger-v1')
+        self.profile.update(schema='sg-formal-repair-profile-v1',completePreserved=961,remainingComplete=299039,
+            featureProfile='eight-free-retrigger-v1',planHash=digest(self.plan))
+        self.assertEqual(self.check(self.plan),self.plan)
+        for key,value in [('maxSteps',2048),('featureProfile','anything'),('target',300961),('buy',1)]:
+            altered={**self.plan,key:value}
+            old=self.profile['planHash'];self.profile['planHash']=digest(altered)
+            with self.subTest(key=key),self.assertRaises(Exception):self.check(altered)
+            self.profile['planHash']=old
+        self.profile['remainingComplete']=300000
+        with self.assertRaises(Exception):self.check(self.plan)

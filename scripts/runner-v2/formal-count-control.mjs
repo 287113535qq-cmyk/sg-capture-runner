@@ -6,12 +6,16 @@ import {checkPrimaryLeases} from './lease-boundary.mjs';import {checkDemoSourceE
 import {formalCountProfilePath,applyFormalCount} from './formal-count-plan.mjs';
 import {activateFormalCount} from './formal-count-activation.mjs';import {loadCountPermission,checkLedger} from './complete-count.mjs';
 import {amendFormalRuntime} from './formal-count-runtime.mjs';
+import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const mode=process.argv[2];assert(['activate','admit','amend'].includes(mode),'FORMAL_COUNT_OPERATION');
+const mode=process.argv[2];assert(['activate','admit','amend','repair'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[32795],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
-const revision=mode==='activate'?null:readFile('config/formal-runtime-pearl-20260930.json');
+const isRepair=profile.schema==='sg-formal-repair-profile-v1';
+assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
+assert(!isRepair||['repair','admit'].includes(mode),'FORMAL_REPAIR_OPERATION');
+const revision=mode==='activate'||isRepair?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 const files=revision?.files??profile.files;
 assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
@@ -30,7 +34,13 @@ try{
   const rows=await transport.request('rounds_scan',{trialId:plan.trialId,after:profile.maxSequence});
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
- if(mode==='amend'){
+ if(mode==='repair'){
+  const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.retirementRun.split(':')[0]);
+  assert(ended.status==='completed'&&ended.conclusion==='success'&&ended.head_sha===profile.retirementCommit
+   &&`${ended.id}:${ended.run_attempt}`===profile.retirementRun&&ended.path==='.github/workflows/demo-maintenance.yml','FORMAL_REPAIR_RETIREMENT_RUN');
+  console.log(JSON.stringify(await activateFormalRepair({store,transport,parser,plans:basePlans,profile,
+   oldProfile:readFile('config/formal-count-pearl-20260930.json'),boundary,commit,run})));
+ }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);
   console.log(JSON.stringify(await amendFormalRuntime({store,transport,plan,profile,revision,ended,jobs,commit,run,boundary})));
