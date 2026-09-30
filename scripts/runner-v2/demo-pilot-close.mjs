@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {readInterruptedClosure} from './demo-interrupted-close.mjs';
 
 export const pilotCloseKey=plan=>`closed-demo-pilot:${plan.trialId}:${plan.demoGeneration}`;
 export async function pilotCloseScene(store,plan){
@@ -88,6 +89,7 @@ export async function closeDemoPilot({store,transport,parser,basePlan,plan,profi
 // altered state, or changed counts never stand in for a completed close.
 export async function readClosedPilot({store,plan,profile,scene}){
  const key=pilotCloseKey(plan),closed=(await store.get('journal',key+':complete'))?.value,before=(await store.get('journal',key+':before'))?.value;
+ if(closed?.schema==='sg-demo-pilot-closed-v2')return readInterruptedClosure({store,plan,profile,scene,closed,before});
  assert(closed?.schema==='sg-demo-pilot-closed-v1'&&closed.trialId===plan.trialId&&closed.generation===plan.demoGeneration
   &&closed.planHash===hash(plan)&&closed.specHash===profile.sourceSpecHash&&closed.sourceRunKey===profile.sourceRunKey
   &&closed.sourceCommit===profile.sourceCommit&&closed.sourceProfileHash===profile.sourceProfileHash

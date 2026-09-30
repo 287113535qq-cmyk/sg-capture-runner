@@ -4,7 +4,7 @@ on:
     inputs:
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot]
+        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot]
         default: rollover
 permissions:
   contents: read
@@ -35,6 +35,9 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Isolate interrupted pilot and close its unused allowance without source requests
+        if: inputs.operation == 'close-interrupted-pilot'
+        run: node scripts/runner-v2/demo-interrupted-close-control.mjs
       - name: Close unused finite pilot allowance without source requests
         if: inputs.operation == 'close-pilot'
         run: node scripts/runner-v2/demo-pilot-close-control.mjs

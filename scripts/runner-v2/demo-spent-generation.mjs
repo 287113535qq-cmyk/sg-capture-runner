@@ -22,7 +22,7 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
   }
  }
  if(profile.sourceClosureHash||scene.fromPool.demoPilotClosed){
-  assert(!residual,'NEXT_GAME_CLOSURE_SCHEMA');closure=await readClosedPilot({store,plan:fromPlan,profile,scene});budgets=closure.usedByWorker;
+  assert(!residual,'NEXT_GAME_CLOSURE_SCHEMA');closure=await readClosedPilot({store,plan:fromPlan,profile,scene});budgets=closure.completeByWorker??closure.usedByWorker;
  }
  assert(Number.isSafeInteger(parent.firstBatchId)&&parent.firstBatchId>=1&&parent.firstBatchId<=scene.fromPool.nextBatchId,'NEXT_GAME_SOURCE_BATCH_BOUND');
  assert(scene.sourceBatches.length===scene.fromPool.nextBatchId-1
@@ -44,5 +44,5 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'NEXT_GAME_SOURCE_RECORD_INVALID');verified++;
   }
  }
- return {schema:parent.schema,spent:budgets.reduce((a,b)=>a+b,0),verified,newBetAllowance:0,...(closure?{foregone:closure.foregone,closureHash:hash(closure)}:{})};
+ return {schema:parent.schema,spent:closure?.used??budgets.reduce((a,b)=>a+b,0),verified,newBetAllowance:0,...(closure?{foregone:closure.foregone,closureHash:hash(closure)}:{})};
 }
