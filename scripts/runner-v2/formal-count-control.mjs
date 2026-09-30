@@ -11,11 +11,13 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
-const plans=applyFormalCount(basePlans,profile),plan=plans[32795],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
+const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
+const isRhino=profile.schema==='sg-formal-count-rhino-v1';
+assert(!isRhino||['activate','admit'].includes(mode),'RHINO_FORMAL_OPERATION');
 const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
 assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
 assert(!isRepair||['repair','admit'].includes(mode),'FORMAL_REPAIR_OPERATION');
-const revision=mode==='activate'||isRepair?null:readFile('config/formal-runtime-pearl-20260930.json');
+const revision=mode==='activate'||isRepair||isRhino?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 const files=revision?.files??profile.files;
 assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
@@ -54,7 +56,7 @@ try{
   const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
   const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
   assert(pool.enabled&&!pool.failure&&ledger.reserved===0&&pool.confirmed<plan.target
-   &&Object.values(pool.workers).every(w=>!w.activeBatch)&&c.enabled&&c.activeGame===32795&&!c.protocolValidation&&!c.validationLimit
+   &&Object.values(pool.workers).every(w=>!w.activeBatch)&&c.enabled&&c.activeGame===plan.gameId&&!c.protocolValidation&&!c.validationLimit
    &&c.formalCount?.activation===profile.activation,'FORMAL_COUNT_NOT_READY');
   const key=`count-run:${plan.trialId}:${run}`;assert(!(await store.get('journal',key)),'FORMAL_COUNT_RUN_ALREADY_ADMITTED');
   const permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,

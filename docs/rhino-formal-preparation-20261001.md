@@ -1,0 +1,11 @@
+# Rhino正式计数入口提前准备
+
+32799短采入口已完成，正式入口此前被显式拒绝。本次在32795正常采集期间补齐32799独立formal-count-rhino-v1路径，避免短采结束后再开始入口开发。未生成formal-count-rhino-20261001.json，未申请或应用新额度，未派Rhino源请求，未改变当前32795运行版本或已应用许可。
+
+激活严格要求：独立profile绑定32799/basePlan/新activation和固定文件，完整100局试点全部Python验证及Mongo全文一致、20分片各5、无活租约/在途/故障、至少2条已核验免费完整局；保存100并只分配剩余299900完整数。历史分析样本不能代替这100局或抵扣目标。满足条件前拒绝正式激活；未观察到所需自然终局时不能通过反复重置短采额度解决。
+
+正式worker复用已有计数账本、会话轮换及持久化流程。每次进程使用新会话身份，必须取得对应activation的正式租约；完整免费链和EndGame后才记完整、释放剩余预约。正式入口要求runLimit0，有限入口仍要求5，不能混用。Python和Runner分别绑定独立game/schema/profile；不能借用Pearl许可。服务器I/O层代码仅增加32799/runtime33159的固定600000序号上限（完整目标仍300000），尚未部署，现有Rhino native范围仍仅此前短采范围。
+
+本机验证：9项激活/拒绝测试（含原Pearl行为）、6项Rhino worker/持久化测试、4项真实BatchController离线测试、15项Python/profile/gateway测试通过。Controller以真实Python和collector验证一付费+13FREE+EndGame，Mongo全文读回后完整计数1、剩余预约0、nextSequence101；该例为合成，不是新实采。正式profile文件未创建，测试使用内存授权，Python正式scope通过独立mock文件负例核验。
+
+新增代码尚待统一Linux检查；真正切换仍需当前主线安全结束、32799独立有限试采及自然功能验证、600000固定native范围部署、fresh和正式许可。当前累计完成仍14/178。

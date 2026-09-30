@@ -15,13 +15,15 @@ def validate_pool_plan(plan):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         expected=plans.get(str(plan.get('gameId')))
         if 'countAllocation' in plan:
-            require('demoGeneration' not in plan and plan.get('gameId') == 32795, 'FORMAL_COUNT_SCOPE')
+            require('demoGeneration' not in plan and plan.get('gameId') in (32795,32799), 'FORMAL_COUNT_SCOPE')
             filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')
-            require(filename in ('formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
+            require(filename in ('formal-count-rhino-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             repair = filename == 'formal-repair-pearl-20260930.json'
             awards = filename == 'formal-repair-pearl-awards-20261001.json'
-            require(profile.get('schema') == ('sg-formal-repair-profile-v2' if awards else 'sg-formal-repair-profile-v1' if repair else 'sg-formal-count-profile-v1') and profile.get('gameId') == 32795
+            rhino = filename == 'formal-count-rhino-20261001.json'
+            require(profile.get('schema') == ('sg-formal-count-rhino-v1' if rhino else 'sg-formal-repair-profile-v2' if awards else 'sg-formal-repair-profile-v1' if repair else 'sg-formal-count-profile-v1')
+                and profile.get('gameId') == plan.get('gameId') == (32799 if rhino else 32795)
                 and profile.get('basePlanHash') == digest(expected) and profile.get('activation') == plan['countAllocation']
                 and isinstance(plan['countAllocation'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['countAllocation'])
                 and profile.get('completePreserved') == (2596 if awards else 961 if repair else 100) and profile.get('remainingComplete') == (297404 if awards else 299039 if repair else 299900)

@@ -7,7 +7,6 @@ import {rhinoSession,rhinoPayload,rhinoResponse,rhinoInit,RHINO_ENDPOINT} from '
 export async function runRhinoWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash,prepareRound,evidence,shouldStop,requestStop,onLease,
  commitSha,planHash,fetchImpl=fetch,deadline=performance.now()+240*60000,limit=5,runId,runAttempt,job}){
  const formal=plan.countAllocation!==undefined;
- assert(!formal,'RHINO_FORMAL_NOT_ADMITTED');
  assert(plan.schema==='sg-work-pool-v1'&&Number.isSafeInteger(limit)&&limit>0
   &&(formal?limit<=plan.target:limit<=5),'RHINO_CAPTURE_LIMIT');
  const initial=rhinoSession(baseGame,plan,shard,formal?`${runId}:${runAttempt}:${randomUUID()}`:undefined);

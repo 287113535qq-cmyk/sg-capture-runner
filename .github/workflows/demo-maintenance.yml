@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      formal_profile:
+        description: Independent reviewed complete-count profile
+        type: choice
+        default: formal-count-pearl-20260930.json
+        options: [formal-count-pearl-20260930.json, formal-count-rhino-20261001.json]
       repair_profile:
         description: 'Independent reviewed repair permission; old profiles remain frozen'
         type: choice
@@ -61,7 +66,7 @@ jobs:
       - name: Activate independently reviewed complete-count permission without source requests
         if: inputs.operation == 'activate-formal-count'
         env:
-          SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+          SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile || 'formal-count-pearl-20260930.json' }}
         run: node scripts/runner-v2/formal-count-control.mjs activate
       - name: Bind corrected runtime after failed admission without changing allocation
         if: inputs.operation == 'amend-formal-runtime'

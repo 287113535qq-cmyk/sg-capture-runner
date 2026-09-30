@@ -11,11 +11,13 @@ const {rhinoFields}=require('../../collector/sg.rhino.ts');
 const basePlan=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32799'];
 const plan={...basePlan,demoGeneration:'f'.repeat(64)};
 const profile=JSON.parse(fs.readFileSync('service/round_types.json')).profiles[plan.sourceKey];
-async function run({failDurability=false,unknown=false}={}){
+async function run({failDurability=false,unknown=false,formal=false,badLease=false}={}){
+ const plan={...basePlan,...(formal?{countAllocation:'e'.repeat(64)}:{demoGeneration:'f'.repeat(64)})};
  const parser=analyzer({python:process.env.PYTHON||'python3'}),fixture=rhinoFixture(8,{4:5});
  let posts=0,pending=null,bootstrap=null,raw=null,record=null;const saved=[];
  const evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
- const lease={durable:0,sequenceTarget:100,batchId:1,epoch:1,shortRunLimit:1,pendingRound:null};
+ let finished=false;
+ const lease={durable:0,sequenceTarget:100,batchId:1,epoch:1,...(formal?{countAllocation:badLease?'0'.repeat(64):plan.countAllocation}:{shortRunLimit:1}),pendingRound:null};
  const rpc=async(op,data)=>{
   if(op==='register')return {workerEpoch:1};if(op==='next')return lease;
   if(op==='bootstrap_intent'){bootstrap=data.requestPayload;return {};}
@@ -32,6 +34,7 @@ async function run({failDurability=false,unknown=false}={}){
    return {complete:!next,followingIntentDurable:false,checkpoint:0};
   }
   if(op==='release'){assert(record);return {status:'partial',checkpoint:1};}
+  if(op==='finish_run'){finished=true;return {released:true};}
   if(op==='status')return {confirmed:record?1:0};throw Error('UNEXPECTED_RPC');
  };
  const fetchImpl=async(url,options)=>{
@@ -41,12 +44,18 @@ async function run({failDurability=false,unknown=false}={}){
    if(unknown&&posts===1)text=text.replace('<GameResult','<GameResult UNKNOWN="1"');}
   posts++;return {ok:true,headers:{getSetCookie:()=>[],get:()=>null},text:async()=>text};
  };
- let error;try{await runRhinoWorker({plan,baseGame:{mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'},shard:0,rpc,mappingHash:hash(profile),prepareRound:rhinoFields,evidence,shouldStop:()=>false,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
+ let error;try{await runRhinoWorker({plan,baseGame:{mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'},shard:0,rpc,mappingHash:hash(profile),prepareRound:rhinoFields,evidence,shouldStop:()=>formal&&evidence.completedThisRun>=1,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
  catch(e){error=e;}finally{parser.close();}
- return {error,posts,saved,record,pending,evidence};
+ return {error,posts,saved,record,pending,evidence,finished};
 }
 test('Rhino worker persists Init, paid Logic, 13 free Logic and EndGame before full Python record',async()=>{
  const r=await run();assert.equal(r.error,undefined);assert.equal(r.posts,16);assert.equal(r.saved.length,16);assert.equal(r.record.normalized.bet,0.4);assert.equal(r.record.normalized.bonus,1);assert.equal(r.evidence.paidRoundRequests,1);assert(onePaidRound(basePlan,r.record.raw));
+});
+test('Rhino count lease runs full free chain and explicitly finishes its session',async()=>{
+ const r=await run({formal:true});assert.equal(r.error,undefined);assert.equal(r.posts,16);assert.equal(r.evidence.completedThisRun,1);assert.equal(r.record.normalized.bonus,1);assert.equal(r.finished,true);
+});
+test('Rhino rejects wrong formal lease before Init or any source request',async()=>{
+ const r=await run({formal:true,badLease:true});assert.match(r.error.message,/RHINO_FORMAL_LEASE_REQUIRED/);assert.equal(r.posts,0);assert.equal(r.finished,false);
 });
 test('Rhino worker does not retry a response with unknown durability',async()=>{
  const r=await run({failDurability:true});assert.equal(r.error.code,'ACK_UNKNOWN');assert.equal(r.posts,2);assert(r.pending);assert.equal(r.record,null);

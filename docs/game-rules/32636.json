@@ -149,7 +149,7 @@
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/piggies-size2-integration-20261001.md": "5917f2f45cf3f6acf9ec7ed5229735f7cfa1ca3ff962e1f25b7b25cccc170cec",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
-    "docs/repair-reentry-20261001.md": "2730cc818ebdaabd733e1a03276666959739cff7caac89a25f9756aae515ee16",
+    "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
   "observations": {
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2dbc86c88871b9d098df00b7aa586c1c75191416b137e2ab0c7408145d98f2ca"
+  "ruleHash": "d6a858361f5329751e44c246edb127647fabb7d9f50fc0229131843fb1748afc"
 }

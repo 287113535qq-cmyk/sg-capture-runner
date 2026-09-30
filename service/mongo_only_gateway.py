@@ -49,8 +49,9 @@ class Gateway:
         scope = self.manifest['trials'][trial]
         need(scope['group'] == self.group, 'GROUP_SCOPE_DENIED')
         if 'maxSequence' in scope:
-            need(trial == 'sg_r1_20260930_32795' and scope['group'] == 'primary'
-                 and scope['gameId'] == 32795 and scope['runtimeGameId'] == 33155
+            approved = {'sg_r1_20260930_32795': (32795,33155), 'sg_r1_20261001_32799': (32799,33159)}
+            need(trial in approved and scope['group'] == 'primary'
+                 and (scope['gameId'],scope['runtimeGameId']) == approved[trial]
                  and scope['target'] == 300000 and type(scope['maxSequence']) is int
                  and scope['maxSequence'] == 600000, 'SEQUENCE_SCOPE_DENIED')
         return trial, scope

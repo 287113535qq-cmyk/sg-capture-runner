@@ -12,10 +12,10 @@ export async function activateFormalCount({store,transport,parser,plans,profile,
  assert(typeof boundary==='function'&&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'FORMAL_COUNT_RUNTIME');
  assert(Number.isSafeInteger(profile.createdAt)&&Number.isSafeInteger(profile.expiresAt)
   &&profile.createdAt<=now()&&now()<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000,'FORMAL_COUNT_PROFILE_STALE');
- const plan=applyFormalCount(plans,profile)[32795],base=plans[32795],fromPlan={...base,demoGeneration:profile.sourceGeneration};
+ const plan=applyFormalCount(plans,profile)[profile.gameId],base=plans[profile.gameId],fromPlan={...base,demoGeneration:profile.sourceGeneration};
  await boundary();const scene=await pilotCloseScene(store,fromPlan),{campaign,pool,batches}=scene;
  assert(hash(scene)===profile.sceneHash&&pool.enabled&&!pool.failure&&!pool.countAllocation&&!pool.demoPilotClosed
-  &&pool.planHash===hash(fromPlan)&&campaign.enabled&&campaign.activeGame===32795
+  &&pool.planHash===hash(fromPlan)&&campaign.enabled&&campaign.activeGame===plan.gameId
   &&campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&campaign.protocolValidation.commit===profile.sourceCommit
   &&campaign.protocolValidation.generation===profile.sourceGeneration,'FORMAL_COUNT_SOURCE_CHANGED');

@@ -4,9 +4,9 @@ import {captureBatch} from '../trial/capture-batch.mjs';import {rhinoFixture} fr
 import {rhinoNext,rhinoMapping} from '../trial/rhino-protocol.mjs';import {protocolHash as hash} from './protocol-resume.mjs';
 const require=createRequire(import.meta.url);require('../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json'});
 const {rhinoFields}=require('../../collector/sg.rhino.ts');
-async function harness(parser){
+async function harness(parser,formal=false){
  const docs=new Map(),rounds=new Map();let failResponse=false;
- const plan=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32799'],commit='f'.repeat(40);
+ const base=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32799'],plan={...base,...(formal?{countAllocation:'e'.repeat(64)}:{})},commit='f'.repeat(40);
  const transport={async request(op,r){
   if(op==='resources')return {};
   if(op==='read_many')return r.keys.filter(k=>docs.has(r.collection+'/'+k)).map(k=>({_id:'primary/'+k,...structuredClone(docs.get(r.collection+'/'+k))}));
@@ -25,18 +25,30 @@ async function harness(parser){
  const control={allowed:async()=>store.get('state','pool:'+plan.trialId),halt:async reason=>store.update('state','global-hold',v=>({...v,active:true,reason}))};
  await store.create('state','global-hold',{active:false});
  await store.create('state','campaign',{enabled:true,activeGame:32799,games:[{game_id:32799,status:'active'}]});
- await store.create('state','pool:'+plan.trialId,{enabled:true,failure:null,nextSequence:1,nextBatchId:1,confirmed:0,workers:{}});
+ const pool={enabled:true,failure:null,nextSequence:1,nextBatchId:1,confirmed:0,workers:{},planHash:hash(plan)};
+ if(formal){
+  const spec={schema:'sg-complete-count-v1',activation:plan.countAllocation,commit,planHash:hash(plan),trialId:plan.trialId,gameId:plan.gameId,target:plan.target,maxSequence:600000,baselineBatchCount:0,baselineHash:hash([]),firstSequence:1,sessionRotation:'closed-batches-v1',runAdmission:'unique-github-run-v1',profileHash:'d'.repeat(64)};
+  const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+  await store.create('journal',key,spec);await store.create('journal',key+':complete',{schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit});
+  await store.create('journal',`count-run:${plan.trialId}:3:1`,{schema:'sg-count-run-v1',run:'3:1',activation:plan.countAllocation,profileHash:spec.profileHash,commit,createdAt:0,expiresAt:10000});
+  pool.countAllocation={specHash:hash(spec),reserved:0,batches:{}};
+ }
+ await store.create('state','pool:'+plan.trialId,pool);
  await store.create('state','write-permits',{limit:1,slots:{}});
- const controller=new BatchController({store,transport,gate,analyzer:parser,spool:{append(){},confirmed(){}},control,plan,commit,group:'primary',now,sleep:async()=>{}});
+ // The fixture injects count permission only into the real JS controller;
+ // protocol parsing uses the identical base game scope. Python formal profile
+ // binding is separately exercised without creating a deployable profile file.
+ const validator=formal?{call:r=>parser.call({...r,plan:base})}:parser;
+ const controller=new BatchController({store,transport,gate,analyzer:validator,spool:{append(){},confirmed(){}},control,plan,commit,runKey:'capture-run:3:1',group:'primary',now,sleep:async()=>{}});
  const rpc=(op,r={})=>controller.rpc(op,{shardId:0,...r});
- const registered=await rpc('register',{owner:'job',sessionHash:'a'.repeat(64),planHash:hash(plan)}),worker={owner:'job',workerEpoch:registered.workerEpoch};
+ const registered=await rpc('register',{owner:'job',sessionHash:'a'.repeat(64),planHash:hash(plan),commitSha:commit}),worker={owner:'job',workerEpoch:registered.workerEpoch};
  const lease=await rpc('next',worker),owned={...worker,epoch:lease.epoch,batchId:lease.batchId};
  return {controller,store,rounds,plan,rpc,lease,owned,failResponse(){failResponse=true;}};
 }
-for(const mode of ['complete','unknown','durability'])test('Rhino durable controller '+mode,async()=>{
+for(const mode of ['complete','formal','unknown','durability'])test('Rhino durable controller '+mode,async()=>{
  const parser=analyzer({python:process.env.PYTHON||'python3'});
  try{
-  const f=await harness(parser),raw=rhinoFixture(8,{4:5}),profile=JSON.parse(fs.readFileSync('service/round_types.json')).profiles[f.plan.sourceKey];let posts=0;
+  const f=await harness(parser,mode==='formal'),raw=rhinoFixture(8,{4:5}),profile=JSON.parse(fs.readFileSync('service/round_types.json')).profiles[f.plan.sourceKey];let posts=0;
   if(mode==='durability')f.failResponse();
   const capture=()=>captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},protocol:'wms',startMessage:'Logic',route:rhinoNext,mapping:rhinoMapping,mappingHash:hash(profile),prepareRound:rhinoFields,
    post:async(payload,msg)=>{
@@ -45,10 +57,16 @@ for(const mode of ['complete','unknown','durability'])test('Rhino durable contro
     if(mode==='unknown')step.responsePayload=step.responseXml=step.responseXml.replace('<GameResult','<GameResult UNKNOWN="1"');return step;
    },payload:msg=>{assert.equal(raw.steps[posts].msgId,msg);return raw.steps[posts].requestPayload;},bootstrap:async()=>{throw Error('UNEXPECTED_INIT');},
    shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
-  if(mode==='complete'){
+  if(mode==='complete'||mode==='formal'){
    await capture();assert.equal(posts,15);assert.equal(f.rounds.size,1);const record=[...f.rounds.values()][0];
-   assert((await parser.call({op:'verify',plan:f.plan,raw:record.raw,record})).verified);
+   const verifyPlan={...f.plan};delete verifyPlan.countAllocation;
+   assert((await parser.call({op:'verify',plan:verifyPlan,raw:record.raw,record})).verified);
    const b=(await f.store.get('state',f.controller.batchKey)).value;assert.equal(b.pending,null);assert.equal(b.checkpoint,1);assert.equal(b.journaled,1);assert.equal(b.leaseUntil,0);
+   if(mode==='formal'){
+    const pool=(await f.store.get('state','pool:'+f.plan.trialId)).value;
+    assert.equal(pool.confirmed,1);assert.equal(pool.countAllocation.reserved,0);assert.equal(pool.countAllocation.batches[1].complete,1);
+    assert.equal(pool.nextSequence,101);await f.rpc('finish_run',f.owned);
+   }
   }else if(mode==='unknown'){
    await assert.rejects(capture(),{code:'RHINO_UNKNOWN_FEATURE'});await f.rpc('fail',{...f.owned,code:'RHINO_UNKNOWN_FEATURE'});
    assert.equal(posts,1);assert.equal(f.rounds.size,0);const b=(await f.store.get('state',f.controller.batchKey)).value;assert.equal(b.pending,null);

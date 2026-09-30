@@ -6,7 +6,7 @@ on:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
+        options: [formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       pilot_profile:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice

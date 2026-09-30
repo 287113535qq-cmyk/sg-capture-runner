@@ -91,5 +91,15 @@ class GatewayTests(unittest.TestCase):
         self.manifest['trials']['sg_r1_20260928_32723']['maxSequence']=600000
         with self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':'sg_r1_20260928_32723'})
 
+    def test_rhino_sequence_ceiling_does_not_borrow_pearl_identity(self):
+        trial='sg_r1_20261001_32799'
+        scope={'group':'primary','gameId':32799,'runtimeGameId':33159,'target':300000,'maxSequence':600000}
+        self.manifest['trials'][trial]=scope
+        self.assertEqual(self.g.scope({'trialId':trial})[1]['target'],300000)
+        for key,value in [('gameId',32795),('runtimeGameId',33155),('target',600000),('maxSequence',600001)]:
+            original=scope[key];scope[key]=value
+            with self.subTest(key=key),self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':trial})
+            scope[key]=original
+
 
 if __name__=='__main__':unittest.main()

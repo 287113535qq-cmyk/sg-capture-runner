@@ -271,7 +271,7 @@
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/repair-reentry-20261001.md": "2730cc818ebdaabd733e1a03276666959739cff7caac89a25f9756aae515ee16",
+    "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
@@ -285,5 +285,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e32d77a02b60e34c3472e9e917ceea4f4ee6d5c34b9bfa88f5442eb4e153558a"
+  "ruleHash": "9a3c29d95a2f8be83c00ab140ed1c512f882ee0ac989b38831e1aaf4959f2a3c"
 }
