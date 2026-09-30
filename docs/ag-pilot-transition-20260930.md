@@ -11,3 +11,17 @@
 真实32718留样在本机仅内存回放，独立Python校验全部91完整并保留53历史，新的38完整和1作废计39已用；内存注销61。生产关闭必须再通过固定profile、GitHub身份/原源运行/全租约/资源/状态快照检查，最终完成凭据最后写。
 
 此时本机572 Runner测试通过；GitHub Linux及线上无源维护结果待追加。合成下一款准入不能称真实下一款已启动；修复轮盘后续分支、下一款真实准入及正式300000授权仍独立审查。有限试点验收不授权正式规模，也不追加旧试点预算。
+
+## 实际验收结果
+
+runtime `c2f0e0674d901ee0377fe51ffc4b76afeaad24cf`，Linux36689656197成功（572 Runner及完整Python/TypeScript/collector/178cards检查）。首次36689494042因规则卡未生成失败，修正后重跑通过；没有绕过检查。
+
+唯一无源维护36689927238:1成功，job08:28:39Z开始、08:30:11Z结束，92秒。实际关闭39已用/61注销，91完整逐条独立Python及Mongo读回通过，旧journal/batch/campaign不变，pending0/待写0，源请求0。新增独立repair记录sourceAllowance0；原activeGame指针保留供已绑定的nextGame转换，返回waiting-ready，没有伪称已切下一款。
+
+关闭hash `73a71436e57a076bfba810b3bcd35f52afb76c1c32b26d0ad7ed8b0aecf438e4`，profile canonical `f9a661e3f1cc602285c9f1fe48a5f7775ac5a41d8de01276452a37eb3f7be346` 永久冻结。旧MorePuff试点100上限现在39已用（38完整+1作废）+61注销，不得重派或借额度。
+
+下一款的真实采集仍未启动。已验收的是失败隔离/部分预算结清/修复与主队列独立/下一款退役切换及新会话准入的无源端到端路径；下一款的生产profile和实际派发仍须独立准备，当前维护入口不自行创建新源许可。修复状态变为reviewing-adapter不阻碍后续切换。
+
+主队列下一步是准备符合准入条件的下一款，旧32718后续轮盘修复留在独立队列。不得回到等待32718修好才准备下一款的串行方式。全部源开关保持false。
+
+私有增量双备份已readback：prepare13file34512bytes SHA3a4a16531bef67c3eb33dba17594a71e279a72b1097b2dfc2543f8f685c19d85；final20file162616bytes SHAdb6e52b8454c8f280015d82ecfafae269dcef9b60b07f344cfc22187fddcc04f。服务器同时验证原MorePuff postpilot及prepare引用，原91完整数据不重复上传。最终github鲜读仅两精确旧queued、其他活动0，两源变量false。

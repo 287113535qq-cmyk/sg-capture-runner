@@ -191,7 +191,7 @@
     "docs/sg-efficiency-plan-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "9dddf650b5d6380b32b2badecd955f0a6b3837850e41bef43bd651dae1e2ae55",
+    "docs/continuous-processing.md": "efa06f2d481a973461c8f8f2dc1846557cbfd48e5f6bf6309f31d868b510dda9",
     "docs/demon-code-adapter-result.json": "e63ab61ea28bc449c61ecf3913de3e8d087ac148f57e6d8446011d183f374b4c",
     "docs/demon-code-observation-20260929.md": "7c05c1c2b4cc07dfb1a4f5b95ba462374921fa111e49694e2eb8dbd6972d86ed",
     "docs/demon-code-protocol.md": "f5d161027423666c6b0f18aea504c1a07f8bb7df63c9f0110e7e153d40a0d012",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "3be738bdb4161840491a36dfcde632bdeed140e091079563a99e7fd0bfd03c0e"
+  "ruleHash": "5d4ad8596af8182662bbabc75482fc7de5662b54314e5a077e7deab572fe84a1"
 }
