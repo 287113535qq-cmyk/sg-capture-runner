@@ -9,7 +9,7 @@ on:
         options: [demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop]
+        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source]
         default: rollover
 permissions:
   contents: read
@@ -66,3 +66,6 @@ jobs:
         env:
           SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile || 'demo-pilot-morepuff-20260930.json' }}
         run: node scripts/runner-v2/demo-next-game-control.mjs
+      - name: Bind reviewed runtime after independently verified zero source requests
+        if: inputs.operation == 'rebind-zero-source'
+        run: node scripts/runner-v2/demo-zero-source-control.mjs

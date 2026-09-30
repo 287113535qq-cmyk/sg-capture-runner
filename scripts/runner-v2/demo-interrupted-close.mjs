@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
 
@@ -32,7 +33,7 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
  const get=async k=>(await store.get('journal',k))?.value,k=`demo-generation:${plan.trialId}:${plan.demoGeneration}`;
  const spec=await get(k),done=await get(k+':complete'),{campaign,pool,batches}=scene;
  assert(spec?.schema==='sg-demo-generation-v1'&&hash(spec)===profile.sourceSpecHash&&pool.demoGeneration?.specHash===hash(spec)
-  &&spec.planHash===hash(plan)&&spec.trialId===plan.trialId&&spec.generation===plan.demoGeneration&&spec.commit===profile.sourceCommit
+  &&spec.planHash===hash(plan)&&spec.trialId===plan.trialId&&spec.generation===plan.demoGeneration&&(await demoRuntimeCommit({store,plan,spec,campaign}))===profile.sourceCommit
   &&spec.workers===20&&spec.perWorker===5&&spec.newBetAllowance===100
   &&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(spec)&&done.commit===spec.commit&&done.run===spec.run,'AG_CLOSE_SPEC');
  const top=spec.activationStage&&await get(spec.activationStage.key+':complete');
@@ -41,7 +42,7 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
   &&top.commit===spec.commit&&top.run===spec.run&&top.newBetAllowance===100&&top.sourceRequests===0,'AG_CLOSE_ACTIVATION');
  const game=campaign?.games.find(g=>g.game_id===plan.gameId);
  assert(campaign.activeGame===plan.gameId&&game?.status==='parking-protocol'&&campaign.protocolValidation?.runKey===profile.sourceRunKey
-  &&campaign.protocolValidation.commit===spec.commit&&campaign.protocolValidation.demoFresh===hash(spec)&&campaign.protocolValidation.generation===plan.demoGeneration
+  &&campaign.protocolValidation.commit===profile.sourceCommit&&campaign.protocolValidation.demoFresh===hash(spec)&&campaign.protocolValidation.generation===plan.demoGeneration
   &&pool.planHash===hash(plan)&&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true&&!pool.demoPilotClosed,'AG_CLOSE_BINDING');
  assert(Number.isSafeInteger(spec.firstBatchId)&&spec.firstBatchId>=1&&spec.firstBatchId<=pool.nextBatchId
   &&budget(profile.usedByWorker)&&budget(profile.completeByWorker),'AG_CLOSE_BUDGET');

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import {readInterruptedClosure} from './demo-interrupted-close.mjs';
@@ -20,7 +21,7 @@ export async function reviewClosablePilot({store,transport,parser,basePlan,plan,
  const spec=await get(key),done=await get(key+':complete'),{campaign,pool,batches}=scene;
  assert(spec?.schema==='sg-demo-generation-v1'&&spec.trialId===plan.trialId&&spec.generation===plan.demoGeneration
   &&spec.planHash===hash(plan)&&hash(spec)===profile.sourceSpecHash&&pool.demoGeneration?.specHash===hash(spec)
-  &&spec.commit===profile.sourceCommit&&spec.workers===20&&spec.perWorker===5&&spec.newBetAllowance===100
+  &&(await demoRuntimeCommit({store,plan,spec,campaign}))===profile.sourceCommit&&spec.workers===20&&spec.perWorker===5&&spec.newBetAllowance===100
   &&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(spec)&&done.commit===spec.commit&&done.run===spec.run,'PILOT_CLOSE_SPEC_CHANGED');
  const top=spec.activationStage&&await get(spec.activationStage.key+':complete');
  assert(spec.activationStage?.key===`next-demo-game:${plan.trialId}:${plan.demoGeneration}`
@@ -28,7 +29,7 @@ export async function reviewClosablePilot({store,transport,parser,basePlan,plan,
   &&top.profileHash===profile.sourceProfileHash&&top.commit===spec.commit&&top.run===spec.run
   &&top.generation===plan.demoGeneration&&top.newBetAllowance===100&&top.sourceRequests===0,'PILOT_CLOSE_ACTIVATION');
  assert(campaign.activeGame===plan.gameId&&campaign.protocolValidation?.runKey===profile.sourceRunKey
-  &&campaign.protocolValidation.commit===spec.commit&&campaign.protocolValidation.demoFresh===hash(spec)
+  &&campaign.protocolValidation.commit===profile.sourceCommit&&campaign.protocolValidation.demoFresh===hash(spec)
   &&campaign.protocolValidation.generation===plan.demoGeneration&&pool.planHash===hash(plan)
   &&pool.enabled&&!pool.failure&&!pool.demoPilotClosed,'PILOT_CLOSE_BINDING');
  assert(Number.isSafeInteger(spec.firstBatchId)&&spec.firstBatchId>=1&&spec.firstBatchId<=pool.nextBatchId

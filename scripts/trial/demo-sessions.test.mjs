@@ -1,8 +1,18 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {gameForShard} from './demo-sessions.mjs';
+import fs from 'node:fs';
 const base={id:32471,runtimeSlug:'bookofsevens96',serverAddress:'ogs-gdm-usnj.nyxop.net/nextgen',mode:'demo',
   operatorId:'explicit-offline-fixture',sessionId:'Free:explicit-offline-fixture',currency:'USD'};
+
+test('actual zero-history Piggies plan derives twenty sessions with exact new trial scope',()=>{
+ const p=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32636'];
+ const profile=JSON.parse(fs.readFileSync('config/demo-pilot-piggies-20260930.json','utf8')),plan={...p,demoGeneration:profile.generation},b={...base,id:p.gameId,runtimeSlug:p.runtimeSlug};
+ const sessions=Array.from({length:20},(_,i)=>gameForShard(b,i,p.trialId,plan).sessionId);assert.equal(new Set(sessions).size,20);
+ assert.deepEqual(sessions,Array.from({length:20},(_,i)=>gameForShard(b,i,p.trialId,plan).sessionId));
+ for(const bad of [{...plan,demoGeneration:undefined},{...plan,runtimeGameId:33114},{...plan,trialId:'sg_r1_20260930_32714'}])assert.throws(()=>gameForShard(b,0,p.trialId,bad),/DEMO_TRIAL_SCOPE/);
+ assert.throws(()=>gameForShard(b,0,'sg_r1_20261001_32636',plan),/DEMO_TRIAL_SCOPE/);
+});
 
 test('reviewed generation creates twenty new stable sessions while legacy derivation stays unchanged',()=>{
  const plan={campaignId:'sg_round_one_20260928',phase:1,gameId:32471,runtimeSlug:base.runtimeSlug};

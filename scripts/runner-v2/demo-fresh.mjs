@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';import {protocolHash as hash} from './protocol-resume.mjs';
+import {demoRuntimeCommit} from './demo-runtime.mjs';
 export class DemoFresh{
  constructor({store,plan,stage,runKey,now=Date.now,sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms))}){Object.assign(this,{store,plan,stage,runKey,now,sleep});}
  async admit(identity,worker){
@@ -8,7 +9,7 @@ export class DemoFresh{
    &&p?.phase==='short'&&p.generation===this.plan.demoGeneration&&p.commit===identity.commitSha&&p.runKey===this.runKey&&/^capture-run:\d+:1$/.test(this.runKey||''),'DEMO_FRESH_RUN_CHANGED');
   const key=`demo-generation:${this.plan.trialId}:${this.plan.demoGeneration}`,s=await get('journal',key),done=await get('journal',key+':complete');
   const residual=s?.schema==='sg-demo-generation-residual-v1';
-  assert((s?.schema==='sg-demo-generation-v1'||residual)&&hash(s)===p.demoFresh&&s.planHash===hash(this.plan)&&s.trialId===this.plan.trialId&&s.gameId===this.plan.gameId&&s.generation===this.plan.demoGeneration&&s.commit===p.commit
+  assert((s?.schema==='sg-demo-generation-v1'||residual)&&hash(s)===p.demoFresh&&s.planHash===hash(this.plan)&&s.trialId===this.plan.trialId&&s.gameId===this.plan.gameId&&s.generation===this.plan.demoGeneration&&(await demoRuntimeCommit({store:this.store,plan:this.plan,spec:s,campaign:c}))===p.commit
    &&s.perWorker===5&&s.workers===20&&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(s)&&done.commit===s.commit&&done.run===s.run,'DEMO_FRESH_NOT_COMPLETE');
   if(s.activationStage){
    const a=s.activationStage,expected=`next-demo-game:${this.plan.trialId}:${this.plan.demoGeneration}`,completed=await get('journal',expected+':complete');

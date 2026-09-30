@@ -103,10 +103,12 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
-    "docs/piggies-next-preparation-20260930.md"
+    "docs/piggies-next-preparation-20260930.md",
+    "docs/piggies-zero-source-rebind-20260930.md"
   ],
   "analysisDocumentHashes": {
-    "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a"
+    "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
+    "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -115,5 +117,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "598d046c704c58ce48fd84bdb3327936989630820a081a673163c5436c86b99e"
+  "ruleHash": "6b19c701b4cfa06a66372b0727b14d7a9a9b3779045da5dd505d114333293c67"
 }
