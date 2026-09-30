@@ -199,6 +199,11 @@ def types(raw, kind):
     beaver_type = source_key == BEAVER_SOURCE and beaver_feature_type(raw)
     from morepuff_fields import SOURCE as MOREPUFF_SOURCE, EXTENSION as MOREPUFF_EXTENSION, feature_type as morepuff_feature_type
     morepuff_type = source_key == MOREPUFF_SOURCE and morepuff_feature_type(raw)
+    from morepuff_megahat_review import EXTENSION as MEGAHAT_EXTENSION, has_megahat, inspect as inspect_megahat
+    morepuff_megahat = morepuff_type and has_megahat(raw)
+    if morepuff_megahat:
+        check(inspect_megahat(raw)['complete'], 'INCOMPLETE_ROUND')
+        MOREPUFF_EXTENSION = MEGAHAT_EXTENSION
     from jinzita_fields import SOURCE as JINZITA_SOURCE, EXTENSION as JINZITA_EXTENSION, feature_type as jinzita_feature_type
     jinzita_type = source_key == JINZITA_SOURCE and jinzita_feature_type(raw)
     from luxor_fields import SOURCE as LUXOR_SOURCE, EXTENSION as LUXOR_EXTENSION, feature_type as luxor_feature_type
@@ -237,8 +242,8 @@ def types(raw, kind):
         check(kind=='freeGame' and profile.get('featureSelector')=='piggies-size2-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['freeTypes']['native-free-game']
     elif morepuff_type:
-        check(kind == 'freeGame' and profile.get('featureSelector') == 'morepuff-wheel-cash-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
-        bonus = profile['featureTypes']['wheelCash']
+        check(kind == 'freeGame' and profile.get('featureSelector') == ('morepuff-wheel-megahat-single-v1' if morepuff_megahat else 'morepuff-wheel-cash-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus = profile['featureTypes']['wheelMegaHatSingle' if morepuff_megahat else 'wheelCash']
     elif jinzita_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == 'jinzita-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['independentFreeGames']

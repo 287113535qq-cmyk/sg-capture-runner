@@ -1,6 +1,7 @@
 // Bounded standalone wheel cash exits; further feature outcomes remain unsupported.
 // Official WheelOutro returns Idle for these cash stops, unless the independent
 // combined-feature flag is set. Other stops enter a further feature spin.
+import {hasMegaHat,inspectMegaHat} from './morepuff-megahat-review.mjs';
 const CASH=new Set([0,2,7,8,11]);
 const FURTHER=new Set([1,3,4,5,6,9,10]);
 const KNOWN_GSD=new Set(['BWS','BRS','BMS','ABW','buyInPrice','FMS','WHSTOP','WHEELSPIN','WHJPM','FRAMES','PREVFRAMES','FRAMEWINS','HHSHIFTPOS','VA','BSSHIFTPOS','FEAT_WIN','HHPOS','BSPOS','FEAT','BWC']);
@@ -35,6 +36,7 @@ function state(step,index){
   return {p,q,g,n,t,c};
 }
 export function morepuffSequence(raw){
+  if(hasMegaHat(raw))return inspectMegaHat(raw);
   check(raw.sourceKey==='huffnmorepuffhighlimit96-round-one-base-v1'&&raw.protocol==='nextgen','MOREPUFF_PROFILE_REQUIRED');
   check(Array.isArray(raw.steps)&&raw.steps.length>=1&&raw.steps.length<=2,'MOREPUFF_FEATURE_NOT_ADAPTED');
   const first=state(raw.steps[0],0);
@@ -61,6 +63,7 @@ export function morepuffNext(raw){const {next}=morepuffSequence(raw);return next
 export function morepuffMapping(raw,extensionHash){
   check(raw.roundFieldsVersion==='sg-round-fields-v1'&&raw.fixtureOnly===false,'MOREPUFF_PROFILE_REQUIRED');
   check(morepuffSequence(raw).complete,'INCOMPLETE_ROUND');
-  check(/^[a-f0-9]{64}$/.test(extensionHash??''),'MOREPUFF_MAPPING_REQUIRED');
-  return {buy:0,bonus:2,typeMappingHash:extensionHash};
+  const selected=typeof extensionHash==='object'&&extensionHash!==null?extensionHash[hasMegaHat(raw)?'megahat':'cash']:hasMegaHat(raw)?null:extensionHash;
+  check(/^[a-f0-9]{64}$/.test(selected??''),'MOREPUFF_MAPPING_REQUIRED');
+  return {buy:0,bonus:hasMegaHat(raw)?3:2,typeMappingHash:selected};
 }

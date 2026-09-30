@@ -69,6 +69,9 @@ class MorepuffSequence(NativeNextgenFields):
         check(raw.get('protocol') == 'nextgen' and raw.get('sourceKey') == SOURCE, 'MOREPUFF_PROFILE_REQUIRED')
         if not feature_type(raw):
             return super().next_request(raw)
+        from morepuff_megahat_review import has_megahat, inspect
+        if has_megahat(raw):
+            return {'MSGID': 'FREE_GAME'} if inspect(raw)['next'] else None
         steps = raw['steps']
         check(1 <= len(steps) <= 2, 'MOREPUFF_FEATURE_NOT_ADAPTED')
         p, q, g, n, c = self.wheel_frame(steps[0], 0)
@@ -90,7 +93,8 @@ class MorepuffSequence(NativeNextgenFields):
         if not feature_type(raw):
             return super().settled(raw)
         check(raw.get('fixtureOnly') is False and raw.get('roundFieldsVersion') == VERSION, 'TRIAL_PROFILE_REQUIRED')
-        check(self.sequence(raw) is None and len(raw['steps']) == 2, 'INCOMPLETE_ROUND')
+        from morepuff_megahat_review import has_megahat
+        check(self.sequence(raw) is None and len(raw['steps']) == (3 if has_megahat(raw) else 2), 'INCOMPLETE_ROUND')
         fields = derive(raw)
         check(fields['buy'] == 0 and fields['money']['betRaw'] == self.plan['betRaw'], 'TRIAL_ACTUAL_COST_MISMATCH')
         return fields

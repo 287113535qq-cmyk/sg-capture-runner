@@ -115,8 +115,8 @@ def contract(game_id):
         native.update({'family': 'morepuff-wheel-cash-v1',
             'continue': '首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。',
             'complete': '仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。',
-            'bounds': '真实试点新增38普通完整、1中断轮盘留样作废，旧53不变、合计91。实际FREE返回FID1|2|、WHSTOP3、WHSLICE，仍有后续功能；当前拒绝并停池。39 BET已用、61未用未结案；现金终局仍仅合成，无真实轮盘完整链，不标ready/formal。'})
-        native['files'] += ['service/morepuff_fields.py', 'scripts/trial/morepuff-protocol.mjs', 'collector/sg.morepuff.ts']
+            'bounds': '真实试点38普通完整及1中断，旧53保全共91；39已用、61已注销。新增独立MegaHat单次免费映射bonus3，仅FID2→FID1|2/WHSTOP3/WHSLICE MEGAHAT→一帧FREE单槽0或1终局，严格TFG1/进度0,0,1/剩余1,1,0；新授予、重触发、FRAMEWINS及进一步功能拒绝。实际仅两帧前缀，现金和MegaHat终局均仅合成；尚未重入，不标ready/formal。'})
+        native['files'] += ['service/morepuff_fields.py', 'scripts/trial/morepuff-protocol.mjs', 'collector/sg.morepuff.ts', 'service/morepuff_megahat_review.py', 'scripts/trial/morepuff-megahat-review.mjs', 'collector/sg.morepuff-megahat.ts']
         native['fields'].update({'FID / GSD.WHSTOP': '官方FID2=Wheel；WHSTOP决定现金退出或后续功能，NFG0不足单独判断。',
             'GSD.VA': '需排除同时3个13和6个14触发的组合功能；未知功能字段拒绝。',
             'NFG / CFGG': '官方映射分别Bb.Ee/Bb.Wf，不混淆剩余与进度。'})

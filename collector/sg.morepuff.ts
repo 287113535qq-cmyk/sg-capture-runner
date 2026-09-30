@@ -1,4 +1,5 @@
-/** Independent raw validation of the reviewed standalone Wheel cash exit. */
+import {hasMegaHat,megaHatFields} from './sg.morepuff-megahat';
+/** Independent raw validation of the reviewed bounded Wheel branches. */
 const need=(value:unknown,code:string):void=>{if(!value)throw Error(code);};
 function fields(text:string,separator='&',delimiter='='):Record<string,string>{
   need(typeof text==='string','INVALID_PARAMETERS');const result:Record<string,string>=Object.create(null);
@@ -14,6 +15,7 @@ export function hasMorepuffWheel(raw:any):boolean{
     &&raw.steps.some((s:any)=>(fields(s.responsePayload).FID??'').split('|').includes('2'));
 }
 export function morepuffFields(raw:any,mappingHash:string){
+  if(hasMegaHat(raw))return megaHatFields(raw,mappingHash);
   need(hasMorepuffWheel(raw)&&raw.protocol==='nextgen'&&raw.roundFieldsVersion==='sg-round-fields-v1'
     &&raw.fixtureOnly===false&&raw.steps.length===2,'MOREPUFF_PROFILE_REQUIRED');
   const allowed=new Set(['BWS','BRS','BMS','ABW','buyInPrice','FMS','WHSTOP','WHEELSPIN','WHJPM','FRAMES','PREVFRAMES','FRAMEWINS','HHSHIFTPOS','VA','BSSHIFTPOS','FEAT_WIN','HHPOS','BSPOS','FEAT','BWC']);

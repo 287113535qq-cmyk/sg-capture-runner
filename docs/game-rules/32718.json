@@ -30,14 +30,17 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。",
     "complete": "仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。",
-    "bounds": "真实试点新增38普通完整、1中断轮盘留样作废，旧53不变、合计91。实际FREE返回FID1|2|、WHSTOP3、WHSLICE，仍有后续功能；当前拒绝并停池。39 BET已用、61未用未结案；现金终局仍仅合成，无真实轮盘完整链，不标ready/formal。",
+    "bounds": "真实试点38普通完整及1中断，旧53保全共91；39已用、61已注销。新增独立MegaHat单次免费映射bonus3，仅FID2→FID1|2/WHSTOP3/WHSLICE MEGAHAT→一帧FREE单槽0或1终局，严格TFG1/进度0,0,1/剩余1,1,0；新授予、重触发、FRAMEWINS及进一步功能拒绝。实际仅两帧前缀，现金和MegaHat终局均仅合成；尚未重入，不标ready/formal。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
       "service/morepuff_fields.py",
       "scripts/trial/morepuff-protocol.mjs",
-      "collector/sg.morepuff.ts"
+      "collector/sg.morepuff.ts",
+      "service/morepuff_megahat_review.py",
+      "scripts/trial/morepuff-megahat-review.mjs",
+      "collector/sg.morepuff-megahat.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -101,17 +104,44 @@
       "featureTypes": {
         "wheelCash": 2
       }
+    },
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "morepuff-wheel-megahat-single-v1",
+      "featureTypes": {
+        "wheelMegaHatSingle": 3
+      }
     }
   },
   "mappingHashes": {
     "huffnmorepuffhighlimit96-round-one-base-v1": "a537d5692ce49c0bb4407f0cf652608fe56e2f16da353bf5c98b8a849bad2e1c",
-    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-cash-v1": "bd2e8b2972065a922d3230bd8497c48cb81318f543b5ab74f02fdffdb2c078f4"
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-cash-v1": "bd2e8b2972065a922d3230bd8497c48cb81318f543b5ab74f02fdffdb2c078f4",
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1": "af2fadb272854c5cb8720ae5f64e3247fa5472c52a3772e0d7b0e64d3ed2317c"
   },
   "configuredNaturalBonusCodes": [
     1,
-    2
+    2,
+    3
   ],
-  "configuredOutcomeCategoryCount": 2,
+  "configuredOutcomeCategoryCount": 3,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -123,12 +153,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "77adc41e81c35e760b431253e5ce38f65f4884d349a0138b7fdc251465bae9a7",
+    "service/round_fields.py": "68d7698a9ae64adb75d3181c6395e261678831eb1434e9e9b5f6f08d3fe947de",
     "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
-    "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
-    "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
-    "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
-    "service/game_rule_catalog.py": "a57a37441267af2c6995bf15158099b36d55494d046e3dc876b862f83fce4780"
+    "service/morepuff_fields.py": "5daa6e78402db09326710e1abfa2560e8fc8e5ba5dec2ffaed6a6c8b638292d1",
+    "scripts/trial/morepuff-protocol.mjs": "cd9baab5dc7ce8a7484a91f253d8a3eadfc655e6899d1a2bb61e79745b484b5f",
+    "collector/sg.morepuff.ts": "d30882d2952b36ec5b9a4bedf6055934679d90f2d1c4a5a75217bcba20811648",
+    "service/morepuff_megahat_review.py": "163cba04ae5598931914750dd5ec6afc97f9aa13f5be307b285bfccc86ae7378",
+    "scripts/trial/morepuff-megahat-review.mjs": "2709cbda6ebe4a6c613d3dab1afb2707980e5b5fc5f8377c3ca94f1e93a14451",
+    "collector/sg.morepuff-megahat.ts": "145184c91f927a5944452dfdc66dab02c13d6dc6a1b64e1fc1f2b6ac3d947a4b",
+    "service/game_rule_catalog.py": "91b8c37b0aac5c698a453f5b5205aaaacef58444f2dd846b221f34731931c4e0"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -138,6 +171,7 @@
     "docs/mansion-next-review-20260930.md",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-latency-audit-20260930-result.json",
+    "docs/morepuff-megahat-integration-20261001.md",
     "docs/morepuff-mixed-repair-20260930.md",
     "docs/morepuff-next-review-20260930.md",
     "docs/morepuff-pilot-result-20260930.md",
@@ -154,6 +188,7 @@
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-latency-audit-20260930-result.json": "12e09c154229fb93f671313b77bc7889edaf0e168a91260d9986bfa1ccc03311",
+    "docs/morepuff-megahat-integration-20261001.md": "3237daadc76eb87a44ead9c813aae57da700dfa74fbcfd72a16ff9519310019e",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
     "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
     "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
@@ -170,5 +205,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fb1224999a4b0e2f7d25834168d535b3fc6217eb1432bcfb85aee5b58c1d1f18"
+  "ruleHash": "58c3c344f48429af5ffd21fe4223648f061bdf4854946eaf8b06f4fe28172205"
 }
