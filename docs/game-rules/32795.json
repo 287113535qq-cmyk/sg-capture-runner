@@ -115,11 +115,12 @@
     "docs/repair-reentry-20261001.md",
     "docs/rhino-formal-preparation-20261001.md",
     "docs/rhino-integration-20261001.md",
-    "docs/rules.md"
+    "docs/rules.md",
+    "docs/secondary-idle-preparation-20261001.md"
   ],
   "analysisDocumentHashes": {
     "docs/formal-next-candidate-20261001.md": "8b10b1ee6f06e44874632af761ebf5bc1d3c8957797e40c49fe510f0d3cf85bc",
-    "docs/inca-free-integration-20261001.md": "be693503f2616f7618fed9174617928072fc5e1016f6356bb51ee082b93b5b0f",
+    "docs/inca-free-integration-20261001.md": "ec37f1d56b20688ee09390aed029be7c8a3892e6c15f266d1b5fd0bd2e05472d",
     "docs/mansion-retrigger-integration-20261001.md": "512799d3c5765b7731ff6ebd8506ae92b00c32f2a144e4fdcd879e81a9e7e1d6",
     "docs/morepuff-megahat-integration-20261001.md": "da9fbafa091bff57e05d007102889262c31e68330e85f2c6e0abe51837cecf6b",
     "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
@@ -134,7 +135,8 @@
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-formal-preparation-20261001.md": "56531514617342eef9a729ca096b2173c4a9ab5609edca4a80bdc8ab36e8822d",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
+    "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
+    "docs/secondary-idle-preparation-20261001.md": "4e62a3f8dacee5dfe1589508ff45f67021d111247571b534dd65184f24373161"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -143,5 +145,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "231a03984bd3564a966542dce47c976e17c8629df505d7575e7bfef51e66b017"
+  "ruleHash": "73391d8e3afe9d3ff1d4dd5a8ca48a4474307e2c7c0279ceae2953c34a58d79d"
 }
