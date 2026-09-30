@@ -1,0 +1,23 @@
+{
+  "at": 1790730572,
+  "completePreserved": 415,
+  "used": 95,
+  "foregone": 5,
+  "newBetAllowance": 0,
+  "sourceRequests": 0,
+  "pending": 0,
+  "backlog": 0,
+  "oldJournalsUnchanged": true,
+  "oldBatchesUnchanged": true,
+  "campaignUnchanged": true,
+  "poolDisabled": true,
+  "closeHash": "84fb63256be091668eb73ecfd3fea13bec38ae651118e8d4b408a53a188f2c6f",
+  "commit": "f860fffceb1b6ce635bd436baf07bf177f72302b",
+  "run": "36653582501:1",
+  "profileHash": "66b3127c8caa6b214aab3b9b06ae7f41fb78747c1f87038661ec518ada30c372",
+  "snapshotHash": "12031daba33cfeb837b118b8eb4f84818c2774379cf68b50aeb086d15c16085a",
+  "linuxRun": 36653249136,
+  "maintenanceRun": 36653582501,
+  "linuxConclusion": "success",
+  "maintenanceConclusion": "success"
+}

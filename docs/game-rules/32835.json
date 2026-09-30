@@ -144,7 +144,7 @@
   ],
   "analysisDocumentHashes": {
     "docs/complete-count-allocation-20260930.md": "9b3821e3eb850efd7a983e44d84174f1cbdee47ea0feffdf03af3cc1c3aa3fb4",
-    "docs/continuous-processing.md": "1faf9ac05e56db2b6a5bb7e699307bf79383751766e4e0b8181cf27ccf5ed4df",
+    "docs/continuous-processing.md": "e5de871895a2fe97087a1e802e41f039fc316c7124e2932b02c8d0cacc83a05f",
     "docs/luxor-free-integration-20260930.md": "3c9545c0a77fa00ccebcbe6e616d23719f4ddd157fa42ce162b47a00c7cc098d",
     "docs/luxor-next-result-20260930.json": "4ede7a14f709760e8313553daac6714207dba00d424ce81f9cc7f303f9adca4c",
     "docs/luxor-next-result-20260930.md": "d4fa5d9613c979637add8cf834fabea97d19865fee8850f064e0e6d0b3a0616c",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c0d68896154757ffb6d57e217613c111c22938841c0c97f9636b7337d8bf49a7"
+  "ruleHash": "c423088c10300160db12674becc697be88f0e12967f4e21d1999dc87114718a5"
 }
