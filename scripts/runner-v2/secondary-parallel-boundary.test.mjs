@@ -7,7 +7,7 @@ function fixture(){
  const evidence={journal:[],state:[{_id:'primary/campaign',value:{group:'primary',enabled:true,activeGame:32795,validationLimit:0,formalCount:{activation:p.activation,trialId:p.trialId,profileHash:p.profileHash},demoRunRevoked:revokedMarker}},
   {_id:'primary/pool:'+p.trialId,value:{enabled:true,countAllocation:{},workers:{0:{leaseUntil:1000,owner:p.id+':1:formal-capture:fixture'}}}},
   {_id:`primary/capture-run:${p.id}:1`,value:{gameId:32795}}]};
- const jobs=[{name:'formal-admit',status:'completed',conclusion:'success'},...Array.from({length:20},(_,i)=>({name:'formal-capture-'+i,status:'in_progress',conclusion:null}))];
+ const jobs=[{name:'formal-admit',status:'completed',conclusion:'success'},...Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'in_progress',conclusion:null}))];
  let other=false,oldJob=false,truncated=false,hold=false,late=false;
  const read=async q=>{const repo=q.split('/actions/')[0].slice(6);if(q.includes('runs?')){const status=new URL('https://test/'+q).searchParams.get('status'),found=runs.filter(r=>r.repository.full_name===repo&&r.status===status);
   if(other&&repo===secondaryRepository&&status==='queued')found.push({...runs[0],id:456,status});return {total_count:truncated?100:found.length,workflow_runs:found};}
@@ -26,4 +26,9 @@ test('other activity old jobs truncation main failure or wrong identity all refu
 });
 test('cross-group evidence rejects omissions duplicate ids and unrelated pool/run',()=>{
  for(const reason of ['missing','duplicate','scope','bound']){const f=fixture();if(reason==='missing')f.evidence.state.pop();if(reason==='duplicate')f.evidence.state[2]=f.evidence.state[1];if(reason==='scope')f.evidence.state[1]._id='secondary/pool:other';if(reason==='bound')f.evidence.state[2].value.gameId=32714;assert.throws(()=>checkPrimaryReadonlyEvidence(f.evidence,100));}
+});
+
+test('GitHub display names are capture-N while owners retain the formal-capture job id',async()=>{
+ const f=fixture();assert.equal(f.jobs[1].name,'capture-0');assert.match(f.evidence.state[1].value.workers[0].owner,/:formal-capture:/);
+ await secondaryParallelBoundary(f.args)();f.jobs[1].name='formal-capture-0';await assert.rejects(secondaryParallelBoundary(f.args)(),/PRIMARY_JOBS_CHANGED/);
 });

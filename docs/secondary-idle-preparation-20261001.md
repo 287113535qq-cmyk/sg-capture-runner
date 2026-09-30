@@ -9,3 +9,5 @@
 secondary-admit先核独立无源维护成功、最终证明、两账号安全状态、空worker与新运行唯一绑定，成功后才启动20个矩阵worker。关闭路径复用AG partial结案，以worker20–39映射独立20槽计数；合成1完成1作废/98注销及零源修复队列测试通过。不能把候选终局或内存转换说成真实新采/完整游戏ready。
 
 本机导入/新旧转换/并行边界/独立Python scope/gateway/AG回归通过。新固定版本Linux待执行；没有生成源许可文件，没有部署/开关/dispatch/线上补写。本次新增私有集成结果.local/inca-next/idle-integration-review.json。
+
+14944cc Linux36763254846成功，日志SHA5e347c10e3de649ef77b7d3fd363134968bd960f589fe483c0a1660d455126e4。之后源前鲜读发现GitHub实际显示名是capture-N，owner仍formal-capture；候选边界误用后者而拒绝。已按实际20个jobs更正匹配并加区别测试，未部署/写库/生成许可；更正后固定版本待Linux。

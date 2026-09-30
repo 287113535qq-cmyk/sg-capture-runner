@@ -48,7 +48,7 @@ export function secondaryParallelBoundary({read,transport,run,commit,workflowPat
    const jobs=await read(`repos/${ref.repository}/actions/runs/${ref.id}/jobs?filter=all&per_page=100`);
    assert(Array.isArray(jobs.jobs)&&Number.isInteger(jobs.total_count)&&jobs.total_count<100&&jobs.jobs.length===jobs.total_count,'PARALLEL_JOBS_TRUNCATED');
    if(ref.id!==parallelPrimary.id)assert(jobs.total_count===0,'OLD_JOB_EXISTS');
-   else {const captures=jobs.jobs.filter(j=>/^formal-capture-(?:[0-9]|1[0-9])$/.test(j.name));
+   else {const captures=jobs.jobs.filter(j=>/^capture-(?:[0-9]|1[0-9])$/.test(j.name));
     assert(captures.length===20&&new Set(captures.map(j=>j.name)).size===20
      &&captures.every(j=>['in_progress','completed'].includes(j.status)&&(j.status!=='completed'||j.conclusion==='success'))
      &&jobs.jobs.some(j=>j.name==='formal-admit'&&j.status==='completed'&&j.conclusion==='success')
