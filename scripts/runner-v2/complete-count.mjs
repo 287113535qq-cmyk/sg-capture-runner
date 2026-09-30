@@ -12,10 +12,16 @@ export async function loadCountPermission({store,plan,pool,commit}){
  const spec=(await store.get('journal',key))?.value,complete=(await store.get('journal',key+':complete'))?.value;
  // The key is an activation identity, distinct from the plan hash to avoid a
  // circular spec -> plan -> spec hash dependency.
- assert(spec&&spec.activation===plan.countAllocation&&spec.planHash===hash(plan)&&spec.commit===commit
+ assert(spec&&spec.activation===plan.countAllocation&&spec.planHash===hash(plan)
   &&spec.gameId===plan.gameId&&plan.buy===0&&plan.phase===1,'COUNT_AUTHORIZATION');
  assert(complete&&complete.schema==='sg-complete-count-activation-v1'&&complete.specHash===hash(spec)
-  &&complete.trialId===plan.trialId&&complete.planHash===hash(plan)&&complete.commit===commit,'COUNT_ACTIVATION_INCOMPLETE');
+  &&complete.trialId===plan.trialId&&complete.planHash===hash(plan)&&complete.commit===spec.commit,'COUNT_ACTIVATION_INCOMPLETE');
+ if(spec.commit!==commit){
+  const revision=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${commit}`))?.value;
+  assert(revision?.schema==='sg-count-runtime-v1'&&revision.commit===commit&&revision.fromCommit===spec.commit
+   &&revision.specHash===hash(spec)&&revision.profileHash===spec.profileHash&&revision.activation===spec.activation
+   &&revision.sourceRequests===0&&revision.completePreserved===100&&revision.remainingComplete===299900,'COUNT_AUTHORIZATION');
+ }
  checkLedger(pool,plan,spec);return spec;
 }
 

@@ -9,7 +9,7 @@ on:
         options: [demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count]
+        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime]
         default: rollover
 permissions:
   contents: read
@@ -50,6 +50,11 @@ jobs:
         env:
           SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
         run: node scripts/runner-v2/formal-count-control.mjs activate
+      - name: Bind corrected runtime after failed admission without changing allocation
+        if: inputs.operation == 'amend-formal-runtime'
+        env:
+          SG_FORMAL_COUNT_PROFILE: formal-count-pearl-20260930.json
+        run: node scripts/runner-v2/formal-count-control.mjs amend
       - name: Retire a reviewed adapter-only shared stop and close its unused allowance
         if: inputs.operation == 'close-reviewed-adapter-stop'
         env:

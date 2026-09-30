@@ -804,6 +804,11 @@ jobs:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
       - name: Admit one fresh formal run after complete resource and ownership checks
+        # The admission module loads the XML receipt validator before main().
+        # Install its locked dependency even though this job sends no SG requests.
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify the independent formal run admission
         run: node scripts/runner-v2/formal-count-control.mjs admit
   formal-capture:
     needs: formal-admit

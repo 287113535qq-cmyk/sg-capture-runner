@@ -5,19 +5,23 @@ import {authenticatedRead} from './github-boundary.mjs';import {maintenanceBound
 import {checkPrimaryLeases} from './lease-boundary.mjs';import {checkDemoSourceEnded} from './demo-source-ended.mjs';
 import {formalCountProfilePath,applyFormalCount} from './formal-count-plan.mjs';
 import {activateFormalCount} from './formal-count-activation.mjs';import {loadCountPermission,checkLedger} from './complete-count.mjs';
+import {amendFormalRuntime} from './formal-count-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const mode=process.argv[2];assert(['activate','admit'].includes(mode),'FORMAL_COUNT_OPERATION');
+const mode=process.argv[2];assert(['activate','admit','amend'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[32795],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
-assert(profile.files&&Object.keys(profile.files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
-for(const [p,h] of Object.entries(profile.files)){
+const revision=mode==='activate'?null:readFile('config/formal-runtime-pearl-20260930.json');
+if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
+const files=revision?.files??profile.files;
+assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
+for(const [p,h] of Object.entries(files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(p)&&!p.includes('..'),'FORMAL_COUNT_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'FORMAL_COUNT_RUNTIME_CHANGED');
 }
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer(),read=authenticatedRead(process.env.GH_TOKEN);
 const idle=maintenanceBoundary({read,store,oldProfile:readFile('config/demo-pilot-beaver-20260930.json'),run,commit,
- workflowPath:mode==='activate'?'.github/workflows/demo-maintenance.yml':'.github/workflows/trial-300k.yml'});
+ workflowPath:mode!=='admit'?'.github/workflows/demo-maintenance.yml':'.github/workflows/trial-300k.yml'});
 try{
  const boundary=async()=>{
   await idle();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
@@ -26,7 +30,11 @@ try{
   const rows=await transport.request('rounds_scan',{trialId:plan.trialId,after:profile.maxSequence});
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
- if(mode==='activate'){
+ if(mode==='amend'){
+  const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
+  const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);
+  console.log(JSON.stringify(await amendFormalRuntime({store,transport,plan,profile,revision,ended,jobs,commit,run,boundary})));
+ }else if(mode==='activate'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.sourceRunKey.split(':')[1]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);
   checkDemoSourceEnded({ended,jobs,profile});assert(ended.conclusion==='success','FORMAL_COUNT_SOURCE_NOT_SUCCESSFUL');
