@@ -81,7 +81,7 @@
     "service/rhino_fields.py": "e83c1dc9b6ee6546bd3791826a380f1047a41d65e51e90bf69cf95d6ce7da61c",
     "collector/rhino-review.cjs": "1f6b7205419c26bc54e7bdbce26f900772cb0e457317c2c85c04ccbad922b8d7",
     "collector/sg.rhino.ts": "6601b2ccd0acd2a04b85f57c4f3e8efe1d0991bc2103721cf6c8782e7db807aa",
-    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
+    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -96,7 +96,7 @@
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
-    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab"
+    "docs/rhino-integration-20261001.md": "9efbc9d922461af29fe7c4a73d5cb5ecc13bcc040174ca41c7852b5ddf34b212"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -105,5 +105,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8a9130b4559f7728855ebf5ea01c1e886e4260ee3febaacb9932a7d621bb2b8e"
+  "ruleHash": "02dcb2ba020f1870df5755d8785acf978419173d41252b85639922461d59c4c6"
 }

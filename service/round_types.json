@@ -1358,6 +1358,34 @@
       "ordinaryBonus": 0,
       "freeBonus": 1,
       "feature": "counter-driven-free-retrigger-v1"
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": "docs/huff-hard-hat-protocol.md",
+      "featureSelector": "huff-hard-hat-retrigger-v2",
+      "featureTypes": {
+        "hardHatRetrigger": 2
+      }
     }
   }
 }

@@ -94,12 +94,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "service/round_fields.py": "20b787a07cc4db6d930707873c84b14040638baaf05a3deb5e77473381ca525e",
     "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
     "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
     "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
     "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d",
-    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
+    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -131,5 +131,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b18dc8b5ad734962c951b447906f23b6906dde830717791f50ce2f9899f5b995"
+  "ruleHash": "7f4b8361ce579bbd5bd14a495a6332e5baf266019050293aeb2bb13a3bfac43c"
 }

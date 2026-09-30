@@ -123,12 +123,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "service/round_fields.py": "20b787a07cc4db6d930707873c84b14040638baaf05a3deb5e77473381ca525e",
     "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
     "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
     "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
     "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
-    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
+    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -170,5 +170,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ca58c08adcbe2de36f7d80ad21617833ccbeff978763b28c0b12f809f93dfd1b"
+  "ruleHash": "b95f813c8541ee8ddc7727f8eecf07c67b7e437f0980a27ac773876067207396"
 }

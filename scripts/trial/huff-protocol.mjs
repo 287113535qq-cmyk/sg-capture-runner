@@ -1,4 +1,5 @@
 // 32714 only. Server independently verifies XML, exact request mode and money.
+import {hasRetrigger,review as reviewRetrigger} from './huff-retrigger-review.mjs';
 import {hasTouchup,reviewTouchup} from './huff-touchup-review.mjs';
 export const HUFF_SOURCE='huffnpuffmoneymansionhighlimit96-round-one-base-v1';
 export const HUFF_EXTENSION=HUFF_SOURCE+'-hard-hat-v1';
@@ -40,6 +41,7 @@ function state(step) {
   return {p,g,featureIds,previous,counters};
 }
 export function huffNextRequest(raw) {
+  if(hasRetrigger(raw)){const r=reviewRetrigger(raw);return r.next?{MSGID:r.next}:null;}
   if(hasTouchup(raw)){const r=reviewTouchup(raw);return r.clientNext?{MSGID:r.clientNext}:null;}
   need(raw.sourceKey===HUFF_SOURCE && raw.protocol==='nextgen' && raw.steps.length<=100,'HUFF_PROFILE_REQUIRED');
   let next='BET',player;
@@ -55,6 +57,11 @@ export function huffNextRequest(raw) {
   return next?{MSGID:next}:null;
 }
 export function huffMapping(raw,baseHash,extensionHash) {
+  if(hasRetrigger(raw)){
+    need(reviewRetrigger(raw).candidateComplete,'HUFF_INCOMPLETE_ROUND');
+    need(/^[a-f0-9]{64}$/.test(extensionHash?.retrigger??''),'HUFF_RETRIGGER_MAPPING_REQUIRED');
+    return {buy:0,bonus:2,typeMappingHash:extensionHash.retrigger};
+  }
   if(hasTouchup(raw)){
     need(reviewTouchup(raw).candidateComplete,'HUFF_INCOMPLETE_ROUND');
     need(/^[a-f0-9]{64}$/.test(extensionHash?.touchup??''),'HUFF_FEATURE_MAPPING_REQUIRED');

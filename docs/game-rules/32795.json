@@ -95,10 +95,11 @@
     "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
     "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
     "collector/sg.pearl-award.ts": "28124369ee49cf0794df8351aa76c83f763ef83bb64d7eb9eb74542a27c4802b",
-    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
+    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/mansion-retrigger-integration-20261001.md",
     "docs/pearl-award-repair-20261001.md",
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
@@ -110,6 +111,7 @@
     "docs/rules.md"
   ],
   "analysisDocumentHashes": {
+    "docs/mansion-retrigger-integration-20261001.md": "e9c2deb1954baae97479f4569f59115cbadd640481473051de046111ba245148",
     "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
@@ -117,7 +119,7 @@
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
-    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab",
+    "docs/rhino-integration-20261001.md": "9efbc9d922461af29fe7c4a73d5cb5ecc13bcc040174ca41c7852b5ddf34b212",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
   "observations": {
@@ -127,5 +129,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "3aae01053a7d6f7acaafc16784241ea8d0587ffa27d0f88c8b2a2235167112be"
+  "ruleHash": "1379a88e1e6cab735c6119009d2216649f9d7fd810d17f247ca8bdd2a766c2e9"
 }

@@ -961,11 +961,14 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "PGS2/GE2 branch remains in repair; counter similarity does not support this branch.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -1154,11 +1157,14 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -1510,9 +1516,12 @@
         "terminal": "client-feature-exits"
       },
       "references": {
-        "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
-        "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
-        "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a"
+        "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
+        "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
+        "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
+        "service/huff_retrigger_review.py": "0fd22030fe8fef554298f0202216211166bc161b28d187ed11435bfa94bfca86",
+        "scripts/trial/huff-retrigger-review.mjs": "24ffb6d2a00929f9c5d953d00e1dd9fd13f4ef06d057da42a56c8c6f92e4b8ad",
+        "collector/sg.huff-retrigger.ts": "f1630e29b7146738968e64f40eb499978d6a1595fb45b3fc5e597a044309cb1c"
       },
       "candidates": [
         {
@@ -1532,7 +1541,7 @@
             "collector/sg.morepuff.ts"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Cash-only exit does not support mixed wheel/free branches."
@@ -1563,7 +1572,7 @@
             "collector/sg.piggies.ts"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "PGS2/GE2 branch remains in repair; counter similarity does not support this branch."
           ],
@@ -1592,7 +1601,7 @@
             "scripts/trial/squid-protocol.mjs"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
           ],
@@ -1622,7 +1631,7 @@
             "collector/sg.jinzita.ts"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
@@ -1653,7 +1662,7 @@
             "collector/sg.beaver.ts"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence."
@@ -1684,7 +1693,7 @@
             "collector/sg.luxor.ts"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence."
@@ -1714,7 +1723,7 @@
             "scripts/trial/quarterback-protocol.mjs"
           ],
           "requiredReview": [
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
           ],
@@ -1785,12 +1794,15 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Cash-only exit does not support mixed wheel/free branches.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -2099,12 +2111,15 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -2975,12 +2990,15 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -3223,12 +3241,15 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false
@@ -3390,11 +3411,14 @@
           "referenceFiles": [
             "service/huff_fields.py",
             "scripts/trial/huff-protocol.mjs",
-            "service/huff_touchup_review.py"
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
           ],
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
-            "HardHat repeated PCFID slots and TouchUp/Mansion transitions must be reviewed separately.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
           "captureAuthorization": false

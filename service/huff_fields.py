@@ -9,12 +9,15 @@ from huff_feature_review import SOURCE, inspect_frame, game_state, feature_ids
 from native_nextgen_fields import NativeNextgenFields
 from round_fields import VERSION, amount, check, derive, params
 from huff_touchup_review import has_touchup, review_touchup
+from huff_retrigger_review import has_retrigger, review as review_retrigger
 
 EXTENSION = SOURCE + '-hard-hat-v1'
 
 
 def feature_type(raw):
     """Add a type only to newly supported Hard Hat chains; keep old hashes."""
+    if has_retrigger(raw):
+        return 'hardHatRetrigger'
     if has_touchup(raw):
         # Sequence validation is performed before settlement. This separate
         # mapping never rewrites historical ordinary/Hard Hat receipts.
@@ -51,6 +54,9 @@ class HuffFields(NativeNextgenFields):
         return state['counters']['NFG'] or 0
 
     def next_request(self, raw):
+        if has_retrigger(raw):
+            result = review_retrigger(raw)
+            return {'MSGID':result['next']} if result['next'] else None
         if has_touchup(raw):
             result = review_touchup(self.plan, raw)
             return {'MSGID': result['clientNext']} if result['clientNext'] else None

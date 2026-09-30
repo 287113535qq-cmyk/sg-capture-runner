@@ -1,0 +1,68 @@
+"""Independent FID1 Hard Hat additive review; source admission remains separate."""
+import re, xml.etree.ElementTree as ET
+from round_fields import check, params, amount, VERSION
+from native_nextgen_fields import NativeNextgenFields
+from huff_feature_review import SOURCE, game_state
+
+PLAN={'gameId':32714,'sourceKey':SOURCE,'betRaw':500,'requestParams':
+      {'AP':'false','BPR':'25','GN':'huffnpuffmoneymansionhighlimit96','RB':'5'}}
+KNOWN={'BRS','BGHHPOS','BMS','HHADD','VA','HHPOS','HHNPOS','CFFGT',
+       'CFTFG','PREVFRAMES','CFCFGG','PCFID','FMS','FEAT','FRAMES','CFNFG','FRAMEWINS'}
+
+def numbers(text,separator=','):
+    check(isinstance(text,str) and re.fullmatch(r'[0-9]+(?:'+re.escape(separator)+r'[0-9]+)*',text), 'HARDHAT_BOARD')
+    return [amount(x) for x in text.split(separator)]
+
+def review(raw):
+    check(raw.get('sourceKey')==SOURCE and raw.get('protocol')=='nextgen'
+          and raw.get('fixtureOnly') is False and raw.get('roundFieldsVersion')==VERSION,'HARDHAT_PROFILE')
+    steps=raw.get('steps');check(isinstance(steps,list) and 0<len(steps)<=100,'HARDHAT_STEPS')
+    prior_total=prior_remaining=player=None;retriggers=0
+    for i,s in enumerate(steps):
+        msg='FREE_GAME' if i else 'BET';check(s.get('msgId')==msg,'HARDHAT_SEQUENCE')
+        q=NativeNextgenFields(PLAN).request_params(s.get('requestPayload'),msg)
+        check(player is None or player==q['PID'],'HARDHAT_SESSION');player=q['PID']
+        p=params(s['responsePayload']);g=game_state(p.get('GSD',''))
+        text=s.get('responseXml');check(isinstance(text,str) and len(text)<262144
+            and not re.search(r'<!DOCTYPE|<!ENTITY',text,re.I),'HARDHAT_XML')
+        root=ET.fromstring(text)
+        check(root.tag.upper()=='GDMRESPONSE' and root.findtext('SUCCESS','').lower()=='true'
+              and root.findtext('PAYLOAD')==s['responsePayload'],'HARDHAT_XML')
+        check(amount(s.get('elapsedMs'))<=300000,'HARDHAT_TIMING')
+        check(p.get('MSGID')==msg and p.get('FID') in ('1','1|')
+              and p.get('IFG')==str(int(i>0)) and p.get('RID')==str(int(i>0)),'HARDHAT_FEATURE')
+        check(not any(k in p for k in ('CFG','ABPM','GCT','SB','FRTR','FRTW','BUY_IN'))
+              and not any(k.startswith(('FS_','NFR_','CFR_','CFP_','FR_')) for k in p)
+              and p.get('FRBAL','0')=='0','HARDHAT_UNREVIEWED')
+        check(set(g)<=KNOWN,'HARDHAT_UNKNOWN_FIELD')
+        board=numbers(g.get('VA'));check(len(board)==15 and max(board)<=15,'HARDHAT_BOARD')
+        check(not(board.count(13)>=3 and board.count(14)>=6),'HARDHAT_COMBINED_EXIT')
+        if 'FRAMEWINS' in g:
+            check(len(numbers(g['FRAMEWINS'],'|'))==len(numbers(g.get('FRAMES'),'|'))==15,'HARDHAT_FRAME_EXIT')
+        total,remaining,progress=[amount(p.get(k)) for k in ('TFG','NFG','CFGG')]
+        check(0<total<100 and total==remaining+progress and progress==i,'HARDHAT_COUNTER')
+        if not i:
+            check(total==6 and remaining==6 and not g.get('PCFID') and not g.get('FEAT'),'HARDHAT_TRIGGER')
+        else:
+            check(prior_remaining>0,'HARDHAT_AFTER_END')
+            added=amount(g.get('CFFGT'))
+            check(total==prior_total+added and remaining==prior_remaining-1+added,'HARDHAT_COUNTER')
+            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|1|','1|1') if added else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
+            check([amount(g.get(k)) for k in ('CFTFG','CFNFG','CFCFGG')]==[total,remaining,progress],'HARDHAT_COUNTER')
+            retriggers+=int(added>0)
+        prior_total,prior_remaining=total,remaining
+        check('responseBalance' not in s or amount(s['responseBalance'])==amount(p['B']),'HARDHAT_BALANCE')
+        check(amount(p['B'])==amount(p['AB']) and amount(raw['startBalanceRaw'])-amount(p['B'])+amount(p['TW'])==500,'HARDHAT_MONEY')
+    return {'next':'FREE_GAME' if remaining else None,'candidateComplete':remaining==0,
+            'retriggers':retriggers,'total':total,'sourceRequests':0,'captureAuthorized':False,
+            'naturalTerminalObserved':False}
+
+EXTENSION = SOURCE + '-hard-hat-retrigger-v2'
+def has_retrigger(raw):
+    if raw.get('sourceKey') != SOURCE:
+        return False
+    for s in raw.get('steps', []):
+        g = game_state(params(s['responsePayload']).get('GSD', ''))
+        if g.get('PCFID', '').rstrip('|') == '1|1' or g.get('FEAT') == 'HARDHAT' and g.get('CFFGT', '0') not in ('0', ''):
+            return True
+    return False

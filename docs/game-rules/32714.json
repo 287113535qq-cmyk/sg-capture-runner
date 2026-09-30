@@ -31,7 +31,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。",
     "complete": "无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。",
-    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；混合、重触发、负FRAMEWINS及组合后续仍拒绝。TouchUp自然终局尚未观察。FID清零不等于新触发。",
+    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，重复PCFID限1|1并匹配CFFGT与总数/进度/剩余；原129全文不变，真实3帧未结束、终局仅合成，新重入尚未准入。TouchUp自然终局尚未观察。FID清零不等于新触发。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -41,7 +41,11 @@
       "scripts/trial/huff-protocol.mjs",
       "service/huff_touchup_review.py",
       "scripts/trial/huff-touchup-review.mjs",
-      "collector/sg.huff-touchup.ts"
+      "collector/sg.huff-touchup.ts",
+      "service/huff_retrigger_review.py",
+      "scripts/trial/huff-retrigger-review.mjs",
+      "collector/huff-retrigger-review.cjs",
+      "collector/sg.huff-retrigger.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -131,12 +135,38 @@
       "featureTypes": {
         "moneyMansionTouchUp": 4
       }
+    },
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "huff-hard-hat-retrigger-v2",
+      "featureTypes": {
+        "hardHatRetrigger": 2
+      }
     }
   },
   "mappingHashes": {
     "huffnpuffmoneymansionhighlimit96-round-one-base-v1": "2f3815fb664fb7ea891c29078843333a229879a74674349e8f9191e2aa7df7b6",
     "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-v1": "c13d5523174399353602fdcc794c9ac770485a03486b2b56232cf330fc5315e8",
-    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-touchup-cash-v1": "b0ea06891367c14a66ed24f63de3a5f1ce75f118df622e6f095a3bc24c4aec67"
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-touchup-cash-v1": "b0ea06891367c14a66ed24f63de3a5f1ce75f118df622e6f095a3bc24c4aec67",
+    "huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2": "dcc3c9a4012699fb8617231a1dcd25b3b4158d46a8303cd20a87fa690696937f"
   },
   "configuredNaturalBonusCodes": [
     1,
@@ -156,15 +186,19 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "5dc61ef4da390273c548c1ae0cd1ea6490653f3de5382c711460889efea89875",
+    "service/round_fields.py": "20b787a07cc4db6d930707873c84b14040638baaf05a3deb5e77473381ca525e",
     "scripts/runner-v2/record_fields.py": "43f05dec6190470c86f4224c06919c3bf84caa1a91802e0d0631394d8adebe8b",
-    "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
+    "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
-    "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
+    "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/game_rule_catalog.py": "b60934ad8250807532eab5fcaf4465e29378101e91fcf1a5ef4971ef487b9785"
+    "service/huff_retrigger_review.py": "0fd22030fe8fef554298f0202216211166bc161b28d187ed11435bfa94bfca86",
+    "scripts/trial/huff-retrigger-review.mjs": "24ffb6d2a00929f9c5d953d00e1dd9fd13f4ef06d057da42a56c8c6f92e4b8ad",
+    "collector/huff-retrigger-review.cjs": "3aa693e07ea5bc33cf914b33240e1422543fa0b52969e0e8c6f8906d2a27c377",
+    "collector/sg.huff-retrigger.ts": "f1630e29b7146738968e64f40eb499978d6a1595fb45b3fc5e597a044309cb1c",
+    "service/game_rule_catalog.py": "b38c770450fec38654e5a7c3f0753e23f655bfbe2805876ecdf0949e75fc0d67"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -189,6 +223,7 @@
     "docs/mansion-native-resolution-20260930.md",
     "docs/mansion-next-review-20260930-result.json",
     "docs/mansion-next-review-20260930.md",
+    "docs/mansion-retrigger-integration-20261001.md",
     "docs/mansion-touchup-integration-20260930-result.json",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-mixed-repair-20260930.md",
@@ -223,6 +258,7 @@
     "docs/mansion-native-resolution-20260930.md": "ef8e014dab9edb61f1e6f9d4b6174be6cc493b0ebf60668fe612d498ebbb5cee",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
+    "docs/mansion-retrigger-integration-20261001.md": "e9c2deb1954baae97479f4569f59115cbadd640481473051de046111ba245148",
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
@@ -232,7 +268,7 @@
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/rhino-integration-20261001.md": "dfcde7e5b288351ca0f053abcc041bb06c70d586e0d324edc1be7cf1280e4cab",
+    "docs/rhino-integration-20261001.md": "9efbc9d922461af29fe7c4a73d5cb5ecc13bcc040174ca41c7852b5ddf34b212",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
@@ -245,5 +281,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d1f784916d238f97f1565e0f9f9642a17953822beba65c1db1e067ad55ab211a"
+  "ruleHash": "9a8acde080a1173a7b7823f976b874e8c309ab869fbe04559b23e47118bcb91b"
 }
