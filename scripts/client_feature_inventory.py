@@ -54,8 +54,11 @@ def inventory(plans, root, completed, reviewed):
         if slug.endswith(('95', '96')):
             names.add(slug[:-2])
         clients = []
-        for name in sorted(names):
-            path = root / name / 'js' / 'app.js'
+        # Cached clients use app.js, older game.js, and fixed bundle layouts.
+        # Inspect only these fixed entry points, never recursively scan assets.
+        paths = [root / name / entry for name in sorted(names)
+                 for entry in ('js/app.js', 'js/game.js', 'game.bundle.js', 'game_min.js')]
+        for path in paths:
             if not path.is_file():
                 continue
             # A cache junction or symlink cannot escape the explicitly selected root.
@@ -64,7 +67,8 @@ def inventory(plans, root, completed, reviewed):
                 raise ValueError('CLIENT_PATH_ESCAPES_ROOT')
             if real not in cache:
                 cache[real] = fingerprint(real.read_bytes())
-            clients.append(dict(relativePath=path.relative_to(root).as_posix(), **cache[real]))
+            clients.append(dict(relativePath=path.relative_to(root).as_posix(),
+                entryPoint=path.name, **cache[real]))
         rows.append(dict(row, status='lexical-candidate' if clients else 'unmapped', clients=clients,
             identityVerified=False, semanticTraits={}, requiredReview=[
                 'Verify client identity independently of its directory name.',

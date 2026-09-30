@@ -9,6 +9,25 @@ s.loader.exec_module(m)
 
 
 class InventoryTests(unittest.TestCase):
+    def test_game_entry_and_multiple_entries_remain_candidates_without_automatic_identity(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for entry in ('app.js', 'game.js'):
+                p = root/'both'/'js';p.mkdir(parents=True, exist_ok=True)
+                (p/entry).write_text('"BET" "FREE_GAME" "NFG"', encoding='utf-8')
+            p = root/'old'/'js';p.mkdir(parents=True)
+            (p/'game.js').write_text('"BET" "FREE_GAME" "NFG"', encoding='utf-8')
+            p = root/'bundle';p.mkdir()
+            (p/'game.bundle.js').write_text('"Logic" "EndGame"', encoding='utf-8')
+            result = m.inventory({'1': {'runtimeSlug': 'old95'}, '2': {'runtimeSlug': 'both'},
+                                  '3': {'runtimeSlug': 'bundle'}}, root, set(), {1})
+            self.assertEqual(result['filesRead'], 4)
+            self.assertEqual(result['games'][0]['clients'][0]['entryPoint'], 'game.js')
+            self.assertEqual(len(result['games'][1]['clients']), 2)
+            self.assertEqual(result['games'][1]['references'], [])
+            self.assertEqual(result['games'][2]['clients'][0]['entryPoint'], 'game.bundle.js')
+            self.assertTrue(all(not r['identityVerified'] and not r['ready'] for r in result['games']))
+
     def test_lexical_overlap_is_not_semantic_proof_and_completed_clients_are_not_read(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)

@@ -51,14 +51,25 @@ export class GithubCampaign {
     }
     return next;
   }
-  async finalizeStoppedRun(runKey){
+  async finalizeStoppedRun(runKey,{waitMs=0,sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
     assert(/^capture-run:[0-9]+:[0-9]+$/.test(runKey),'RUN_BINDING_REQUIRED');
+    assert(Number.isSafeInteger(waitMs)&&waitMs>=0&&waitMs<=300000,'FINALIZE_WAIT_SCOPE');
+    const deadline=this.now()+waitMs;let result;
+    // Run after all source jobs end. Wait for existing leases to expire without
+    // stealing them, rewriting batches, or allocating a different game.
+    for(let attempt=0;attempt<=30;attempt++){
     const c=(await this.store.get('state','campaign')).value;
     const bound=(await this.store.get('state',runKey))?.value;
     // Finalizer never allocates another game or extends a short-run grant.
     if(c.validationLimit || c.protocolValidation || !bound || c.activeGame!==bound.gameId
-      || c.games.find(g=>g.game_id===bound.gameId)?.status!=='parking-protocol')return;
-    return this.select({expectedGame:bound.gameId});
+      || c.games.find(g=>g.game_id===bound.gameId)?.status!=='parking-protocol')return result;
+    result=await this.select({expectedGame:bound.gameId});
+    if(result?.action!=='wait'||this.now()>=deadline||attempt===30)return result;
+    // Successful parking also returns wait; check it before sleeping.
+    const after=(await this.store.get('state','campaign')).value;
+    if(after.activeGame!==bound.gameId||after.games.find(g=>g.game_id===bound.gameId)?.status!=='parking-protocol')return result;
+    await sleep(Math.max(0,Math.min(10000,deadline-this.now())));
+    }
   }
   async select({expectedGame}={}){
     await this.control.allowed({newRound:true});

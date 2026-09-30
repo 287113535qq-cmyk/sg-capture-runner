@@ -25,6 +25,28 @@ function fixture(){
   return {c,store,rows,holds,plans,docs,calls};
 }
 
+test('ended-run finalizer waits for lease expiry then parks without selecting another ready game',async()=>{
+ const f=fixture(),trial=f.plans[32723].trialId;let clock=1000,sleeps=0;f.c.now=()=>clock;
+ await f.store.create('state','campaign',{enabled:true,activeGame:32723,games:[
+  {game_id:32723,status:'parking-protocol'},{game_id:32726,status:'ready',baseline:299998}]});
+ await f.store.create('state','capture-run:111:1',{gameId:32723});
+ await f.store.create('state','pool:'+trial,{workers:{0:{leaseUntil:15000,activeBatch:null}},planHash:'a'});
+ await f.c.finalizeStoppedRun('capture-run:111:1',{waitMs:300000,sleep:async ms=>{sleeps++;clock+=ms;}});
+ const c=(await f.store.get('state','campaign')).value;
+ assert.equal(sleeps,2);assert.equal(c.activeGame,null);assert.equal(c.games[0].status,'parked-protocol');
+ assert.equal(c.games[1].status,'ready');assert(!(await f.store.get('state','pool:'+f.plans[32726].trialId)));
+});
+
+test('ended-run finalizer waits only within its bound and never steals a live lease',async()=>{
+ const f=fixture(),trial=f.plans[32723].trialId;let clock=1000;f.c.now=()=>clock;
+ await f.store.create('state','campaign',{enabled:true,activeGame:32723,games:[{game_id:32723,status:'parking-protocol'}]});
+ await f.store.create('state','capture-run:111:1',{gameId:32723});
+ await f.store.create('state','pool:'+trial,{workers:{0:{leaseUntil:999999,activeBatch:null}},planHash:'a'});
+ const old=JSON.stringify([...f.docs]);
+ assert.equal((await f.c.finalizeStoppedRun('capture-run:111:1',{waitMs:30000,sleep:async ms=>{clock+=ms;}})).action,'wait');
+ assert.equal(clock,31000);assert.equal(JSON.stringify([...f.docs]),old);
+});
+
 test('a group only selects its owned ready games, preserving parked and completed targets',async()=>{
   const f=fixture();await f.store.create('state','campaign',{enabled:true,activeGame:null,games:[
     {game_id:32726,status:'parked-protocol',baseline:299998},{game_id:32723,status:'ready',baseline:299998}]});

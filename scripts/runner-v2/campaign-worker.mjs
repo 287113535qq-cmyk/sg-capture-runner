@@ -43,7 +43,7 @@ async function capture(plan){
 }
 try{
   if(['status','finalize'].includes(process.argv[2])){
-    if(process.argv[2]==='finalize')await stages.run('finalize',()=>campaign.finalizeStoppedRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`));
+    if(process.argv[2]==='finalize')await stages.run('finalize',()=>campaign.finalizeStoppedRun(`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`,{waitMs:300000}));
     const status=await campaign.status();console.log(JSON.stringify(status));
     if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`campaign_status=${status.status}\n`);
   }else{

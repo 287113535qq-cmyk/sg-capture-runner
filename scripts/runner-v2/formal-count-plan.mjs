@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {pyramidsCountPlan} from './pyramids-count-profile.mjs';
 import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';
+import {sessionLayoutPlan} from './session-layout-profile.mjs';
 
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
+ if(profile?.schema==='sg-session-layout-profile-v1')return {...plans,[32795]:sessionLayoutPlan(base,profile)};
  if(profile?.schema==='sg-formal-repair-pyramids-v1')return {...plans,[32721]:pyramidsRepairPlan(base,profile)};
  if(profile?.schema==='sg-formal-count-pyramids-v1')return {...plans,[32721]:pyramidsCountPlan(base,profile)};
  if(profile?.schema==='sg-formal-count-rhino-v1'){
@@ -43,6 +45,8 @@ export function applyFormalCount(plans,profile){
 }
 
 export function formalCountProfilePath(env=process.env){
+ if(['formal-sessions-pearl-two-20261001.json','formal-sessions-pearl-four-20261001.json'].includes(env.SG_FORMAL_COUNT_PROFILE))
+  return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  assert(['formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'].includes(env.SG_FORMAL_COUNT_PROFILE),'FORMAL_COUNT_PROFILE_PATH');
  return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
 }

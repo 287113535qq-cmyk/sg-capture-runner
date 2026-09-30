@@ -8,12 +8,16 @@ import {activateFormalCount} from './formal-count-activation.mjs';import {loadCo
 import {amendFormalRuntime} from './formal-count-runtime.mjs';
 import {refreshCountRuntime} from './count-runtime-refresh.mjs';
 import {activateFormalRepair} from './formal-repair-activation.mjs';
+import {activateSessionLayout} from './session-layout-activation.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh'].includes(mode),'FORMAL_COUNT_OPERATION');
+const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const isRhino=profile.schema==='sg-formal-count-rhino-v1';
+const isSessions=profile.schema==='sg-session-layout-profile-v1';
+assert(!isSessions||['sessions','admit'].includes(mode),'SESSION_CONTROL_OPERATION');
+assert(mode!=='sessions'||isSessions,'SESSION_CONTROL_PROFILE');
 assert(!isRhino||['activate','admit'].includes(mode),'RHINO_FORMAL_OPERATION');
 const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
 assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
@@ -22,7 +26,7 @@ const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
 assert(!runtimeProfile||runtimeProfile==='count-runtime-pearl-observation-20261001.json','COUNT_RUNTIME_PROFILE_PATH');
 assert(!runtimeProfile||(['refresh','admit'].includes(mode)&&profile.schema==='sg-formal-repair-profile-v2'),'COUNT_RUNTIME_REFRESH_SCOPE');
 assert(mode!=='refresh'||runtimeProfile,'COUNT_RUNTIME_PROFILE_REQUIRED');
-const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino?null:readFile('config/formal-runtime-pearl-20260930.json');
+const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 const files=revision?.files??profile.files;
 assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
@@ -42,7 +46,12 @@ try{
   const rows=await transport.request('rounds_scan',{trialId:plan.trialId,after:profile.maxSequence});
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
- if(mode==='repair'){
+ if(mode==='sessions'){
+  const parent=readFile('config/'+(profile.previousLanesPerHost===1?'formal-repair-pearl-awards-20261001.json':'formal-sessions-pearl-two-20261001.json'));
+  const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.sourceRun.split(':')[0];
+  const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
+  console.log(JSON.stringify(await activateSessionLayout({store,plans:basePlans,profile,parent,ended,jobs,commit,run,boundary})));
+ }else if(mode==='repair'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.retirementRun.split(':')[0]);
   assert(ended.status==='completed'&&ended.conclusion==='success'&&ended.head_sha===profile.retirementCommit
    &&`${ended.id}:${ended.run_attempt}`===profile.retirementRun&&ended.path==='.github/workflows/demo-maintenance.yml','FORMAL_REPAIR_RETIREMENT_RUN');
