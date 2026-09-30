@@ -1,0 +1,179 @@
+{
+  "schema": "sg-throughput-ag-plan-v1",
+  "ag": {
+    "repositoryHead": "5480d91395be82ee3d4b1d2b4ab138a5078d9195",
+    "auditedWorkingFiles": [
+      {
+        "path": "src/ag.round.ts",
+        "sha256": "6553614498067cd06e3571c012deb592872b612e329772dae19540fc830f0ada"
+      },
+      {
+        "path": "src/ag.scheduler.ts",
+        "sha256": "c0db014d6da6a06f8b813f5ef0d2c66be8d4a8728514921fa3debfa2dc1d848c"
+      },
+      {
+        "path": "src/ag.client.ts",
+        "sha256": "417fd811e289a4abe95cac000b8800f6508c2060246d1fa92d477bdebb010b98"
+      },
+      {
+        "path": "scripts/rolling-worker.ts",
+        "sha256": "9c1ac5e9baf11240220d71c9bc3f60f0758e67dff9d5ec0c458f9456701c4527"
+      },
+      {
+        "path": "scripts/rolling-controller-lib.ts",
+        "sha256": "6e6f9c472b3d69aff4a2f0e7fb507f5957037e3dbf82c66fc56021c08df19897"
+      },
+      {
+        "path": "docs/next-train-fix.md",
+        "sha256": "113563d3d7327d5a893320e2cc23638e220b25d017cae1300ffb3e191f91824f"
+      },
+      {
+        "path": "docs/triple-supreme-pick-fix.md",
+        "sha256": "2bb53a327dfff930b52c70e54d30cc3ded8d473f22a47a2babd0659de26920aa"
+      },
+      {
+        "path": "docs/blaze-protocol-diagnosis.md",
+        "sha256": "0a016a70ddaff3ea75c511c5c9e9f039771e933070eed64c8f0f43aaaf0e079e"
+      }
+    ],
+    "rollingLanes": 20,
+    "configuredWorkersPerLane": 8,
+    "observedActiveSessions": null,
+    "autoRepairEngineFound": false,
+    "collectionExecuted": false
+  },
+  "pearl": {
+    "run": 36753473985,
+    "at": 1790803338,
+    "mongoComplete": 152016,
+    "confirmed": 151916,
+    "priorRun": 36744028113,
+    "priorSourceWallShare": 0.8314727401295061,
+    "priorGatewayWallShare": 0.12587904286944693,
+    "sample": {
+      "schema": "sg-offline-source-timing-v1",
+      "records": 100,
+      "frames": 200,
+      "framesPerRound": 2.0,
+      "sourceTotalMs": 135582,
+      "sourceMeanMs": 677.91,
+      "sourceMsPerRound": 1355.82,
+      "p50Ms": 55,
+      "p95Ms": 4492,
+      "p99Ms": 4692,
+      "maxMs": 8081,
+      "thresholds": [
+        {
+          "atLeastMs": 1000,
+          "frames": 31,
+          "timeShare": 0.9157262763493679
+        },
+        {
+          "atLeastMs": 4000,
+          "frames": 16,
+          "timeShare": 0.5867519287221018
+        },
+        {
+          "atLeastMs": 8000,
+          "frames": 2,
+          "timeShare": 0.11907185319585195
+        }
+      ],
+      "sourceRequests": 0,
+      "captureAuthorization": false,
+      "limitation": "Sample only; elapsed time cannot distinguish network from remote processing."
+    }
+  },
+  "pyramids": {
+    "run": 36778619850,
+    "progress": {
+      "at": 1790803705,
+      "gameId": 32721,
+      "mongo": 1658,
+      "newSinceFormalActivation": 296,
+      "settledComplete": 1462,
+      "activeWorkers": 0,
+      "activeBatches": 4,
+      "holds": [
+        false,
+        false
+      ],
+      "enabled": false,
+      "failure": "PROTOCOL_VALIDATION_FAILED",
+      "gameStatus": "parked-protocol",
+      "activeGame": null,
+      "hasPendingReview": true,
+      "pendingCount": 0,
+      "waitingWriteCount": 0
+    },
+    "failureReview": {
+      "at": 1790803457,
+      "abandoned": [
+        {
+          "reason": "PYRAMIDS_FREE_UNREVIEWED_GSD",
+          "disposition": "interrupted-abandoned-without-replay",
+          "frames": [
+            {
+              "message": "BET",
+              "counters": {
+                "FID": "1|",
+                "NFG": "10",
+                "TFG": "10",
+                "CFGG": "0",
+                "IFG": "0"
+              },
+              "gsdKeys": [
+                "BGCL",
+                "CL",
+                "BGRS",
+                "VA",
+                "IIFS"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "workflowOutcome": {
+      "status": "completed",
+      "conclusion": "success",
+      "gameComplete": false
+    },
+    "sourceRunReview": {
+      "run": 36778619850,
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-09-30T21:18:54Z",
+      "captureStartedAt": "2026-09-30T21:20:29Z",
+      "lastJobCompletedAt": "2026-09-30T21:24:56Z",
+      "logSha256": "a54e31f1578f9a7737136cc438b572bab76010cf33d5a0b5603fc723a2cf1929",
+      "gameComplete": false
+    }
+  },
+  "reuseIndex": {
+    "reviewedGames": 12,
+    "unclassified": 166,
+    "automaticallyClassifiesUnknown": false
+  },
+  "implementation": {
+    "offlineTimingSummaryTests": 2,
+    "fetchStagePrototypeTests": 3,
+    "liveTimingHookDeployed": false,
+    "multiSessionDeployed": false,
+    "fullStageAutomationDeployed": false,
+    "measuredSpeedup": null
+  },
+  "sourceRequestsForAnalysis": 0,
+  "mongoWritesForAnalysis": 0,
+  "estimates": {
+    "gatewayHalfSpeedup": 1.0671669789457874,
+    "gatewayRemovedSpeedup": 1.1440064350849861,
+    "millisecondsPerRoundFor300kIn30minAt20Sessions": 120
+  },
+  "nextActions": [
+    "Add live stage metrics at a natural runtime boundary",
+    "Investigate request tails before transport/concurrency changes",
+    "Review Pyramids free-trigger BGCL/CL differences without resuming the abandoned attempt",
+    "Prepare next candidate independently of repairs"
+  ]
+}
