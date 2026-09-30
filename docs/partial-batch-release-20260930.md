@@ -5,3 +5,5 @@
 原因在BatchController.release：完整数据已flush且checkpoint等于journaled后，部分批次路径只调用pool.release。修正先核对无pending、pendingOriginal、bootstrapAwaiting、写入已确认，再按原owner/epoch和缓存版本CAS将批次leaseUntil设0，最后释放worker。批次CAS冲突或写入结果未知时不能释放worker；其他worker在这两个动作之间仍受原worker所有权约束。记录、checkpoint、额度和epoch不变，正式整批完成路径不变。
 
 本机14项batch-controller检查通过，包括真实capture循环完成10局后的即时安全再领取、CAS冲突保留所有权、三种未完成证据拒绝释放，以及原有未知响应、AG停池和正常免费链保护。该修正不改变本轮已应用关闭profile；发布与Linux结果另记。尚无使用此修正的真实源运行，因此只确认可消除所复现的残留批次租约条件，不能声称全程采集已实测提速9分钟。
+
+发布runtime `a86861b`，Linux36710973261成功，11:50:16Z→11:51:54Z，共98秒。全套协议、Runner、Python、collector及178规则卡检查通过；本次检查未派发新源。日志SHA `2049c5a74fe358874243cca9d539646ef131015cd72b8226ec7227f12747cb7d`。

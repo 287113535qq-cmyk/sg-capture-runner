@@ -11,3 +11,7 @@
 本机承担离线适配、99条真实历史三套解析器回放、受影响检查、配置准备、真实33条事后全文核对及私有增量备份。独立检查并行，GitHub仍负责SG和在线业务。本轮19:35左右本机约4GB可用内存、CPU快照4%，离线重任务当时已结束；这不是全程CPU利用率，也不能据此宣称CPU加速倍数。
 
 本轮保存响应合计56：34BET、7FREE_GAME、8INIT、7REELSTRIP。postpilot增量18文件609922字节，两端逐文件readback通过，SHA `9ebd841a5abd2f3f93fe73834cd2026dfbc506d2325c5ebc931d552109c635ad`。结案后最新全租约审查15pool/175相关batch，future worker/batch均0、两hold false，空间129.51GiB。
+
+后续效率修正见[部分批次租约释放](partial-batch-release-20260930.md)，已通过Linux36710973261；尚无使用该修正的真实源运行。主线候选筛选只读检查未完成游戏，55个不超过5MiB的历史文件每个最多101行；32795元数据含1条10步Logic→EndGame免费链，但尚未全文审查、适配或授额，不能称ready。
+
+最终增量20文件426079字节已在本机和服务器逐文件readback，SHA `ee3899d1394b4f09f399acd811f87252ed3a923236647489176b21fe97bf9ffc`；引用原33/129完整样本，未重复上传。最终GitHub鲜读1790769165仅两精确旧queued、其余活动0，两SG_TRIAL_ENABLED均false；sg-30继续暂停。

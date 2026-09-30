@@ -112,10 +112,10 @@
   ],
   "analysisDocumentHashes": {
     "docs/continuous-processing.md": "031ba70f322e789ddeeca5baf1217ff583098d2f51f6bc89802313b79588d97a",
-    "docs/partial-batch-release-20260930.md": "5bbbab650c8215928f2f68242133f2ee8b9f500bf55e03232864a8cde9b280ef",
+    "docs/partial-batch-release-20260930.md": "f63526bd2a6d74aca4ffda48ae96ff6e8e260b980ed5e0de676fc2336c6cf1c4",
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
-    "docs/piggies-pilot-result-20260930-result.json": "985fb331b0fc3fe6a5b7f466b033ab63651d90d1ffdf6538771477ab577296bf",
-    "docs/piggies-pilot-result-20260930.md": "56412487889b8c97aa1cc530181c16393ae40c9b553e85f8ad9c855c74dde421",
+    "docs/piggies-pilot-result-20260930-result.json": "5678b55244bac2e45f56e6647e43c7c91d1d937ca2cd5fc649c82c3e63c7a7f6",
+    "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73"
   },
   "observations": {
@@ -125,5 +125,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c605b38e29fd31df100168844a6046fac08505d862f9cbdd7f5ae2bcca16bb4b"
+  "ruleHash": "ffed5e2c944a6718a759aa2d0692234aba826a9cb395adeea05b9fc43ad10442"
 }

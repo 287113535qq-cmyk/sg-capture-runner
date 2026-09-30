@@ -23,8 +23,12 @@
     "service/game_rule_catalog.py": "344520ae163e142cce6947598793f532bdbd6f18bd0ab9b0c1780d7dfa7402e5"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/piggies-pilot-result-20260930.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "dd831990fc6b8d591135e49aa5b867954f81c6228323493f177b72fb834962d0"
+  "ruleHash": "956600437c9447eaf9d5de9e9b83bb94816b14a3ce801e70875586481b7ba266"
 }

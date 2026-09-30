@@ -21,5 +21,15 @@
     "FREE_GAME": 7,
     "INIT": 8,
     "REELSTRIP": 7
-  }
+  },
+  "finalArchive": {
+    "files": 20,
+    "bytes": 426079,
+    "sha256": "ee3899d1394b4f09f399acd811f87252ed3a923236647489176b21fe97bf9ffc",
+    "bothVerified": true
+  },
+  "leaseReleasePreflight": "36710973261",
+  "leaseReleaseLiveCaptureVerified": false,
+  "finalGithubReadAt": 1790769165,
+  "sourceEnabled": false
 }
