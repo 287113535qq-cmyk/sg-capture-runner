@@ -8,6 +8,8 @@ import {connectGateway} from './transport.mjs';import {ResourceGate} from './res
 import {authenticatedRead} from './github-boundary.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {importParkedDemo} from './parked-import.mjs';import {decodeParkedArchive} from './parked-decoder.mjs';
 import {nextDemoGame} from './demo-next-game.mjs';import {applyDemoPilot} from './demo-pilot-plan.mjs';
+import {checkPyramidsAmendment,rebindPyramidsUnstarted} from './pyramids-zero-source.mjs';
+import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {closeInterruptedPilot} from './demo-interrupted-close.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY===secondaryRepository,'SECONDARY_GITHUB_REQUIRED');
 assert(process.env.SG_DEMO_PILOT_PROFILE==='demo-pilot-pyramids-20261001.json','SECONDARY_NEXT_PROFILE_PATH');
@@ -15,7 +17,9 @@ const mode=process.argv[2];assert(['activate','admit','close-interrupted'].inclu
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load('config/demo-pilot-pyramids-20261001.json'),plans=load('config/round-one-plans.json');
 checkSecondaryNextProfile(profile,plans[32721]);
 assert(Object.keys(profile.files??{}).length>400,'SECONDARY_NEXT_FILES_REQUIRED');
-for(const [path,expected] of Object.entries(profile.files)){
+const amendmentPath='config/demo-runtime-pyramids-20261001.json',amendment=mode!=='activate'&&fs.existsSync(amendmentPath)?load(amendmentPath):null;
+if(amendment){checkPyramidsAmendment(amendment,profile);assert(Object.keys(profile.files).every(p=>p in amendment.files),'PYRAMIDS_AMENDMENT_FILES');}
+for(const [path,expected] of Object.entries(amendment?.files??profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..'),'SECONDARY_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===expected,'SECONDARY_RUNTIME_CHANGED');
 }
@@ -53,21 +57,28 @@ try{
   console.log(JSON.stringify(await closeInterruptedPilot({store,transport,parser,basePlan,plan,profile:close,boundary:closeBoundary,commit,run})));
  }else{
   await boundary();const plan=applyDemoPilot(plans,profile)[32721],key=`next-demo-game:${plan.trialId}:${plan.demoGeneration}`;
+  const originalTop=(await store.get('journal',key+':complete'))?.value;
+  assert(originalTop?.run==='36772084996:1'&&originalTop.commit==='f0a531912a963acb6ad72cf695d4a60e605c73fa','PYRAMIDS_ACTIVATION_CHANGED');
+  const maintenance=await read(`repos/${secondaryRepository}/actions/runs/36772084996`);
+  assert(maintenance.run_attempt===1&&maintenance.head_sha===originalTop.commit&&maintenance.status==='completed'&&maintenance.conclusion==='success'
+   &&maintenance.path==='.github/workflows/demo-maintenance.yml'&&maintenance.repository?.full_name===secondaryRepository,'SECONDARY_MAINTENANCE_NOT_SUCCESS');
+  if(amendment){
+   const current=(await store.get('state','campaign'))?.value;
+   if(!current?.protocolValidation?.runtimeRebind)await rebindPyramidsUnstarted({store,transport,parser,basePlan:plans[32721],plan,original:profile,profile:amendment,boundary,commit,run});
+   else assert(current.protocolValidation.runtimeRebind.profileHash===hash(amendment),'PYRAMIDS_AMENDMENT_CHANGED');
+  }
   const completed=(await store.get('journal',key+':complete'))?.value,c=(await store.get('state','campaign'))?.value,
    pool=(await store.get('state','pool:'+plan.trialId))?.value,spec=(await store.get('journal',`demo-generation:${plan.trialId}:${plan.demoGeneration}`))?.value,
    specDone=(await store.get('journal',`demo-generation:${plan.trialId}:${plan.demoGeneration}:complete`))?.value;
-  assert(completed?.schema==='sg-next-demo-game-complete-v1'&&completed.profileHash===hash(profile)&&completed.commit===commit
+  assert(completed?.schema==='sg-next-demo-game-complete-v1'&&completed.profileHash===hash(profile)&&completed.commit===spec?.commit
    &&completed.generation===plan.demoGeneration&&completed.newBetAllowance===100&&completed.sourceRequests===0
    &&completed.completePreserved===1262&&completed.abandonedAttempts===4&&completed.group==='secondary'&&completed.workerOffset===20
    &&c?.group==='secondary'&&c.activeGame===32721&&c.enabled&&c.protocolValidation?.commit===commit
    &&c.protocolValidation.generation===plan.demoGeneration&&c.protocolValidation.runKey===null
    &&pool?.enabled&&!pool.failure&&pool.planHash===hash(plan)&&pool.demoGeneration?.specHash===hash(spec)
    &&pool.nextBatchId===spec?.firstBatchId&&Object.keys(pool.workers).length===0
-   &&spec.commit===commit&&spec.run===completed.run&&spec.group==='secondary'&&spec.workerOffset===20&&spec.newBetAllowance===100
-   &&spec.activationStage?.profileHash===hash(profile)&&specDone?.specHash===hash(spec)&&specDone.commit===commit,'SECONDARY_NEXT_ADMISSION_INCOMPLETE');
-  const maintenance=await read(`repos/${secondaryRepository}/actions/runs/${completed.run.split(':')[0]}`);
-  assert(maintenance.run_attempt===1&&maintenance.head_sha===commit&&maintenance.status==='completed'&&maintenance.conclusion==='success'
-   &&maintenance.path==='.github/workflows/demo-maintenance.yml'&&maintenance.repository?.full_name===secondaryRepository,'SECONDARY_MAINTENANCE_NOT_SUCCESS');
+   &&(await demoRuntimeCommit({store,plan,spec,campaign:c}))===commit&&spec.run===completed.run&&spec.group==='secondary'&&spec.workerOffset===20&&spec.newBetAllowance===100
+   &&spec.activationStage?.profileHash===hash(profile)&&specDone?.specHash===hash(spec)&&specDone.commit===spec.commit,'SECONDARY_NEXT_ADMISSION_INCOMPLETE');
   await boundary();await store.update('state','campaign',v=>{assert(hash(v)===hash(c),'SECONDARY_CAMPAIGN_CHANGED');return{...v,protocolValidation:{...v.protocolValidation,runKey:'capture-run:'+run}};});
   assert((await store.get('state','campaign'))?.value.protocolValidation?.runKey==='capture-run:'+run,'SECONDARY_ADMISSION_READBACK');
   console.log(JSON.stringify({schema:'sg-secondary-next-admission-v1',gameId:32721,newBetAllowance:100,sourceRequests:0,run}));

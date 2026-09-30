@@ -39,9 +39,9 @@ def validate_pool_plan(plan):
             repair_scopes = {'demo-repair-mansion-20261001.json': (32714, 129, 'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2'),
                 'demo-repair-piggies-20261001.json': (32636, 33, 'richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1'),
                 'demo-repair-morepuff-20261001.json': (32718, 91, 'huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1')}
-            require(filename in repair_scopes or filename in ('demo-pilot-inca-20261001.json','demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
+            require(filename in repair_scopes or filename in ('demo-pilot-pyramids-20261001.json','demo-pilot-inca-20261001.json','demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
-            next_scope = {'demo-pilot-rhino-20261001.json': (32799, 32795), 'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
+            next_scope = {'demo-pilot-pyramids-20261001.json': (32721, 32719), 'demo-pilot-rhino-20261001.json': (32799, 32795), 'demo-pilot-pearl-20260930.json': (32795, 32636), 'demo-pilot-piggies-20260930.json': (32636, 32714), 'demo-pilot-mansion-20260930.json': (32714, 32718), 'demo-pilot-morepuff-20260930.json': (32718, 32720), 'demo-pilot-luxor-20260930.json': (32835, 32820), 'demo-pilot-jinzita-20260930.json': (32720, 32835)}.get(filename)
             if filename in repair_scopes:
                 game, preserved, extension = repair_scopes[filename]
                 candidate = profile.get('repairedCandidate', {})
@@ -66,6 +66,19 @@ def validate_pool_plan(plan):
                     or (isinstance(profile.get('sourceClosureHash'), str) and re.fullmatch(r'[a-f0-9]{64}', profile['sourceClosureHash'])),
                     'REPAIR_SOURCE_BOUNDARY_REQUIRED')
                 next_scope = (game, profile['fromGameId'])
+            if filename == 'demo-pilot-pyramids-20261001.json':
+                legacy=profile.get('legacyImport',{})
+                fixed=json.loads((Path(__file__).resolve().parents[1]/'config/parked-pyramids-20261001.json').read_text(encoding='utf-8'))
+                require(digest(profile)=='93d4cf52cdec03b69e48f078f2ce0fd014165bd0791efa620ae46ec0a8cea339'
+                    and profile.get('group')=='secondary' and type(profile.get('workerOffset')) is int and profile['workerOffset']==20
+                    and profile.get('completePreserved')==1262 and profile.get('abandonedAttempts')==4
+                    and profile.get('sourceClosureHash')=='6c4638ed879867f611a3aeffb6e97a40ba2b8cdeaa90d211f669711549c4425c'
+                    and profile.get('sourceRunKey')=='capture-run:36765916285:1'
+                    and digest(fixed)=='c29872c827b7cd192d7424bf46b17108a173ee3175c9aa291299010e0cf7ba28'
+                    and legacy.get('fixedLegacyHash')==digest(fixed) and fixed.get('planHash')==digest(expected)
+                    and all(legacy.get(k)==fixed[k] for k in ('archiveHash','bytes','complete','mongoCount','pending'))
+                    and not any(profile.get(k) for k in ('sourceFormal','repairedCandidate','emptyCandidate')),
+                    'SECONDARY_PYRAMIDS_PROFILE_SCOPE')
             idle = filename == 'demo-pilot-inca-20261001.json'
             if idle:
                 legacy=profile.get('legacyImport',{})
