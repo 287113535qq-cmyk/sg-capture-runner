@@ -4,7 +4,7 @@ on:
     inputs:
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game]
+        options: [rollover, retire-finished, residual, next-game, close-pilot]
         default: rollover
 permissions:
   contents: read
@@ -35,6 +35,9 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Close unused finite pilot allowance without source requests
+        if: inputs.operation == 'close-pilot'
+        run: node scripts/runner-v2/demo-pilot-close-control.mjs
       - name: Fence the unstarted run and activate the bounded fresh generation
         if: inputs.operation == 'rollover'
         run: node scripts/runner-v2/demo-maintenance-control.mjs

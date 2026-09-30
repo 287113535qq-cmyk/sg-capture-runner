@@ -1,3 +1,5 @@
+import {checkDemoSourceEnded} from './demo-source-ended.mjs';
+import {pilotCloseScene,readClosedPilot} from './demo-pilot-close.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
 import {authenticatedRead} from './github-boundary.mjs';import {maintenanceBoundary} from './demo-run-fence.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
@@ -21,7 +23,11 @@ try{
   assert(Date.now()>=profile.createdAt&&Date.now()<profile.expiresAt,'NEXT_GAME_PROFILE_STALE');await idle();
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.sourceRunKey.split(':')[1]);
   const jobs=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+ended.id+'/jobs?filter=all&per_page=100');
-  assert('capture-run:'+ended.id+':'+ended.run_attempt===profile.sourceRunKey&&ended.head_sha===profile.sourceCommit&&ended.status==='completed'&&ended.conclusion==='success'&&ended.path==='.github/workflows/trial-300k.yml'&&ended.repository.full_name==='zyzuoyang/sg-capture-runner'&&jobs.total_count===jobs.jobs.length&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed'),'NEXT_GAME_SOURCE_NOT_FINISHED');
+  checkDemoSourceEnded({ended,jobs,profile});
+  if(profile.sourceClosureHash){
+   const plan={...plans[profile.fromGameId],demoGeneration:profile.sourceGeneration},s=await pilotCloseScene(store,plan);
+   await readClosedPilot({store,plan,profile,scene:{campaign:s.campaign,fromPool:s.pool,sourceBatches:s.batches}});
+  }
   await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');await checkPrimaryLeases({store,plans});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r.value.active===false),'GLOBAL_HOLD');
  };

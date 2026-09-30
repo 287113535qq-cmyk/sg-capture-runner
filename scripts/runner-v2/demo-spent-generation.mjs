@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {readClosedPilot} from './demo-pilot-close.mjs';
 // Read-only proof that the previous finite generation is finished and spent.
 // A completed v1 pilot is not a new source allowance for the previous game.
 export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,profile,scene,now=Date.now}){
@@ -11,7 +12,7 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
   &&parent.planHash===hash(fromPlan)&&parent.trialId===fromPlan.trialId&&parent.generation===fromPlan.demoGeneration,'NEXT_GAME_SOURCE_PROOF');
  const residual=parent.schema==='sg-demo-generation-residual-v1';
  assert(residual||parent.schema==='sg-demo-generation-v1','NEXT_GAME_SOURCE_PROOF');
- let budgets;
+ let budgets,closure;
  if(residual){
   assert(Array.isArray(parent.budgets)&&parent.budgets.length===20&&parent.budgets.every(n=>Number.isInteger(n)&&n>=0&&n<=5),'NEXT_GAME_SOURCE_PROOF');budgets=parent.budgets;
  }else{
@@ -19,6 +20,9 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
   if(parent.activationStage){const a=parent.activationStage,k=`next-demo-game:${parent.trialId}:${parent.generation}`,top=await get(k+':complete');
    assert(a.key===k&&/^[a-f0-9]{64}$/.test(a.profileHash)&&top?.schema==='sg-next-demo-game-complete-v1'&&top.profileHash===a.profileHash&&top.generation===parent.generation&&top.commit===parent.commit&&top.run===parent.run&&top.newBetAllowance===100&&top.sourceRequests===0,'NEXT_GAME_SOURCE_ACTIVATION');
   }
+ }
+ if(profile.sourceClosureHash||scene.fromPool.demoPilotClosed){
+  assert(!residual,'NEXT_GAME_CLOSURE_SCHEMA');closure=await readClosedPilot({store,plan:fromPlan,profile,scene});budgets=closure.usedByWorker;
  }
  assert(Number.isSafeInteger(parent.firstBatchId)&&parent.firstBatchId>=1&&parent.firstBatchId<=scene.fromPool.nextBatchId,'NEXT_GAME_SOURCE_BATCH_BOUND');
  assert(scene.sourceBatches.length===scene.fromPool.nextBatchId-1
@@ -40,5 +44,5 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'NEXT_GAME_SOURCE_RECORD_INVALID');verified++;
   }
  }
- return {schema:parent.schema,spent:budgets.reduce((a,b)=>a+b,0),verified,newBetAllowance:0};
+ return {schema:parent.schema,spent:budgets.reduce((a,b)=>a+b,0),verified,newBetAllowance:0,...(closure?{foregone:closure.foregone,closureHash:hash(closure)}:{})};
 }

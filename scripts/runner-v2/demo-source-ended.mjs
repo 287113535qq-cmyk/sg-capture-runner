@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+export function checkDemoSourceEnded({ended,jobs,profile,closing=false}){
+ assert('capture-run:'+ended.id+':'+ended.run_attempt===profile.sourceRunKey&&ended.run_attempt===1
+  &&ended.head_sha===profile.sourceCommit&&ended.status==='completed'
+  &&ended.path==='.github/workflows/trial-300k.yml'&&ended.repository?.full_name==='zyzuoyang/sg-capture-runner'
+  &&jobs.total_count===jobs.jobs.length&&jobs.total_count>0&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed'),'NEXT_GAME_SOURCE_NOT_FINISHED');
+ if(closing){
+  assert(ended.conclusion===profile.sourceConclusion&&['success','failure'].includes(ended.conclusion),'PILOT_CLOSE_SOURCE_CONCLUSION');
+  const workers=jobs.jobs.filter(j=>/^fresh-capture-\d+$/.test(j.name));
+  assert(workers.length===20&&new Set(workers.map(j=>j.name)).size===20,'PILOT_CLOSE_SOURCE_JOBS');
+  for(let w=0;w<20;w++){const job=workers.find(j=>j.name===`fresh-capture-${w}`);
+   assert(job&&job.conclusion===(profile.usedByWorker[w]===5?'success':'failure'),'PILOT_CLOSE_SOURCE_JOBS');}
+ }else assert(ended.conclusion==='success'||profile.sourceClosureHash&&ended.conclusion==='failure','NEXT_GAME_SOURCE_NOT_FINISHED');
+}

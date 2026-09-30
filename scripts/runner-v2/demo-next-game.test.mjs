@@ -2,6 +2,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {nextDemoGame,nextDemoScene} from './demo-next-game.mjs';import {DemoFresh} from './demo-fresh.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';import {receiptKey} from './durable-queue.mjs';
+import {closeDemoPilot,pilotCloseScene} from './demo-pilot-close.mjs';
 function retirementFixture(){
  const plan={trialId:'synthetic-demo',gameId:32820,phase:1,buy:0},pool={enabled:false,nextBatchId:2,workers:{7:{leaseUntil:0}}},pending={sequence:3,attempt:'unfinished',awaiting:null,raw:{steps:[{msgId:'BET'}]}};
  pool.planHash=hash(plan);
@@ -82,4 +83,26 @@ test('imported pool requires same profile runtime run and final import receipt b
   if(cause==='commit')receipt.commit='f'.repeat(40);if(cause==='run')receipt.run='999:1';if(cause==='profile')receipt.profileHash='0'.repeat(64);if(cause==='spec')receipt.specHash='0'.repeat(64);if(cause==='pool')delete pool.legacyImport;
   const before=hash([...f.docs]);await assert.rejects(nextDemoGame(f.args),/NEXT_GAME_IMPORT_INCOMPLETE/);assert.equal(hash([...f.docs]),before);
  }
+});
+
+test('closed95 pilot can enter actual nextGame retirement rollover and fresh admission without borrowing5',async()=>{
+ const f=await fixture(true),fromBase=f.args.plans[32820],fromPlan={...fromBase,demoGeneration:f.args.profile.sourceGeneration};
+ const parent=f.docs.get('journal/'+f.parentKey).value,source=f.docs.get('state/pool:'+fromPlan.trialId).value,c=f.docs.get('state/campaign').value;
+ source.nextBatchId=20;source.workers={};f.docs.delete('state/batch:'+fromPlan.trialId+':20');
+ for(let n=1901;n<=1905;n++)f.docs.delete('journal/'+receiptKey(fromPlan.trialId,n));
+ for(let w=0;w<19;w++){
+  const b=f.docs.get('state/batch:'+fromPlan.trialId+':'+(w+1)).value;source.workers[w]={sessionHash:b.sessionHash,leaseUntil:0};
+  for(let n=b.start;n<=b.journaled;n++){const r=f.docs.get('journal/'+receiptKey(fromPlan.trialId,n)).value;r._id=hash('source'+n);f.mongo.set(r._id,structuredClone(r));}
+ }
+ const top=`next-demo-game:${fromPlan.trialId}:${fromPlan.demoGeneration}`;parent.activationStage={key:top,profileHash:'e'.repeat(64)};
+ source.demoGeneration.specHash=hash(parent);f.docs.get('journal/'+f.parentKey+':complete').value.specHash=hash(parent);
+ f.docs.set('journal/'+top+':complete',{value:{schema:'sg-next-demo-game-complete-v1',profileHash:'e'.repeat(64),commit:parent.commit,run:parent.run,generation:fromPlan.demoGeneration,newBetAllowance:100,sourceRequests:0}});
+ Object.assign(c.protocolValidation,{commit:parent.commit,generation:fromPlan.demoGeneration,demoFresh:hash(parent)});
+ f.args.store.cas=async(col,k,doc,value)=>{const before=f.get(col,k);if(hash(before.value)!==hash(doc.value))return null;f.docs.set(col+'/'+k,{value:structuredClone(value)});return f.get(col,k);};
+ const p={schema:'sg-demo-pilot-close-v1',planHash:hash(fromPlan),sourceSpecHash:hash(parent),sourceProfileHash:'e'.repeat(64),sourceRunKey:'capture-run:10:1',sourceCommit:parent.commit,usedByWorker:[...Array(19).fill(5),0],completePreserved:95,newBetAllowance:0,createdAt:0,expiresAt:7200000,sceneHash:hash(await pilotCloseScene(f.args.store,fromPlan))};
+ const closed=await closeDemoPilot({...f.args,basePlan:fromBase,plan:fromPlan,profile:p,run:'20:1'});
+ Object.assign(f.args.profile,{sourceSpecHash:hash(parent),sourceCommit:parent.commit,sourceProfileHash:p.sourceProfileHash,sourceClosureHash:hash(closed)});
+ f.args.profile.sceneHash=hash(await nextDemoScene(f.args.store,f.args.plans[32835],fromPlan));
+ const r=await nextDemoGame(f.args);assert.equal(r.newBetAllowance,100);assert.equal(r.sourceRequests,0);assert.equal((await f.admit()).limit,5);
+ assert.equal(closed.used,95);assert.equal(closed.foregone,5);assert.equal(f.get('state','pool:'+fromPlan.trialId).value.enabled,false);
 });
