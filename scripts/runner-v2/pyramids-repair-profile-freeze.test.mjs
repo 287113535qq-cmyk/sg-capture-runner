@@ -13,3 +13,10 @@ test('applied Pyramids retirement and repaired count profiles never reset histor
  assert.equal(repaired.workerOffset,20);assert.equal(repaired.maxSequence,600000);
  assert.equal(repaired.oldProfileHash,hash(read('formal-count-pyramids-20261001.json')));
 });
+
+test('applied zero-source runtime amendment preserves the original activation and remaining target',()=>{
+ const read=name=>JSON.parse(fs.readFileSync('config/'+name,'utf8'));
+ const revised=read('count-runtime-pyramids-session-20261001.json');
+ assert.equal(hash(revised),'1c91dba12a0cc6eafeb20fa9530189cccb8781f6b4cacfd8cf3ee0d2d41561a4');
+ assert.equal(revised.activation,read('formal-repair-pyramids-coins-20261001.json').activation);
+});

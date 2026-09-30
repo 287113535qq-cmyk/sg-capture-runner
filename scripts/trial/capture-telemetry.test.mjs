@@ -1,5 +1,20 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {createCaptureTelemetry,businessOutcome,completedResponseTiming} from './capture-telemetry.mjs';
+import http from 'node:http';import {once} from 'node:events';
+
+test('real loopback transport phases persist only after the complete body and never expose endpoints',async()=>{
+ const server=http.createServer((req,res)=>res.end('private-fixture'));
+ server.listen(0,'127.0.0.1');await once(server,'listening');
+ const t=createCaptureTelemetry({evidence:{completedThisRun:0,sourceRequests:1}});
+ try{
+  const response=await t.fetch(fetch,'BET','http://127.0.0.1:'+server.address().port);
+  assert.equal(completedResponseTiming(response),null);assert.equal(await response.text(),'private-fixture');
+  const value=completedResponseTiming(response);assert.equal(value.connection.correlated,true);assert.equal(value.connection.socketObserved,true);
+  assert(value.connection.tcpConnectMs>=0);assert.equal(value.connection.tlsHandshakeMs,null);
+  assert(!JSON.stringify(value).includes('127.0.0.1'));assert(!JSON.stringify(value).includes('private-fixture'));
+  value.connection.tcpConnectMs=99999;assert.notEqual(completedResponseTiming(response).connection.tcpConnectMs,99999);
+ }finally{t.stop();server.closeAllConnections();await new Promise(r=>server.close(r));}
+});
 test('timing keeps one fetch, exact arguments, cookies and Response semantics',async()=>{
  let now=0,calls=0;const rows=[],options={body:'PRIVATE',signal:new AbortController().signal};
  const t=createCaptureTelemetry({gameId:32795,shardId:0,evidence:{completedThisRun:0,sourceRequests:1},now:()=>now,emit:x=>rows.push(x)});

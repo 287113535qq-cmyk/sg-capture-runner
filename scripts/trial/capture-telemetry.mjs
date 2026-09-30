@@ -1,3 +1,4 @@
+import {connectionObserver} from './connection-observer.mjs';
 // Observation only: never retries, changes a request, or decides capture eligibility.
 const bounds=[1,5,10,25,50,100,250,500,1000,2000,4000,8000,16000,30000,60000];
 const messages=new Set(['INIT','REELSTRIP','BET','FREE_GAME','FEATURE_START','FEATURE_PICK','FEATURE_END','Init','Logic','EndGame']);
@@ -7,7 +8,8 @@ const responseTimings=new WeakMap();
 // No additional RPC, credentials, request data, or admission decisions.
 export function completedResponseTiming(response){
  const value=responseTimings.get(response);
- return value?.complete?{schema:'sg-source-timing-v1',headersMs:value.headersMs,bodyMs:value.bodyMs,totalMs:value.totalMs}:null;
+ return value?.complete?{schema:'sg-source-timing-v1',headersMs:value.headersMs,bodyMs:value.bodyMs,totalMs:value.totalMs,
+  ...(value.connection?.correlated?{connection:structuredClone(value.connection)}:{})}:null;
 }
 const histogram=()=>({count:0,totalMs:0,maxMs:0,buckets:Array(bounds.length+1).fill(0)});
 function add(map,key,ms){
@@ -30,7 +32,7 @@ export function businessOutcome(result,error){
 }
 export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=()=>performance.now(),
  resource=()=>({cpu:process.cpuUsage(),rssBytes:process.memoryUsage().rss}),metrics=()=>({}),intervalMs=60000}={}){
- const start=now();let windowStart=start,lastRounds=0,timer=null,closed=false;
+ const start=now();let windowStart=start,lastRounds=0,timer=null,closed=false,connections=null;
  const cumulative={},window={};let errors=0;
  const safe=fn=>{try{return fn();}catch{return undefined;}};
  const observe=(key,ms)=>safe(()=>{add(cumulative,key,ms);add(window,key,ms);});
@@ -53,17 +55,23 @@ export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=
  return {
   start(){if(!timer&&!closed){timer=setInterval(()=>report('interval'),intervalMs);timer.unref?.();}},
   progress(){if(evidence.completedThisRun-lastRounds>=100)report('rounds');},
-  stop(){if(timer)clearInterval(timer);timer=null;if(!closed){closed=true;report('final');}},
+  stop(){if(timer)clearInterval(timer);timer=null;if(!closed){closed=true;report('final');safe(()=>connections?.close());}},
   snapshot,observe,
   sync(key,fn){return (...args)=>{const at=now();try{return fn(...args);}finally{observe(key==='normalize'?'normalize':'local',now()-at);}};},
   async rpc(call,op,data){const at=now();try{return await call(op,data);}finally{observe('rpc.'+(operations.has(op)?op:'other'),now()-at);}},
   async fetch(call,message,...args){
-   const name=messages.has(message)?message:'other',at=now();let response;
-   try{response=await call(...args);}catch(error){errors++;observe('source.'+name+'.headersError',now()-at);throw error;}
+   const name=messages.has(message)?message:'other',at=now();let response,trace;
+   // Observer construction may fail independently. Never retry a source call.
+   if(!closed&&!connections)connections=safe(()=>connectionObserver({now}));
+   try{if(connections){trace=await connections.trace(call,...args);response=trace.response;}else response=await call(...args);}
+   catch(error){errors++;observe('source.'+name+'.headersError',now()-at);throw error;}
    const headersMs=rounded(now()-at);
    observe('source.'+name+'.headers',headersMs);
    if(!response.ok){errors++;observe('source.'+name+'.httpRejected',now()-at);}
-   const timing={headersMs,complete:false};
+   const connection=safe(()=>trace?.summary());
+   if(connection?.correlated)for(const key of ['beforeRequestMs','beforeHeadersWriteMs','afterHeadersWriteMs','lookupWaitMs','tcpConnectMs','tlsHandshakeMs'])
+    if(connection[key]!==null)observe('connection.'+key,connection[key]);
+   const timing={headersMs,complete:false,connection};
    const wrapped=new Proxy(response,{get(target,key){
     if(key==='text')return async()=>{const bodyAt=now();try{const text=await target.text();
      timing.bodyMs=rounded(now()-bodyAt);timing.totalMs=rounded(now()-at);timing.complete=true;return text;}

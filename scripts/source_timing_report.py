@@ -10,6 +10,8 @@ from pathlib import Path
 MESSAGES = {'INIT', 'REELSTRIP', 'BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK',
             'FEATURE_END', 'Init', 'Logic', 'EndGame'}
 BOUNDS = (1, 5, 10, 25, 50, 100, 250, 500, 1000, 2000, 4000, 8000, 16000, 30000, 60000)
+CONNECTION_PHASES = ('beforeRequestMs', 'beforeHeadersWriteMs', 'afterHeadersWriteMs',
+                     'lookupWaitMs', 'tcpConnectMs', 'tlsHandshakeMs')
 
 
 def number(value):
@@ -19,7 +21,8 @@ def number(value):
 def summarize(records, start_ms, end_ms):
     if not number(start_ms) or not number(end_ms) or end_ms <= start_ms:
         raise ValueError('TIMING_WINDOW')
-    hist, shards = {}, collections.Counter()
+    hist, shards, by_shard = {}, collections.Counter(), {}
+    connection_frames = missing_connection = invalid_connection = reused_frames = 0
     frames = missing = invalid = long_frames = 0
     total = long_total = 0.0
     for record in records:
@@ -54,20 +57,52 @@ def summarize(records, start_ms, end_ms):
             if t['totalMs'] >= 1000:
                 long_frames += 1
                 long_total += t['totalMs']
-            for k in ('headersMs', 'bodyMs', 'totalMs'):
-                h = hist.setdefault(name + '.' + k, {'count': 0, 'totalMs': 0, 'maxMs': 0,
-                    'buckets': [0] * (len(BOUNDS) + 1)})
-                h['count'] += 1
-                h['totalMs'] += t[k]
-                h['maxMs'] = max(h['maxMs'], t[k])
-                h['buckets'][next((i for i, b in enumerate(BOUNDS) if t[k] <= b), len(BOUNDS))] += 1
+            measurements = {k: t[k] for k in ('headersMs', 'bodyMs', 'totalMs')}
+            c = t.get('connection')
+            if c is None:
+                missing_connection += 1
+            elif (not isinstance(c, dict) or c.get('schema') != 'sg-connection-observation-v1'
+                  or c.get('correlated') is not True or type(c.get('requestsObserved')) is not int or c['requestsObserved'] != 1
+                  or not isinstance(c.get('socketObserved'), bool)
+                  or c.get('reusedSocket') is not None and not isinstance(c['reusedSocket'], bool)
+                  or any(k not in c or c[k] is not None and not number(c[k]) for k in CONNECTION_PHASES)
+                  or c.get('reusedSocket') is True and any(c.get(k) is not None for k in ('lookupWaitMs', 'tcpConnectMs', 'tlsHandshakeMs'))):
+                invalid_connection += 1
+            else:
+                connection_frames += 1
+                reused_frames += c.get('reusedSocket') is True
+                measurements.update({'connection.' + k: c[k] for k in CONNECTION_PHASES if c[k] is not None})
+            for k, value in measurements.items():
+                for output in (hist, by_shard.setdefault(shard, {})):
+                    h = output.setdefault(name + '.' + k, {'count': 0, 'totalMs': 0, 'maxMs': 0,
+                        'buckets': [0] * (len(BOUNDS) + 1)})
+                    h['count'] += 1
+                    h['totalMs'] += value
+                    h['maxMs'] = max(h['maxMs'], value)
+                    h['buckets'][next((i for i, b in enumerate(BOUNDS) if value <= b), len(BOUNDS))] += 1
+    for output in (hist, *by_shard.values()):
+        for h in output.values():
+            h['meanMs'] = h['totalMs'] / h['count']
+            for label, fraction in (('p50UpperMs', .5), ('p95UpperMs', .95), ('p99UpperMs', .99)):
+                cutoff = math.ceil(h['count'] * fraction)
+                cumulative = 0
+                for i, count in enumerate(h['buckets']):
+                    cumulative += count
+                    if cumulative >= cutoff:
+                        h[label] = BOUNDS[i] if i < len(BOUNDS) else None
+                        break
     return dict(schema='sg-persisted-source-window-v1', startMs=start_ms, endMs=end_ms,
         responseFrames=frames, missingTimingFrames=missing, invalidFrames=invalid,
         framesByShard=dict(sorted(shards.items())), histograms=hist, bucketUpperBoundsMs=[*BOUNDS, None],
+        histogramsByShard=by_shard, connectionFrames=connection_frames,
+        missingConnectionFrames=missing_connection, invalidConnectionFrames=invalid_connection,
+        reusedConnectionFrames=reused_frames, connectionPhasesNestedWithinHeaders=True,
         longFrames=long_frames, longSourceTimeFraction=long_total / total if total else None,
         wholeWorkerTimeCovered=False, captureAuthorization=False,
         limitations='Completed exported records only; excludes in-flight/abandoned frames and local/RPC time. '
-                     'Headers include connection/network/server wait, not an attribution to any one cause.')
+                     'Headers include connection/network/server wait; connection phases overlap and must not be summed. '
+                     'lookupWait includes client setup through lookup completion; afterHeadersWrite includes upload/network/server wait. '
+                     'Quantiles are histogram upper bounds, not exact percentiles.')
 
 
 if __name__ == '__main__':

@@ -8,6 +8,28 @@ s.loader.exec_module(m)
 
 
 class TimingReportTests(unittest.TestCase):
+    def test_connection_phases_stay_separate_and_unknown_or_invalid_is_not_zero(self):
+        connection = dict(schema='sg-connection-observation-v1', requestsObserved=1, correlated=True,
+            socketObserved=True, reusedSocket=False, beforeRequestMs=1, beforeHeadersWriteMs=25,
+            afterHeadersWriteMs=1000, lookupWaitMs=2, tcpConnectMs=5, tlsHandshakeMs=4)
+        step = dict(ts='2026-01-01T00:00:00Z', msgId='BET', sourceTiming=dict(
+            schema='sg-source-timing-v1', headersMs=1100, bodyMs=2, totalMs=1103, connection=connection))
+        rows = [{'shardId': 20, 'raw': {'steps': [step]}}]
+        v = m.summarize(rows, 1767225600000, 1767226200000)
+        self.assertEqual(v['connectionFrames'], 1)
+        self.assertEqual(v['histogramsByShard'][20]['BET.connection.tcpConnectMs']['meanMs'], 5)
+        self.assertEqual(v['histograms']['BET.totalMs']['p95UpperMs'], 2000)
+        connection['reusedSocket'] = True  # Cannot charge the old handshake again.
+        v = m.summarize(rows, 1767225600000, 1767226200000)
+        self.assertEqual(v['invalidConnectionFrames'], 1)
+        self.assertEqual(v['invalidFrames'], 0)
+        self.assertNotIn('BET.connection.tcpConnectMs', v['histograms'])
+        for key in ('lookupWaitMs', 'tcpConnectMs', 'tlsHandshakeMs'):
+            connection[key] = None
+        v = m.summarize(rows, 1767225600000, 1767226200000)
+        self.assertEqual(v['reusedConnectionFrames'], 1)
+        self.assertNotIn('BET.connection.tcpConnectMs', v['histograms'])
+
     def test_boundaries_old_frames_and_no_sensitive_output(self):
         rows = [{'shardId': 0, 'raw': {'steps': [dict(ts='2026-01-01T00:00:00Z', msgId='PRIVATE',
             requestPayload='SECRET', sourceTiming=dict(schema='sg-source-timing-v1', headersMs=1100, bodyMs=2, totalMs=1103))]}}]

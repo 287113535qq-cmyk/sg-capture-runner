@@ -273,7 +273,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "c8553958e52340dd3f693c8eab97ad5a12187393688f6325ed53a8fbc1513f80",
+    "docs/rules.md": "e075890d45caa25b130f7b6c3d7167027b24790efe1ce21bb7747a14035d5051",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -285,5 +285,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6195c93ee694019a927f73f9f27aead64e94c2ec42d71b9291b2c8adea5574a8"
+  "ruleHash": "55549e4866ad74c4bba7285e2508098d75db039356abd92641c6e161cf619a5d"
 }
