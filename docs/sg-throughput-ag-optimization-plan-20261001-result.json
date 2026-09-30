@@ -205,7 +205,22 @@
         false,
         false
       ]
-    }
+    },
+    "latestLiveSnapshot": {
+      "at": 1790805640,
+      "mongo": 166876,
+      "newMongo": 500,
+      "confirmed": 166876,
+      "activeWorkers": 20,
+      "activeBatches": 20,
+      "enabled": true,
+      "failure": null,
+      "holds": [
+        false,
+        false
+      ]
+    },
+    "liveLogAccess": "Live console in Actions; REST job-log download unavailable while job runs. Online speedup not claimed."
   },
   "sourceRequestsForAnalysis": 0,
   "mongoWritesForAnalysis": 0,
