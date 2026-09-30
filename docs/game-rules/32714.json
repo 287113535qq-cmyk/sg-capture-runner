@@ -213,7 +213,7 @@
     "docs/huff-hard-hat-protocol.md": "945815517f89bc4abadc32d97dfab58f82b309d89fdd6ca5066114b64285b68b",
     "docs/huff-natural-free-stop-20260928-result.json": "7426e09239e8365da21768b709e522ed5c714be5ce47c93ccd8810b46070e24e",
     "docs/huff-natural-free-stop-20260928.md": "11b154d3f8505ae6ab2185d9518616c4021fb05c50fc81368e5f45361df36730",
-    "docs/mansion-native-resolution-20260930-result.json": "d3ab87ffc846826ebe1d818058b63b439668408c7520f7090292df83bdb80487",
+    "docs/mansion-native-resolution-20260930-result.json": "6861cdf38749370cd23554a2b98deaef5230d44f811383a3e2ccb36002a5b321",
     "docs/mansion-native-resolution-20260930.md": "5f8bd1557b81158084160fd3098379f0dc596a097d0ec61b4e375e1d9f6b1985",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
@@ -233,5 +233,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "edf2a71238f30b8c35d82f0af9f713a63b4f2bcd3ee2a0dd3174c0b8e68d838a"
+  "ruleHash": "576538b72e0e79bdfcb53548c7669932caacb11300ca084fa58162b720fc3fed"
 }
