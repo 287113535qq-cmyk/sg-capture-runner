@@ -3,7 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
 import {authenticatedRead} from './github-boundary.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {secondaryParallelBoundary,secondaryRepository} from './secondary-parallel-boundary.mjs';
-import {pyramidsCountPlan} from './pyramids-count-profile.mjs';import {activatePyramidsCount} from './pyramids-count-activation.mjs';
+import {pyramidsCountPlan,reviewPyramidsPilotJobs} from './pyramids-count-profile.mjs';import {activatePyramidsCount} from './pyramids-count-activation.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY===secondaryRepository,'SECONDARY_GITHUB_REQUIRED');
 assert(process.env.SG_FORMAL_COUNT_PROFILE==='formal-count-pyramids-20261001.json','PYRAMIDS_COUNT_PROFILE_PATH');
@@ -21,8 +21,7 @@ try{
   const root=`repos/${secondaryRepository}/actions/runs/36774221164`,source=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
   assert(source.id===36774221164&&source.run_attempt===1&&source.repository?.full_name===secondaryRepository&&source.event==='workflow_dispatch'
    &&source.path==='.github/workflows/trial-300k.yml'&&source.head_sha===profile.sourceCommit&&source.status==='completed'&&source.conclusion==='success','PYRAMIDS_COUNT_SOURCE_RUN');
-  assert(jobs.total_count===jobs.jobs.length&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
-   &&jobs.jobs.filter(j=>/^capture-(?:[0-9]|1[0-9])$/.test(j.name)&&j.conclusion==='success').length===20,'PYRAMIDS_COUNT_SOURCE_JOBS');
+  reviewPyramidsPilotJobs(jobs);
   console.log(JSON.stringify(await activatePyramidsCount({store,transport,parser,plans,profile,boundary,commit,run})));
  }else{
   await boundary();const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;

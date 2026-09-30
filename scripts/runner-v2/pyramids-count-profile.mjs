@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
+export function reviewPyramidsPilotJobs(jobs){
+ assert(jobs.total_count===jobs.jobs.length&&jobs.total_count<100
+  &&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion)), 'PYRAMIDS_COUNT_SOURCE_JOBS');
+ const capture=jobs.jobs.filter(j=>/^fresh-capture-(?:[0-9]|1[0-9])$/.test(j.name));
+ assert(capture.length===20&&new Set(capture.map(j=>j.name)).size===20
+  &&capture.every(j=>j.conclusion==='success')
+  &&jobs.jobs.some(j=>j.name==='secondary-admit'&&j.conclusion==='success'), 'PYRAMIDS_COUNT_SOURCE_JOBS');
+}
+
 // Independent complete-count scope; this does not renew the spent 100 BET pilot.
 export function pyramidsCountPlan(base, p){
  assert(p?.schema==='sg-formal-count-pyramids-v1'&&p.gameId===32721&&p.group==='secondary'&&p.workerOffset===20
