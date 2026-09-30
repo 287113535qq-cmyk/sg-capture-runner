@@ -105,6 +105,7 @@
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
     "docs/pearl-integration-20260930.md",
+    "docs/pearl-network-close-20261001.md",
     "docs/pearl-pilot-result-20260930.md",
     "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
@@ -118,6 +119,7 @@
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
+    "docs/pearl-network-close-20261001.md": "283976d8c1079541ad72117587c9f0803cbda860c382b9b9880d06f99889dcc1",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
@@ -131,5 +133,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a73df4ccc16e52987e8ec47128b153f75673a9d2f802aabf47b79bf7e715cdf8"
+  "ruleHash": "54deaa7dc24dd3de2b78336a0e02aa640371857ec752468fa0d3f0d393a1e4b0"
 }

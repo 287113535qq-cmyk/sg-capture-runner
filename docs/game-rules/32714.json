@@ -227,6 +227,7 @@
     "docs/mansion-touchup-integration-20260930-result.json",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-mixed-repair-20260930.md",
+    "docs/pearl-network-close-20261001.md",
     "docs/pearl-repair-reentry-20260930.md",
     "docs/piggies-next-preparation-20260930.md",
     "docs/piggies-pilot-result-20260930.md",
@@ -262,6 +263,7 @@
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
+    "docs/pearl-network-close-20261001.md": "283976d8c1079541ad72117587c9f0803cbda860c382b9b9880d06f99889dcc1",
     "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
@@ -281,5 +283,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c1d3d7acac65820944bfcf5f2f66319f0862a72f4330dfbeb70c562b704240bd"
+  "ruleHash": "74c25c11c3d05452f4b2166c4de5546ac3ae6aae881ad835c42d9bfca96bc7c3"
 }
