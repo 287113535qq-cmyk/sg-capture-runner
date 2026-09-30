@@ -19,7 +19,7 @@ on:
         options: [demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -50,6 +50,9 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Close reviewed unknown count request without replay or new source permission
+        if: inputs.operation == 'close-count-network'
+        run: node scripts/runner-v2/count-network-close-control.mjs
       - name: Isolate interrupted pilot and close its unused allowance without source requests
         if: inputs.operation == 'close-interrupted-pilot'
         env:
