@@ -1,5 +1,7 @@
 # More Puff 轮盘现金出口接线（2026-09-30）
 
+最新已完成接线和有限实采：旧53+新38=91完整，1半局已留样作废，39 BET已用、61未用未結案；当前停池、pending/待写0。真实WHSTOP3/FID1|2|/WHSLICE续玩仍未适配，不能重派。以[实际结果](morepuff-pilot-result-20260930.md)覆盖下方准备期状态。
+
 32718 的有限轮盘适配已接入 Python、Runner、worker 和 collector。首 BET 独立 FID2 只请求一次 FREE_GAME；只有官方 WHSTOP 现金出口 0、2、7、8、11，明确 1→0 计数及无组合功能证据时才结算。进一步免费/组合玩法、未知字段或出口拒绝，并按已有 AG 规则隔离该游戏。旧中断局只作留样，不续接。
 
 新增 wheel-cash-v1 映射 `bd2e8b2972065a922d3230bd8497c48cb81318f543b5ab74f02fdffdb2c078f4`，旧基础映射 `a537d5692ce49c0bb4407f0cf652608fe56e2f16da353bf5c98b8a849bad2e1c` 不变。现金终局、金额及拒绝边界目前均是合成测试；尚无真实轮盘 FREE 响应或自然完整 FID2 终局，不能据此标记整款 ready 或 formal。

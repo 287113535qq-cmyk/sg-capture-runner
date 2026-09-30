@@ -66,5 +66,12 @@ class MorepuffTests(unittest.TestCase):
             if kind=='late':rewrite(value['steps'][0],FID='0|');rewrite(value['steps'][1],FID='2|')
             with self.subTest(kind=kind),self.assertRaises(FieldError):MorepuffSequence(PLAN).settled(value)
 
+    def test_observed_continuation_shape_remains_unsettled(self):
+        value=sample(3)
+        rewrite(value['steps'][1],FID='1|2|',NFG=1,TFG=1,CFGG=0,IFG=1,
+                GSD=f'VA~{VA}#WHSTOP~3#WHSLICE~0')
+        with self.assertRaises(FieldError):execute(dict(plan=PLAN,op='next',raw=value))
+        with self.assertRaises(FieldError):MorepuffSequence(PLAN).settled(value)
+
 
 if __name__=='__main__':unittest.main()

@@ -132,7 +132,7 @@
     "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
     "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
     "scripts/trial/squid-protocol.mjs": "1427a037583d803c00cfc5b194eebf527719520e67d2d976161a488179a5438f",
-    "service/game_rule_catalog.py": "95536be490f556120e378323273d9b4b5ef15661e98042016ffe2b770df59c60"
+    "service/game_rule_catalog.py": "b2bba346b53735d9f5dcf7153f8a55ef137bed113fa6fe39fe666a12cc715b28"
   },
   "reviewDocuments": [
     "docs/squid-jackpot-protocol.md"
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a3722f4fa157481fc30f3527079ffbe570bd9f2703e5f1624c0a850b3c2025d1"
+  "ruleHash": "b19c46fe40d4918e3f56250ccdd3ced03844c486742801838c5af6a413472a52"
 }

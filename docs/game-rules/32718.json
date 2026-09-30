@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。",
     "complete": "仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。",
-    "bounds": "其他轮盘出口继续功能而非终局，当前明确拒绝并隔离该游戏。真实旧53完整规范化不变；原FID2仅一帧离线继续，不续旧局。现金终局仅合成，尚无真实轮盘完整链，不标ready/formal。",
+    "bounds": "真实试点新增38普通完整、1中断轮盘留样作废，旧53不变、合计91。实际FREE返回FID1|2|、WHSTOP3、WHSLICE，仍有后续功能；当前拒绝并停池。39 BET已用、61未用未结案；现金终局仍仅合成，无真实轮盘完整链，不标ready/formal。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -128,21 +128,23 @@
     "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
     "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
     "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
-    "service/game_rule_catalog.py": "95536be490f556120e378323273d9b4b5ef15661e98042016ffe2b770df59c60"
+    "service/game_rule_catalog.py": "b2bba346b53735d9f5dcf7153f8a55ef137bed113fa6fe39fe666a12cc715b28"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
     "docs/continuous-processing.md",
     "docs/morepuff-next-review-20260930.md",
+    "docs/morepuff-pilot-result-20260930.md",
     "docs/morepuff-wheel-integration-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "38b0a83a2f3be0d6e62352c903429ade1548be233de7b0e4ddae585705ee7fc3",
-    "docs/morepuff-next-review-20260930.md": "4a52908204cbdbee21248c083e7e8188978640039872411cbe016109de795016",
-    "docs/morepuff-wheel-integration-20260930.md": "2f63aa4b93107dfdd989143b62240bc28bfd05a09873a74f01cc5f3e6a0b9d99",
+    "docs/continuous-processing.md": "898fbae031e1a7bdb9b742ac6da288edfe48e45f4135c7f2c1f07489e8ba696e",
+    "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
+    "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
+    "docs/morepuff-wheel-integration-20260930.md": "012af068b0e8fbd9c6936662380d32fddcf6d470ca074e37398a0b48cce216c2",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
@@ -154,5 +156,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e58c269202e3f5f35fa69bad861e131d5c6f85ed1c1b3efd3842f40cc6cd00e0"
+  "ruleHash": "0de0ae4d9e8aa4f3edbd4a48340ce5375ba71337101accd1fcc3eb58888727eb"
 }

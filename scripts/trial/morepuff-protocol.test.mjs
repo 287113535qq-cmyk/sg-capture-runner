@@ -46,3 +46,29 @@ test('actual captureBatch persists one BET and one FREE intent before accepting 
     shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
   assert.deepEqual(messages,['BET','FREE_GAME']);assert.equal(evidence.completedThisRun,1);
 });
+
+test('wheel continuation with WHSLICE is persisted and rejected before any further request',async()=>{
+  // Synthetic reproduction of the observed branch shape, with no private payload.
+  const raw=structuredClone(fixture.cases[0].raw),last=raw.steps[1];
+  last.responsePayload=last.responsePayload.replace('FID=0|','FID=1|2|')
+    .replace('NFG=0','NFG=1').replace('CFGG=1','CFGG=0')
+    .replace('WHSTOP~0','WHSTOP~3#WHSLICE~0');
+  assert.throws(()=>nextRequest(raw),/UNKNOWN_TRIAL_FEATURE/);
+  let index=0,intent=false;const messages=[],saved=[],evidence={completedThisRun:0};
+  await assert.rejects(captureBatch({plan:{sourceKey:raw.sourceKey,target:100,maxSteps:100},
+    lease:{durable:0,sequenceTarget:5,pendingRound:null},owned:{},
+    payload:msg=>{assert.equal(raw.steps[index].msgId,msg);return raw.steps[index].requestPayload;},
+    post:async(_payload,msg)=>{assert(intent);intent=false;messages.push(msg);return structuredClone(raw.steps[index++]);},
+    rpc:async(op,r)=>{
+      if(op==='begin'||op==='intent')intent=true;
+      if(op==='exchange_journal'){
+        saved.push(r.step);assert.equal(r.normalized,undefined);
+        if(index===2){assert.equal(r.following,undefined);throw Error('UNKNOWN_TRIAL_FEATURE');}
+        assert(r.following);intent=true;return {complete:false,followingIntentDurable:true};
+      }
+    },bootstrap:async()=>{throw Error('UNEXPECTED_INIT');},prepareRound:prepareNextgenRound,
+    mappingHash:fixture.base,extensionHash:fixture.extension,evidence,state:{balance:100000},
+    shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:5}),/UNKNOWN_TRIAL_FEATURE/);
+  assert.deepEqual(messages,['BET','FREE_GAME']);assert.deepEqual(saved,raw.steps);
+  assert.equal(evidence.completedThisRun,0);
+});

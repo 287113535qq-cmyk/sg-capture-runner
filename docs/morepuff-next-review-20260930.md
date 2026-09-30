@@ -1,5 +1,7 @@
 # 下一候选32718旧现场审查（2026-09-30）
 
+最新已完成接线和有限实采：旧53+新38=91完整，1半局已留样作废，39 BET已用、61未用未結案；当前停池、pending/待写0。真实WHSTOP3/FID1|2|/WHSLICE续玩仍未适配，不能重派。以[实际结果](morepuff-pilot-result-20260930.md)覆盖下方准备期状态。
+
 Huff N’ More Puff High Limit（32718）已选为下一候选。鲜读确认它在primary队列暂挂，native state/journal均0，当前trial Mongo49条。固定旧SQLite/WAL共13批，离线复用正式parked_legacy解码器核验53完整：49与Mongo全文原样，4条是旧完整积压，另1条中断BET。没有新增采集或业务写入，尚未导入native。
 
 原半局为FID2、NFG1、TFG1、CFGG0、awaiting=null，只有一帧。它仅作分析留样，后续按通用规则作废，绝不续接。

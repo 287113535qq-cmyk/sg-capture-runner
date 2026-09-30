@@ -93,7 +93,7 @@ def contract(game_id):
         native.update({'family': 'morepuff-wheel-cash-v1',
             'continue': '首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。',
             'complete': '仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。',
-            'bounds': '其他轮盘出口继续功能而非终局，当前明确拒绝并隔离该游戏。真实旧53完整规范化不变；原FID2仅一帧离线继续，不续旧局。现金终局仅合成，尚无真实轮盘完整链，不标ready/formal。'})
+            'bounds': '真实试点新增38普通完整、1中断轮盘留样作废，旧53不变、合计91。实际FREE返回FID1|2|、WHSTOP3、WHSLICE，仍有后续功能；当前拒绝并停池。39 BET已用、61未用未结案；现金终局仍仅合成，无真实轮盘完整链，不标ready/formal。'})
         native['files'] += ['service/morepuff_fields.py', 'scripts/trial/morepuff-protocol.mjs', 'collector/sg.morepuff.ts']
         native['fields'].update({'FID / GSD.WHSTOP': '官方FID2=Wheel；WHSTOP决定现金退出或后续功能，NFG0不足单独判断。',
             'GSD.VA': '需排除同时3个13和6个14触发的组合功能；未知功能字段拒绝。',
