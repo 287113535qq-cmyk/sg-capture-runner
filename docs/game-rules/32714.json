@@ -173,6 +173,7 @@
   "analysisDocuments": [
     "docs/available-workers-20260928-result.json",
     "docs/available-workers-20260928.md",
+    "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
     "docs/huff-feature-inventory-20260928.json",
     "docs/huff-goals-client-review-20260928.md",
@@ -186,6 +187,7 @@
     "docs/huff-natural-free-stop-20260928.md",
     "docs/mansion-next-review-20260930-result.json",
     "docs/mansion-next-review-20260930.md",
+    "docs/mansion-touchup-integration-20260930-result.json",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
@@ -196,6 +198,7 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
+    "docs/continuous-processing.md": "e46e20772b8d37c756a69a2a4f3e560457c0942889d5c573b5ad846292fcfd85",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
@@ -209,7 +212,8 @@
     "docs/huff-natural-free-stop-20260928.md": "11b154d3f8505ae6ab2185d9518616c4021fb05c50fc81368e5f45361df36730",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
-    "docs/mansion-touchup-integration-20260930.md": "7ed87e63f44540311d3821f58a34141b19a5269af71fb446a2b74dcad5f05b61",
+    "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
+    "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
@@ -223,5 +227,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4debe7880944b7a4a4fd125d14e0c4e886606ebef0fbff20fa553807b19d41f0"
+  "ruleHash": "4f4aa3237658635a31d8585e2c267aa6f0f1a20d4c7b3b35540938078b8e0565"
 }

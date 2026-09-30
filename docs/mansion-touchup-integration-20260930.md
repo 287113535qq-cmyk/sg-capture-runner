@@ -9,3 +9,9 @@ NFG0必须同时满足完整8帧、FID/FEAT/PCFID、TFG/CFGG进度、同session�
 新增32714独立profile路径及Python许可范围，固定32714←32718、103保留/2旧中断、20×5且总100。工作流增加受限pilot_profile选择，维护与有限源入口使用同一明确profile，减少每款修改硬编码入口；默认仍为旧profile，不自动新增权限。生产profile、native固定范围、Linux和fresh验收各自通过后才可派发。本报告初始版本记录接线准备，线上结果另行追加。
 
 本机验证：574 Runner、72 protocol、41 Huff Python专项、collector TypeScript通过；全Python发现旧parking测试用FID2假冒未知功能，现改为仍未适配FID3，9项parking专项通过，统一Linux复核全量。独立profile专项通过，profile尚未应用。
+
+统一Linux 36694868478在runtime a35f6f6f91ce824a03415fb163222d211ace7ac6通过，09:14:49Z启动、09:16:26Z结束（97秒），包含全Python、575 Runner、72 protocol、collector和178规则卡。独立profile canonical f7d70be05456a74883a1adc1b0d691d27be07d79f2845d5b799d681afed04741，尚未应用。
+
+下一阶段准备32714固定native范围与完整租约检查脚本的本机命令被自动审批审查拒绝，只有“blocked by policy”，没有具体原因；命令未执行、服务器未改动。本轮无源维护/源采集派发均0、Mongo写0、开关0。保持原AG关闭状态，不绕过拒绝，也不重复已完成接线与Linux。真实下一款转换和采集仍未完成。
+
+私有增量30文件、176555字节，SHA256 4da81f2ebb5fb3c96f8a8203f328ce46fcea0f88b3e4b6a9470fd75e3ac37fc1；本地与服务器mansion-integration-20260930/full.tar.gz均逐文件readback验证，服务器同时验证原32714旧档案及AG关闭final。旧103与91全文引用已有档案，不重复上传。

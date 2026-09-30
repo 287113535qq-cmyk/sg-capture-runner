@@ -1,0 +1,27 @@
+{
+  "at": "2026-09-30T09:16:35.071666+00:00",
+  "runtime": "a35f6f6f91ce824a03415fb163222d211ace7ac6",
+  "profileHash": "f7d70be05456a74883a1adc1b0d691d27be07d79f2845d5b799d681afed04741",
+  "profileApplied": false,
+  "nativeScopeApplied": false,
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "maintenanceDispatched": false,
+  "sourceDispatched": false,
+  "nextGame": 32714,
+  "agTransition": "offline-memory-pass",
+  "blocker": {
+    "stage": "prepare-native-scope-and-lease-script",
+    "actionExecuted": false,
+    "reason": "automatic approval review: blocked by policy; no detailed reason returned",
+    "retryAllowed": false
+  },
+  "linuxRun": 36694868478,
+  "linuxConclusion": "success",
+  "linuxCreatedAt": "2026-09-30T09:14:44Z",
+  "linuxCompletedAt": "2026-09-30T09:16:26Z",
+  "linuxLogHash": "175ab425cf56396dea24f6ff410fb85dea3168ada0d791aa363a8cb5e5a8dbe5",
+  "runnerTests": 575,
+  "pythonTests": 278,
+  "protocolTests": 72
+}
