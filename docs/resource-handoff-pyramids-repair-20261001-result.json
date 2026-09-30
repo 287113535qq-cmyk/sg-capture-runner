@@ -45,5 +45,11 @@
     "limitation": "Sample only; elapsed time cannot distinguish network from remote processing.",
     "at": 1790806327,
     "selection": "last up to 5 persisted rounds from each current worker batch; bounded at 100"
-  }
+  },
+  "linuxFirstRun": {
+    "id": 36784521776,
+    "conclusion": "failure",
+    "reason": "RunnerState introduced releaseHold requirement incompatible with existing gate test doubles; moved handoff release into ResourceGate.observe, original RunnerState interface restored"
+  },
+  "localRegressionTests": 34
 }

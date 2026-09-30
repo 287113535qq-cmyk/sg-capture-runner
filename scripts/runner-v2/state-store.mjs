@@ -11,8 +11,7 @@ export class RunnerState {
   }
   async sample() {
     if(this.now()-this.lastSample>=10_000) {
-      try {this.gate.observe(await this.transport.request('resources'));this.lastSample=this.now();
-        this.gate.releaseHold('RESOURCE_HANDOFF_FRESH_REQUIRED');}
+      try {this.gate.observe(await this.transport.request('resources'));this.lastSample=this.now();}
       catch(error){this.gate.observe(null);throw error;}
     }
     return this.gate.status();

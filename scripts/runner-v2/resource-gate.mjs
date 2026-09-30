@@ -15,6 +15,9 @@ export class ResourceGate {
     this.paused=true; this.reason=reason; this.lowSince=null; this.resumedAt=null;
   }
   observe(sample) {
+    // Only a new observation can release the handoff hold; invalid samples
+    // still pause through the ordinary validation below. Other holds remain.
+    this.holds.delete('RESOURCE_HANDOFF_FRESH_REQUIRED');
     const now=this.now(), valid=sample && Number.isFinite(sample.sampledAtMs)
       && sample.sampledAtMs<=now+5000 && now-sample.sampledAtMs<=resourcePolicy.maxAgeMs
       && typeof sample.bootId==='string' && sample.bootId.length>0
