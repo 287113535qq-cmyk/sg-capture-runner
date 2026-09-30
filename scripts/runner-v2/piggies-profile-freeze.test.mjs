@@ -6,3 +6,7 @@ test('applied Piggies profile and zero historical credit stay frozen',()=>{
  assert.equal(p.sourceClosureHash,'88e2975a2c0a011c73e6b2cb9475dd297059f410570808c1f3e2ae5878895ca5');
  assert.equal(p.newBetAllowance,100);assert.equal(p.workers,20);assert.equal(p.perWorker,5);
 });
+test('applied zero-source runtime rebind stays frozen',()=>{
+ const p=JSON.parse(fs.readFileSync('config/demo-zero-source-piggies-20260930.json','utf8'));
+ assert.equal(hash(p),'2e2989d7a47d2e2344e7e166500d2a4685629fa60581f3538a0f89b4a6350464');
+});

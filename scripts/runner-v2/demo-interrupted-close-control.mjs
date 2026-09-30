@@ -4,11 +4,17 @@ import {authenticatedRead} from './github-boundary.mjs';import {maintenanceBound
 import {advanceAgPilot} from './ag-pilot-transition.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';import {checkDemoSourceEnded} from './demo-source-ended.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
-const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load('config/demo-close-morepuff-20260930.json'),source=load('config/demo-pilot-morepuff-20260930.json'),plans=load('config/round-one-plans.json');
-const basePlan=plans['32718'],plan={...basePlan,demoGeneration:source.generation};
-assert(profile.sourceRunKey==='capture-run:36684942513:1'&&profile.sourceCommit==='2e70191930c1639d5446aafb90afa683c83a91e2'
- &&hash(source)==='9ed50c4e0376120e8a8f2a78a441c72e9a9b231498c7b0094202135076051ead'&&profile.sourceProfileHash===hash(source)
- &&profile.sourceConclusion==='failure'&&profile.completePreserved===91&&hash(profile.usedByWorker)===hash([5,0,0,5,1,5,0,5,1,5,1,0,2,0,0,0,0,4,5,0])&&profile.schema==='sg-demo-pilot-close-v2','PILOT_CLOSE_PROFILE_SCOPE');
+const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),selected=process.env.SG_DEMO_PILOT_PROFILE||'demo-pilot-morepuff-20260930.json';
+const scopes={
+ 'demo-pilot-morepuff-20260930.json':{gameId:32718,close:'demo-close-morepuff-20260930.json',run:'36684942513',commit:'2e70191930c1639d5446aafb90afa683c83a91e2',sourceHash:'9ed50c4e0376120e8a8f2a78a441c72e9a9b231498c7b0094202135076051ead',complete:91,used:[5,0,0,5,1,5,0,5,1,5,1,0,2,0,0,0,0,4,5,0]},
+ 'demo-pilot-piggies-20260930.json':{gameId:32636,close:'demo-close-piggies-20260930.json',run:'36709321525',commit:'8a4c20a03a63c7e1fa14a58393c07f60f08f8748',sourceHash:'6f1f982a6906e68c73411eddb7ee1ed1ad56d985f2820dbec2d825e3ddbfc029',complete:33,used:[5,0,0,5,0,0,5,0,4,0,5,0,0,0,5,0,0,0,0,5]}
+};
+const scope=scopes[selected];assert(scope,'PILOT_CLOSE_SELECTION');
+const profile=load('config/'+scope.close),source=load('config/'+selected),plans=load('config/round-one-plans.json');
+const basePlan=plans[scope.gameId],plan={...basePlan,demoGeneration:source.generation};
+assert(profile.sourceRunKey===`capture-run:${scope.run}:1`&&profile.sourceCommit===scope.commit
+ &&hash(source)===scope.sourceHash&&profile.sourceProfileHash===hash(source)
+ &&profile.sourceConclusion==='failure'&&profile.completePreserved===scope.complete&&hash(profile.usedByWorker)===hash(scope.used)&&profile.schema==='sg-demo-pilot-close-v2','PILOT_CLOSE_PROFILE_SCOPE');
 for(const [path,expected] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..'),'PILOT_CLOSE_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===expected,'PILOT_CLOSE_RUNTIME_CHANGED');
@@ -19,7 +25,7 @@ const idle=maintenanceBoundary({read,store,oldProfile:load('config/demo-pilot-be
 try{
  const boundary=async()=>{
   assert(Date.now()>=profile.createdAt&&Date.now()<profile.expiresAt,'PILOT_CLOSE_PROFILE_STALE');await idle();
-  const prefix='repos/zyzuoyang/sg-capture-runner/actions/runs/36684942513',ended=await read(prefix),jobs=await read(prefix+'/jobs?filter=all&per_page=100');
+  const prefix='repos/zyzuoyang/sg-capture-runner/actions/runs/'+scope.run,ended=await read(prefix),jobs=await read(prefix+'/jobs?filter=all&per_page=100');
   checkDemoSourceEnded({ended,jobs,profile,closing:true});
   await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');await checkPrimaryLeases({store,plans});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r.value.active===false),'GLOBAL_HOLD');

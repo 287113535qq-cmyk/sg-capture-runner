@@ -193,6 +193,7 @@
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-mixed-repair-20260930.md",
     "docs/piggies-next-preparation-20260930.md",
+    "docs/piggies-pilot-result-20260930.md",
     "docs/piggies-zero-source-rebind-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
@@ -223,6 +224,7 @@
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
+    "docs/piggies-pilot-result-20260930.md": "f1eca6128215d7102ce743990ccf91bd0d510308f5891e7b02f6bc96d0c720f4",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
@@ -237,5 +239,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "39c61355890653630b2a49454009dd4377725fdfb9190a9d26ba28c680d55385"
+  "ruleHash": "0a8f95c37914af7dfb1a515efbb5c464ec8a6f25fc43357de7d040d05179ca7c"
 }

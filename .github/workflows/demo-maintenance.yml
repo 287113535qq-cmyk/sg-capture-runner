@@ -42,6 +42,8 @@ jobs:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Isolate interrupted pilot and close its unused allowance without source requests
         if: inputs.operation == 'close-interrupted-pilot'
+        env:
+          SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile || 'demo-pilot-morepuff-20260930.json' }}
         run: node scripts/runner-v2/demo-interrupted-close-control.mjs
       - name: Retire a reviewed adapter-only shared stop and close its unused allowance
         if: inputs.operation == 'close-reviewed-adapter-stop'

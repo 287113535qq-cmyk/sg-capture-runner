@@ -1,0 +1,16 @@
+{
+  "gameId": 32636,
+  "sourceRun": "36709321525:1",
+  "runtime": "8a4c20a03a63c7e1fa14a58393c07f60f08f8748",
+  "complete": 33,
+  "naturalFreeComplete": 1,
+  "abandoned": 1,
+  "usedBet": 34,
+  "unusedPendingClosure": 66,
+  "pending": 0,
+  "outstanding": 0,
+  "oldMansionPreserved": 129,
+  "completeGames": 14,
+  "formal": false,
+  "sourceLogSha256": "9262248a60abbfb8f090f25ac9c05a08873e6fd8dcf0a844d7dc335b0d9a4adf"
+}
