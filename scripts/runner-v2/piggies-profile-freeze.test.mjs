@@ -10,3 +10,10 @@ test('applied zero-source runtime rebind stays frozen',()=>{
  const p=JSON.parse(fs.readFileSync('config/demo-zero-source-piggies-20260930.json','utf8'));
  assert.equal(hash(p),'2e2989d7a47d2e2344e7e166500d2a4685629fa60581f3538a0f89b4a6350464');
 });
+test('applied Piggies closure preserves 34 used and 66 foregone',()=>{
+ const p=JSON.parse(fs.readFileSync('config/demo-close-piggies-20260930.json','utf8'));
+ assert.equal(hash(p),'74d35438a4d1bc94df786b59802d90fc7a6d156ff264212953b82d741cd762db');
+ assert.equal(p.usedByWorker.reduce((a,b)=>a+b,0),34);
+ assert.equal(p.completeByWorker.reduce((a,b)=>a+b,0),33);
+ assert.equal(p.newBetAllowance,0);
+});

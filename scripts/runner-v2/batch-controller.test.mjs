@@ -62,6 +62,9 @@ test('existing capture loop writes responses durably and confirms a partial batc
     payload:()=> 'MSGID=BET',bootstrap:async()=>100000,shouldStop:()=>false,requestStop(){},
     deadline:performance.now()+60000,limit:10});
   assert.equal(result.status,'pending');assert.equal(posted,10);assert.equal(f.rounds.size,10);
+  const released=(await f.store.get('state',f.controller.batchKey)).value;
+  assert.equal(released.leaseUntil,0);assert.equal(released.checkpoint,10);assert.equal(released.journaled,10);
+  assert.equal((await f.store.get('state',f.controller.pool.key)).value.workers['0'].leaseUntil,0);
   const registered=await f.rpc('register',{...f.identity,owner:'next-job'});
   const next=await f.rpc('next',{owner:'next-job',workerEpoch:registered.workerEpoch});
   assert.equal(next.batchId,f.lease.batchId);assert.equal(next.durable,10);
@@ -141,6 +144,27 @@ test('a granted original natural round resumes with FREE_GAME before any BET and
   assert.deepEqual(calls,['FREE_GAME','BET']);assert.equal(f.rounds.size,2);
   const original=f.rounds.get(String(1).padStart(64,'0'));
   assert.deepEqual(original.raw.steps.slice(0,1),pending.raw.steps);
+});
+
+test('partial release retains worker fencing when batch CAS conflicts',async()=>{
+  const f=await fixture(),cas=f.store.cas.bind(f.store);
+  f.store.cas=async(c,k,b,v)=>{
+    if(k===f.controller.batchKey&&v.leaseUntil===0)return null;
+    return cas(c,k,b,v);
+  };
+  await assert.rejects(f.rpc('release',f.owned),{code:'BATCH_VERSION_CHANGED'});
+  assert((await f.store.get('state',f.controller.batchKey)).value.leaseUntil>0);
+  assert((await f.store.get('state',f.controller.pool.key)).value.workers['0'].leaseUntil>0);
+});
+
+test('partial release cannot clear unresolved pending evidence',async()=>{
+  for(const field of ['pending','pendingOriginal','bootstrapAwaiting']){
+    const f=await fixture();
+    await f.controller.update(v=>({...v,[field]:{unresolved:true}}));
+    await assert.rejects(f.rpc('release',f.owned),/UNFINISHED_ROUND/);
+    assert((await f.store.get('state',f.controller.batchKey)).value.leaseUntil>0);
+    assert((await f.store.get('state',f.controller.pool.key)).value.workers['0'].leaseUntil>0);
+  }
 });
 
 test('AG-style actual capture failure archives only the half round and queues repair while a fresh run selects B',async()=>{

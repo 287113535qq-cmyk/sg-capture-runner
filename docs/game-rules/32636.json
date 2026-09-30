@@ -31,7 +31,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "独立免费 NFG>0，TFG=NFG+CFGG；每次进度加1，重触发按TFG增量核对剩余次数。",
     "complete": "官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。",
-    "bounds": "历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度；不代表整款玩法覆盖或正式300000准入。",
+    "bounds": "历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，PGS2/GE2未知分支1局作废，34已用/66注销；不代表整款玩法覆盖或正式300000准入。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -99,19 +99,23 @@
     "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
     "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
     "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d",
-    "service/game_rule_catalog.py": "11bd727fc879ba7c2dd1f7a793265983de2086b0edc1ffa9d635fb5d4762c4f3"
+    "service/game_rule_catalog.py": "344520ae163e142cce6947598793f532bdbd6f18bd0ab9b0c1780d7dfa7402e5"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/continuous-processing.md",
+    "docs/partial-batch-release-20260930.md",
     "docs/piggies-next-preparation-20260930.md",
     "docs/piggies-pilot-result-20260930-result.json",
     "docs/piggies-pilot-result-20260930.md",
     "docs/piggies-zero-source-rebind-20260930.md"
   ],
   "analysisDocumentHashes": {
+    "docs/continuous-processing.md": "031ba70f322e789ddeeca5baf1217ff583098d2f51f6bc89802313b79588d97a",
+    "docs/partial-batch-release-20260930.md": "5bbbab650c8215928f2f68242133f2ee8b9f500bf55e03232864a8cde9b280ef",
     "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
-    "docs/piggies-pilot-result-20260930-result.json": "14226cc6ff9b4139e97919b4dcbc276bbaadecec33ff896fd29b4bfd91e2add9",
-    "docs/piggies-pilot-result-20260930.md": "f1eca6128215d7102ce743990ccf91bd0d510308f5891e7b02f6bc96d0c720f4",
+    "docs/piggies-pilot-result-20260930-result.json": "985fb331b0fc3fe6a5b7f466b033ab63651d90d1ffdf6538771477ab577296bf",
+    "docs/piggies-pilot-result-20260930.md": "56412487889b8c97aa1cc530181c16393ae40c9b553e85f8ad9c855c74dde421",
     "docs/piggies-zero-source-rebind-20260930.md": "778c34eee9d55b54468d01850e0fe59b8464a0b7b85365431cb92234f1908a73"
   },
   "observations": {
@@ -121,5 +125,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "af958d4c65397dfaa02a630e63628ef8d0e7be04f88e5daf50afe8ebfb3748f2"
+  "ruleHash": "c605b38e29fd31df100168844a6046fac08505d862f9cbdd7f5ae2bcca16bb4b"
 }

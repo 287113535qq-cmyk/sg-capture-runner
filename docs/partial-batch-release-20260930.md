@@ -1,0 +1,7 @@
+# 正常短采退出后的批次租约释放
+
+32636源运行36709321525于11:37:02Z结束。6个成功worker已释放worker租约，但部分批次仍保留申请时的10分钟leaseUntil，最晚11:46:34.727Z到期。AG无源结案因此需要额外等约9分33秒；11:46:49Z鲜读确认15pool、175相关batch中无未来租约后，11:47:02Z才派发结案。本轮没有人工缩短旧租约或跳过租约保护。
+
+原因在BatchController.release：完整数据已flush且checkpoint等于journaled后，部分批次路径只调用pool.release。修正先核对无pending、pendingOriginal、bootstrapAwaiting、写入已确认，再按原owner/epoch和缓存版本CAS将批次leaseUntil设0，最后释放worker。批次CAS冲突或写入结果未知时不能释放worker；其他worker在这两个动作之间仍受原worker所有权约束。记录、checkpoint、额度和epoch不变，正式整批完成路径不变。
+
+本机14项batch-controller检查通过，包括真实capture循环完成10局后的即时安全再领取、CAS冲突保留所有权、三种未完成证据拒绝释放，以及原有未知响应、AG停池和正常免费链保护。该修正不改变本轮已应用关闭profile；发布与Linux结果另记。尚无使用此修正的真实源运行，因此只确认可消除所复现的残留批次租约条件，不能声称全程采集已实测提速9分钟。

@@ -198,12 +198,16 @@ export class BatchController {
   async release(r){
     await this.owned(r);await this.flush();
     const b=(await this.store.get('state',this.batchKey)).value;this.batchOwned(b);
-    assert(!b.pending && !b.bootstrapAwaiting,'UNFINISHED_ROUND');
+    assert(!b.pending && !b.pendingOriginal && !b.bootstrapAwaiting,'UNFINISHED_ROUND');
     assert(b.checkpoint===b.journaled,'UNCONFIRMED_QUEUE');
     if(b.journaled===b.end){
       await this.pool.complete(this.lease,this.batch,{pending:null,confirmed:b.end-b.start+1,fullReadback:true});
       return {status:'complete',checkpoint:b.checkpoint};
     }
+    // Storage is fully acknowledged. Drop the batch lease before releasing
+    // the worker, so another owner cannot claim it between these two writes.
+    // A failed CAS leaves worker ownership intact and cannot authorize resume.
+    await this.update(v=>{assert(hash(v)===hash(b),'BATCH_VERSION_CHANGED');return {...v,leaseUntil:0};});
     await this.pool.release(this.lease,{resumeSafe:true});
     return {status:'pending',checkpoint:b.checkpoint};
   }
