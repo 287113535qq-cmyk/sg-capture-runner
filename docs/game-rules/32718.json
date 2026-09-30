@@ -132,6 +132,7 @@
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/ag-pilot-transition-20260930.md",
     "docs/continuous-processing.md",
     "docs/morepuff-next-review-20260930.md",
     "docs/morepuff-pilot-result-20260930.md",
@@ -141,7 +142,8 @@
     "docs/protocol-parking-storage-stop-20260928.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "898fbae031e1a7bdb9b742ac6da288edfe48e45f4135c7f2c1f07489e8ba696e",
+    "docs/ag-pilot-transition-20260930.md": "bb3686d27bf3fcec7028ec63c8a1f5829e837c76e24c03dd41d9793351a08ba9",
+    "docs/continuous-processing.md": "9dddf650b5d6380b32b2badecd955f0a6b3837850e41bef43bd651dae1e2ae55",
     "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
     "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
     "docs/morepuff-wheel-integration-20260930.md": "012af068b0e8fbd9c6936662380d32fddcf6d470ca074e37398a0b48cce216c2",
@@ -156,5 +158,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0de0ae4d9e8aa4f3edbd4a48340ce5375ba71337101accd1fcc3eb58888727eb"
+  "ruleHash": "c508d68d3535448270650fe9b6fd3ae4cc35c310fd3c27e8de9d6ebb99bbe614"
 }

@@ -102,7 +102,7 @@
     "docs/quarterback-observation-20260929.md"
   ],
   "analysisDocumentHashes": {
-    "docs/continuous-processing.md": "898fbae031e1a7bdb9b742ac6da288edfe48e45f4135c7f2c1f07489e8ba696e",
+    "docs/continuous-processing.md": "9dddf650b5d6380b32b2badecd955f0a6b3837850e41bef43bd651dae1e2ae55",
     "docs/panda-network-recovery-20260929-result.json": "3b62d441b9026d15cfbf9cb6f0694a1d33ae1ff2e0a9fc7875b3de9b53005c64",
     "docs/panda-network-recovery-20260929.md": "1aefc439ba03ef094cd63d301958a06f389cb43f9f2b435ba2a0778f04bdcabd",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965"
@@ -114,5 +114,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b14630bc0157f4983367b286f15619bbc40f1b4a8c1d2a6e1ce1c5dd21f15193"
+  "ruleHash": "7314b31d369ceb3084cf1ca1b489dea737931ca12716f4034245d872962208f7"
 }
