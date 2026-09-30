@@ -9,7 +9,7 @@ on:
         options: [demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json]
       operation:
         type: choice
-        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot]
+        options: [rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop]
         default: rollover
 permissions:
   contents: read
@@ -43,6 +43,11 @@ jobs:
       - name: Isolate interrupted pilot and close its unused allowance without source requests
         if: inputs.operation == 'close-interrupted-pilot'
         run: node scripts/runner-v2/demo-interrupted-close-control.mjs
+      - name: Retire a reviewed adapter-only shared stop and close its unused allowance
+        if: inputs.operation == 'close-reviewed-adapter-stop'
+        env:
+          SG_DEMO_PILOT_PROFILE: demo-pilot-mansion-20260930.json
+        run: node scripts/runner-v2/ag-shared-stop-control.mjs
       - name: Close unused finite pilot allowance without source requests
         if: inputs.operation == 'close-pilot'
         run: node scripts/runner-v2/demo-pilot-close-control.mjs

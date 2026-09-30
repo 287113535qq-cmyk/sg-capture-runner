@@ -134,6 +134,7 @@
   "analysisDocuments": [
     "docs/ag-pilot-transition-20260930.md",
     "docs/continuous-processing.md",
+    "docs/mansion-native-resolution-20260930.md",
     "docs/mansion-next-review-20260930.md",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-latency-audit-20260930-result.json",
@@ -148,6 +149,7 @@
   "analysisDocumentHashes": {
     "docs/ag-pilot-transition-20260930.md": "38d924d12f961f3c2d868058b909821e089dd9345d258941f18fca78f6236611",
     "docs/continuous-processing.md": "b88b892170b2666b40b47098a798023fcb9374ad3b87d30e3765b1377cc64c01",
+    "docs/mansion-native-resolution-20260930.md": "5f8bd1557b81158084160fd3098379f0dc596a097d0ec61b4e375e1d9f6b1985",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-latency-audit-20260930-result.json": "12e09c154229fb93f671313b77bc7889edaf0e168a91260d9986bfa1ccc03311",
@@ -166,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "458af7e759caed5ac2efd0a972fd3c194d1abdee10f9e6656c9358c3910099e7"
+  "ruleHash": "5812fb5fa161e2fc684a3c30e7b47e50b692dcfcd30ca3ecd7ea48ee27360198"
 }
