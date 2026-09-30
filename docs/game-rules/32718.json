@@ -137,6 +137,7 @@
     "docs/mansion-next-review-20260930.md",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-latency-audit-20260930-result.json",
+    "docs/morepuff-mixed-repair-20260930.md",
     "docs/morepuff-next-review-20260930.md",
     "docs/morepuff-pilot-result-20260930.md",
     "docs/morepuff-wheel-integration-20260930.md",
@@ -146,10 +147,11 @@
   ],
   "analysisDocumentHashes": {
     "docs/ag-pilot-transition-20260930.md": "38d924d12f961f3c2d868058b909821e089dd9345d258941f18fca78f6236611",
-    "docs/continuous-processing.md": "e46e20772b8d37c756a69a2a4f3e560457c0942889d5c573b5ad846292fcfd85",
+    "docs/continuous-processing.md": "b88b892170b2666b40b47098a798023fcb9374ad3b87d30e3765b1377cc64c01",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-latency-audit-20260930-result.json": "12e09c154229fb93f671313b77bc7889edaf0e168a91260d9986bfa1ccc03311",
+    "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
     "docs/morepuff-next-review-20260930.md": "912fabbfd00eeea77fa34731699ec27633576c3c5d189a0cd6c1f91834943cfe",
     "docs/morepuff-pilot-result-20260930.md": "e32bbff4de4cb9f5c9477b32e78713997804c6028714099e1f561c1e79c2e8ce",
     "docs/morepuff-wheel-integration-20260930.md": "012af068b0e8fbd9c6936662380d32fddcf6d470ca074e37398a0b48cce216c2",
@@ -164,5 +166,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f1f6db67c83d36dbb9e9ab0d0163484e66235d7e9d1a318a3336c6f9a06768c3"
+  "ruleHash": "458af7e759caed5ac2efd0a972fd3c194d1abdee10f9e6656c9358c3910099e7"
 }
