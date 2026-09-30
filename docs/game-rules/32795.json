@@ -23,16 +23,16 @@
     "maxSteps": 10
   },
   "roundRule": {
-    "family": "pearl-wms-eight-free-v1",
+    "family": "pearl-wms-additive-free-v2",
     "messages": [
       "Init",
       "Logic",
       "EndGame"
     ],
     "start": "新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。",
-    "continue": "原许可固定8免费不变；独立修复许可支持后续每次增加8免费，总数/进度/bonusAwarded严格匹配，最多1024免费。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。",
+    "continue": "旧固定8许可不变；新v2独立许可按官方授予计数累加，首次正数、后续非负，总数/逐帧进度/bonusAwarded严格匹配；1024为运行上限，不是奖表。readyForEndGame=N才继续，每响应轮换sessionID并绑定下一请求。",
     "complete": "末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。",
-    "bounds": "当前961完整含8自然免费；真实第7免费重触发8→16造成1局作废。修复独立三方校验及官方方法回放支持重复加8，但重触发完整终局目前仅合成；旧局不续接，MaxWin/BigBet/未知分支拒绝。961计数已结清，重入须独立许可，非整款玩法覆盖。",
+    "bounds": "累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新重入尚未应用。",
     "files": [
       "service/pearl_fields.py",
       "scripts/trial/pearl-protocol.mjs",
@@ -43,11 +43,14 @@
       "scripts/trial/pearl-session.mjs",
       "scripts/trial/pearl-worker.mjs",
       "scripts/runner-v2/formal-repair-activation.mjs",
-      "scripts/runner-v2/paid-round-evidence.mjs"
+      "scripts/runner-v2/paid-round-evidence.mjs",
+      "service/pearl_award_fields.py",
+      "scripts/trial/pearl-award-protocol.mjs",
+      "collector/sg.pearl-award.ts"
     ],
     "fields": {
       "Header.sessionID": "按响应轮换，会话值私有。",
-      "FSInfo": "首次8；修复许可后续0或8，与总数逐帧累加、进度和bonusAwarded一致。",
+      "FSInfo": "旧v1仍首次8/后续0或8；新v2独立许可按授予计数守恒，与总数、进度、bonusAwarded及完整终局共同验证。",
       "BGInfo.totalWagerWin": "等于逐Logic累加totalWin。",
       "Balances": "唯一CASH_BALANCE，初值-200+累计奖。",
       "EndGame": "必须收到确认，不用额外Logic探测终态。"
@@ -86,13 +89,17 @@
     "scripts/trial/pearl-retrigger-protocol.mjs": "09090fa8bf7ca630a121000a8449466d5e53e02689e3125160e73273a8c0967f",
     "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254",
     "scripts/trial/pearl-session.mjs": "c3474c3a7d58c775c7bb60e43d9c4036de9678406d688dc444c9d7284b86bb12",
-    "scripts/trial/pearl-worker.mjs": "51a1538a2b30ccfd1a4d752e4d832c6b6d7d5484a2cdbe87a9facfad2b8630a0",
-    "scripts/runner-v2/formal-repair-activation.mjs": "e2fe0a03663b0b9a93e39dcccd426ab9846c4117ab0b760f23f1d63c4399568f",
+    "scripts/trial/pearl-worker.mjs": "1de958770c5ebf3c8d090cdd09ec254357b1abfec468803b9e283d2d52e246a2",
+    "scripts/runner-v2/formal-repair-activation.mjs": "6435bc11d7ca4bcfda5acd1cfa9482170222efd782971f051e261e2205303252",
     "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
-    "service/game_rule_catalog.py": "e0cd3792df7647c60d88f55d28f24fbfa8a61f03dace07fba3c19ac19281192a"
+    "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
+    "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
+    "collector/sg.pearl-award.ts": "28124369ee49cf0794df8351aa76c83f763ef83bb64d7eb9eb74542a27c4802b",
+    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/pearl-award-repair-20261001.md",
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
     "docs/pearl-integration-20260930.md",
@@ -102,11 +109,12 @@
     "docs/rules.md"
   ],
   "analysisDocumentHashes": {
+    "docs/pearl-award-repair-20261001.md": "0070764f873fb940d53f738a64e830c4d5fb3065c031a5775880e411b7f20733",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
     "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
-    "docs/pearl-repair-reentry-20260930.md": "322466a0758b5c6cf331d403f492d2117a34c3e741435e1fbec9b49dd0f1d219",
+    "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0",
     "docs/rules.md": "f811bd82b3ce3e8a2c1a3e7ba628e6db74571ba2e0a5248cc6b6274f1e48a4d1"
   },
@@ -117,5 +125,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b9425fd4a31953a516662e22d68ae30f090b1e1ce841562b60a2dba8376c477a"
+  "ruleHash": "e3310112b42018b8f2f42c82324e39a38c6687cf83b4aaacc062a1a23fefe62e"
 }

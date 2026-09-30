@@ -1,0 +1,11 @@
+# Pearl按授予计数修复
+
+32795上一轮新增1635完整后，在首Logic授予15次免费处被原8次规则拒绝。总2596完整已由无源维护36741489445结清；原记录、旧journal、campaign及repair全文不变，confirmed2596、reserved0、pending0。维护源请求0，新增作废0。原会话不续接，旧许可永久冻结。
+
+固定官方客户端SHA8c05283dc5c2f3e756c5be170189eb66369ef5658cae8dfc4c69b3fa41b0681b的FsParser/SpinTypeModel/CheckBaseGameBonus等方法读取响应授予数；真实15触发进入免费，尚未发送后续请求。新additive-free-awards-v2按逐帧授予增量、总数、已执行数、bonusAwarded及金额共同校验，终态仍必须有readyForEndGame与单次EndGame确认。1024为运行保护上限，不是声称奖表可授予所有次数。MaxWin、BigBet和未知结构继续拒绝。
+
+Python、Runner与collector独立实现；2596旧完整规范化不变，旧8及8+8继续使用原映射，新计数形状用独立映射。离线候选通过8组完整合成链、142过程片段及14类异常；15次与新重触发完整终局仍是合成，不能称整款玩法已覆盖。实际worker入口合成验证Init、1付费、15+8免费、EndGame及每次意图/响应持久化顺序。
+
+新许可独立继承66个已关闭批次和2596完整，只保留目标剩余297404，下一sequence6601；旧范围不回收，修复队列本身源额度仍0。真实数据内存调用activateFormalRepair已通过，Linux及线上重新准入待执行，本文准备阶段不代表已经恢复采集。
+
+主线32799同步完成官方6个请求编码方法的独立核验，100历史响应在新请求格式下通过Python、Runner、collector；含1条自然8+5终局。尚未生产接线/准入。分组索引10款/5组提供可复用部分与差异，其余168款待分类，不将同协议或同FID数字当成相同玩法。

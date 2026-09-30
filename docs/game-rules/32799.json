@@ -20,18 +20,20 @@
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
   "settlement": null,
   "codeSources": {
-    "service/game_rule_catalog.py": "e0cd3792df7647c60d88f55d28f24fbfa8a61f03dace07fba3c19ac19281192a"
+    "service/game_rule_catalog.py": "56f4321b14f642acce608cfcfe21b0a4da698343737179a73e47562f70a26aae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
+    "docs/pearl-award-repair-20261001.md",
     "docs/pearl-formal-count-20260930-result.json",
     "docs/pearl-formal-count-20260930.md",
     "docs/pearl-repair-reentry-20260930.md"
   ],
   "analysisDocumentHashes": {
+    "docs/pearl-award-repair-20261001.md": "0070764f873fb940d53f738a64e830c4d5fb3065c031a5775880e411b7f20733",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
-    "docs/pearl-repair-reentry-20260930.md": "322466a0758b5c6cf331d403f492d2117a34c3e741435e1fbec9b49dd0f1d219"
+    "docs/pearl-repair-reentry-20260930.md": "66efdee37aa858cd714c83630a3ea2cb653336a03b575555ff14b3793e5ff546"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -40,5 +42,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "76a77e78f9b89ea12c13b3dcadef84627cd441173a531a890fdb14b37dc12c18"
+  "ruleHash": "0c1a9ef61d05da5ec27e88e17073e3b4e2e8b9981d610b9d31687b73daf9618b"
 }

@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      repair_profile:
+        description: 'Independent reviewed repair permission; old profiles remain frozen'
+        type: choice
+        default: formal-repair-pearl-20260930.json
+        options: [formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       retire_profile:
         description: 'Exact stopped-count retirement; grants no source requests'
         type: choice
@@ -68,7 +73,7 @@ jobs:
       - name: Return a repaired game with preserved complete counts and fresh session admission
         if: inputs.operation == 'activate-formal-repair'
         env:
-          SG_FORMAL_COUNT_PROFILE: formal-repair-pearl-20260930.json
+          SG_FORMAL_COUNT_PROFILE: ${{ inputs.repair_profile || 'formal-repair-pearl-20260930.json' }}
         run: node scripts/runner-v2/formal-count-control.mjs repair
       - name: Retire a reviewed adapter-only shared stop and close its unused allowance
         if: inputs.operation == 'close-reviewed-adapter-stop'

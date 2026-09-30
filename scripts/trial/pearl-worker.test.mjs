@@ -4,23 +4,26 @@ import {protocolHash as hash} from '../runner-v2/protocol-resume.mjs';
 import {runPearlWorker} from './pearl-worker.mjs';import {pearlFixture} from './pearl-fixture.mjs';
 import {pearlPayload,pearlSession,PEARL_ENDPOINT} from './pearl-session.mjs';
 import {retriggerFixture} from './pearl-retrigger-fixture.mjs';
+import {awardFixture} from './pearl-award-fixture.mjs';
+import {PEARL_AWARD_EXTENSION} from './pearl-award-protocol.mjs';
 import {PEARL_RETRIGGER_EXTENSION} from './pearl-retrigger-protocol.mjs';
 import {applyFormalCount} from '../runner-v2/formal-count-plan.mjs';
 const require=createRequire(import.meta.url);require('../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json'});
 const {pearlFields}=require('../../collector/sg.pearl.ts');
 const {pearlRetriggerFields}=require('../../collector/sg.pearl-retrigger.ts');
+const {pearlAwardFields}=require('../../collector/sg.pearl-award.ts');
 const basePlan=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32795'];
 const plan={...basePlan,demoGeneration:'f'.repeat(64)};
 const profile=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[plan.sourceKey];
 
-async function run({failDurability=false,unknown=false,formal=false,repair=false}={}){
- const plan=repair?applyFormalCount({32795:basePlan},JSON.parse(fs.readFileSync('config/formal-repair-pearl-20260930.json','utf8')))[32795]:{...basePlan,...(formal?{countAllocation:'b'.repeat(64)}:{demoGeneration:'f'.repeat(64)})};
- const analyzerPlan=repair?plan:basePlan;
+async function run({failDurability=false,unknown=false,formal=false,repair=false,awards=false}={}){
+ const plan=awards||repair?applyFormalCount({32795:basePlan},JSON.parse(fs.readFileSync(awards?'config/formal-repair-pearl-awards-20261001.json':'config/formal-repair-pearl-20260930.json','utf8')))[32795]:{...basePlan,...(formal?{countAllocation:'b'.repeat(64)}:{demoGeneration:'f'.repeat(64)})};
+ const analyzerPlan=awards||repair?plan:basePlan;
  const parser=analyzer({python:process.env.PYTHON||'python3'});let posts=0,pending=null,raw=null,record=null,bootAwaiting=null;
- const saved=[],fixture=repair?retriggerFixture():pearlFixture(!formal),evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
- if(formal&&!repair)for(const s of fixture.steps){s.responseXml=s.responseXml.replaceAll('="400"','="0"').replace('value="100200"','value="2400"');s.responsePayload=s.responseXml;}
+ const saved=[],fixture=awards?awardFixture(15,{7:8}):repair?retriggerFixture():pearlFixture(!formal),evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
+ if(formal&&!repair&&!awards)for(const s of fixture.steps){s.responseXml=s.responseXml.replaceAll('="400"','="0"').replace('value="100200"','value="2400"');s.responsePayload=s.responseXml;}
  const baseGame={mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'};
- const rawBase={fixtureOnly:false,protocol:'wms',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:formal&&!repair?2600:100000,steps:[]};
+ const rawBase={fixtureOnly:false,protocol:'wms',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:formal&&!repair&&!awards?2600:100000,steps:[]};
  const lease={durable:0,sequenceTarget:100,batchId:1,epoch:1,...(formal?{countAllocation:plan.countAllocation}:{shortRunLimit:1}),pendingRound:null};
  let finished=false;
  const rpc=async(op,data)=>{
@@ -48,20 +51,28 @@ async function run({failDurability=false,unknown=false,formal=false,repair=false
   let text;
   if(posts===0){if(!formal)assert.equal(options.body,pearlPayload('Init',pearlSession(baseGame,plan,0)));
    text='<GameResponse type="Init"><Header gameID="20327" versionID="1_0" isRecovering="N" readyForEndGame="N" sessionID="synthetic-0"/><Stakes defaultIndex="0">200|400</Stakes><Balances><Balance name="CASH_BALANCE" value="100000"/></Balances></GameResponse>';
-   if(formal&&!repair)text=text.replace('value="100000"','value="2600"');
+   if(formal&&!repair&&!awards)text=text.replace('value="100000"','value="2600"');
   }else{const step=fixture.steps[posts-1];assert(step);assert.equal(options.body,pearlPayload(step.msgId,'synthetic-'+(posts-1)));text=step.responseXml;
    if(unknown&&posts===1)text=text.replace('<BGInfo','<BGInfo NEWFEATURE="1"');}
   posts++;return {ok:true,headers:{getSetCookie:()=>[],get:()=>null},text:async()=>text};
  };
  let error;
  const extension=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[PEARL_RETRIGGER_EXTENSION];
- try{await runPearlWorker({plan,baseGame,shard:0,rpc,mappingHash:hash(profile),extensionHash:repair?hash(extension):undefined,prepareRound:repair?pearlRetriggerFields:pearlFields,evidence,shouldStop:()=>repair&&evidence.completedThisRun>=1,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
+ const awardExtension=JSON.parse(fs.readFileSync('service/round_types.json','utf8')).profiles[PEARL_AWARD_EXTENSION];
+ try{await runPearlWorker({plan,baseGame,shard:0,rpc,mappingHash:hash(profile),extensionHash:awards?{retrigger:hash(extension),awards:hash(awardExtension)}:repair?hash(extension):undefined,prepareRound:awards?pearlAwardFields:repair?pearlRetriggerFields:pearlFields,evidence,shouldStop:()=>(repair||awards)&&evidence.completedThisRun>=1,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
  catch(e){error=e;}finally{parser.close();}
  return {posts,error,saved,record,evidence,pending,finished};
 }
 test('WMS worker uses persisted Init, one paid Logic, eight free Logic and EndGame with Python readback',async()=>{
  const r=await run();assert.equal(r.error,undefined);assert.equal(r.posts,11);assert.equal(r.saved.length,11);
  assert.equal(r.evidence.paidRoundRequests,1);assert.equal(r.evidence.completedThisRun,1);assert.equal(r.record.normalized.bonus,1);
+});
+
+test('count-driven worker persists initial15 plus8 and EndGame through Python and collector',async()=>{
+ const old=process.env.SG_FORMAL_COUNT_PROFILE;process.env.SG_FORMAL_COUNT_PROFILE='formal-repair-pearl-awards-20261001.json';
+ try{const r=await run({formal:true,awards:true});assert.equal(r.error,undefined);assert.equal(r.posts,26);assert.equal(r.saved.length,26);
+  assert.equal(r.evidence.paidRoundRequests,1);assert.equal(r.evidence.completedThisRun,1);assert.equal(r.record.raw.steps.length,25);assert(r.finished);
+ }finally{if(old===undefined)delete process.env.SG_FORMAL_COUNT_PROFILE;else process.env.SG_FORMAL_COUNT_PROFILE=old;}
 });
 test('WMS response durability failure never sends another request or retries',async()=>{
  const r=await run({failDurability:true});assert.equal(r.error.code,'ACK_UNKNOWN');assert.equal(r.posts,2);assert(r.pending);assert.equal(r.record,null);

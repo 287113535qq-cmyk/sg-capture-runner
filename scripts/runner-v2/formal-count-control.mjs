@@ -12,7 +12,7 @@ assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyz
 const mode=process.argv[2];assert(['activate','admit','amend','repair'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[32795],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
-const isRepair=profile.schema==='sg-formal-repair-profile-v1';
+const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
 assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
 assert(!isRepair||['repair','admit'].includes(mode),'FORMAL_REPAIR_OPERATION');
 const revision=mode==='activate'||isRepair?null:readFile('config/formal-runtime-pearl-20260930.json');
@@ -39,7 +39,7 @@ try{
   assert(ended.status==='completed'&&ended.conclusion==='success'&&ended.head_sha===profile.retirementCommit
    &&`${ended.id}:${ended.run_attempt}`===profile.retirementRun&&ended.path==='.github/workflows/demo-maintenance.yml','FORMAL_REPAIR_RETIREMENT_RUN');
   console.log(JSON.stringify(await activateFormalRepair({store,transport,parser,plans:basePlans,profile,
-   oldProfile:readFile('config/formal-count-pearl-20260930.json'),boundary,commit,run})));
+   oldProfile:readFile(profile.schema==='sg-formal-repair-profile-v2'?'config/formal-repair-pearl-20260930.json':'config/formal-count-pearl-20260930.json'),boundary,commit,run})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);

@@ -9,6 +9,7 @@ from native_nextgen_fields import NativeNextgenFields
 from piggies_fields import PiggiesFields, SOURCE as PIGGIES_SOURCE
 from pearl_fields import PearlFields, SOURCE as PEARL_SOURCE
 from pearl_retrigger_fields import PearlRetriggerFields
+from pearl_award_fields import PearlAwardFields
 from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
 from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
 from demon_nested_fields import DemonNestedFields as DemonFields, SOURCE as DEMON_SOURCE
@@ -29,7 +30,7 @@ def execute(request):
     if key not in adapters:
         plan = validate_pool_plan(plan)
         cls = {MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
-        adapters[key] = ((PearlRetriggerFields if plan.get('featureProfile') == 'eight-free-retrigger-v1' else PearlFields) if plan['sourceKey'] == PEARL_SOURCE else PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
+        adapters[key] = ((PearlAwardFields if plan.get('featureProfile') == 'additive-free-awards-v2' else PearlRetriggerFields if plan.get('featureProfile') == 'eight-free-retrigger-v1' else PearlFields) if plan['sourceKey'] == PEARL_SOURCE else PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']
     if plan['sourceKey'] == PEARL_SOURCE:

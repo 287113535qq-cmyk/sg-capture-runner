@@ -17,19 +17,21 @@ def validate_pool_plan(plan):
         if 'countAllocation' in plan:
             require('demoGeneration' not in plan and plan.get('gameId') == 32795, 'FORMAL_COUNT_SCOPE')
             filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')
-            require(filename in ('formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json'), 'FORMAL_COUNT_PROFILE_PATH')
+            require(filename in ('formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             repair = filename == 'formal-repair-pearl-20260930.json'
-            require(profile.get('schema') == ('sg-formal-repair-profile-v1' if repair else 'sg-formal-count-profile-v1') and profile.get('gameId') == 32795
+            awards = filename == 'formal-repair-pearl-awards-20261001.json'
+            require(profile.get('schema') == ('sg-formal-repair-profile-v2' if awards else 'sg-formal-repair-profile-v1' if repair else 'sg-formal-count-profile-v1') and profile.get('gameId') == 32795
                 and profile.get('basePlanHash') == digest(expected) and profile.get('activation') == plan['countAllocation']
                 and isinstance(plan['countAllocation'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['countAllocation'])
-                and profile.get('completePreserved') == (961 if repair else 100) and profile.get('remainingComplete') == (299039 if repair else 299900)
+                and profile.get('completePreserved') == (2596 if awards else 961 if repair else 100) and profile.get('remainingComplete') == (297404 if awards else 299039 if repair else 299900)
                 and profile.get('maxSequence') == 600000 and profile.get('sessionRotation') == 'closed-batches-v1'
                 and profile.get('planHash') == digest(plan), 'FORMAL_COUNT_PLAN_CHANGED')
             expected={**expected,'countAllocation':profile['activation']}
-            if repair:
-                require(profile.get('featureProfile') == 'eight-free-retrigger-v1', 'FORMAL_REPAIR_FEATURE')
-                expected.update(maxSteps=1026,featureProfile='eight-free-retrigger-v1')
+            if repair or awards:
+                feature = 'additive-free-awards-v2' if awards else 'eight-free-retrigger-v1'
+                require(profile.get('featureProfile') == feature, 'FORMAL_REPAIR_FEATURE')
+                expected.update(maxSteps=1026,featureProfile=feature)
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
             require(filename in ('demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')

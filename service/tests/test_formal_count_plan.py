@@ -20,7 +20,7 @@ class FormalPlanTests(unittest.TestCase):
             'sessionRotation':'closed-batches-v1','planHash':digest(self.plan)}
 
     def check(self,plan):
-        filename='formal-repair-pearl-20260930.json' if self.profile['schema']=='sg-formal-repair-profile-v1' else 'formal-count-pearl-20260930.json'
+        filename='formal-repair-pearl-awards-20261001.json' if self.profile['schema']=='sg-formal-repair-profile-v2' else 'formal-repair-pearl-20260930.json' if self.profile['schema']=='sg-formal-repair-profile-v1' else 'formal-count-pearl-20260930.json'
         def read(path,*a,**kw):
             return json.dumps(self.profile if path.name==filename else self.plans)
         with patch.dict(os.environ,{'SG_FORMAL_COUNT_PROFILE':filename}),patch.object(pathlib.Path,'read_text',read):
@@ -51,3 +51,13 @@ class FormalPlanTests(unittest.TestCase):
             self.profile['planHash']=old
         self.profile['remainingComplete']=300000
         with self.assertRaises(Exception):self.check(self.plan)
+
+    def test_second_repair_keeps2596_and_does_not_reuse_old_scope(self):
+        self.plan.update(maxSteps=1026,featureProfile='additive-free-awards-v2')
+        self.profile.update(schema='sg-formal-repair-profile-v2',completePreserved=2596,remainingComplete=297404,
+            featureProfile='additive-free-awards-v2',planHash=digest(self.plan))
+        self.assertEqual(self.check(self.plan),self.plan)
+        for key,value in [('completePreserved',961),('remainingComplete',300000),('featureProfile','eight-free-retrigger-v1')]:
+            old=copy.deepcopy(self.profile);self.profile[key]=value
+            with self.subTest(key=key),self.assertRaises(Exception):self.check(self.plan)
+            self.profile=old

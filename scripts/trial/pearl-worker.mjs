@@ -3,12 +3,15 @@ import {createHash,randomUUID} from 'node:crypto';
 import {captureBatch,runDynamicBatches,fail} from './capture-batch.mjs';
 import {pearlNext,pearlMapping} from './pearl-protocol.mjs';
 import {pearlRetriggerNext,pearlRetriggerMapping} from './pearl-retrigger-protocol.mjs';
+import {pearlAwardNext,pearlAwardMapping} from './pearl-award-protocol.mjs';
 import {pearlSession,pearlPayload,pearlResponse,pearlInit,PEARL_ENDPOINT} from './pearl-session.mjs';
 
 export async function runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash,prepareRound,evidence,shouldStop,requestStop,onLease,
  commitSha,planHash,fetchImpl=fetch,deadline=performance.now()+240*60000,limit=5,runId,runAttempt,job}){
  const formal=plan.countAllocation!==undefined;
  const retrigger=plan.featureProfile==='eight-free-retrigger-v1';
+ const awards=plan.featureProfile==='additive-free-awards-v2';
+ assert(!awards||(formal&&plan.maxSteps===1026&&['retrigger','awards'].every(k=>/^[a-f0-9]{64}$/.test(extensionHash?.[k]??''))),'PEARL_AWARD_PERMISSION');
  assert(!retrigger||(formal&&plan.maxSteps===1026&&/^[a-f0-9]{64}$/.test(extensionHash??'')),'PEARL_RETRIGGER_PERMISSION');
  assert(plan.schema==='sg-work-pool-v1'&&Number.isSafeInteger(limit)&&limit>0
   &&(formal?limit<=plan.target:limit<=5),'PEARL_CAPTURE_LIMIT');
@@ -58,7 +61,7 @@ export async function runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extens
    if(formal)assert(lease.countAllocation===plan.countAllocation&&lease.shortRunLimit===undefined,'PEARL_FORMAL_LEASE_REQUIRED');
    else assert(Number.isSafeInteger(lease.shortRunLimit)&&lease.shortRunLimit>0&&lease.shortRunLimit<=5,'PEARL_PILOT_ONLY');
    const result=await captureBatch({plan,lease,owned:owner,rpc:trackedRpc,post,payload,bootstrap,prepareRound,mappingHash,extensionHash,
-    evidence,state,shouldStop:stopped,requestStop,deadline,limit:formal?limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:retrigger?pearlRetriggerNext:pearlNext,mapping:retrigger?pearlRetriggerMapping:pearlMapping});
+    evidence,state,shouldStop:stopped,requestStop,deadline,limit:formal?limit:Math.min(limit,lease.shortRunLimit),protocol:'wms',startMessage:'Logic',route:awards?pearlAwardNext:retrigger?pearlRetriggerNext:pearlNext,mapping:awards?pearlAwardMapping:retrigger?pearlRetriggerMapping:pearlMapping});
    evidence.result=result;return result;
   }});
  if(formal)await rpc('finish_run');

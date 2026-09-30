@@ -1,6 +1,7 @@
 import {HUFF_TOUCHUP_EXTENSION} from './huff-touchup-review.mjs';
 import {PEARL_SOURCE} from './pearl-protocol.mjs';
 import {PEARL_RETRIGGER_EXTENSION} from './pearl-retrigger-protocol.mjs';
+import {PEARL_AWARD_EXTENSION} from './pearl-award-protocol.mjs';
 import {runPearlWorker} from './pearl-worker.mjs';
 import {MOREPUFF_SOURCE,MOREPUFF_EXTENSION} from './morepuff-protocol.mjs';
 import {JINZITA_SOURCE,JINZITA_EXTENSION} from './jinzita-protocol.mjs';
@@ -26,6 +27,7 @@ require('../../collector/node_modules/ts-node').register({project:path.resolve('
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
 const {pearlFields}=require('../../collector/sg.pearl.ts');
 const {pearlRetriggerFields}=require('../../collector/sg.pearl-retrigger.ts');
+const {pearlAwardFields}=require('../../collector/sg.pearl-award.ts');
 const { XMLParser } = require('../../collector/node_modules/fast-xml-parser');
 const parser = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseTagValue:false});
 const planFile = process.env.SG_TRIAL_PLAN || 'config/trial-300k.json';
@@ -75,7 +77,8 @@ async function main() {
     assert(isPool&&shard!==null&&process.env.SG_PROCESSING_MODE==='github-v2','PEARL_GITHUB_POOL_REQUIRED');
     const requested=Number(process.env.SG_POOL_RUN_LIMIT||'0');
     assert(plan.countAllocation?requested===0:requested===5,'PEARL_CAPTURE_PERMISSION');
-    return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash:plan.featureProfile==='eight-free-retrigger-v1'?hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])):null,prepareRound:plan.featureProfile==='eight-free-retrigger-v1'?pearlRetriggerFields:pearlFields,evidence,
+    const awards=plan.featureProfile==='additive-free-awards-v2';
+    return runPearlWorker({plan,baseGame,shard,rpc,mappingHash,extensionHash:awards?{retrigger:hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])),awards:hash(canonical(registry.profiles[PEARL_AWARD_EXTENSION]))}:plan.featureProfile==='eight-free-retrigger-v1'?hash(canonical(registry.profiles[PEARL_RETRIGGER_EXTENSION])):null,prepareRound:awards?pearlAwardFields:plan.featureProfile==='eight-free-retrigger-v1'?pearlRetriggerFields:pearlFields,evidence,
       shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
       commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
       runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,

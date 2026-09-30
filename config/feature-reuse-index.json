@@ -2564,7 +2564,9 @@
       "references": {
         "scripts/trial/pearl-retrigger-protocol.mjs": "09090fa8bf7ca630a121000a8449466d5e53e02689e3125160e73273a8c0967f",
         "service/pearl_retrigger_fields.py": "c0ac626577bbf7e4fcbf6e2f97172992e0deb338cc65f3a62cd880647b9b0509",
-        "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254"
+        "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254",
+        "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
+        "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce"
       },
       "candidates": [
         {
@@ -2589,7 +2591,7 @@
           },
           "referenceFiles": [],
           "requiredReview": [
-            "New retrigger terminal was synthetic at repair activation; inspect subsequent natural observations.",
+            "The applied v1 scope was8; a real initial15 trigger is now observed. New counter-driven v2 needs separate admission, and natural15/retrigger terminal is still absent.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific.",
             "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
             "No readyForEndGame in this client; do not copy the Pearl terminal condition."
@@ -2668,12 +2670,14 @@
           "referenceFiles": [
             "scripts/trial/pearl-retrigger-protocol.mjs",
             "service/pearl_retrigger_fields.py",
-            "collector/sg.pearl-retrigger.ts"
+            "collector/sg.pearl-retrigger.ts",
+            "service/pearl_award_fields.py",
+            "scripts/trial/pearl-award-protocol.mjs"
           ],
           "requiredReview": [
             "Offline candidate only; natural historical 8+5 chain reviewed, production entry not yet admitted.",
             "No readyForEndGame in this client; do not copy the Pearl terminal condition.",
-            "New retrigger terminal was synthetic at repair activation; inspect subsequent natural observations.",
+            "The applied v1 scope was8; a real initial15 trigger is now observed. New counter-driven v2 needs separate admission, and natural15/retrigger terminal is still absent.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
           ],
           "captureAuthorization": false

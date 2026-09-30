@@ -266,8 +266,8 @@ def derive(raw):
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
     from pearl_fields import PearlFields, SOURCE as PEARL_SOURCE
     if raw.get('sourceKey') == PEARL_SOURCE:
-        from pearl_retrigger_fields import PearlRetriggerFields
-        return PearlRetriggerFields({'gameId':32795,'runtimeGameId':33155,'sourceKey':PEARL_SOURCE,'betRaw':200}).settled(raw)
+        from pearl_award_fields import PearlAwardFields
+        return PearlAwardFields({'gameId':32795,'runtimeGameId':33155,'sourceKey':PEARL_SOURCE,'betRaw':200}).settled(raw)
     check(isinstance(raw.get('steps'), list) and 0 < len(raw['steps']) <= 100 and all(isinstance(s, dict) for s in raw['steps']), 'INVALID_ROUND_STEPS')
     start = amount(raw.get('startBalanceRaw'))
     protocol = raw.get('protocol')
