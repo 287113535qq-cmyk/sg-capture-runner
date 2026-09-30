@@ -2,7 +2,7 @@ import hashlib, io, sys, tarfile, unittest, json, sqlite3, tempfile
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts/runner-v2'))
-from parked_legacy import decode_archive, convert_directory
+from parked_legacy import decode_archive, decode_review_archive, convert_directory
 from store import digest
 
 
@@ -52,6 +52,32 @@ class ParkedArchiveTests(unittest.TestCase):
             self.decode(self.archive([f'batches/{i}/state.sqlite3' for i in range(1,503)]))
 
 
+class LargerArchiveReviewTests(unittest.TestCase):
+    archive = ParkedArchiveTests.archive
+    decode = ParkedArchiveTests.decode
+    def test_review_requires_exact_counts_without_expanding_production_default(self):
+        data=self.archive(['work-pool.sqlite3'])
+        args=dict(data=data,plan={'phase':1,'buy':0},mongo_records=[{}]*1102,
+                  expected_hash=hashlib.sha256(data).hexdigest(),checked_at=100,
+                  expected_records=1262,expected_mongo=1102,worker_offset=20)
+        result={'records':[{}]*1262,'mongoMatched':1102}
+        with patch('parked_legacy.convert_directory',return_value=result) as convert:
+            self.assertEqual(decode_review_archive(**args),result)
+            self.assertEqual(convert.call_args.kwargs,{'record_limit':1262,'review_batches':None})
+        with patch('parked_legacy.convert_directory') as convert:
+            with self.assertRaises(AssertionError):self.decode(data,mongo_records=[{}]*1102)
+            convert.assert_not_called()
+        for change in [{'expected_records':10001},{'expected_records':True},
+                       {'expected_mongo':1101},{'expected_hash':'0'*64}]:
+            with self.subTest(change=change),patch('parked_legacy.convert_directory') as convert:
+                with self.assertRaises(AssertionError):decode_review_archive(**{**args,**change})
+                convert.assert_not_called()
+        for result in [{'records':[{}]*1261,'mongoMatched':1102},
+                       {'records':[{}]*1262,'mongoMatched':1101}]:
+            with patch('parked_legacy.convert_directory',return_value=result):
+                with self.assertRaises(AssertionError):decode_review_archive(**args)
+
+
 class ParkedWorkerRangeTests(unittest.TestCase):
     def fixture(self, base, worker, registered=None):
         plan={'trialId':'fixture-range','target':299900,'phase':1,'buy':0}
@@ -95,3 +121,21 @@ class ParkedWorkerRangeTests(unittest.TestCase):
             with self.subTest(offset=offset),patch('parked_legacy.convert_directory') as convert:
                 with self.assertRaises(AssertionError):decode_archive(b'',{},[],'',100,offset)
                 convert.assert_not_called()
+
+    def test_review_variable_range_requires_exact_layout_and_stays_bounded(self):
+        with tempfile.TemporaryDirectory() as d:
+            base=Path(d);plan=self.fixture(base,20)
+            batch={'id':1,'worker':20,'start':1,'end':20}
+            with sqlite3.connect(base/'work-pool.sqlite3') as c:
+                c.execute('update batches set end=20')
+                c.execute('update control set next_sequence=21')
+            c.close()
+            with sqlite3.connect(base/'batches/1/state.sqlite3') as c:
+                c.execute('update trial set plan_hash=?',(digest({'plan':plan,'batch':batch}),))
+            c.close()
+            self.assertEqual(convert_directory(base,plan,[],'fixed',100,20,
+                record_limit=1262,review_batches=[batch])['records'],[])
+            with self.assertRaises(AssertionError):convert_directory(base,plan,[],'fixed',100,20)
+            for changed in [{**batch,'start':2},{**batch,'worker':0},{**batch,'end':101}]:
+                with self.assertRaises(AssertionError):convert_directory(base,plan,[],'fixed',100,20,
+                    record_limit=1262,review_batches=[changed])

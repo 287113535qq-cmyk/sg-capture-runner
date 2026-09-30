@@ -11,8 +11,9 @@ from record_fields import execute
 from store import digest
 
 
-def convert_directory(base, plan, mongo_records, archive_hash, checked_at, worker_offset=0):
+def convert_directory(base, plan, mongo_records, archive_hash, checked_at, worker_offset=0, *, record_limit=1000, review_batches=None):
     assert type(worker_offset) is int and worker_offset in (0, 20)
+    assert type(record_limit) is int and 0 < record_limit <= 10000
     def ro(p):
      c=sqlite3.connect(p.resolve().as_uri()+'?mode=ro',uri=True);c.row_factory=sqlite3.Row;return c
     with contextlib.closing(ro(base/'work-pool.sqlite3')) as c:
@@ -22,7 +23,13 @@ def convert_directory(base, plan, mongo_records, archive_hash, checked_at, worke
     assert [b['id'] for b in batches]==list(range(1,len(batches)+1))
     assert all(w['lease_until']<checked_at for w in workers)
     assert len({w['id'] for w in workers}) == len(workers) and all(worker_offset <= w['id'] < worker_offset + 20 for w in workers)
-    assert all(worker_offset <= b['worker'] < worker_offset + 20 and b['start'] == i*100+1 and b['end'] == (i+1)*100 for i,b in enumerate(batches))
+    if review_batches is None:
+     assert all(worker_offset <= b['worker'] < worker_offset + 20 and b['start'] == i*100+1 and b['end'] == (i+1)*100 for i,b in enumerate(batches))
+    else:
+     assert [{k:b[k] for k in ('id','worker','start','end')} for b in batches] == review_batches
+     assert all(worker_offset <= b['worker'] < worker_offset + 20 and
+                b['start'] == (batches[i-1]['end']+1 if i else 1) and
+                1 <= b['end']-b['start']+1 <= 100 for i,b in enumerate(batches))
     assert control['next_sequence'] == batches[-1]['end']+1
     ranges={b['id']:{k:b[k] for k in ['id','worker','start','end']} for b in batches}
     pool={'schema':'sg-github-pool-v2','enabled':False,'failure':'LEGACY_IMPORT_REQUIRES_RETIREMENT','planHash':digest(plan),'legacyArchiveHash':archive_hash,'nextSequence':control['next_sequence'],'nextBatchId':len(batches)+1,'confirmed':0,'legacyBatches':ranges,'workers':{str(w['id']):{'sessionHash':w['session_hash'],'owner':None,'epoch':w['epoch'],'leaseUntil':0,'activeBatch':ranges.get(w['active_batch'])} for w in workers}}
@@ -43,17 +50,37 @@ def convert_directory(base, plan, mongo_records, archive_hash, checked_at, worke
       if q:q['raw']=json.loads(q['raw']);assert q['sequence']==b['start']+len(rs);pending.append({'batch':b['id'],**q})
       value={**ranges[b['id']],'owner':None,'epoch':state['epoch'],'leaseUntil':0,'sessionHash':state['session_hash'],'journaled':b['start']-1+len(rs),'checkpoint':state['checkpoint'],'legacyDurable':state['durable'],'pending':None,'pendingOriginal':q,'failure':'LEGACY_IMPORT_REQUIRES_RETIREMENT','legacyFailure':state['failure'],'legacyArchiveHash':archive_hash}
       assert b['start']-1<=value['checkpoint']<=value['journaled']<=b['end'];states.append({'key':f"batch:{plan['trialId']}:{b['id']}",'value':value})
-    assert len(records) <= 1000
+    assert len(records) <= record_limit
     assert len({r['_id'] for r in records})==len(records) and set(mongo)<=set(r['_id'] for r in records)
 
     return {"states":states,"records":records,"pending":pending,"committed":committed,"mongoMatched":matched,"missingMongo":missing,"archiveHash":archive_hash}
 
 
 def decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker_offset=0):
+    return _decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker_offset, 1000)
+
+
+def decode_review_archive(data, plan, mongo_records, expected_hash, checked_at,
+                          *, expected_records, expected_mongo, worker_offset=0, expected_batches=None):
+    """Read-only review of a larger fixed archive; grants no import/source scope.
+
+    Exact counts must come from the frozen archive and a complete paged Mongo
+    snapshot. The production CLI deliberately continues to call decode_archive.
+    """
+    assert type(expected_records) is int and 1000 < expected_records <= 10000
+    assert type(expected_mongo) is int and 0 <= expected_mongo <= expected_records
+    assert len(mongo_records) == expected_mongo
+    result = _decode_archive(data, plan, mongo_records, expected_hash, checked_at,
+                             worker_offset, expected_records, expected_batches)
+    assert len(result['records']) == expected_records and result['mongoMatched'] == expected_mongo
+    return result
+
+
+def _decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker_offset, record_limit, review_batches=None):
     assert type(worker_offset) is int and worker_offset in (0, 20)
     import tarfile
     assert len(data) <= 40 * 1024 * 1024 and hashlib.sha256(data).hexdigest() == expected_hash
-    assert plan['phase'] == 1 and plan['buy'] == 0 and len(mongo_records) <= 1000
+    assert plan['phase'] == 1 and plan['buy'] == 0 and len(mongo_records) <= record_limit
     with tempfile.TemporaryDirectory(prefix='sg-parked-') as directory:
         base = Path(directory)
         with tarfile.open(fileobj=io.BytesIO(data), mode='r:gz') as archive:
@@ -70,7 +97,10 @@ def decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker_
                 target.parent.mkdir(parents=True, exist_ok=True)
                 with target.open('xb') as output:
                     output.write(archive.extractfile(member).read())
-        return convert_directory(base, plan, mongo_records, expected_hash, checked_at, worker_offset)
+        if record_limit == 1000:
+            return convert_directory(base, plan, mongo_records, expected_hash, checked_at, worker_offset)
+        return convert_directory(base, plan, mongo_records, expected_hash, checked_at, worker_offset,
+                                 record_limit=record_limit, review_batches=review_batches)
 
 
 if __name__ == '__main__':
