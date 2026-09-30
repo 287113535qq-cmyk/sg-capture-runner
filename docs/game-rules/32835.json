@@ -150,7 +150,7 @@
     "docs/luxor-next-result-20260930.md": "d4fa5d9613c979637add8cf834fabea97d19865fee8850f064e0e6d0b3a0616c",
     "docs/primary-natural-parks-20260929.md": "b96d3a79d90890619d7ec6d274698054219666e43797ad699197acc14eb40ec4",
     "docs/protocol-short-session-stop-20260929.md": "474975acdaec9980e989326767cada4c307f1b901a08423c843967e970e2682b",
-    "docs/sg-efficiency-plan-20260929.md": "4061c09a555ee30e4aff49a87a194e98ecbe58f057a20c19f45b7652e4773b81"
+    "docs/sg-efficiency-plan-20260929.md": "0afaec317cc5934cca39b5fd608c504549c95200f46632cbe3e25ddff9b30751"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "70c348fe4b8272f1df6e5b41dbbe1016cbd7516a550ddff82a1021c910f4d002"
+  "ruleHash": "c0d68896154757ffb6d57e217613c111c22938841c0c97f9636b7337d8bf49a7"
 }

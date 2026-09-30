@@ -97,5 +97,9 @@
       "p95Ms": 1.2546449999999993
     },
     "limitation": "Same data offline. Actual response XM, game request dN and nesting predicates; wallet/UI/base request fallback stubs. Different work, no network/Mongo/health, not online throughput."
-  }
+  },
+  "admissionFixRuntime": "6ff4062bccd7883ce396c1226fb9c8e7915ffeaf",
+  "admissionFixLinuxRun": 36651686829,
+  "admissionFixLinuxConclusion": "success",
+  "remainingBudgetAction": "prefer controlled closure without more source requests"
 }

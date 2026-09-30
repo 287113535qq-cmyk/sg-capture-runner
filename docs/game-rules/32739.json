@@ -210,7 +210,7 @@
     "docs/quarterback-foam-recovery.md": "be11bb213502fe5a877acfbebc620c3d9abcd9d3fca40338da13161ca6c14a2e",
     "docs/quarterback-observation-20260929.md": "deaa582209f25a7eda34886e5daac4ebe5e38b21d5d720ba2cbedc3eef718965",
     "docs/session-recovery-20260929.md": "5eea97f0047092324d7f8ae125d7990123fe2cf6cd8aa4d903d7938296ce8bb3",
-    "docs/sg-efficiency-plan-20260929.md": "4061c09a555ee30e4aff49a87a194e98ecbe58f057a20c19f45b7652e4773b81"
+    "docs/sg-efficiency-plan-20260929.md": "0afaec317cc5934cca39b5fd608c504549c95200f46632cbe3e25ddff9b30751"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "26734406c76b7ba49b53b9434c54100fb9a94931325723d2ca33a8c20723f9cc"
+  "ruleHash": "c0c694cb7bd7969fc91b362297db666837236e15ee1d4b5269359b88db18608b"
 }
