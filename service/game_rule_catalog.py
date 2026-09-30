@@ -89,11 +89,20 @@ def contract(game_id):
             'NFG / TFG / CFGG': '剩余/总数/当前免费计数必须显式保存；重触发不强制每帧减1。',
             'GSD.CFG': '官方客户端仅CFG=0激活Beaver Bonus；实际FID1/CFG1/NFG5仍应免费继续。源码仅CFG0判Beaver，CFG1仅在独立FID1允许；新v2核TFG=NFG+CFGG、进度及终局，旧base/free-v1映射不变。',
         })
+    elif game_id == 32718:
+        native.update({'family': 'morepuff-wheel-cash-v1',
+            'continue': '首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。',
+            'complete': '仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。',
+            'bounds': '其他轮盘出口继续功能而非终局，当前明确拒绝并隔离该游戏。真实旧53完整规范化不变；原FID2仅一帧离线继续，不续旧局。现金终局仅合成，尚无真实轮盘完整链，不标ready/formal。'})
+        native['files'] += ['service/morepuff_fields.py', 'scripts/trial/morepuff-protocol.mjs', 'collector/sg.morepuff.ts']
+        native['fields'].update({'FID / GSD.WHSTOP': '官方FID2=Wheel；WHSTOP决定现金退出或后续功能，NFG0不足单独判断。',
+            'GSD.VA': '需排除同时3个13和6个14触发的组合功能；未知功能字段拒绝。',
+            'NFG / CFGG': '官方映射分别Bb.Ee/Bb.Wf，不混淆剩余与进度。'})
     elif game_id == 32720:
         native.update({'family': 'jinzita-standalone-free-v1',
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',
             'complete': '上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。',
-            'bounds': '旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片准入失败且源0，原100还剩其独占5，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。'})
+            'bounds': '旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片源0；已关闭试点，95实际已用加5明确注销，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。'})
         native['files'] += ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts']
         native['fields'].update({'FID': '1=FreeSpins，0=HoldNSpin；新适配仅首BET独立1。',
             'GSD.FGRS / CFGC': '客户端免费剩余和进度可由这两个内层字段驱动；独立路径要求与外层计数一致，不能只看NFG0。',

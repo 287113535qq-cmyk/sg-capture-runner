@@ -184,13 +184,15 @@ def types(raw, kind):
     from quarterback_fields import SOURCE as QUARTERBACK_SOURCE, EXTENSION as QUARTERBACK_EXTENSION, PICK_EXTENSION, is_pick, is_foam
     from beaver_fields import SOURCE as BEAVER_SOURCE, EXTENSION as BEAVER_EXTENSION, CFG1_EXTENSION, cfg1_type, feature_type as beaver_feature_type
     beaver_type = source_key == BEAVER_SOURCE and beaver_feature_type(raw)
+    from morepuff_fields import SOURCE as MOREPUFF_SOURCE, EXTENSION as MOREPUFF_EXTENSION, feature_type as morepuff_feature_type
+    morepuff_type = source_key == MOREPUFF_SOURCE and morepuff_feature_type(raw)
     from jinzita_fields import SOURCE as JINZITA_SOURCE, EXTENSION as JINZITA_EXTENSION, feature_type as jinzita_feature_type
     jinzita_type = source_key == JINZITA_SOURCE and jinzita_feature_type(raw)
     from luxor_fields import SOURCE as LUXOR_SOURCE, EXTENSION as LUXOR_EXTENSION, feature_type as luxor_feature_type
     luxor_type = source_key == LUXOR_SOURCE and luxor_feature_type(raw)
     foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
     beaver_cfg1 = beaver_type and cfg1_type(raw)
-    profile, mapping_hash = type_profile(JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    profile, mapping_hash = type_profile(MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -218,7 +220,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if jinzita_type:
+    if morepuff_type:
+        check(kind == 'freeGame' and profile.get('featureSelector') == 'morepuff-wheel-cash-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus = profile['featureTypes']['wheelCash']
+    elif jinzita_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == 'jinzita-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['independentFreeGames']
     elif luxor_type:

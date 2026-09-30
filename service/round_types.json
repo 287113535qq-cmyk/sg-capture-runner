@@ -1226,6 +1226,38 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-cash-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32718,
+        "runtimeGameId": 33118,
+        "sourceId": "00c0f28f-6028-4487-937d-a227b684ef3b"
+      },
+      "featureSelector": "morepuff-wheel-cash-v1",
+      "featureTypes": {
+        "wheelCash": 2
+      }
     }
   }
 }

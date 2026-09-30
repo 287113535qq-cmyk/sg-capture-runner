@@ -51,5 +51,5 @@ jobs:
       - name: Retire the next game and activate its independent finite demo generation
         if: inputs.operation == 'next-game'
         env:
-          SG_DEMO_PILOT_PROFILE: demo-pilot-jinzita-20260930.json
+          SG_DEMO_PILOT_PROFILE: demo-pilot-morepuff-20260930.json
         run: node scripts/runner-v2/demo-next-game-control.mjs

@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。",
     "complete": "上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。",
-    "bounds": "旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片准入失败且源0，原100还剩其独占5，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。",
+    "bounds": "旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片源0；已关闭试点，95实际已用加5明确注销，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -122,12 +122,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "9413c18f8eaac8d67af8d92a7f71b293aec7e4d6dd4cb96a90e849b6fdf9790a",
-    "scripts/runner-v2/record_fields.py": "e0171b5f6100da4203d6da7c442e485d10918622c430a46e14954ea1ce0e94b9",
+    "service/round_fields.py": "8fddfff0193a0ad28f977789a30fa3e231231a2d9bba56666e3515cd9d5ed951",
+    "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
     "service/jinzita_fields.py": "89b465920919742d40c73667469edd4c0438e7fb554bb0fb27082a10b7ee246b",
     "scripts/trial/jinzita-protocol.mjs": "9c1584cd4fc5c21e38698e40cda0e472453d90fdca152fef780899509c5c63ae",
     "collector/sg.jinzita.ts": "1b57f42a8b5db35a297371642af0f4ea4ae6a9ba0739145a08217c615fc24cf8",
-    "service/game_rule_catalog.py": "9d6ea30a1fa98fb6b5d28877419717f19a32036dad3117bdd5cc42eac1aa5f57"
+    "service/game_rule_catalog.py": "95536be490f556120e378323273d9b4b5ef15661e98042016ffe2b770df59c60"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -151,5 +151,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "41dfbec69981061c6cde9c4c9468efa65a3eadd4a79a61d1950c8c2202dd929d"
+  "ruleHash": "1b09904fe212a428b92b9c02801ce4e4ded006fb820add0a2d7c8fba74cf982b"
 }

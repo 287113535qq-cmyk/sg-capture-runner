@@ -77,7 +77,7 @@
 | [32715](32715.json) | Huff N' Even More Puff | not-documented | 待确认 |
 | [32716](32716.json) | Huff N’ Even More Puff Grand | not-documented | 待确认 |
 | [32717](32717.json) | Huff N' Lots of Goals! | implemented-subset | 1 |
-| [32718](32718.json) | Huff N' More Puff High Limit | implemented-subset | 1 |
+| [32718](32718.json) | Huff N' More Puff High Limit | implemented-subset | 2 |
 | [32719](32719.json) | Hypercharged Inca Jungle | implemented-subset | 1 |
 | [32720](32720.json) | Hypercharged Jinzita | implemented-subset | 2 |
 | [32721](32721.json) | Hypercharged Pyramids of Ra | implemented-subset | 1 |

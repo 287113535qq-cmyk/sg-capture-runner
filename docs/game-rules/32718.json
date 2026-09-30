@@ -22,19 +22,22 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "morepuff-wheel-cash-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "首BET独立FID2为Wheel，NFG1/TFG1/CFGG0同会话续一次FREE_GAME；不是通用独立免费模板。",
+    "complete": "仅轮盘现金WHSTOP 0/2/7/8/11且明确NFG0/CFGG1/TFG1，FID0或1单槽，无组合功能；再核XML、会话、B/AB、TW和实际下注2000。",
+    "bounds": "其他轮盘出口继续功能而非终局，当前明确拒绝并隔离该游戏。真实旧53完整规范化不变；原FID2仅一帧离线继续，不续旧局。现金终局仅合成，尚无真实轮盘完整链，不标ready/formal。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/morepuff_fields.py",
+      "scripts/trial/morepuff-protocol.mjs",
+      "collector/sg.morepuff.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -44,7 +47,10 @@
       "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "FID / GSD.WHSTOP": "官方FID2=Wheel；WHSTOP决定现金退出或后续功能，NFG0不足单独判断。",
+      "GSD.VA": "需排除同时3个13和6个14触发的组合功能；未知功能字段拒绝。",
+      "NFG / CFGG": "官方映射分别Bb.Ee/Bb.Wf，不混淆剩余与进度。"
     }
   },
   "typeMappings": {
@@ -70,15 +76,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-cash-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "morepuff-wheel-cash-v1",
+      "featureTypes": {
+        "wheelCash": 2
+      }
     }
   },
   "mappingHashes": {
-    "huffnmorepuffhighlimit96-round-one-base-v1": "a537d5692ce49c0bb4407f0cf652608fe56e2f16da353bf5c98b8a849bad2e1c"
+    "huffnmorepuffhighlimit96-round-one-base-v1": "a537d5692ce49c0bb4407f0cf652608fe56e2f16da353bf5c98b8a849bad2e1c",
+    "huffnmorepuffhighlimit96-round-one-base-v1-wheel-cash-v1": "bd2e8b2972065a922d3230bd8497c48cb81318f543b5ab74f02fdffdb2c078f4"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -90,9 +123,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "9413c18f8eaac8d67af8d92a7f71b293aec7e4d6dd4cb96a90e849b6fdf9790a",
-    "scripts/runner-v2/record_fields.py": "e0171b5f6100da4203d6da7c442e485d10918622c430a46e14954ea1ce0e94b9",
-    "service/game_rule_catalog.py": "9d6ea30a1fa98fb6b5d28877419717f19a32036dad3117bdd5cc42eac1aa5f57"
+    "service/round_fields.py": "8fddfff0193a0ad28f977789a30fa3e231231a2d9bba56666e3515cd9d5ed951",
+    "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
+    "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
+    "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
+    "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
+    "service/game_rule_catalog.py": "95536be490f556120e378323273d9b4b5ef15661e98042016ffe2b770df59c60"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -116,5 +152,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8b61a12c8cc9a3a28fc0bb4491c5adeea7599e8dee316205c744afb2e8c8d40b"
+  "ruleHash": "d7fd7035da37ac2088ab7b65b10236ec948f5b1f724553b9ed1fd15208476d21"
 }
