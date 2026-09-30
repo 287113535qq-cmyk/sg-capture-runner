@@ -44,8 +44,22 @@ test('partial activation or conflicting Mongo never grants source through fresh 
  const broken=await fixture();broken.corrupt();await assert.rejects(activateSecondaryIdle(broken.args));assert(!broken.docs.has('journal/'+broken.key+':complete'));
 });
 
-test('secondary AG close counts worker20..39 separately and grants repair zero source',async()=>{
- const f=await fixture();await activateSecondaryIdle(f.args);const trial=f.plan.trialId;
+for(const closingGame of [32719,32721])test(`secondary AG close ${closingGame} counts worker20..39 separately and grants repair zero source`,async()=>{
+ const f=await fixture();await activateSecondaryIdle(f.args);
+ if(closingGame===32721){
+  const oldTrial=f.plan.trialId,newTrial='sg_r1_20260928_32721';
+  const replace=v=>JSON.parse(JSON.stringify(v).replaceAll(oldTrial,newTrial).replaceAll('32719','32721').replaceAll('33119','33121'));
+  const entries=[...f.docs];f.docs.clear();for(const [k,d] of entries)f.docs.set(k.replaceAll(oldTrial,newTrial),replace(d));
+  for(const [k,v] of f.mongo)f.mongo.set(k,replace(v));
+  f.oldPlan=replace(f.oldPlan);f.plan=replace(f.plan);f.args.profile=replace(f.args.profile);
+  const spec=f.docs.get(`journal/demo-generation:${newTrial}:${f.plan.demoGeneration}`).value;
+  spec.planHash=hash(f.plan);spec.activationStage.profileHash=hash(f.args.profile);
+  f.docs.get('journal/'+spec.activationStage.key+':complete').value.profileHash=hash(f.args.profile);
+  f.docs.get(`journal/demo-generation:${newTrial}:${f.plan.demoGeneration}:complete`).value.specHash=hash(spec);
+  const pool=f.docs.get('state/pool:'+newTrial).value;pool.planHash=hash(f.plan);pool.demoGeneration.specHash=hash(spec);
+  const c=f.docs.get('state/campaign').value;c.protocolValidation.demoFresh=hash(spec);
+ }
+ const trial=f.plan.trialId;
  const pool=f.docs.get('state/pool:'+trial).value,c=f.docs.get('state/campaign').value;
  const spec=f.docs.get('journal/'+`demo-generation:${trial}:${f.plan.demoGeneration}`).value;
  Object.assign(pool,{enabled:false,failure:'PROTOCOL_VALIDATION_FAILED',drainingProtocol:true,nextBatchId:4,workers:{20:{leaseUntil:0,sessionHash:'new20',activeBatch:{id:2}},21:{leaseUntil:0,sessionHash:'new21',activeBatch:{id:3}}}});

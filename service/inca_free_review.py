@@ -21,6 +21,10 @@ class IncaSequence(NativeNextgenFields):
         check(plan.get('gameId') == 32719 and plan.get('sourceKey') == SOURCE, 'INCA_PROFILE_REQUIRED')
         super().__init__(plan)
 
+    def validate_gsd(self, gsd, index):
+        check(set(gsd) <= {'BGRS','IIFS','VA','NWI','PWI','FGTS','FGRS','CFGC'}, 'INCA_UNREVIEWED_GSD')
+        check('IIFS' not in gsd or gsd['IIFS'] == ('1' if index == 0 else '0'), 'INCA_UNREVIEWED_GSD')
+
     def sequence(self, raw):
         check(raw.get('protocol') == 'nextgen' and raw.get('sourceKey') == SOURCE, 'INCA_PROFILE_REQUIRED')
         steps = raw.get('steps')
@@ -40,8 +44,7 @@ class IncaSequence(NativeNextgenFields):
                 bits = item.split('~')
                 check(len(bits) == 2 and bits[0] and bits[0] not in gsd, 'INVALID_INCA_GSD')
                 gsd[bits[0]] = bits[1]
-            check(set(gsd) <= {'BGRS','IIFS','VA','NWI','PWI','FGTS','FGRS','CFGC'}, 'INCA_UNREVIEWED_GSD')
-            check('IIFS' not in gsd or gsd['IIFS'] == ('1' if i == 0 else '0'), 'INCA_UNREVIEWED_GSD')
+            self.validate_gsd(gsd, i)
             check(p.get('FRBAL','0') == '0', 'INCA_UNREVIEWED_FREE_ROUNDS')
             request = self.request_params(step['requestPayload'], step['msgId'])
             check(player is None or player == request['PID'], 'SESSION_CHANGED_MID_ROUND')

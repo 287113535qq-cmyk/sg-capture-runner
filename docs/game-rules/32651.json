@@ -128,11 +128,11 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "557fd5cc579adb8ba3eca36d68f2d0156db9a80598bbd0653f178e0994607806",
-    "scripts/runner-v2/record_fields.py": "d71bf92dec8c4539ad9e8617cbe0e5dd68c025103ed7635e9c223f048d60d54a",
+    "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
+    "scripts/runner-v2/record_fields.py": "c8e9b1eb84932266886626fb3756e735b4c9af5391870b11618cb475e8bef887",
     "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
-    "scripts/trial/squid-protocol.mjs": "39985758f335e6bf4834894fca70ee7712adf47e1ecf1b6177cce202a8c356c0",
-    "service/game_rule_catalog.py": "e06d6af7b03a4c818e7232375c122ce3cf91dfa5cd2f68998c49827fbe251d71"
+    "scripts/trial/squid-protocol.mjs": "645d73295cc08a43fce4949b680b1370301f53ae78a7487743ce3ec14b8e9d0e",
+    "service/game_rule_catalog.py": "f01b0fc85974067e518f7a08583432bf91aa41373fd3b125874e426cc9851ddf"
   },
   "reviewDocuments": [
     "docs/squid-jackpot-protocol.md"
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f7f95db4e34869963c73ca6fee07d5b69d5ff5c68eb5eca1f0888ac716f7893c"
+  "ruleHash": "6629003c1aea679f7e788b8bc9a92e3353348caa87fc5158f5fddec002864dab"
 }

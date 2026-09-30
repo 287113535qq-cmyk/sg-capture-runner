@@ -54,6 +54,22 @@ async function fixture(shardId=0){
     failResponse(){failResponse=true;},advance(ms){now+=ms;}};
 }
 
+test('Pyramids and Inca explicit feature gaps isolate the game while validation errors hold shared writes',async()=>{
+ for(const [code,local] of [['PYRAMIDS_UNREVIEWED_GSD',true],['PYRAMIDS_UNREVIEWED_FEATURE',true],
+  ['PYRAMIDS_FREE_UNREVIEWED_GSD',true],['INCA_UNREVIEWED_COIN',true],['INCA_UNREVIEWED_JACKPOT',true],
+  ['PYRAMIDS_TERMINAL',false],['PYRAMIDS_FREE_COUNTERS',false],['SESSION_CHANGED_MID_ROUND',false]]){
+  const f=await fixture();
+  await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});
+  f.controller.analyzer.call=async()=>{throw Object.assign(Error(code),{code});};
+  await assert.rejects(f.rpc('exchange_journal',{...f.owned,sequence:1,step:{requestPayload:'MSGID=BET',msgId:'BET',responsePayload:'NFG=1',responseXml:'<synthetic/>'}}));
+  await f.rpc('fail',{...f.owned});
+  const b=(await f.store.get('state',f.controller.batchKey)).value;
+  assert.equal((await f.store.get('state','global-hold')).value.active,!local,code);
+  if(local){assert.equal(b.pending,null);assert(b.abandonedDemo);assert.equal((await f.store.get('journal',b.abandonedDemo)).value.reason,code);}
+  else assert(b.pending);
+ }
+});
+
 test('existing capture loop writes responses durably and confirms a partial batch before resume',async()=>{
   const f=await fixture();let posted=0;
   const result=await captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},

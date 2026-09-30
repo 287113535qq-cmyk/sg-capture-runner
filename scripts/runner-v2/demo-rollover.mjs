@@ -1,3 +1,4 @@
+import {checkSecondaryNextProfile} from './secondary-next-profile.mjs';
 import {checkIdleSecondaryCampaign,checkSecondaryIdleProfile} from './secondary-idle-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
@@ -6,16 +7,18 @@ import {reviewFormalSource,readPoolBatches} from './formal-source-review.mjs';
 
 // No source requests. A completed retirement is required before a fresh,
 // bounded generation can replace the inactive worker registrations.
-export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,idleProfile,now=Date.now}){
+export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,idleProfile,secondaryNextProfile,now=Date.now}){
  assert(typeof boundary==='function'&&/^[a-f0-9]{64}$/.test(plan.demoGeneration)&&/^[a-f0-9]{40}$/.test(commit)
   &&/^\d+:1$/.test(run)&&expiresAt>now()&&expiresAt-now()<=7200000,'ROLLOVER_SCOPE');
  const idle=!!idleProfile;if(idle){checkSecondaryIdleProfile(idleProfile,oldPlan);assert(!fromPlan&&!formalSource&&activationStage?.profileHash===hash(idleProfile),'ROLLOVER_IDLE_SCOPE');}
+ const secondaryNext=!!secondaryNextProfile;if(secondaryNext){checkSecondaryNextProfile(secondaryNextProfile,oldPlan);assert(!idle&&!formalSource&&fromPlan.gameId===32719&&activationStage?.profileHash===hash(secondaryNextProfile),'ROLLOVER_SECONDARY_SCOPE');}
  const stripped={...plan};delete stripped.demoGeneration;
  assert(hash(stripped)===hash(oldPlan)&&plan.buy===0&&plan.phase===1&&(idle||fromPlan.gameId!==plan.gameId),'ROLLOVER_PLAN_CHANGED');
  const get=async(c,k)=>(await store.get(c,k))?.value;
  await boundary();
  const campaign=await get('state','campaign'),pool=await get('state','pool:'+plan.trialId),fromPool=idle?null:await get('state','pool:'+fromPlan.trialId);
  if(idle)checkIdleSecondaryCampaign(campaign);
+ assert(secondaryNext?campaign.group==='secondary':idle||campaign.group!=='secondary','ROLLOVER_GROUP_CHANGED');
  const candidate=campaign.games.find(g=>g.game_id===plan.gameId);
  if(pool.emptyCandidate){
   const key=`empty-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,ready=await get('journal',key+':complete'),before=await get('journal',key+':before');
@@ -63,7 +66,7 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  const spec={schema:'sg-demo-generation-v1',generation:plan.demoGeneration,trialId:plan.trialId,gameId:plan.gameId,planHash:hash(plan),commit,run,createdAt:now(),expiresAt,firstBatchId:pool.nextBatchId,
   historicalBatches:Object.fromEntries(batches.map(b=>[b.id,hash(b)])),retirement:pool.retiredDemo,retirementHash:hash(retired),beforeHash:hash(before),completePreserved:records.length,perWorker:5,workers:20,newBetAllowance:100,
   oldSessions:[...new Set([...Object.values(pool.workers).map(w=>w.sessionHash),...batches.map(b=>b.sessionHash)].filter(Boolean))],
-  ...(idle?{group:'secondary',workerOffset:20}:{}),
+  ...(idle||secondaryNext?{group:'secondary',workerOffset:20}:{}),
   ...(activationStage?{activationStage}:{}),
   ...(Object.keys(unchangedRetiredBatches).length?{unchangedRetiredBatches}:{})};
  await save(key+':before',before);await save(key,spec);

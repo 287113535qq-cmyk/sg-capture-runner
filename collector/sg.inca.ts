@@ -16,6 +16,7 @@ export function incaFields(raw:any,mappingHash:string){
   requireInca(raw.sourceKey==='hyperchargedincajungle96-round-one-base-v1'&&raw.protocol==='nextgen'
     &&raw.roundFieldsVersion==='sg-round-fields-v1'&&raw.steps.length>0&&raw.steps.length<=100,'INCA_PROFILE_REQUIRED');
   const special=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
+  const coins=special&&raw.steps.some((s:any)=>Object.keys(fields(fields(s.responsePayload).GSD??'','#','~')).some(k=>['CL','BGCL'].includes(k)));
   let remaining=0,total=0,current=0,session:string|undefined,last:Record<string,string>={};
   raw.steps.forEach((s:any,i:number)=>{
     const request=fields(s.requestPayload),p=fields(s.responsePayload),msg=i===0?'BET':'FREE_GAME';
@@ -30,8 +31,17 @@ export function incaFields(raw:any,mappingHash:string){
     ['B','AB','TW'].forEach(k=>counter(p[k]));
     const n=counter(p.NFG??(i===0&&!special?'0':undefined));requireInca(n<=100,'FREE_LIMIT');
     if(!special)requireInca(raw.steps.length===1&&n===0,'UNKNOWN_TRIAL_FEATURE');
+    if(coins)requireInca(p.JPV===undefined,'INCA_UNREVIEWED_JACKPOT');
     if(special){
-      const gsd=fields(p.GSD??'','#','~');requireInca(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','NWI','PWI','FGTS','FGRS','CFGC'].includes(k)),'INCA_UNREVIEWED_GSD');
+      const gsd=fields(p.GSD??'','#','~');requireInca(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','NWI','PWI','FGTS','FGRS','CFGC',...(coins?['CL','BGCL']:[])].includes(k)),'INCA_UNREVIEWED_GSD');
+      if(coins)for(const key of ['CL','BGCL'])if(gsd[key]!==undefined){
+        const rows=gsd[key].split('|');if(rows[rows.length-1]==='')rows.pop();
+        requireInca(rows.length>0&&rows.length<=15,'INCA_COIN_LAYOUT');const occupied=new Set<string>();
+        for(const row of rows){const cells=row.split(';');if(cells[cells.length-1]==='')cells.pop();
+          requireInca(cells.length===3,'INCA_COIN_LAYOUT');const [x,y,v]=cells.map(counter),pos=x+','+y;
+          requireInca(x<3&&y<5&&[10,20,40,60,80,100,300,400,600,800].includes(v)&&!occupied.has(pos),'INCA_UNREVIEWED_COIN');occupied.add(pos);
+        }
+      }
       requireInca(gsd.IIFS===undefined||gsd.IIFS===(i===0?'1':'0'),'INCA_UNREVIEWED_GSD');
       requireInca((p.FRBAL??'0')==='0','INCA_UNREVIEWED_FREE_ROUNDS');
       const t=counter(p.TFG),c=counter(p.CFGG);requireInca(t===10&&c<=10&&n<=10&&t===n+c,'INCA_COUNTERS');
@@ -51,7 +61,7 @@ export function incaFields(raw:any,mappingHash:string){
     ||Number(raw.steps[raw.steps.length-1].responseBalance)===end),'BALANCE_MISMATCH');
   requireInca(/^[a-f0-9]{64}$/.test(mappingHash),'MAPPING_REQUIRED');
   return {roundFieldsVersion:raw.roundFieldsVersion,protocol:raw.protocol,sourceKey:raw.sourceKey,
-    bet:stake/100,mul:win/stake,buy:0,bonus:special?2:raw.steps.length>1?1:0,
+    bet:stake/100,mul:win/stake,buy:0,bonus:special?(coins?3:2):raw.steps.length>1?1:0,
     primaryBonusKind:raw.steps.length>1?'freeGame':'none',typeMappingHash:mappingHash,
     money:{startBalanceRaw:start,endBalanceRaw:end,totalWinRaw:win,betRaw:stake}};
 }

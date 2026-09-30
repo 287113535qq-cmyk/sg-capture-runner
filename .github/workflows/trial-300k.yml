@@ -11,7 +11,7 @@ on:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
         default: demo-pilot-morepuff-20260930.json
-        options: [demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
+        options: [demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       allocation:
         description: 'Dynamic batches for a configured new trial, or the preserved legacy trial'
         default: round-one
@@ -855,13 +855,13 @@ jobs:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
         run: node scripts/runner-v2/campaign-worker.mjs capture
   secondary-admit:
-    if: github.event_name == 'workflow_dispatch' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.role == 'demo-fresh-short' && inputs.allocation == 'round-one' && inputs.round_one_limit == '5' && inputs.pilot_profile == 'demo-pilot-inca-20261001.json'
+    if: github.event_name == 'workflow_dispatch' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.role == 'demo-fresh-short' && inputs.allocation == 'round-one' && inputs.round_one_limit == '5' && (inputs.pilot_profile == 'demo-pilot-inca-20261001.json' || inputs.pilot_profile == 'demo-pilot-pyramids-20261001.json')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
-      SG_DEMO_PILOT_PROFILE: demo-pilot-inca-20261001.json
+      SG_DEMO_PILOT_PROFILE: ${{ inputs.pilot_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -877,11 +877,15 @@ jobs:
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Admit independent secondary pilot without source requests
+        if: inputs.pilot_profile == 'demo-pilot-inca-20261001.json'
         run: node scripts/runner-v2/secondary-idle-control.mjs admit
+      - name: Admit next secondary candidate after completed import and retirement
+        if: inputs.pilot_profile == 'demo-pilot-pyramids-20261001.json'
+        run: node scripts/runner-v2/secondary-next-control.mjs admit
   fresh-capture:
     needs: [secondary-admit]
     name: fresh-capture-${{ matrix.shard }}
-    if: always() && !cancelled() && (inputs.pilot_profile != 'demo-pilot-inca-20261001.json' || needs.secondary-admit.result == 'success') && github.event_name == 'workflow_dispatch' && ((inputs.role == 'fresh-short' || inputs.role == 'pair-residual-short') && inputs.round_one_limit == '10' || inputs.role == 'demo-fresh-short' && inputs.round_one_limit == '5') && inputs.allocation == 'round-one'
+    if: always() && !cancelled() && ((inputs.pilot_profile != 'demo-pilot-inca-20261001.json' && inputs.pilot_profile != 'demo-pilot-pyramids-20261001.json') || needs.secondary-admit.result == 'success') && github.event_name == 'workflow_dispatch' && ((inputs.role == 'fresh-short' || inputs.role == 'pair-residual-short') && inputs.round_one_limit == '10' || inputs.role == 'demo-fresh-short' && inputs.round_one_limit == '5') && inputs.allocation == 'round-one'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

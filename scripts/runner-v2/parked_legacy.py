@@ -103,12 +103,27 @@ def _decode_archive(data, plan, mongo_records, expected_hash, checked_at, worker
                                  record_limit=record_limit, review_batches=review_batches)
 
 
+def decode_fixed_pyramids(request):
+    """Exact independently reviewed 1262-record archive. No generic scope lift."""
+    import base64
+    fixed=json.loads((Path(__file__).resolve().parents[2]/'config/parked-pyramids-20261001.json').read_text())
+    assert request['fixedLegacyHash']==digest(fixed)=='c29872c827b7cd192d7424bf46b17108a173ee3175c9aa291299010e0cf7ba28'
+    plan=request['plan']
+    assert plan['gameId']==32721 and plan['trialId']==fixed['trialId'] and digest(plan)==fixed['planHash']
+    assert request['archiveHash']==fixed['archiveHash'] and request.get('workerOffset')==20
+    data=base64.b64decode(request['archive'],validate=True);assert len(data)==fixed['bytes']
+    result=decode_review_archive(data,plan,request['rounds'],fixed['archiveHash'],request['checkedAt'],
+        expected_records=1262,expected_mongo=1102,worker_offset=20,expected_batches=fixed['batches'])
+    assert len(result['pending'])==4
+    return result
+
+
 if __name__ == '__main__':
     import base64
     import sys
     try:
         request = json.loads(sys.stdin.buffer.read(64 * 1024 * 1024 + 1))
-        result = decode_archive(base64.b64decode(request['archive'], validate=True),
+        result = decode_fixed_pyramids(request) if 'fixedLegacyHash' in request else decode_archive(base64.b64decode(request['archive'], validate=True),
             request['plan'], request['rounds'], request['archiveHash'], request['checkedAt'], request.get('workerOffset', 0))
         print(json.dumps({'ok': True, 'result': result}, separators=(',', ':')))
     except Exception:

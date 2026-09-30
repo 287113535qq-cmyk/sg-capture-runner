@@ -1,7 +1,9 @@
+import {checkSecondaryNextProfile} from './secondary-next-profile.mjs';
 import {SECONDARY_IDLE_SCHEMA,checkSecondaryIdleProfile} from './secondary-idle-profile.mjs';
 import assert from 'node:assert/strict';import {protocolHash as hash} from './protocol-resume.mjs';
 export function applyDemoPilot(plans,profile){
  const secondary=profile.schema===SECONDARY_IDLE_SCHEMA;if(secondary)checkSecondaryIdleProfile(profile,plans[profile.gameId]);
+ if(profile.group==='secondary'&&!secondary)checkSecondaryNextProfile(profile,plans[profile.gameId]);
  const residual=profile.schema==='sg-demo-residual-pilot-v1',next=profile.schema==='sg-demo-next-game-v1';
  assert((secondary|| (next?Number.isInteger(profile.gameId)&&!!plans[profile.gameId]&&!!plans[profile.fromGameId]&&profile.gameId!==profile.fromGameId:
   (profile.schema==='sg-demo-pilot-v1'||residual)&&profile.gameId===32820&&profile.fromGameId===(residual?32820:32739)))&&profile.perWorker===5&&profile.workers===20,'DEMO_PILOT_SCOPE');

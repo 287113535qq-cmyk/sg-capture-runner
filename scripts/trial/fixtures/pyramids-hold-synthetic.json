@@ -1,0 +1,72 @@
+{
+  "sourceKey": "hyperchargedpyramidsofra96-round-one-base-v1",
+  "protocol": "nextgen",
+  "roundFieldsVersion": "sg-round-fields-v1",
+  "fixtureOnly": false,
+  "startBalanceRaw": 100000,
+  "steps": [
+    {
+      "msgId": "BET",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=BET&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=BET&FID=0|&NFG=6&TFG=6&CFGG=0&IFG=0&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=BET&amp;FID=0|&amp;NFG=6&amp;TFG=6&amp;CFGG=0&amp;IFG=0&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=7&TFG=8&CFGG=1&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=7&amp;TFG=8&amp;CFGG=1&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=6&TFG=8&CFGG=2&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=6&amp;TFG=8&amp;CFGG=2&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=5&TFG=8&CFGG=3&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=5&amp;TFG=8&amp;CFGG=3&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=4&TFG=8&CFGG=4&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=4&amp;TFG=8&amp;CFGG=4&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=3&TFG=8&CFGG=5&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=3&amp;TFG=8&amp;CFGG=5&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=2&TFG=8&CFGG=6&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=2&amp;TFG=8&amp;CFGG=6&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=1&TFG=8&CFGG=7&IFG=1&B=99980&AB=99980&TW=0&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=1&amp;TFG=8&amp;CFGG=7&amp;IFG=1&amp;B=99980&amp;AB=99980&amp;TW=0&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN</PAYLOAD></GDMRESPONSE>"
+    },
+    {
+      "msgId": "FREE_GAME",
+      "elapsedMs": 1,
+      "requestPayload": "PID=gdmgcmfixture-pyramids&MSGID=FREE_GAME&GN=hyperchargedpyramidsofra96&BPL=1&LB=40",
+      "responsePayload": "MSGID=FREE_GAME&FID=0|&NFG=0&TFG=8&CFGG=8&IFG=1&B=100080&AB=100080&TW=100&GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN#HNSTW~100",
+      "responseXml": "<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>MSGID=FREE_GAME&amp;FID=0|&amp;NFG=0&amp;TFG=8&amp;CFGG=8&amp;IFG=1&amp;B=100080&amp;AB=100080&amp;TW=100&amp;GSD=CL~0;0;20;|#BGCL~0;0;20;|#HCL~0;0;20;|#HVA~12;12;12;|12;12;12;|12;12;12;|12;12;12;|12;12;12;|#HNS~1#HNSID~2#HNSRIDS~2;2;2;#CS~RESPIN#HNSTW~100</PAYLOAD></GDMRESPONSE>"
+    }
+  ]
+}

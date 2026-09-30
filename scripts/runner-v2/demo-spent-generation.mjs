@@ -11,6 +11,8 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
  assert(parent&&hash(parent)===profile.sourceSpecHash&&hash(parent)===scene.fromPool.demoGeneration?.specHash
   &&done?.specHash===hash(parent)&&done.schema==='sg-demo-generation-complete-v1'&&done.commit===parent.commit&&done.run===parent.run
   &&parent.planHash===hash(fromPlan)&&parent.trialId===fromPlan.trialId&&parent.generation===fromPlan.demoGeneration,'NEXT_GAME_SOURCE_PROOF');
+ const offset=parent.group==='secondary'?20:0;
+ assert(offset===0||profile.group==='secondary'&&profile.workerOffset===20&&fromPlan.gameId===32719&&parent.workerOffset===20&&profile.sourceClosureHash,'NEXT_GAME_SOURCE_GROUP');
  const residual=parent.schema==='sg-demo-generation-residual-v1';
  assert(residual||parent.schema==='sg-demo-generation-v1','NEXT_GAME_SOURCE_PROOF');
  let budgets,closure;
@@ -31,8 +33,8 @@ export async function reviewSpentDemoGeneration({store,parser,basePlan,fromPlan,
  assert(scene.sourceBatches.every(b=>!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&b.checkpoint===b.journaled&&b.leaseUntil<=now()),'NEXT_GAME_SOURCE_UNSETTLED');
  assert(Object.values(scene.fromPool.workers).every(w=>w.leaseUntil<=now()),'NEXT_GAME_SOURCE_UNSETTLED');
  const rows=scene.sourceBatches.filter(b=>b.id>=parent.firstBatchId);
- assert(rows.every(b=>Number.isInteger(b.worker)&&b.worker>=0&&b.worker<20&&Number.isSafeInteger(b.journaled)&&b.start-1<=b.journaled&&b.journaled<=b.end),'NEXT_GAME_SOURCE_BATCH_BOUND');
- for(let worker=0;worker<20;worker++)assert(rows.filter(b=>b.worker===worker).reduce((n,b)=>n+b.journaled-b.start+1,0)===budgets[worker],'NEXT_GAME_SOURCE_QUOTA_NOT_SPENT');
+ assert(rows.every(b=>Number.isInteger(b.worker)&&b.worker>=offset&&b.worker<offset+20&&Number.isSafeInteger(b.journaled)&&b.start-1<=b.journaled&&b.journaled<=b.end),'NEXT_GAME_SOURCE_BATCH_BOUND');
+ for(let worker=offset;worker<offset+20;worker++)assert(rows.filter(b=>b.worker===worker).reduce((n,b)=>n+b.journaled-b.start+1,0)===budgets[worker-offset],'NEXT_GAME_SOURCE_QUOTA_NOT_SPENT');
  // New v1 support additionally verifies the actual complete BET records, not
  // just high-water marks. Existing applied residual evidence stays unchanged.
  let verified=0;

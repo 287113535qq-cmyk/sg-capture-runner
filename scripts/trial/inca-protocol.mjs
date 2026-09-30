@@ -1,3 +1,5 @@
+import{incaCoinSequence,hasIncaCoins,INCA_EXTENSION as INCA_COIN_EXTENSION}from'./inca-coin-review.mjs';
+export{INCA_COIN_EXTENSION};
 import{incajungleSequence}from'./inca-free-review.mjs';
 // Inca has an independently reviewed ten-free route and a separate mapping.
 // Standalone FID1 is supported; switching feature at NFG0 is not an exit.
@@ -17,7 +19,7 @@ function integer(v){check(typeof v==='string'&&/^\d+$/.test(v)&&Number.isSafeInt
 export function incaSequence(raw){
  check(raw?.steps?.length>0,'INVALID_ROUND_STEPS');
  const special=raw.steps.some(s=>['1','1|'].includes(pairs(s.responsePayload).FID));
- if(special)return incajungleSequence(raw);
+ if(special)return {...(hasIncaCoins(raw)?incaCoinSequence(raw):incajungleSequence(raw)),coins:hasIncaCoins(raw)};
 
   check(raw.sourceKey===INCA_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'INCA_PROFILE_REQUIRED');
   let previous,player,last;
@@ -43,14 +45,14 @@ export function incaNextRequest(raw){
   const {next}=incaSequence(raw);return next?{MSGID:next}:null;
 }
 export function incaMapping(raw,baseHash,extensionHash){
-  const {next,special,last}=incaSequence(raw);
+  const {next,special,last,coins}=incaSequence(raw);
   check(next===null&&(!special||raw.steps.length>1),'INCOMPLETE_ROUND');
   const end=integer(last.B),win=integer(last.TW);
   check(raw.roundFieldsVersion==='sg-round-fields-v1'&&Number.isSafeInteger(raw.startBalanceRaw)
     &&raw.startBalanceRaw>=0&&raw.startBalanceRaw-end+win===20,'STAKE_MISMATCH');
   check(end===integer(last.AB)&&(raw.steps.at(-1).responseBalance===undefined
     ||Number(raw.steps.at(-1).responseBalance)===end),'BALANCE_MISMATCH');
-  const typeMappingHash=special?extensionHash:baseHash;
+  const typeMappingHash=special?(coins?extensionHash?.coins:typeof extensionHash==='object'?extensionHash.free:extensionHash):baseHash;
   check(typeof typeMappingHash==='string'&&/^[a-f0-9]{64}$/.test(typeMappingHash),'INCA_MAPPING_REQUIRED');
-  return {buy:0,bonus:special?2:raw.steps.length>1?1:0,typeMappingHash};
+  return {buy:0,bonus:special?(coins?3:2):raw.steps.length>1?1:0,typeMappingHash};
 }

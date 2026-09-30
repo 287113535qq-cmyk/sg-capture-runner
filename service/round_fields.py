@@ -171,6 +171,12 @@ def type_profile(source_key):
 
 def types(raw, kind):
     source_key = raw.get('sourceKey')
+    from pyramids_fields import SOURCE as PYRAMIDS_SOURCE, EXTENSION as PYRAMIDS_EXTENSION, hold_type, PyramidsFields
+    from pyramids_free_review import feature_type as pyramids_free_type
+    pyramids_free = source_key == PYRAMIDS_SOURCE and pyramids_free_type(raw)
+    if source_key == PYRAMIDS_SOURCE:
+        pplan={'gameId':32721,'sourceKey':PYRAMIDS_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedpyramidsofra96','LB':'40'}}
+        check(PyramidsFields(pplan).next_request(raw) is None, 'INCOMPLETE_ROUND')
     from piggies_fields import SIZE2_EXTENSION, has_size2, PiggiesFields
     piggies_size2 = has_size2(raw)
     if piggies_size2:
@@ -206,15 +212,19 @@ def types(raw, kind):
         MOREPUFF_EXTENSION = MEGAHAT_EXTENSION
     from inca_free_review import SOURCE as INCA_SOURCE, EXTENSION as INCA_EXTENSION, feature_type as inca_feature_type, IncaSequence
     inca_type = source_key == INCA_SOURCE and inca_feature_type(raw)
+    from inca_coin_review import EXTENSION as INCA_COIN_EXTENSION, has_coins, IncaCoinSequence
+    inca_coin = inca_type and has_coins(raw)
+    if inca_coin:
+        INCA_EXTENSION = INCA_COIN_EXTENSION
     if inca_type:
-        check(IncaSequence({'gameId':32719,'sourceKey':INCA_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedincajungle96','LB':'40'}}).sequence(raw) is None, 'INCOMPLETE_ROUND')
+        check((IncaCoinSequence if inca_coin else IncaSequence)({'gameId':32719,'sourceKey':INCA_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedincajungle96','LB':'40'}}).sequence(raw) is None, 'INCOMPLETE_ROUND')
     from jinzita_fields import SOURCE as JINZITA_SOURCE, EXTENSION as JINZITA_EXTENSION, feature_type as jinzita_feature_type
     jinzita_type = source_key == JINZITA_SOURCE and jinzita_feature_type(raw)
     from luxor_fields import SOURCE as LUXOR_SOURCE, EXTENSION as LUXOR_EXTENSION, feature_type as luxor_feature_type
     luxor_type = source_key == LUXOR_SOURCE and luxor_feature_type(raw)
     foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
     beaver_cfg1 = beaver_type and cfg1_type(raw)
-    profile, mapping_hash = type_profile(INCA_EXTENSION if inca_type else SIZE2_EXTENSION if piggies_size2 else MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    profile, mapping_hash = type_profile(PYRAMIDS_EXTENSION if pyramids_free else INCA_EXTENSION if inca_type else SIZE2_EXTENSION if piggies_size2 else MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -242,14 +252,17 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if piggies_size2:
+    if pyramids_free:
+        check(kind=='freeGame' and profile.get('featureSelector')=='pyramids-ten-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus=profile['featureTypes']['independentFreeGames']
+    elif piggies_size2:
         check(kind=='freeGame' and profile.get('featureSelector')=='piggies-size2-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['freeTypes']['native-free-game']
     elif morepuff_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == ('morepuff-wheel-megahat-single-v1' if morepuff_megahat else 'morepuff-wheel-cash-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['wheelMegaHatSingle' if morepuff_megahat else 'wheelCash']
     elif inca_type:
-        check(kind == 'freeGame' and profile.get('featureSelector') == 'inca-ten-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')
+        check(kind == 'freeGame' and profile.get('featureSelector') == ('inca-coin-free-v1' if inca_coin else 'inca-ten-free-v1'), 'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus = profile['featureTypes']['independentFreeGames']
     elif jinzita_type:
         check(kind == 'freeGame' and profile.get('featureSelector') == 'jinzita-free-v1', 'FEATURE_TYPE_MAPPING_REQUIRED')

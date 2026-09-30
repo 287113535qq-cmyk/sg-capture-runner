@@ -1,3 +1,4 @@
+import {PYRAMIDS_SOURCE,pyramidsNextRequest,pyramidsMapping} from './pyramids-protocol.mjs';
 import {INCA_SOURCE,incaNextRequest,incaMapping} from './inca-protocol.mjs';
 import {PIGGIES_SOURCE,piggiesNext,piggiesMapping} from './piggies-protocol.mjs';
 import {hasMorepuffWheel,morepuffNext,morepuffMapping} from './morepuff-protocol.mjs';
@@ -23,6 +24,7 @@ function parse(text) {
 }
 function integer(v) {if(!/^\d+$/.test(String(v)) || !Number.isSafeInteger(Number(v)))throw new Error('INVALID_PROTOCOL_COUNTER');return Number(v);}
 export function nextRequest(raw) {
+  if(raw.sourceKey===PYRAMIDS_SOURCE)return pyramidsNextRequest(raw);
   if(raw.sourceKey===PIGGIES_SOURCE)return piggiesNext(raw);
   if(hasMorepuffWheel(raw))return morepuffNext(raw);
   if(raw.sourceKey===INCA_SOURCE)return incaNextRequest(raw);
@@ -57,6 +59,7 @@ export function nextRequest(raw) {
   return next;
 }
 export function roundMapping(raw, baseHash, extensionHash) {
+  if(raw.sourceKey===PYRAMIDS_SOURCE)return pyramidsMapping(raw,baseHash,extensionHash);
   if(raw.sourceKey===PIGGIES_SOURCE)return piggiesMapping(raw,baseHash,extensionHash);
   if(hasMorepuffWheel(raw))return morepuffMapping(raw,extensionHash);
   if(raw.sourceKey===INCA_SOURCE)return incaMapping(raw,baseHash,extensionHash);

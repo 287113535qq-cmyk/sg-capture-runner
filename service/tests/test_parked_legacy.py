@@ -139,3 +139,27 @@ class ParkedWorkerRangeTests(unittest.TestCase):
             for changed in [{**batch,'start':2},{**batch,'worker':0},{**batch,'end':101}]:
                 with self.assertRaises(AssertionError):convert_directory(base,plan,[],'fixed',100,20,
                     record_limit=1262,review_batches=[changed])
+
+
+class FixedPyramidsScopeTests(unittest.TestCase):
+    def test_fixed_scope_cannot_be_used_for_other_archives_games_or_offsets(self):
+        import base64
+        from parked_legacy import decode_fixed_pyramids
+        root=Path(__file__).resolve().parents[2]
+        fixed=json.loads((root/'config/parked-pyramids-20261001.json').read_text())
+        plan=json.loads((root/'config/round-one-plans.json').read_text())['32721']
+        request=dict(fixedLegacyHash=digest(fixed),plan=plan,archiveHash=fixed['archiveHash'],workerOffset=20,
+                     archive=base64.b64encode(b'x'*fixed['bytes']).decode(),rounds=[],checkedAt=1)
+        result={'pending':[{}]*4}
+        with patch('parked_legacy.decode_review_archive',return_value=result) as decoder:
+            self.assertEqual(decode_fixed_pyramids(request),result)
+            self.assertEqual(decoder.call_args.kwargs['expected_records'],1262)
+            self.assertEqual(decoder.call_args.kwargs['expected_mongo'],1102)
+            self.assertEqual(decoder.call_args.kwargs['expected_batches'],fixed['batches'])
+        for change in [dict(fixedLegacyHash='0'*64),dict(plan={**plan,'gameId':32719}),dict(workerOffset=0),
+                       dict(archiveHash='0'*64),dict(archive='eA==')]:
+            with self.subTest(change=list(change)),patch('parked_legacy.decode_review_archive') as decoder:
+                with self.assertRaises(AssertionError):decode_fixed_pyramids({**request,**change})
+                decoder.assert_not_called()
+        with patch('parked_legacy.decode_review_archive',return_value={'pending':[{}]*3}):
+            with self.assertRaises(AssertionError):decode_fixed_pyramids(request)

@@ -883,6 +883,8 @@
           },
           "differences": {},
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -892,8 +894,8 @@
           "requiredReview": [
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1033,6 +1035,40 @@
           "captureAuthorization": false
         },
         {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
           "referenceGameId": 32651,
           "scope": "transport-only",
           "common": {
@@ -1141,7 +1177,7 @@
       },
       "references": {
         "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
-        "scripts/trial/squid-protocol.mjs": "39985758f335e6bf4834894fca70ee7712adf47e1ecf1b6177cce202a8c356c0"
+        "scripts/trial/squid-protocol.mjs": "645d73295cc08a43fce4949b680b1370301f53ae78a7487743ce3ec14b8e9d0e"
       },
       "candidates": [
         {
@@ -1285,6 +1321,8 @@
             }
           },
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -1294,8 +1332,8 @@
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1329,6 +1367,43 @@
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -1697,6 +1772,8 @@
             }
           },
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -1707,8 +1784,8 @@
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -1740,6 +1817,41 @@
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -1993,6 +2105,8 @@
             }
           },
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -2003,8 +2117,8 @@
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -2036,6 +2150,41 @@
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "client-feature-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -2146,11 +2295,13 @@
         "terminal": "explicit-NFG0-and-game-exits"
       },
       "references": {
-        "service/inca_free_review.py": "85e711e5016fc1bd854a9c7ec66e256d40f0b5bf837bcb6aa4a7c6938ba635b4",
-        "service/inca_fields.py": "a31d2cd2aadfd7a705ed27a1f41f2d517b63b280b890d96494e39953d579192b",
+        "service/inca_coin_review.py": "3665f381e7a6563413f2b94f1a3896ca0c90a9084ff562c7808d45a0823157dd",
+        "scripts/trial/inca-coin-review.mjs": "61708ccf81324659219b1fbe8161c30bdaeb3663fee9d8705cb897fca34e1b5e",
+        "service/inca_free_review.py": "b93b2518081adab43798ae24bc47235ae159330dcceaf2cc1a4ba838d505d543",
+        "service/inca_fields.py": "3aea5ec1b43547472f9ec4ba8ca571b52bb92609746fb09e62dc02476fca1be5",
         "scripts/trial/inca-free-review.mjs": "f51436a1f3503607d52ec78b3ac5530cae00bcd097823d21ff197ae731412bed",
-        "scripts/trial/inca-protocol.mjs": "76b424856673904fe0125847b93a9a9d7f99f8ebf5ef532dcfe69bab93c7e54c",
-        "collector/sg.inca.ts": "daec02fa961564bfbab912e2e9644953c4c5cfbbd4c85384e4837dc33810673e"
+        "scripts/trial/inca-protocol.mjs": "45ad77ce8d5466a635ef4fdd1d58935fb14004682b67b67cceefdc88fecc4916",
+        "collector/sg.inca.ts": "a573f1119a62dbf2e686b9cad3ab3c91f82edc5600ba78c2779cc153f44a795b"
       },
       "candidates": [
         {
@@ -2171,8 +2322,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
@@ -2195,8 +2346,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
           ],
@@ -2220,8 +2371,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -2245,8 +2396,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -2280,8 +2431,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
@@ -2315,10 +2466,46 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -2349,8 +2536,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
           ],
           "captureAuthorization": false
@@ -2382,8 +2569,8 @@
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
           ],
           "captureAuthorization": false
@@ -2444,6 +2631,8 @@
           },
           "differences": {},
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -2454,8 +2643,8 @@
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -2572,6 +2761,41 @@
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -2645,11 +2869,317 @@
     {
       "gameId": 32721,
       "name": "Hypercharged Pyramids of Ra",
-      "status": "unclassified",
-      "group": null,
-      "traits": {},
-      "references": {},
-      "candidates": [],
+      "status": "reviewed-traits",
+      "group": "nextgen-hold-extensions",
+      "traits": {
+        "protocol": "nextgen-payload",
+        "session": "same-PID",
+        "requests": "BET-FREE_GAME",
+        "counters": "TFG=NFG+CFGG-plus-2-or-4",
+        "terminal": "isolated-hold-outro-and-request-BET"
+      },
+      "references": {
+        "service/pyramids_hold_review.py": "cebbb5ce4587d018634d4112ef2fc370aa3dcd016686e41e55c0f29d6a1d89f9",
+        "scripts/trial/pyramids-hold-review.mjs": "b24fe93f4f9246eb4d71ccbd2ab9d619aa1012bd7196547387db11ad495ab370",
+        "service/pyramids_free_review.py": "0cf69dac1a00098ae1571a7bde93a07475405f981100ba43b2daad198477b983",
+        "scripts/trial/pyramids-free-review.mjs": "7ebeb1ff7cb67d640385d1c4856b7a9dfd4bb064235eed2c784df7c04937a811",
+        "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
+        "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
+        "collector/sg.pyramids.ts": "d332820c8fa5927523985e470fe7cded8edb9e1b503ed59ad7bb1aa67f0be35c"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32636,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/piggies_fields.py",
+            "scripts/trial/piggies-protocol.mjs",
+            "collector/sg.piggies.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32714,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/huff_fields.py",
+            "scripts/trial/huff-protocol.mjs",
+            "service/huff_touchup_review.py",
+            "service/huff_retrigger_review.py",
+            "scripts/trial/huff-retrigger-review.mjs",
+            "collector/sg.huff-retrigger.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
+            "Do not transfer FID meanings or treat NFG0 alone as terminal."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32718,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "feature-specific"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "client-feature-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/morepuff_fields.py",
+            "scripts/trial/morepuff-protocol.mjs",
+            "collector/sg.morepuff.ts",
+            "service/morepuff_megahat_review.py",
+            "scripts/trial/morepuff-megahat-review.mjs",
+            "collector/sg.morepuff-megahat.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "FID2 is Wheel; WHSTOP and combined features decide continuation.",
+            "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32719,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
+            "service/inca_free_review.py",
+            "service/inca_fields.py",
+            "scripts/trial/inca-free-review.mjs",
+            "scripts/trial/inca-protocol.mjs",
+            "collector/sg.inca.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32720,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/jinzita_fields.py",
+            "scripts/trial/jinzita-protocol.mjs",
+            "collector/sg.jinzita.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
+            "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32820,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/beaver_fields.py",
+            "scripts/trial/beaver-protocol.mjs",
+            "collector/sg.beaver.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32835,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "TFG=NFG+CFGG"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "explicit-NFG0-and-game-exits"
+            }
+          },
+          "referenceFiles": [
+            "service/luxor_fields.py",
+            "scripts/trial/luxor-protocol.mjs",
+            "collector/sg.luxor.ts"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32651,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/squid_fields.py",
+            "scripts/trial/squid-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32836,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG-plus-2-or-4",
+              "reference": "feature-specific"
+            },
+            "requests": {
+              "target": "BET-FREE_GAME",
+              "reference": "BET-START-PICK-END"
+            },
+            "terminal": {
+              "target": "isolated-hold-outro-and-request-BET",
+              "reference": "feature-END-and-followups"
+            }
+          },
+          "referenceFiles": [
+            "service/quarterback_fields.py",
+            "scripts/trial/quarterback-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported.",
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
+          ],
+          "captureAuthorization": false
+        }
+      ],
       "captureAuthorization": false
     },
     {
@@ -3353,6 +3883,8 @@
           },
           "differences": {},
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -3363,8 +3895,8 @@
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -3481,6 +4013,41 @@
             "Independent free terminal is synthetic evidence.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "FID1/CFG1 is independent free; CFG0 selects a different feature.",
+            "Independent free terminal is synthetic evidence.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -3634,6 +4201,8 @@
           },
           "differences": {},
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -3644,8 +4213,8 @@
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -3762,6 +4331,41 @@
             "Independent free terminal is synthetic evidence.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "requests": "BET-FREE_GAME",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "TFG=NFG+CFGG",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "terminal": {
+              "target": "explicit-NFG0-and-game-exits",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "FID2 means free spins here; switching to respin/cascade is not a terminal.",
+            "Independent free terminal is synthetic evidence.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },
@@ -3990,6 +4594,8 @@
             }
           },
           "referenceFiles": [
+            "service/inca_coin_review.py",
+            "scripts/trial/inca-coin-review.mjs",
             "service/inca_free_review.py",
             "service/inca_fields.py",
             "scripts/trial/inca-free-review.mjs",
@@ -3999,8 +4605,8 @@
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
-            "Only one real ten-free trigger exists. Continuations/terminal remain synthetic; independent mapping/capture checks passed locally, no admission or source permission.",
-            "Strict ten-free candidate rejects retriggers, mixed HoldNSpin and unknown GSD; do not inherit Jinzita broader progression."
+            "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
+            "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
           ],
           "captureAuthorization": false
         },
@@ -4034,6 +4640,43 @@
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32721,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "nextgen-payload",
+            "session": "same-PID"
+          },
+          "differences": {
+            "counters": {
+              "target": "feature-specific",
+              "reference": "TFG=NFG+CFGG-plus-2-or-4"
+            },
+            "requests": {
+              "target": "BET-START-PICK-END",
+              "reference": "BET-FREE_GAME"
+            },
+            "terminal": {
+              "target": "feature-END-and-followups",
+              "reference": "isolated-hold-outro-and-request-BET"
+            }
+          },
+          "referenceFiles": [
+            "service/pyramids_hold_review.py",
+            "scripts/trial/pyramids-hold-review.mjs",
+            "service/pyramids_free_review.py",
+            "scripts/trial/pyramids-free-review.mjs",
+            "service/pyramids_fields.py",
+            "scripts/trial/pyramids-protocol.mjs",
+            "collector/sg.pyramids.ts"
+          ],
+          "requiredReview": [
+            "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
+            "Fifteen historical natural HoldNSpin chains and three incomplete prefixes pass independent Python/Node review; 1262 historical normalizations preserved. Independent Python/Runner/collector and capture entry integrated; real archive import-retire-rollover-session audit passed in memory, not admitted online.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Independent10-free route/exit reviewed against official methods, terminal still synthetic. Mixed free and external jackpot remain unsupported."
           ],
           "captureAuthorization": false
         },

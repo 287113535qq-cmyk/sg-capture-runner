@@ -121,13 +121,22 @@ def contract(game_id):
             'GSD.VA': '需排除同时3个13和6个14触发的组合功能；未知功能字段拒绝。',
             'NFG / CFGG': '官方映射分别Bb.Ee/Bb.Wf，不混淆剩余与进度。'})
     elif game_id == 32719:
-        native.update({'family':'inca-ten-free-v1',
+        native.update({'family':'inca-ten-free-and-coin-v1',
             'continue':'首BET独立FID1/TFG10/NFG10/CFGG0；同PID按FREE_GAME继续，严格每帧NFG减1/CFGG加1，无重触发。',
             'complete':'第10次FREE明确NFG0/CFGG10；FGRS/CFGC若存在必须与外层相等，GCT/非零FRBAL/混合FID/未知GSD拒绝；独立核XML和下注20。',
-            'bounds':'第二账号旧67完整（60Mongo、7待补写）已离线逐条保全，1中断仅真实触发前缀；完整11帧终局仍合成。已接Python/Runner/collector/capture，尚未独立准入或源请求；FID0 HoldNSpin与混合功能未支持，非普通NFG0单BET拒绝。'})
-        native['files'] += ['service/inca_free_review.py','service/inca_fields.py','scripts/trial/inca-free-review.mjs','scripts/trial/inca-protocol.mjs','collector/sg.inca.ts']
+            'bounds':'第二账号94完整保全，29已用/71已注销。CL/BGCL金币免费修复新增独立bonus3映射及三方/capture入口，94旧规范化不变；未重入，完整11帧终局仍合成。FID0 HoldNSpin、负值奖池、外部JPV与混合功能未支持；不授正式额度。'})
+        native['files'] += ['service/inca_coin_review.py','scripts/trial/inca-coin-review.mjs','service/inca_free_review.py','service/inca_fields.py','scripts/trial/inca-free-review.mjs','scripts/trial/inca-protocol.mjs','collector/sg.inca.ts']
         native['fields'].update({'FID':'固定官方客户端1=FreeSpins、0=HoldNSpin；不能跨游戏照搬FID。',
             'GSD.FGRS / CFGC':'独立执行官方EM/LXa验证额外剩余和进度可覆盖外层；NFG0不单独结束。'})
+    elif game_id == 32721:
+        native.update({'family':'pyramids-isolated-hold-and-ten-free-v1',
+            'continue':'FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。',
+            'complete':'Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。',
+            'bounds':'1262旧完整三方规范化不变，含15自然Hold终局；4旧半局未完成。独立10免费终局仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。真实旧档案import-retire-rollover-fresh已内存验证160补写4作废，尚未线上转换；不称整款ready/formal。'})
+        native['files'] += ['service/pyramids_hold_review.py','service/pyramids_free_review.py','service/pyramids_fields.py','scripts/trial/pyramids-hold-review.mjs','scripts/trial/pyramids-free-review.mjs','scripts/trial/pyramids-protocol.mjs','collector/sg.pyramids.ts']
+        native['fields'].update({'FID':'固定官方客户端0=HoldNSpin、1=FreeSpins；独立审查后使用。',
+            'GSD.HNSTW / HVA / HVABT':'Hold累计奖励与首BET赢奖相加核TW；5x3盘面拒绝Grand标记。',
+            'GSD.FGRS / CFGC':'客户端剩余/进度可覆盖外层，严格相等防止提前结束。'})
     elif game_id == 32720:
         native.update({'family': 'jinzita-standalone-free-v1',
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',

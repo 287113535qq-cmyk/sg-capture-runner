@@ -1,3 +1,4 @@
+import {checkSecondaryNextProfile} from './secondary-next-profile.mjs';
 import {SECONDARY_IDLE_SCHEMA,checkSecondaryIdleProfile,checkIdleSecondaryCampaign} from './secondary-idle-profile.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -7,14 +8,15 @@ import {receiptKey} from './durable-queue.mjs';
 // No source transport and no round insert. Verified old complete records and
 // interrupted evidence enter a disabled pool; normal retirement does the flush.
 export async function importParkedDemo({store,transport,decode,plan,profile,boundary,commit,run,now=Date.now}){
- const secondary=profile.schema===SECONDARY_IDLE_SCHEMA;if(secondary)checkSecondaryIdleProfile(profile,plan);
+ const idle=profile.schema===SECONDARY_IDLE_SCHEMA,secondary=idle||profile.group==='secondary';
+ const fixed=secondary&&!idle?checkSecondaryNextProfile(profile,plan):null;if(idle)checkSecondaryIdleProfile(profile,plan);
  const spec=profile.legacyImport,key=`import-parked-demo:${plan.trialId}:${spec?.archiveHash?.slice(0,16)}`;
  assert((profile.schema==='sg-demo-next-game-v1'||secondary)&&profile.gameId===plan.gameId&&profile.oldPlanHash===hash(plan)
   &&profile.createdAt<=now()&&now()<profile.expiresAt&&profile.expiresAt-profile.createdAt===7200000
   &&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'PARKED_IMPORT_SCOPE');
  assert(spec?.schema==='sg-parked-import-v1'&&spec.planHash===hash(plan)&&spec.trialId===plan.trialId
   &&/^[a-f0-9]{64}$/.test(spec.archiveHash)&&Number.isInteger(spec.bytes)&&spec.bytes>0&&spec.bytes<=40*1024**2
-  &&Number.isInteger(spec.complete)&&spec.complete>0&&spec.complete<=1000
+  &&Number.isInteger(spec.complete)&&spec.complete>0&&spec.complete<=(fixed?1262:1000)
   &&spec.complete===profile.completePreserved&&Number.isInteger(spec.mongoCount)&&spec.mongoCount>=0&&spec.mongoCount<=spec.complete
   &&spec.pending===profile.abandonedAttempts,'PARKED_IMPORT_SCOPE');
  await boundary();
@@ -22,7 +24,7 @@ export async function importParkedDemo({store,transport,decode,plan,profile,boun
  assert(campaign&&hash(campaign)===spec.campaignHash&&campaign.activeGame===profile.fromGameId
   &&campaign.games.find(g=>g.game_id===plan.gameId)?.status==='parked-protocol','PARKED_IMPORT_CAMPAIGN');
  assert(!(await store.get('state','pool:'+plan.trialId))&&!(await store.get('journal',key+':before')),'PARKED_IMPORT_ALREADY_STARTED');
- if(secondary)checkIdleSecondaryCampaign(campaign);
+ if(idle)checkIdleSecondaryCampaign(campaign);
  const chunks=[];let offset=0;
  while(offset<spec.bytes){const r=await transport.request('frozen_trial_bytes',{trialId:plan.trialId,offset});
   const chunk=Buffer.from(r.data,'base64');assert(r.offset===offset&&r.size===spec.bytes&&r.sha256===spec.archiveHash&&chunk.length>0&&chunk.length<=256*1024&&offset+chunk.length<=spec.bytes,'PARKED_IMPORT_ARCHIVE');chunks.push(chunk);offset+=chunk.length;
@@ -34,7 +36,7 @@ export async function importParkedDemo({store,transport,decode,plan,profile,boun
   assert(rounds.length<=spec.mongoCount,'PARKED_IMPORT_MONGO');if(page.length<100)break;
  }
  assert(rounds.length===spec.mongoCount&&hash(rounds)===spec.mongoHash,'PARKED_IMPORT_MONGO');
- const decoded=await decode({archive,plan,rounds,archiveHash:spec.archiveHash,checkedAt:now()/1000,...(secondary?{workerOffset:20}:{})});
+ const decoded=await decode({archive,plan,rounds,archiveHash:spec.archiveHash,checkedAt:now()/1000,...(fixed?{fixedLegacyHash:hash(fixed)}:{}),...(secondary?{workerOffset:20}:{})});
  assert(decoded.archiveHash===spec.archiveHash&&decoded.records.length===spec.complete&&decoded.pending.length===spec.pending
   &&decoded.mongoMatched===spec.mongoCount&&hash(decoded.states)===spec.statesHash&&hash(decoded.records)===spec.recordsHash,'PARKED_IMPORT_DECODE');
  const pool=decoded.states[0],batches=decoded.states.slice(1);

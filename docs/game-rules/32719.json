@@ -22,7 +22,7 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "inca-ten-free-v1",
+    "family": "inca-ten-free-and-coin-v1",
     "messages": [
       "BET",
       "FREE_GAME"
@@ -30,11 +30,13 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "首BET独立FID1/TFG10/NFG10/CFGG0；同PID按FREE_GAME继续，严格每帧NFG减1/CFGG加1，无重触发。",
     "complete": "第10次FREE明确NFG0/CFGG10；FGRS/CFGC若存在必须与外层相等，GCT/非零FRBAL/混合FID/未知GSD拒绝；独立核XML和下注20。",
-    "bounds": "第二账号旧67完整（60Mongo、7待补写）已离线逐条保全，1中断仅真实触发前缀；完整11帧终局仍合成。已接Python/Runner/collector/capture，尚未独立准入或源请求；FID0 HoldNSpin与混合功能未支持，非普通NFG0单BET拒绝。",
+    "bounds": "第二账号94完整保全，29已用/71已注销。CL/BGCL金币免费修复新增独立bonus3映射及三方/capture入口，94旧规范化不变；未重入，完整11帧终局仍合成。FID0 HoldNSpin、负值奖池、外部JPV与混合功能未支持；不授正式额度。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
+      "service/inca_coin_review.py",
+      "scripts/trial/inca-coin-review.mjs",
       "service/inca_free_review.py",
       "service/inca_fields.py",
       "scripts/trial/inca-free-review.mjs",
@@ -101,17 +103,44 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "hyperchargedincajungle96-round-one-base-v1-inca-coin-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "inca-coin-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 3
+      }
     }
   },
   "mappingHashes": {
     "hyperchargedincajungle96-round-one-base-v1": "7030b553d563ec901fc4435680379cb1b6f44c3a2319d859bcb2c14771e0d4b5",
-    "hyperchargedincajungle96-round-one-base-v1-inca-ten-free-v1": "a3209aecb00d8884b0d8890d5ba3288d18396c6d27de83513ca14c2ad794adba"
+    "hyperchargedincajungle96-round-one-base-v1-inca-ten-free-v1": "a3209aecb00d8884b0d8890d5ba3288d18396c6d27de83513ca14c2ad794adba",
+    "hyperchargedincajungle96-round-one-base-v1-inca-coin-free-v1": "bc880884652c638ec8dae7004494fdb64c82f48c20974e819d3766a54dfd3fd9"
   },
   "configuredNaturalBonusCodes": [
     1,
-    2
+    2,
+    3
   ],
-  "configuredOutcomeCategoryCount": 2,
+  "configuredOutcomeCategoryCount": 3,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -123,14 +152,16 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "557fd5cc579adb8ba3eca36d68f2d0156db9a80598bbd0653f178e0994607806",
-    "scripts/runner-v2/record_fields.py": "d71bf92dec8c4539ad9e8617cbe0e5dd68c025103ed7635e9c223f048d60d54a",
-    "service/inca_free_review.py": "85e711e5016fc1bd854a9c7ec66e256d40f0b5bf837bcb6aa4a7c6938ba635b4",
-    "service/inca_fields.py": "a31d2cd2aadfd7a705ed27a1f41f2d517b63b280b890d96494e39953d579192b",
+    "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
+    "scripts/runner-v2/record_fields.py": "c8e9b1eb84932266886626fb3756e735b4c9af5391870b11618cb475e8bef887",
+    "service/inca_coin_review.py": "3665f381e7a6563413f2b94f1a3896ca0c90a9084ff562c7808d45a0823157dd",
+    "scripts/trial/inca-coin-review.mjs": "61708ccf81324659219b1fbe8161c30bdaeb3663fee9d8705cb897fca34e1b5e",
+    "service/inca_free_review.py": "b93b2518081adab43798ae24bc47235ae159330dcceaf2cc1a4ba838d505d543",
+    "service/inca_fields.py": "3aea5ec1b43547472f9ec4ba8ca571b52bb92609746fb09e62dc02476fca1be5",
     "scripts/trial/inca-free-review.mjs": "f51436a1f3503607d52ec78b3ac5530cae00bcd097823d21ff197ae731412bed",
-    "scripts/trial/inca-protocol.mjs": "76b424856673904fe0125847b93a9a9d7f99f8ebf5ef532dcfe69bab93c7e54c",
-    "collector/sg.inca.ts": "daec02fa961564bfbab912e2e9644953c4c5cfbbd4c85384e4837dc33810673e",
-    "service/game_rule_catalog.py": "e06d6af7b03a4c818e7232375c122ce3cf91dfa5cd2f68998c49827fbe251d71"
+    "scripts/trial/inca-protocol.mjs": "45ad77ce8d5466a635ef4fdd1d58935fb14004682b67b67cceefdc88fecc4916",
+    "collector/sg.inca.ts": "a573f1119a62dbf2e686b9cad3ab3c91f82edc5600ba78c2779cc153f44a795b",
+    "service/game_rule_catalog.py": "f01b0fc85974067e518f7a08583432bf91aa41373fd3b125874e426cc9851ddf"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -138,6 +169,7 @@
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md",
+    "docs/pyramids-next-review-20261001.md",
     "docs/secondary-idle-preparation-20261001.md"
   ],
   "analysisDocumentHashes": {
@@ -145,6 +177,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
+    "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/secondary-idle-preparation-20261001.md": "aa935a133e88f2b09121b787fab1cc793b30417ea8e71a7b28558f089c997bca"
   },
   "observations": {
@@ -154,5 +187,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "25f0d3696d89c54911f9a845c7d7300cb7b940c2ce4b878b5daa8015a1e86055"
+  "ruleHash": "1f3ce9ea943c19a22a4330c918130f786c39cfbfce52db24b7453ee02b8f8a3f"
 }

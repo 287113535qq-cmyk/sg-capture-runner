@@ -2,8 +2,12 @@
 from inca_free_review import IncaSequence, SOURCE, EXTENSION, feature_type
 from native_nextgen_fields import NativeNextgenFields
 from round_fields import derive, check, params
+from inca_coin_review import IncaCoinSequence, has_coins
 
 class IncaFields(IncaSequence):
+    def sequence(self, raw):
+        return IncaCoinSequence(self.plan).sequence(raw) if has_coins(raw) else super().sequence(raw)
+
     def next_request(self, raw):
         if feature_type(raw):
             return self.sequence(raw)

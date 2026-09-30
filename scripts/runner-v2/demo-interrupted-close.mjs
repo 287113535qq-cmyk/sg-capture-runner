@@ -42,7 +42,7 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
   &&top?.schema==='sg-next-demo-game-complete-v1'&&top.profileHash===profile.sourceProfileHash&&top.generation===plan.demoGeneration
   &&top.commit===spec.commit&&top.run===spec.run&&top.newBetAllowance===100&&top.sourceRequests===0,'AG_CLOSE_ACTIVATION');
  const secondary=campaign?.group==='secondary',offset=secondary?20:0;
- assert(secondary?(spec.group==='secondary'&&spec.workerOffset===20&&plan.gameId===32719):(!spec.group&&!spec.workerOffset),'AG_CLOSE_GROUP_SCOPE');
+ assert(secondary?(spec.group==='secondary'&&spec.workerOffset===20&&[32719,32721].includes(plan.gameId)&&plan.trialId===`sg_r1_20260928_${plan.gameId}`):(!spec.group&&!spec.workerOffset),'AG_CLOSE_GROUP_SCOPE');
  const game=campaign?.games.find(g=>g.game_id===plan.gameId);
  assert(campaign.activeGame===plan.gameId&&game?.status==='parking-protocol'&&campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&campaign.protocolValidation.commit===profile.sourceCommit&&campaign.protocolValidation.demoFresh===hash(spec)&&campaign.protocolValidation.generation===plan.demoGeneration

@@ -22,29 +22,38 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "pyramids-isolated-hold-and-ten-free-v1",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "continue": "FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。",
+    "complete": "Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。",
+    "bounds": "1262旧完整三方规范化不变，含15自然Hold终局；4旧半局未完成。独立10免费终局仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝。真实旧档案import-retire-rollover-fresh已内存验证160补写4作废，尚未线上转换；不称整款ready/formal。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
-      "scripts/runner-v2/record_fields.py"
+      "scripts/runner-v2/record_fields.py",
+      "service/pyramids_hold_review.py",
+      "service/pyramids_free_review.py",
+      "service/pyramids_fields.py",
+      "scripts/trial/pyramids-hold-review.mjs",
+      "scripts/trial/pyramids-free-review.mjs",
+      "scripts/trial/pyramids-protocol.mjs",
+      "collector/sg.pyramids.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
       "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
       "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
       "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "FID": "固定官方客户端0=HoldNSpin、1=FreeSpins；独立审查后使用。",
       "B / AB": "终帧两个余额必须一致。",
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
+      "GSD.HNSTW / HVA / HVABT": "Hold累计奖励与首BET赢奖相加核TW；5x3盘面拒绝Grand标记。",
+      "GSD.FGRS / CFGC": "客户端剩余/进度可覆盖外层，严格相等防止提前结束。"
     }
   },
   "typeMappings": {
@@ -70,15 +79,42 @@
       },
       "featureSelector": null,
       "featureTypes": null
+    },
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-ten-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "pyramids-ten-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 2
+      }
     }
   },
   "mappingHashes": {
-    "hyperchargedpyramidsofra96-round-one-base-v1": "f40123d14c4ce5091eeaab0c559ada08179cf41303966b1458baa7c782074dca"
+    "hyperchargedpyramidsofra96-round-one-base-v1": "f40123d14c4ce5091eeaab0c559ada08179cf41303966b1458baa7c782074dca",
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-ten-free-v1": "c121c0851ee85ea888d1c6c32da76d38557635dc2162ee390a0c8fb446ae7ef2"
   },
   "configuredNaturalBonusCodes": [
-    1
+    1,
+    2
   ],
-  "configuredOutcomeCategoryCount": 1,
+  "configuredOutcomeCategoryCount": 2,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -90,22 +126,31 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "557fd5cc579adb8ba3eca36d68f2d0156db9a80598bbd0653f178e0994607806",
-    "scripts/runner-v2/record_fields.py": "d71bf92dec8c4539ad9e8617cbe0e5dd68c025103ed7635e9c223f048d60d54a",
-    "service/game_rule_catalog.py": "e06d6af7b03a4c818e7232375c122ce3cf91dfa5cd2f68998c49827fbe251d71"
+    "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
+    "scripts/runner-v2/record_fields.py": "c8e9b1eb84932266886626fb3756e735b4c9af5391870b11618cb475e8bef887",
+    "service/pyramids_hold_review.py": "cebbb5ce4587d018634d4112ef2fc370aa3dcd016686e41e55c0f29d6a1d89f9",
+    "service/pyramids_free_review.py": "0cf69dac1a00098ae1571a7bde93a07475405f981100ba43b2daad198477b983",
+    "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
+    "scripts/trial/pyramids-hold-review.mjs": "b24fe93f4f9246eb4d71ccbd2ab9d619aa1012bd7196547387db11ad495ab370",
+    "scripts/trial/pyramids-free-review.mjs": "7ebeb1ff7cb67d640385d1c4856b7a9dfd4bb064235eed2c784df7c04937a811",
+    "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
+    "collector/sg.pyramids.ts": "d332820c8fa5927523985e470fe7cded8edb9e1b503ed59ad7bb1aa67f0be35c",
+    "service/game_rule_catalog.py": "f01b0fc85974067e518f7a08583432bf91aa41373fd3b125874e426cc9851ddf"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
     "docs/inca-pilot-result-20261001.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
-    "docs/protocol-parking-storage-stop-20260928.md"
+    "docs/protocol-parking-storage-stop-20260928.md",
+    "docs/pyramids-next-review-20261001.md"
   ],
   "analysisDocumentHashes": {
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
-    "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a"
+    "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
+    "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -114,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "85652f821f54ba452eb4788d9225067677f5b7ef589e21222711e37ec5ce01ea"
+  "ruleHash": "290ea4b5759845e7ffb99e6d3ae21f29b4c6353446ae8fba81679bf741cf040e"
 }

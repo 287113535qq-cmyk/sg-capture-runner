@@ -1,3 +1,4 @@
+import {pyramidsFields} from './sg.pyramids';
 import {incaFields} from './sg.inca';
 import {hasHuffRetrigger,huffRetriggerFields} from './sg.huff-retrigger';
 import {validatePiggies} from './sg.piggies';
@@ -15,6 +16,11 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  * them against the raw protocol and its own pinned policy again before writing.
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
+  if(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'){
+    const value=pyramidsFields(raw,mapping.typeMappingHash);
+    if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_PYRAMIDS_MAPPING_MISMATCH');
+    return value;
+  }
   if(raw.sourceKey==='richlittlepiggiesworldclass96-round-one-base-v1')validatePiggies(raw,mapping);
   if (raw.protocol !== 'nextgen' || raw.roundFieldsVersion !== ROUND_FIELDS_VERSION) throw new Error('SG_UNSUPPORTED_ROUND_CONTRACT');
   if(hasHuffRetrigger(raw)){

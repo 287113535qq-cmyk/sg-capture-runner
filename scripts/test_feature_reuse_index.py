@@ -28,5 +28,12 @@ class ReuseIndexTests(unittest.TestCase):
         self.assertTrue(all(not x['captureAuthorization'] for x in result['games']))
         self.assertTrue(all(not x['candidates'] for x in result['games'] if x['status'] == 'unclassified'))
 
+    def test_pyramids_hold_cannot_inherit_inca_free_progression(self):
+        match=next(x for x in recommend(32721) if x['referenceGameId']==32719)
+        self.assertEqual(match['scope'],'transport-only')
+        self.assertIn('counters',match['differences'])
+        self.assertIn('terminal',match['differences'])
+        self.assertFalse(match['captureAuthorization'])
+
 if __name__ == '__main__':
     unittest.main()
