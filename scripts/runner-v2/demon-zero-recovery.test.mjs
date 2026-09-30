@@ -14,7 +14,8 @@ test('fresh workflow uses one20-worker job without resuming old owners',()=>{
  const job=workflow.split('  fresh-capture:')[1].split('  trial:')[0];
  assert(job.includes("inputs.role == 'fresh-short'"));assert(job.includes('SG_PENDING_FIRST_STAGE: fresh'));
  assert(job.includes('max-parallel: 20'));assert(!job.includes('needs: pending-resume'));
- assert(workflow.includes('needs: [trial, pending-resume, pending-capture, fresh-capture]'));
+ const needs=workflow.split('  verify:')[1].match(/needs: \[([^\]]+)\]/)[1].split(',').map(x=>x.trim());
+ assert.deepEqual(needs,['trial','pending-resume','pending-capture','fresh-capture','formal-capture']);
 });
 test('applied zero profile stays frozen and rejects the new nested runtime',()=>{
  const p=JSON.parse(fs.readFileSync('config/demon-zero-20260929.json','utf8'));

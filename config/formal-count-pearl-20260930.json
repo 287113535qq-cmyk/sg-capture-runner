@@ -188,7 +188,7 @@
     "scripts/runner-v2/demon-zero-control.mjs": "271b88d336d559203281c2b2a246d586ffa55f9759cafe6250821a443bc64c2a",
     "scripts/runner-v2/demon-zero-history-fixture.json": "131c436fa29b3d73b43e2731caf48e86127022effa914a20ccd56f3ce123adc5",
     "scripts/runner-v2/demon-zero-recovery.mjs": "d8d5fcbe769dde0475696b9c4b06bc12a1c5a978505b87f519041850777e76c1",
-    "scripts/runner-v2/demon-zero-recovery.test.mjs": "d6a7000488693e900788d12a25be5b708b27f46c0c1565ab6e060fe1bda4f2ea",
+    "scripts/runner-v2/demon-zero-recovery.test.mjs": "b7700fabb97b3761a041e0b2430c78b665fa5ee5da7520d05f58a3721cecfba4",
     "scripts/runner-v2/demon-zero-stage.mjs": "08c92dd129b5b6b470681342c162da810f7ae7f5079638b2cc8e7525496a8b26",
     "scripts/runner-v2/demon-zero-test-fixture.mjs": "f1957e7ca431389b5bcc43609502a664e1cf1cfde3fe5a9a96ce451d30daaeb1",
     "scripts/runner-v2/durable-queue.mjs": "3f475402db41aa0ca415150c0847694703da81b03c6ae51230ae8b77bee799d2",
