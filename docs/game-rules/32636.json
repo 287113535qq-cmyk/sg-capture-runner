@@ -6,25 +6,108 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "richlittlepiggiesworldclass96-round-one-base-v1",
+  "planHash": "de80e9caf79343886a58e4f023fea1c68b286caf74f596324dfdae6463a9e40d",
+  "parameters": {
+    "trialId": "sg_r1_20260930_32636",
+    "runtimeSlug": "richlittlepiggiesworldclass96",
+    "buy": 0,
+    "betRaw": 100,
+    "requestParams": {
+      "AP": "false",
+      "BPL": "5",
+      "GN": "richlittlepiggiesworldclass96",
+      "LB": "25"
+    },
+    "maxSteps": 100
+  },
+  "roundRule": {
+    "family": "piggies-single-free-retrigger-v1",
+    "messages": [
+      "BET",
+      "FREE_GAME"
+    ],
+    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
+    "continue": "独立免费 NFG>0，TFG=NFG+CFGG；每次进度加1，重触发按TFG增量核对剩余次数。",
+    "complete": "官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。",
+    "bounds": "历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度；不代表整款玩法覆盖或正式300000准入。",
+    "files": [
+      "service/native_nextgen_fields.py",
+      "service/round_fields.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/piggies_fields.py",
+      "scripts/trial/piggies-protocol.mjs",
+      "collector/sg.piggies.ts"
+    ],
+    "fields": {
+      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
+      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
+      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
+      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
+      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "B / AB": "终帧两个余额必须一致。",
+      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+    }
+  },
+  "typeMappings": {
+    "richlittlepiggiesworldclass96-round-one-base-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "richlittlepiggiesworldclass96-round-one-base-v1": "07c350822c376506d0df9d99885ebe3b547711684f6eec6eb4a4c115cfbb00c3"
+  },
+  "configuredNaturalBonusCodes": [
+    1
+  ],
+  "configuredOutcomeCategoryCount": 1,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "e29e82bb2748d28898a1cc0849e40103eb6f5c357b023c27fe9cb6ea950bdb5e"
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "9ddb90182bba1fa0b977109d67e48624cbfe1f86126da871d49a7a6f87df2b58",
+    "scripts/runner-v2/record_fields.py": "033e9c1f38b882cd5ac514f246ae7a202e039043626d5a3927b4e59ce311fe24",
+    "service/piggies_fields.py": "344bb0226c08ce8d396bdf45b606f97bef9d6c8c0c2d21636cfe4380d9491740",
+    "scripts/trial/piggies-protocol.mjs": "e2728ef1841889e94f1208da79b6fd6ef4c35548d4556917a659b07cade7cfb0",
+    "collector/sg.piggies.ts": "4ac2a9ff8e35070b22089312b72d65fca8ce68b339b319ad36559163515eed9d",
+    "service/game_rule_catalog.py": "11bd727fc879ba7c2dd1f7a793265983de2086b0edc1ffa9d635fb5d4762c4f3"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/piggies-next-preparation-20260930.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +115,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7063ab9ebe2a20ba8ec0c6b07d65f28edfdae159ca3538e1f3331ab05b837ffc"
+  "ruleHash": "598d046c704c58ce48fd84bdb3327936989630820a081a673163c5436c86b99e"
 }

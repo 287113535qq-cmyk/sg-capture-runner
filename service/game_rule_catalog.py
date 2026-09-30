@@ -40,6 +40,12 @@ def contract(game_id):
         native['family'] = 'book-of-sevens-native-v1'
         native['files'][0] = 'service/trial_fields.py'
         native['fields']['BPL / LB'] = '请求和响应固定 BPL=5、LB=5；实际下注 25。'
+    elif game_id == 32636:
+        native.update({'family': 'piggies-single-free-retrigger-v1',
+            'continue': '独立免费 NFG>0，TFG=NFG+CFGG；每次进度加1，重触发按TFG增量核对剩余次数。',
+            'complete': '官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。',
+            'bounds': '历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度；不代表整款玩法覆盖或正式300000准入。'})
+        native['files'] += ['service/piggies_fields.py', 'scripts/trial/piggies-protocol.mjs', 'collector/sg.piggies.ts']
     elif game_id == 32651:
         native.update({'family': 'squid-jackpot-v1', 'messages': ['BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE_END'],
             'start': '首帧 BET；其后按完整历史执行自然免费或 Jackpot 功能，不能再次 BET；一大局内会话不变。',

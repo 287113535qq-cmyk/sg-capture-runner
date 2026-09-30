@@ -24,6 +24,13 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  const oldPlan=plans[profile.gameId],plan=applyDemoPilot(plans,profile)[profile.gameId],fromPlan={...plans[profile.fromGameId],demoGeneration:profile.sourceGeneration};
  assert(hash(fromPlan)===profile.sourcePlanHash,'NEXT_GAME_SOURCE_PLAN');
  await boundary();const scene=await nextDemoScene(store,oldPlan,fromPlan);
+ if(profile.emptyCandidate){
+  const key=`empty-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,ready=(await store.get('journal',key+':complete'))?.value;
+  assert(ready?.schema==='sg-empty-demo-candidate-complete-v1'&&ready.profileHash===hash(profile)
+   &&ready.planHash===hash(oldPlan)&&ready.commit===commit&&ready.run===run&&ready.sourceRequests===0&&ready.newBetAllowance===0
+   &&scene.pool.emptyCandidate?.key===key&&scene.pool.emptyCandidate.specHash===hash(profile.emptyCandidate)
+   &&hash(scene.campaign)===profile.emptyCandidate.campaignHash,'NEXT_GAME_EMPTY_CANDIDATE_INCOMPLETE');
+ }
  if(profile.legacyImport||scene.pool.legacyImport){
   assert(profile.legacyImport&&scene.pool.legacyImport,'NEXT_GAME_IMPORT_INCOMPLETE');
   const imported=(await store.get('journal',scene.pool.legacyImport.key+':complete'))?.value;

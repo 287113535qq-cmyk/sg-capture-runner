@@ -157,14 +157,14 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "9ddb90182bba1fa0b977109d67e48624cbfe1f86126da871d49a7a6f87df2b58",
-    "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
+    "scripts/runner-v2/record_fields.py": "033e9c1f38b882cd5ac514f246ae7a202e039043626d5a3927b4e59ce311fe24",
     "service/huff_fields.py": "d848a612b5a1ba50be594d6e205b88e5bb32d8a97d555cf747e9e93f51240c36",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "06484f26e33f67757d7c8234e6e55e7ad604977a1336dde43d97b5665b838bfe",
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/game_rule_catalog.py": "e29e82bb2748d28898a1cc0849e40103eb6f5c357b023c27fe9cb6ea950bdb5e"
+    "service/game_rule_catalog.py": "11bd727fc879ba7c2dd1f7a793265983de2086b0edc1ffa9d635fb5d4762c4f3"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -192,6 +192,7 @@
     "docs/mansion-touchup-integration-20260930-result.json",
     "docs/mansion-touchup-integration-20260930.md",
     "docs/morepuff-mixed-repair-20260930.md",
+    "docs/piggies-next-preparation-20260930.md",
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/secondary-account-diagnostics-20260928.md",
@@ -220,6 +221,7 @@
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
     "docs/morepuff-mixed-repair-20260930.md": "3d22318eb674e3a93c2d7e7e80efa7a5d3916b8f2c9660f0f1ce55771f9b5716",
+    "docs/piggies-next-preparation-20260930.md": "1c0e00a644f5c7a14c2fea2941438b633ebd55c6dfcf81938bcfd5c93a22594a",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
@@ -233,5 +235,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "678e2ca88daa0a20fc96041837f03f87be33646497e7fb1f323974759060dd3a"
+  "ruleHash": "1cc427dac40ec38aaae677a5ed2bc0e3f67e50b3fb6cc558639c50b7203143c6"
 }

@@ -1,3 +1,4 @@
+import {validatePiggies} from './sg.piggies';
 import {hasMorepuffWheel,morepuffFields} from './sg.morepuff';
 import {hasHuffTouchup,huffTouchupFields} from './sg.huff-touchup';
 import {jinzitaFields} from './sg.jinzita';
@@ -12,6 +13,7 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  * them against the raw protocol and its own pinned policy again before writing.
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
+  if(raw.sourceKey==='richlittlepiggiesworldclass96-round-one-base-v1')validatePiggies(raw,mapping);
   if (raw.protocol !== 'nextgen' || raw.roundFieldsVersion !== ROUND_FIELDS_VERSION) throw new Error('SG_UNSUPPORTED_ROUND_CONTRACT');
   if(hasHuffTouchup(raw)){
     const value=huffTouchupFields(raw,mapping.typeMappingHash);

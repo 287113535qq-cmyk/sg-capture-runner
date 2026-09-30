@@ -51,7 +51,7 @@
 | [32633](32633.json) | Rich Little Piggies Hog Wild | implemented-subset | 1 |
 | [32634](32634.json) | Rich Little Piggies Meal Ticket | not-documented | 待确认 |
 | [32635](32635.json) | Rich Little Piggies Meal Ticket Christmas Edition | not-documented | 待确认 |
-| [32636](32636.json) | Rich Little Piggies World Class | not-documented | 待确认 |
+| [32636](32636.json) | Rich Little Piggies World Class | implemented-subset | 1 |
 | [32637](32637.json) | Rich Little Piggies World Class Halloween Edition | not-documented | 待确认 |
 | [32641](32641.json) | Rockets! Red Glare | not-documented | 待确认 |
 | [32644](32644.json) | Shields of the Wild | not-documented | 待确认 |

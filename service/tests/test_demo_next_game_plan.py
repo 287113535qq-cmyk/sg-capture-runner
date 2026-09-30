@@ -4,6 +4,22 @@ from unittest.mock import patch
 from pool_plan import validate_pool_plan
 from store import digest
 class NextGamePlanTests(unittest.TestCase):
+    def test_piggies_has_independent_zero_history_plan_and_closed_source(self):
+        root=Path(__file__).resolve().parents[2]
+        old=json.loads((root/'config/round-one-plans.json').read_text())['32636']
+        self.assertEqual(old['target'],300000)
+        plan={**old,'demoGeneration':'e'*64}
+        profile={'sourceClosureHash':'f'*64,'schema':'sg-demo-next-game-v1','gameId':32636,'fromGameId':32714,'workers':20,'perWorker':5,'newBetAllowance':100,'oldPlanHash':digest(old),'generation':'e'*64,'planHash':digest(plan)}
+        real=Path.read_text
+        def read(path,*args,**kwargs):
+            return json.dumps(profile) if path.name=='demo-pilot-piggies-20260930.json' else real(path,*args,**kwargs)
+        with patch.object(Path,'read_text',autospec=True,side_effect=read),patch.dict(os.environ,{'SG_DEMO_PILOT_PROFILE':'demo-pilot-piggies-20260930.json'}):
+            self.assertEqual(validate_pool_plan(plan),plan)
+            for key,value in [('sourceClosureHash',''),('fromGameId',32718),('newBetAllowance',101),('perWorker',6),('gameId',32714)]:
+                before=profile[key];profile[key]=value
+                with self.assertRaises(Exception):validate_pool_plan(plan)
+                profile[key]=before
+            with self.assertRaises(Exception):validate_pool_plan({**plan,'target':299900})
     def test_jinzita_profile_cannot_borrow_luxor_or_change_target(self):
         root=Path(__file__).resolve().parents[2]
         old=json.loads((root/'config/round-one-plans.json').read_text())['32720']

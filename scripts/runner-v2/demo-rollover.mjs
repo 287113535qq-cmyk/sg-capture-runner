@@ -12,8 +12,17 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  const get=async(c,k)=>(await store.get(c,k))?.value;
  await boundary();
  const campaign=await get('state','campaign'),pool=await get('state','pool:'+plan.trialId),fromPool=await get('state','pool:'+fromPlan.trialId);
+ const candidate=campaign.games.find(g=>g.game_id===plan.gameId);
+ if(pool.emptyCandidate){
+  const key=`empty-demo-candidate:${plan.trialId}:${plan.demoGeneration}`,ready=await get('journal',key+':complete'),before=await get('journal',key+':before');
+  assert(pool.emptyCandidate.key===key&&candidate?.status==='needs-adapter'&&candidate.baseline===0&&candidate.confirmed===0&&!candidate.pendingReview
+   &&ready?.schema==='sg-empty-demo-candidate-complete-v1'&&ready.profileHash===activationStage?.profileHash
+   &&ready.planHash===hash(oldPlan)&&ready.commit===commit&&ready.run===run
+   &&ready.sourceRequests===0&&ready.newBetAllowance===0&&ready.historicalCredit===0
+   &&before?.profileHash===ready.profileHash&&hash(before.campaign)===hash(campaign),'ROLLOVER_EMPTY_CANDIDATE_INCOMPLETE');
+ }
  assert(hash({campaign,pool,fromPool})===expected&&campaign.activeGame===fromPlan.gameId
-  &&campaign.games.find(g=>g.game_id===plan.gameId)?.status==='parked-protocol'&&!pool.enabled&&!pool.demoGeneration
+  &&(candidate?.status==='parked-protocol'||(candidate?.status==='needs-adapter'&&pool.emptyCandidate))&&!pool.enabled&&!pool.demoGeneration
   &&pool.planHash===hash(oldPlan)&&pool.retiredDemo,'ROLLOVER_SNAPSHOT_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now())&&Object.values(fromPool.workers).every(w=>w.leaseUntil<=now()),'ROLLOVER_LEASE_ACTIVE');
  assert(Number.isSafeInteger(fromPool.nextBatchId)&&fromPool.nextBatchId>=1&&fromPool.nextBatchId<=101,'ROLLOVER_SOURCE_BATCH_BOUND');

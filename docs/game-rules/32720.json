@@ -123,11 +123,11 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "9ddb90182bba1fa0b977109d67e48624cbfe1f86126da871d49a7a6f87df2b58",
-    "scripts/runner-v2/record_fields.py": "ec8d7c87b11211d9f3d6b1443785adedc4c934eff236ebb808c9f703431c8154",
+    "scripts/runner-v2/record_fields.py": "033e9c1f38b882cd5ac514f246ae7a202e039043626d5a3927b4e59ce311fe24",
     "service/jinzita_fields.py": "89b465920919742d40c73667469edd4c0438e7fb554bb0fb27082a10b7ee246b",
     "scripts/trial/jinzita-protocol.mjs": "9c1584cd4fc5c21e38698e40cda0e472453d90fdca152fef780899509c5c63ae",
     "collector/sg.jinzita.ts": "1b57f42a8b5db35a297371642af0f4ea4ae6a9ba0739145a08217c615fc24cf8",
-    "service/game_rule_catalog.py": "e29e82bb2748d28898a1cc0849e40103eb6f5c357b023c27fe9cb6ea950bdb5e"
+    "service/game_rule_catalog.py": "11bd727fc879ba7c2dd1f7a793265983de2086b0edc1ffa9d635fb5d4762c4f3"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -151,5 +151,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2a951101762f8209fea77418b9ac344738921aeb2aa2eea7eedbce0ebb725f41"
+  "ruleHash": "b8afd5966a9c4446333d6ebefd2ea5def201f5f166678e5b86159637cf61dae5"
 }

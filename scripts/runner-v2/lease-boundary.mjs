@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 export async function checkPrimaryLeases({store,plans,now=Date.now}) {
   const keys=[...new Set(Object.values(plans).map(p=>'pool:'+p.trialId))];
-  // The178-game catalog currently has24 configured runnable/parked plans.
-  assert(keys.length===24,'PLAN_COVERAGE_CHANGED');
+  // The 178-game catalog currently has 25 configured runnable/parked plans.
+  assert(keys.length===25,'PLAN_COVERAGE_CHANGED');
   const pools=[];
   for(let i=0;i<keys.length;i+=100)pools.push(...await store.getMany('state',keys.slice(i,i+100)));
   let workers=0,batches=0;

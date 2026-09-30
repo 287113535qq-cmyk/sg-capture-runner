@@ -751,5 +751,37 @@
       "GN": "quarterbackfieldsofglory96",
       "RB": "5"
     }
+  },
+  "32636": {
+    "schema": "sg-work-pool-v1",
+    "configured": true,
+    "trialId": "sg_r1_20260930_32636",
+    "target": 300000,
+    "workers": 20,
+    "gameId": 32636,
+    "runtimeGameId": 33085,
+    "name": "Rich Little Piggies World Class",
+    "runtimeSlug": "richlittlepiggiesworldclass96",
+    "sourceKey": "richlittlepiggiesworldclass96-round-one-base-v1",
+    "mode": "demo",
+    "buy": 0,
+    "betRaw": 100,
+    "betPerLine": 5,
+    "lineBet": 5,
+    "maxSteps": 100,
+    "mongoBatchSize": 100,
+    "minRequestIntervalMs": 0,
+    "database": "sg_capture_staging_v1",
+    "collection": "official_rounds",
+    "productionGamePoolWrites": false,
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "adapter": "native-nextgen-v1",
+    "requestParams": {
+      "AP": "false",
+      "BPL": "5",
+      "GN": "richlittlepiggiesworldclass96",
+      "LB": "25"
+    }
   }
 }

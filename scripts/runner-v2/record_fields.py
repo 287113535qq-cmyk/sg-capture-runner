@@ -6,6 +6,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / 'service'))
 from store import canonical, digest
 from pool_plan import validate_pool_plan
 from native_nextgen_fields import NativeNextgenFields
+from piggies_fields import PiggiesFields, SOURCE as PIGGIES_SOURCE
 from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
 from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
 from demon_nested_fields import DemonNestedFields as DemonFields, SOURCE as DEMON_SOURCE
@@ -26,7 +27,7 @@ def execute(request):
     if key not in adapters:
         plan = validate_pool_plan(plan)
         cls = {MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
-        adapters[key] = cls(plan)
+        adapters[key] = (PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
     adapter = adapters[key]
     op, raw = request['op'], request['raw']
     if op == 'next':
