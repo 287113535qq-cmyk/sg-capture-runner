@@ -51,7 +51,7 @@ def contract(game_id):
             'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
             'continue': '首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。',
             'complete': '末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。',
-            'bounds': '历史100局含1自然8免费已核，历史credit0。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。',
+            'bounds': '历史100局含1自然8免费已核、credit0；新试点100完整含2自然8免费，全部EndGame及Mongo全文核验。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。',
             'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/paid-round-evidence.mjs'],
             'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '总数8、进度0至8、首次授予8后续0。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
     elif game_id == 32651:

@@ -1,0 +1,15 @@
+# 32795 Pearl of the Caribbean：真实有限试采结果
+
+100局全部完整落库，20 worker各5；其中2局自然8免费完整终局。Python逐条验证原文与规范化、Runner状态机及collector独立映射一致，100条Mongo逐条匹配不可变receipt。旧32636的33条及其旧journal原样保留。本轮无作废、pending0、待写0。累计完成仍14/178；本款完成100/300000。
+
+保存236次响应：20 Init、116 Logic（100付费+16免费）、100 EndGame。20个worker日志独立汇总与Mongo/receipt一致，未重试源请求。两局真实免费已采用官方Stake200与CurrencyMultiplier1形状，响应session轮换、8次免费及EndGame确认均通过。本次不表示最大赢额、重触发或其他未观察玩法均支持。
+
+固定runtime91fe3f9b9004d2e25bdb7a62db9e8b113ff44581。Linux36723612453成功，102秒；595 Runner/284 Python/82协议/26 collector及178卡通过。首预检36723219186因旧固定计划数量25失败，修正为完整检查全部配置并拒绝重复/空范围后通过。
+
+唯一无源维护36723939414成功，13:45:15Z至13:47:59Z，164秒。源36724417766成功，13:49:00Z创建，首job13:49:04Z启动，13:52:17Z结束。预检成功至实采派发281秒（4分41秒），维护结束至派发61秒。相邻阶段连续执行，没有20分钟心跳等待。
+
+最新只读审计1790776368/租约1790776375：16pool、195相关未完成batch，未来worker/batch租约均0；任务结束后无需额外等待10分钟。磁盘约169.98GiB，两个hold为false。GitHub1790776435仅原两精确隔离queued、其他活动0。两source变量保持false，primary源workflow恢复disabled_manually。
+
+已应用profile config/demo-pilot-pearl-20260930.json永久冻结，canonical135cf98bdca0329fa370a8d48dabc1246222d564e6e2f5090f5310410b94db73，generationadcc5cb4ee01608043791e18944313b7b7a967ac70235ffc7390568db9e47f36。100已用、0剩余，不刷新原profile、不重派试点。正式规模需要独立完整计数激活、Python许可、序号范围及跨代际审计接线，尚未激活。已有真实自然免费证据，下一步推进该独立正式准入。
+
+私有postpilot增量16文件、501299bytes，SHA4ddb2671ba9c290cf63041be226cfb085919f265b29e65e7a569bc7585c9b5e1，本机与服务器逐文件readback通过。原33条引用已验证Piggies final，不重复上传；新100完整全文及运行日志保留私有。

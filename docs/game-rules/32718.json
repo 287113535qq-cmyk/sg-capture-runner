@@ -128,7 +128,7 @@
     "service/morepuff_fields.py": "525a0691577a6722aea80231c15e17d00a863fffbb464716c444f7bdc50193d9",
     "scripts/trial/morepuff-protocol.mjs": "64c179cb364aa2d204a18e123f65b82865e258e4ebe7bf76e7bdfa455bf685fc",
     "collector/sg.morepuff.ts": "9e4857593703cd939687e217253e45c1224a9aa362fff7dfb7948b03438323d3",
-    "service/game_rule_catalog.py": "de5d9d6b64a6f3175a7f5ce654b9ff01ea5bb57ce8596aacf7abccb37a3d2f58"
+    "service/game_rule_catalog.py": "0e0cc10ecd4328be49bb44d8d5fb383a07e78b156b9b8a83241cf09c5efd0f61"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -168,5 +168,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "376ddb7a2a15e5373c3d2b993f4defce9eb25d70a2fc2e36aebc90c03bca6ae4"
+  "ruleHash": "f3dbbcf8e895b92efbbdab1787db39bf873e936742cf5c9d291cfaa0bf2c544a"
 }

@@ -32,7 +32,7 @@
     "start": "新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。",
     "continue": "首Logic授予固定8次免费，freeSpinNumber严格0至8，readyForEndGame=N才继续；每响应轮换sessionID，下一请求绑定该值。",
     "complete": "末Logic明确readyForEndGame=Y后单次EndGame，收到完整确认且余额不变才完成；核对全XML、累计奖、各ReelSpin与金额。",
-    "bounds": "历史100局含1自然8免费已核，历史credit0。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。",
+    "bounds": "历史100局含1自然8免费已核、credit0；新试点100完整含2自然8免费，全部EndGame及Mongo全文核验。生产请求采用官方Stake及CurrencyMultiplier1；拒绝重触发、MaxWin、BigBet、恢复会话及未知分支，非整款覆盖或正式300000许可。",
     "files": [
       "service/pearl_fields.py",
       "scripts/trial/pearl-protocol.mjs",
@@ -81,15 +81,17 @@
     "scripts/trial/pearl-session.mjs": "20c826a9775566aaf1a5751b64895ad00c0df7db03b4bda9b402b2ce044e507c",
     "scripts/trial/pearl-worker.mjs": "c6473c4e8652035e4f294d6f8719c650fc3d906b9a5806705c42cf69e4931028",
     "scripts/runner-v2/paid-round-evidence.mjs": "87f8d956e577d6b93004387c0518ed5dc7ac8314935f7a4e2813555a6819378b",
-    "service/game_rule_catalog.py": "de5d9d6b64a6f3175a7f5ce654b9ff01ea5bb57ce8596aacf7abccb37a3d2f58"
+    "service/game_rule_catalog.py": "0e0cc10ecd4328be49bb44d8d5fb383a07e78b156b9b8a83241cf09c5efd0f61"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
     "docs/pearl-integration-20260930.md",
+    "docs/pearl-pilot-result-20260930.md",
     "docs/piggies-pilot-result-20260930.md"
   ],
   "analysisDocumentHashes": {
     "docs/pearl-integration-20260930.md": "260fdb3bbd0830f4e0fc342a61f4361417133c087198a435ebd83a28289adf37",
+    "docs/pearl-pilot-result-20260930.md": "bc889c86e8a708ff0cc7e0649e865f9c197a13d2e36d2c2795f899564b63a983",
     "docs/piggies-pilot-result-20260930.md": "bdd1e9d0be978a7647fadd8a86d877b093aad3653f3941ddc687dfed3cfc4be0"
   },
   "observations": {
@@ -99,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7d58819e3a37c3394db348d0ba2e24be5acef705a9487f05c3ab18fb234bfa44"
+  "ruleHash": "882e1f2ba793c3f912b3737154207394c662efb1fcaeaa30fee75629a3fe1c1e"
 }
