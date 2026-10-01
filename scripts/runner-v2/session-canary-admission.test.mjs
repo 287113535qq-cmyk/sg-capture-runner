@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {claimSessionCanary,checkCanaryDispatchInputs} from './session-canary-admission.mjs';
+import {claimSessionCanary,checkCanaryDispatchInputs,checkCanaryAdmission} from './session-canary-admission.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {RunnerState} from './state-store.mjs';
 function fixture(){
@@ -18,9 +18,15 @@ function fixture(){
 test('one immutable claim binds the exact source permit without creating quota',async()=>{
  const f=fixture(),result=await claimSessionCanary(f);assert.equal(f.rows.size,1);
  assert.equal(result.value.sourcePermitHash,hash(f.permit));assert.equal(result.value.sourceRequests,0);assert.equal(result.value.newBetAllowance,0);
+ assert.equal(checkCanaryAdmission({...f,admission:result.value}),hash(result.value));
  await assert.rejects(()=>claimSessionCanary(f),/CANARY_ALREADY_CLAIMED/);
  await assert.rejects(()=>claimSessionCanary({...f,permit:{...f.permit,run:'101:1'}}),/CANARY_ALREADY_CLAIMED/);
 });
+for(const [key,value] of [['run','101:1'],['commit','c'.repeat(40)],['revisionHash','c'.repeat(64)],['sourcePermitHash','c'.repeat(64)],['newBetAllowance',1]])
+ test(`window review rejects changed claim ${key}`,async()=>{const f=fixture(),claim=await claimSessionCanary(f);
+  assert.throws(()=>checkCanaryAdmission({...f,admission:{...claim.value,[key]:value}}),/CANARY_ADMISSION_PROOF/);
+ });
+test('window review cannot use a missing claim',()=>{const f=fixture();assert.throws(()=>checkCanaryAdmission(f),/CANARY_ADMISSION_PROOF/);});
 test('unknown claim acknowledgement is never repeated by another run',async()=>{
  const f=fixture(),create=f.store.create;f.store.create=async(...args)=>{await create(...args);throw new Error('UNKNOWN_ACK');};
  await assert.rejects(()=>claimSessionCanary(f),/UNKNOWN_ACK/);assert.equal(f.rows.size,1);
