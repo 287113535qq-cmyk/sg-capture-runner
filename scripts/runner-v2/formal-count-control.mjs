@@ -39,7 +39,8 @@ try{
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
  if(mode==='sessions'){
-  const parent=readFile('config/'+(profile.previousLanesPerHost===1?'formal-repair-pearl-awards-20261001.json':'formal-sessions-pearl-two-20261001.json'));
+  const parentName=profile.gameId===32799?(profile.previousLanesPerHost===1?'formal-count-rhino-guarantee-20261001.json':'formal-sessions-rhino-two-20261001.json'):(profile.previousLanesPerHost===1?'formal-repair-pearl-awards-20261001.json':'formal-sessions-pearl-two-20261001.json');
+  const parent=readFile('config/'+parentName);
   const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.sourceRun.split(':')[0];
   const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
   console.log(JSON.stringify(await activateSessionLayout({store,plans:basePlans,profile,parent,ended,jobs,commit,run,boundary})));

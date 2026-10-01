@@ -3,16 +3,18 @@ import {activateSessionLayout} from './session-layout-activation.mjs';
 import {applyFormalCount} from './formal-count-plan.mjs';
 import {loadCountPermission} from './complete-count.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
-function fixture(){
- const docs=new Map(),fromCommit='a'.repeat(40),commit='b'.repeat(40),activation=JSON.parse(fs.readFileSync('config/formal-repair-pearl-awards-20261001.json','utf8')).activation;
+function fixture(rhino=false){
+ const filename=rhino?'formal-count-rhino-guarantee-20261001.json':'formal-repair-pearl-awards-20261001.json',gameId=rhino?32799:32795;
+ const docs=new Map(),fromCommit='a'.repeat(40),commit='b'.repeat(40),activation=JSON.parse(fs.readFileSync('config/'+filename,'utf8')).activation;
  const plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
- const profile=JSON.parse(fs.readFileSync('config/formal-repair-pearl-awards-20261001.json','utf8'));
- const plan=applyFormalCount(plans,profile)[32795];
+ const profile=JSON.parse(fs.readFileSync('config/'+filename,'utf8'));
+ const plan=applyFormalCount(plans,profile)[gameId];
  const actualActivation=profile.activation;
  const set=(c,k,value)=>docs.set(c+'/'+k,{value:structuredClone(value)});
  const ledger={};
  for(let id=1;id<=121;id++){
   const b={id,worker:0,start:(id-1)*100+1,end:id*100,sessionHash:hash(id),checkpoint:id*100,journaled:id*100,pending:null,leaseUntil:0};
+  if(rhino&&id===1)b.failure='PROTOCOL_VALIDATION_FAILED';
   set('state',`batch:${plan.trialId}:${id}`,b);
   const key=`count-settlement:${plan.trialId}:${activation}:${id}`;
   const receipt={schema:'sg-count-batch-settlement-v1',activation,trialId:plan.trialId,fullReadback:true,batch:b};
@@ -44,15 +46,26 @@ function fixture(){
   sizes.push(ks.length);return ks.map(k=>structuredClone(docs.get(c+'/'+k)));},
   update:async(c,k,fn)=>{set(c,k,fn(structuredClone(docs.get(c+'/'+k).value)));},
   create:async(c,k,v,opts)=>{assert.equal(opts.immutable,true);assert(!docs.has(c+'/'+k));set(c,k,v);}};
- const candidate={schema:'sg-session-layout-profile-v1',gameId:32795,group:'primary',basePlanHash:hash(plans[32795]),
+ const candidate={schema:rhino?'sg-session-layout-rhino-v1':'sg-session-layout-profile-v1',gameId,group:'primary',basePlanHash:hash(plans[gameId]),
   activation:'d'.repeat(64),parentActivation:profile.activation,parentProfileHash:hash(profile),sourceSpecHash:hash(spec),
   poolHash:hash(pool),campaignHash:hash(campaign),sourcePermitHash:hash(permit),sourceRun:'77:1',sourceCommit:fromCommit,
   completePreserved:12100,remainingComplete:287900,newBetAllowance:0,maxSequence:600000,sessionRotation:'closed-batches-v1',
   featureProfile:'additive-free-awards-v2',previousLanesPerHost:1,comparisonHash:null,createdAt:1,expiresAt:1000,
   sessionLayout:{schema:'sg-independent-sessions-v1',group:'primary',hosts:20,lanesPerHost:2}};
+ if(rhino){delete candidate.featureProfile;candidate.captureMinutes=20;}
  const nextPlan={...plan,countAllocation:candidate.activation,sessionLayout:candidate.sessionLayout};candidate.planHash=hash(nextPlan);
  return {docs,set,pool,sizes,plan:nextPlan,args:{store,plans,profile:candidate,parent:profile,ended,jobs,commit,run:'88:1',boundary:async()=>{},now:()=>100}};
 }
+
+test('Rhino handoff preserves audited failed historical baseline and never admits a new failed batch',async()=>{
+ const f=fixture(true),key='state/batch:'+f.plan.trialId+':1',old=hash(f.docs.get(key));
+ const result=await activateSessionLayout(f.args);assert.equal(result.completePreserved,12100);
+ assert.equal(hash(f.docs.get(key)),old);assert.equal(result.newBetAllowance,0);
+ const next=fixture(true);next.docs.get('state/batch:'+next.plan.trialId+':120').value.failure='PROTOCOL_VALIDATION_FAILED';
+ await assert.rejects(activateSessionLayout(next.args),/SESSION_BATCH_NOT_CLOSED/);
+ const changed=fixture(true);changed.docs.get('state/batch:'+changed.plan.trialId+':1').value.failure='CHANGED';
+ await assert.rejects(activateSessionLayout(changed.args),/COUNT_AUDIT_HISTORY_CHANGED/);
+});
 
 test('natural healthy handoff validates all pages and keeps every old batch and receipt immutable',async()=>{
  const f=fixture(),old=new Map([...f.docs].filter(([k])=>!['state/campaign','state/pool:'+f.plan.trialId].includes(k)).map(([k,v])=>[k,hash(v)]));

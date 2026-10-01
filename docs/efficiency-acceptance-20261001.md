@@ -34,3 +34,15 @@ Rhino正式计数无源激活36829512294成功，07:17:54Z→07:19:23Z，89秒�
 ### 15:36 measurement control entry correction
 
 The first corrected maintenance 36831116015 failed before gateway connection at RHINO_FORMAL_OPERATION. Fresh readback preserves all 151 rounds, campaign, states and journals. The controller now uses an independently tested operation policy: only the bound Rhino v2 measurement refresh is admitted; wrong profiles, modes and unbound refresh remain rejected. Twelve scoped tests pass. No new source request or count write occurred. Stable throughput and multi-session comparisons still await actual runs.
+
+### 15:48 concurrent-session implementation and bounded review
+
+The 20-minute Rhino baseline source 36831981152 uses fixed runtime a5fcad83217260da96aef4262d0999ead09f0b34. All 20 capture jobs were observed running; no failed job was observed. Admission succeeded. Source allowance remains the existing 299849 complete rounds; this observation window does not reset it. Stable throughput has not yet been measured.
+
+Rhino-specific independent session layouts now support the reviewed 1→2→4 steps with twenty host jobs. Forty session identities remain distinct, Python validates the same plan, and old single-session plans cannot expand through environment settings. The old failed historical baseline must retain its audited hash; new failed batches block handoff. Thirty-three affected Node tests and four independent Python tests pass. No new layout profile has been generated or applied. Four lanes still require a stored matched comparison proving higher throughput without errors, unknown outcomes, resource holds or request-tail regression.
+
+A read-only observation-window review uses the existing native gateway, 100-record pages, batch settlement proofs and independent Python record verification. It does not mark a partial game complete or write capture state. Seven tests cover 2501 records beyond the old small helper bound, missing/unverified records, active batches, concurrent changes and baseline tampering. A separate local replay verifies all 151 actual historical records. This GitHub review route remains subject to Linux preflight and an ended healthy source run.
+
+A compound local command preparing a custom server-side pagination reader was rejected by automatic approval review with only “blocked by policy”. It did not execute and was not retried through another wrapper. No custom server reader was installed. The new review instead uses the existing constrained native read operations and performs business validation on GitHub.
+
+AG reference applied here: independent per-session ownership and canary-before-expansion; healthy work continues while local repair and preparation progress; failure evidence is preserved rather than replayed; staged concurrency is selected by measured throughput, error rate and resource limits. SG retains exact complete counts and current authorization. Actual two/four-lane comparison, full workflow relay and remaining repair reentries are still unfinished.

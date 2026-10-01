@@ -1,3 +1,4 @@
+import {sessionWorkerAllowed} from '../runner-v2/session-layout.mjs';
 import {createHmac} from 'node:crypto';
 import {parseXml,one,children,need,uint} from './pearl-protocol.mjs';
 import {RHINO_SOURCE} from './rhino-protocol.mjs';
@@ -8,7 +9,7 @@ export function rhinoSession(base,plan,worker,run){
  need(!formal||(!plan.demoGeneration&&/^[a-f0-9]{64}$/.test(plan.countAllocation)&&/^\d+:1:[a-f0-9-]{36}$/.test(run??'')),'RHINO_FORMAL_SESSION_SCOPE');
  need(plan.gameId===32799&&plan.runtimeGameId===33159&&plan.sourceKey===RHINO_SOURCE&&plan.adapter==='rhino-wms-v1'
   &&plan.trialId==='sg_r1_20261001_32799'&&plan.mode==='demo'&&plan.buy===0&&plan.betRaw===40
-  &&/^[a-f0-9]{64}$/.test((formal?plan.countAllocation:plan.demoGeneration)??'')&&Number.isInteger(worker)&&worker>=0&&worker<20,'RHINO_SESSION_SCOPE');
+  &&/^[a-f0-9]{64}$/.test((formal?plan.countAllocation:plan.demoGeneration)??'')&&Number.isInteger(worker)&&worker>=0&&(formal&&plan.sessionLayout?sessionWorkerAllowed(plan,worker,'primary'):worker<20),'RHINO_SESSION_SCOPE');
  need(base.mode==='demo'&&/^Free:/i.test(base.sessionId??'')&&typeof base.operatorId==='string'&&base.operatorId.length>0,'RHINO_DEMO_REQUIRED');
  return base.sessionId.slice(0,5)+createHmac('sha256',base.sessionId+'@'+base.operatorId)
   .update(`sg-rhino-wms-v1:${plan.trialId}:${formal?plan.countAllocation+':'+run:plan.demoGeneration}:${worker}`).digest('hex').slice(0,32);

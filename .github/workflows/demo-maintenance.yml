@@ -15,7 +15,7 @@ on:
         description: Independent reviewed complete-count profile
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-count-pyramids-20261001.json, formal-count-pearl-20260930.json, formal-count-rhino-20261001.json, formal-count-rhino-guarantee-20261001.json]
+        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-sessions-rhino-two-20261001.json, formal-sessions-rhino-four-20261001.json, formal-count-pyramids-20261001.json, formal-count-pearl-20260930.json, formal-count-rhino-20261001.json, formal-count-rhino-guarantee-20261001.json]
       repair_profile:
         description: 'Independent reviewed repair permission; old profiles remain frozen'
         type: choice
@@ -33,7 +33,7 @@ on:
         options: [demo-repair-rhino-guarantee-20261001.json, demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -64,6 +64,12 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
         env:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Verify settled observation window through existing bounded native reads
+        if: inputs.operation == 'review-count-window'
+        env:
+          SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
+          SG_WINDOW_SOURCE_RUN: ${{ inputs.ended_source_run }}
+        run: node scripts/runner-v2/count-window-review-control.mjs
       - name: Close reviewed unknown count request without replay or new source permission
         if: inputs.operation == 'close-count-network'
         run: node scripts/runner-v2/count-network-close-control.mjs

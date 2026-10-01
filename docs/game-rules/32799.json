@@ -86,7 +86,7 @@
   },
   "codeSources": {
     "scripts/trial/rhino-protocol.mjs": "8ffafaec99dc3ed2c949e3c31e5cc2e372f89375607c92672dc99d0469c41fd8",
-    "scripts/trial/rhino-session.mjs": "5c3656dfa0add9777e6e57bda5c487d540bb178899d729d355c2ff4d5a4b51a9",
+    "scripts/trial/rhino-session.mjs": "5463749affd36cbd09ae23211bb5fabd1dec05b2c83217a472fbbf0fa7116203",
     "scripts/trial/rhino-worker.mjs": "047799ebab74859c28599ffb0ded0c4fe932a52e5760cada4d16fc6464eb6108",
     "service/rhino_fields.py": "c54eac8a54acca49b7506daf90e43471d704d61c79ca6e627f0c956b5858ae4f",
     "collector/rhino-review.cjs": "479a7ee92658c52c0b59a6a9dacb3d7066445893717fdcc003ef245800442ff3",
@@ -127,5 +127,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "cca5c16f58e5370902b6a1d0f478a29e091c21fa651b4faadf52945bb4ea52b7"
+  "ruleHash": "f9d98a733c842d7805b2cca214caa6898485676dcfaad7c2eb45341b6fd6d33f"
 }

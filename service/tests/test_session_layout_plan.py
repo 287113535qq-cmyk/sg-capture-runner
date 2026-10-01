@@ -31,6 +31,19 @@ def fixture(lanes=2):
 
 
 class SessionLayoutPlanTests(unittest.TestCase):
+    def test_rhino_independent_python_entry_keeps_original_adapter_and_window(self):
+        for lanes,filename in ((2,'formal-sessions-rhino-two-20261001.json'),(4,'formal-sessions-rhino-four-20261001.json')):
+            plans,p,_=fixture(lanes);base=plans['32799']
+            p.update(schema='sg-session-layout-rhino-v1',gameId=32799,basePlanHash=digest(base),captureMinutes=20)
+            p.pop('featureProfile')
+            plan={**base,'countAllocation':p['activation'],'sessionLayout':copy.deepcopy(p['sessionLayout'])};p['planHash']=digest(plan)
+            def read(path,*a,**kw):return json.dumps(p if path.name==filename else plans)
+            with patch.dict(os.environ,SG_FORMAL_COUNT_PROFILE=filename),patch.object(Path,'read_text',read):
+                self.assertEqual(validate_pool_plan(plan),plan)
+            for key,value in [('captureMinutes',240),('gameId',32795),('newBetAllowance',100),('planHash','0'*64)]:
+                changed=copy.deepcopy(p);changed[key]=value
+                with self.subTest(key=key),self.assertRaises(Exception):session_layout_plan(base,changed)
+
     def test_independent_profile_is_required_by_actual_python_plan_entry(self):
         for lanes,filename in ((2,'formal-sessions-pearl-two-20261001.json'),(4,'formal-sessions-pearl-four-20261001.json')):
             plans,p,plan=fixture(lanes)
@@ -58,4 +71,3 @@ class SessionLayoutPlanTests(unittest.TestCase):
         plans,p,plan=fixture()
         with patch.dict(os.environ,SG_FORMAL_COUNT_PROFILE='formal-repair-pearl-awards-20261001.json'):
             with self.assertRaises(Exception):validate_pool_plan(plan)
-

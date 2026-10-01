@@ -6,7 +6,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 export function sessionLayout(plan,spec){
  const layout=plan?.sessionLayout;
  if(layout===undefined){assert(spec?.sessionLayout===undefined,'SESSION_LAYOUT_PERMISSION');return null;}
- assert(plan.gameId===32795&&plan.adapter==='pearl-wms-v1'&&plan.phase===1&&plan.buy===0
+ assert((plan.gameId===32795&&plan.adapter==='pearl-wms-v1'||plan.gameId===32799&&plan.adapter==='rhino-wms-v1')&&plan.phase===1&&plan.buy===0
   &&/^[a-f0-9]{64}$/.test(plan.countAllocation??'')&&!plan.demoGeneration
   &&layout?.schema==='sg-independent-sessions-v1'&&layout.group==='primary'
   &&layout.hosts===20&&[2,4].includes(layout.lanesPerHost)

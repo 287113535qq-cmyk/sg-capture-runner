@@ -3,9 +3,18 @@ import {spawn} from 'node:child_process';
 import {captureSessionLanes} from './session-lanes.mjs';
 import {sessionWorker,sessionLayout} from './session-layout.mjs';
 import {pearlSession} from '../trial/pearl-session.mjs';
+import {rhinoSession} from '../trial/rhino-session.mjs';
 import fs from 'node:fs';
 const base=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32795'];
 const plan={...base,countAllocation:'a'.repeat(64),sessionLayout:{schema:'sg-independent-sessions-v1',group:'primary',hosts:20,lanesPerHost:4}};
+test('Rhino opt-in yields forty independent sessions without expanding old single-session plans',()=>{
+ const b=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32799'],p={...b,countAllocation:'a'.repeat(64),sessionLayout:{...plan.sessionLayout,lanesPerHost:2}};
+ const game={mode:'demo',sessionId:'Free:synthetic',operatorId:'fixture'},run='1:1:00000000-0000-0000-0000-000000000001',ids=new Set();
+ for(let host=0;host<20;host++)for(let lane=0;lane<2;lane++)ids.add(rhinoSession(game,p,sessionWorker(p,host,'primary',lane),run));
+ assert.equal(ids.size,40);assert.throws(()=>rhinoSession(game,{...b,countAllocation:p.countAllocation},40,run));
+ for(const worker of [20,39,60,80,-1])assert.throws(()=>rhinoSession(game,p,worker,run));
+ assert.throws(()=>rhinoSession(game,p,0,'old-run'));
+});
 test('80 unique session identities retain 20 host jobs and disjoint group/lane identifiers',()=>{
  const sessions=new Set(),workers=new Set(),game={mode:'demo',sessionId:'Free:synthetic',operatorId:'fixture'};
  for(let host=0;host<20;host++)for(let lane=0;lane<4;lane++){

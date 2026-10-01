@@ -7,7 +7,7 @@ import {sessionLayout} from './session-layout.mjs';
 // A natural, healthy run boundary only. No cancellation, request replay, quota
 // reset or mutation of old batches/receipts is part of changing session layout.
 export async function activateSessionLayout({store,plans,profile,parent,ended,jobs,commit,run,boundary,now=Date.now}){
- const stamp=now(),oldPlan=applyFormalCount(plans,parent)[32795],plan=applyFormalCount(plans,profile)[32795];
+ const stamp=now(),oldPlan=applyFormalCount(plans,parent)[profile.gameId],plan=applyFormalCount(plans,profile)[profile.gameId];
  assert(profile.parentProfileHash===hash(parent)&&profile.parentActivation===parent.activation
   &&profile.previousLanesPerHost===(sessionLayout(oldPlan)?.lanesPerHost??1)
   &&Number.isSafeInteger(profile.createdAt)&&Number.isSafeInteger(profile.expiresAt)
@@ -62,7 +62,7 @@ export async function activateSessionLayout({store,plans,profile,parent,ended,jo
    proofs.forEach((r,i)=>cache.set('journal/'+keys[i],r.value));}
   for(const [i,row]of rows.entries()){
    const b=row.value,id=ids[i],count=b.journaled-b.start+1;
-   assert(b.id===id&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.failure
+   assert(b.id===id&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&(profile.schema==='sg-session-layout-rhino-v1'&&b.id<=oldSpec.baselineBatchCount||!b.failure)
     &&b.leaseUntil<=stamp&&b.checkpoint===b.journaled&&pool.countAllocation.batches[id].closed,'SESSION_BATCH_NOT_CLOSED');
    cache.set(`batch:${plan.trialId}:${id}`,b);
    await auditCountBatch({store,pool,plan:oldPlan,spec:oldSpec,record:{batchId:id},cache});
