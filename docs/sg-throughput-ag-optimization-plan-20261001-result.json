@@ -242,5 +242,18 @@
     "negativeCases": 8,
     "productionImported": false,
     "sourceRequests": 0
+  },
+  "fourthBatch": {
+    "report": "docs/throughput-fourth-batch-20261001-result.json",
+    "runtime": "b4b4204bab722f95fb67b4ab6abcf1b851e3ee3c",
+    "allOptimizationsValidated": false,
+    "preflightSuccess": true,
+    "onlineSessionComparisonCompleted": false,
+    "agFinalizeApplied": true,
+    "inventory": {
+      "lexical-candidate": 145,
+      "completed-skipped": 14,
+      "loader-only": 19
+    }
   }
 }

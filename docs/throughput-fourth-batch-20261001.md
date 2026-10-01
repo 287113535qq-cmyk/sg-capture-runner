@@ -36,6 +36,8 @@ Pyramids源运行结束时，原finalizer仅检查一次；当时仍有租约未
 
 运行结果另输出绑定当前run的businessStatus和已结算数；parked-protocol、等待终审和真正complete明确区分，不用workflow绿灯代替整款完成。12项campaign/实际入口测试通过。
 
+最终运行版本b4b4204经Linux36794682852验证成功：807 Runner、344 Python、140协议/启动、28 collector及178卡，00:08:54Z→00:10:23Z（89秒）。报告提交不授予新源权限。准备档案31文件1,075,333 bytes，最终档案22文件656,597 bytes均两端逐文件readback，旧2127原文通过hash引用而不重复上传；SHA及原始日志hash见[结果JSON](throughput-fourth-batch-20261001-result.json)。Pearl于1790813391鲜读245513完整、pool健康、未热改。
+
 ## 尚未结束的优化
 
 多会话准入的受控线上对比、真实连接分段观测、完整跨工作流接力仍未完成。145个源码候选不等于145款已适配，19个加载器缺玩法源码。当前健康Pearl继续原运行，未热改或取消；它必须自然结束后才能应用独立多会话许可。Pyramids差异证据仍须接严格独立校验与重新准入，禁止仅加白名单后重启。
