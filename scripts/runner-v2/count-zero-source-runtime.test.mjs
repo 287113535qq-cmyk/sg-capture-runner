@@ -30,7 +30,7 @@ function fixture(){
  const ended={id:36788992387,run_attempt:1,status:'completed',conclusion:'cancelled',head_sha:fromCommit,repository:{full_name:'287113535qq-cmyk/sg-capture-runner'},path:'.github/workflows/trial-300k.yml'};
  const jobs={total_count:21,jobs:[{name:'pyramids-formal-admit',status:'completed',conclusion:'success'},...Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'completed',conclusion:'cancelled'}))]};
  const store={get:async(c,k)=>structuredClone(docs.get(c+'/'+k)),getMany:async(c,ks)=>ks.map(k=>structuredClone(docs.get(c+'/'+k))),
-  create:async(c,k,v,o)=>{assert(o.immutable&&!docs.has(c+'/'+k));put(c,k,v);},update:async(c,k,fn)=>{const v=fn(structuredClone(docs.get(c+'/'+k).value));if(v)put(c,k,v);}};
+  create:async(c,k,v,o)=>{assert(o.immutable&&!docs.has(c+'/'+k));put(c,k,v);},update:async(c,k,fn)=>{const v=await fn(structuredClone(docs.get(c+'/'+k).value));if(v)put(c,k,v);}};
  return {docs,pool,base,oldHash,put,args:{store,plan,profile,revision,ended,jobs,commit,run:'999:1',boundary:async()=>{},now:()=>100}};
 }
 test('zero-registration amendment adds only immutable runtime proof; real session path rejects old identity then registers fresh owner',async()=>{
