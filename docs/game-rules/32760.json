@@ -23,8 +23,12 @@
     "service/game_rule_catalog.py": "2272bd3a15ed3a0cf6ceb8b0ff50ea37042cc671fcadff9673d839ec46125ecb"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/ag-preparation-method-reuse-20261002.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/ag-preparation-method-reuse-20261002.md": "feaa89b9906c4198e25428c8424d5dd3585d5e8518b6b37e835d1d0f08054577"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5d31d53a7378a06985cdcdf8c3c245b7d59b85653a530a222680246f0ad84077"
+  "ruleHash": "5d18949ccdd027900e53603ecafb8e077c9139708a048246ea9dae06ff0b3e04"
 }
