@@ -42,5 +42,15 @@
   "mixedSequenceSyntheticFullChains": 3,
   "mixedSequenceNegativeChecks": 26,
   "mixedNaturalTerminalObserved": false,
-  "prepareArchiveSha256": "5c75431c1363b0d5f11482f7672644a14c089cb8bf3022ccd4c86a3458f12bdf"
+  "prepareArchiveSha256": "5c75431c1363b0d5f11482f7672644a14c089cb8bf3022ccd4c86a3458f12bdf",
+  "logIntegrityLinux": {
+    "run": "36871653765:1",
+    "commit": "43a54580690c2da0358e925c77fcb19540e5b669",
+    "logSha256": "ec71e52de093d47bd85831f89c0fb66996e588599eca35815322cfa861a048f7",
+    "startedAt": "2026-10-01T13:50:16Z",
+    "completedAt": "2026-10-01T13:52:08Z",
+    "verified": true
+  },
+  "logIntegrityLocalChecks": 16,
+  "logIntegrityOnlineVerified": false
 }
