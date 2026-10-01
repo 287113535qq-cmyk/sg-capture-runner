@@ -9,7 +9,7 @@ from round_fields import check, params, amount
 
 SOURCE='hyperchargedpyramidsofra96-round-one-base-v1'
 KEYS={'BGCL','BGRS','CL','CS','FTTCV','HCL','HCLBT','HNS','HNSID','HNSRIDS',
-      'HNSTW','HPCL','HRS','HRSBT','HVA','HVABT','NCCP','PHRS','PSTRS','PVA','STRS','VA'}
+      'HNSTW','HPCL','HRS','HRSBT','HVA','HVABT','NCCP','PHRS','PSTRS','PVA','STRS','VA','SHNST'}
 COINS={'CL','BGCL','HCL','HCLBT','HPCL'}
 
 
@@ -35,7 +35,9 @@ def gsd_fields(p):
         check(len(bits)==2 and bits[0] in KEYS and bits[0] not in g,'PYRAMIDS_UNREVIEWED_GSD')
         g[bits[0]]=bits[1]
     for key,value in g.items():
-        if key=='CS':
+        if key=='SHNST':
+            check(value in {'0','1'},'PYRAMIDS_SUPER_HOLD_FLAG')
+        elif key=='CS':
             check(value in {'RESPIN','RESPININITIALCHEST','RESPINSUPER','RESPINSUPERMORECHEST'},'PYRAMIDS_STATE')
         elif key in COINS:
             occupied=set()
@@ -75,6 +77,7 @@ class PyramidsHoldSequence(NativeNextgenFields):
                   and not any(k in p for k in ('JPV','SB'))
                   and not any(k.startswith(('CFR_','CFP_')) for k in p),'PYRAMIDS_UNREVIEWED_FEATURE')
             g=gsd_fields(p);n,t,c=(amount(p.get(k)) for k in ('NFG','TFG','CFGG'))
+            check('SHNST' not in g or i == 0, 'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY')
             check(0<=n<=99 and 6<=t<=98 and 0<=c<=98 and n+c==t,'PYRAMIDS_COUNTERS')
             if previous is None:
                 check((n,t,c)==(6,6,0) and p['IFG']=='0' and {'CL','BGCL','HCL','HVA'}<=g.keys(),'PYRAMIDS_TRIGGER')

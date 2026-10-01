@@ -11,10 +11,11 @@ function matrix(text:string):number[][]{
 }
 function grid(text:string){const m=matrix(text);requireP(m.length===5&&m.every(r=>r.length===3&&r.every(v=>v>=0&&v<=15)),'PYRAMIDS_GRID');}
 function holdGsd(g:Record<string,string>){
- const keys='BGCL BGRS CL CS FTTCV HCL HCLBT HNS HNSID HNSRIDS HNSTW HPCL HRS HRSBT HVA HVABT NCCP PHRS PSTRS PVA STRS VA'.split(' ');
+ const keys='BGCL BGRS CL CS FTTCV HCL HCLBT HNS HNSID HNSRIDS HNSTW HPCL HRS HRSBT HVA HVABT NCCP PHRS PSTRS PVA STRS VA SHNST'.split(' ');
  requireP(Object.keys(g).every(k=>keys.includes(k)),'PYRAMIDS_UNREVIEWED_GSD');
  for(const k of Object.keys(g)){
-  if(['CL','BGCL','HCL','HCLBT','HPCL'].includes(k)){
+  if(k==='SHNST')requireP(['0','1'].includes(g[k]),'PYRAMIDS_SUPER_HOLD_FLAG');
+  else if(['CL','BGCL','HCL','HCLBT','HPCL'].includes(k)){
    const seen=new Set<string>();for(const r of matrix(g[k])){const [x,y,v]=r,pos=x+','+y;requireP(r.length===3&&x>=0&&x<3&&y>=0&&y<5&&!seen.has(pos)&&[-4,-3,-2,10,20,40,60,80,100,300,400,600,800].includes(v),'PYRAMIDS_COIN');seen.add(pos);}
   }else if(['HVA','HVABT'].includes(k))grid(g[k]);
   else if(k==='HNS')requireP(count(g[k])===1,'PYRAMIDS_HNS');
@@ -28,7 +29,7 @@ export function pyramidsFields(raw:any,mappingHash:string){
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
  const hold=!free&&(raw.steps.length>1||count(fields(raw.steps[0].responsePayload).NFG??'0')>0);
- let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,last:Record<string,string>={};
+ let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{
   const q=fields(s.requestPayload),p=fields(s.responsePayload),msg=i?'FREE_GAME':'BET';
   requireP(s.msgId===msg&&q.MSGID===msg&&p.MSGID===msg&&(!i||prior>0)&&Object.keys(q).length===5&&q.BPL==='1'&&q.LB==='40'&&q.GN==='hyperchargedpyramidsofra96','PYRAMIDS_REQUEST');
@@ -45,7 +46,11 @@ export function pyramidsFields(raw:any,mappingHash:string){
     if(g.CLBN!==undefined)requireP(i>0&&g.CL!==undefined&&g.CLBN===g.CL,'PYRAMIDS_FREE_COIN_ALIAS');
     if(g.FSRS!==undefined){const stops=g.FSRS.split(';');if(stops[stops.length-1]==='')stops.pop();requireP(i>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(count);}
     for(const key of ['BGCL','CL'])if(g[key]!==undefined){
-     requireP(key==='CL'||i===0,'PYRAMIDS_FREE_COIN_PREFIX_ONLY');const seen=new Set<string>(),coins=matrix(g[key]);
+     if(key==='BGCL'){
+      if(i===0)baseCoins=g[key];
+      else requireP(baseCoins!==undefined&&g[key]===baseCoins,'PYRAMIDS_BASE_COINS_CHANGED');
+     }
+     const seen=new Set<string>(),coins=matrix(g[key]);
      requireP(coins.length<=15,'PYRAMIDS_FREE_COIN');
      for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&v>=0&&!seen.has(pos)&&!/-/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);}
     }
@@ -53,7 +58,8 @@ export function pyramidsFields(raw:any,mappingHash:string){
     if(g.FGVABN!==undefined)grid(g.FGVABN);
     requireP(i?c===played+1&&n===prior-1&&t===total:n===10&&c===0&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');
    }else{
-    holdGsd(g);requireP(n<=99&&t>=6&&t<=98&&c<=98,'PYRAMIDS_COUNTERS');
+    holdGsd(g);requireP(g.SHNST===undefined||i===0,'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY');
+    requireP(n<=99&&t>=6&&t<=98&&c<=98,'PYRAMIDS_COUNTERS');
     if(!i){requireP(n===6&&t===6&&c===0&&p.IFG==='0'&&['CL','BGCL','HCL','HVA'].every(k=>g[k]!==undefined),'PYRAMIDS_TRIGGER');firstWin=count(p.TW);}
     else{requireP(c===played+1&&[0,2,4].includes(t-total)&&n===prior-1+t-total&&['HNS','HNSID','HNSRIDS','HVA','CS'].every(k=>g[k]!==undefined),'PYRAMIDS_PROGRESS');
      if(n===0)requireP(prior===1&&t===total&&count(p.TW)===firstWin+count(g.HNSTW),'PYRAMIDS_TERMINAL');}

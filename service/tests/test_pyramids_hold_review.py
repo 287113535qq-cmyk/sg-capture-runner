@@ -8,7 +8,20 @@ ROOT=Path(__file__).resolve().parents[2]
 PLAN=json.loads((ROOT/'config/round-one-plans.json').read_text())['32721']
 def sample():return json.loads((ROOT/'scripts/trial/fixtures/pyramids-hold-synthetic.json').read_text())
 
+def super_display_sample():
+    raw=sample();gsd=raw['steps'][0]['responsePayload'].split('GSD=',1)[1].split('&',1)[0]
+    rewrite(raw['steps'][0],GSD=gsd+'#SHNST~1');return raw
+
 class PyramidsReviewTests(unittest.TestCase):
+    def test_super_display_trigger_preserves_counters_and_rejects_unreviewed_positions(self):
+        parser=PyramidsHoldSequence(PLAN);value=super_display_sample()
+        self.assertEqual(parser.settled(value),parser.settled(sample()))
+        self.assertEqual(parser.sequence({**value,'steps':value['steps'][:1]}),{'MSGID':'FREE_GAME'})
+        for index,flag in ((0,'2'),(0,'true'),(0,'-1'),(1,'1'),(1,'0')):
+            bad=sample();gsd=bad['steps'][index]['responsePayload'].split('GSD=',1)[1].split('&',1)[0]
+            rewrite(bad['steps'][index],GSD=gsd+'#SHNST~'+flag)
+            with self.subTest(index=index,flag=flag),self.assertRaises(FieldError):parser.settled(bad)
+
     def test_extensions_prefixes_and_complete_money(self):
         raw=sample();original=copy.deepcopy(raw);p=PyramidsHoldSequence(PLAN)
         for n in range(1,len(raw['steps'])):

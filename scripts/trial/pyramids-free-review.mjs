@@ -18,7 +18,7 @@ export function pyramidsFreeSequence(raw){
   check(raw.sourceKey===PYRAMIDS_FREE_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'PYRAMIDS_FREE_PROFILE_REQUIRED');
   const special=raw.steps.some(s=>['1','1|'].includes(pairs(s.responsePayload).FID));
   check(special,'PYRAMIDS_FREE_FREE_REVIEW_REQUIRED');
-  let previous,player,last;
+  let previous,player,last,baseCoins;
   for(const [index,step] of raw.steps.entries()){
     const msg=index===0?'BET':'FREE_GAME',q=pairs(step.requestPayload),p=pairs(step.responsePayload);
     check(step.msgId===msg&&q.MSGID===msg&&p.MSGID===msg&&(index===0||previous.n>0),'PYRAMIDS_FREE_SEQUENCE_MISMATCH');
@@ -33,11 +33,12 @@ export function pyramidsFreeSequence(raw){
     let t,c;
     if(special){
       const gsd=pairs(p.GSD??'','#','~');
+      if(index===0)baseCoins=gsd.BGCL;
+      else if(gsd.BGCL!==undefined)check(baseCoins!==undefined&&gsd.BGCL===baseCoins,'PYRAMIDS_BASE_COINS_CHANGED');
       check(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'].includes(k)),'PYRAMIDS_FREE_UNREVIEWED_GSD');
       if(gsd.CLBN!==undefined)check(index>0&&gsd.CL!==undefined&&gsd.CLBN===gsd.CL,'PYRAMIDS_FREE_COIN_ALIAS');
       if(gsd.FSRS!==undefined){const stops=gsd.FSRS.split(';');if(stops.at(-1)==='')stops.pop();check(index>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(integer);}
       for(const key of ['BGCL','CL'])if(gsd[key]!==undefined){
-        check(key==='CL'||index===0,'PYRAMIDS_FREE_COIN_PREFIX_ONLY');
         const rows=gsd[key].split('|');if(rows.at(-1)==='')rows.pop();
         check(rows.length>0&&rows.length<=15,'PYRAMIDS_FREE_COIN');const seen=new Set();
         for(const row of rows){

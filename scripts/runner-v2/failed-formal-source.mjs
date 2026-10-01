@@ -3,13 +3,16 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 
 // This failed, fully ended source is immutable evidence, never permission to replay it.
 export function checkFailedFormalSource({ended,jobs,profile}){
+ const source=profile.sourceRun==='36842835455:1'
+  ?{id:36842835455,commit:'819b429562e3c011305b2366e8ceac7354999dec'}
+  :{id:36791455132,commit:'876797180569bb1134fd7cc6c6934dc347cd0cb1'};
  assert(profile.schema==='sg-formal-stopped-retire-pyramids-v2'&&profile.group==='secondary'
   &&profile.gameId===32721&&profile.trialId==='sg_r1_20260928_32721'
-  &&profile.sourceRun==='36791455132:1'&&profile.sourceCommit==='876797180569bb1134fd7cc6c6934dc347cd0cb1'
+  &&profile.sourceRun===source.id+':1'&&profile.sourceCommit===source.commit
   &&profile.sourceFailure?.schema==='sg-ended-protocol-failure-v1'
   &&profile.sourceFailure.reason==='PROTOCOL_VALIDATION_FAILED','FAILED_FORMAL_SCOPE');
  assert(ended?.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
-  &&ended.id===36791455132&&ended.run_attempt===1&&ended.status==='completed'&&ended.conclusion==='failure'
+  &&ended.id===source.id&&ended.run_attempt===1&&ended.status==='completed'&&ended.conclusion==='failure'
   &&ended.event==='workflow_dispatch'&&ended.path==='.github/workflows/trial-300k.yml'
   &&ended.head_sha===profile.sourceCommit,'FAILED_FORMAL_SOURCE');
  assert(Array.isArray(jobs?.jobs)&&Number.isInteger(jobs.total_count)&&jobs.total_count===jobs.jobs.length

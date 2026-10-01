@@ -59,7 +59,24 @@ def display_sample():
     return value
 
 
+def repeated_base_coins_sample():
+    value=display_sample()
+    for step in value['steps']:
+        p=dict(item.split('=',1) for item in step['responsePayload'].split('&'))
+        rewrite(step,GSD=p['GSD']+'#BGCL~0;0;20;|')
+    return value
+
+
 class PyramidsFreeTests(unittest.TestCase):
+    def test_repeated_base_snapshot_preserves_settlement_and_rejects_changes(self):
+        parser=PyramidsFreeSequence(PLAN);value=repeated_base_coins_sample()
+        self.assertEqual(parser.settled(value),parser.settled(sample()))
+        for i in range(1,11):
+            self.assertEqual(parser.sequence({**value,'steps':value['steps'][:i]}),{'MSGID':'FREE_GAME'})
+        for coins in ('0;0;40;|','0;0;-1;|','0;0;20;|0;0;20;|','3;0;20;|'):
+            bad=copy.deepcopy(value);rewrite(bad['steps'][1],GSD='BGCL~'+coins)
+            with self.subTest(coins=coins),self.assertRaises(FieldError):parser.settled(bad)
+
     def test_free_display_keeps_counter_terminal_and_amount_rules(self):
         parser=PyramidsFreeSequence(PLAN);value=display_sample()
         self.assertEqual(parser.settled(value),parser.settled(sample()))

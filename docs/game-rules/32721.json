@@ -128,13 +128,13 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
     "scripts/runner-v2/record_fields.py": "509672199fcb01088ffcff2f99eee4d3f8c4a4419e3065bf0e6146d89c7e2fbf",
-    "service/pyramids_hold_review.py": "cebbb5ce4587d018634d4112ef2fc370aa3dcd016686e41e55c0f29d6a1d89f9",
-    "service/pyramids_free_review.py": "8542067f78ab8ea6c0d44bd972c37a603c6e5295b9788edccd821a2e13804ffd",
+    "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
+    "service/pyramids_free_review.py": "4f81804b8c2cb235af702aa0a9fbd1c48cf68f7a498ff3b3907925961e53bc8c",
     "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
-    "scripts/trial/pyramids-hold-review.mjs": "b24fe93f4f9246eb4d71ccbd2ab9d619aa1012bd7196547387db11ad495ab370",
-    "scripts/trial/pyramids-free-review.mjs": "9707b8c39cf1cd5e4bcebde66595d141bf8f323b67ef60e62704bc6147be7938",
+    "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
+    "scripts/trial/pyramids-free-review.mjs": "1ef37f7d3ad000b3ab35b0dfaacf8ce8a4656bc35b30bf36c52dd5d329712934",
     "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
-    "collector/sg.pyramids.ts": "2e593229a75b1b6833b26985d3e68c1c59bf63e6a419dc71e51e9cc76a77f606",
+    "collector/sg.pyramids.ts": "9c1af380ec1bc084b8708d6271eea79ed5769c3e671f22f7c4da0428b71065a4",
     "service/game_rule_catalog.py": "def659746e44ab931dc4e4a8a99a44714c906b8cd8440ba3599ca33bff89cd6c"
   },
   "reviewDocuments": [],
@@ -167,5 +167,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "dad97939c17d77966110ab14e254708c5cb144a3d67bbcde084990a989b66805"
+  "ruleHash": "49743813f1307efd1e0562b193cec92f5b26999c5808a5bf6d5fdf724eacde6a"
 }

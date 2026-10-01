@@ -23,7 +23,7 @@ def validate_pool_plan(plan):
                 approved=session_layout_plan(expected, profile)
                 require(plan == approved, 'SESSION_PROFILE_PLAN_CHANGED')
                 return dict(plan)
-            require(filename in ('formal-repair-pyramids-display-20261001.json','formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-rhino-guarantee-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
+            require(filename in ('formal-repair-pyramids-continuation-20261001.json','formal-repair-pyramids-display-20261001.json','formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-rhino-guarantee-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             repair = filename == 'formal-repair-pearl-20260930.json'
             awards = filename == 'formal-repair-pearl-awards-20261001.json'
@@ -36,15 +36,16 @@ def validate_pool_plan(plan):
                     and profile.get('sourceGeneration')=='a8bbaf0c5f2522764d73a5111acb42eceed9076d276f5b077f8bc1c6eabcfc0d'
                     and profile.get('repairedBaseline',{}).get('completePreserved')==51,'RHINO_REPAIRED_SOURCE_SCOPE')
             pyramids = filename == 'formal-count-pyramids-20261001.json'
-            pyramids_display = filename == 'formal-repair-pyramids-display-20261001.json'
+            pyramids_continuation = filename == 'formal-repair-pyramids-continuation-20261001.json'
+            pyramids_display = pyramids_continuation or filename == 'formal-repair-pyramids-display-20261001.json'
             pyramids_repair = pyramids_display or filename == 'formal-repair-pyramids-coins-20261001.json'
             if pyramids_repair:
                 require(profile.get('group')=='secondary' and profile.get('workerOffset')==20
                     and profile.get('historicalBaseline')==150 and profile.get('totalTarget')==300000
                     and expected.get('target')==299850 and expected.get('trialId')=='sg_r1_20260928_32721'
-                    and profile.get('oldProfileHash')==('93fef71918ebb6ad0d08e546b3ec13a2964b8493b8f860306e99564899808533' if pyramids_display else '989d114146fc85a759015ead8fa46c0f7d89c19d29f590ac849c9ff059ffdb9c')
-                    and profile.get('sourceRun')==('36791455132:1' if pyramids_display else '36778619850:1')
-                    and profile.get('sourceCommit')==('876797180569bb1134fd7cc6c6934dc347cd0cb1' if pyramids_display else 'c3e172c9712084034ddd34d69ab51071d78cb1a4'), 'PYRAMIDS_REPAIR_PROFILE_SCOPE')
+                    and profile.get('oldProfileHash')==('ad341baba9491cb4ca804074fec940f1a85b12ea8df454eeacdddf4c6ff42e8b' if pyramids_continuation else '93fef71918ebb6ad0d08e546b3ec13a2964b8493b8f860306e99564899808533' if pyramids_display else '989d114146fc85a759015ead8fa46c0f7d89c19d29f590ac849c9ff059ffdb9c')
+                    and profile.get('sourceRun')==('36842835455:1' if pyramids_continuation else '36791455132:1' if pyramids_display else '36778619850:1')
+                    and profile.get('sourceCommit')==('819b429562e3c011305b2366e8ceac7354999dec' if pyramids_continuation else '876797180569bb1134fd7cc6c6934dc347cd0cb1' if pyramids_display else 'c3e172c9712084034ddd34d69ab51071d78cb1a4'), 'PYRAMIDS_REPAIR_PROFILE_SCOPE')
             if pyramids:
                 require(profile.get('group')=='secondary' and profile.get('workerOffset')==20
                     and profile.get('historicalBaseline')==150 and profile.get('totalTarget')==300000
@@ -56,7 +57,7 @@ def validate_pool_plan(plan):
                 and profile.get('gameId') == plan.get('gameId') == (32721 if pyramids or pyramids_repair else 32799 if rhino else 32795)
                 and profile.get('basePlanHash') == digest(expected) and profile.get('activation') == plan['countAllocation']
                 and isinstance(plan['countAllocation'],str) and re.fullmatch(r'[a-f0-9]{64}',plan['countAllocation'])
-                and profile.get('completePreserved') == (151 if rhino_repaired else 2127 if pyramids_display else 1658 if pyramids_repair else 1362 if pyramids else 2596 if awards else 961 if repair else 100) and profile.get('remainingComplete') == (299849 if rhino_repaired else 297723 if pyramids_display else 298192 if pyramids_repair else 298488 if pyramids else 297404 if awards else 299039 if repair else 299900)
+                and profile.get('completePreserved') == (151 if rhino_repaired else 2590 if pyramids_continuation else 2127 if pyramids_display else 1658 if pyramids_repair else 1362 if pyramids else 2596 if awards else 961 if repair else 100) and profile.get('remainingComplete') == (299849 if rhino_repaired else 297260 if pyramids_continuation else 297723 if pyramids_display else 298192 if pyramids_repair else 298488 if pyramids else 297404 if awards else 299039 if repair else 299900)
                 and profile.get('maxSequence') == 600000 and profile.get('sessionRotation') == 'closed-batches-v1'
                 and profile.get('planHash') == digest(plan), 'FORMAL_COUNT_PLAN_CHANGED')
             expected={**expected,'countAllocation':profile['activation']}

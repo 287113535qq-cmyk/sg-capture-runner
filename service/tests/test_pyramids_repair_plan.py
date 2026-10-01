@@ -11,7 +11,7 @@ from store import digest
 
 
 class PyramidsRepairPlanTests(unittest.TestCase):
-    def check_scope(self,v2=False):
+    def check_scope(self,v2=False,continuation=False):
         plans = json.loads((Path(__file__).resolve().parents[2]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         base = plans['32721'];plan = {**base, 'countAllocation': 'a'*64}
         profile = dict(schema='sg-formal-repair-pyramids-v2' if v2 else 'sg-formal-repair-pyramids-v1', gameId=32721, group='secondary', workerOffset=20,
@@ -20,6 +20,9 @@ class PyramidsRepairPlanTests(unittest.TestCase):
             basePlanHash=digest(base),activation='a'*64,completePreserved=2127 if v2 else 1658,remainingComplete=297723 if v2 else 298192,
             maxSequence=600000,sessionRotation='closed-batches-v1',planHash=digest(plan))
         name='formal-repair-pyramids-display-20261001.json' if v2 else 'formal-repair-pyramids-coins-20261001.json'
+        if continuation:
+            profile.update(sourceRun='36842835455:1',sourceCommit='819b429562e3c011305b2366e8ceac7354999dec',oldProfileHash='ad341baba9491cb4ca804074fec940f1a85b12ea8df454eeacdddf4c6ff42e8b',completePreserved=2590,remainingComplete=297260)
+            name='formal-repair-pyramids-continuation-20261001.json'
         def read(p,*a,**kw):
             return json.dumps(profile if p.name==name else plans)
         with patch.dict(os.environ,SG_FORMAL_COUNT_PROFILE=name),patch.object(Path,'read_text',read):
@@ -35,3 +38,5 @@ class PyramidsRepairPlanTests(unittest.TestCase):
 
     def test_first_repair_scope(self):self.check_scope()
     def test_second_repair_scope(self):self.check_scope(True)
+
+    def test_continuation_repair_scope(self):self.check_scope(True,True)

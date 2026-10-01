@@ -19,3 +19,14 @@ test('entry correction selects a new retirement profile while keeping the old Py
  assert.throws(()=>pyramidsRepairEntry('admit','formal-repair-pyramids-display-20261001.json',e.retireName));
  assert.throws(()=>pyramidsRepairEntry('retire','formal-count-pyramids-20261001.json',e.retireName));
 });
+
+
+test('continuation repair keeps the applied display parent and exact ended source',()=>{
+ for(const mode of ['retire','activate','admit']){
+  const e=pyramidsRepairEntry(mode,'formal-repair-pyramids-continuation-20261001.json');
+  assert.equal(e.oldName,'formal-repair-pyramids-display-20261001.json');
+  assert.equal(e.sourceId,36842835455);assert.equal(e.v2,true);
+  assert.equal(e.parserProfile,mode==='retire'?e.oldName:e.newName);
+ }
+ assert.throws(()=>pyramidsRepairEntry('retire','formal-repair-pyramids-continuation-20261001.json','formal-retire-pyramids-display-20261001.json'));
+});

@@ -35,7 +35,6 @@ class PyramidsFreeSequence(NativeNextgenFields):
         for key in ('BGCL','CL'):
             if key not in gsd:
                 continue
-            check(key == 'CL' or index == 0, 'PYRAMIDS_FREE_COIN_PREFIX_ONLY')
             rows = gsd[key].split('|')
             if rows[-1] == '': rows.pop()
             check(0 < len(rows) <= 15, 'PYRAMIDS_FREE_COIN')
@@ -58,7 +57,7 @@ class PyramidsFreeSequence(NativeNextgenFields):
         steps = raw.get('steps')
         check(isinstance(steps, list) and 0 < len(steps) <= 100, 'INVALID_ROUND_STEPS')
         check(feature_type(raw), 'PYRAMIDS_FREE_FREE_REVIEW_REQUIRED')
-        previous, player = None, None
+        previous, player, base_coins = None, None, None
         for i, step in enumerate(steps):
             p = params(step['responsePayload'])
             check(step.get('msgId') == ('BET' if i == 0 else 'FREE_GAME'), 'PYRAMIDS_FREE_SEQUENCE_MISMATCH')
@@ -73,6 +72,12 @@ class PyramidsFreeSequence(NativeNextgenFields):
                 check(len(bits) == 2 and bits[0] and bits[0] not in gsd, 'INVALID_PYRAMIDS_FREE_GSD')
                 gsd[bits[0]] = bits[1]
             self.validate_gsd(gsd, i)
+            # BGCL restores the base reel snapshot; a free response may repeat
+            # the trigger snapshot, but must not introduce or change it.
+            if i == 0:
+                base_coins = gsd.get('BGCL')
+            elif 'BGCL' in gsd:
+                check(base_coins is not None and gsd['BGCL'] == base_coins, 'PYRAMIDS_BASE_COINS_CHANGED')
             check(p.get('FRBAL','0') == '0', 'PYRAMIDS_FREE_UNREVIEWED_FREE_ROUNDS')
             request = self.request_params(step['requestPayload'], step['msgId'])
             check(player is None or player == request['PID'], 'SESSION_CHANGED_MID_ROUND')

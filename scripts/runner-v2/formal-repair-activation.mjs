@@ -9,8 +9,9 @@ import {receiptKey} from './durable-queue.mjs';
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
  const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ const continuation=v2&&profile.sourceRun==='36842835455:1';
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
  assert(['sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');

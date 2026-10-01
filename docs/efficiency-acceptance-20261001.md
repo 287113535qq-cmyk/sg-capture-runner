@@ -1,5 +1,7 @@
 # 效率优化验收与执行链
 
+最新进展见[连续采集与差异修复](ag-continuous-efficiency-20261001.md)：15/178完成，Rhino长时双会话已准入，35,722全文已通过，Pyramids修复继续；全部优化尚未完成。以下各时间段为历史记录。
+
 2026-10-01。本次优先执行真实吞吐验证；全部优化尚未验收完成。累计完成15/178，Pearl已结束，不重采。Rhino双会话窗口实际新增10374条，累计已落库18694条，仍需本轮独立Python全文读回和稳定窗口对比。
 
 AG参考固定源码：E:/platform-sync/api_new/api.numeric/capture/capture-ag。rolling-worker的独立会话/持续领取、scheduler的故障分类、client最近8步上下文、round精确映射分别对应下列验收。

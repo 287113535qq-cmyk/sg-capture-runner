@@ -13,11 +13,12 @@ function rows(text){
  const groups=text.split('|');if(groups.at(-1)==='')groups.pop();need(groups.length>0&&groups.length<=100,'PYRAMIDS_ARRAY');
  return groups.map(g=>{const cells=g.split(';');if(cells.at(-1)==='')cells.pop();need(cells.length>0&&cells.length<=100&&cells.every(v=>/^-?\d+$/.test(v)&&Number.isSafeInteger(+v)),'PYRAMIDS_ARRAY');return cells.map(Number);});
 }
-const keys=new Set('BGCL BGRS CL CS FTTCV HCL HCLBT HNS HNSID HNSRIDS HNSTW HPCL HRS HRSBT HVA HVABT NCCP PHRS PSTRS PVA STRS VA'.split(' '));
+const keys=new Set('BGCL BGRS CL CS FTTCV HCL HCLBT HNS HNSID HNSRIDS HNSTW HPCL HRS HRSBT HVA HVABT NCCP PHRS PSTRS PVA STRS VA SHNST'.split(' '));
 function gsd(p){
  const g=pairs(p.GSD??'','#','~');need(Object.keys(g).every(k=>keys.has(k)),'PYRAMIDS_UNREVIEWED_GSD');
  for(const [k,v] of Object.entries(g)){
-  if(k==='CS')need(['RESPIN','RESPININITIALCHEST','RESPINSUPER','RESPINSUPERMORECHEST'].includes(v),'PYRAMIDS_STATE');
+  if(k==='SHNST')need(['0','1'].includes(v),'PYRAMIDS_SUPER_HOLD_FLAG');
+  else if(k==='CS')need(['RESPIN','RESPININITIALCHEST','RESPINSUPER','RESPINSUPERMORECHEST'].includes(v),'PYRAMIDS_STATE');
   else if(['CL','BGCL','HCL','HCLBT','HPCL'].includes(k)){
    const occupied=new Set();for(const row of rows(v)){const[x,y,value]=row,pos=x+','+y;
     need(row.length===3&&x>=0&&x<3&&y>=0&&y<5&&!occupied.has(pos)&&[-4,-3,-2,10,20,40,60,80,100,300,400,600,800].includes(value),'PYRAMIDS_COIN');occupied.add(pos);
@@ -40,6 +41,7 @@ export function pyramidsHoldReview(raw){
   need(xml.tag.toUpperCase()==='GDMRESPONSE'&&children(success).length===0&&children(payload).length===0&&success.children.map(x=>x.text??'').join('').toLowerCase()==='true'&&payload.children.map(x=>x.text??'').join('')===s.responsePayload,'PYRAMIDS_XML_MISMATCH');
   need(Number.isSafeInteger(s.elapsedMs)&&s.elapsedMs>=0&&s.elapsedMs<=300000,'PYRAMIDS_TIMING');
   const g=gsd(p),n=uint(p.NFG),t=uint(p.TFG),c=uint(p.CFGG);
+  need(!Object.hasOwn(g,'SHNST')||i===0,'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY');
   need(n<=99&&t>=6&&t<=98&&c<=98&&n+c===t,'PYRAMIDS_COUNTERS');
   if(!i){need(n===6&&t===6&&c===0&&p.IFG==='0'&&['CL','BGCL','HCL','HVA'].every(k=>Object.hasOwn(g,k)),'PYRAMIDS_TRIGGER');firstWin=uint(p.TW);}
   else{

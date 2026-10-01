@@ -9,3 +9,12 @@ test('wrong identities, incomplete jobs and arbitrary source failures are reject
  const mutate=[j=>j.jobs.pop(),j=>{j.jobs[0].status='in_progress'},j=>{j.jobs.find(x=>x.name==='capture-0').name='capture-1'},j=>{j.jobs.find(x=>x.name==='verify').conclusion='failure'},j=>{j.jobs.find(x=>x.name==='capture-0').conclusion='cancelled'}];
  for(const fn of mutate){const j=structuredClone(e.jobs);fn(j);assert.throws(()=>checkFailedFormalSource({ended:e.run,jobs:j,profile:{...p,sourceFailure:{...p.sourceFailure,jobsHash:hash(j)}}}));}
 });
+
+
+test('new display source uses its own exact ended identity without allowing arbitrary failures',()=>{
+ const run={...e.run,id:36842835455,head_sha:'819b429562e3c011305b2366e8ceac7354999dec'};
+ const profile={...p,sourceRun:'36842835455:1',sourceCommit:run.head_sha};
+ assert.doesNotThrow(()=>checkFailedFormalSource({ended:run,jobs:e.jobs,profile}));
+ for(const change of [{id:run.id+1},{head_sha:e.run.head_sha},{status:'in_progress'}])
+  assert.throws(()=>checkFailedFormalSource({ended:{...run,...change},jobs:e.jobs,profile}));
+});
