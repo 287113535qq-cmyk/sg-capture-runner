@@ -6,6 +6,7 @@ import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 import {loadCountPermission} from './complete-count.mjs';import {reviewCountWindow} from './count-window-review.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {windowTiming} from './window-timing.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
 assert(profile.gameId===32799&&['sg-formal-count-rhino-v2','sg-session-layout-rhino-v1'].includes(profile.schema),'WINDOW_PROFILE_SCOPE');
@@ -26,7 +27,8 @@ try{
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${process.env.SG_WINDOW_SOURCE_RUN}`))?.value;
  assert(permit?.commit===ended.head_sha&&permit.profileHash===hash(profile)&&permit.activation===spec.activation,'WINDOW_SOURCE_PERMISSION');
  const scans={request:async(op,fields)=>{await store.writable();return transport.request(op,fields);}};
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec});
+ const captures=jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)),startMs=Math.min(...captures.map(j=>Date.parse(j.started_at))),endMs=Math.max(...captures.map(j=>Date.parse(j.completed_at)));
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:windowTiming(startMs,endMs)});
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),

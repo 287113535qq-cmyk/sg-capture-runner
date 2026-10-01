@@ -4,7 +4,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkLedger,auditAllocatedRecord,auditCountBatch} from './complete-count.mjs';
 
 // Read-only measurement verification. A partial window never marks a game complete.
-export async function reviewCountWindow({store,transport,parser,plan,pool,spec}){
+export async function reviewCountWindow({store,transport,parser,plan,pool,spec,timing}){
  const ledger=checkLedger(pool,plan,spec),before=hash(pool);
  assert(ledger.reserved===0&&pool.enabled&&!pool.failure&&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=Date.now()),'WINDOW_NOT_SETTLED');
  const cache=new Map(),counts=new Map(),digest=createHash('sha256');let after=0,count=0,pages=0;
@@ -18,6 +18,7 @@ export async function reviewCountWindow({store,transport,parser,plan,pool,spec})
    auditAllocatedRecord({pool,plan,spec,record});
    await auditCountBatch({store,pool,plan,spec,record,cache});
    assert((await parser.call({op:'verify',plan,raw:record.raw,record}))?.verified===true,'WINDOW_PYTHON_UNVERIFIED');
+   timing?.record(record);
    digest.update(hash([record._id,record.contentHash])+'\n');after=record.sequence;count++;
    assert(count<=pool.confirmed,'WINDOW_EXCESS');counts.set(record.batchId,(counts.get(record.batchId)||0)+1);
   }
@@ -28,5 +29,5 @@ export async function reviewCountWindow({store,transport,parser,plan,pool,spec})
  return {schema:'sg-count-window-review-v1',gameId:plan.gameId,trialId:plan.trialId,activation:spec.activation,
   complete:count,remainingComplete:plan.target-count,recordsHash:digest.digest('hex'),poolHash:before,
   fullReadback:true,pageSize:100,pages,lastSequence:after,sourceRequests:0,databaseWrites:0,
-  gameComplete:count===plan.target};
+  gameComplete:count===plan.target,...(timing?{timing:timing.finish()}:{})};
 }
