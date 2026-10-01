@@ -16,9 +16,16 @@ export class RunnerState {
     Object.assign(this,{transport,gate,now,sleep,deadline,deltaCas,random});this.lastSample=-Infinity;
   }
   async sample() {
-    if(this.now()-this.lastSample>=10_000) {
-      try {this.gate.observe(await this.transport.request('resources'));this.lastSample=this.now();}
-      catch(error){this.gate.observe(null);throw error;}
+    // Concurrent write guards share only the in-flight OS read. Each caller
+    // still checks its gate; no allowed flag or mutable pool is cached.
+    if(this.resourceSample)await this.resourceSample;
+    else if(this.now()-this.lastSample>=10_000) {
+      const pending=(async()=>{
+        try {this.gate.observe(await this.transport.request('resources'));this.lastSample=this.now();}
+        catch(error){this.gate.observe(null);throw error;}
+      })();
+      this.resourceSample=pending;
+      try {await pending;}finally {if(this.resourceSample===pending)this.resourceSample=null;}
     }
     return this.gate.status();
   }

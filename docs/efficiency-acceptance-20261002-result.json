@@ -206,6 +206,23 @@
       "rootCauseUniquelyEstablished": false,
       "sourceRequestsForReview": 0,
       "databaseWrites": 0
+    },
+    "casContentionLinux": {
+      "run": 36933047423,
+      "commit": "c08a0a448c044d7fdcf1cd4ee348fae9a80a84f0",
+      "logSha256": "de34c2e2f02cfa2e7272a8a0be53194a569c0d3302bc280ebbdb00d5e41a4578",
+      "onlineGainVerified": false
+    },
+    "resourceSampleFlightLocal": {
+      "affectedTests": 21,
+      "concurrentGuards": 80,
+      "resourceReadsPerSamplingPoint": 1,
+      "overloadAndRecoveryUnchanged": true,
+      "failedReadRejectsEveryGuard": true,
+      "crossProcessCache": false,
+      "sourceRequests": 0,
+      "databaseWrites": 0,
+      "onlineGainVerified": false
     }
   },
   "pending": [
