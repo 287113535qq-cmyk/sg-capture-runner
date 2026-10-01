@@ -26,14 +26,31 @@ export class GithubCampaign {
     const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
     return spec?idleAtCountTail(pool,plan,spec,worker,this.now()):idleAtAssignedTail(pool,worker,plan.target,this.now());
   }
-  async status(){
+  async status({runKey}={}){
     const c=(await this.store.get('state','campaign'))?.value;
     const holds=await this.transport.request('global_holds');
     const globalPaused=holds.some(x=>!x||x.value.active);
     if(!c)return {status:'paused',reason:'MIGRATION_REQUIRED',globalPaused:true};
     const counts={};for(const g of c.games)counts[g.status]=(counts[g.status]||0)+1;
+    let runOutcome;
+    if(runKey!==undefined){
+      assert(/^capture-run:[0-9]+:[0-9]+$/.test(runKey),'RUN_BINDING_REQUIRED');
+      const bound=(await this.store.get('state',runKey))?.value;
+      const game=c.games.find(g=>g.game_id===bound?.gameId),plan=this.plans[bound?.gameId];
+      if(game&&plan){
+        const pool=(await this.store.get('state','pool:'+plan.trialId))?.value;
+        const businessStatus=game.status==='complete'?'complete':game.status==='parked-protocol'?'parked-protocol':
+          game.status==='parking-protocol'?'parking-protocol':globalPaused||!c.enabled?'source-paused':
+          pool?.failure?'pool-blocked':pool?.confirmed===plan.target?'awaiting-audit':
+          pool?.enabled&&Object.values(pool.workers??{}).some(w=>w.leaseUntil>this.now())?'collecting':'waiting-ready';
+        runOutcome={gameId:game.game_id,businessStatus,settledComplete:pool?.confirmed??null,target:plan.target,
+          gameAuditedComplete:game.status==='complete',repairQueued:!!game.repairKey,
+          workflowSuccessIsNotGameCompletion:true};
+      }else runOutcome={businessStatus:'unbound',gameAuditedComplete:false,workflowSuccessIsNotGameCompletion:true};
+    }
     return {group:this.group,status:!c.enabled||globalPaused||c.protocolValidation?.runKey?'paused':c.games.every(x=>x.status==='complete')?'complete':'running',
       activeGame:c.activeGame,counts,globalPaused,protocolParkingEnabled:true,
+      ...(runOutcome?{runOutcome}:{}),
       parkedGames:c.games.filter(x=>x.status==='parked-protocol').map(x=>x.game_id)};
   }
   async selectForRun(runKey){

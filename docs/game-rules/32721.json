@@ -145,7 +145,8 @@
     "docs/protocol-parking-storage-stop-20260928.md",
     "docs/pyramids-next-review-20261001.md",
     "docs/pyramids-pilot-result-20261001.md",
-    "docs/sg-throughput-ag-optimization-plan-20261001-result.json"
+    "docs/sg-throughput-ag-optimization-plan-20261001-result.json",
+    "docs/throughput-fourth-batch-20261001.md"
   ],
   "analysisDocumentHashes": {
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
@@ -154,7 +155,8 @@
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
     "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1",
-    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "a125a4f986e3bb989276e1ec0b2f82739a30e7a50101f7c1ec633d7095d277b9"
+    "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "a125a4f986e3bb989276e1ec0b2f82739a30e7a50101f7c1ec633d7095d277b9",
+    "docs/throughput-fourth-batch-20261001.md": "74b70477934f22053fd09f544e9f57400395897baf33df9a934a6bfde8ffa5ff"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -163,5 +165,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "79414d147e6604d9c3fb178051abd96146e17fcf82f9037f38de6ef5dc2c2e1b"
+  "ruleHash": "e9e9f938cc549f6d241f4babf2555836d36ab493a272c4a5cb060b6e4428b0c9"
 }

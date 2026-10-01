@@ -25,6 +25,22 @@ function fixture(){
   return {c,store,rows,holds,plans,docs,calls};
 }
 
+test('run outcome distinguishes workflow success, parked game, pending audit and complete game without writes',async()=>{
+ const f=fixture(),trial=f.plans[32723].trialId;
+ await f.store.create('state','capture-run:11:1',{gameId:32723});
+ await f.store.create('state','pool:'+trial,{enabled:false,failure:'PROTOCOL_VALIDATION_FAILED',confirmed:1,workers:{}});
+ await f.store.create('state','campaign',{enabled:true,activeGame:null,games:[{game_id:32723,status:'parked-protocol',repairKey:'fixture'}]});
+ let out=(await f.c.status({runKey:'capture-run:11:1'})).runOutcome;
+ assert.equal(out.businessStatus,'parked-protocol');assert.equal(out.gameAuditedComplete,false);assert.equal(out.settledComplete,1);assert.equal(out.repairQueued,true);
+ const pool=f.docs.get('state/pool:'+trial).value;pool.enabled=true;pool.failure=null;pool.confirmed=2;
+ const campaign=f.docs.get('state/campaign').value;campaign.activeGame=32723;campaign.games[0].status='active';
+ out=(await f.c.status({runKey:'capture-run:11:1'})).runOutcome;assert.equal(out.businessStatus,'awaiting-audit');assert.equal(out.gameAuditedComplete,false);
+ campaign.games[0].status='complete';campaign.activeGame=null;
+ out=(await f.c.status({runKey:'capture-run:11:1'})).runOutcome;assert.equal(out.businessStatus,'complete');assert.equal(out.gameAuditedComplete,true);
+ assert.equal((await f.c.status({runKey:'capture-run:12:1'})).runOutcome.businessStatus,'unbound');
+ assert.equal(f.docs.size,3);assert(f.calls.every(op=>op==='global_holds'));
+});
+
 test('ended-run finalizer waits for lease expiry then parks without selecting another ready game',async()=>{
  const f=fixture(),trial=f.plans[32723].trialId;let clock=1000,sleeps=0;f.c.now=()=>clock;
  await f.store.create('state','campaign',{enabled:true,activeGame:32723,games:[

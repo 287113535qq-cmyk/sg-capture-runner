@@ -9,6 +9,45 @@ s.loader.exec_module(m)
 
 
 class InventoryTests(unittest.TestCase):
+    def test_loader_only_never_becomes_client_evidence(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/'nextgen';root.mkdir()
+            wms=Path(d)/'wms';p=wms/'missing'/'js';p.mkdir(parents=True)
+            (p/'metadatabundle.js').write_text('"BET" "FREE_GAME" "NFG"',encoding='utf-8')
+            result=m.inventory({'1':{'runtimeSlug':'missing'}},root,set(),{1},wms)
+            row=result['games'][0]
+            self.assertEqual(result['filesRead'],0)
+            self.assertEqual(row['status'],'loader-only')
+            self.assertEqual(row['clients'],[])
+            self.assertEqual(row['references'],[])
+            self.assertEqual(len(row['loaders']),1)
+            self.assertFalse(row['captureAuthorization'])
+
+    def test_wms_fixed_entry_and_slug_variants_are_only_unverified_candidates(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)/'nextgen';root.mkdir()
+            wms=Path(d)/'wms';p=wms/'firequeen_prt'/'app/js';p.mkdir(parents=True)
+            (p/'main.js').write_text('"Logic" "EndGame" "FreeSpins"',encoding='utf-8')
+            p=wms/'other'/'js';p.mkdir(parents=True)
+            (p/'app.js').write_text('"Logic" "EndGame"',encoding='utf-8')
+            p=wms/'modern'/'app/js';p.mkdir(parents=True)
+            (p/'game.js').write_text('"Logic" "EndGame"',encoding='utf-8')
+            p=wms/'named'/'app';p.mkdir(parents=True)
+            (p/'named.Game.js').write_text('"Logic" "EndGame"',encoding='utf-8')
+            p=root/'christmas'/'js';p.mkdir(parents=True)
+            (p/'app.js').write_text('"BET"',encoding='utf-8')
+            result=m.inventory({'1':{'runtimeSlug':'fire-queen'},'2':{'runtimeSlug':'christmas94'},
+                                '3':{'runtimeSlug':'../../private'},'4':{'runtimeSlug':'unknown'},
+                                '5':{'runtimeSlug':'other'},'6':{'runtimeSlug':'modern'},
+                                '7':{'runtimeSlug':'named'}},root,set(),set(),wms)
+            self.assertEqual(result['filesRead'],5)
+            self.assertEqual(result['games'][0]['clients'][0]['rootKind'],'wms')
+            self.assertEqual(result['games'][1]['clients'][0]['rootKind'],'nextgen')
+            self.assertTrue(all(not r['ready'] and not r['captureAuthorization'] for r in result['games']))
+            self.assertFalse(result['games'][0]['identityVerified'])
+            self.assertEqual(result['games'][2]['status'],'unmapped')
+            self.assertEqual(result['games'][3]['status'],'unmapped')
+
     def test_game_entry_and_multiple_entries_remain_candidates_without_automatic_identity(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)

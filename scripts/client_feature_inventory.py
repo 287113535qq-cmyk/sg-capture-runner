@@ -14,6 +14,8 @@ TOKENS = ('MSGID', 'BET', 'FREE_GAME', 'FEATURE_START', 'FEATURE_PICK', 'FEATURE
           'WHEELSPIN', 'WHSLICE', 'MMBG', 'FRAMEWINS', 'Logic', 'EndGame',
           'readyForEndGame', 'lastFreeSpin', 'FreeSpins', 'HoldNSpin')
 IDENTIFIER = frozenset('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$')
+# Observed cache spellings only, never identity or gameplay equivalence proofs.
+WMS_CANDIDATE_ALIASES = {32759: 'crystalforesthd_prt', 32774: 'himalayas', 32810: 'bigfoot'}
 
 
 def fingerprint(data):
@@ -37,8 +39,10 @@ def fingerprint(data):
                 tokenOffsets={k: v for k, v in seen.items() if v})
 
 
-def inventory(plans, root, completed, reviewed):
+def inventory(plans, root, completed, reviewed, wms_root=None):
     root = root.resolve(strict=True)
+    if wms_root is not None:
+        wms_root = wms_root.resolve(strict=True)
     rows, cache = [], {}
     for game_id, plan in sorted(plans.items(), key=lambda pair: int(pair[0])):
         gid = int(game_id)
@@ -51,25 +55,53 @@ def inventory(plans, root, completed, reviewed):
             rows.append(dict(row, status='unmapped', clients=[]))
             continue
         names = {slug}
-        if slug.endswith(('95', '96')):
+        if slug.endswith(('90', '94', '95', '96')):
             names.add(slug[:-2])
         clients = []
         # Cached clients use app.js, older game.js, and fixed bundle layouts.
         # Inspect only these fixed entry points, never recursively scan assets.
-        paths = [root / name / entry for name in sorted(names)
-                 for entry in ('js/app.js', 'js/game.js', 'game.bundle.js', 'game_min.js')]
-        for path in paths:
+        paths = [(root, root / name / entry) for name in sorted(names)
+                 for entry in ('js/app.js', 'js/game.js', 'game.bundle.js', 'game_min.js', 'src/main.js',
+                               f'scripts/ci_gdm_{name}_desktop.min.js', f'scripts/ci_gdm_{name}_mobile.min.js')]
+        wms_names = set()
+        if wms_root is not None:
+            wms_names = {slug, slug.replace('-', '')}
+            wms_names |= {name + '_prt' for name in tuple(wms_names) if not name.endswith('_prt')}
+            if gid in WMS_CANDIDATE_ALIASES:
+                wms_names.add(WMS_CANDIDATE_ALIASES[gid])
+            paths.extend((wms_root, wms_root / name / entry) for name in sorted(wms_names)
+                         for entry in ('app/js/main.js', 'app/js/game.js', 'js/app.js', f'app/{name}.Game.js', f'app/{name}.js'))
+            if gid == 32764:
+                paths.append((wms_root, wms_root / 'dragonspin/app/dragon.min.js'))
+        for selected_root, path in paths:
             if not path.is_file():
                 continue
             # A cache junction or symlink cannot escape the explicitly selected root.
             real = path.resolve(strict=True)
-            if not real.is_relative_to(root):
+            if not real.is_relative_to(selected_root):
                 raise ValueError('CLIENT_PATH_ESCAPES_ROOT')
             if real not in cache:
                 cache[real] = fingerprint(real.read_bytes())
-            clients.append(dict(relativePath=path.relative_to(root).as_posix(),
+            clients.append(dict(rootKind='wms' if selected_root == wms_root else 'nextgen',
+                relativePath=path.relative_to(selected_root).as_posix(),
                 entryPoint=path.name, **cache[real]))
-        rows.append(dict(row, status='lexical-candidate' if clients else 'unmapped', clients=clients,
+        loaders = []
+        if not clients and wms_root is not None:
+            for name in sorted(wms_names):
+                for entry in ('js/metadatabundle.js', 'js/bootstrapper.js', 'app/metadatabundle.js'):
+                    path = wms_root / name / entry
+                    if not path.is_file():
+                        continue
+                    real = path.resolve(strict=True)
+                    if not real.is_relative_to(wms_root):
+                        raise ValueError('CLIENT_PATH_ESCAPES_ROOT')
+                    data = real.read_bytes()
+                    if len(data) > 1024 * 1024:
+                        raise ValueError('LOADER_TOO_LARGE')
+                    loaders.append(dict(relativePath=path.relative_to(wms_root).as_posix(),
+                        bytes=len(data), sha256=hashlib.sha256(data).hexdigest()))
+        rows.append(dict(row, status='lexical-candidate' if clients else 'loader-only' if loaders else 'unmapped', clients=clients,
+            loaders=loaders,
             identityVerified=False, semanticTraits={}, requiredReview=[
                 'Verify client identity independently of its directory name.',
                 'Trace request route, counter transitions, money, session and complete exits.',
@@ -100,6 +132,7 @@ if __name__ == '__main__':
     from feature_reuse_index import REVIEWED
     p = argparse.ArgumentParser()
     p.add_argument('--client-root', type=Path, required=True)
+    p.add_argument('--wms-root', type=Path, help='Optional exact WMS content root; fixed game entry points only')
     p.add_argument('--completed', type=Path, required=True, help='Private JSON array of completed game IDs; never rescanned')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
@@ -111,7 +144,7 @@ if __name__ == '__main__':
     catalog = json.loads((config/'round-one.json').read_text(encoding='utf-8'))['games']
     plans = {str(g['gameId']): plans.get(str(g['gameId']),
         {'runtimeSlug': g.get('historicalDatabase', '').removeprefix('sg_')}) for g in catalog}
-    result = inventory(plans, a.client_root, set(completed), REVIEWED)
+    result = inventory(plans, a.client_root, set(completed), REVIEWED, a.wms_root)
     a.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
-    counts = {key: sum(r['status'] == key for r in result['games']) for key in ('completed-skipped','lexical-candidate','unmapped')}
+    counts = {key: sum(r['status'] == key for r in result['games']) for key in ('completed-skipped','lexical-candidate','loader-only','unmapped')}
     print(json.dumps(dict(games=len(result['games']), filesRead=result['filesRead'], counts=counts, sourceRequests=0)))
