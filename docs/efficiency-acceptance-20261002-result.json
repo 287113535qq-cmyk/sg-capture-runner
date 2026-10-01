@@ -231,6 +231,47 @@
       "sourceRequests": 0,
       "databaseWrites": 0,
       "onlineGainVerified": false
+    },
+    "stateEfficiencyEvidenceBackup": {
+      "verifiedFiles": 56,
+      "bytes": 1357889,
+      "sha256": "bd8db48e38cbdda5d82de7b13bead3c9c094ad2cbd969cfe42a737a2fb96fe5a"
+    },
+    "repairXmlDeltaOffline": {
+      "cases": [
+        {
+          "case": "duplicate-SUCCESS",
+          "pythonRejected": true
+        },
+        {
+          "case": "nested-SUCCESS",
+          "pythonRejected": true
+        },
+        {
+          "case": "duplicate-PAYLOAD",
+          "pythonRejected": true
+        },
+        {
+          "case": "nested-PAYLOAD",
+          "pythonRejected": true
+        }
+      ],
+      "runnerCollectorReject": true,
+      "actualPrefixStillIncomplete": true,
+      "syntheticFullChainsUnchanged": 3,
+      "beforeFixDuplicateElementsAcceptedByPython": true,
+      "sourceRequests": 0,
+      "databaseWrites": 0,
+      "productionImported": false,
+      "captureAuthorized": false
+    },
+    "nextPreparationMoneyMethods": {
+      "gameId": 32812,
+      "methodCount": 3,
+      "naturalXmlObserved": false,
+      "missingCloseBalanceMustNotBecomeTerminal": true,
+      "sourceRequests": 0,
+      "ready": false
     }
   },
   "pending": [
