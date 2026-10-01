@@ -100,7 +100,13 @@ function p95(w){
 }
 export function compareCanaryWindows({schedule,report,baselineSafety,candidateSafety,activity}){
  checkSchedule(schedule);
- assert(report?.fullReadback===true&&/^[a-f0-9]{64}$/.test(report.recordsHash??'')
+ const reused=report?.readbackScope==='current-source-with-preserved-proof-v1'&&report.currentSourceFullReadback===true
+  &&report.history?.schema==='sg-window-history-reuse-review-v1'&&report.history.preservedReadbackReused===true
+  &&report.history.historicalReadbackFresh===false&&report.history.rawRecordsRead===0
+  &&report.history.sourcePermitHash===schedule.sourcePermitHash&&/^[a-f0-9]{64}$/.test(report.history.proofHash??'')
+  &&Number.isSafeInteger(report.history.complete)&&report.history.complete>=0
+  &&Number.isSafeInteger(report.sourceComplete)&&report.sourceComplete>0&&report.complete===report.history.complete+report.sourceComplete;
+ assert((report?.fullReadback===true||reused)&&/^[a-f0-9]{64}$/.test(report.recordsHash??'')
   &&report.sourceRun===schedule.run&&report.sourceCommit===schedule.commit
   &&report.activation===schedule.activation&&report.profileHash===schedule.profileHash
   &&report.sourcePermitHash===schedule.sourcePermitHash&&report.timing?.schema==='sg-session-canary-timing-v1'
@@ -136,6 +142,7 @@ export function compareCanaryWindows({schedule,report,baselineSafety,candidateSa
   activation:schedule.activation,profileHash:schedule.profileHash,sourcePermitHash:schedule.sourcePermitHash,
   scheduleHash:hash(schedule),recordsHash:report.recordsHash,activityHash:hash(activity),fullReadback:true,
   baselineResources:baselineSafety,candidateResources:candidateSafety,
+  ...(reused?{readbackScope:report.readbackScope,historyProofHash:hash(report.history),currentSourceFullReadback:true}:{}),
   baseline:values[0],candidate:values[1],sourceRequests:0,newBetAllowance:0};
 }
 export function reviewCanaryActivity({schedule,workers,fullReadback,recordsHash,logSha256}){

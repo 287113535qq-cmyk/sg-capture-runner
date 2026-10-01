@@ -54,7 +54,7 @@ try{
   canaryRevisionHash=hash(revision);
   canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:ended.head_sha,run:process.env.SG_WINDOW_SOURCE_RUN});
  }
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,historyPermit:canary?permit:undefined,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
  let canaryProof;
  if(canary){

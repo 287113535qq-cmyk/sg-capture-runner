@@ -2,12 +2,16 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkLedger,auditAllocatedRecord,auditCountBatch} from './complete-count.mjs';
+import {reviewHistoryPrefix} from './count-window-history.mjs';
 
 // Read-only measurement verification. A partial window never marks a game complete.
-export async function reviewCountWindow({store,transport,parser,plan,pool,spec,timing}){
+export async function reviewCountWindow({store,transport,parser,plan,pool,spec,timing,historyPermit}){
  const ledger=checkLedger(pool,plan,spec),before=hash(pool);
  assert(ledger.reserved===0&&pool.enabled&&!pool.failure&&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=Date.now()),'WINDOW_NOT_SETTLED');
  const cache=new Map(),counts=new Map(),digest=createHash('sha256');let after=0,count=0,pages=0;
+ const history=historyPermit?await reviewHistoryPrefix({store,plan,pool,spec,permit:historyPermit}):null;
+ if(history){after=history.after;count=history.complete;digest.update('preserved-history:'+hash(history)+'\n');
+  for(let id=1;id<=history.batchCount;id++)counts.set(id,pool.countAllocation.batches[id].complete);}
  while(true){
   const rows=await transport.request('rounds_scan',{trialId:plan.trialId,after});
   assert(Array.isArray(rows)&&rows.length<=100,'WINDOW_PAGE');
@@ -28,6 +32,6 @@ export async function reviewCountWindow({store,transport,parser,plan,pool,spec,t
  assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===before,'WINDOW_CHANGED');
  return {schema:'sg-count-window-review-v1',gameId:plan.gameId,trialId:plan.trialId,activation:spec.activation,
   complete:count,remainingComplete:plan.target-count,recordsHash:digest.digest('hex'),poolHash:before,
-  fullReadback:true,pageSize:100,pages,lastSequence:after,sourceRequests:0,databaseWrites:0,
-  gameComplete:count===plan.target,...(timing?{timing:timing.finish()}:{})};
+  fullReadback:!history,...(history?{readbackScope:'current-source-with-preserved-proof-v1',currentSourceFullReadback:true,history,sourceComplete:count-history.complete}:{}),pageSize:100,pages,lastSequence:after,sourceRequests:0,databaseWrites:0,
+  gameComplete:!history&&count===plan.target,...(timing?{timing:timing.finish()}:{})};
 }

@@ -14,7 +14,7 @@ export function reviewCanaryFinalLogs({schedule,report,rows,logSha256}){
    final:true,finalActivity:row.canarySourceActivity,hostDiagnostics:row.rpcMetrics?.hostResourceObservation,
    diagnostics:row.rpcMetrics?.resourceObservation};
  });
- const activity=reviewCanaryActivity({schedule,workers,fullReadback:report.fullReadback,recordsHash:report.recordsHash,logSha256});
+ const activity=reviewCanaryActivity({schedule,workers,fullReadback:report.fullReadback||report.currentSourceFullReadback,recordsHash:report.recordsHash,logSha256});
  const safety=key=>reviewResourceWorkers({run:schedule.run,commit:schedule.commit,logSha256,expectedSlots:[...canarySlots],workers,
   startMs:schedule[key].startMs,endMs:schedule[key].endMs});
  const baselineSafety=safety('baseline'),candidateSafety=safety('candidate');

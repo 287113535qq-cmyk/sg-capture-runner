@@ -20,6 +20,7 @@ import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkSessionCanaryRevision} from './session-canary.mjs';
 import {claimSessionCanary,checkCanaryDispatchInputs} from './session-canary-admission.mjs';
+import {countHistoryBoundary} from './count-window-history.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
@@ -96,6 +97,7 @@ try{
   const key=`count-run:${plan.trialId}:${run}`;assert(!(await store.get('journal',key)),'FORMAL_COUNT_RUN_ALREADY_ADMITTED');
   const permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,
    poolHash:hash(pool),completeBefore:pool.confirmed,remainingComplete:plan.target-pool.confirmed,createdAt:Date.now(),expiresAt:Date.now()+270*60000};
+  if(canaryWindow)permit.historyBoundary=countHistoryBoundary({pool,plan,spec});
   if(canaryWindow)await claimSessionCanary({store,plan,profile,revision,permit,inputs:canaryInputs});
   await store.create('journal',key,permit,{immutable:true});
   assert(hash((await store.get('journal',key))?.value)===hash(permit),'FORMAL_COUNT_RUN_READBACK');

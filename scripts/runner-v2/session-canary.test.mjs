@@ -87,3 +87,12 @@ test('canary source policy retains the independently applied two-lane activation
  for(const mode of ['sessions','repair','activate','amend'])assert.throws(()=>countControlPolicy(mode,profile,name));
  assert.throws(()=>countControlPolicy('admit',{...profile,sessionLayout:{lanesPerHost:4}},name));
 });
+
+test('same-run comparison accepts explicit new-source full readback plus bound preserved history proofs',()=>{
+ const f=fixture();Object.assign(f.report,{fullReadback:false,readbackScope:'current-source-with-preserved-proof-v1',currentSourceFullReadback:true,
+  complete:12999,sourceComplete:999,history:{schema:'sg-window-history-reuse-review-v1',complete:12000,preservedReadbackReused:true,
+   historicalReadbackFresh:false,rawRecordsRead:0,sourcePermitHash:f.schedule.sourcePermitHash,proofHash:hash('preserved')}});
+ const r=compareCanaryWindows(f);assert.equal(r.currentSourceFullReadback,true);assert.equal(r.readbackScope,f.report.readbackScope);
+ for(const change of [{currentSourceFullReadback:false},{complete:13000},{history:{...f.report.history,sourcePermitHash:hash('other')}},
+  {history:{...f.report.history,historicalReadbackFresh:true}}])assert.throws(()=>compareCanaryWindows({...f,report:{...f.report,...change}}));
+});
