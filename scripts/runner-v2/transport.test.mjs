@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {EventEmitter} from 'node:events';
-import {connectGateway} from './transport.mjs';
+import {connectGateway,gatewayDocumentKind} from './transport.mjs';
 
 Object.assign(process.env,{GITHUB_ACTIONS:'true',RUNNER_OS:'Linux',RUNNER_ENVIRONMENT:'github-hosted',
  GITHUB_REPOSITORY:'zyzuoyang/sg-capture-runner',SG_SSH_KEY_FILE:'key',SG_SSH_HOSTS_FILE:'hosts',SG_SSH_HOST:'fixed-host'});
@@ -63,4 +63,17 @@ test('old session events cannot resolve or reject the replacement request',async
 test('request fields cannot turn a recoverable read into a mutation',async()=>{
  const f=fixture(['ok']);await assert.rejects(f.gateway.request('read',{op:'cas'}),/override/);
  assert.equal(f.writes.length,0);f.gateway.close();
+});
+test('document cost labels cannot expose any key or value',async()=>{
+ const f=fixture(['ok']);
+ for(const [collection,key,label]of [['state','pool:private-trial','statePool'],['state','batch:private-session:7','stateBatch'],['state','private-session','stateOther'],['journal','private-source-key','journal']]){
+  assert.equal(gatewayDocumentKind('read',{collection,key}),label);
+  await f.gateway.request('read',{collection,key,value:'PRIVATE_SECRET'});
+ }
+ const metrics=f.gateway.metrics();assert.equal(metrics.documentKindsNestedWithinOperations,true);
+ assert.equal(Object.values(metrics.byDocumentKind).reduce((sum,m)=>sum+m.requests,0),4);
+ assert.equal(Object.values(metrics.byDocumentKind).reduce((sum,m)=>sum+m.responseBytes,0),metrics.byOperation.read.responseBytes);
+ assert.equal(Object.values(metrics.byDocumentKind).reduce((sum,m)=>sum+m.requestBytes,0),metrics.byOperation.read.requestBytes);
+ assert(!JSON.stringify(metrics).includes('private'));assert(!JSON.stringify(metrics).includes('PRIVATE_SECRET'));
+ assert.equal(gatewayDocumentKind('resources',{}),null);f.gateway.close();
 });

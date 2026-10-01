@@ -2,6 +2,17 @@ import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {repositories} from '../trial/runner-group.mjs';
 
+// Fixed labels only: document identities, raw values and session fields never
+// enter telemetry. This breakdown is nested within byOperation, not additive.
+export function gatewayDocumentKind(op,fields){
+  if(!['read','create','cas'].includes(op))return null;
+  if(fields.collection==='journal')return 'journal';
+  if(fields.collection!=='state')return 'other';
+  if(typeof fields.key==='string'&&fields.key.startsWith('pool:'))return 'statePool';
+  if(typeof fields.key==='string'&&fields.key.startsWith('batch:'))return 'stateBatch';
+  return 'stateOther';
+}
+
 export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setTimeout(r,ms)),ackTimeoutMs=60_000}={}) {
   assert.equal(process.env.GITHUB_ACTIONS,'true');
   assert.equal(process.env.RUNNER_OS,'Linux');
@@ -13,7 +24,7 @@ export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setT
     '-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o',`UserKnownHostsFile=${hosts}`,
     '-o','ConnectTimeout=15','-o','ServerAliveInterval=10','-o','ServerAliveCountMax=2',`sgcapture@${host}`];
   let child,pending=null,closed=false,disposed=false,busy=false,entry=true,buffer=Buffer.alloc(0);
-  const metrics={requests:0,elapsedMs:0,initialReadReconnects:0,byOperation:{}};
+  const metrics={requests:0,elapsedMs:0,initialReadReconnects:0,byOperation:{},documentKindsNestedWithinOperations:true,byDocumentKind:{}};
   const error=code=>Object.assign(new Error(code),{code});
   function reject(code){if(pending){clearTimeout(pending.timer);pending.reject(error(code));pending=null;}}
   function open(){
@@ -33,15 +44,19 @@ export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setT
     const p=pending;pending=null;clearTimeout(p.timer);
     metrics.byOperation[p.op].responseBytes=(metrics.byOperation[p.op].responseBytes??0)+Buffer.byteLength(line,'utf8');
     const ms=performance.now()-p.started;metrics.elapsedMs+=ms;metrics.byOperation[p.op].elapsedMs+=ms;
+    if(p.kind){const m=metrics.byDocumentKind[p.kind];m.elapsedMs+=ms;m.responseBytes+=Buffer.byteLength(line,'utf8');}
     p.resolve(response.result);
   });
   }
   open();
-  async function once(op,input){
+  async function once(op,input,kind){
     if(closed)throw error('GATEWAY_DISCONNECTED');
+    const requestBytes=Buffer.byteLength(input);
     metrics.requests++;metrics.byOperation[op]??={requests:0,elapsedMs:0};metrics.byOperation[op].requests++;
+    metrics.byOperation[op].requestBytes=(metrics.byOperation[op].requestBytes??0)+requestBytes;
+    if(kind){metrics.byDocumentKind[kind]??={requests:0,elapsedMs:0,responseBytes:0,requestBytes:0};metrics.byDocumentKind[kind].requests++;metrics.byDocumentKind[kind].requestBytes+=requestBytes;}
     return new Promise((resolve,rejectPromise)=>{
-      pending={resolve,reject:rejectPromise,op,started:performance.now(),timer:setTimeout(()=>{
+      pending={resolve,reject:rejectPromise,op,kind,started:performance.now(),timer:setTimeout(()=>{
         reject('GATEWAY_ACK_UNKNOWN');closed=true;child.kill();
       },ackTimeoutMs)};
       child.stdin.write(input);
@@ -56,9 +71,10 @@ export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setT
     // Recover only the initial pure read. A successful response or any other
     // operation permanently ends recovery; writes and unknown ACKs never retry.
     const recover=entry&&op==='read';entry=false;busy=true;
+    const kind=gatewayDocumentKind(op,fields);
     try{
       for(let attempt=0;;attempt++){
-        try{return await once(op,input);}catch(e){
+        try{return await once(op,input,kind);}catch(e){
           if(!recover||attempt>=2||e.code!=='GATEWAY_DISCONNECTED'||disposed)throw e;
           const previous=child;child=null;previous.kill();
           metrics.initialReadReconnects++;await pause(250);
