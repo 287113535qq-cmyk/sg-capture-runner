@@ -46,3 +46,8 @@ Linux36854308469成功；25份增量文件612671bytes、SHA d604f09095023ccff24d
 恢复源36854881370在11:21:43UTC派发，当前GitHub仍返回queued、jobs0/checks0；原完整数量不变、count-run许可不存在、租约0。普通取消及force-cancel均未成功；force-cancel明确返回HTTP409：该运行尚未进入可取消的队列。已记录唯一派发intent，禁止重复派发或假称已采集。这不是已实证的采集器吞吐问题，也不能把具体根因猜成GitHub-hosted容量或旧队列占位。
 
 修复线已完成已观察FREE CL=-3的独立三端接线；3,211旧完整逐条不变，2实际前缀继续FREE，修复队列源额度0。见[pyramids独立修复](pyramids-free-major-repair-20261001.md)。每一步分别保留AG任务身份、单款差异隔离、持久结果复用及重新准入，未跳过全文和资源保护。
+
+
+工作流 choice 中的空字符串选项已改为显式 none，并在环境入口转换为空值；固定 actionlint 检查通过。不能以该语法缺陷直接断言GitHub排队根因唯一确定。
+
+新无源撤销仅绑定36854881370:1/head38465d0和原runtime配置hash。准入键写入sg-count-run-revoked-v1拒绝凭证，旧正式入口的RUN_ALREADY_ADMITTED与worker的许可schema检查均拒绝；不是伪造一次已采集运行。before、拒绝凭证与complete均不可变读回，池、campaign、额度和全部记录不变。后续仅凭精确身份/jobs0与完整撤销证明可隔离该记录，未知身份、已启动/晚出现job、已准入、活租约、未结清或分页不完整继续拒绝。本机45项相关检查通过；真实无源撤销及新入口源仍待执行。

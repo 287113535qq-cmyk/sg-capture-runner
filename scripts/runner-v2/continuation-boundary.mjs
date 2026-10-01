@@ -1,3 +1,4 @@
+import {joblessFencedRead} from './count-jobless-fence.mjs';
 import assert from 'node:assert/strict';
 import {original} from './expired-run-review.mjs';
 import {stalled,revokedMarker} from './demo-run-fence.mjs';
@@ -7,6 +8,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 // Only the two previously fenced, exact runs may be excluded. This is not an
 // age-based queue bypass: identity, no jobs, and durable revocation are required.
 export async function continuationHasOtherRun({read,store,repository,runId,now=Date.now}){
+  read=joblessFencedRead({read,store});
   const started=now(),known=new Map([[original.id,original],[stalled.id,stalled]]),excluded=new Set();
   for(const status of ['queued','pending','waiting','requested','in_progress']){
     const result=await read(`repos/${repository}/actions/workflows/trial-300k.yml/runs?status=${status}&per_page=100`);

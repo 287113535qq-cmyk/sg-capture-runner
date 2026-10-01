@@ -1,3 +1,4 @@
+import {joblessFencedRead} from './count-jobless-fence.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {githubBoundary} from './github-boundary.mjs';
@@ -16,7 +17,7 @@ export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.n
   const rows=await store.getMany('journal',[key,key+':before',key+':complete',key+':parked-source']);assert(rows.length===4&&rows.every(r=>r===null),'STALLED_HAS_WRITES');
  };
  const filtered=async path=>{
-  const r=await read(path);
+  const r=await joblessFencedRead({read,store})(path);
   if(!path.startsWith(`repos/${stalled.repository}/actions/runs?`))return r;
   assert(Number.isInteger(r.total_count)&&r.total_count<100&&Array.isArray(r.workflow_runs)&&r.workflow_runs.length===r.total_count,'GITHUB_RUN_LIST_TRUNCATED');
   const found=r.workflow_runs.filter(x=>x.id===stalled.id);assert(found.length<=1,'STALLED_DUPLICATE');

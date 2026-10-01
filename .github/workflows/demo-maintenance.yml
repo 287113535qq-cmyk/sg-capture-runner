@@ -5,8 +5,8 @@ on:
       window_peer_profile:
         description: 'Read-only window audit with an independently pinned healthy peer'
         type: choice
-        default: ''
-        options: ['', count-window-peer-rhino-pyramids-20261001.json]
+        default: none
+        options: [none, count-window-peer-rhino-pyramids-20261001.json]
       ended_source_run:
         description: 'Exact ended run id:attempt for AG parking only; no source permission'
         type: string
@@ -14,8 +14,8 @@ on:
       runtime_profile:
         description: 'Reviewed healthy-run runtime update without additional quota'
         type: choice
-        default: ''
-        options: ['', count-runtime-rhino-ag-continuation-entryfix-20261001.json, count-runtime-rhino-ag-continuation-20261001.json, count-runtime-rhino-continuous-20261001.json, count-runtime-rhino-two-observation-20261001.json, count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
+        default: none
+        options: [none, count-runtime-rhino-ag-dispatchfix-20261001.json, count-runtime-rhino-ag-continuation-entryfix-20261001.json, count-runtime-rhino-ag-continuation-20261001.json, count-runtime-rhino-continuous-20261001.json, count-runtime-rhino-two-observation-20261001.json, count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
       formal_profile:
         description: Independent reviewed complete-count profile
         type: choice
@@ -38,7 +38,7 @@ on:
         options: [demo-repair-rhino-guarantee-20261001.json, demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -48,7 +48,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   maintain:
-    if: github.repository == 'zyzuoyang/sg-capture-runner' && inputs.operation != 'close-count-shared'
+    if: github.repository == 'zyzuoyang/sg-capture-runner' && inputs.operation != 'close-count-shared' && inputs.operation != 'revoke-rhino-jobless'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -74,7 +74,7 @@ jobs:
         env:
           SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
           SG_WINDOW_SOURCE_RUN: ${{ inputs.ended_source_run }}
-          SG_COUNT_WINDOW_PEER_PROFILE: ${{ inputs.window_peer_profile }}
+          SG_COUNT_WINDOW_PEER_PROFILE: ${{ inputs.window_peer_profile != 'none' && inputs.window_peer_profile || '' }}
         run: node scripts/runner-v2/count-window-review-control.mjs
       - name: Close reviewed unknown count request without replay or new source permission
         if: inputs.operation == 'close-count-network'
@@ -87,8 +87,8 @@ jobs:
       - name: Preserve healthy count allocation and bind reviewed runtime
         if: inputs.operation == 'refresh-count-runtime'
         env:
-          SG_FORMAL_COUNT_PROFILE: ${{ (inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-two-observation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-continuous-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-entryfix-20261001.json') && inputs.formal_profile || inputs.repair_profile }}
-          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
+          SG_FORMAL_COUNT_PROFILE: ${{ (inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-two-observation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-continuous-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-entryfix-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-dispatchfix-20261001.json') && inputs.formal_profile || inputs.repair_profile }}
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
         run: node scripts/runner-v2/formal-count-control.mjs refresh
       - name: Isolate interrupted pilot and close its unused allowance without source requests
         if: inputs.operation == 'close-interrupted-pilot'
@@ -234,7 +234,7 @@ jobs:
         if: inputs.operation == 'amend-pyramids-zero-runtime'
         env:
           SG_FORMAL_COUNT_PROFILE: formal-repair-pyramids-coins-20261001.json
-          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
         run: node scripts/runner-v2/pyramids-zero-runtime-control.mjs amend
 
   finalize-ended-source:
@@ -278,3 +278,25 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Settle reviewed shared stop without source requests
         run: node scripts/runner-v2/count-shared-close-control.mjs
+
+  revoke-rhino-jobless:
+    if: github.repository == 'zyzuoyang/sg-capture-runner' && inputs.operation == 'revoke-rhino-jobless'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Revoke the exact never-admitted jobless run without source or quota changes
+        run: node scripts/runner-v2/count-jobless-fence-control.mjs
