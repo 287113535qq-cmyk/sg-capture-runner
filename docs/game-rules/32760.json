@@ -27,7 +27,7 @@
     "docs/ag-preparation-method-reuse-20261002.md"
   ],
   "analysisDocumentHashes": {
-    "docs/ag-preparation-method-reuse-20261002.md": "feaa89b9906c4198e25428c8424d5dd3585d5e8518b6b37e835d1d0f08054577"
+    "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -36,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5d18949ccdd027900e53603ecafb8e077c9139708a048246ea9dae06ff0b3e04"
+  "ruleHash": "4ec0ceaaa9ed94c75a00b020d5534479162614e655d6aef1c5df1b5ae97c4755"
 }

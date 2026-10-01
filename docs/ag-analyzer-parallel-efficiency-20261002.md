@@ -7,3 +7,5 @@
 26项受影响检查包括真实Python一/双管道、损坏末条后再次正确验证、两管道同时进入、失败等待另一半、错误子收据、跨区重复与顺序异常。只有1或2个终审进程，其他设置拒绝。100条合成完整base/free/retrigger/guarantee字段由独立Python生成；7组交错配对每组500条，串行中位1375.13ms、双进程700.88ms，验证阶段减少49.03%，同一有序记录digest d3e68e74b367a2375bc56aa095b69c3400652aa390b778ed05f9e8777db76008。仅是本机完整验证阶段测量，未含远程分页/落库确认，不作为整款或线上吞吐49%提速。
 
 当前36919896773健康源固定34a10ba不改变，正常尾局按原算法排空并全量终审。新代码需独立Linux通过和后续运行绑定，不能中途换解释器或跳过全审。源请求0、Mongo写0、新BET额度0。效率全部完成仍需线上终审、后续独立准入及连续流水线验收。
+
+Linux36925664121 fixed89c3a5379971fc4fedc70fa68449b5332f735c1b passed (21:00:19Z–21:02:34Z). Log SHA e2260e453e2a4efd4bb584004da30479692fb844486c836696549e7c76b439d6. Local/server archive readback: 11 files, 222301 bytes, SHA 0f41a88d37ccca15e8a8495198be8a72357bab4c0c99b5256f8bd7eddab3e388. Current fixed source is unchanged; online terminal validation remains pending.

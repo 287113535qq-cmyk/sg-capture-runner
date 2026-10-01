@@ -11,3 +11,5 @@
 实际已结束四路源36915539745的启动分解：20父任务采集步骤前中位7秒（4–18），依赖安装中位4秒（2–9）；采集步骤到80子会话首次后端ready中位163.37秒（87.76–247.42）。后一段仍包含准入、保护性资源观察及子进程/鲜读，不能认定全部是重复健康等待；当前已实现的父子资源计数handoff仍保留新鲜样本和冷启动回退。后续优化以真正阶段证据为准，不继续把安装或几十毫秒模块加载当主因。
 
 本轮源请求0、数据库写入0，不改变健康36919896773固定34a10ba。下一ready准入仍需要独立生产mapping/profile/native范围与fresh验收；全部效率完成标记保持false。
+
+Linux36924983750 fixed3e0b49a0566e061c7ee14bd5ed15c4a62e4d8392 passed. Log SHA cf5fbf844a6a9281e4965e46eafb26c7675563a969d4a3400e61e56acd9b2396. Incremental evidence: 22 files, 256073 bytes, local/server readback SHA f2115b478fa61094c422e71eb8efd82547f8ffda3d996d54ec5aa8118b5cb7e9. No duplicated old full records.
