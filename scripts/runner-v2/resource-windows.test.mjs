@@ -32,12 +32,23 @@ test('actual resource gate records covered intervals without weakening stale che
  now+=30001;assert.equal(g.status().allowed,false);
  assert.equal(g.diagnostics().windows.buckets.at(-1).blocked,true);
 });
-function workers(){return {run:'100:1',commit:'a'.repeat(40),logSha256:'b'.repeat(64),
- expectedSlots:Array.from({length:40},(_,i)=>i),startMs:60000,endMs:660000,
- workers:Array.from({length:40},(_,slot)=>({slot,run:'100:1',commit:'a'.repeat(40),sourceErrors:0,unknown:0,
+function workers(lanes=2,offset=0){const slots=Array.from({length:lanes*20},(_,i)=>offset+i%20+Math.floor(i/20)*40);
+ return {run:'100:1',commit:'a'.repeat(40),logSha256:'b'.repeat(64),
+ expectedSlots:slots,startMs:60000,endMs:660000,
+ workers:slots.map(slot=>({slot,run:'100:1',commit:'a'.repeat(40),sourceErrors:0,unknown:0,
   diagnostics:{schema:'sg-resource-observation-v1',windows:sample().diagnostics()}}))};}
 test('pool resource proof binds all forty lanes and the measured interval',()=>{
  const r=reviewResourceWorkers(workers());assert.equal(r.workers,40);assert.equal(r.sourceRequests,0);
+});
+for(const lanes of [1,2,4])for(const offset of [0,20])test(`actual ${lanes}-lane host ids, group offset ${offset}`,()=>{
+ const f=workers(lanes,offset);assert.equal(reviewResourceWorkers(f).workers,lanes*20);
+});
+for(const kind of ['contiguous-two-groups','foreign-host','missing-fourth-lane'])test('reject incorrect global slot layout '+kind,()=>{
+ const f=workers(kind==='missing-fourth-lane'?4:2);
+ if(kind==='contiguous-two-groups'){f.expectedSlots=Array.from({length:40},(_,i)=>i);f.workers.forEach((w,i)=>w.slot=i);}
+ if(kind==='foreign-host'){f.expectedSlots[19]=20;f.workers[19].slot=20;}
+ if(kind==='missing-fourth-lane'){f.expectedSlots[79]=159;f.workers[79].slot=159;}
+ assert.throws(()=>reviewResourceWorkers(f));
 });
 for(const kind of ['missing-lane','duplicate-lane','foreign-run','foreign-commit','missing-errors','unknown','old-telemetry'])test('reject pool proof '+kind,()=>{
  const f=workers(),w=f.workers[3];if(kind==='missing-lane')f.workers.pop();

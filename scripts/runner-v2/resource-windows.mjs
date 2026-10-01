@@ -52,10 +52,16 @@ export function reviewResourceWindow(report,startMs,endMs){
 // Call after authenticating the source/jobs and hashing the full saved log.
 // Require every admitted lane; a healthy subset cannot stand in for the pool.
 export function reviewResourceWorkers({run,commit,logSha256,expectedSlots,workers,startMs,endMs}){
+  // Actual session ids reserve forty positions per lane: primary host 0..19,
+  // secondary host 20..39. A contiguous forty-id set mixes two owners and
+  // cannot prove the primary's two-lane pool. Four lanes reach ids 120..159.
+  const lanes=expectedSlots?.length/20,offset=Math.min(...(expectedSlots??[]));
+  const layout=[1,2,4].includes(lanes)&&[0,20].includes(offset)?
+    Array.from({length:lanes*20},(_,i)=>offset+i%20+Math.floor(i/20)*40):[];
   assert(/^\d+:1$/.test(run??'')&&/^[a-f0-9]{40}$/.test(commit??'')
     &&/^[a-f0-9]{64}$/.test(logSha256??'')&&Array.isArray(expectedSlots)
     &&[20,40,80].includes(expectedSlots.length)&&new Set(expectedSlots).size===expectedSlots.length
-    &&expectedSlots.every(v=>Number.isSafeInteger(v)&&v>=0&&v<80)
+    &&layout.length===expectedSlots.length&&expectedSlots.every(v=>Number.isSafeInteger(v)&&layout.includes(v))
     &&Array.isArray(workers)&&workers.length===expectedSlots.length,'RESOURCE_WORKERS_SCOPE');
   const seen=new Set(),reviews=[];
   for(const w of workers){

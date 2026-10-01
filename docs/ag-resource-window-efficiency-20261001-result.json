@@ -29,5 +29,8 @@
     "bytes": 102174,
     "sha256": "3c891534f2c20040133f26cddc6125a62cf117eb3e8f9f71cc3b0862d8db4ce6",
     "verifiedBothEnds": true
-  }
+  },
+  "slotLayoutLocalChecks": 49,
+  "slotLayoutLinuxVerified": false,
+  "slotLayout": "host + groupOffset + 40 * lane"
 }
