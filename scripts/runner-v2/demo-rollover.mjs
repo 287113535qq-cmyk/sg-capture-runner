@@ -2,12 +2,13 @@ import {checkSecondaryNextProfile} from './secondary-next-profile.mjs';
 import {checkIdleSecondaryCampaign,checkSecondaryIdleProfile} from './secondary-idle-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {readClosedPilot} from './demo-pilot-close.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import {reviewFormalSource,readPoolBatches} from './formal-source-review.mjs';
 
 // No source requests. A completed retirement is required before a fresh,
 // bounded generation can replace the inactive worker registrations.
-export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,idleProfile,secondaryNextProfile,now=Date.now}){
+export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,expected,commit,run,expiresAt,activationStage,formalSource,closedSourceProfile,idleProfile,secondaryNextProfile,now=Date.now}){
  assert(typeof boundary==='function'&&/^[a-f0-9]{64}$/.test(plan.demoGeneration)&&/^[a-f0-9]{40}$/.test(commit)
   &&/^\d+:1$/.test(run)&&expiresAt>now()&&expiresAt-now()<=7200000,'ROLLOVER_SCOPE');
  const idle=!!idleProfile;if(idle){checkSecondaryIdleProfile(idleProfile,oldPlan);assert(!fromPlan&&!formalSource&&activationStage?.profileHash===hash(idleProfile),'ROLLOVER_IDLE_SCOPE');}
@@ -28,13 +29,14 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
    &&ready.sourceRequests===0&&ready.newBetAllowance===0&&ready.historicalCredit===0
    &&before?.profileHash===ready.profileHash&&hash(before.campaign)===hash(campaign),'ROLLOVER_EMPTY_CANDIDATE_INCOMPLETE');
  }
- assert(hash({campaign,pool,fromPool})===expected&&((formalSource||idle)?campaign.activeGame===null:campaign.activeGame===fromPlan.gameId)
+ assert(hash({campaign,pool,fromPool})===expected&&((formalSource||idle)?campaign.activeGame===null:(campaign.activeGame===fromPlan.gameId||closedSourceProfile&&campaign.activeGame===null))
   &&(candidate?.status==='parked-protocol'||(candidate?.status==='needs-adapter'&&pool.emptyCandidate))&&!pool.enabled&&!pool.demoGeneration
   &&pool.planHash===hash(oldPlan)&&pool.retiredDemo,'ROLLOVER_SNAPSHOT_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now())&&(idle||Object.values(fromPool.workers).every(w=>w.leaseUntil<=now())),'ROLLOVER_LEASE_ACTIVE');
  const sourceBatches=idle?[]:await readPoolBatches(store,fromPlan,fromPool,{limit:formalSource?600001:101});
  assert(sourceBatches.every(b=>!b.pending&&!b.bootstrapAwaiting&&!b.pendingOriginal&&b.checkpoint===b.journaled&&b.leaseUntil<=now()),'ROLLOVER_SOURCE_BATCH_UNSAFE');
  if(formalSource)await reviewFormalSource({store,plan:fromPlan,profile:{sourceFormal:formalSource},scene:{campaign,fromPool,sourceBatches},now});
+ if(closedSourceProfile){assert(!idle&&!formalSource&&activationStage?.profileHash===hash(closedSourceProfile),'ROLLOVER_CLOSED_SCOPE');await readClosedPilot({store,plan:fromPlan,profile:closedSourceProfile,scene:{campaign,fromPool,sourceBatches}});}
  const retired=await get('journal',pool.retiredDemo+':complete');
  assert(retired?.schema==='sg-retired-demo-result-v1'&&retired.trialId===plan.trialId&&retired.sourceRequests===0&&retired.newBetAllowance===0,'ROLLOVER_RETIREMENT_MISSING');
  assert(Number.isSafeInteger(pool.nextBatchId)&&pool.nextBatchId>=1&&pool.nextBatchId<=101,'ROLLOVER_BATCH_BOUND');

@@ -52,7 +52,31 @@ def coin_sample():
     return value
 
 
+def display_sample():
+    value=sample()
+    for step in value['steps'][1:]:
+        rewrite(step,GSD='BGRS~1;2;3;4;5;#CL~0;0;20;|#CLBN~0;0;20;|#FSRS~1;2;3;4;5;#IIFS~1')
+    return value
+
+
 class PyramidsFreeTests(unittest.TestCase):
+    def test_free_display_keeps_counter_terminal_and_amount_rules(self):
+        parser=PyramidsFreeSequence(PLAN);value=display_sample()
+        self.assertEqual(parser.settled(value),parser.settled(sample()))
+        for i in range(1,11):
+            prefix={**value,'steps':value['steps'][:i]}
+            self.assertEqual(parser.sequence(prefix),{'MSGID':'FREE_GAME'})
+            with self.assertRaises(FieldError):parser.settled(prefix)
+        for gsd in ('CLBN~0;0;20;|','CL~0;0;20;|#CLBN~0;0;40;|',
+                    'FSRS~1;2;3;4;','FSRS~1;2;3;4;-1;','FSRS~1;2;3;4;9007199254740992;',
+                    'FSRS~1;2;3;4;５;','IIFS~2','BGCL~0;0;20;|','CL~0;0;-1;|',
+                    'CL~0;0;20;|0;0;40;|','UNKNOWN~1'):
+            bad=sample();rewrite(bad['steps'][1],GSD=gsd)
+            with self.subTest(gsd=gsd),self.assertRaises(FieldError):parser.settled(bad)
+        for gsd in ('FSRS~1;2;3;4;5;','CL~0;0;20;|#CLBN~0;0;20;|'):
+            bad=sample();rewrite(bad['steps'][0],GSD=gsd)
+            with self.assertRaises(FieldError):parser.settled(bad)
+
     def test_trigger_coin_display_preserves_mapping_and_rejects_unreviewed_values(self):
         parser=PyramidsFreeSequence(PLAN)
         self.assertEqual(parser.settled(coin_sample()),parser.settled(sample()))
@@ -60,7 +84,7 @@ class PyramidsFreeTests(unittest.TestCase):
                     '0;0;20;|0;0;30;|','0;0;|','0;0;20;99;|','0;0;1e2;|','0;0;２０;|'):
             value=sample();rewrite(value['steps'][0],GSD='CL~'+bad)
             with self.subTest(bad=bad),self.assertRaises(FieldError):parser.settled(value)
-        value=sample();rewrite(value['steps'][1],GSD='CL~0;0;20;|')
+        value=sample();rewrite(value['steps'][1],GSD='BGCL~0;0;20;|')
         with self.assertRaises(FieldError):parser.settled(value)
 
     def test_all_prefixes_and_synthetic_terminal(self):
@@ -79,7 +103,7 @@ class PyramidsFreeTests(unittest.TestCase):
         mutations=[(1,{'FID':f}) for f in ('0|','2|','1|0|','0|1|','1|1|','')]
         mutations += [(1,{'NFG':None}),(1,{'CFGG':0}),(1,{'TFG':11,'NFG':10}),
             (10,{'GSD':'FGRS~2#CFGC~10'}),(1,{'GSD':'CFGC~8'}),
-            (1,{'GSD':'HRS~1'}),(1,{'GSD':'IIFS~1'}),(1,{'GSD':'NWI~1#NWI~2'}),
+            (1,{'GSD':'HRS~1'}),(1,{'GSD':'IIFS~2'}),(1,{'GSD':'NWI~1#NWI~2'}),
             (1,{'GCT':1}),(1,{'FRBAL':1}),(1,{'FS_1':1}),(1,{'CFG':1}),
             (10,{'B':99990,'AB':99990}),(10,{'AB':99999}),(0,{'IFG':1})]
         for i,changes in mutations:

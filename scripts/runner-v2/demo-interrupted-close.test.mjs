@@ -99,3 +99,50 @@ test('AG coordinator parks immediately with no ready candidate and later advance
  assert.equal(second.action,'next-ready');assert.equal(second.sourceRequests,0);assert.equal((await f.admit()).limit,5);
  assert.equal(hash(f.get('journal',f.key+':complete').value),closeHash);assert.equal(f.get('state',f.repairKey).value.status,'reviewing-adapter');
 });
+async function parkedInterrupted(){
+ const f=await interrupted(),s=await interruptedScene(f.args.store,f.closeArgs.plan),trial=f.closeArgs.plan.trialId,h=hash(s.pool);
+ const archiveKey=`parked-v2:${trial}:${h}`,key=`game-repair:${trial}:${h}`,evidence=[];
+ for(const w of Object.values(s.pool.workers)){
+  const b=s.batches.find(b=>b.id===w.activeBatch.id),k=`${archiveKey}:batch:${b.id}`;
+  f.docs.set('journal/'+k,{value:{batch:structuredClone(b),poolPlanHash:s.pool.planHash}});evidence.push({key:k,hash:hash(b)});
+ }
+ const archive={pool:structuredClone(s.pool),evidence},repair={schema:'sg-game-repair-v1',gameId:f.closeArgs.plan.gameId,trialId:trial,status:'pending-adapter',archiveKey,evidence,sourceAllowance:0,requiresNewSession:true};
+ f.docs.set('journal/'+archiveKey,{value:archive});f.docs.set('state/'+key,{value:repair});
+ const c=f.docs.get('state/campaign').value;c.activeGame=null;c.games[0].status='parked-protocol';c.games[0].repairKey=key;
+ f.closeArgs.profile.parkedRepair={key,hash:hash(repair),archiveKey,archiveHash:hash(archive)};
+ f.closeArgs.profile.sceneHash=hash(await interruptedScene(f.args.store,f.closeArgs.plan));f.repairKey=key;return f;
+}
+
+test('already parked pilot reuses immutable AG evidence and repair, then retires and activates next game',async()=>{
+ const f=await parkedInterrupted(),original=new Map([...f.docs].map(([k,v])=>[k,hash(v.value)])),closed=await closeInterruptedPilot(f.closeArgs);
+ assert.equal(closed.used,39);assert.equal(closed.foregone,61);assert.equal(closed.repairKey,f.repairKey);
+ for(const [k,h] of original)if(k!=='state/pool:'+f.closeArgs.plan.trialId)assert.equal(hash(f.docs.get(k).value),h);
+ assert.equal([...f.docs.keys()].filter(k=>k.startsWith('state/game-repair:')).length,1);
+ f.docs.get('state/'+f.repairKey).value.status='reviewing-adapter';
+ await f.bindNext(closed);const next=await nextDemoGame(f.args);assert.equal(next.newBetAllowance,100);
+ assert.equal(f.get('state','campaign').value.activeGame,32835);assert.equal((await f.admit()).limit,5);
+ assert.equal(f.get('state',f.repairKey).value.status,'reviewing-adapter');
+});
+
+test('already parked close rejects changed repair, archive, batch, active pointer or omitted binding before writes',async()=>{
+ for(const cause of ['quota','archive','batch','active','missing-binding','repair-key','repair-hash']){
+  const f=await parkedInterrupted(),p=f.closeArgs.profile.parkedRepair;
+  if(cause==='quota')f.docs.get('state/'+p.key).value.sourceAllowance=1;
+  if(cause==='archive')f.docs.get('journal/'+p.archiveKey).value.pool.confirmed++;
+  if(cause==='batch')f.docs.get('journal/'+p.archiveKey+':batch:1').value.batch.journaled--;
+  if(cause==='active')f.docs.get('state/campaign').value.activeGame=32835;
+  if(cause==='missing-binding')delete f.closeArgs.profile.parkedRepair;
+  if(cause==='repair-key')p.key+='wrong';if(cause==='repair-hash')p.hash='0'.repeat(64);
+  f.closeArgs.profile.sceneHash=hash(await interruptedScene(f.args.store,f.closeArgs.plan));const original=hash([...f.docs]);
+  await assert.rejects(closeInterruptedPilot(f.closeArgs));assert.equal(hash([...f.docs]),original);
+ }
+});
+
+test('parked closure cannot be used after its independent archive or repair allowance changes',async()=>{
+ for(const cause of ['archive','quota']){
+  const f=await parkedInterrupted(),closed=await closeInterruptedPilot(f.closeArgs),p=closed.parkedRepair;
+  if(cause==='archive')f.docs.get('journal/'+p.archiveKey+':batch:1').value.batch.journaled--;
+  else f.docs.get('state/'+p.key).value.sourceAllowance=1;
+  await f.bindNext(closed);const original=hash([...f.docs]);await assert.rejects(nextDemoGame(f.args));assert.equal(hash([...f.docs]),original);
+ }
+});

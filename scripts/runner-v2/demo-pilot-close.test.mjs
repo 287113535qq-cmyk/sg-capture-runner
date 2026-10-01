@@ -92,3 +92,11 @@ test('authenticated completed run must include all20 exact jobs; a failed run al
   assert.throws(()=>checkDemoSourceEnded({ended:r,jobs:j,profile,closing:true}));
  }
 });
+
+test('partial fifth BET abandonment is a failed job despite five consumed allowances',async()=>{
+ const f=await fixture(),profile={...f.args.profile,schema:'sg-demo-pilot-close-v2',completeByWorker:[...f.args.profile.usedByWorker]};
+ profile.usedByWorker=[...profile.usedByWorker];profile.usedByWorker[18]=5;profile.completeByWorker[18]=4;
+ const ended={id:2,run_attempt:1,head_sha:profile.sourceCommit,status:'completed',conclusion:'failure',path:'.github/workflows/trial-300k.yml',repository:{full_name:'zyzuoyang/sg-capture-runner'}};
+ const jobs={total_count:20,jobs:profile.completeByWorker.map((n,w)=>({name:'fresh-capture-'+w,status:'completed',conclusion:n===5?'success':'failure'}))};
+ checkDemoSourceEnded({ended,jobs,profile,closing:true});jobs.jobs[18].conclusion='success';assert.throws(()=>checkDemoSourceEnded({ended,jobs,profile,closing:true}));
+});

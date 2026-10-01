@@ -1,6 +1,6 @@
 """Independent Pyramids FID1 ten-free validator; no source permission.
 
-Official isolated free routing reviewed; all continuation/terminal frames synthetic.
+Official isolated free routing and saved first free response reviewed; terminal remains synthetic.
 HoldNSpin, mixed FIDs, retriggers and alternate nested counters remain rejected.
 """
 import xml.etree.ElementTree as ET
@@ -22,13 +22,20 @@ class PyramidsFreeSequence(NativeNextgenFields):
         super().__init__(plan)
 
     def validate_gsd(self, gsd, index):
-        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL'}, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
-        # Official rC maps trigger-only [column,row,value] display entries.
-        # Negative jackpot codes and subsequent free-frame coin fields are unreviewed.
+        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'}, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
+        # Original PZa/rC also maps free-frame CL. Ancillary CLBN/FSRS/IIFS
+        # do not affect the official projection; accept only reviewed shapes.
+        if 'CLBN' in gsd:
+            check(index > 0 and 'CL' in gsd and gsd['CLBN'] == gsd['CL'], 'PYRAMIDS_FREE_COIN_ALIAS')
+        if 'FSRS' in gsd:
+            stops = gsd['FSRS'].split(';')
+            if stops[-1] == '': stops.pop()
+            check(index > 0 and len(stops) == 5 and all(v.isascii() and v.isdigit()
+                  and int(v) <= 9007199254740991 for v in stops), 'PYRAMIDS_FREE_STOPS')
         for key in ('BGCL','CL'):
             if key not in gsd:
                 continue
-            check(index == 0, 'PYRAMIDS_FREE_COIN_PREFIX_ONLY')
+            check(key == 'CL' or index == 0, 'PYRAMIDS_FREE_COIN_PREFIX_ONLY')
             rows = gsd[key].split('|')
             if rows[-1] == '': rows.pop()
             check(0 < len(rows) <= 15, 'PYRAMIDS_FREE_COIN')
@@ -44,7 +51,7 @@ class PyramidsFreeSequence(NativeNextgenFields):
             from pyramids_hold_review import rows
             grid=rows(gsd['FGVABN'])
             check(len(grid)==5 and all(len(r)==3 and all(0<=x<=15 for x in r) for r in grid),'PYRAMIDS_FREE_GRID')
-        check('IIFS' not in gsd or gsd['IIFS'] == ('1' if index == 0 else '0'), 'PYRAMIDS_FREE_UNREVIEWED_GSD')
+        check('IIFS' not in gsd or gsd['IIFS'] in ({'1'} if index == 0 else {'0','1'}), 'PYRAMIDS_FREE_UNREVIEWED_GSD')
 
     def sequence(self, raw):
         check(raw.get('protocol') == 'nextgen' and raw.get('sourceKey') == SOURCE, 'PYRAMIDS_FREE_PROFILE_REQUIRED')

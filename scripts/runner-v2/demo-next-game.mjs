@@ -55,7 +55,7 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
    &&imported.commit===commit&&imported.run===run&&imported.newBetAllowance===0&&imported.sourceRequests===0,'NEXT_GAME_IMPORT_INCOMPLETE');
  }
  assert(hash(scene)===profile.sceneHash&&!scene.pool.enabled&&!scene.pool.demoGeneration
-  &&(profile.sourceFormal?scene.campaign.activeGame===null:scene.campaign.activeGame===fromPlan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey)
+  &&(profile.sourceFormal?scene.campaign.activeGame===null:(scene.campaign.activeGame===fromPlan.gameId||profile.sourceClosureHash&&scene.campaign.activeGame===null)&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey)
   &&scene.fromPool.planHash===hash(fromPlan),'NEXT_GAME_SCENE_CHANGED');
  if(profile.sourceFormal)await reviewFormalSource({store,plan:fromPlan,profile,scene,now});
  else await reviewSpentDemoGeneration({store,parser,basePlan:plans[profile.fromGameId],fromPlan,profile,scene,now});
@@ -69,7 +69,7 @@ export async function nextDemoGame({store,transport,gate,parser,plans,profile,bo
  assert(hash(after.campaign)===hash(scene.campaign)&&hash(after.fromPool)===hash(scene.fromPool)
   &&hash(after.sourceBatches)===hash(scene.sourceBatches),'NEXT_GAME_SOURCE_CHANGED');
  const result=await rolloverDemo({store,transport,parser,boundary,oldPlan,plan,fromPlan,
-  expected:hash({campaign:after.campaign,pool:after.pool,fromPool:after.fromPool}),commit,run,expiresAt:profile.expiresAt,activationStage:{key,profileHash:hash(profile)},formalSource:profile.sourceFormal,secondaryNextProfile:secondary?profile:undefined,now});
+  expected:hash({campaign:after.campaign,pool:after.pool,fromPool:after.fromPool}),commit,run,expiresAt:profile.expiresAt,activationStage:{key,profileHash:hash(profile)},formalSource:profile.sourceFormal,closedSourceProfile:profile.sourceClosureHash?profile:undefined,secondaryNextProfile:secondary?profile:undefined,now});
  assert(result.completePreserved===profile.completePreserved,'NEXT_GAME_COUNT_CHANGED');
  if(profile.repairedCandidate){
   const p=profile.repairedCandidate;

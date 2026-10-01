@@ -129,12 +129,12 @@
     "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
     "scripts/runner-v2/record_fields.py": "c8e9b1eb84932266886626fb3756e735b4c9af5391870b11618cb475e8bef887",
     "service/pyramids_hold_review.py": "cebbb5ce4587d018634d4112ef2fc370aa3dcd016686e41e55c0f29d6a1d89f9",
-    "service/pyramids_free_review.py": "f1d74e935fc9118e1668f81730f40121c3ac3db7694102d6eaf06aac431a8472",
+    "service/pyramids_free_review.py": "8542067f78ab8ea6c0d44bd972c37a603c6e5295b9788edccd821a2e13804ffd",
     "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
     "scripts/trial/pyramids-hold-review.mjs": "b24fe93f4f9246eb4d71ccbd2ab9d619aa1012bd7196547387db11ad495ab370",
-    "scripts/trial/pyramids-free-review.mjs": "a6eb3367aa7c8b57b0c23e1f0008c6fec58190178b319654ac48b0c180f8348f",
+    "scripts/trial/pyramids-free-review.mjs": "9707b8c39cf1cd5e4bcebde66595d141bf8f323b67ef60e62704bc6147be7938",
     "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
-    "collector/sg.pyramids.ts": "c3704d58be3b33e1fe8fafa33fb1dfb53294b4123e13a18dd07a5deeb61f2df4",
+    "collector/sg.pyramids.ts": "2e593229a75b1b6833b26985d3e68c1c59bf63e6a419dc71e51e9cc76a77f606",
     "service/game_rule_catalog.py": "def659746e44ab931dc4e4a8a99a44714c906b8cd8440ba3599ca33bff89cd6c"
   },
   "reviewDocuments": [],
@@ -165,5 +165,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d2b1000e639d6b30f7842040c920a35d113279bd2ce14cc4d93e4c7da5ead710"
+  "ruleHash": "2f40252d7058d57ec64d23557d1f391f0b314069ee0071880cc2adf3d1f57e78"
 }
