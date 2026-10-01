@@ -31,6 +31,11 @@
     "verifiedBothEnds": true
   },
   "slotLayoutLocalChecks": 49,
-  "slotLayoutLinuxVerified": false,
-  "slotLayout": "host + groupOffset + 40 * lane"
+  "slotLayoutLinuxVerified": true,
+  "slotLayout": "host + groupOffset + 40 * lane",
+  "slotLayoutPreflightRun": "36866434523:1",
+  "slotLayoutPreflightCommit": "fa7e293764fe0c86cbae9a92d65b86401bfa3a6f",
+  "slotLayoutPreflightLogSha256": "3418fa2b7e6f8666c8cf6ccd4c0e4df64bf6926209c8f76323f9c0eaac25af6f",
+  "repairMixedPayoutProjectionReviewed": true,
+  "naturalMixedPayoutObserved": false
 }

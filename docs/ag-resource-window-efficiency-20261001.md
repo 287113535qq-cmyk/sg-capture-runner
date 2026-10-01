@@ -19,3 +19,7 @@ AG参考固定 `capture-ag/scripts/rolling-worker.ts` 的 canary 后扩并发及
 20:58:49鲜读1790859529：Rhino89,697完整、40会话；采集保持运行。混合前缀再通过独立JavaScript检查，与Python对同一真实8帧及23个负例结果一致，原始全文未改；这是前缀修复进展，尚无后续完整出口。私有最终增量10文件102174字节，两端readback SHA3c891534f2c20040133f26cddc6125a62cf117eb3e8f9f71cc3b0862d8db4ce6，新增JS检查另外留在私有工作区，不声称包含于该旧档案。
 
 新增验收差异修正：资源池槽位按实际host + groupOffset + 40 * lane绑定，不再用连续0..39编号假代表40个会话。1/2/4会话的两仓布局、混入另一仓、缺第四层均有检查；49项本机相关检查通过。本次编号修正Linux仍待验证，上一版bd079f0 Linux通过不能代替本次检查。
+
+槽位修正Linux36866434523:1已成功，固定fa7e293764fe0c86cbae9a92d65b86401bfa3a6f，完整日志SHA3418fa2b7e6f8666c8cf6ccd4c0e4df64bf6926209c8f76323f9c0eaac25af6f。官方混合Hold派奖投影BSa新增差异审查：内层未结束不输出已结算奖金，内层结束且外层免费仍存在使用HNSTW；这些辅助函数出口构造是合成，不代替真实服务器终局和余额。
+
+本轮普通git推送出现TLS握手中断，改用GitHub Git对象接口同步同一提交，并严格核对本地树SHA及提交SHA，fast-forward更新且不force。没有扩大认证范围、改源开关或占用健康源Runner。完整证据准备增量10文件9258字节，两端readback SHAfc694fe045ea190649eb2f5e8a128c6ec5745a72352c8b7f8bce71cbf2c7aaf3，引用前一档案，不重复原始样本。
