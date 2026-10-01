@@ -167,21 +167,48 @@
       "featureTypes": {
         "independentFreeGames": 4
       }
+    },
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-fifteen-free-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "pyramids-fifteen-free-v1",
+      "featureTypes": {
+        "independentFreeGames": 5
+      }
     }
   },
   "mappingHashes": {
     "hyperchargedpyramidsofra96-round-one-base-v1": "f40123d14c4ce5091eeaab0c559ada08179cf41303966b1458baa7c782074dca",
     "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-ten-free-v1": "c121c0851ee85ea888d1c6c32da76d38557635dc2162ee390a0c8fb446ae7ef2",
     "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-free-major-v1": "59012348f3a626ce331f182f144a36e377eef57e2a6d83e5dd2980ab406cacc8",
-    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-free-hold-v1": "3365d83a52b4738de9792d9406a94809a78dd74dd7f9dc05f81e8eb68704ad67"
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-free-hold-v1": "3365d83a52b4738de9792d9406a94809a78dd74dd7f9dc05f81e8eb68704ad67",
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-fifteen-free-v1": "a8647827b22cb2b59bf8b2b71180ba6fc4a7f8b8a55dc4f4dd7ab76ecf6b5d28"
   },
   "configuredNaturalBonusCodes": [
     1,
     2,
     3,
-    4
+    4,
+    5
   ],
-  "configuredOutcomeCategoryCount": 4,
+  "configuredOutcomeCategoryCount": 5,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -193,24 +220,24 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "1be0978953d3b855f2cd7d94c58c21230735cf580e50f2a6f7ce85e5e2fc13fc",
+    "service/round_fields.py": "c368cfefbe54c6940fed51bdfce7c1d26e4f6663423dbe45a19cdc9fb7660f83",
     "scripts/runner-v2/record_fields.py": "25ffcda8ce14b328ce31ca87eb6a2656d2347071b6d09363a13afa71e84d2989",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
     "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
     "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
     "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
-    "service/pyramids_free_review.py": "3c9ae5a0953225521db9114a2dafcee75e6d93fa6b7f22e21942bf101edda7ce",
-    "service/pyramids_fields.py": "9395cfcf9f356bb843493dda0d9a7d59e3faa02fb3aa2a2b068192a49841d066",
+    "service/pyramids_free_review.py": "bd52b3c05b6c94f18b342a92b25855fcda9ea1a6ab0b7f1727c031cb00fe0b90",
+    "service/pyramids_fields.py": "912f2845eb568afa17af017154e7d7f046d374784840f3016d053dceaaae5046",
     "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
-    "scripts/trial/pyramids-free-review.mjs": "a7e1df29deae3229862ca50e0ec775f37cb7c6139dd470aa8d0e7a79e5901697",
-    "scripts/trial/pyramids-protocol.mjs": "b2e3b007c5cf8d314d4f99057fcf26496a3f78c424b9bca8c0a8fd891b6823fe",
-    "collector/sg.pyramids.ts": "bdc54a2a57abdd5469e3770b24776fbcdfb9486b0f1a2033e48e9c42a0e03256",
-    "service/pyramids_mixed_prefix.py": "7a47e938849ec431e5fa92bea97decbb260543b3e998214c0af1cdb18f2e3dfe",
-    "service/pyramids_mixed_review.py": "6f4bdbb8be8ee7eda5d777f3aec637f270a721f587e0bc0f9f2bfc5f0fd5ca98",
-    "scripts/trial/pyramids-mixed-prefix.mjs": "3c4630204e44312e3bbf226a10ec045ab77c3d2e72af2a01ef76d39dab5c68e8",
-    "scripts/trial/pyramids-mixed-review.mjs": "79cb978022e87c779203fdc70c128e6a6c4dfc5c39e6ba84fc8c6aa9266c329b",
-    "collector/sg.pyramids-mixed.ts": "700e4c2f8272926bfb3e15a0e482e57976919f0f7b478175afadcf30912c4682",
+    "scripts/trial/pyramids-free-review.mjs": "716545db7a94026188167397359881e6d039bc88fb418543c59b43b40252e07e",
+    "scripts/trial/pyramids-protocol.mjs": "b64b0d8d520e972f9c6ef9a63a5b3d5deb520d9364a8918db344e9c2f78c1cb7",
+    "collector/sg.pyramids.ts": "279ae6cf885a4ce8142a8fe6dd73589699faa047202330bc42d52aae3bb4e2e2",
+    "service/pyramids_mixed_prefix.py": "21c53e48823b9611a00c9511e15d9de37b62d61d9350ad985e5c33fa3e00df55",
+    "service/pyramids_mixed_review.py": "8c72c17ae52ed462799e20ead0fa832364298b7e17e56c591120aaee698d1bee",
+    "scripts/trial/pyramids-mixed-prefix.mjs": "96d8838dfbb8d443ae3eb46c879c15eed2ea92253af43745a8c03a556b73d42a",
+    "scripts/trial/pyramids-mixed-review.mjs": "7c4b825b78ecc56713a1a5932517a666c38ca52091980fbe1c4db3bf2ae49bb8",
+    "collector/sg.pyramids-mixed.ts": "4f453f4602e86681352c1debc9dc270e9f3df3fdd6da4435ea7891d6b132a679",
     "service/pyramids_mixed_plan.py": "8b85e1c5612e1a4d24d26666b1d566119fe53103f485dfc8c460db3f9124f22b",
     "scripts/runner-v2/pyramids-mixed-repair-profile.mjs": "d3bd634a498fe26b4a3a7c95ffba93fbbc54952c97a1e2c4eee286a65f261e7f",
     "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
@@ -247,5 +274,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a524dbd2d9fef4af0846e8fda2884250d9c94ea07e8c56b335b7829f9381a91b"
+  "ruleHash": "3b574793ef05b53429547e68d6e94caf0534db08490bb58fd8fa4dfcd2205237"
 }

@@ -25,7 +25,8 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10){
+ requireP([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
  const hold=!free&&(raw.steps.length>1||count(fields(raw.steps[0].responsePayload).NFG??'0')>0);
@@ -42,7 +43,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false){
    requireP((p.GCT??'0')==='0'&&(p.FRBAL??'0')==='0','PYRAMIDS_TERMINATION');
    const t=count(p.TFG),c=count(p.CFGG),g=fields(p.GSD??'','#','~');requireP(n+c===t,'PYRAMIDS_COUNTERS');
    if(free){
-    requireP(t===10&&n<=10&&c<=10,'PYRAMIDS_FREE_COUNTERS');
+    requireP(t===freeTotal&&n<=t&&c<=t,'PYRAMIDS_FREE_COUNTERS');
     requireP(Object.keys(g).every(k=>['BGRS','VA','IIFS','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'].includes(k)),'PYRAMIDS_FREE_GSD');
     if(g.CLBN!==undefined)requireP(i>0&&g.CL!==undefined&&g.CLBN===g.CL,'PYRAMIDS_FREE_COIN_ALIAS');
     if(g.FSRS!==undefined){const stops=g.FSRS.split(';');if(stops[stops.length-1]==='')stops.pop();requireP(i>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(count);}
@@ -59,7 +60,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false){
     requireP(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
     requireP((g.IIFS===undefined||(i?['0','1']:['1']).includes(g.IIFS))&&(g.FGRS===undefined||count(g.FGRS)===n)&&(g.CFGC===undefined||count(g.CFGC)===c),'PYRAMIDS_FREE_NESTED');
     if(g.FGVABN!==undefined)grid(g.FGVABN);
-    requireP(i?c===played+1&&n===prior-1&&t===total:n===10&&c===0&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');
+    requireP(i?c===played+1&&n===prior-1&&t===total:n===freeTotal&&c===0&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');
    }else{
     holdGsd(g);requireP(g.SHNST===undefined||i===0,'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY');
     requireP(n<=99&&t>=6&&t<=98&&c<=98,'PYRAMIDS_COUNTERS');
@@ -70,7 +71,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false){
   }else requireP(raw.steps.length===1&&n===0,'PYRAMIDS_UNKNOWN_FEATURE');
   prior=n;last=p;
  });
- requireP(!reviewedMajor||observedMajor,'PYRAMIDS_MAJOR_SCOPE');
+ requireP(!reviewedMajor||freeTotal===15||observedMajor,'PYRAMIDS_MAJOR_SCOPE');
  requireP(prior===0&&(!(free||hold)||raw.steps.length>1),'INCOMPLETE_ROUND');
  const start=raw.startBalanceRaw,end=count(last.B),win=count(last.TW),stake=start-end+win;
  requireP(Number.isSafeInteger(start)&&start>=0&&stake===20&&end===count(last.AB)&&(raw.steps[raw.steps.length-1].responseBalance===undefined||Number(raw.steps[raw.steps.length-1].responseBalance)===end),'PYRAMIDS_MONEY');

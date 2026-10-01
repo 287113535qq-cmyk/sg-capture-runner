@@ -9,12 +9,13 @@ from pyramids_major_review import PyramidsMajorSequence
 from pyramids_hold_review import gsd_fields,KEYS,rows
 from round_fields import check,params,amount
 
-def review_mixed_sequence(plan,raw):
+def review_mixed_sequence(plan,raw,free_total=10):
+ check(free_total in (10,15),'MIXED_UNREVIEWED_FREE_TOTAL')
  steps=raw.get('steps');check(isinstance(steps,list) and 2<=len(steps)<=100,'MIXED_STEPS')
  check(all(s.get('methodName')=='processGameMessage' for s in steps),'MIXED_METHOD')
  trigger=next((i for i,s in enumerate(steps) if params(s['responsePayload']).get('FID')=='0|1|'),None)
  check(trigger is not None,'MIXED_TRIGGER_MISSING')
- prefix=review_prefix(plan,{**raw,'steps':steps[:trigger+1]})
+ prefix=review_prefix(plan,{**raw,'steps':steps[:trigger+1]},free_total=free_total)
  parser=PyramidsMajorSequence(plan);outer=dict(prefix['outer']);inner=dict(prefix['inner']);phase='hold'
  first=params(steps[0]['responsePayload']);pid=params(steps[0]['requestPayload'])['PID']
  initial_win=amount(params(steps[trigger]['responsePayload'])['TW']);last_win=initial_win
@@ -62,7 +63,7 @@ def review_mixed_sequence(plan,raw):
    for k in {'BGCL','CL','CLBN'} & g.keys():
     check(not re.search(r'(^|[;|])-0([;|]|$)',g[k]) and all(r[2] in {10,20,40,60,80,100,300,400,600,800} for r in rows(g[k])),'MIXED_POST_HOLD_UNREVIEWED_COIN')
    if 'BGCL' in g:check(base_coins is not None and g['BGCL']==base_coins,'MIXED_BASE_CHANGED')
-   check(outer['remaining']>0 and t==outer['total']==10 and c==outer['current']+1
+   check(outer['remaining']>0 and t==outer['total']==free_total and c==outer['current']+1
     and n==outer['remaining']-1 and n+c==t,'MIXED_FREE_RESUME_PROGRESS')
    check(('FGRS' not in g or amount(g['FGRS'])==n) and ('CFGC' not in g or amount(g['CFGC'])==c),'MIXED_FREE_RESUME_COUNTER')
    outer={'remaining':n,'current':c,'total':t};complete=n==0

@@ -8,10 +8,11 @@ from round_fields import check,params,amount,VERSION
 FREE_KEYS={'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'}
 TRIGGER_KEYS=FREE_KEYS|{'FGTS','HCL','HVA'}
 
-def review_prefix(plan,raw):
+def review_prefix(plan,raw,free_total=10):
+ check(free_total in (10,15),'MIXED_UNREVIEWED_FREE_TOTAL')
  check(raw.get('fixtureOnly') is False and raw.get('roundFieldsVersion')==VERSION,'MIXED_PROFILE')
- steps=raw.get('steps');check(isinstance(steps,list) and 2<=len(steps)<=11,'MIXED_PREFIX_LENGTH')
- parser=PyramidsMajorSequence(plan)
+ steps=raw.get('steps');check(isinstance(steps,list) and 2<=len(steps)<=free_total+1,'MIXED_PREFIX_LENGTH')
+ parser=PyramidsMajorSequence(plan);parser.reviewed_free_total=free_total
  check(parser.sequence({**raw,'steps':steps[:-1]})=={'MSGID':'FREE_GAME'},'MIXED_FREE_PREFIX')
  step=steps[-1];p=params(step['responsePayload']);prior=params(steps[-2]['responsePayload'])
  check(step['msgId']==p.get('MSGID')=='FREE_GAME' and p.get('FID')=='0|1|' and p.get('IFG')=='1','MIXED_TRIGGER')
@@ -37,7 +38,7 @@ def review_prefix(plan,raw):
  check({'FGRS','CFGC','FGTS','CL','CLBN','HCL','HVA','FGVABN'}<=g.keys(),'MIXED_MISSING_GSD')
  free_remaining=amount(g['FGRS']);free_current=amount(g['CFGC']);free_total=amount(g['FGTS'])
  check(free_remaining==amount(prior['NFG'])-1 and free_current==amount(prior['CFGG'])+1
-  and free_total==amount(prior['TFG'])==10 and free_remaining+free_current==free_total,'MIXED_OUTER_COUNTERS')
+  and free_total==amount(prior['TFG'])==free_total and free_remaining+free_current==free_total,'MIXED_OUTER_COUNTERS')
  parser.validate_gsd({k:v for k,v in g.items() if k in FREE_KEYS},len(steps)-1)
  gsd_fields({'GSD':'#'.join(k+'~'+v for k,v in g.items() if k in KEYS)})
  check(g['CL']==g['CLBN']==g['HCL'],'MIXED_TRIGGER_COIN_SNAPSHOTS')

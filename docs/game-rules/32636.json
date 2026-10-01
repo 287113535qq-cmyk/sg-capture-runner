@@ -118,7 +118,7 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "1be0978953d3b855f2cd7d94c58c21230735cf580e50f2a6f7ce85e5e2fc13fc",
+    "service/round_fields.py": "c368cfefbe54c6940fed51bdfce7c1d26e4f6663423dbe45a19cdc9fb7660f83",
     "scripts/runner-v2/record_fields.py": "25ffcda8ce14b328ce31ca87eb6a2656d2347071b6d09363a13afa71e84d2989",
     "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
     "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "69119ac87736b55eb96850c8a96c87fa5d8f7775169bf94a6ccb6c8c2a743d98"
+  "ruleHash": "1a7db36fde062ed1310eff0f87e7e41ae7554586ea71d98aeb69106892930718"
 }

@@ -51,7 +51,8 @@ function xml(step:any){
  const roots=Object.keys(parsed).filter(k=>k!=='?xml');assert(roots.length===1&&roots[0].toUpperCase()==='GDMRESPONSE','COLLECTOR_XML');
  const root=parsed[roots[0]];assert(typeof root.SUCCESS==='string'&&root.SUCCESS.toLowerCase()==='true'&&root.PAYLOAD===step.responsePayload,'COLLECTOR_XML');
 }
-export function reviewMixedCollector(raw:any,mappingHash:string){
+export function reviewMixedCollector(raw:any,mappingHash:string,freeTotal=10){
+ assert([10,15].includes(freeTotal),'COLLECTOR_UNREVIEWED_FREE_TOTAL');
  assert(raw?.protocol==='nextgen'&&raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.fixtureOnly===false
   &&raw.roundFieldsVersion==='sg-round-fields-v1'&&Number.isSafeInteger(raw.startBalanceRaw)&&raw.startBalanceRaw>=0
   &&Array.isArray(raw.steps)&&raw.steps.length>=2&&raw.steps.length<=100,'COLLECTOR_PROFILE');
@@ -69,7 +70,7 @@ export function reviewMixedCollector(raw:any,mappingHash:string){
   const b=num(p.B),ab=num(p.AB),win=num(p.TW),n=num(p.NFG),t=num(p.TFG),c=num(p.CFGG);
   assert(raw.startBalanceRaw-b+win===20&&win>=lastWin,'COLLECTOR_MONEY');
   if(!i){
-   assert(['1','1|'].includes(p.FID)&&n===10&&t===10&&c===0&&g.IIFS==='1','COLLECTOR_FREE_TRIGGER');
+   assert(['1','1|'].includes(p.FID)&&n===freeTotal&&t===freeTotal&&c===0&&g.IIFS==='1','COLLECTOR_FREE_TRIGGER');
    base=g.BGCL;geometry(g,'initial',base);outer={remaining:n,current:c,total:t};phase='free-before-hold';
   }else if(phase==='free-before-hold'&&p.FID==='0|1|'){
    assert(outer.remaining>0&&n===6&&t===6&&c===0&&['FGRS','CFGC','FGTS','CL','CLBN','HCL','HVA','FGVABN'].every(k=>has(g,k)),'COLLECTOR_MIXED_TRIGGER');
@@ -85,7 +86,7 @@ export function reviewMixedCollector(raw:any,mappingHash:string){
    inner={remaining:n,current:c,total:t};
   }else{
    assert(['free-before-hold','free-after-hold'].includes(phase)&&['1','1|'].includes(p.FID)&&outer.remaining>0
-    &&t===outer.total&&t===10&&c===outer.current+1&&n===outer.remaining-1&&n+c===t,'COLLECTOR_FREE_PROGRESS');
+    &&t===outer.total&&t===freeTotal&&c===outer.current+1&&n===outer.remaining-1&&n+c===t,'COLLECTOR_FREE_PROGRESS');
    geometry(g,'free',base);assert((g.FGRS===undefined||num(g.FGRS)===n)&&(g.CFGC===undefined||num(g.CFGC)===c),'COLLECTOR_FREE_COUNTERS');
    if(phase==='free-after-hold')for(const k of ['BGCL','CL','CLBN'])if(g[k]!==undefined)assert(rows(g[k]).every(r=>[10,20,40,60,80,100,300,400,600,800].includes(r[2])),'COLLECTOR_POST_HOLD_UNREVIEWED_COIN');
    outer={remaining:n,current:c,total:t};complete=n===0;assert(!complete||phase==='free-after-hold','COLLECTOR_MIXED_REQUIRED');
@@ -102,3 +103,4 @@ export function reviewMixedCollector(raw:any,mappingHash:string){
 }
 
 export function hasPyramidsMixed(raw:any){return raw?.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&Array.isArray(raw.steps)&&raw.steps.some((s:any)=>pairs(s.responsePayload).FID==='0|1|');}
+export const validatePyramidsMixedXml=xml;

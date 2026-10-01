@@ -32,11 +32,12 @@ function validateGsd(g,phase,base){
  if(g.BGCL!==undefined)check(g.BGCL===base,'MIXED_BASE_CHANGED');
  if(g.CLBN!==undefined)check(g.CLBN===g.CL,'MIXED_COIN_ALIAS');
 }
-export function reviewMixedSequence(raw){
+export function reviewMixedSequence(raw,{freeTotal=10}={}){
+ check([10,15].includes(freeTotal),'MIXED_UNREVIEWED_FREE_TOTAL');
  check(Array.isArray(raw.steps)&&raw.steps.length>=2&&raw.steps.length<=100,'MIXED_STEPS');
  check(raw.steps.every(s=>s.methodName==='processGameMessage'),'MIXED_METHOD');
  const trigger=raw.steps.findIndex(s=>pairs(s.responsePayload).FID==='0|1|');check(trigger>=0,'MIXED_TRIGGER_MISSING');
- const prefix=reviewMixedPrefix({...raw,steps:raw.steps.slice(0,trigger+1)});
+ const prefix=reviewMixedPrefix({...raw,steps:raw.steps.slice(0,trigger+1)},{freeTotal});
  let outer={...prefix.outer},inner={...prefix.inner},phase='hold',complete=false;
  const pid=pairs(raw.steps[0].requestPayload).PID,base=pairs(pairs(raw.steps[0].responsePayload).GSD,'#','~').BGCL;
  const firstWin=number(pairs(raw.steps[trigger].responsePayload).TW);let win=firstWin;
@@ -61,7 +62,7 @@ export function reviewMixedSequence(raw){
    if(n===0){check(inner.remaining===1&&t===inner.total&&g.HNSTW!==undefined&&nextWin===firstWin+number(g.HNSTW),'MIXED_PAYOUT');phase='free';complete=outer.remaining===0;}
    inner={remaining:n,current:c,total:t};
   }else{
-   check(['1','1|'].includes(p.FID)&&outer.remaining>0&&t===outer.total&&t===10&&c===outer.current+1
+   check(['1','1|'].includes(p.FID)&&outer.remaining>0&&t===outer.total&&t===freeTotal&&c===outer.current+1
     &&n===outer.remaining-1&&n+c===t,'MIXED_FREE_RESUME');
    check((g.FGRS===undefined||number(g.FGRS)===n)&&(g.CFGC===undefined||number(g.CFGC)===c),'MIXED_FREE_COUNTER');
    outer={remaining:n,current:c,total:t};complete=n===0;

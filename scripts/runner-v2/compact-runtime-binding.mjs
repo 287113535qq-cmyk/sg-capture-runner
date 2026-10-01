@@ -39,6 +39,34 @@ export function compactLayoutBinding({plan,profile,spec,complete,commit}) {
   return true;
 }
 
+// A later repaired allocation can adopt the same fixed worker projection.
+// Applied older repair profiles never acquire this mode implicitly.
+export function compactRepairBinding({plan,profile,spec,complete,commit}) {
+  assert(profile?.schema==='sg-formal-repair-pyramids-v5'
+    &&profile.controlReadMode==='compact-worker-v1'
+    &&/^[a-f0-9]{64}$/.test(profile.gatewayHash??''),'COMPACT_REPAIR_MODE');
+  assert(plan?.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
+    &&plan.target===299850&&plan.buy===0&&plan.phase===1
+    &&plan.countAllocation===profile.activation&&profile.group==='secondary'
+    &&profile.completePreserved>0&&profile.remainingComplete>0
+    &&Number.isSafeInteger(profile.completePreserved)&&Number.isSafeInteger(profile.remainingComplete)
+    &&profile.completePreserved+profile.remainingComplete===plan.target
+    &&profile.historicalBaseline===150&&profile.totalTarget===300000
+    &&profile.stateWriteMode==='versioned-delta-v1','COMPACT_REPAIR_SCOPE');
+  assert(/^[a-f0-9]{40}$/.test(commit??'')&&spec?.schema==='sg-complete-count-v1'
+    &&spec.commit===commit&&spec.activation===plan.countAllocation
+    &&spec.profileHash===hash(profile)&&spec.planHash===hash(plan)
+    &&spec.trialId===plan.trialId&&spec.gameId===plan.gameId&&spec.target===plan.target
+    &&spec.sourceRecordsHash===profile.recordsHash
+    &&complete?.schema==='sg-complete-count-activation-v1'
+    &&complete.specHash===hash(spec)&&complete.commit===commit
+    &&complete.profileHash===hash(profile)&&complete.planHash===hash(plan)
+    &&complete.trialId===plan.trialId&&complete.sourceRequests===0
+    &&complete.completePreserved===profile.completePreserved
+    &&complete.remainingComplete===profile.remainingComplete,'COMPACT_REPAIR_RECEIPT');
+  return true;
+}
+
 export function compactControlInitializer({plan,runtimeName,commit,resourceReady,readRevision,readProfile,readReceipt,control}) {
   let ready;
   return ()=>ready??=(async()=>{
@@ -48,7 +76,7 @@ export function compactControlInitializer({plan,runtimeName,commit,resourceReady
       await resourceReady;
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
       const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
-      control.compact=compactLayoutBinding({plan,profile,spec,complete,commit});return;
+      control.compact=(profile.schema==='sg-formal-repair-pyramids-v5'?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
     }
     const revision=readRevision(runtimeName);
     if(revision.controlReadMode===undefined)return;

@@ -29,7 +29,7 @@ function fixture(group='primary'){
  };
  let pending=false;
  const transport={request:async(op,args)=>{assert(!pending);pending=true;calls.push({op,args});await Promise.resolve();pending=false;
-  return op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:evidence;}};
+  return op==='global_holds'?[{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:{active:false}}]:evidence;}};
  return {args:{read,transport,peer,selfGroup,run:'123:1',commit:self.head_sha,workflowPath:self.path,now:()=>100},peer,pool,campaign,spec,permit,complete,evidence,jobs,runs,other,calls};
 }
 test('both directions accept only an immutable peer and serial native reads',async()=>{

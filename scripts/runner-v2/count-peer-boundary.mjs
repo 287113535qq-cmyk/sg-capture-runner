@@ -58,8 +58,21 @@ export function checkCountPeerEvidence(evidence,peer,status,now=Date.now()){
   'COUNT_PEER_ENDED_UNSETTLED');
  return permit;
 }
-export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,workflowPath,now=Date.now}){
+export function checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash){
+ assert(holds?.length===2&&new Set(holds.map(r=>r._id)).size===2
+  &&['primary/global-hold','secondary/global-hold'].every(id=>holds.some(r=>r._id===id)),'GLOBAL_HOLD');
+ if(maintenanceHoldHash){
+  const own=holds.find(r=>r._id===selfGroup+'/global-hold')?.value;
+  assert(selfGroup==='secondary'&&hash(own)===maintenanceHoldHash&&own.active
+   &&own.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'&&own.details?.code==='PYRAMIDS_FREE_COUNTERS'
+   &&own.details.category==='source_protocol'&&own.details.trialId==='sg_r1_20260928_32721'
+   &&own.details.cooldownUntil===0&&holds.find(r=>r._id==='primary/global-hold')?.value.active===false,'GLOBAL_HOLD');
+ }else assert(holds.every(r=>r?.value?.active===false),'GLOBAL_HOLD');
+}
+export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,workflowPath,maintenanceHoldHash,now=Date.now}){
  const fixed=checkCountPeerDescriptor(peer,selfGroup),selfRepo=repositories[selfGroup];
+ assert(!maintenanceHoldHash||workflowPath==='.github/workflows/demo-maintenance.yml'
+  &&selfGroup==='secondary'&&/^[a-f0-9]{64}$/.test(maintenanceHoldHash),'COUNT_PEER_MAINTENANCE_HOLD_SCOPE');
  assert(/^[1-9][0-9]{0,14}:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit)
   &&['.github/workflows/demo-maintenance.yml','.github/workflows/trial-300k.yml'].includes(workflowPath),'COUNT_PEER_SELF');
  const selfId=Number(run.split(':')[0]),peerId=Number(peer.run.split(':')[0]);
@@ -110,7 +123,7 @@ export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,work
   if(r.status==='completed'&&evidence.state?.find(d=>d._id===peer.group+'/campaign')?.value.activeGame===null)
    assert(jobs.jobs.filter(j=>j.name==='verify'&&j.status==='completed'&&j.conclusion==='success').length===1,'COUNT_PEER_FINISHED_AUDIT');
   checkCountPeerEvidence(evidence,peer,r.status,now());
-  const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(d=>d?.value?.active===false),'GLOBAL_HOLD');
+  const holds=await transport.request('global_holds');checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash);
   assert(now()-start<=30000,'GITHUB_EVIDENCE_STALE');
  };
 }

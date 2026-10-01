@@ -17,6 +17,7 @@ def feature_type(raw):
 
 
 class PyramidsFreeSequence(NativeNextgenFields):
+    reviewed_free_total = 10
     def __init__(self, plan):
         check(plan.get('gameId') == 32721 and plan.get('sourceKey') == SOURCE, 'PYRAMIDS_FREE_PROFILE_REQUIRED')
         super().__init__(plan)
@@ -105,7 +106,7 @@ class PyramidsFreeSequence(NativeNextgenFields):
             check(amount(step.get('elapsedMs')) <= 300000, 'INVALID_TRIAL_TIMING')
             check(all(k in p for k in ('NFG', 'TFG', 'CFGG')), 'PYRAMIDS_FREE_MISSING_COUNTER')
             n, t, c = (amount(p[k]) for k in ('NFG', 'TFG', 'CFGG'))
-            check(t == 10 and t == n + c and 0 <= n <= 10 and 0 <= c <= 10, 'PYRAMIDS_FREE_COUNTERS')
+            check(self.reviewed_free_total in (10,15) and t == self.reviewed_free_total and t == n + c and 0 <= n <= t and 0 <= c <= t, 'PYRAMIDS_FREE_COUNTERS')
             check(p.get('GCT', '0') == '0', 'UNSUPPORTED_PYRAMIDS_FREE_TERMINATION')
             check(('FGRS' not in gsd or amount(gsd['FGRS']) == n)
                   and ('CFGC' not in gsd or amount(gsd['CFGC']) == c), 'UNSUPPORTED_PYRAMIDS_FREE_NESTED_COUNTER')

@@ -153,7 +153,7 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "1be0978953d3b855f2cd7d94c58c21230735cf580e50f2a6f7ce85e5e2fc13fc",
+    "service/round_fields.py": "c368cfefbe54c6940fed51bdfce7c1d26e4f6663423dbe45a19cdc9fb7660f83",
     "scripts/runner-v2/record_fields.py": "25ffcda8ce14b328ce31ca87eb6a2656d2347071b6d09363a13afa71e84d2989",
     "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
     "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
@@ -218,5 +218,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "827f3f67dfa884a5cc75d7f11d08d96a0b284814cba341cb4be1326f806fdbba"
+  "ruleHash": "76ee53a289b96d88ab50e930325e52edb985e3ceddd0790b75556428d3fb8a65"
 }

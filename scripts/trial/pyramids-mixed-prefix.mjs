@@ -13,10 +13,11 @@ function rows(s){check(typeof s==='string','MIXED_ARRAY');const rs=s.split('|');
  check(rs.length>0&&rs.length<=100,'MIXED_ARRAY');return rs.map(r=>{const c=r.split(';');if(c.at(-1)==='')c.pop();
  check(c.length>0&&c.length<=100&&c.every(v=>/^-?\d+$/.test(v)&&Number.isSafeInteger(+v)),'MIXED_ARRAY');return c.map(Number);});}
 const keys=new Set('BGRS IIFS VA FGRS CFGC FGVABN BGCL CL CLBN FSRS FGTS HCL HVA'.split(' '));
-export function reviewMixedPrefix(raw){
+export function reviewMixedPrefix(raw,{freeTotal=10}={}){
+ check([10,15].includes(freeTotal),'MIXED_UNREVIEWED_FREE_TOTAL');
  check(raw?.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Number.isSafeInteger(raw.startBalanceRaw)&&raw.startBalanceRaw>=0,'MIXED_PROFILE');
- check(Array.isArray(raw.steps)&&raw.steps.length>=2&&raw.steps.length<=11,'MIXED_PREFIX_LENGTH');
- check(pyramidsFreeSequence({...raw,steps:raw.steps.slice(0,-1)},{reviewedMajor:true}).next==='FREE_GAME','MIXED_FREE_PREFIX');
+ check(Array.isArray(raw.steps)&&raw.steps.length>=2&&raw.steps.length<=freeTotal+1,'MIXED_PREFIX_LENGTH');
+ check(pyramidsFreeSequence({...raw,steps:raw.steps.slice(0,-1)},{reviewedMajor:true,freeTotal}).next==='FREE_GAME','MIXED_FREE_PREFIX');
  const tail=raw.steps.at(-1),p=pairs(tail.responsePayload),prior=pairs(raw.steps.at(-2).responsePayload),q=pairs(tail.requestPayload);
  check(tail.msgId===p.MSGID&&p.MSGID===q.MSGID&&q.MSGID==='FREE_GAME'&&p.FID==='0|1|'&&p.IFG==='1','MIXED_TRIGGER');
  check(Object.keys(q).length===5&&q.BPL==='1'&&q.GN==='hyperchargedpyramidsofra96'&&q.LB==='40'&&q.PID===pairs(raw.steps[0].requestPayload).PID,'MIXED_REQUEST');
@@ -24,7 +25,7 @@ export function reviewMixedPrefix(raw){
  check(amount(p.NFG)===6&&amount(p.TFG)===6&&amount(p.CFGG)===0,'MIXED_INNER_COUNTER');
  const g=pairs(p.GSD,'#','~');check(Object.keys(g).every(k=>keys.has(k))&&['FGRS','CFGC','FGTS','CL','CLBN','HCL','HVA','FGVABN'].every(k=>Object.hasOwn(g,k)),'MIXED_GSD');
  const remaining=amount(g.FGRS),current=amount(g.CFGC),total=amount(g.FGTS);
- check(remaining===amount(prior.NFG)-1&&current===amount(prior.CFGG)+1&&total===amount(prior.TFG)&&total===10&&remaining+current===total,'MIXED_OUTER_COUNTER');
+ check(remaining===amount(prior.NFG)-1&&current===amount(prior.CFGG)+1&&total===amount(prior.TFG)&&total===freeTotal&&remaining+current===total,'MIXED_OUTER_COUNTER');
  check(g.CL===g.CLBN&&g.CL===g.HCL,'MIXED_COIN_SNAPSHOT');
  for(const k of ['CL','CLBN','BGCL','HCL'])if(g[k]!==undefined){const occupied=new Set();for(const r of rows(g[k])){
   const [x,y,v]=r,pos=x+','+y;check(r.length===3&&x>=0&&x<3&&y>=0&&y<5&&!occupied.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[k])&&[10,20,40,60,80,100,300,400,600,800].includes(v),'MIXED_COIN');occupied.add(pos);}}

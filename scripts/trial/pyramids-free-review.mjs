@@ -14,7 +14,8 @@ function pairs(text,sep='&',eq='='){
   }return p;
 }
 function integer(v){check(typeof v==='string'&&/^\d+$/.test(v)&&Number.isSafeInteger(Number(v)),'INVALID_NUMBER');return Number(v);}
-export function pyramidsFreeSequence(raw,{reviewedMajor=false}={}){
+export function pyramidsFreeSequence(raw,{reviewedMajor=false,freeTotal=10}={}){
+  check([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
   check(raw.sourceKey===PYRAMIDS_FREE_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'PYRAMIDS_FREE_PROFILE_REQUIRED');
   const special=raw.steps.some(s=>['1','1|'].includes(pairs(s.responsePayload).FID));
   check(special,'PYRAMIDS_FREE_FREE_REVIEW_REQUIRED');
@@ -57,7 +58,7 @@ export function pyramidsFreeSequence(raw,{reviewedMajor=false}={}){
       }
       check(gsd.IIFS===undefined||(index===0?['1']:['0','1']).includes(gsd.IIFS),'PYRAMIDS_FREE_UNREVIEWED_GSD');
       check((p.FRBAL??'0')==='0','PYRAMIDS_FREE_UNREVIEWED_FREE_ROUNDS');
-      t=integer(p.TFG);c=integer(p.CFGG);check(t===10&&c<=10&&n<=10&&t===n+c,'PYRAMIDS_FREE_COUNTERS');
+      t=integer(p.TFG);c=integer(p.CFGG);check(t===freeTotal&&c<=t&&n<=t&&t===n+c,'PYRAMIDS_FREE_COUNTERS');
       check((p.GCT??'0')==='0','UNSUPPORTED_PYRAMIDS_FREE_TERMINATION');
       check((gsd.FGRS===undefined||integer(gsd.FGRS)===n)&&(gsd.CFGC===undefined||integer(gsd.CFGC)===c),'UNSUPPORTED_PYRAMIDS_FREE_NESTED_COUNTER');
       if(index===0)check(n>0&&c===0&&p.IFG==='0','PYRAMIDS_FREE_EMPTY_TRIGGER');
