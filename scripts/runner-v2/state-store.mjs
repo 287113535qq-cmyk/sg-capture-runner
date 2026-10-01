@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {countPermissionReader} from './count-permission-cache.mjs';
 import {stable} from './mongo-writer.mjs';
 import {stateDelta} from './state-delta.mjs';
+import {contentionDelay} from './cas-contention.mjs';
 import {sessionWorkerAllowed,sessionLayout} from './session-layout.mjs';
 import {allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
 
@@ -9,9 +10,10 @@ const fail=code=>Object.assign(new Error(code),{code});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 export class RunnerState {
-  constructor({transport,gate,now=Date.now,sleep=delay,deadline=Infinity,deltaCas=false}) {
+  constructor({transport,gate,now=Date.now,sleep=delay,deadline=Infinity,deltaCas=false,random=Math.random}) {
     assert(typeof deltaCas==='boolean','DELTA_CAS_MODE');
-    Object.assign(this,{transport,gate,now,sleep,deadline,deltaCas});this.lastSample=-Infinity;
+    assert(typeof random==='function','CAS_CONTENTION_RANDOM');
+    Object.assign(this,{transport,gate,now,sleep,deadline,deltaCas,random});this.lastSample=-Infinity;
   }
   async sample() {
     if(this.now()-this.lastSample>=10_000) {
@@ -68,7 +70,7 @@ export class RunnerState {
       const value=await change(structuredClone(before.value));
       if(value===null)return before;
       const after=await this.cas(collection,key,before,value);if(after)return after;
-      await this.sleep(Math.min(250,10+i*10));
+      await this.sleep(contentionDelay(i,this.random));
     }
     throw fail('STATE_CONTENTION');
   }

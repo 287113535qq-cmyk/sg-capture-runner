@@ -146,6 +146,66 @@
     "metadataCanaryLinux": {
       "run": 36931351600,
       "commit": "1505dc5b560d10c228f1ee6703247fbadb1c7237"
+    },
+    "metadataCompressionCanary": {
+      "fixtureOnly": true,
+      "pairs": 10,
+      "applicationDocumentBytes": 739381,
+      "plainReadMedianMs": 83.69934900000226,
+      "compressedReadMedianMs": 83.45949100000144,
+      "samples": {
+        "plain": [
+          429.18610000000626,
+          152.64976399998704,
+          87.13334300000861,
+          82.44803200000024,
+          82.62051400000928,
+          83.04028800000378,
+          83.69934900000226,
+          82.19060299999546,
+          80.72913300000073,
+          83.86435699999856
+        ],
+        "compressed": [
+          141.1583040000114,
+          83.84330800001044,
+          122.58716300000378,
+          79.72133999998914,
+          81.24923400000262,
+          83.45949100000144,
+          79.63014999999723,
+          81.33381099998951,
+          83.68295800000487,
+          79.68026399999508
+        ]
+      },
+      "fullReadback": true,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "gamePoolWrites": 0,
+      "officialRoundWrites": 0,
+      "onWireBytesMeasured": false,
+      "gameThroughputVerified": false,
+      "run": 36932239564,
+      "commit": "93bdcfba94ede2e700e0bc40571e4df2056d67de",
+      "conclusion": "success",
+      "compressedReadMedianReductionPercent": 0.28657092661594774,
+      "adopted": false,
+      "decision": "Keep disabled: 0.2866% median improvement on synthetic metadata does not justify backend compression CPU at observed pressure."
+    },
+    "wholeRunPressure": {
+      "run": 36919896773,
+      "workers": 80,
+      "workersWithPauseAfterReady": 78,
+      "maxPauseTransitionsPerWorker": 6,
+      "peakBackendCpuPercent": 99.857108835437,
+      "peakBackendMemoryPercent": 67.64670566017716,
+      "activeHoldsAtEnd": 0,
+      "allSourceErrors": 0,
+      "shortStableWindowIsNotWholeRunHealth": true,
+      "rootCauseUniquelyEstablished": false,
+      "sourceRequestsForReview": 0,
+      "databaseWrites": 0
     }
   },
   "pending": [
@@ -191,6 +251,75 @@
       "gameThroughputVerified": false,
       "sourceRequests": 0,
       "mongoWrites": 0
+    },
+    "casContention": {
+      "schema": "sg-cas-contention-offline-benchmark-v1",
+      "fixtureOnly": true,
+      "workers": 80,
+      "simulatedOperationDelayMs": 2,
+      "pairs": [
+        {
+          "legacy": {
+            "elapsedMs": 15229.0969,
+            "readCalls": 2382,
+            "casAttempts": 2382,
+            "failedVersionAttempts": 2302,
+            "successfulClaims": 80,
+            "remaining": 0
+          },
+          "jitter": {
+            "elapsedMs": 1546.0748999999996,
+            "readCalls": 807,
+            "casAttempts": 807,
+            "failedVersionAttempts": 727,
+            "successfulClaims": 80,
+            "remaining": 0
+          }
+        },
+        {
+          "jitter": {
+            "elapsedMs": 1637.9301000000014,
+            "readCalls": 809,
+            "casAttempts": 809,
+            "failedVersionAttempts": 729,
+            "successfulClaims": 80,
+            "remaining": 0
+          },
+          "legacy": {
+            "elapsedMs": 16217.542400000002,
+            "readCalls": 2553,
+            "casAttempts": 2553,
+            "failedVersionAttempts": 2473,
+            "successfulClaims": 80,
+            "remaining": 0
+          }
+        },
+        {
+          "legacy": {
+            "elapsedMs": 18772.197099999998,
+            "readCalls": 3020,
+            "casAttempts": 3020,
+            "failedVersionAttempts": 2940,
+            "successfulClaims": 80,
+            "remaining": 0
+          },
+          "jitter": {
+            "elapsedMs": 1733.307200000003,
+            "readCalls": 843,
+            "casAttempts": 843,
+            "failedVersionAttempts": 763,
+            "successfulClaims": 80,
+            "remaining": 0
+          }
+        }
+      ],
+      "legacyMedianMs": 16217.542400000002,
+      "jitterMedianMs": 1637.9301000000014,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "onlineGainVerified": false,
+      "exactClaims": true,
+      "localMedianReductionPercent": 89.90025702044719
     }
   }
 }
