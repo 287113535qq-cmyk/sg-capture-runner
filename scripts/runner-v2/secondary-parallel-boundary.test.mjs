@@ -60,3 +60,17 @@ test('ended Rhino coexistence requires all capture jobs successful and explicit 
  f.jobs[1].conclusion='failure';await assert.rejects(secondaryParallelBoundary({...f.args,allowEndedPrimary:true})(),/JOBS_CHANGED/);
  assert.throws(()=>secondaryParallelBoundary({...fixture().args,allowEndedPrimary:true}),/ENDED_SCOPE/);
 });
+
+test('precisely audited parent tail failure permits settled peer and caches immutable log proof',async()=>{
+ const f=fixture(rhinoTwoPrimary);Object.assign(f.runs[1],{status:'completed',conclusion:'failure'});
+ f.jobs.filter(j=>j.name.startsWith('capture-')).forEach(j=>Object.assign(j,{status:'completed',conclusion:'failure'}));
+ f.jobs.push({name:'verify',status:'completed',conclusion:'success'});
+ const pool=f.evidence.state[1].value;pool.confirmed=18694;pool.countAllocation.reserved=0;pool.workers[0].leaseUntil=0;
+ f.evidence.journal[0].value.completeBefore=8320;
+ const evidence={schema:'sg-known-parent-tail-failure-v1',sourceRun:rhinoTwoPrimary.id+':1',sourceCommit:rhinoTwoPrimary.commit,
+  logSha256:'228dbb93491cd97660dd8de5dffb00953bb541ad0093e1ad25c8b61dbe4e4663',distinctWorkers:40,childComplete:10374,sourceErrors:0,parentError:'CONCURRENT_PARENT_GATEWAY_READ'};
+ let reads=0;const check=secondaryParallelBoundary({...f.args,allowEndedPrimary:true,readTailProof:()=>{reads++;return evidence;}});
+ await check();await check();assert.equal(reads,1);
+ pool.countAllocation.reserved=1;await assert.rejects(check(),/PARENT_FAILURE_UNSETTLED/);pool.countAllocation.reserved=0;
+ pool.workers[0].activeBatch={id:1};await assert.rejects(check(),/PARENT_FAILURE_UNSETTLED/);
+});

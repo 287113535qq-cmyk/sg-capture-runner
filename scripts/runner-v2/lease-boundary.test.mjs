@@ -30,3 +30,11 @@ test('all configured pools and non-complete batches covered without rescanning c
 for(const mode of ['worker','batch','missing'])test('lease read rejects '+mode,async()=>{
   await assert.rejects(checkPrimaryLeases({store:fake(mode),plans,now:()=>100}));
 });
+
+test('many pools share two serial campaign reads and reject a changed completion classification',async()=>{
+ let reads=0,change=false;const campaign={games:Array.from({length:20},(_,game_id)=>({game_id,status:'active'}))};
+ const store={get:async()=>{reads++;return {value:structuredClone(change&&reads===2?{...campaign,enabled:false}:campaign)};},
+  getMany:async(c,keys)=>keys.map(k=>k.startsWith('pool:')?{_id:'primary/'+k,value:{nextBatchId:1,workers:{0:{leaseUntil:0}}}}:null)};
+ assert.deepEqual(await checkPrimaryLeases({store,plans,now:()=>100}),{pools:25,workers:25,batches:0});assert.equal(reads,2);
+ reads=0;change=true;await assert.rejects(checkPrimaryLeases({store,plans,now:()=>100}),/LEASE_CAMPAIGN_CHANGED/);
+});

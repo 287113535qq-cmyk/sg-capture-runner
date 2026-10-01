@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {protocolHash as hash} from './protocol-resume.mjs';
 export async function checkPrimaryLeases({store,plans,now=Date.now}) {
   const keys=[...new Set(Object.values(plans).map(p=>'pool:'+p.trialId))];
   // Cover every configured plan; adding a candidate must not require a new fixed count.
@@ -6,13 +7,15 @@ export async function checkPrimaryLeases({store,plans,now=Date.now}) {
     &&Object.values(plans).every(p=>typeof p.trialId==='string'&&p.trialId.length>0),'PLAN_COVERAGE_CHANGED');
   const pools=[];
   for(let i=0;i<keys.length;i+=100)pools.push(...await store.getMany('state',keys.slice(i,i+100)));
+  const present=pools.filter(Boolean);
+  const campaign=present.length?(await store.get('state','campaign'))?.value:null;
+  assert(!present.length||campaign,'LEASE_SCOPE_CHANGED');
   let workers=0,batches=0;
-  for(const doc of pools.filter(Boolean)){
+  for(const doc of present){
     const pool=doc.value;
     for(const w of Object.values(pool.workers)){
       assert(Number.isFinite(w.leaseUntil) && w.leaseUntil<=now(),'WORKER_LEASE_ACTIVE');workers++;
     }
-    const campaign=(await store.get('state','campaign'))?.value;
     const trialId=doc._id.split('/pool:')[1];
     const plan=Object.values(plans).find(p=>p.trialId===trialId);
     assert(plan && campaign,'LEASE_SCOPE_CHANGED');
@@ -26,5 +29,6 @@ export async function checkPrimaryLeases({store,plans,now=Date.now}) {
       for(const {value:b} of rows){assert(Number.isFinite(b.leaseUntil) && b.leaseUntil<=now(),'BATCH_LEASE_ACTIVE');batches++;}
     }
   }
-  return {pools:pools.filter(Boolean).length,workers,batches};
+  if(present.length)assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'LEASE_CAMPAIGN_CHANGED');
+  return {pools:present.length,workers,batches};
 }
