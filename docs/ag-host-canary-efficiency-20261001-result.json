@@ -24,8 +24,23 @@
   "canaryResourceLogLocalChecks": 1,
   "canaryAffectedLocalChecks": 79,
   "canaryComparisonEntryConnected": true,
-  "canaryLinuxVerified": false,
+  "canaryLinuxVerified": true,
   "resourceProgressHistoryOmitted": true,
   "resourceFinalHistoryPreserved": true,
-  "resourceLogSyntheticReductionMoreThan": 20
+  "resourceLogSyntheticReductionMoreThan": 20,
+  "canaryLinux": {
+    "run": "36869860766:1",
+    "commit": "b25933b8a7693a04b7d41f35e8311e6a6f6b9ade",
+    "logSha256": "0033b861668c1ee92e8d873e91bd1c782cbacf9253de4d76c074585121230bd9",
+    "startedAt": "2026-10-01T13:36:04Z",
+    "completedAt": "2026-10-01T13:37:56Z",
+    "runnerChecks": 1092,
+    "trialChecks": 148,
+    "collectorChecks": 28
+  },
+  "mixedSequenceIndependentParity": true,
+  "mixedSequenceSyntheticFullChains": 3,
+  "mixedSequenceNegativeChecks": 26,
+  "mixedNaturalTerminalObserved": false,
+  "prepareArchiveSha256": "5c75431c1363b0d5f11482f7672644a14c089cb8bf3022ccd4c86a3458f12bdf"
 }
