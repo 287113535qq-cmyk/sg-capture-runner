@@ -1,7 +1,7 @@
 {
   "schema": "sg-resource-window-efficiency-review-v1",
   "nodeChecks": 53,
-  "linuxVerified": false,
+  "linuxVerified": true,
   "onlineApplied": false,
   "actualThroughputGainVerified": false,
   "resourcePolicyChanged": false,
@@ -11,6 +11,23 @@
   "sourceRequests": 0,
   "mongoWrites": 0,
   "retiredGameComplete": 3627,
-  "healthyMainCompleteSnapshot": 76597,
-  "allOptimizationComplete": false
+  "healthyMainCompleteSnapshot": 89697,
+  "allOptimizationComplete": false,
+  "preflightRun": "36863702535:1",
+  "preflightCommit": "bd079f03645d76105695730fe3b4a83fe230d60c",
+  "preflightLogSha256": "eddadee52b933bfff670e2347a68f84ba0380e096a5f0d42a2849359f07eaf82",
+  "repairPrefixXmlFrames": 8,
+  "repairPrefixNegativeChecks": 23,
+  "mixedProductionImported": false,
+  "mixedCaptureAuthorized": false,
+  "featureReuseIndexUpdated": true,
+  "healthySnapshotAt": 1790859529,
+  "repairPrefixJavaScriptChecks": 23,
+  "repairPrefixIndependentParity": true,
+  "privateArchive": {
+    "files": 10,
+    "bytes": 102174,
+    "sha256": "3c891534f2c20040133f26cddc6125a62cf117eb3e8f9f71cc3b0862d8db4ce6",
+    "verifiedBothEnds": true
+  }
 }
