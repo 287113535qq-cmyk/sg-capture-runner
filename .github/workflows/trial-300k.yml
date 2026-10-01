@@ -1071,6 +1071,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.role == 'formal-count' && (inputs.formal_profile || 'formal-count-pearl-20260930.json') || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.role == 'formal-count' && inputs.runtime_profile || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

@@ -2,11 +2,15 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {loadCountPermission,auditCountBatch,checkLedger} from './complete-count.mjs';
 import {checkParentTailFailure} from './parent-tail-failure.mjs';
+import {checkVerifyEntryFailure} from './verify-entry-failure.mjs';
 
 // A completed, healthy run may move to a reviewed runtime without minting quota.
 // Only immutable authorization is added; campaign, pool, batches and records stay intact.
-export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,now=Date.now}){
- const tail=ended.conclusion==='failure'?checkParentTailFailure({ended,jobs,evidence:parentTailFailure}):null;
+export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,now=Date.now}){
+ const verify=verifyEntryFailure?checkVerifyEntryFailure({ended,jobs,evidence:verifyEntryFailure}):null;
+ const tail=ended.conclusion==='failure'&&!verify?checkParentTailFailure({ended,jobs,evidence:parentTailFailure}):null;
+ assert(!verify||(profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===2
+  &&revision.verifyEntryFailureHash===hash(verify)&&revision.newBetAllowance===0&&revision.completePreserved===35722),'COUNT_REFRESH_VERIFY_FAILURE_SCOPE');
  assert(!tail||(profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===2
   &&revision.parentTailFailureHash===hash(tail)&&revision.newBetAllowance===0&&revision.completePreserved===18694),'COUNT_REFRESH_PARENT_FAILURE_SCOPE');
  assert(revision.schema==='sg-count-runtime-refresh-profile-v1'
@@ -16,10 +20,10 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
   &&revision.createdAt<=now()&&now()<revision.expiresAt
   &&revision.expiresAt-revision.createdAt<=7200000,'COUNT_REFRESH_PROFILE');
  assert(`${ended.id}:${ended.run_attempt}`===revision.sourceRun&&ended.status==='completed'
-  &&(ended.conclusion==='success'||tail)&&ended.head_sha===revision.fromCommit
+  &&(ended.conclusion==='success'||tail||verify)&&ended.head_sha===revision.fromCommit
   &&ended.repository.full_name==='zyzuoyang/sg-capture-runner'
   &&ended.path==='.github/workflows/trial-300k.yml','COUNT_REFRESH_SOURCE');
- assert(tail||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100
+ assert(tail||verify||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100
   &&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
   &&Array.from({length:20},(_,i)=>'capture-'+i).every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)
  ),'COUNT_REFRESH_JOBS');
@@ -33,6 +37,7 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
   &&permit.run===revision.sourceRun&&permit.activation===spec.activation&&permit.profileHash===spec.profileHash
   &&hash(permit)===revision.sourcePermitHash,'COUNT_REFRESH_PERMIT');
  assert(!tail||permit.completeBefore+tail.childComplete===revision.completePreserved,'COUNT_REFRESH_CHILD_COUNT');
+ assert(!verify||permit.completeBefore+verify.childComplete===revision.completePreserved,'COUNT_REFRESH_CHILD_COUNT');
  const ledger=checkLedger(pool,plan,spec);
  assert(spec.profileHash===hash(profile)&&pool.enabled&&!pool.failure&&ledger.reserved===0
   &&pool.confirmed===revision.completePreserved&&pool.confirmed>=permit.completeBefore&&pool.confirmed<plan.target

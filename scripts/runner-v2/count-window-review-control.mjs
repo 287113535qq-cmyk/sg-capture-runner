@@ -10,16 +10,18 @@ import {windowTiming} from './window-timing.mjs';
 import {readParentTailFailure} from './parent-tail-failure.mjs';
 import {checkWindowPeerProfile} from './count-window-peer.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';
+import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
 assert(profile.gameId===32799&&['sg-formal-count-rhino-v2','sg-session-layout-rhino-v1'].includes(profile.schema),'WINDOW_PROFILE_SCOPE');
 const plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8')),plan=applyFormalCount(plans,profile)[32799];
 const read=authenticatedRead(process.env.GH_TOKEN),root='repos/zyzuoyang/sg-capture-runner/actions/runs/'+process.env.SG_WINDOW_SOURCE_RUN.split(':')[0];
 const ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
-const parentTailFailure=ended.conclusion==='failure'?readParentTailFailure(ended,jobs):null;
-assert(`${ended.id}:${ended.run_attempt}`===process.env.SG_WINDOW_SOURCE_RUN&&ended.status==='completed'&&(ended.conclusion==='success'||parentTailFailure)
+const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):null;
+const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure?readParentTailFailure(ended,jobs):null;
+assert(`${ended.id}:${ended.run_attempt}`===process.env.SG_WINDOW_SOURCE_RUN&&ended.status==='completed'&&(ended.conclusion==='success'||parentTailFailure||verifyEntryFailure)
  &&ended.repository?.full_name==='zyzuoyang/sg-capture-runner'&&ended.path==='.github/workflows/trial-300k.yml','WINDOW_SOURCE_NOT_ENDED');
-assert(parentTailFailure||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
+assert(parentTailFailure||verifyEntryFailure||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
  &&Array.from({length:20},(_,i)=>'capture-'+i).every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)),'WINDOW_SOURCE_JOBS');
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
 try{
@@ -40,6 +42,6 @@ try{
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),
-  previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure}));
+  previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure}));
 }catch(e){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(e.message)?e.message:'WINDOW_REVIEW_FAILED',sourceRequests:0,databaseWrites:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

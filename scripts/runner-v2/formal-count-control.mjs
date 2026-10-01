@@ -15,6 +15,7 @@ import {checkRhinoObservationRevision} from './rhino-observation-runtime.mjs';
 import {readParentTailFailure} from './parent-tail-failure.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';
 import {checkRhinoContinuousRevision} from './rhino-continuous-runtime.mjs';
+import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
@@ -62,8 +63,9 @@ try{
   const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0];
   const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
   const refresh=initialWindow?authorizeInitialCountRuntime:refreshCountRuntime;
-  const parentTailFailure=ended.conclusion==='failure'?readParentTailFailure(ended,jobs):undefined;
-  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure})));
+  const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):undefined;
+  const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure?readParentTailFailure(ended,jobs):undefined;
+  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);

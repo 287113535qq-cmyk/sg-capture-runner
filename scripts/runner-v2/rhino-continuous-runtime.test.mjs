@@ -8,7 +8,7 @@ const revision={schema:'sg-count-runtime-refresh-profile-v1',purpose:'continuous
 const commit='e'.repeat(40),receipt={schema:'sg-count-runtime-v2',commit,profileHash:hash(profile),activation:profile.activation,revisionHash:hash(revision),newBetAllowance:0,sourceRequests:0};
 test('continuous count reuses two independent sessions and remaining quota only after refresh',()=>assert.equal(rhinoContinuousMinutes(profile,revision,receipt,commit),220));
 test('wrong target duration increased concurrency missing peer and unbound refresh refuse',()=>{
- for(const patch of [{captureMinutes:240},{newBetAllowance:1},{completePreserved:8320-1},{remainingComplete:300000},{purpose:'observation'},{secondaryPeer:null}])assert.throws(()=>checkRhinoContinuousRevision(profile,{...revision,...patch}));
+ for(const patch of [{captureMinutes:240},{newBetAllowance:1},{completePreserved:8320-1},{remainingComplete:300000},{purpose:'observation'},{secondaryPeer:{}}])assert.throws(()=>checkRhinoContinuousRevision(profile,{...revision,...patch}));
  assert.throws(()=>checkRhinoContinuousRevision({...profile,sessionLayout:{lanesPerHost:4}},revision));
  for(const patch of [{revisionHash:'f'.repeat(64)},{commit:'f'.repeat(40)},{sourceRequests:1}])assert.throws(()=>rhinoContinuousMinutes(profile,revision,{...receipt,...patch},commit));
 });

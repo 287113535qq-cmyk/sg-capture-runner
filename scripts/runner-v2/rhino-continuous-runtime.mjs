@@ -11,7 +11,7 @@ export function checkRhinoContinuousRevision(profile,revision){
   &&revision.captureMinutes===220&&revision.newBetAllowance===0&&revision.resourceObservation==='sg-resource-observation-v1'
   &&Number.isSafeInteger(revision.completePreserved)&&revision.completePreserved>=profile.completePreserved
   &&revision.completePreserved<300000&&revision.remainingComplete===300000-revision.completePreserved,'RHINO_CONTINUOUS_PERMISSION');
- checkCountPeerDescriptor(revision.secondaryPeer,'primary');
+ if(revision.secondaryPeer)checkCountPeerDescriptor(revision.secondaryPeer,'primary');
  return revision.captureMinutes;
 }
 export function rhinoContinuousMinutes(profile,revision,receipt,commit){
