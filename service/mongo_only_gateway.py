@@ -73,6 +73,18 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'parallel_primary_rhino_two_boundary':
+            # Fixed native reads only; GitHub verifies run, profile and leases.
+            need(self.group == 'secondary', 'GROUP_SCOPE_DENIED')
+            need(set(r) == {'schema', 'op'}, 'BOUNDARY_SCOPE_DENIED')
+            scope = self.manifest['trials'].get('sg_r1_20261001_32799', {})
+            need((scope.get('gameId'), scope.get('runtimeGameId'), scope.get('group'), scope.get('target'), scope.get('maxSequence'))
+                 == (32799,33159,'primary',300000,600000), 'BOUNDARY_TRIAL_SCOPE')
+            ids = ['primary/campaign', 'primary/pool:sg_r1_20261001_32799',
+                   'primary/capture-run:36835017232:1']
+            keys = ['primary/count-run:sg_r1_20261001_32799:36835017232:1']
+            return {'state': list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(3)),
+                    'journal': list(self.db[COLLECTIONS['journal']].find({'_id': {'$in': keys}}, max_time_ms=10000).limit(1))}
         if op == 'parallel_primary_observation_boundary':
             need(self.group == 'secondary', 'GROUP_SCOPE_DENIED')
             need(set(r) == {'schema','op'}, 'BOUNDARY_SCOPE_DENIED')

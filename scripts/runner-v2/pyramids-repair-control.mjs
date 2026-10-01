@@ -7,13 +7,13 @@ import {secondaryParallelBoundary,secondaryRepository,observationPrimary} from '
 import {pyramidsCountPlan} from './pyramids-count-profile.mjs';import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';
 import {retireStoppedFormal} from './formal-stopped-retire.mjs';import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
+import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY===secondaryRepository,'SECONDARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['retire','activate','admit'].includes(mode),'PYRAMIDS_REPAIR_OPERATION');
-const oldName='formal-count-pyramids-20261001.json',newName='formal-repair-pyramids-coins-20261001.json';
-assert(process.env.SG_FORMAL_COUNT_PROFILE===(mode==='retire'?oldName:newName),'PYRAMIDS_REPAIR_PROFILE_PATH');
+const entry=pyramidsRepairEntry(mode,process.env.SG_FORMAL_COUNT_PROFILE),{oldName,newName}=entry;
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),plans=load('config/round-one-plans.json'),oldProfile=load('config/'+oldName);
-const profile=load('config/'+(mode==='retire'?'formal-retire-pyramids-coins-20261001.json':newName));
-const plan=mode==='retire'?pyramidsCountPlan(plans[32721],oldProfile):pyramidsRepairPlan(plans[32721],profile);
+const profile=load('config/'+(mode==='retire'?entry.retireName:newName));
+const plan=mode==='retire'?(entry.v2?pyramidsRepairPlan(plans[32721],oldProfile):pyramidsCountPlan(plans[32721],oldProfile)):pyramidsRepairPlan(plans[32721],profile);
 assert(Object.keys(profile.files??{}).length>500,'PYRAMIDS_REPAIR_FILES');
 for(const [p,h] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(p)&&!p.includes('..'),'PYRAMIDS_REPAIR_FILE_SCOPE');
@@ -22,14 +22,14 @@ for(const [p,h] of Object.entries(profile.files)){
 const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate();
 const store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
-const github=secondaryParallelBoundary({read,transport,run,commit,primaryRun:observationPrimary,
+const github=secondaryParallelBoundary({read,transport,run,commit,primaryRun:entry.primaryRun,allowEndedPrimary:entry.allowEndedPrimary,
  workflowPath:mode==='admit'?'.github/workflows/trial-300k.yml':'.github/workflows/demo-maintenance.yml'});
 const boundary=async()=>{await github();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
  await checkPrimaryLeases({store,plans});assert((await transport.request('rounds_scan',{trialId:plan.trialId,after:600000})).length===0,'PYRAMIDS_COUNT_NATIVE_CEILING');};
 try{
  if(mode==='retire'){
-  const root=`repos/${secondaryRepository}/actions/runs/36778619850`,ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
-  assert(ended.id===36778619850&&ended.run_attempt===1&&ended.event==='workflow_dispatch'&&ended.path==='.github/workflows/trial-300k.yml','PYRAMIDS_REPAIR_SOURCE_IDENTITY');
+  const root=`repos/${secondaryRepository}/actions/runs/${entry.sourceId}`,ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
+  assert(ended.id===entry.sourceId&&ended.run_attempt===1&&ended.event==='workflow_dispatch'&&ended.path==='.github/workflows/trial-300k.yml','PYRAMIDS_REPAIR_SOURCE_IDENTITY');
   console.log(JSON.stringify(await retireStoppedFormal({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run})));
  }else if(mode==='activate'){
   console.log(JSON.stringify(await activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run})));

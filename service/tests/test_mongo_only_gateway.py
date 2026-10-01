@@ -63,6 +63,19 @@ class GatewayTests(unittest.TestCase):
         self.assertTrue(self.call('cas',collection='state',key='worker:0',version=0,value={'a':2})['replaced'])
         self.assertFalse(self.call('cas',collection='state',key='worker:0',version=0,value={'a':99})['replaced'])
         self.assertEqual(self.call('read',collection='state',key='worker:0')['value'],{'a':2})
+    def test_rhino_peer_is_four_fixed_documents_under_existing_trial_scope(self):
+        m=copy.deepcopy(self.manifest);m['trials']['sg_r1_20261001_32799']={'gameId':32799,'runtimeGameId':33159,'group':'primary','target':300000,'maxSequence':600000}
+        g=Gateway(self.db,'secondary',m);request={'schema':'sg-mongo-only-v2','op':'parallel_primary_rhino_two_boundary'}
+        for key in ['primary/count-run:sg_r1_20261001_32799:36835017232:1','primary/count-run:sg_r1_20261001_32799:999:1']:
+            self.db['capture_journal_v2'].rows[key]={'_id':key,'value':{}}
+        before=copy.deepcopy(self.db['capture_journal_v2'].rows)
+        result=g.dispatch(request);self.assertEqual(len(result['journal']),1);self.assertIn('36835017232',result['journal'][0]['_id'])
+        self.assertEqual(before,self.db['capture_journal_v2'].rows)
+        for extra in ({'runId':999},{'keys':[]},{'trialId':'other'}):
+            with self.assertRaises(Refused):g.dispatch({**request,**extra})
+        with self.assertRaises(Refused):self.g.dispatch(request)
+        m['trials']['sg_r1_20261001_32799']['maxSequence']=999999
+        with self.assertRaises(Refused):Gateway(self.db,'secondary',m).dispatch(request)
     def test_group_cannot_be_selected_in_rpc(self):
         with self.assertRaisesRegex(Refused,'GROUP_IS_NOT_CLIENT_INPUT'):self.call('hello',group='secondary')
         self.call('create',collection='state',key='worker:0',value={'private':True})

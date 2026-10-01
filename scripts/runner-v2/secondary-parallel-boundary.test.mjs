@@ -1,12 +1,12 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {parallelPrimary,observationPrimary,secondaryRepository,secondaryParallelBoundary,checkPrimaryReadonlyEvidence} from './secondary-parallel-boundary.mjs';
+import {parallelPrimary,observationPrimary,rhinoTwoPrimary,secondaryRepository,secondaryParallelBoundary,checkPrimaryReadonlyEvidence} from './secondary-parallel-boundary.mjs';
 import {original} from './expired-run-review.mjs';import {stalled,revokedMarker} from './demo-run-fence.mjs';
 function fixture(p=parallelPrimary){
  const id=123,commit='a'.repeat(40),path='.github/workflows/demo-maintenance.yml',runs=[{repository:secondaryRepository,id,commit,path,status:'in_progress'},
   ...[p,original,stalled].map(x=>({...x,path:'.github/workflows/trial-300k.yml',status:x===p?'in_progress':'queued'}))].map(x=>({...x,head_sha:x.commit,run_attempt:1,event:'workflow_dispatch',conclusion:null,repository:{full_name:x.repository}}));
- const evidence={journal:[],state:[{_id:'primary/campaign',value:{group:'primary',enabled:true,activeGame:32795,validationLimit:0,formalCount:{activation:p.activation,trialId:p.trialId,profileHash:p.profileHash},demoRunRevoked:revokedMarker}},
+ const evidence={journal:p===rhinoTwoPrimary?[{_id:`primary/count-run:${p.trialId}:${p.id}:1`,value:{schema:'sg-count-run-v1',activation:p.activation,profileHash:p.profileHash,commit:p.commit,run:p.id+':1'}}]:[],state:[{_id:'primary/campaign',value:{group:'primary',enabled:true,activeGame:p.gameId,validationLimit:0,formalCount:{activation:p.activation,trialId:p.trialId,profileHash:p.profileHash},demoRunRevoked:revokedMarker}},
   {_id:'primary/pool:'+p.trialId,value:{enabled:true,countAllocation:{},workers:{0:{leaseUntil:1000,owner:p.id+':1:formal-capture:fixture'}}}},
-  {_id:`primary/capture-run:${p.id}:1`,value:{gameId:32795}}]};
+  {_id:`primary/capture-run:${p.id}:1`,value:{gameId:p.gameId}}]};
  const jobs=[{name:'formal-admit',status:'completed',conclusion:'success'},...Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'in_progress',conclusion:null}))];
  let other=false,oldJob=false,truncated=false,hold=false,late=false;
  const read=async q=>{const repo=q.split('/actions/')[0].slice(6);if(q.includes('runs?')){const status=new URL('https://test/'+q).searchParams.get('status'),found=runs.filter(r=>r.repository.full_name===repo&&r.status===status);
@@ -39,4 +39,24 @@ test('reviewed observation run has a distinct fixed readonly scope',async()=>{
  await assert.rejects(secondaryParallelBoundary({...f.args,primaryRun:parallelPrimary})());
  checkPrimaryReadonlyEvidence(f.evidence,100,observationPrimary);
  assert.throws(()=>checkPrimaryReadonlyEvidence(f.evidence,100),/EVIDENCE_SCOPE/);
+});
+
+test('Rhino two lanes requires exact count permission and permits only reviewed worker ranges',async()=>{
+ const f=fixture(rhinoTwoPrimary);f.evidence.state[1].value.workers[40]={leaseUntil:1000,owner:rhinoTwoPrimary.id+':1:formal-capture:fixture'};
+ await secondaryParallelBoundary(f.args)();
+ for(const reason of ['permission','worker','owner']){const bad=fixture(rhinoTwoPrimary);
+  if(reason==='permission')bad.evidence.journal[0].value.profileHash='b'.repeat(64);
+  if(reason==='worker')bad.evidence.state[1].value.workers[60]={leaseUntil:1000,owner:rhinoTwoPrimary.id+':1:formal-capture:fixture'};
+  if(reason==='owner')bad.evidence.state[1].value.workers[0].owner='another-run';
+  await assert.rejects(secondaryParallelBoundary(bad.args)(),undefined,reason);
+ }
+});
+
+test('ended Rhino coexistence requires all capture jobs successful and explicit reviewed scope',async()=>{
+ const f=fixture(rhinoTwoPrimary);Object.assign(f.runs[1],{status:'completed',conclusion:'success'});
+ f.jobs.forEach(j=>Object.assign(j,{status:'completed',conclusion:'success'}));
+ await assert.rejects(secondaryParallelBoundary(f.args)(),/IDENTITY_CHANGED/);
+ await secondaryParallelBoundary({...f.args,allowEndedPrimary:true})();
+ f.jobs[1].conclusion='failure';await assert.rejects(secondaryParallelBoundary({...f.args,allowEndedPrimary:true})(),/JOBS_CHANGED/);
+ assert.throws(()=>secondaryParallelBoundary({...fixture().args,allowEndedPrimary:true}),/ENDED_SCOPE/);
 });
