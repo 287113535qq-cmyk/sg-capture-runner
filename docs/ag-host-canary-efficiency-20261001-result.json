@@ -72,5 +72,15 @@
     "collectorChecks": 28,
     "pythonStorageChecks": 363,
     "verified": true
-  }
+  },
+  "canaryExpansionLocalChecks": 107,
+  "canaryExpansionLinux": {
+    "run": "36875993266:1",
+    "commit": "87c6ff6a09bf9edf59e1572923ba10a4f2d2a982",
+    "verified": true,
+    "logSha256": "ff225413455d13ef941c4fde8654fef9391c95f3e640448029667b67c2dc0e26",
+    "startedAt": "2026-10-01T14:23:46Z",
+    "completedAt": "2026-10-01T14:25:22Z"
+  },
+  "canaryExpansionOnlineVerified": false
 }
