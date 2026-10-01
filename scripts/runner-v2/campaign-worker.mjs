@@ -12,16 +12,23 @@ import {repositories} from '../trial/runner-group.mjs';
 import {applyDemoPilot} from './demo-pilot-plan.mjs';
 import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 import {createStageProgress} from './stage-progress.mjs';
+import {countMeasurementMinutes} from './count-initial-runtime.mjs';
 import {exportResourceHistory} from './resource-handoff.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
-const end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
+let end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
 const store=new RunnerState({transport,gate,deadline:end+(process.env.SG_FORMAL_COUNT_PROFILE?25*60000:0)}),control=new SourceControl({store,transport,gate});
 let plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
 if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync(demoPilotProfilePath(),'utf8')));
 if(process.env.SG_FORMAL_COUNT_PROFILE){
  if(process.env.SG_DEMO_PILOT==='true')throw Error('FORMAL_COUNT_DEMO_CONFLICT');
  plans=applyFormalCount(plans,JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')));
+}
+if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-measurement-20261001.json'){
+ const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8')),plan=plans[32799];
+ const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
+ if(revision.activation!==plan.countAllocation||receipt?.commit!==process.env.GITHUB_SHA)throw Error('COUNT_MEASUREMENT_SCOPE');
+ end=Date.now()+countMeasurementMinutes(revision,receipt)*60000;
 }
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,

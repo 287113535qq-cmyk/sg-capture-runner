@@ -9,6 +9,7 @@ import {amendFormalRuntime} from './formal-count-runtime.mjs';
 import {refreshCountRuntime} from './count-runtime-refresh.mjs';
 import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {activateSessionLayout} from './session-layout-activation.mjs';
+import {authorizeInitialCountRuntime} from './count-initial-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
@@ -23,8 +24,9 @@ const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].inc
 assert(mode!=='repair'||isRepair,'FORMAL_REPAIR_PROFILE_REQUIRED');
 assert(!isRepair||['repair','admit','refresh'].includes(mode),'FORMAL_REPAIR_OPERATION');
 const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
-assert(!runtimeProfile||runtimeProfile==='count-runtime-pearl-observation-20261001.json','COUNT_RUNTIME_PROFILE_PATH');
-assert(!runtimeProfile||(['refresh','admit'].includes(mode)&&profile.schema==='sg-formal-repair-profile-v2'),'COUNT_RUNTIME_REFRESH_SCOPE');
+const initialWindow=runtimeProfile==='count-runtime-rhino-measurement-20261001.json';
+assert(!runtimeProfile||initialWindow||runtimeProfile==='count-runtime-pearl-observation-20261001.json','COUNT_RUNTIME_PROFILE_PATH');
+assert(!runtimeProfile||(['refresh','admit'].includes(mode)&&(initialWindow?profile.schema==='sg-formal-count-rhino-v2':profile.schema==='sg-formal-repair-profile-v2')),'COUNT_RUNTIME_REFRESH_SCOPE');
 assert(mode!=='refresh'||runtimeProfile,'COUNT_RUNTIME_PROFILE_REQUIRED');
 const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
@@ -60,7 +62,8 @@ try{
  }else if(mode==='refresh'){
   const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0];
   const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
-  console.log(JSON.stringify(await refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary})));
+  const refresh=initialWindow?authorizeInitialCountRuntime:refreshCountRuntime;
+  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);
