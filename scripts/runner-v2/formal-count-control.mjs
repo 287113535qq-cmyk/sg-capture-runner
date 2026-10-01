@@ -20,18 +20,21 @@ import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkSessionCanaryRevision} from './session-canary.mjs';
 import {claimSessionCanary,checkCanaryDispatchInputs} from './session-canary-admission.mjs';
+import {loadInitialReadFailure} from './initial-read-failure.mjs';
+import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {countHistoryBoundary} from './count-window-history.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
-const {isRhino,isSessions,isRepair,initialWindow,observationWindow,continuousCount,canaryWindow}=countControlPolicy(mode,profile,runtimeProfile);
+const {isRhino,isSessions,isRepair,initialWindow,observationWindow,continuousCount,canaryWindow,fourReadRecovery}=countControlPolicy(mode,profile,runtimeProfile);
 const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 if(observationWindow)checkRhinoObservationRevision(profile,revision);
 if(continuousCount)checkRhinoContinuousRevision(profile,revision);
 if(canaryWindow)checkSessionCanaryRevision(profile,revision);
+if(fourReadRecovery)checkFourReadRecovery(profile,revision);
 const canaryInputs=canaryWindow&&mode==='admit'?JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs:null;
 if(canaryWindow&&mode==='admit')checkCanaryDispatchInputs(canaryInputs);
 const files=revision?.files??profile.files;
@@ -72,9 +75,10 @@ try{
   const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
   const refresh=initialWindow?authorizeInitialCountRuntime:refreshCountRuntime;
   const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):undefined;
-  const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!revision.sharedClosureKey&&!revision.networkClosureKey?readParentTailFailure(ended,jobs):undefined;
-  if(profile.sessionLayout?.lanesPerHost===4)await checkFourContinuousProof({store,plan,profile,revision});
-  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,
+  const initialReadFailure=fourReadRecovery?loadInitialReadFailure(ended,jobs):undefined;
+  const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!initialReadFailure&&!revision.sharedClosureKey&&!revision.networkClosureKey?readParentTailFailure(ended,jobs):undefined;
+  if(profile.sessionLayout?.lanesPerHost===4&&!fourReadRecovery)await checkFourContinuousProof({store,plan,profile,revision});
+  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,initialReadFailure,
    sharedCloseProfile:revision.sharedClosureKey?readFile('config/count-shared-rhino-ready-20261001.json'):undefined,
    networkCloseProfile:revision.networkClosureKey?readFile('config/count-network-rhino-canary-20261002.json'):undefined})));
  }else if(mode==='amend'){
@@ -91,7 +95,7 @@ try{
   const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
   const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
   if(runtimeProfile){
-   if(profile.sessionLayout?.lanesPerHost===4)await checkFourContinuousProof({store,plan,profile,revision});
+   if(profile.sessionLayout?.lanesPerHost===4&&!fourReadRecovery)await checkFourContinuousProof({store,plan,profile,revision});
    const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${commit}`))?.value;
    assert(receipt?.schema==='sg-count-runtime-v2'&&receipt.revisionHash===hash(revision),'COUNT_RUNTIME_REFRESH_NOT_APPLIED');
   }

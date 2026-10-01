@@ -32,5 +32,36 @@ def extract(path, expected_count=40):
     return rows
 
 
-if __name__ == '__main__':
+def extract_startup(path):
+    rows = extract(path, 80)
+    finals = {}
+    with zipfile.ZipFile(path) as archive:
+        for info in archive.infolist():
+            if '/' in info.filename or '\\' in info.filename or not info.filename.endswith('.txt'):
+                continue
+            for line in archive.read(info).decode('utf-8', errors='strict').splitlines():
+                start = line.find('{"schema":"sg-work-pool-v1"')
+                if start < 0:
+                    continue
+                row = json.loads(line[start:])
+                assert row['shardId'] not in finals, 'DUPLICATE_WORKER_FINAL'
+                finals[row['shardId']] = row
+    assert len(finals) == 80, 'MISSING_WORKER_FINAL'
+    result = []
+    for row in rows:
+        final = finals[row['shardId']]
+        resource = row['rpcMetrics']['resourceObservation']
+        result.append({'slot': row['shardId'], 'gameId': row['gameId'],
+                       'sourceRequests': row['sourceRequests'], 'sourceErrors': row['sourceErrors'],
+                       'complete': row['completedThisRun'], 'outcome': final.get('outcome'),
+                       'error': final.get('error'), 'businessOutcome': final.get('businessOutcome'),
+                       'firstReadyAtMs': resource.get('firstReadyAtMs'),
+                       'operationRequests': {key: value['requests'] for key, value in
+                                             row['rpcMetrics']['gateway']['byOperation'].items()}})
+    return result
+
+
+if __name__ == '__main__' and len(sys.argv) > 2 and sys.argv[2] == 'startup':
+    print(json.dumps(extract_startup(sys.argv[1])))
+elif __name__ == '__main__':
     print(json.dumps(extract(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 40)))

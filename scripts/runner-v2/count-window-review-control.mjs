@@ -17,17 +17,21 @@ import {loadCanarySourceLog} from './canary-source-log.mjs';
 import {reviewCanaryFinalLogs} from './session-canary-log.mjs';
 import {reviewFourLogs,fourReadyWindow} from './session-four-log-review.mjs';
 import {checkCanaryAdmission} from './session-canary-admission.mjs';
+import {loadInitialReadFailure,checkInitialReadFailure} from './initial-read-failure.mjs';
+import {fourReadRecoveryName} from './four-read-recovery-runtime.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
 assert(profile.gameId===32799&&['sg-formal-count-rhino-v2','sg-session-layout-rhino-v1'].includes(profile.schema),'WINDOW_PROFILE_SCOPE');
 const plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8')),plan=applyFormalCount(plans,profile)[32799];
 const read=authenticatedRead(process.env.GH_TOKEN),root='repos/zyzuoyang/sg-capture-runner/actions/runs/'+process.env.SG_WINDOW_SOURCE_RUN.split(':')[0];
 const ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
+const initialReadReview=process.env.SG_COUNT_RUNTIME_PROFILE===fourReadRecoveryName;
+const initialReadFailure=initialReadReview?checkInitialReadFailure({ended,jobs,evidence:loadInitialReadFailure(ended,jobs)}):null;
 const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):null;
-const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure?readParentTailFailure(ended,jobs):null;
-assert(`${ended.id}:${ended.run_attempt}`===process.env.SG_WINDOW_SOURCE_RUN&&ended.status==='completed'&&(ended.conclusion==='success'||parentTailFailure||verifyEntryFailure)
+const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!initialReadFailure?readParentTailFailure(ended,jobs):null;
+assert(`${ended.id}:${ended.run_attempt}`===process.env.SG_WINDOW_SOURCE_RUN&&ended.status==='completed'&&(ended.conclusion==='success'||parentTailFailure||verifyEntryFailure||initialReadFailure)
  &&ended.repository?.full_name==='zyzuoyang/sg-capture-runner'&&ended.path==='.github/workflows/trial-300k.yml','WINDOW_SOURCE_NOT_ENDED');
-assert(parentTailFailure||verifyEntryFailure||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
+assert(parentTailFailure||verifyEntryFailure||initialReadFailure||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
  &&Array.from({length:20},(_,i)=>'capture-'+i).every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)),'WINDOW_SOURCE_JOBS');
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
 try{
@@ -47,7 +51,7 @@ try{
  // Align numeric timing windows with resource minute buckets. The partial
  // startup minute is excluded, never counted as a stable comparison window.
  let canary,canaryAdmissionHash,canaryRevisionHash;
- if(process.env.SG_COUNT_RUNTIME_PROFILE){
+ if(process.env.SG_COUNT_RUNTIME_PROFILE&&!initialReadReview){
   assert(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE),'WINDOW_RUNTIME_SCOPE');
   const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
   const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${ended.head_sha}`))?.value;
@@ -56,10 +60,12 @@ try{
   canaryRevisionHash=hash(revision);
   canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:ended.head_sha,run:process.env.SG_WINDOW_SOURCE_RUN});
  }
- const four=profile.schema==='sg-session-layout-rhino-v1'&&profile.gameId===32799&&profile.sessionLayout?.lanesPerHost===4;
+ assert(!initialReadReview||(profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===4),'INITIAL_READ_REVIEW_PROFILE');
+ const four=!initialReadReview&&profile.schema==='sg-session-layout-rhino-v1'&&profile.gameId===32799&&profile.sessionLayout?.lanesPerHost===4;
  const fourLogs=four?loadCanarySourceLog(ended,jobs,{expectedCount:80}):null;
  const fourInterval=four?fourReadyWindow({rows:fourLogs.rows,captureStartMs:startMs,captureEndMs:endMs}):null;
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,historyPermit:canary||four?permit:undefined,timing:canary?canaryWindowTiming(canary):four?windowTiming(fourInterval.startMs,fourInterval.endMs):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,historyPermit:canary||four||initialReadReview?permit:undefined,timing:initialReadReview?undefined:canary?canaryWindowTiming(canary):four?windowTiming(fourInterval.startMs,fourInterval.endMs):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
+ assert(!initialReadReview||(result.sourceComplete===initialReadFailure.childComplete&&result.complete===permit.completeBefore+initialReadFailure.childComplete),'INITIAL_READ_REVIEW_COUNT');
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
  let canaryProof,fourProof;
  if(four){
@@ -91,6 +97,7 @@ try{
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),
   previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure,
   ...(four?{fourProof,fourSessionProofHash:hash(fourProof),databaseWrites:1}:{}),
+  ...(initialReadReview?{initialReadFailure,initialReadFailureHash:hash(initialReadFailure),fourConcurrencyAccepted:false}:{}),
   ...(canary?{canarySchedule:canary,sourcePermitHash:hash(permit),canaryProof,comparisonHash:hash(canaryProof.comparison),comparisonJournalWrites:1,databaseWrites:1}:{})}));
 }catch(e){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(e.message)?e.message:'WINDOW_REVIEW_FAILED',sourceRequests:0,databaseWrites:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}
