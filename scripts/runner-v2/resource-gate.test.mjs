@@ -25,6 +25,14 @@ test('diagnostics separate startup from later resource pauses without relaxing p
  f.ready();f.advance(30001);assert.equal(f.gate.status().allowed,false);assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,2);
  assert.equal(f.gate.diagnostics().peakCpuPercent,96);assert.equal(f.gate.diagnostics().observationOnly,true);
 });
+test('startup overload is separate from measured after-ready resource peaks',()=>{
+ const f=fixture();f.observe(98,50);f.observe(98,50);assert.equal(f.gate.diagnostics().afterReadyPeakCpuPercent,null);
+ f.ready();const before=f.gate.diagnostics().afterReadySamples,ready=f.gate.diagnostics().firstReadyAtMs;assert(Number.isFinite(ready));
+ f.observe(15,55);const d=f.gate.diagnostics();assert.equal(d.peakCpuPercent,98);assert.equal(d.afterReadyPeakCpuPercent,15);
+ assert.equal(d.afterReadyPeakMemoryPercent,55);assert.equal(d.afterReadySamples,before+1);assert(d.lastSampleAtMs>ready);
+ assert.equal(f.observe(96,50).allowed,false);assert.equal(f.gate.diagnostics().afterReadyPeakCpuPercent,96);
+ assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,1);
+});
 for(const metric of ['cpu','memory'])test(`${metric} at 95 pauses; both below 90 must remain stable`,()=>{
   const f=fixture();f.ready();
   assert.equal(f.observe(metric==='cpu'?95:10,metric==='memory'?95:50).reason,'RESOURCE_OVERLOAD');

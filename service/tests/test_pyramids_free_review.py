@@ -104,6 +104,17 @@ class PyramidsFreeTests(unittest.TestCase):
         value=sample();rewrite(value['steps'][1],GSD='BGCL~0;0;20;|')
         with self.assertRaises(FieldError):parser.settled(value)
 
+    def test_known_coin_symbol_is_isolated_but_malformed_positions_are_hard_faults(self):
+        parser=PyramidsFreeSequence(PLAN)
+        for coin in ('-4','-3','-2'):
+            value=sample();rewrite(value['steps'][1],GSD='CL~0;0;'+coin+';|')
+            with self.assertRaisesRegex(FieldError,'PYRAMIDS_FREE_UNREVIEWED_COIN'):
+                parser.sequence(value)
+        for text in ('0;0;-3;|3;0;20;|','0;0;-3;|0;0;20;|','0;0;-5;|','-1;0;-3;|'):
+            value=sample();rewrite(value['steps'][1],GSD='CL~'+text)
+            with self.assertRaisesRegex(FieldError,'PYRAMIDS_FREE_COIN$'):
+                parser.sequence(value)
+
     def test_all_prefixes_and_synthetic_terminal(self):
         value=sample();parser=PyramidsFreeSequence(PLAN)
         for i in range(1,11):

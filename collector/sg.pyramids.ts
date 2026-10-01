@@ -45,6 +45,7 @@ export function pyramidsFields(raw:any,mappingHash:string){
     requireP(Object.keys(g).every(k=>['BGRS','VA','IIFS','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'].includes(k)),'PYRAMIDS_FREE_GSD');
     if(g.CLBN!==undefined)requireP(i>0&&g.CL!==undefined&&g.CLBN===g.CL,'PYRAMIDS_FREE_COIN_ALIAS');
     if(g.FSRS!==undefined){const stops=g.FSRS.split(';');if(stops[stops.length-1]==='')stops.pop();requireP(i>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(count);}
+    let unreviewedCoin=false;
     for(const key of ['BGCL','CL'])if(g[key]!==undefined){
      if(key==='BGCL'){
       if(i===0)baseCoins=g[key];
@@ -52,8 +53,9 @@ export function pyramidsFields(raw:any,mappingHash:string){
      }
      const seen=new Set<string>(),coins=matrix(g[key]);
      requireP(coins.length<=15,'PYRAMIDS_FREE_COIN');
-     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&v>=0&&!seen.has(pos)&&!/-/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);}
+     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&(v>=0||[-4,-3,-2].includes(v))&&!seen.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);unreviewedCoin ||= v<0;}
     }
+    requireP(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
     requireP((g.IIFS===undefined||(i?['0','1']:['1']).includes(g.IIFS))&&(g.FGRS===undefined||count(g.FGRS)===n)&&(g.CFGC===undefined||count(g.CFGC)===c),'PYRAMIDS_FREE_NESTED');
     if(g.FGVABN!==undefined)grid(g.FGVABN);
     requireP(i?c===played+1&&n===prior-1&&t===total:n===10&&c===0&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');

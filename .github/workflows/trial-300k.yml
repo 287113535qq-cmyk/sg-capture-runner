@@ -2,6 +2,15 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      formal_relay:
+        description: 'Continue the same applied allocation after a successful settled run'
+        type: choice
+        default: ''
+        options: ['', same-allocation-v1]
+      relay_parent:
+        description: 'Exact parent run; requires immutable relay intent and successful end'
+        type: string
+        default: ''
       runtime_profile:
         description: 'Reviewed runtime update; requires immutable no-source refresh receipt'
         type: choice
@@ -804,6 +813,7 @@ jobs:
       SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile || '' }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
+      SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile || 'formal-count-pearl-20260930.json' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -837,6 +847,7 @@ jobs:
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'
       SG_POOL_RUN_LIMIT: '0'
+      SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile || 'formal-count-pearl-20260930.json' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -868,6 +879,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
+      SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -909,6 +921,7 @@ jobs:
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'
       SG_POOL_RUN_LIMIT: '0'
+      SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -1099,6 +1112,11 @@ jobs:
       - name: Audit every completed round in the selected trial
         if: (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'round-one' && steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
+      - name: Continue the same applied formal allocation after settled successful capture
+        if: success() && inputs.role == 'formal-count' && inputs.formal_relay == 'same-allocation-v1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/runner-v2/formal-relay-control.mjs
       - name: Continue next game with a fresh complete matrix
         if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure') && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && (inputs.role || 'capture') == 'capture' && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
         env:

@@ -1,3 +1,4 @@
+import {waitFormalRelayParent,formalRelayInputs} from './formal-relay.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
@@ -40,6 +41,7 @@ const workflowPath=mode!=='admit'?'.github/workflows/demo-maintenance.yml':'.git
 const idle=revision?.secondaryPeer?countPeerBoundary({read,transport,peer:revision.secondaryPeer,selfGroup:'primary',run,commit,workflowPath}):
  maintenanceBoundary({read,store,oldProfile:readFile('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath});
 try{
+ if(mode==='admit'&&process.env.SG_COUNT_RELAY_PARENT)await waitFormalRelayParent({store,read,plan,profile,repository:process.env.GITHUB_REPOSITORY,commit,parentRun:process.env.SG_COUNT_RELAY_PARENT,selfRun:run,inputs:formalRelayInputs(JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs)});
  const boundary=async()=>{
   await idle();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
   await checkPrimaryLeases({store,plans:basePlans});

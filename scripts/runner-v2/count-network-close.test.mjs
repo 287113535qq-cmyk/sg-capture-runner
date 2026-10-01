@@ -28,7 +28,7 @@ function countedFixture(){
 
 
 
-function network(){
+export function network(){
  const f=countedFixture(),pool=f.pool,plan=f.args.plan;pool.enabled=true;pool.failure=null;f.batch.failure=null;f.batch.pending.awaiting='unknown-synthetic-request';
  const spec=f.docs.get('journal/'+f.key).value;spec.sessionRotation='closed-batches-v1';spec.profileHash='e'.repeat(64);
  pool.countAllocation.specHash=hash(spec);f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);

@@ -1,3 +1,4 @@
+import {waitFormalRelayParent,formalRelayInputs} from './formal-relay.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
@@ -30,6 +31,7 @@ const github=profile.primaryPeer?countPeerBoundary({read,transport,run,commit,pe
 const boundary=async()=>{await github();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
  await checkPrimaryLeases({store,plans});assert((await transport.request('rounds_scan',{trialId:plan.trialId,after:600000})).length===0,'PYRAMIDS_COUNT_NATIVE_CEILING');};
 try{
+ if(mode==='admit'&&process.env.SG_COUNT_RELAY_PARENT)await waitFormalRelayParent({store,read,plan,profile,repository:process.env.GITHUB_REPOSITORY,commit,parentRun:process.env.SG_COUNT_RELAY_PARENT,selfRun:run,inputs:formalRelayInputs(JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs)});
  assert((await parser.call({op:'plan',plan})).validated===true,'PYRAMIDS_PYTHON_PLAN_REQUIRED');
  if(mode==='retire'){
   if(profile.beforeOnlyRecovery){

@@ -194,3 +194,10 @@ test('peer protocol stop after full settlement preserves batch bytes and immutab
  const {auditCountBatch}=await import('./complete-count.mjs');
  await auditCountBatch({store:f.store,pool:await f.read(),plan:f.plan,spec:f.spec,record:{batchId:lease.batchId},cache:new Map()});
 });
+
+test('RunnerPool permission reuse still reads fresh pool and refuses changed counters',async()=>{
+ const f=await fixture({baseline:false});let poolReads=0,journalReads=0;const get=f.store.get.bind(f.store);
+ f.store.get=async(c,k)=>{if(c==='state'&&k===f.pool.key)poolReads++;if(c==='journal')journalReads++;return get(c,k);};
+ for(let i=0;i<10;i++)await f.pool.countPermission();assert.equal(poolReads,10);assert.equal(journalReads,2);
+ f.docs.get('state/'+f.pool.key).value.confirmed=1;await assert.rejects(f.pool.countPermission(),/COUNT_COUNTER/);assert.equal(poolReads,11);
+});

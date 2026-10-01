@@ -32,6 +32,7 @@ class PyramidsFreeSequence(NativeNextgenFields):
             if stops[-1] == '': stops.pop()
             check(index > 0 and len(stops) == 5 and all(v.isascii() and v.isdigit()
                   and int(v) <= 9007199254740991 for v in stops), 'PYRAMIDS_FREE_STOPS')
+        unreviewed_coin = False
         for key in ('BGCL','CL'):
             if key not in gsd:
                 continue
@@ -42,10 +43,15 @@ class PyramidsFreeSequence(NativeNextgenFields):
             for row in rows:
                 cells = row.split(';')
                 if cells[-1] == '': cells.pop()
-                check(len(cells) == 3 and all(v.isascii() and v.isdigit() for v in cells), 'PYRAMIDS_FREE_COIN')
+                check(len(cells) == 3 and all(v.isascii() and v.isdigit() for v in cells[:2])
+                      and (cells[2].isascii() and cells[2].isdigit() or cells[2] in {'-4','-3','-2'}), 'PYRAMIDS_FREE_COIN')
                 x,y,value = map(int,cells)
                 check(0 <= x < 3 and 0 <= y < 5 and value <= 9007199254740991 and (x,y) not in seen, 'PYRAMIDS_FREE_COIN')
                 seen.add((x,y))
+                unreviewed_coin |= value < 0
+        # Known official coin symbols are an adapter gap, not corrupt money.
+        # Validate every position first so a malformed later coin stays a hard fault.
+        check(not unreviewed_coin, 'PYRAMIDS_FREE_UNREVIEWED_COIN')
         if 'FGVABN' in gsd:
             from pyramids_hold_review import rows
             grid=rows(gsd['FGVABN'])

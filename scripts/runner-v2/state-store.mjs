@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
+import {countPermissionReader} from './count-permission-cache.mjs';
 import {stable} from './mongo-writer.mjs';
 import {sessionWorkerAllowed,sessionLayout} from './session-layout.mjs';
-import {loadCountPermission,allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
+import {allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
 
 const fail=code=>Object.assign(new Error(code),{code});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -70,6 +71,7 @@ export class RunnerState {
 export class RunnerPool {
   constructor({store,plan,group,now=Date.now,commit=process.env.GITHUB_SHA}) {
     Object.assign(this,{store,plan,group,now,commit});this.key='pool:'+plan.trialId;
+    this.permissionReader=countPermissionReader({store});
     assert(['primary','secondary'].includes(group));
   }
   checkWorker(worker) {
@@ -81,7 +83,7 @@ export class RunnerPool {
   async countPermission(){
     if(this.plan.countAllocation===undefined)return null;
     const pool=(await this.store.get('state',this.key))?.value;assert(pool,'STATE_MISSING');
-    return loadCountPermission({store:this.store,plan:this.plan,pool,commit:this.commit});
+    return this.permissionReader({plan:this.plan,pool,commit:this.commit});
   }
   checkCount(value,spec){
     if(spec)checkLedger(value,this.plan,spec);else assert(!value.countAllocation,'COUNT_PLAN_MISSING');
