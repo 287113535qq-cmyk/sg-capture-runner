@@ -13,6 +13,7 @@ import {sessionCanarySchedule,waitCanaryLane,isSessionCanaryRuntime} from './ses
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {formalCountProfilePath} from './formal-count-plan.mjs';
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
+import {stateWriteInitializer} from './state-write-binding.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
@@ -38,6 +39,9 @@ export function connectLocal(plan){
     readRevision:name=>JSON.parse(fs.readFileSync('config/'+name,'utf8')),
     readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),
     readReceipt:async key=>(await store.get('journal',key))?.value});
+  const ensureStateWrite=stateWriteInitializer({store,commit:process.env.GITHUB_SHA,
+    group:repositories[process.env.GITHUB_REPOSITORY].name,resourceReady,
+    readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'))});
   return {async canaryReady(shouldStop){
     await ensureControlMode();
     if(!process.env.SG_CANARY_SCHEDULE){
@@ -58,7 +62,7 @@ export function connectLocal(plan){
     return waitCanaryLane({schedule,slot,shouldStop,observe:async()=>{
       const resource=await store.sample();const status=await controller.status({workerId:slot});return {...status,resourceAllowed:resource.allowed,resourceReason:resource.reason};
     }});
-  },rpc:async(op,data)=>{await resourceReady;await ensureControlMode();return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
+  },rpc:async(op,data)=>{await resourceReady;await ensureControlMode();await ensureStateWrite(plan);return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
     resourceObservation:gate.diagnostics({includeWindows:final}),
     hostResourceObservation:hostResources.diagnostics({includeWindows:final}),
     localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),

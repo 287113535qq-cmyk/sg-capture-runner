@@ -19,6 +19,7 @@ import {fourReadRecoveryName,fourReadRecoveryEntryName,isFourReadRecoveryName,fo
 import {exportResourceHistory} from './resource-handoff.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {sessionCanarySchedule,isSessionCanaryRuntime} from './session-canary.mjs';
+import {stateWriteInitializer} from './state-write-binding.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2});
 let canary;
@@ -73,7 +74,11 @@ const childStop=new AbortController();
 process.on('SIGTERM',()=>{stop=true;childStop.abort();});process.on('SIGINT',()=>{stop=true;childStop.abort();});
 const sleep=()=>new Promise(r=>setTimeout(r,10000));
 const stages=createStageProgress({emit:row=>console.log(JSON.stringify(row))});
+const ensureStateWrite=stateWriteInitializer({store,commit:process.env.GITHUB_SHA,
+  group:repositories[process.env.GITHUB_REPOSITORY].name,
+  readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'))});
 async function capture(plan){
+  await ensureStateWrite(plan);
   const validationLimit=(await store.get('state','campaign')).value.validationLimit || 0;
   fs.writeFileSync('config/round-one-active.json',JSON.stringify(plan)+'\n');
   return captureSessionLanes({plan,host:Number(process.env.SG_TRIAL_SHARD),group,history:exportResourceHistory(gate),signal:childStop.signal,

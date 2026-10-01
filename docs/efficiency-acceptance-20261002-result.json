@@ -61,10 +61,27 @@
       "repeatedOldGameScan": false,
       "sourceRun": 36919896773,
       "auditElapsedSeconds": 933.546
+    },
+    "stateDeltaLinux": {
+      "run": 36930043901,
+      "commit": "30669c3e02ace63f28284cdea2ba5dd82b07e354",
+      "logSha256": "43caab9ecdddaf74faa7853bb336504541a6c9ca9ab0bed884c85d491f909f6c"
+    },
+    "stateDeltaNative": {
+      "gatewaySha256": "a40d94a60d8133f3d4cd4fb384610712c60676f94b82c7615289cd4cae4f690e",
+      "manifestSha256": "3c8968d31e5bcde290640b033f86a75eb62d306df2aa79ff34b4ad1356213324",
+      "approvedTrials": 19,
+      "trialScopesUnchanged": true,
+      "oldGatewaySha256": "52e273384daf8ebfb2ae95c68683396feef928562b06a945784ab013a310a913",
+      "oldManifestSha256": "57329bee4c2d6cce0fe50571c6bf1c7db8728fc876a7b3f8042a0ca569600054",
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "capabilityEnabled": true,
+      "at": 1790890983
     }
   },
   "pending": [
-    "Bounded delta CAS native deployment, real diagnostic readback and independently bound capture adoption.",
+    "Bounded real diagnostic readback and independently activated capture adoption of delta CAS.",
     "Independent subsequent-runtime adoption and measured terminal/readback cost.",
     "Next independently ready game admission and continuous handoff.",
     "Natural unsupported repair terminals and reentry."

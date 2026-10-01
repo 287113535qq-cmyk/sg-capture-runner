@@ -11,3 +11,9 @@
 实际保留80会话快照的租约更新：完整请求784682字节，补丁119字节，减少99.9848%；逐字段回放完全一致、原数据不变。本机中位处理从完整序列化1.215ms变为补丁计算并序列化2.493ms，增加约1.28ms，不能称CPU提速。该结果只证明离线传输量下降，不代表线上吞吐收益。
 
 本机44项Runner专项包含80会话争用最后7额度、CAS冲突后owner丢失拒绝、无确认不重放和原完整流程；native与证据工具专项另行核验。统一Linux、native固定文件部署、GitHub零源诊断全文读回及下一独立运行绑定仍需完成，不能称全部优化完成。任何新源仍须独立ready和fresh准入。
+
+## 实际部署与采集绑定
+
+Linux36930043901已成功。native已固定文件安装并逐字节读回，gateway a40d94a60d8133f3d4cd4fb384610712c60676f94b82c7615289cd4cae4f690e，manifest 3c8968d31e5bcde290640b033f86a75eb62d306df2aa79ff34b4ad1356213324，19trial/group范围与原权限不变，源请求和Mongo写入均0。原文件固定私有备份保留。独立mongo-io-check运行36930565077正在进行，仅有界诊断元数据。
+
+父worker与capture入口新增versioned-delta-v1选择。只有新profile显式选择、当前commit/activation/profileHash/planHash绑定的spec及complete全部一致，且native同group启用时才能开启。每activation只核一次，不额外授源额度；原profile不增加远程请求、不修改、不自动开启。仅安装接口不能代称采集已经采用；新入口34项专项通过，下一固定Linux验证仍需完成。
