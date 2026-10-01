@@ -56,7 +56,7 @@ export function connectLocal(plan){
     controller.canarySchedule=schedule;
     const slot=Number(process.env.SG_TRIAL_SHARD)+40*Number(process.env.SG_SESSION_LANE);
     return waitCanaryLane({schedule,slot,shouldStop,observe:async()=>{
-      const resource=await store.sample();const status=await controller.status();return {...status,resourceAllowed:resource.allowed,resourceReason:resource.reason};
+      const resource=await store.sample();const status=await controller.status({workerId:slot});return {...status,resourceAllowed:resource.allowed,resourceReason:resource.reason};
     }});
   },rpc:async(op,data)=>{await resourceReady;await ensureControlMode();return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
     resourceObservation:gate.diagnostics({includeWindows:final}),

@@ -147,6 +147,7 @@ class Gateway:
                 projection = {'_id': 1, 'version': 1, 'value.active': 1,
                               'value.enabled': 1, 'value.activeGame': 1,
                               'value.failure': 1, 'value.drainingProtocol': 1,
+                              'value.confirmed': 1,
                               'value.workers.'+str(worker): 1}
             rows = list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, projection=projection, max_time_ms=10000).limit(4))
             return rows

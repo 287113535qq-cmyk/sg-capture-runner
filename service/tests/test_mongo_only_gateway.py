@@ -156,12 +156,12 @@ class GatewayTests(unittest.TestCase):
     def test_compact_control_projects_only_fresh_hold_campaign_and_exact_worker(self):
         trial='sg_r1_20260928_32723'
         for key,value in [('global-hold',{'active':False,'private':'omit'}),('campaign',{'enabled':True,'activeGame':32723,'games':['omit']}),
-                          ('pool:'+trial,{'enabled':True,'failure':None,'workers':{'0':{'owner':'fresh','epoch':2},'1':{'owner':'peer'}},'countAllocation':{'large':'omit'}})]:
+                          ('pool:'+trial,{'enabled':True,'failure':None,'confirmed':12,'workers':{'0':{'owner':'fresh','epoch':2},'1':{'owner':'peer'}},'countAllocation':{'large':'omit'}})]:
             self.call('create',collection='state',key=key,value=value)
         before=copy.deepcopy(self.db['capture_state_v2'].rows)
         rows=self.call('control_read',trialId=trial,workerId=0)
         pool=next(r for r in rows if '/pool:' in r['_id'])
-        self.assertEqual(pool['value'],{'enabled':True,'failure':None,'workers':{'0':{'owner':'fresh','epoch':2}}})
+        self.assertEqual(pool['value'],{'enabled':True,'failure':None,'confirmed':12,'workers':{'0':{'owner':'fresh','epoch':2}}})
         self.assertEqual(next(r for r in rows if r['_id']=='primary/global-hold')['value'],{'active':False})
         self.assertEqual(before,self.db['capture_state_v2'].rows)
         self.db['capture_state_v2'].rows['primary/global-hold']['value']['active']=True

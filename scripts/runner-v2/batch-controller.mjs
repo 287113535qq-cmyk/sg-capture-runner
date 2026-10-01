@@ -23,8 +23,14 @@ export class BatchController {
     this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
   }
-  async status(){
-    const pool=(await this.store.get('state',this.pool.key))?.value;
+  async status({workerId}={}){
+    let pool;
+    if(this.control.compact===true&&workerId!==undefined){
+      assert(Number.isSafeInteger(workerId)&&workerId>=0&&workerId<160,'CONTROL_WORKER_SCOPE');
+      const rows=await this.transport.request('control_read',{trialId:this.plan.trialId,workerId});
+      pool=rows.find(row=>row._id===this.group+'/'+this.pool.key)?.value;
+      if(pool)assert(Number.isSafeInteger(pool.confirmed)&&pool.confirmed>=0&&pool.confirmed<=this.plan.target,'CONTROL_COUNT_REQUIRED');
+    }else pool=(await this.store.get('state',this.pool.key))?.value;
     if(!pool)return {status:'halted',reason:'POOL_NOT_INITIALIZED'};
     return {status:pool.failure||!pool.enabled?'halted':pool.confirmed===this.plan.target?'complete':'pending',
       trialId:this.plan.trialId,confirmed:pool.confirmed,target:this.plan.target,reason:pool.failure};

@@ -53,6 +53,18 @@ async function fixture(shardId=0){
   return {controller,store,docs,rounds,plan,rpc,lease,owned,identity,
     failResponse(){failResponse=true;},advance(ms){now+=ms;}};
 }
+test('idle canary reads compact fresh counts, honors completion and pauses, and rejects incomplete projection',async()=>{
+ const f=await fixture();f.controller.control.compact=true;let value={enabled:true,failure:null,confirmed:0},reads=0;
+ f.controller.transport={request:async(op,r)=>{reads++;assert.equal(op,'control_read');assert.deepEqual(r,{trialId:f.plan.trialId,workerId:40});return [{_id:'primary/pool:'+f.plan.trialId,value:structuredClone(value)}];}};
+ assert.equal((await f.controller.status({workerId:40})).status,'pending');
+ value.confirmed=f.plan.target;assert.equal((await f.controller.status({workerId:40})).status,'complete');
+ value.enabled=false;assert.equal((await f.controller.status({workerId:40})).status,'halted');
+ value.enabled=true;value.failure='PROTOCOL_VALIDATION_FAILED';assert.equal((await f.controller.status({workerId:40})).reason,value.failure);
+ delete value.confirmed;await assert.rejects(f.controller.status({workerId:40}),/CONTROL_COUNT_REQUIRED/);
+ await assert.rejects(f.controller.status({workerId:160}),/CONTROL_WORKER_SCOPE/);assert.equal(reads,5);
+ assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending,null);
+});
+
 test('compact source control still freshly rejects peer holds and changed worker fences before intent',async()=>{
  for(const fault of ['hold','worker']){
   const f=await fixture(),requests=[],gate={status:()=>({allowed:true,maxBatchSize:100,metrics:{diskFreeBytes:100*1024**3}})};

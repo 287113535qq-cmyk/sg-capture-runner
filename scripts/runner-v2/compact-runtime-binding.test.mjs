@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
-import {compactRuntimeBinding,compactControlInitializer} from './compact-runtime-binding.mjs';
+import {compactRuntimeBinding,compactLayoutBinding,compactControlInitializer} from './compact-runtime-binding.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 function fixture(){
  const profile=JSON.parse(fs.readFileSync('config/formal-sessions-rhino-two-20261001.json'));
@@ -34,6 +34,28 @@ test('legacy long runtime does not add immutable journal reads',async()=>{
  const initialize=compactControlInitializer({...f,runtimeName:'legacy.json',control,readRevision:()=>({}),
    readProfile:()=>{throw Error('unexpected');},readReceipt:async()=>{reads++;}});
  await initialize();assert.equal(reads,0);assert.equal(control.compact,undefined);
+});
+function layoutFixture(){
+ const f=fixture();f.profile.sessionLayout.lanesPerHost=4;f.profile.controlReadMode='compact-worker-v1';f.profile.gatewayHash='c'.repeat(64);
+ f.plan={...f.plan,trialId:'sg_r1_20261001_32799',target:300000,phase:1,buy:0};
+ f.spec={schema:'sg-complete-count-v1',activation:f.plan.countAllocation,commit:f.commit,profileHash:hash(f.profile),planHash:hash(f.plan),trialId:f.plan.trialId,gameId:32799};
+ f.complete={schema:'sg-complete-count-activation-v1',specHash:hash(f.spec),commit:f.commit,profileHash:hash(f.profile),planHash:hash(f.plan),trialId:f.plan.trialId,sourceRequests:0,newBetAllowance:0};return f;
+}
+test('new four-session window keeps compact reads through its applied layout receipt',()=>assert.equal(compactLayoutBinding(layoutFixture()),true));
+for(const kind of ['incomplete-activation','wrong-commit','changed-profile','changed-plan','unbound-spec'])test('four-session compact layout rejects '+kind,()=>{
+ const f=layoutFixture();if(kind==='incomplete-activation')f.complete=null;if(kind==='wrong-commit')f.commit='b'.repeat(40);
+ if(kind==='changed-profile')f.profile.gatewayHash='d'.repeat(64);if(kind==='changed-plan')f.plan.target=300001;
+ if(kind==='unbound-spec')f.complete.specHash='0'.repeat(64);assert.throws(()=>compactLayoutBinding(f));
+});
+test('initial four-session entry reads both activation documents once and checks full binding',async()=>{
+ const f=layoutFixture(),control={},keys=[];
+ const init=compactControlInitializer({...f,control,resourceReady:Promise.resolve(),readProfile:()=>f.profile,
+   readReceipt:async key=>{keys.push(key);return key.endsWith(':complete')?f.complete:f.spec;}});
+ await init();await init();assert.equal(keys.length,2);assert.equal(control.compact,true);
+});
+test('four-session continuous runtime retains compact mode with its own applied revision',()=>{
+ const f=fixture();f.profile.sessionLayout.lanesPerHost=4;f.revision.purpose='continuous-four-count-v1';f.revision.profileHash=hash(f.profile);
+ f.receipt.profileHash=hash(f.profile);f.receipt.revisionHash=hash(f.revision);assert.equal(compactRuntimeBinding(f),true);
 });
 for(const kind of ['wrong-game','wrong-allocation','unapplied','wrong-commit','changed-revision','unknown-mode','unknown-purpose','missing-gateway','new-quota'])test('reject '+kind,()=>{
  const f=fixture();if(kind==='wrong-game')f.plan.gameId=32718;if(kind==='wrong-allocation')f.plan.countAllocation='b'.repeat(64);
