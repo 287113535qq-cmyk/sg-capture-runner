@@ -57,3 +57,7 @@ Pyramids组合修复新增独立TypeScript collector离线审查：真实8帧仍
 修订统一Linux36879745119:1成功，源码0a3fd291b6058ea248b70ecba86f6dfd06fe2d48，日志SHAa8f89abc330d113f197140984f109aae08882e0cd1614d01bdce2b0154d3f6ec。实际无源预约36880349088:1成功，唯一count-relay intent全文readback hash f01153c84f5d177822fe24078ad01772cf94f418b201980b8a50941d220050c5；源0/新额度0/元数据写1。应用profile57e51f...已加永久冻结检查，旧未应用fdc0...和首失败记录保留。Rhino鲜读1790866766为166397完整、40active、两hold false；预约不取消或修改健康源。旧父源真实尾段及canary/4会话吞吐仍未验收。
 
 独立修复线完成Pyramids候选完整规范化比较：真实8帧不完整且无fields，3条合成完整链Python/collector所有字段一致，29负例通过。合成mapping仅离线，没有production import或新source权限，不声称自然混合终局已观察。
+
+## 普通多会话的验收日志
+
+普通2/4会话与canary共用有界逐行输出队列，子进程退出前排空stdout/stderr，避免多个大型最终JSON交错。单会话入口保持原样；日志失败不能生成验收凭证，不重放源请求。真实离线子进程验证普通和canary两种入口，固定ZIP解析支持40或80条最终记录，缺失、重复及错误数量拒绝。19项本机专项通过；线上资源和吞吐尚未验收，不声称提速。此改动对应AG的独立通道、持久化结果及结果复用机制。

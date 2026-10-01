@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';import {execFileSync} from 'node:child_p
 import {createHash} from 'node:crypto';import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 
-export function extractCanaryLog(path,{python='python3'}={}){
- return JSON.parse(execFileSync(python,[fileURLToPath(new URL('./canary-log-extract.py',import.meta.url)),path],
+export function extractCanaryLog(path,{python='python3',expectedCount=40}={}){
+ assert([40,80].includes(expectedCount),'CANARY_LOG_ROW_COUNT');
+ return JSON.parse(execFileSync(python,[fileURLToPath(new URL('./canary-log-extract.py',import.meta.url)),path,String(expectedCount)],
   {maxBuffer:32*1024**2,timeout:30000,stdio:['ignore','pipe','pipe']}));
 }
 

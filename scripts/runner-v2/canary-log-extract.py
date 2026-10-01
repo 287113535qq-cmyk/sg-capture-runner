@@ -4,7 +4,8 @@ import sys
 import zipfile
 
 
-def extract(path):
+def extract(path, expected_count=40):
+    assert expected_count in (40, 80), 'UNSUPPORTED_FINAL_ROW_COUNT'
     rows = []
     names = set()
     with zipfile.ZipFile(path) as archive:
@@ -27,9 +28,9 @@ def extract(path):
                 row = json.loads(line[start:])
                 if row.get('schema') == 'sg-capture-performance-v1' and row.get('reason') == 'final':
                     rows.append(row)
-    assert len(rows) == 40, 'MISSING_OR_DUPLICATE_FINAL_ROWS'
+    assert len(rows) == expected_count, 'MISSING_OR_DUPLICATE_FINAL_ROWS'
     return rows
 
 
 if __name__ == '__main__':
-    print(json.dumps(extract(sys.argv[1])))
+    print(json.dumps(extract(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 40)))

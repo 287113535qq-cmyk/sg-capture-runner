@@ -1,14 +1,14 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
 import {execFileSync} from 'node:child_process';import {extractCanaryLog,loadCanarySourceLog} from './canary-source-log.mjs';
 const python=process.env.PYTHON||'python3';
-function fixture(mode){
+function fixture(mode,lanes=2){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sg-canary-log-')),file=path.join(dir,'fixture.zip');
  const script=`import json,sys,zipfile,warnings
 warnings.simplefilter('ignore')
 with zipfile.ZipFile(sys.argv[1],'w',compression=zipfile.ZIP_DEFLATED) as z:
  for host in range(20):
   lines=[]
-  for lane in range(2):
+  for lane in range(int(sys.argv[3])):
    row={'schema':'sg-capture-performance-v1','reason':'final','worker':host+40*lane,'fixture':'x'*150000}
    if sys.argv[2]=='missing' and host==19 and lane==1: continue
    lines.append('2026-10-01T00:00:00Z '+json.dumps(row))
@@ -18,7 +18,7 @@ with zipfile.ZipFile(sys.argv[1],'w',compression=zipfile.ZIP_DEFLATED) as z:
   if sys.argv[2]=='duplicate' and host==0: z.writestr(name,content)
  if sys.argv[2]=='malformed': z.writestr('0_verify.txt','{"schema":"sg-capture-performance-v1",BROKEN')
 `;
- execFileSync(python,['-c',script,file,mode]);return {file,close(){fs.unlinkSync(file);fs.rmdirSync(dir);}};
+ execFileSync(python,['-c',script,file,mode,String(lanes)]);return {file,close(){fs.unlinkSync(file);fs.rmdirSync(dir);}};
 }
 test('real ZIP aggregates retain forty large observations without duplicated step files',()=>{
  const f=fixture('valid');try{const rows=extractCanaryLog(f.file,{python});assert.equal(rows.length,40);
@@ -29,4 +29,12 @@ for(const mode of ['missing','duplicate','malformed'])test(`reject ${mode} final
 });
 test('running or unbound source archives cannot be downloaded',()=>{
  assert.throws(()=>loadCanarySourceLog({status:'in_progress'},{}),/CANARY_SOURCE_LOG_IDENTITY/);
+});
+
+test('four-session ZIP preserves eighty unique large final rows and rejects wrong layout size',()=>{
+ const f=fixture('valid',4);try{const rows=extractCanaryLog(f.file,{python,expectedCount:80});
+ assert.equal(rows.length,80);assert.equal(new Set(rows.map(row=>row.worker)).size,80);
+ assert.throws(()=>extractCanaryLog(f.file,{python}));
+ assert.throws(()=>extractCanaryLog(f.file,{python,expectedCount:60}),/CANARY_LOG_ROW_COUNT/);
+ }finally{f.close();}
 });

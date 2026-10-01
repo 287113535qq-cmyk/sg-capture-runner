@@ -125,5 +125,20 @@
     "fullReadback": true
   },
   "mixedSequenceFullFieldsParity": true,
-  "mixedSequenceMappingNegatives": 29
+  "mixedSequenceMappingNegatives": 29,
+  "normalMultiLaneLogIntegrity": {
+    "localChecks": 19,
+    "lanes": [
+      2,
+      4
+    ],
+    "finalRows": [
+      40,
+      80
+    ],
+    "linuxVerified": false,
+    "onlineVerified": false,
+    "sourceRequests": 0,
+    "databaseWrites": 0
+  }
 }

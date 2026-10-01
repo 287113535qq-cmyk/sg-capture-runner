@@ -7,7 +7,7 @@ import {laneLogOutput} from './lane-log-output.mjs';
 export async function captureSessionLanes({plan,host,group,env,history,spawnImpl=spawn,signal}){
  const lanes=sessionLayout(plan)?.lanesPerHost??1;
  const children=[];let stopping=false;
- const logs=env.SG_CANARY_SCHEDULE?laneLogOutput():null;
+ const logs=lanes>1||env.SG_CANARY_SCHEDULE?laneLogOutput():null;
  const stop=()=>{stopping=true;for(const child of children)if(child.exitCode===null)child.kill('SIGTERM');};
  if(signal?.aborted)return 2;
  signal?.addEventListener('abort',stop,{once:true});
