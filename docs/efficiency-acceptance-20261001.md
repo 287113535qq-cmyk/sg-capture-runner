@@ -8,14 +8,14 @@ AG参考固定源码：E:/platform-sync/api_new/api.numeric/capture/capture-ag�
 |---|---|---|---|
 | 准备到启动 | 通道连续推进 | Rhino最新预检结束到试采派发4分34秒 | 自动跨工作流接力、无ready时准备和修复同时推进 |
 | 请求等待 | 独立工作线程 | 被动连接分段和逐帧计时已接入口 | 两个稳定10分钟窗口、连接复用与长尾实测 |
-| 会话并行 | 每线程独立session | 2/4调度、租约、配额、Python准入离线/Linux通过 | 当前实现限定已完成Pearl；须独立适配Rhino或后续健康款并实测1→2→4 |
+| 会话并行 | 每线程独立session | Rhino独立2/4会话、租约、配额、Python准入已接线；双仓源码同步 | Rhino实际1→2→4吞吐对比，4会话只在有效比较后准入 |
 | 故障处理 | 分类、最近8步、继续下一款 | AG留样、作废、修复队列已上线 | 双账号独立运行边界及持续自动接力 |
 | 修复复用 | 精确游戏事件/家族差异 | 特征索引、固定客户端hash和三端回放 | 分组匹配后的差异验证和真实重新准入 |
-| 完整计数 | CAS领取 | Rhino修复后100真实完整，151总量；正式剩余299849内存验证 | 正式激活、源准入、运行与全文终审 |
+| 完整计数 | CAS领取 | Rhino151保全后的正式激活和20分钟源准入已成功 | 本次窗口全文读回、全目标终审 |
 
 Rhino修复试采36826318464成功：100新增完整，99普通加1自然免费完整结束；旧51保留。正式profile为独立v2，旧作废、批次、journal和已用额度保持。Python实际profile校验通过。原100许可已耗尽，不借旧额度进行性能测试。
 
-Pyramids v2保全2127条、剩余297723的退休/修复重入内存链已通过，控制入口和跨账号边界尚待接通；Mansion single-slot的Python/Runner/collector各7正例6负例通过，尚未上线。两条修复均不可报告线上完成。
+Pyramids v2保全2127条、剩余297723的退休/修复重入内存链已通过，控制入口和跨账号边界尚待接通；Mansion single-slot的Python/Runner/collector各7正例6负例已接生产校验，Linux36833484513成功；实际重新准入尚未完成。两条修复均不可报告重新入正常队列完成。
 
 所有速度结论必须标清样本、并发、窗口、普通/免费比例、完整入库数、p95/p99、错误及资源暂停。嵌套RPC时间不重复相加；缺连接事件为unknown。前后并发对比只在同游戏有效独立许可内执行，不增加目标、不重放未知请求。
 
@@ -52,3 +52,11 @@ AG reference applied here: independent per-session ownership and canary-before-e
 While the fixed Rhino baseline remains running, Mansion single-slot additive Hard Hat retrigger validation was integrated independently into Python, Runner and collector. All seven private positive prefixes and six negative cases pass the production validators; all 152 historical complete records still pass independent Python verification. The six-to-seven award/count progression remains strict. A corrupted zero CFFGT with an increased total now selects the strict retrigger validator instead of falling back to the older Hard Hat path. The terminal sample remains synthetic; this change grants no new source budget and does not resume the old interrupted round.
 
 Successful Linux preflight can now be reused for configuration-only commits only when the scripts, service, collector and workflow Git tree identities are exactly unchanged. Failed/running checks, foreign repositories, wrong workflow or attempts, dirty runtime files and any changed runtime tree are rejected. Profile validation, fresh ownership checks and unique run admission remain independent requirements. Three utility tests pass. This removes redundant full Linux runs for unchanged code; no measured end-to-end improvement is claimed yet.
+
+### 16:00 bounded measurement without duplicate raw exports
+
+The read-only paged window review now streams numeric ten-minute summaries while independently verifying each persisted complete record. It reports completed rounds, request histogram p50/p95/p99 upper bounds and reused connections. Missing or inconsistent timings, startup gaps and intervals shorter than ten minutes cannot qualify as steady-state evidence. It excludes abandoned and in-flight records explicitly. Nine affected review/timing tests pass, including a 2501-record bounded scan.
+
+A separate draft builder requires the verified ended window, bound source permission and exact parent/pool/campaign hashes before preparing a two-lane profile. Seven draft tests preserve remaining counts and reject inconsistent proof or skipped concurrency steps. A draft grants no new allowance and requires fresh independent activation. No two-lane source has yet been dispatched.
+
+Linux36833151565 failed on an old synthetic Huff fixture that expected a retrigger without award/board/slot evidence and then decreased its total. The fixture now explicitly rejects this malformed chain; the legitimate retrigger tests remain positive. All 44 affected Python tests passed locally and Linux36833484513 subsequently succeeded. The fixed Rhino baseline runtime was unchanged.
