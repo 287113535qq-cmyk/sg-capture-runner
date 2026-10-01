@@ -1,3 +1,5 @@
+Latest verification: parallel terminal validation of151 retained real records reduced local validation median45.34% (279.35ms to152.68ms per453 validations); synthetic49.03% retained separately. Audit-phase diagnostics passed Linux36927030129; source36919896773 remains unchanged and full300000 proof remains pending. All-optimization-complete=false.
+
 Fresh 1790888672: Rhino Mongo complete300000, activeWorkers0, activeBatches0, auditInProgress=true, final proof absent. Completion remains15/178 until full audit. Parallel audit Linux36925664121 passed and both evidence archives read back; online new-runtime audit and next-game admission remain pending.
 
 # 2026-10-02 当前效率验收

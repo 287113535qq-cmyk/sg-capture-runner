@@ -1,0 +1,61 @@
+{
+  "schema": "sg-efficiency-acceptance-v1",
+  "allOptimizationsComplete": false,
+  "agReferences": [
+    "capture-ag/scripts/rolling-worker.ts",
+    "capture-ag/src/ag.scheduler.ts",
+    "capture-ag/src/ag.round.ts"
+  ],
+  "sourceRuntimeUnchanged": {
+    "run": 36919896773,
+    "commit": "34a10bafa27faa14632301dd1bc96a06f73f1e3e"
+  },
+  "verified": {
+    "independentSessions": {
+      "lanesPerHost": 4,
+      "totalSessions": 80,
+      "matchedTenMinuteGainOverOnePercent": 99.2,
+      "matchedTenMinuteGainOverTwoPercent": 49.96,
+      "p95UpperBoundMs": 8000
+    },
+    "terminalParallel": {
+      "workers": 2,
+      "linuxRun": 36925664121,
+      "actualRetainedRecords": 151,
+      "actualLocalPhaseReductionPercent": 45.342869825450656,
+      "onlineGainVerified": false
+    },
+    "nextBatchRead": {
+      "linuxRun": 36922581600,
+      "healthyCompactFullReadsBefore": 3,
+      "after": 1,
+      "onlineGainVerified": false
+    },
+    "selectedCollector": {
+      "linuxRun": 36921746605,
+      "localFirstLoadReductionPercent": 52.98,
+      "onlineGainVerified": false
+    },
+    "auditPhaseDiagnostics": {
+      "linuxRun": 36927030129,
+      "additionalDatabaseRequests": 0,
+      "additionalDatabaseWrites": 0
+    },
+    "methodAndCostEvidenceUtilities": {
+      "linuxRun": 36926493277,
+      "checks": 6
+    }
+  },
+  "pending": [
+    "Full300000 actual game audit proof.",
+    "Independent subsequent-runtime adoption and measured terminal/readback cost.",
+    "Next independently ready game admission and continuous handoff.",
+    "Natural unsupported repair terminals and reentry."
+  ],
+  "prohibitedShortcuts": [
+    "No current-runtime hot patch.",
+    "No extra BET quota for performance testing.",
+    "No completion from Mongo count alone.",
+    "No family candidate converted automatically to ready."
+  ]
+}

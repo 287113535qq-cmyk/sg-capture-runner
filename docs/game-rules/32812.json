@@ -28,7 +28,7 @@
     "docs/ag-preparation-method-reuse-20261002.md"
   ],
   "analysisDocumentHashes": {
-    "docs/ag-audit-phase-efficiency-20261002.md": "138efe7c97884be98ac4658df1e0074d074f7f25b853784b275727d3dde993d9",
+    "docs/ag-audit-phase-efficiency-20261002.md": "576baa598e76f991877fdf435641e758f6a3ace9e1c8c7a58be9f12b0159d542",
     "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9"
   },
   "observations": {
@@ -38,5 +38,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8249dcd8d246ccbc898f29fdbcbb36efb141f32f0950cbee01ff71e637da4b1e"
+  "ruleHash": "2b7f10657ab77e0d58741591eb09a62abd2a6eb6dbf5d9e86831c00d43696a58"
 }

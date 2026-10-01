@@ -9,3 +9,5 @@
 当前36919896773健康源固定34a10ba不改变，正常尾局按原算法排空并全量终审。新代码需独立Linux通过和后续运行绑定，不能中途换解释器或跳过全审。源请求0、Mongo写0、新BET额度0。效率全部完成仍需线上终审、后续独立准入及连续流水线验收。
 
 Linux36925664121 fixed89c3a5379971fc4fedc70fa68449b5332f735c1b passed (21:00:19Z–21:02:34Z). Log SHA e2260e453e2a4efd4bb584004da30479692fb844486c836696549e7c76b439d6. Local/server archive readback: 11 files, 222301 bytes, SHA 0f41a88d37ccca15e8a8495198be8a72357bab4c0c99b5256f8bd7eddab3e388. Current fixed source is unchanged; online terminal validation remains pending.
+
+Real retained-data local replay: 151 original complete records (150 base, 1 natural free), unchanged snapshot SHA de0abd7c1db936d2f5be022ae3be1374990f7f3ef0f4ef3246f2991c4e633b78. Seven alternating paired samples of453 validations: serial median279.35ms, parallel152.68ms, reduction45.34%. This excludes online readback/ownership checks and does not grant another completion proof. Four-file4197-byte incremental evidence verified locally/server, SHA e676570232547a69899125f6d4fbee736faf4ff2bd135109851e7c4cfaf2ec1a; old151 records referenced without another export.

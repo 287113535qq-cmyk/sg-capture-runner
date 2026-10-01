@@ -9,3 +9,5 @@
 新增证据工具已纳入 Linux 工作流：36926493277在8ab45e3159ff711e308f849503201dcbf41143ae通过，完整日志SHA f2226a343dea7c1190b7b6fef5e4272fe809ed2ad907506b818b975b9949d98f。原36924983750仅验证其已有工作流与 Runner，不表示新脚本检查当时已在Linux执行。本次将方法复用和文档耗时汇总的6项检查正式加入工作流，避免后续遗漏。
 
 准备通道继续独立推进32812：固定官方客户端额外执行3个响应字段方法和5组FSInfo计数。缺失计数为undefined、异常计数为NaN，官方显示解析器并非严格结算校验；独立适配必须拒绝。BGInfo、BonusWin和FSInfo金额域保持分开。仅合成解析节点，无真实XML或自然终局，不授ready或新额度。
+
+Linux36927030129 fixed9e054b71f25f6920e0cda9065294fc700cc5beb9 passed. Full log SHA ebe7c345ca2509bd1be5af06738fdff9c44961379b56dde973484dabfac27a2c. Fourteen-file442504-byte incremental evidence read back on both sides, SHA c02927eb7e8b32beeec04a9a6a2df39d7bc1d3e61cbc8e5faa2fff1ee53ab6b9. Source36919896773 remained fixed; no source dispatch, SG request, new BET allowance or Mongo business write from this change.
