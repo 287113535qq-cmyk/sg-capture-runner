@@ -1,0 +1,29 @@
+name: Bounded Mongo metadata I/O check without source
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sg-mongo-io-check
+  cancel-in-progress: false
+jobs:
+  check:
+    if: github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+      - name: Configure existing restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Verify bounded diagnostic metadata and stale CAS rejection
+        run: node scripts/runner-v2/check.mjs
