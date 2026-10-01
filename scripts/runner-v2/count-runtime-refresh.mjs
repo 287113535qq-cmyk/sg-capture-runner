@@ -1,3 +1,4 @@
+import {readSharedRuntimeProof} from './shared-runtime-proof.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {loadCountPermission,auditCountBatch,checkLedger} from './complete-count.mjs';
@@ -6,9 +7,10 @@ import {checkVerifyEntryFailure} from './verify-entry-failure.mjs';
 
 // A completed, healthy run may move to a reviewed runtime without minting quota.
 // Only immutable authorization is added; campaign, pool, batches and records stay intact.
-export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,now=Date.now}){
+export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,sharedCloseProfile,now=Date.now}){
+ const shared=revision.sharedClosureKey?await readSharedRuntimeProof({store,plan,profile,revision,ended,jobs,approved:sharedCloseProfile}):null;
  const verify=verifyEntryFailure?checkVerifyEntryFailure({ended,jobs,evidence:verifyEntryFailure}):null;
- const tail=ended.conclusion==='failure'&&!verify?checkParentTailFailure({ended,jobs,evidence:parentTailFailure}):null;
+ const tail=ended.conclusion==='failure'&&!verify&&!shared?checkParentTailFailure({ended,jobs,evidence:parentTailFailure}):null;
  assert(!verify||(profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===2
   &&revision.verifyEntryFailureHash===hash(verify)&&revision.newBetAllowance===0&&revision.completePreserved===35722),'COUNT_REFRESH_VERIFY_FAILURE_SCOPE');
  assert(!tail||(profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===2
@@ -20,10 +22,10 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
   &&revision.createdAt<=now()&&now()<revision.expiresAt
   &&revision.expiresAt-revision.createdAt<=7200000,'COUNT_REFRESH_PROFILE');
  assert(`${ended.id}:${ended.run_attempt}`===revision.sourceRun&&ended.status==='completed'
-  &&(ended.conclusion==='success'||tail||verify)&&ended.head_sha===revision.fromCommit
+  &&(ended.conclusion==='success'||tail||verify||shared)&&ended.head_sha===revision.fromCommit
   &&ended.repository.full_name==='zyzuoyang/sg-capture-runner'
   &&ended.path==='.github/workflows/trial-300k.yml','COUNT_REFRESH_SOURCE');
- assert(tail||verify||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100
+ assert(tail||verify||shared||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100
   &&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
   &&Array.from({length:20},(_,i)=>'capture-'+i).every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)
  ),'COUNT_REFRESH_JOBS');
@@ -77,6 +79,7 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
  assert(!(await store.get('journal',key)),'COUNT_REFRESH_ALREADY_APPLIED');
  const receipt={schema:'sg-count-runtime-v2',commit,fromCommit:spec.commit,previousCommit:revision.fromCommit,
   specHash:hash(spec),profileHash:hash(profile),planHash:hash(plan),activation:spec.activation,
+  ...(shared?{sharedClosureKey:revision.sharedClosureKey,sharedClosureHash:hash(shared)}:{}),
   revisionHash:hash(revision),sourceRun:revision.sourceRun,run,poolHash:hash(pool),campaignHash:hash(campaign),
   completePreserved:preserved,remainingComplete:plan.target-preserved,sourceRequests:0,newBetAllowance:0};
  await store.create('journal',key,receipt,{immutable:true});

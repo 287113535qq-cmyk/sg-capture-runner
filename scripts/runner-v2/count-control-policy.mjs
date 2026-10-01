@@ -6,7 +6,7 @@ export function countControlPolicy(mode,profile,runtimeProfile){
  const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
  const initialWindow=runtimeProfile==='count-runtime-rhino-measurement-20261001.json';
  const observationWindow=runtimeProfile==='count-runtime-rhino-two-observation-20261001.json';
- const continuousCount=runtimeProfile==='count-runtime-rhino-continuous-20261001.json';
+ const continuousCount=['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json'].includes(runtimeProfile);
  assert(!isSessions||['sessions','admit'].includes(mode)||(mode==='refresh'&&(observationWindow||continuousCount)),'SESSION_CONTROL_OPERATION');
  assert(mode!=='sessions'||isSessions,'SESSION_CONTROL_PROFILE');
  assert(!runtimeProfile||initialWindow||observationWindow||continuousCount||runtimeProfile==='count-runtime-pearl-observation-20261001.json','COUNT_RUNTIME_PROFILE_PATH');
