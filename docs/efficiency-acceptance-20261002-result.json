@@ -78,10 +78,33 @@
       "mongoWrites": 0,
       "capabilityEnabled": true,
       "at": 1790890983
+    },
+    "stateDeltaIo": {
+      "run": 36930565077,
+      "head": "1ee7d6125032c7fa7d2d8e9667553d53b7c14a01",
+      "conclusion": "success",
+      "group": "primary",
+      "deltaMetadataReadback": true,
+      "staleVersionRejected": true,
+      "sourceRequests": 0,
+      "officialRoundWrites": 0,
+      "gamePoolWrites": 0,
+      "diagnosticMetadataOnly": true
+    },
+    "stateWriteBindingLinux": {
+      "run": 36930793339,
+      "commit": "8f3b48ad0c7566501ae3c3a6df41639e938a5b52",
+      "independentActivationRequired": true,
+      "existingProfilesChanged": 0
+    },
+    "rhinoFullEvidenceBackup": {
+      "verifiedFiles": 11,
+      "bytes": 10373940,
+      "sha256": "67b7d2fdd379c228cec65d432c3f6b5f7594b312d8b03f80e5a62dcca1dc68dd"
     }
   },
   "pending": [
-    "Bounded real diagnostic readback and independently activated capture adoption of delta CAS.",
+    "Independently activated subsequent capture adoption and measured in-game delta CAS benefit.",
     "Independent subsequent-runtime adoption and measured terminal/readback cost.",
     "Next independently ready game admission and continuous handoff.",
     "Natural unsupported repair terminals and reentry."

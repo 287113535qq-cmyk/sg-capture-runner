@@ -13,6 +13,7 @@ jobs:
     timeout-minutes: 6
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_METADATA_IO_CANARY: fixed-lease-v1
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
