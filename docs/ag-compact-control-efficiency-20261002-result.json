@@ -15,7 +15,7 @@
   "actualComparisonSourceRun": 36896380706,
   "longRuntimeBindingTests": 23,
   "longRuntimeBindingApplied": false,
-  "compactIdleStatusApplied": false,
+  "compactIdleStatusApplied": true,
   "actualThroughputVerified": false,
   "allOptimizationComplete": false,
   "actualSourceSucceeded": true,
@@ -27,5 +27,12 @@
   "comparisonReviewError": "RESOURCE_WINDOW_SCOPE",
   "finalResourceHistoriesMissing": true,
   "workerFinalMetricsForwardingFixed": true,
-  "affectedTests": 74
+  "affectedTests": 74,
+  "currentNativeGatewaySha256": "52e273384daf8ebfb2ae95c68683396feef928562b06a945784ab013a310a913",
+  "finalMetricsLinuxRun": 36901745395,
+  "finalMetricsRuntimeRefreshRun": 36902624905,
+  "finalMetricsSourceRun": 36902953286,
+  "finalMetricsRevisionHash": "19b2259275a3f3373edab8341774971dbe51ca05f259e86f15602fa135683e69",
+  "finalMetricsCompletePreserved": 215145,
+  "finalMetricsRemainingComplete": 84855
 }
