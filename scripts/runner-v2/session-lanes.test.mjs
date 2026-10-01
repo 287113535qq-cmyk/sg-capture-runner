@@ -7,6 +7,22 @@ import {rhinoSession} from '../trial/rhino-session.mjs';
 import fs from 'node:fs';
 const base=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32795'];
 const plan={...base,countAllocation:'a'.repeat(64),sessionLayout:{schema:'sg-independent-sessions-v1',group:'primary',hosts:20,lanesPerHost:4}};
+for(const lanes of [2,4])test(`canary launcher drains ${lanes} real children before returning complete logs`,async()=>{
+ const childScript=`const fs=require('node:fs');const input=fs.createReadStream(null,{fd:3});let data='';input.on('data',x=>data+=x);input.on('end',()=>{
+ if(!JSON.parse(data).fixture)process.exit(2);const row=JSON.stringify({lane:process.env.SG_SESSION_LANE,text:'x'.repeat(150000)});
+ let offset=0;function send(){if(offset>=row.length){process.stdout.write('\\n');return;}process.stdout.write(row.slice(offset,offset+997));offset+=997;setImmediate(send);}send();});`;
+ const script=`import {spawn} from 'node:child_process';import {captureSessionLanes} from './scripts/runner-v2/session-lanes.mjs';
+ const plan=${JSON.stringify({...plan,sessionLayout:{...plan.sessionLayout,lanesPerHost:lanes}})};
+ const result=await captureSessionLanes({plan,host:0,group:'primary',env:{...process.env,SG_CANARY_SCHEDULE:'fixture'},history:{fixture:true},
+ spawnImpl:(exe,args,options)=>spawn(exe,['-e',${JSON.stringify(childScript)}],options)});process.exitCode=result;`;
+ const output=await new Promise((resolve,reject)=>{
+  const child=spawn(process.execPath,['--input-type=module','-e',script],{stdio:['ignore','pipe','pipe']});let out='',err='';
+  child.stdout.on('data',x=>out+=x);child.stderr.on('data',x=>err+=x);child.on('error',reject);
+  child.on('close',code=>code===0?resolve(out):reject(new Error(`launcher exit ${code}: ${err}`)));
+ });
+ const rows=output.trim().split('\n').map(line=>JSON.parse(line));assert.equal(rows.length,lanes);
+ assert.equal(new Set(rows.map(row=>row.lane)).size,lanes);assert(rows.every(row=>row.text==='x'.repeat(150000)));
+});
 test('Rhino opt-in yields forty independent sessions without expanding old single-session plans',()=>{
  const b=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))['32799'],p={...b,countAllocation:'a'.repeat(64),sessionLayout:{...plan.sessionLayout,lanesPerHost:2}};
  const game={mode:'demo',sessionId:'Free:synthetic',operatorId:'fixture'},run='1:1:00000000-0000-0000-0000-000000000001',ids=new Set();
