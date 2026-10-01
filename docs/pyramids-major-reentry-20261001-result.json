@@ -1,5 +1,5 @@
 {
-  "schema": "sg-offline-repair-reentry-review-v1",
+  "schema": "sg-repair-reentry-review-v2",
   "gameId": 32721,
   "completePreserved": 3211,
   "historicalBaseline": 150,
@@ -8,11 +8,20 @@
   "profileHash": "5c7278ed911ed73ca082e611e8556909704e979b9b6447d29591ec8f8cf6a411",
   "memoryReplay": true,
   "pythonFullVerification": true,
-  "nativeDeployed": false,
-  "onlineApplied": false,
+  "nativeDeployed": true,
+  "onlineApplied": true,
   "sourceRequests": 0,
   "nodeChecks": 53,
   "pythonPlanChecks": 2,
   "nativeIoChecks": 16,
-  "onlineNaturalMajorTerminal": false
+  "onlineNaturalMajorTerminal": false,
+  "activationRun": "36859930465:1",
+  "sourceRun": "36860241790:1",
+  "sourceConclusion": "failure",
+  "newCompleteMongo": 416,
+  "totalCompleteMongo": 3627,
+  "repairStatus": "parked-protocol-after-new-mixed-hold",
+  "sourceFailure": "UNKNOWN_TRIAL_FEATURE",
+  "verificationEntryFailure": "ENOENT_CONFIG_NONE",
+  "onlineSettlementPending": true
 }

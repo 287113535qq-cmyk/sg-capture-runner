@@ -37,3 +37,10 @@ test('major repair reuses shared closure and never retires an already closed sou
  for(const mode of ['activate','admit']){const e=pyramidsRepairEntry(mode,'formal-repair-pyramids-major-20261001.json');assert.equal(e.oldName,'formal-repair-pyramids-continuation-20261001.json');assert.equal(e.sourceId,36848037333);assert.equal(e.v3,true);}
  assert.throws(()=>pyramidsRepairEntry('retire','formal-repair-pyramids-major-20261001.json'));
 });
+
+test('mixed Hold retirement binds only the newly ended major source',()=>{
+ const e=pyramidsRepairEntry('retire','formal-repair-pyramids-major-entryfix-20261001.json','formal-retire-pyramids-major-transition-20261001.json');
+ assert.equal(e.sourceId,36860241790);assert.equal(e.oldName,e.parserProfile);assert.equal(e.v3,true);
+ assert.throws(()=>pyramidsRepairEntry('retire','formal-repair-pyramids-major-20261001.json',e.retireName));
+ assert.throws(()=>pyramidsRepairEntry('admit',e.oldName,e.retireName));
+});

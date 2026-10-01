@@ -7,6 +7,13 @@ export function formalRelayInputs(inputs){
   .map(k=>[k,String(inputs?.[k]??'')]).filter(([k,v])=>v!==''||k==='runtime_profile'));
 }
 
+export function formalRelayRuntimePath(inputs){
+ const name=inputs.runtime_profile;
+ if(name===undefined||name===''||name==='none')return null;
+ assert(/^[a-z0-9-]+\.json$/.test(name),'FORMAL_RELAY_RUNTIME_PATH');
+ return 'config/'+name;
+}
+
 // AG's durable claim -> bounded work -> continue model. Reuse an applied
 // allocation; never mint a profile, reset a quota, or replay a source request.
 export async function relayFormalRun({store,plan,profile,inputs,source,jobs,commit,repository,boundary,createIntent,dispatch,now=Date.now}){

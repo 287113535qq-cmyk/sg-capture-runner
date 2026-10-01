@@ -3,14 +3,14 @@ import {connectGateway} from './transport.mjs';import {ResourceGate} from './res
 import {authenticatedRead} from './github-boundary.mjs';import {maintenanceBoundary} from './demo-run-fence.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';import {secondaryParallelBoundary} from './secondary-parallel-boundary.mjs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';import {formalCountProfilePath,applyFormalCount} from './formal-count-plan.mjs';
-import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';import {relayFormalRun,formalRelayInputs} from './formal-relay.mjs';
+import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';import {relayFormalRun,formalRelayInputs,formalRelayRuntimePath} from './formal-relay.mjs';
 const event=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')),inputs=formalRelayInputs(event.inputs);
 if(inputs.formal_relay!=='same-allocation-v1'){console.log(JSON.stringify({continued:false,reason:'FORMAL_RELAY_DISABLED'}));process.exit(0);}
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GH_TOKEN,'GITHUB_REQUIRED');
 const repository=process.env.GITHUB_REPOSITORY,group=repository==='zyzuoyang/sg-capture-runner'?'primary':'secondary';
 assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository),'REPOSITORY_SCOPE');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load(formalCountProfilePath()),plans=applyFormalCount(load('config/round-one-plans.json'),profile),plan=plans[profile.gameId];
-const revision=inputs.runtime_profile?load('config/'+inputs.runtime_profile):null,peer=revision?.secondaryPeer??profile.primaryPeer;
+const runtimePath=formalRelayRuntimePath(inputs),revision=runtimePath?load(runtimePath):null,peer=revision?.secondaryPeer??profile.primaryPeer;
 const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,read=authenticatedRead(process.env.GH_TOKEN);
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+10*60000});let claimed=false;
 const idle=peer?countPeerBoundary({read,transport,peer,selfGroup:group,run,commit,workflowPath:'.github/workflows/trial-300k.yml'}):

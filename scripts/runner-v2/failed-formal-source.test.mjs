@@ -18,3 +18,14 @@ test('new display source uses its own exact ended identity without allowing arbi
  for(const change of [{id:run.id+1},{head_sha:e.run.head_sha},{status:'in_progress'}])
   assert.throws(()=>checkFailedFormalSource({ended:{...run,...change},jobs:e.jobs,profile}));
 });
+
+test('new mixed feature source requires its exact failed relay-choice evidence',()=>{
+ const run={...e.run,id:36860241790,head_sha:'d2d38028883eef3a609ba3209e19785857a54e56'};
+ const jobs=structuredClone(e.jobs);jobs.jobs.find(j=>j.name==='verify').conclusion='failure';
+ const verifyFailure={schema:'sg-known-relay-choice-failure-v1',logSha256:'7ecc23b75814e9ca3b3d377eb147aa0ca5bd011febd6b3a19c60da07c0bec729',code:'ENOENT',runtimeChoice:'none'};
+ const profile={...p,sourceRun:'36860241790:1',sourceCommit:run.head_sha,sourceFailure:{...p.sourceFailure,jobsHash:hash(jobs),verifyFailure}};
+ assert.doesNotThrow(()=>checkFailedFormalSource({ended:run,jobs,profile}));
+ for(const change of [{code:'OTHER'},{logSha256:'a'.repeat(64)},{runtimeChoice:'other.json'}])
+  assert.throws(()=>checkFailedFormalSource({ended:run,jobs,profile:{...profile,sourceFailure:{...profile.sourceFailure,verifyFailure:{...verifyFailure,...change}}}}));
+ assert.throws(()=>checkFailedFormalSource({ended:{...run,head_sha:e.run.head_sha},jobs,profile}));
+});

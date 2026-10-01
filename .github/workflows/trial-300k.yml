@@ -810,7 +810,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
       SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
@@ -842,7 +842,7 @@ jobs:
       matrix:
         shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
     env:
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'

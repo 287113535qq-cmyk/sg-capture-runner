@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {relayFormalRun,waitFormalRelayParent,formalRelayInputs} from './formal-relay.mjs';
+import {relayFormalRun,waitFormalRelayParent,formalRelayInputs,formalRelayRuntimePath} from './formal-relay.mjs';
 function fixture(){
  const commit='a'.repeat(40),activation='b'.repeat(64),profile={activation},repository='zyzuoyang/sg-capture-runner';
  const plan={trialId:'fixture',gameId:32799,buy:0,phase:1,target:300000,countAllocation:activation};
@@ -28,3 +28,10 @@ for(const bad of ['busy','active-worker','bad-proof','wrong-head','wrong-activat
 test('child waits for exact successful parent and only one child may consume intent',async()=>{const f=fixture();await relayFormalRun(f.args);const args=f.child();let calls=0;args.read=async()=>({...f.source,status:++calls===1?'in_progress':'completed',conclusion:calls===1?null:'success'});await waitFormalRelayParent(args);assert.equal(calls,2);await assert.rejects(waitFormalRelayParent({...f.child(),selfRun:'79:1'}),/JOURNAL_CONTENT_CONFLICT/);});
 for(const bad of ['missing-intent','wrong-input','failed-parent','changed-parent','waiting-expired'])test('child refuses '+bad,async()=>{const f=fixture();if(bad!=='missing-intent')await relayFormalRun(f.args);const args=f.child();if(bad==='wrong-input')args.inputs.runtime_profile='foreign.json';if(bad==='failed-parent')args.read=async()=>({...f.source,status:'completed',conclusion:'failure'});if(bad==='changed-parent')args.read=async()=>({...f.source,head_sha:'e'.repeat(40)});if(bad==='waiting-expired')args.read=async()=>f.source;await assert.rejects(waitFormalRelayParent(args));assert(!f.docs.has('journal/count-relay:fixture:77:1:admit'));});
 test('normalized dispatch inputs include exactly the source permission fields',()=>{assert.deepEqual(formalRelayInputs({role:'formal-count',allocation:'round-one',round_one_limit:'0',formal_profile:'fixed.json',runtime_profile:'',pilot_profile:'unused',relay_parent:''}),{role:'formal-count',allocation:'round-one',round_one_limit:'0',formal_profile:'fixed.json',runtime_profile:''});});
+
+test('choice none selects no runtime file while preserving the dispatch binding',()=>{
+ for(const value of [undefined,'','none'])assert.equal(formalRelayRuntimePath({runtime_profile:value}),null);
+ assert.equal(formalRelayRuntimePath({runtime_profile:'count-runtime-fixed.json'}),'config/count-runtime-fixed.json');
+ assert.equal(formalRelayInputs({runtime_profile:'none'}).runtime_profile,'none');
+ for(const value of ['../secret.json','NONE','config/fixed.json'])assert.throws(()=>formalRelayRuntimePath({runtime_profile:value}));
+});
