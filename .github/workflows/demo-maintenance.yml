@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      window_peer_profile:
+        description: 'Read-only window audit with an independently pinned healthy peer'
+        type: choice
+        default: ''
+        options: ['', count-window-peer-rhino-pyramids-20261001.json]
       ended_source_run:
         description: 'Exact ended run id:attempt for AG parking only; no source permission'
         type: string
@@ -69,6 +74,7 @@ jobs:
         env:
           SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
           SG_WINDOW_SOURCE_RUN: ${{ inputs.ended_source_run }}
+          SG_COUNT_WINDOW_PEER_PROFILE: ${{ inputs.window_peer_profile }}
         run: node scripts/runner-v2/count-window-review-control.mjs
       - name: Close reviewed unknown count request without replay or new source permission
         if: inputs.operation == 'close-count-network'

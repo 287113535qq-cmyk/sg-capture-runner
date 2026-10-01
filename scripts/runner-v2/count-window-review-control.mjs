@@ -8,6 +8,8 @@ import {loadCountPermission} from './complete-count.mjs';import {reviewCountWind
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {windowTiming} from './window-timing.mjs';
 import {readParentTailFailure} from './parent-tail-failure.mjs';
+import {checkWindowPeerProfile} from './count-window-peer.mjs';
+import {countPeerBoundary} from './count-peer-boundary.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
 assert(profile.gameId===32799&&['sg-formal-count-rhino-v2','sg-session-layout-rhino-v1'].includes(profile.schema),'WINDOW_PROFILE_SCOPE');
@@ -21,8 +23,12 @@ assert(parentTailFailure||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length
  &&Array.from({length:20},(_,i)=>'capture-'+i).every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)),'WINDOW_SOURCE_JOBS');
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
 try{
- const boundary=maintenanceBoundary({read,store,oldProfile:JSON.parse(fs.readFileSync('config/demo-pilot-beaver-20260930.json','utf8')),
-  run:process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit:process.env.GITHUB_SHA});
+ const witnessName=process.env.SG_COUNT_WINDOW_PEER_PROFILE;
+ assert(!witnessName||witnessName==='count-window-peer-rhino-pyramids-20261001.json','WINDOW_PEER_PROFILE_PATH');
+ const peer=witnessName?checkWindowPeerProfile(JSON.parse(fs.readFileSync('config/'+witnessName,'utf8')),profile,ended):null;
+ const self={run:process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit:process.env.GITHUB_SHA};
+ const boundary=peer?countPeerBoundary({read,transport,peer,selfGroup:'primary',...self,workflowPath:'.github/workflows/demo-maintenance.yml'}):
+  maintenanceBoundary({read,store,oldProfile:JSON.parse(fs.readFileSync('config/demo-pilot-beaver-20260930.json','utf8')),...self});
  await boundary();await checkPrimaryLeases({store,plans});
  const pool=(await store.get('state','pool:'+plan.trialId))?.value,campaign=(await store.get('state','campaign'))?.value;
  const spec=await loadCountPermission({store,plan,pool,commit:ended.head_sha});
