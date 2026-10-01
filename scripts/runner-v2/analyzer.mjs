@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
+import {verifyAnalyzerPage} from './analyzer-page.mjs';
 
 export function analyzer({python='python3',env=process.env}={}) {
   const child=spawn(python,['-B','scripts/runner-v2/record_fields.py'],{stdio:['pipe','pipe','pipe'],env});
@@ -19,11 +20,13 @@ export function analyzer({python='python3',env=process.env}={}) {
     if(!v.ok){reject(v.error);return;}
     const p=pending;pending=null;clearTimeout(p.timer);p.resolve(v.result);
   });
-  return {call(fields){
+  const api={call(fields){
     assert(!pending && !closed);
     return new Promise((resolve,rejectPromise)=>{
       pending={resolve,reject:rejectPromise,timer:setTimeout(()=>{reject('ANALYZER_TIMEOUT');child.kill();},60_000)};
       child.stdin.write(JSON.stringify(fields)+'\n');
     });
-  },close(){closed=true;reject('ANALYZER_CLOSED');child.stdin.end();child.kill();}};
+  },verifyPage(plan,records){return verifyAnalyzerPage(api,plan,records);},
+  close(){closed=true;reject('ANALYZER_CLOSED');child.stdin.end();child.kill();}};
+  return api;
 }

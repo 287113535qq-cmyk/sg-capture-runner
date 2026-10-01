@@ -37,6 +37,20 @@ def execute(request):
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') == 'verify_batch':
+        records = request.get('records')
+        assert isinstance(records, list) and 1 <= len(records) <= 100
+        assert len({r['_id'] for r in records}) == len(records)
+        assert all(r.get('fixtureOnly') is False for r in records)
+        assert all(type(r.get('sequence')) is int and r['sequence'] > 0 for r in records)
+        assert all(a['sequence'] < b['sequence'] for a, b in zip(records, records[1:]))
+        # Preserve the exact single-record monetary, XML and content checks.
+        # A failure anywhere rejects the entire page, with no partial receipt.
+        for record in records:
+            assert execute({'op': 'verify', 'plan': plan,
+                            'raw': record['raw'], 'record': record}) == {'verified': True}
+        return {'verified': True, 'count': len(records),
+                'idsHash': digest([[r['_id'], r['contentHash']] for r in records])}
     op, raw = request['op'], request['raw']
     if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE):
         if op == 'next':

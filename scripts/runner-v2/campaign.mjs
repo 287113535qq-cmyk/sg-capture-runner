@@ -165,13 +165,20 @@ export class GithubCampaign {
     while(true){
       await this.store.writable();
       const rows=await this.transport.request('rounds_scan',{trialId:plan.trialId,after});if(!rows.length)break;
+      if(this.analyzer.verifyPage){
+        assert(rows.length<=100,'AUDIT_PAGE_BOUND');
+        const verified=await this.analyzer.verifyPage(plan,rows);
+        assert(verified?.verified===true&&verified.count===rows.length,'COUNT_AUDIT_UNVERIFIED');
+      }
       for(const record of rows){
         assert(record.sequence>after && record.fixtureOnly===false && record.buy===0);
         if(countSpec)auditAllocatedRecord({pool,plan,spec:countSpec,record});else assert(record.sequence<=plan.target);
         if(countSpec)await auditCountBatch({store:this.store,plan,pool,spec:countSpec,record,cache:sessionAuditCache});
         else await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
-        const verified=await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
-        if(countSpec)assert(verified?.verified===true,'COUNT_AUDIT_UNVERIFIED');
+        if(!this.analyzer.verifyPage){
+          const verified=await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
+          if(countSpec)assert(verified?.verified===true,'COUNT_AUDIT_UNVERIFIED');
+        }
         rules.observeVerified(record);
         digest.update(stable([record._id,record.contentHash])+'\n');after=record.sequence;count++;
       }

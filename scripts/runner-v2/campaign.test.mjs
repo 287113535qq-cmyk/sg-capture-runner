@@ -136,6 +136,28 @@ test('failed record verification never produces a coverage archive or completes 
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'active');
 });
 
+test('page verification preserves session ownership and refuses partial receipts before completion',async()=>{
+ for(const mode of ['valid','partial','invalid-tail','wrong-owner']){
+  const f=fixture(),plan=f.plans[32723];
+  await f.store.create('state','campaign',{enabled:true,activeGame:32723,
+   games:[{game_id:32723,status:'active',baseline:299998}],audit:{owner:'audit-job',until:2000}});
+  await f.store.create('state','pool:'+plan.trialId,{confirmed:2,workers:{0:{leaseUntil:0,activeBatch:null,sessionHash:'fixed'}}});
+  for(let sequence=1;sequence<=2;sequence++)f.rows.push({_id:'id'+sequence,contentHash:'hash'+sequence,
+   sequence,fixtureOnly:false,buy:0,shardId:0,sourceSessionHash:mode==='wrong-owner'?'other':'fixed',
+   normalized:{bonus:0},raw:{steps:[{msgId:'BET',responsePayload:'MSGID=BET&NFG=0&IFG=0'}]}});
+  let pages=0;f.c.analyzer.call=async()=>{throw new Error('PER_RECORD_PATH_USED');};
+  f.c.analyzer.verifyPage=async(p,rows)=>{assert.equal(p,plan);assert.equal(rows.length,2);pages++;
+   if(mode==='invalid-tail')throw new Error('INVALID_TAIL');
+   return {verified:true,count:mode==='partial'?1:2};};
+  if(mode==='valid'){assert.equal((await f.c.audit(plan)).fullReadback,2);
+   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'complete');}
+  else{await assert.rejects(f.c.audit(plan));
+   assert(![...f.docs.keys()].some(k=>k.startsWith('journal/')));
+   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'active');}
+  assert.equal(pages,1);
+ }
+});
+
 test('matrix finalizer cannot extend short scope, park another run or move past a live owner',async()=>{
   for(const mode of ['short','other-run','live']){
     const f=fixture(),trial=f.plans[32723].trialId;
