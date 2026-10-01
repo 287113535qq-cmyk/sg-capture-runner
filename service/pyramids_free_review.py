@@ -48,7 +48,8 @@ class PyramidsFreeSequence(NativeNextgenFields):
                 x,y,value = map(int,cells)
                 check(0 <= x < 3 and 0 <= y < 5 and value <= 9007199254740991 and (x,y) not in seen, 'PYRAMIDS_FREE_COIN')
                 seen.add((x,y))
-                unreviewed_coin |= value < 0
+                unreviewed_coin |= value < 0 and not (getattr(self, 'reviewed_major', False)
+                    and index > 0 and key == 'CL' and cells[2] == '-3')
         # Known official coin symbols are an adapter gap, not corrupt money.
         # Validate every position first so a malformed later coin stays a hard fault.
         check(not unreviewed_coin, 'PYRAMIDS_FREE_UNREVIEWED_COIN')

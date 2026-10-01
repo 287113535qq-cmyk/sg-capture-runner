@@ -1,6 +1,6 @@
 # AG 效率优化：故障隔离、权限复用与连续接力
 
-2026-10-01。本轮全部优化尚未验收完成；完成游戏仍为15/178。Rhino与Pyramids的新源均已结束，当前不宣称仍在采集。
+2026-10-01。本轮全部优化尚未验收完成；完成游戏仍为15/178。此前Rhino与Pyramids的新源均已结束。最新恢复任务已派发，但仍是jobless queued，不能称已恢复采集。
 
 本次发现的实际瓶颈是故障分类：Pyramids免费帧的CL金币值-3被当作损坏数据，触发secondary共享保护；Rhino随后触发GLOBAL_SOURCE_STOPPED并结束。官方固定客户端将-3映射到已知金币符号，原rC投影保留该值；实际两帧仍要求FREE_GAME且未结算。这是未适配分支，不能猜终局，也不能直接恢复旧半局。
 
@@ -38,3 +38,11 @@ Pyramids实际3,211条逐条Python和实际Mongo快照内存回放通过；旧jo
 Rhino36852871261已成功完成线上Python逐条验证及Mongo全文读回：52,897完整保留，28中断留样作废，pending/待写/预留额度0，原activation和计数目标不变，主池健康，两hold均false。新独立配置count-runtime-rhino-ag-continuation-20261001.json绑定真实关闭凭证；实际状态内存回放只增加一条零额度runtime凭证，原状态和全部旧journal不变，分页最大100。恢复配置剩余247,103、20host各2独立会话、220分钟有界运行，并明确启用同额度自动接力；实际源派发尚待最终Linux和无源准入。
 
 Linux36853814785因旧测试精确匹配仅含三种配置的工作流表达式失败；实际工作流已选对正式profile，尚未派发任何恢复维护或源。修正受影响入口测试并新增独立entryfix配置，原未应用配置保留不覆盖。39项本机检查和实际状态恢复回放通过，后续派发只选择count-runtime-rhino-ag-continuation-entryfix-20261001.json。
+
+## 恢复准入完成及当前调度阻塞
+
+Linux36854308469成功；25份增量文件612671bytes、SHA d604f09095023ccff24d05e663546b900066155849e18cfd62d3fb32e03af53f两端读回通过。无源更新36854642355成功，完整52,897、剩余247,103、原activation及额度不变。新配置count-runtime-rhino-ag-continuation-entryfix-20261001.json已经应用，永久冻结。
+
+恢复源36854881370在11:21:43UTC派发，当前GitHub仍返回queued、jobs0/checks0；原完整数量不变、count-run许可不存在、租约0。普通取消及force-cancel均未成功；force-cancel明确返回HTTP409：该运行尚未进入可取消的队列。已记录唯一派发intent，禁止重复派发或假称已采集。这不是已实证的采集器吞吐问题，也不能把具体根因猜成GitHub-hosted容量或旧队列占位。
+
+修复线已完成已观察FREE CL=-3的独立三端接线；3,211旧完整逐条不变，2实际前缀继续FREE，修复队列源额度0。见[pyramids独立修复](pyramids-free-major-repair-20261001.md)。每一步分别保留AG任务身份、单款差异隔离、持久结果复用及重新准入，未跳过全文和资源保护。

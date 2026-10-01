@@ -17,7 +17,7 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
   if(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'){
-    const value=pyramidsFields(raw,mapping.typeMappingHash);
+    const value=pyramidsFields(raw,mapping.typeMappingHash,mapping.bonus===3);
     if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_PYRAMIDS_MAPPING_MISMATCH');
     return value;
   }

@@ -35,6 +35,7 @@
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
+      "service/pyramids_major_review.py",
       "service/pyramids_hold_review.py",
       "service/pyramids_free_review.py",
       "service/pyramids_fields.py",
@@ -53,7 +54,8 @@
       "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
       "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。",
       "GSD.HNSTW / HVA / HVABT": "Hold累计奖励与首BET赢奖相加核TW；5x3盘面拒绝Grand标记。",
-      "GSD.FGRS / CFGC": "客户端剩余/进度可覆盖外层，严格相等防止提前结束。"
+      "GSD.FGRS / CFGC": "客户端剩余/进度可覆盖外层，严格相等防止提前结束。",
+      "GSD.CL=-3": "已观察FREE奖金图标，独立major-v1/bonus3；仅FREE CL允许-3，首BET、BGCL及-4/-2仍拒绝。3211旧完整规范化不变，实际两帧未完成，自然major终局未观察。"
     }
   },
   "typeMappings": {
@@ -104,17 +106,44 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-free-major-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": "pyramids-free-major-v1",
+      "featureTypes": {
+        "independentFreeGames": 3
+      }
     }
   },
   "mappingHashes": {
     "hyperchargedpyramidsofra96-round-one-base-v1": "f40123d14c4ce5091eeaab0c559ada08179cf41303966b1458baa7c782074dca",
-    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-ten-free-v1": "c121c0851ee85ea888d1c6c32da76d38557635dc2162ee390a0c8fb446ae7ef2"
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-ten-free-v1": "c121c0851ee85ea888d1c6c32da76d38557635dc2162ee390a0c8fb446ae7ef2",
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-free-major-v1": "59012348f3a626ce331f182f144a36e377eef57e2a6d83e5dd2980ab406cacc8"
   },
   "configuredNaturalBonusCodes": [
     1,
-    2
+    2,
+    3
   ],
-  "configuredOutcomeCategoryCount": 2,
+  "configuredOutcomeCategoryCount": 3,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
@@ -126,16 +155,17 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "bb55db3d1d53b8da1741f9f12822c2dd08fad4e2cb6ff48a7e1807b7c50c737f",
+    "service/round_fields.py": "795e09079dc425780f001637ea9794c36a4344a1e5e50c00af8215d766e5eaf4",
     "scripts/runner-v2/record_fields.py": "509672199fcb01088ffcff2f99eee4d3f8c4a4419e3065bf0e6146d89c7e2fbf",
+    "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
     "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
-    "service/pyramids_free_review.py": "32c6243c6001a32590343435c2504875286c72544246679dd749672ee7366253",
-    "service/pyramids_fields.py": "d0f039b3a93bafe637785ecf36c7f8765f1c71c55ad7ed05b78e33906fd1a10d",
+    "service/pyramids_free_review.py": "3c9ae5a0953225521db9114a2dafcee75e6d93fa6b7f22e21942bf101edda7ce",
+    "service/pyramids_fields.py": "3e3b7dbc0eddf6b32c7ba7658503e0180abf9e2118a09ada8532bcd40c7b164e",
     "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
-    "scripts/trial/pyramids-free-review.mjs": "6c6bcbd6378a28889572b659f19b460ad70c68a97ca60afba5c4976d07378e84",
-    "scripts/trial/pyramids-protocol.mjs": "3220ec91aed766ff0428c9b01173bf38f78c34d84ea435e55caf366ff3151036",
-    "collector/sg.pyramids.ts": "022944d8e09b0774ae21f3cd9811f86dde22ff09209dcc6ac4544395512ea6d8",
-    "service/game_rule_catalog.py": "def659746e44ab931dc4e4a8a99a44714c906b8cd8440ba3599ca33bff89cd6c"
+    "scripts/trial/pyramids-free-review.mjs": "a7e1df29deae3229862ca50e0ec775f37cb7c6139dd470aa8d0e7a79e5901697",
+    "scripts/trial/pyramids-protocol.mjs": "c944cfefe0b017a2210ed0d6af04cb80a02f208d704af6c6824a4f0bbcdc94b0",
+    "collector/sg.pyramids.ts": "bdc54a2a57abdd5469e3770b24776fbcdfb9486b0f1a2033e48e9c42a0e03256",
+    "service/game_rule_catalog.py": "5d74dac64e2d113bb11cc3af53c11926ca712a18f2f6c8559b715c885d93138f"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -167,5 +197,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d05e2bbee3597c296af26c19785bee373f930b510290a2f99446e9380f29844c"
+  "ruleHash": "53e366cd9de6620e2da47683f902ce7d29abcd187bd05de0742fa4b17c26dbe1"
 }

@@ -25,10 +25,11 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false){
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
  const hold=!free&&(raw.steps.length>1||count(fields(raw.steps[0].responsePayload).NFG??'0')>0);
+ let observedMajor=false;
  let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{
   const q=fields(s.requestPayload),p=fields(s.responsePayload),msg=i?'FREE_GAME':'BET';
@@ -53,7 +54,7 @@ export function pyramidsFields(raw:any,mappingHash:string){
      }
      const seen=new Set<string>(),coins=matrix(g[key]);
      requireP(coins.length<=15,'PYRAMIDS_FREE_COIN');
-     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&(v>=0||[-4,-3,-2].includes(v))&&!seen.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);unreviewedCoin ||= v<0;}
+     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&(v>=0||[-4,-3,-2].includes(v))&&!seen.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);observedMajor ||= i>0&&key==='CL'&&v===-3;unreviewedCoin ||= v<0&&!(reviewedMajor&&i>0&&key==='CL'&&v===-3);}
     }
     requireP(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
     requireP((g.IIFS===undefined||(i?['0','1']:['1']).includes(g.IIFS))&&(g.FGRS===undefined||count(g.FGRS)===n)&&(g.CFGC===undefined||count(g.CFGC)===c),'PYRAMIDS_FREE_NESTED');
@@ -69,9 +70,10 @@ export function pyramidsFields(raw:any,mappingHash:string){
   }else requireP(raw.steps.length===1&&n===0,'PYRAMIDS_UNKNOWN_FEATURE');
   prior=n;last=p;
  });
+ requireP(!reviewedMajor||observedMajor,'PYRAMIDS_MAJOR_SCOPE');
  requireP(prior===0&&(!(free||hold)||raw.steps.length>1),'INCOMPLETE_ROUND');
  const start=raw.startBalanceRaw,end=count(last.B),win=count(last.TW),stake=start-end+win;
  requireP(Number.isSafeInteger(start)&&start>=0&&stake===20&&end===count(last.AB)&&(raw.steps[raw.steps.length-1].responseBalance===undefined||Number(raw.steps[raw.steps.length-1].responseBalance)===end),'PYRAMIDS_MONEY');
  requireP(typeof mappingHash==='string'&&/^[a-f0-9]{64}$/.test(mappingHash),'PYRAMIDS_MAPPING_REQUIRED');
- return{roundFieldsVersion:raw.roundFieldsVersion,protocol:raw.protocol,sourceKey:raw.sourceKey,bet:stake/100,mul:win/stake,buy:0,bonus:free?2:hold?1:0,primaryBonusKind:raw.steps.length>1?'freeGame':'none',typeMappingHash:mappingHash,money:{startBalanceRaw:start,endBalanceRaw:end,totalWinRaw:win,betRaw:stake}};
+ return{roundFieldsVersion:raw.roundFieldsVersion,protocol:raw.protocol,sourceKey:raw.sourceKey,bet:stake/100,mul:win/stake,buy:0,bonus:free?(reviewedMajor?3:2):hold?1:0,primaryBonusKind:raw.steps.length>1?'freeGame':'none',typeMappingHash:mappingHash,money:{startBalanceRaw:start,endBalanceRaw:end,totalWinRaw:win,betRaw:stake}};
 }

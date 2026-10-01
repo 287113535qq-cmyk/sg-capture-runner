@@ -14,7 +14,7 @@ function pairs(text,sep='&',eq='='){
   }return p;
 }
 function integer(v){check(typeof v==='string'&&/^\d+$/.test(v)&&Number.isSafeInteger(Number(v)),'INVALID_NUMBER');return Number(v);}
-export function pyramidsFreeSequence(raw){
+export function pyramidsFreeSequence(raw,{reviewedMajor=false}={}){
   check(raw.sourceKey===PYRAMIDS_FREE_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'PYRAMIDS_FREE_PROFILE_REQUIRED');
   const special=raw.steps.some(s=>['1','1|'].includes(pairs(s.responsePayload).FID));
   check(special,'PYRAMIDS_FREE_FREE_REVIEW_REQUIRED');
@@ -47,7 +47,7 @@ export function pyramidsFreeSequence(raw){
           check(cells.length===3,'PYRAMIDS_FREE_COIN');check(cells.slice(0,2).every(v=>/^\d+$/.test(v)&&Number.isSafeInteger(+v))
             &&(/^[0-9]+$/.test(cells[2])&&Number.isSafeInteger(+cells[2])||['-4','-3','-2'].includes(cells[2])),'PYRAMIDS_FREE_COIN');
           const [x,y,value]=cells.map(Number),pos=x+','+y;
-          check(x<3&&y<5&&!seen.has(pos),'PYRAMIDS_FREE_COIN');seen.add(pos);unreviewedCoin ||= value<0;
+          check(x<3&&y<5&&!seen.has(pos),'PYRAMIDS_FREE_COIN');seen.add(pos);unreviewedCoin ||= value<0&&!(reviewedMajor&&index>0&&key==='CL'&&cells[2]==='-3');
         }
       }
       check(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
