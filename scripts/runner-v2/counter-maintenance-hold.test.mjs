@@ -3,6 +3,7 @@ import {checkCountPeerHolds,countPeerBoundary} from './count-peer-boundary.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 function fixture(){const own={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{code:'PYRAMIDS_FREE_COUNTERS',category:'source_protocol',trialId:'sg_r1_20260928_32721',cooldownUntil:0}};return {own,rows:[{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:own}]};}
 test('no-source counter maintenance accepts only the exact original own hold',()=>{const f=fixture();checkCountPeerHolds(f.rows,'secondary',hash(f.own));assert.throws(()=>checkCountPeerHolds(f.rows,'secondary'));});
+test('reviewed Super Hold adapter gap accepts its exact own maintenance hash only',()=>{const f=fixture();f.own.details.code='PYRAMIDS_SUPER_HOLD_PREFIX_ONLY';checkCountPeerHolds(f.rows,'secondary',hash(f.own));assert.throws(()=>checkCountPeerHolds(f.rows,'secondary','0'.repeat(64)));});
 for(const kind of ['changed-code','changed-category','changed-trial','cooldown','peer-hold','missing-peer','duplicate-id','changed-hash'])test('counter maintenance keeps protection for '+kind,()=>{
  const f=fixture(),expected=hash(f.own);
  if(kind==='changed-code')f.own.details.code='MONGO_CONTENT_CONFLICT';if(kind==='changed-category')f.own.details.category='source_network';

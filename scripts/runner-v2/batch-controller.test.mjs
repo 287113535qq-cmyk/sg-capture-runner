@@ -109,7 +109,7 @@ test('compact source control still freshly rejects peer holds and changed worker
 
 test('Pyramids and Inca explicit feature gaps isolate the game while validation errors hold shared writes',async()=>{
  for(const [code,local] of [['PYRAMIDS_UNREVIEWED_GSD',true],['PYRAMIDS_UNREVIEWED_FEATURE',true],
-  ['PYRAMIDS_FREE_UNREVIEWED_GSD',true],['INCA_UNREVIEWED_COIN',true],['INCA_UNREVIEWED_JACKPOT',true],
+  ['PYRAMIDS_FREE_UNREVIEWED_GSD',true],['PYRAMIDS_SUPER_HOLD_PREFIX_ONLY',true],['INCA_UNREVIEWED_COIN',true],['INCA_UNREVIEWED_JACKPOT',true],
   ['PYRAMIDS_TERMINAL',false],['PYRAMIDS_FREE_COUNTERS',false],['SESSION_CHANGED_MID_ROUND',false]]){
   const f=await fixture();
   await f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'});

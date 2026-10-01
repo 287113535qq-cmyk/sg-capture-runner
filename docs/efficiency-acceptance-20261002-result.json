@@ -305,13 +305,78 @@
       "pending": 0,
       "reserved": 0,
       "sourceRequests": 0
+    },
+    "pyramidsCompactCapture": {
+      "sourceRun": 36941485498,
+      "workersWithFinalMetrics": 17,
+      "workersWithoutFinalMetrics": 3,
+      "completeThisRun": 87,
+      "actualDeltaCasRequests": 22,
+      "controlReadRequests": 152,
+      "controlReadBytes": 975618,
+      "controlBytesPerRequest": 6418.539473684211,
+      "previousFullBytesPerRequest": 50868.19651442308,
+      "compactAdoptionObserved": true,
+      "projectedControlRequests": 135,
+      "startupFullControlRequests": 17,
+      "requestShapeEvidence": "Fixed schema/trial and two-digit worker request byte totals; direct projected field equivalence independently reviewed.",
+      "operations": {
+        "read": {
+          "requests": 224,
+          "elapsedMs": 32462.69883,
+          "responseBytes": 3726698,
+          "requestBytes": 28900
+        },
+        "hello": {
+          "requests": 17,
+          "elapsedMs": 456.2692000000002,
+          "responseBytes": 3196,
+          "requestBytes": 731
+        },
+        "resources": {
+          "requests": 17,
+          "elapsedMs": 492.7780290000005,
+          "responseBytes": 4301,
+          "requestBytes": 799
+        },
+        "control_read": {
+          "requests": 152,
+          "elapsedMs": 1708.3454830000003,
+          "responseBytes": 975618,
+          "requestBytes": 14506
+        },
+        "cas_delta": {
+          "requests": 22,
+          "elapsedMs": 318.3154950000003,
+          "responseBytes": 1146,
+          "requestBytes": 9943
+        },
+        "create": {
+          "requests": 114,
+          "elapsedMs": 739.0657620000013,
+          "responseBytes": 4218,
+          "requestBytes": 377912
+        },
+        "cas": {
+          "requests": 331,
+          "elapsedMs": 2038.1045940000015,
+          "responseBytes": 16812,
+          "requestBytes": 593499
+        }
+      },
+      "sourceConclusion": "failure",
+      "fullRoundGainVerified": false,
+      "sourceRequestsForAnalysis": 0,
+      "mongoWritesForAnalysis": 0,
+      "limitation": "Unmatched protocol shapes and different completed counts cannot establish overall throughput gain."
     }
   },
   "pending": [
     "Independently activated subsequent capture adoption and measured in-game delta CAS benefit.",
     "Independent subsequent-runtime adoption and measured terminal/readback cost.",
     "Next independently ready game admission and continuous handoff.",
-    "Natural unsupported repair terminals and reentry."
+    "Natural unsupported repair terminals and reentry.",
+    "Actual adoption of Super Hold gap classification and controlWorker/controlFull telemetry after immutable prior-run closure."
   ],
   "prohibitedShortcuts": [
     "No current-runtime hot patch.",

@@ -64,7 +64,7 @@ export function checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash){
  if(maintenanceHoldHash){
   const own=holds.find(r=>r._id===selfGroup+'/global-hold')?.value;
   assert(selfGroup==='secondary'&&hash(own)===maintenanceHoldHash&&own.active
-   &&own.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'&&own.details?.code==='PYRAMIDS_FREE_COUNTERS'
+   &&own.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'&&['PYRAMIDS_FREE_COUNTERS','PYRAMIDS_SUPER_HOLD_PREFIX_ONLY'].includes(own.details?.code)
    &&own.details.category==='source_protocol'&&own.details.trialId==='sg_r1_20260928_32721'
    &&own.details.cooldownUntil===0&&holds.find(r=>r._id==='primary/global-hold')?.value.active===false,'GLOBAL_HOLD');
  }else assert(holds.every(r=>r?.value?.active===false),'GLOBAL_HOLD');

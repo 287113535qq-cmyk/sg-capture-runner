@@ -6,18 +6,25 @@ import {retireDemoPool} from './retire-demo-pool.mjs';
 import {nextRequest} from '../trial/squid-protocol.mjs';
 import {pyramidsFreeSequence} from '../trial/pyramids-free-review.mjs';
 import {reviewFifteenSequence} from '../trial/pyramids-fifteen-review.mjs';
+import {pyramidsHoldReview} from '../trial/pyramids-hold-review.mjs';
 
 // Reviewed, ended shared stop only. No SG transport or new count permission.
 // Close the faulty game first; the peer hold continues to protect both groups.
 export async function closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
  const group=profile?.group,root=group==='secondary';
  const counter=profile?.schema==='sg-count-counter-close-profile-v1';
+ const adapter=profile?.schema==='sg-count-adapter-close-profile-v1';
+ if(adapter)assert(root&&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
+  &&plan.target===299850&&profile.sourceRun==='36941485498:1'
+  &&profile.sourceCommit==='6a9d39684e1433cbba1c361044f57c8ee25787d3'
+  &&profile.sourceProfileHash==='f9fe107deffc81d8ebc86a00d9819987001e599bfe115890e4705f3bc8eb82a8'
+  &&profile.completePreserved===5111&&profile.abandonedAttempts===1,'ADAPTER_CLOSE_FIXED_SCOPE');
  if(counter)assert(root&&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
   &&plan.target===299850&&profile.sourceRun==='36937673870:1'
   &&profile.sourceCommit==='a66e2c7ac642c87ecedbbe9ddde5194bcae4de36'
   &&profile.sourceProfileHash==='f32e340466c2c02d725b93e87a92a493f013157275f6ea7ff699d47712ee8892'
   &&profile.completePreserved===5024&&profile.abandonedAttempts===1,'COUNTER_CLOSE_FIXED_SCOPE');
- assert(['primary','secondary'].includes(group)&&(counter||profile.schema==='sg-count-shared-close-profile-v1')
+ assert(['primary','secondary'].includes(group)&&(counter||adapter||profile.schema==='sg-count-shared-close-profile-v1')
   &&profile.gameId===plan.gameId&&profile.trialId===plan.trialId&&profile.planHash===hash(plan)
   &&profile.sourceAllowance===0&&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt<=7200000&&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'SHARED_CLOSE_PROFILE');
@@ -36,11 +43,11 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&(counter?pool&&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true:pool?.enabled&&!pool.failure)
   &&hash(pool)===profile.poolHash,'SHARED_CLOSE_SCENE');
  assert(hash(hold)===profile.holdHash&&hold.active&&hold.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'
-  &&hold.details?.code===(counter?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
-  &&(!counter||hold.details.category==='source_protocol'&&hold.details.cooldownUntil===0),'SHARED_CLOSE_HOLD');
+  &&hold.details?.code===(adapter?'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY':counter?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
+  &&(!(counter||adapter)||hold.details.category==='source_protocol'&&hold.details.cooldownUntil===0),'SHARED_CLOSE_HOLD');
  const spec=await loadCountPermission({store,plan,pool,commit:profile.sourceCommit}),batches=await readPoolBatches(store,plan,pool);
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
- assert(!counter||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
+ assert(!(counter||adapter)||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
  assert(permit?.schema==='sg-count-run-v1'&&permit.commit===profile.sourceCommit&&permit.run===profile.sourceRun
   &&permit.activation===spec.activation&&permit.profileHash===spec.profileHash&&hash(permit)===profile.permitHash,'SHARED_CLOSE_PERMISSION');
  assert(hash(batches)===profile.batchesHash&&Object.values(pool.workers).every(w=>w.leaseUntil<=now())
@@ -51,7 +58,11 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  if(root){
   const fault=batches.find(b=>b.id===hold.details.batchId);
   assert(hold.details.trialId===plan.trialId&&fault?.pending&&hash(fault.pending)===profile.faultPendingHash,'SHARED_CLOSE_FAULT');
-  if(counter){
+  if(adapter){
+   assert(fault.pending.raw.steps.length===2&&fault.pending.raw.steps[0].msgId==='BET'
+    &&fault.pending.raw.steps[1].msgId==='FREE_GAME','ADAPTER_CLOSE_PREFIX');
+   assert.throws(()=>pyramidsHoldReview(fault.pending.raw),/^Error: PYRAMIDS_SUPER_HOLD_PREFIX_ONLY$/,'ADAPTER_CLOSE_OLD_SCOPE');
+  }else if(counter){
    assert(fault.pending.raw.steps.length===1&&fault.pending.raw.steps[0].msgId==='BET','COUNTER_CLOSE_PREFIX');
    assert.throws(()=>pyramidsFreeSequence(fault.pending.raw),/^Error: PYRAMIDS_FREE_COUNTERS$/,'COUNTER_CLOSE_OLD_SCOPE');
    const reviewed=reviewFifteenSequence(fault.pending.raw);

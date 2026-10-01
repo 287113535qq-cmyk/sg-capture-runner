@@ -22,6 +22,18 @@ function fixture(actions,options={}){
  return {gateway:connectGateway({spawnProcess,pause:async()=>{},ackTimeoutMs:20,...options}),children,writes,argumentsSeen};
 }
 
+test('worker control telemetry separates projected reads without exposing identities',async()=>{
+ const f=fixture(['ok','ok']);
+ await f.gateway.request('control_read',{trialId:'private-trial'});
+ await f.gateway.request('control_read',{trialId:'private-trial',workerId:20});
+ const m=f.gateway.metrics();
+ assert.equal(m.byDocumentKind.controlFull.requests,1);
+ assert.equal(m.byDocumentKind.controlWorker.requests,1);
+ assert.equal(m.byOperation.control_read.requests,2);
+ assert.equal(m.byDocumentKind.controlFull.responseBytes+m.byDocumentKind.controlWorker.responseBytes,m.byOperation.control_read.responseBytes);
+ assert(!JSON.stringify(m).includes('private-trial'));f.gateway.close();
+});
+
 test('SSH compression changes only transport codec and preserves the exact request and reconnect protections',async()=>{
  const plain=fixture(['ok']),compressed=fixture(['disconnect','ok'],{compression:true});
  const request={collection:'state',key:'validation:1:1:delta'};
