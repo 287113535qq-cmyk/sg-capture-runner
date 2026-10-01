@@ -27,11 +27,17 @@ export function checkCountPeerEvidence(evidence,peer,status,now=Date.now()){
  const keys=[`${peer.group}/count-run:${peer.trialId}:${peer.run}`,`${peer.group}/complete-count:${peer.trialId}:${peer.activation}`];keys.push(keys[1]+':complete');
  assert(new Set(evidence.journal.map(d=>d._id)).size===3&&evidence.journal.every(d=>keys.includes(d._id)),'COUNT_PEER_JOURNAL_SCOPE');
  const [permit,spec,complete]=keys.map(key=>evidence.journal.find(d=>d._id===key).value);
+ const finished=status==='completed'&&campaign.activeGame===null;
+ if(finished){
+  const entry=campaign.games?.find(g=>g.game_id===fixed.gameId),target=peer.group==='primary'?300000:299850;
+  assert(entry?.status==='complete'&&entry.confirmed===target&&Number.isFinite(entry.completed)
+   &&pool.confirmed===target,'COUNT_PEER_FINISHED_PROOF');
+ }
  assert(permit.schema==='sg-count-run-v1'
   &&permit.run===peer.run&&permit.commit===peer.commit&&permit.activation===peer.activation&&permit.profileHash===peer.profileHash
   &&Number.isSafeInteger(permit.completeBefore)&&permit.completeBefore>=0&&Number.isSafeInteger(permit.remainingComplete)
   &&permit.completeBefore+permit.remainingComplete===(peer.group==='primary'?300000:299850),'COUNT_PEER_PERMISSION');
- assert(campaign.group===peer.group&&campaign.enabled&&campaign.activeGame===fixed.gameId&&!campaign.protocolValidation
+ assert(campaign.group===peer.group&&campaign.enabled&&(finished||campaign.activeGame===fixed.gameId)&&!campaign.protocolValidation
   &&campaign.validationLimit===0&&campaign.formalCount?.activation===peer.activation&&campaign.formalCount.profileHash===peer.profileHash
   &&campaign.formalCount.trialId===peer.trialId&&bound.gameId===fixed.gameId&&pool.enabled&&!pool.failure
   &&pool.countAllocation?.specHash===hash(spec)&&spec.schema==='sg-complete-count-v1'
@@ -100,7 +106,10 @@ export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,work
    &&jobs.jobs.some(j=>j.name===(peer.group==='primary'?'formal-admit':'pyramids-formal-admit')&&j.status==='completed'&&j.conclusion==='success')
    &&jobs.jobs.filter(j=>!captures.includes(j)).every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion)),
    'COUNT_PEER_JOBS');
-  checkCountPeerEvidence(await transport.request(fixed.op,{run:peer.run,activation:peer.activation}),peer,r.status,now());
+  const evidence=await transport.request(fixed.op,{run:peer.run,activation:peer.activation});
+  if(r.status==='completed'&&evidence.state?.find(d=>d._id===peer.group+'/campaign')?.value.activeGame===null)
+   assert(jobs.jobs.filter(j=>j.name==='verify'&&j.status==='completed'&&j.conclusion==='success').length===1,'COUNT_PEER_FINISHED_AUDIT');
+  checkCountPeerEvidence(evidence,peer,r.status,now());
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(d=>d?.value?.active===false),'GLOBAL_HOLD');
   assert(now()-start<=30000,'GITHUB_EVIDENCE_STALE');
  };

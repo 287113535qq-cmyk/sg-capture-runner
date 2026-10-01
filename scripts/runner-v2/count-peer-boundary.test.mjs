@@ -65,6 +65,21 @@ test('ended healthy peer requires closed batches and no live lease; ended failur
  f.pool.workers[0].activeBatch={id:1};await assert.rejects(countPeerBoundary(f.args)(),/ENDED_UNSETTLED/);
  f.other.conclusion='failure';await assert.rejects(countPeerBoundary(f.args)(),/PEER_IDENTITY/);
 });
+test('finished peer can release the next game only after target completion and successful final audit',async()=>{
+ const f=fixture();Object.assign(f.other,{status:'completed',conclusion:'success'});
+ f.jobs.forEach(j=>Object.assign(j,{status:'completed',conclusion:'success'}));f.pool.workers[0].leaseUntil=0;
+ f.pool.confirmed=300000;f.campaign.activeGame=null;
+ f.campaign.games=[{game_id:32799,status:'complete',confirmed:300000,completed:100}];
+ await countPeerBoundary(f.args)();
+ for(const mutation of ['count','status','timestamp','pool','audit','lease']){
+  const e=f.campaign.games[0],saved=structuredClone({e,p:f.pool,j:f.jobs});
+  if(mutation==='count')e.confirmed--;if(mutation==='status')e.status='active';if(mutation==='timestamp')delete e.completed;
+  if(mutation==='pool')f.pool.confirmed--;if(mutation==='audit')f.jobs.find(j=>j.name==='verify').conclusion='skipped';
+  if(mutation==='lease')f.pool.workers[0].leaseUntil=1000;
+  await assert.rejects(countPeerBoundary(f.args)(),undefined,mutation);
+  Object.assign(e,saved.e);Object.assign(f.pool,saved.p);f.jobs.splice(0,f.jobs.length,...saved.j);
+ }
+});
 
 test('running peer isolates only the exact jobless run with complete native denial',async()=>{
  const f=fixture(),id=36854881370,head='38465d0872529e80bc09c60218892c14581162c0';

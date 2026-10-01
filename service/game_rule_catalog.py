@@ -138,7 +138,8 @@ def contract(game_id):
             'GSD.HNSTW / HVA / HVABT':'Hold累计奖励与首BET赢奖相加核TW；5x3盘面拒绝Grand标记。',
             'GSD.FGRS / CFGC':'客户端剩余/进度可覆盖外层，严格相等防止提前结束。',
             'GSD.CL=-3':'已观察FREE奖金图标，独立major-v1/bonus3；仅FREE CL允许-3，首BET、BGCL及-4/-2仍拒绝。3211旧完整规范化不变，实际两帧未完成，自然major终局未观察。'})
-        native['files'] += ['service/pyramids_mixed_prefix.py','service/pyramids_mixed_review.py','scripts/trial/pyramids-mixed-prefix.mjs','scripts/trial/pyramids-mixed-review.mjs','collector/sg.pyramids-mixed.ts']
+        native['files'] += ['service/pyramids_mixed_prefix.py','service/pyramids_mixed_review.py','scripts/trial/pyramids-mixed-prefix.mjs','scripts/trial/pyramids-mixed-review.mjs','collector/sg.pyramids-mixed.ts','service/pyramids_mixed_plan.py','scripts/runner-v2/pyramids-mixed-repair-profile.mjs']
+        native['bounds'] += ' 混合功能重新准入v4准备保留3627完整、原目标剩余296223，采用有界增量CAS；真实全文在内存重入通过，线上未应用。已完成Rhino的精确终审凭证可释放同级队列阻塞，仍核零租约和固定源身份。'
         native['fields']['GSD.FGTS / FGRS / CFGC'] = 'free-hold-v1/bonus4独立混合入口：外层免费10次，进入Hold时内层6/6/0，内层期间外层冻结，Hold累计奖励核TW后恢复外层。实际8帧仅前缀，17/19/21帧终局为合成；不授额度、不续旧会话、未重入。'
     elif game_id == 32720:
         native.update({'family': 'jinzita-standalone-free-v1',

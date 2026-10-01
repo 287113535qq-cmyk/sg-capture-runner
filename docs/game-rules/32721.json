@@ -30,7 +30,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "FID0独立Hold首BET6/6/0，同会话FREE_GAME；CFGG逐帧加1，TFG允许+0/+2/+4。FID1独立免费固定10次，无追加，FGRS/CFGC若存在必须与外层相等。",
     "complete": "Hold终帧priorNFG1到0且无追加，HNSTW+首BET赢奖=TW；免费终帧CFGG10/NFG0。均核XML、同会话、B=AB和下注20；NFG0不单独结束。",
-    "bounds": "1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。后续正式计数新增296完整，共1658；首FID1触发BGCL/CL缺口已隔离，196完整待计数结清。BGCL/CL仅首BET非负三元坐标显示字段已接三方校验，拒绝重复/越界/负JP码及后续帧；未重新准入。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝，不称整款玩法覆盖。",
+    "bounds": "1262旧完整三方保全，含15自然Hold终局；160积压已实际补写、4旧半局已作废。独立试点36774221164成功100完整（99普通、1自然Hold），共1362；无新作废、额度100已用尽。后续正式计数新增296完整，共1658；首FID1触发BGCL/CL缺口已隔离，196完整待计数结清。BGCL/CL仅首BET非负三元坐标显示字段已接三方校验，拒绝重复/越界/负JP码及后续帧；未重新准入。独立10免费终局仍仅合成，混合/外部JPV/Grand/强制GCT/未知字段拒绝，不称整款玩法覆盖。 混合功能重新准入v4准备保留3627完整、原目标剩余296223，采用有界增量CAS；真实全文在内存重入通过，线上未应用。已完成Rhino的精确终审凭证可释放同级队列阻塞，仍核零租约和固定源身份。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -50,7 +50,9 @@
       "service/pyramids_mixed_review.py",
       "scripts/trial/pyramids-mixed-prefix.mjs",
       "scripts/trial/pyramids-mixed-review.mjs",
-      "collector/sg.pyramids-mixed.ts"
+      "collector/sg.pyramids-mixed.ts",
+      "service/pyramids_mixed_plan.py",
+      "scripts/runner-v2/pyramids-mixed-repair-profile.mjs"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -209,7 +211,9 @@
     "scripts/trial/pyramids-mixed-prefix.mjs": "3c4630204e44312e3bbf226a10ec045ab77c3d2e72af2a01ef76d39dab5c68e8",
     "scripts/trial/pyramids-mixed-review.mjs": "79cb978022e87c779203fdc70c128e6a6c4dfc5c39e6ba84fc8c6aa9266c329b",
     "collector/sg.pyramids-mixed.ts": "700e4c2f8272926bfb3e15a0e482e57976919f0f7b478175afadcf30912c4682",
-    "service/game_rule_catalog.py": "e0a45375b2a57767cef6e70e193713ce4bb9c24f5cff50396d3ae24b00edcfb4"
+    "service/pyramids_mixed_plan.py": "8b85e1c5612e1a4d24d26666b1d566119fe53103f485dfc8c460db3f9124f22b",
+    "scripts/runner-v2/pyramids-mixed-repair-profile.mjs": "d3bd634a498fe26b4a3a7c95ffba93fbbc54952c97a1e2c4eee286a65f261e7f",
+    "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -243,5 +247,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c00b2101697dfd91c24fd7bf8b19541cfa3e76a92f6dc239eaf3145e8be64884"
+  "ruleHash": "a524dbd2d9fef4af0846e8fda2884250d9c94ea07e8c56b335b7829f9381a91b"
 }

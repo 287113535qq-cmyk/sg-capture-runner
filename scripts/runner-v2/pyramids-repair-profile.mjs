@@ -1,7 +1,9 @@
 import {pyramidsMajorRepairPlan} from './pyramids-major-repair-profile.mjs';
+import {pyramidsMixedRepairPlan} from './pyramids-mixed-repair-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 export function pyramidsRepairPlan(base,p){
+ if(p?.schema==='sg-formal-repair-pyramids-v4')return pyramidsMixedRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v3')return pyramidsMajorRepairPlan(base,p);
  const continuation=p?.sourceRun==='36842835455:1';
  const v2=p?.schema==='sg-formal-repair-pyramids-v2';

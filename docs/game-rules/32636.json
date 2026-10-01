@@ -123,7 +123,7 @@
     "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
     "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
     "collector/sg.piggies.ts": "874141a07df1df4c3674ec5217b4e0340f46c58d5cccff30d72fbde1f001ba51",
-    "service/game_rule_catalog.py": "e0a45375b2a57767cef6e70e193713ce4bb9c24f5cff50396d3ae24b00edcfb4"
+    "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "92021f840b6d9008ac0075f2741223c35ef24875b5f136afe9800f7c841a96d4"
+  "ruleHash": "69119ac87736b55eb96850c8a96c87fa5d8f7775169bf94a6ccb6c8c2a743d98"
 }

@@ -161,7 +161,7 @@
     "service/morepuff_megahat_review.py": "163cba04ae5598931914750dd5ec6afc97f9aa13f5be307b285bfccc86ae7378",
     "scripts/trial/morepuff-megahat-review.mjs": "2709cbda6ebe4a6c613d3dab1afb2707980e5b5fc5f8377c3ca94f1e93a14451",
     "collector/sg.morepuff-megahat.ts": "145184c91f927a5944452dfdc66dab02c13d6dc6a1b64e1fc1f2b6ac3d947a4b",
-    "service/game_rule_catalog.py": "e0a45375b2a57767cef6e70e193713ce4bb9c24f5cff50396d3ae24b00edcfb4"
+    "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -207,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e75bfe8e1f98b1ab83b1538897f7e87882e5c85444484353eae36d2f4db81dd1"
+  "ruleHash": "424a81a61c7b62ac112bbf824a263a129386febad522393473eb753c18310d74"
 }

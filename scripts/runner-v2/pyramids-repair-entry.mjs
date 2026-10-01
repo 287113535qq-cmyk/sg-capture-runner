@@ -4,6 +4,10 @@ import {observationPrimary,rhinoTwoPrimary} from './secondary-parallel-boundary.
 // An entry selects immutable parent evidence; it never creates quota or chooses a peer dynamically.
 export function pyramidsRepairEntry(mode,name,retireName){
  assert(['retire','activate','admit'].includes(mode),'PYRAMIDS_REPAIR_OPERATION');
+ if(name==='formal-repair-pyramids-mixed-20261002.json'){
+  assert(mode!=='retire'&&!retireName,'PYRAMIDS_MIXED_ALREADY_RETIRED');
+  return {v2:true,v4:true,oldName:'formal-repair-pyramids-major-entryfix-20261001.json',parserProfile:name,newName:name,sourceId:36860241790};
+ }
  if(mode==='retire'&&name==='formal-repair-pyramids-major-entryfix-20261001.json'
   &&['formal-retire-pyramids-major-transition-20261001.json','formal-retire-pyramids-major-transition-entryfix-20261001.json'].includes(retireName))return {
    v2:true,v3:true,oldName:name,parserProfile:name,newName:name,retireName,sourceId:36860241790};

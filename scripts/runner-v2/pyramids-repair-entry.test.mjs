@@ -1,6 +1,17 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';
 import {rhinoTwoPrimary,observationPrimary} from './secondary-parallel-boundary.mjs';
+test('mixed reentry binds the settled major parent and refuses another retirement',()=>{
+ for(const mode of ['activate','admit']){
+  const e=pyramidsRepairEntry(mode,'formal-repair-pyramids-mixed-20261002.json');
+  assert.equal(e.v4,true);assert.equal(e.v2,true);
+  assert.equal(e.sourceId,36860241790);
+  assert.equal(e.oldName,'formal-repair-pyramids-major-entryfix-20261001.json');
+  assert.equal(e.parserProfile,e.newName);
+  assert.throws(()=>pyramidsRepairEntry(mode,e.newName,'formal-retire-pyramids-major-transition-entryfix-20261001.json'));
+ }
+ assert.throws(()=>pyramidsRepairEntry('retire','formal-repair-pyramids-mixed-20261002.json'));
+});
 test('display repair binds failed coins parent and reviewed independent Rhino peer',()=>{
  for(const mode of ['retire','activate','admit']){const e=pyramidsRepairEntry(mode,'formal-repair-pyramids-display-20261001.json');
   assert.equal(e.oldName,'formal-repair-pyramids-coins-20261001.json');assert.equal(e.sourceId,36791455132);

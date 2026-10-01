@@ -9,13 +9,13 @@ import {receiptKey} from './durable-queue.mjs';
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
- const major=profile?.schema==='sg-formal-repair-pyramids-v3';
- const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const mixed=profile?.schema==='sg-formal-repair-pyramids-v4',major=profile?.schema==='sg-formal-repair-pyramids-v3';
+ const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
  const continuation=v2&&profile.sourceRun==='36842835455:1';
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -33,6 +33,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  else assert(retired?.schema==='sg-formal-stopped-retire-v1'&&hash(retired)===profile.retirementHash
   &&retired.completePreserved===preserved&&retired.recordsHash===profile.recordsHash&&retired.repairKey===profile.repairKey
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&retired.sourceCommit===profile.sourceCommit,'FORMAL_REPAIR_RETIREMENT');
+ if(mixed)assert(retired.sourceRun===profile.sourceRun&&retired.profileHash==='23a2419605be82e9bf0b6c359a501bc47b0c2b1015e7b9de8ceb5d88c03f7c62'
+  &&retired.trialId===plan.trialId&&retired.newAbandoned===0,'PYRAMIDS_MIXED_RETIREMENT');
  const oldSpec=await loadCountPermission({store,plan:oldPlan,pool,commit:profile.sourceCommit});
  assert(hash(oldSpec)===profile.oldSpecHash&&pool.countAllocation.reserved===0
   &&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=stamp),'FORMAL_REPAIR_UNSETTLED');
