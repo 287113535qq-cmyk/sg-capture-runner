@@ -96,5 +96,14 @@
     "trialChecks": 148,
     "collectorChecks": 28,
     "pythonStorageChecks": 363
-  }
+  },
+  "boundaryReservationFirstAttempt": {
+    "run": "36879462441:1",
+    "conclusion": "failure",
+    "error": "GROUP_SCOPE_DENIED",
+    "sourceRequests": 0,
+    "reservationWritten": false,
+    "logSha256": "06e58be1c03cde47a6224bdeff7f82d62d9bb6b0a5ba0d242ee0274bce6d66db"
+  },
+  "boundaryReservationEntryfixProfileHash": "57e51f771637a03d510e46f953f0ab9155ce9a7d64087eb9d7b5fdad3ca391bd"
 }
