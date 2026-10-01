@@ -136,9 +136,19 @@
       40,
       80
     ],
-    "linuxVerified": false,
+    "linuxVerified": true,
     "onlineVerified": false,
     "sourceRequests": 0,
-    "databaseWrites": 0
-  }
+    "databaseWrites": 0,
+    "linux": {
+      "run": "36882574528:1",
+      "commit": "51b5e6321c3bf5a00e843b5bae12703ddbf3cb3e",
+      "logSha256": "1597be0b1bd0ee2f623eeec66b06a79c4fee1e4b328fe4b39275db2dd5ccbcf7",
+      "startedAt": "2026-10-01T15:13:38Z",
+      "completedAt": "2026-10-01T15:15:52Z",
+      "runnerChecks": 1174
+    },
+    "node22LocalAllChecks": 1174
+  },
+  "fourSessionOfflineLogReviewChecks": 9
 }
