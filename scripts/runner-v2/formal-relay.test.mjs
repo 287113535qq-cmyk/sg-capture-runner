@@ -35,3 +35,9 @@ test('choice none selects no runtime file while preserving the dispatch binding'
  assert.equal(formalRelayInputs({runtime_profile:'none'}).runtime_profile,'none');
  for(const value of ['../secret.json','NONE','config/fixed.json'])assert.throws(()=>formalRelayRuntimePath({runtime_profile:value}));
 });
+
+test('an independent reserved boundary makes the existing relay skip dispatch without changing its allocation',async()=>{
+ const f=fixture(),before=hash(f.pool);f.docs.set('journal/count-relay:fixture:77:1:intent',{value:{schema:'sg-formal-relay-boundary-reserved-v1',newBetAllowance:0}});
+ const r=await relayFormalRun(f.args);assert.equal(r.continued,false);assert.equal(r.reason,'DISPATCH_ALREADY_ATTEMPTED');
+ assert.equal(f.sent(),0);assert.equal(hash(f.pool),before);
+});
