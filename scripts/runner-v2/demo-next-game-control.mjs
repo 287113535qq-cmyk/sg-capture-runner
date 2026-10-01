@@ -11,7 +11,7 @@ import {demoPilotProfilePath} from './demo-pilot-profile.mjs';
 import {importParkedDemo} from './parked-import.mjs';import {decodeParkedArchive} from './parked-decoder.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),path=demoPilotProfilePath(),profile=load(path),plans=load('config/round-one-plans.json');
-const repairScope={'config/demo-repair-mansion-20261001.json':[32714,129], 'config/demo-repair-piggies-20261001.json':[32636,33], 'config/demo-repair-morepuff-20261001.json':[32718,91]}[path];
+const repairScope={'config/demo-repair-rhino-guarantee-20261001.json':[32799,51], 'config/demo-repair-mansion-20261001.json':[32714,129], 'config/demo-repair-piggies-20261001.json':[32636,33], 'config/demo-repair-morepuff-20261001.json':[32718,91]}[path];
 if(repairScope)assert(profile.repairedCandidate&&!profile.legacyImport&&!profile.emptyCandidate
  &&[32795,32799,32714,32636,32718].includes(profile.fromGameId)&&profile.fromGameId!==repairScope[0]
  &&(profile.sourceFormal||/^[a-f0-9]{64}$/.test(profile.sourceClosureHash??'')),'REPAIR_NEXT_GAME_SCOPE');

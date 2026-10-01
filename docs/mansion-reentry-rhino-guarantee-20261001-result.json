@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-01",
+  "completedGames": 15,
+  "totalGames": 178,
+  "mansion": {
+    "gameId": 32714,
+    "runtime": "02880c29750652a82e65b96b670aff85986e9309",
+    "maintenanceRun": "36823276977:1",
+    "sourceRun": "36823682951:1",
+    "sourceConclusion": "failure",
+    "oldCompletePreserved": 129,
+    "newComplete": 23,
+    "newBonus": {
+      "0": 21,
+      "1": 2
+    },
+    "totalComplete": 152,
+    "used": 24,
+    "abandoned": 1,
+    "unusedPendingClose": 76,
+    "pending": 0,
+    "outstanding": 0,
+    "activeLeases": 0,
+    "failure": "HARDHAT_PREVIOUS_SLOTS",
+    "closed": false,
+    "closeProfileHash": "e93934eae2638eec400e95f4143ef00c494807783ecdd8233d459ec5e5ea42b7"
+  },
+  "rhino": {
+    "gameId": 32799,
+    "productionIntegration": true,
+    "runnerCollectorWorkerTests": 12,
+    "pythonTests": 4,
+    "existingPilotPreserved": 51,
+    "historicalRequestReplayPreserved": 100,
+    "negativeAndPositivePrivateCases": 13,
+    "newMapping": "ragingrhino-wms-v1-terminal-guarantee-v1",
+    "naturalGuaranteeEndObserved": false,
+    "newAdmission": false,
+    "old52Used48ForegoneUnchanged": true
+  },
+  "latency": {
+    "linuxSuccessUtc": "2026-10-01T06:08:26Z",
+    "sourceCreatedUtc": "2026-10-01T06:14:00Z",
+    "seconds": 334
+  },
+  "limitations": [
+    "Rhino actual abandoned prefix reaches EndGame request only; successful acknowledgement was synthesized offline.",
+    "Mansion failed prefix is retained without replay; 76 unused requires no-source close.",
+    "No new formal collection or session-concurrency benchmark has been authorized by these results."
+  ]
+}

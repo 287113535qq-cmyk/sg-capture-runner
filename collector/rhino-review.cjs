@@ -25,14 +25,15 @@ function review(raw,{legacy=false}={}){
    if(g.BaseGameRecoveryInfo!==undefined){assert(i>0,'BASE_RECOVERY');const b=one(g.BaseGameRecoveryInfo);assert.deepEqual(Object.keys(b),['GameResult'],'BASE_RECOVERY');assert.deepEqual(one(b.GameResult),base,'BASE_RECOVERY');}
    const award=uint(ga.totalWin);if(i===0){balance-=40;first=award;}balance+=award;win+=award;uint(balance);uint(win);
    assert(info.isMaxWin==='N'&&uint(info.totalBaseGameWin)===first&&uint(info.totalFreeSpinsWin)===win-first&&uint(info.totalWagerWin)===win,'TOTAL');
-   let awarded=0;const features=list(g.Feature);assert(new Set(features.map(f=>a(f).index)).size===features.length,'FEATURE_DUPLICATE');const fs=features.filter(f=>a(f).index==='1');
+   let awarded=0,guarantee=0;const features=list(g.Feature);assert(new Set(features.map(f=>a(f).index)).size===features.length,'FEATURE_DUPLICATE');const fs=features.filter(f=>a(f).index==='1');
    if(i===0)free=fs.length===1;
-   for(const f of features){if(a(f).index==='1')assert(a(f).name==='FreeSpins');else{assert.deepEqual(a(f),{index:'2',name:'WildInfo'});const d=a(f.data);assert(i>0&&free&&Object.keys(d).join()==='multiplier');const m=d.multiplier.split(',');assert(m.every(v=>/^(0|[1-9]\d*)\|[23]$/.test(v)&&Number(v.split('|')[0])<24)&&new Set(m.map(v=>v.split('|')[0])).size===m.length,'WILD');}}
+   for(const f of features){if(a(f).index==='1')assert(a(f).name==='FreeSpins');else if(a(f).index==='3'){assert.deepEqual(a(f),{index:'3',name:'BonusGuarantee'});assert.deepEqual(Object.keys(f).sort(),['$','data']);const d=a(f.data);assert.deepEqual(Object.keys(f.data),['$']);assert(i>0&&free&&Object.keys(d).join()==='bonusAwarded','GUARANTEE_SHAPE');guarantee=uint(d.bonusAwarded);assert(guarantee>0,'GUARANTEE_AMOUNT');}else{assert.deepEqual(a(f),{index:'2',name:'WildInfo'});const d=a(f.data);assert(i>0&&free&&Object.keys(d).join()==='multiplier');const m=d.multiplier.split(',');assert(m.every(v=>/^(0|[1-9]\d*)\|[23]$/.test(v)&&Number(v.split('|')[0])<24)&&new Set(m.map(v=>v.split('|')[0])).size===m.length,'WILD');}}
    if(free){assert.equal(fs.length,1);const d=a(fs[0].data),keys=Object.keys(d).sort().join();assert.equal(keys,i?'extraFreeSpinsAwarded,freeSpinsTriggerWin,lastFreeSpin,remainingFreeSpins,totalFreeSpinsTriggered':'freeSpinsTriggerWin,lastFreeSpin,totalFreeSpinsTriggered');
     const extra=i?uint(d.extraFreeSpinsAwarded):uint(d.totalFreeSpinsTriggered);awarded=extra;uint(d.freeSpinsTriggerWin);assert(!i||i<=total,'AFTER_TERMINAL');assert((i>0||extra>0)&&extra<=1024,'AWARD');if(i&&extra)retriggers++;total+=extra;assert(total<=1024&&uint(d.totalFreeSpinsTriggered)===total&&(!i||uint(d.remainingFreeSpins)===total-i),'COUNTERS');assert.equal(d.lastFreeSpin,i<total?'N':'Y','TERMINAL');
    }else assert(i===0&&features.length===0,'FEATURE');
-   const reels=one(g.ReelResults),spin=one(reels.ReelSpin),sa=a(spin);assert(a(reels).numSpins==='1'&&sa.freeSpin===(i?'Y':'N')&&sa.bonusAwarded===(awarded?'Y':'N'),'REELS');
-   assert(uint(sa.totalSpinWin)===award&&uint(sa.totalScatterWin)+uint(sa.totalWayWin)===award,'REEL_MONEY');
+   assert(!guarantee||free&&i>0&&i===total&&awarded===0,'GUARANTEE_TERMINAL');
+   const reels=one(g.ReelResults),spin=one(reels.ReelSpin),sa=a(spin);assert(a(reels).numSpins==='1'&&sa.freeSpin===(i?'Y':'N')&&sa.bonusAwarded===(awarded||guarantee?'Y':'N'),'REELS');
+   assert(uint(sa.totalSpinWin)+guarantee===award&&uint(sa.totalScatterWin)+uint(sa.totalWayWin)+guarantee===award,'REEL_MONEY');
    for(const [tag,count,money]of[['AnywayWin','anywayWinCount','totalWayWin'],['ScatterWin','scatterWinCount','totalScatterWin']]){const wins=list(spin[tag]);assert(wins.length===uint(sa[count])&&wins.reduce((s,n)=>s+uint(a(n).winVal),0)===uint(sa[money]),'WIN_MONEY');}
   }
   const ba=a(one(r.Balances).Balance);assert.deepEqual(ba,{name:'CASH_BALANCE',value:String(balance)});assert.equal(uint(s.responseBalance),balance,'BALANCE');

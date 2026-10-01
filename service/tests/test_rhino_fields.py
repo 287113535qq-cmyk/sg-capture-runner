@@ -5,7 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[2]
 class RhinoTests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  r=subprocess.run(['node','--input-type=module','-e',"import {rhinoFixture as f} from './scripts/trial/rhino-fixture.mjs';console.log(JSON.stringify([f(0),f(8,{4:5}),f(15,{4:10})]))"],cwd=ROOT,text=True,capture_output=True,check=True)
+  r=subprocess.run(['node','--input-type=module','-e',"import {rhinoFixture as f,rhinoGuaranteeFixture as g} from './scripts/trial/rhino-fixture.mjs';console.log(JSON.stringify([f(0),f(8,{4:5}),f(15,{4:10}),g()]))"],cwd=ROOT,text=True,capture_output=True,check=True)
   cls.rows=json.loads(r.stdout);cls.adapter=RhinoFields({'gameId':32799,'runtimeGameId':33159,'sourceKey':SOURCE,'betRaw':40})
  def test_complete_and_prefixes(self):
   for r in self.rows:
@@ -24,3 +24,10 @@ class RhinoTests(unittest.TestCase):
   with self.assertRaises(FieldError):review(r)
   r=copy.deepcopy(self.rows[0]);r['steps'].append(copy.deepcopy(r['steps'][-1]))
   with self.assertRaises(FieldError):review(r)
+
+ def test_terminal_guarantee_separate_from_reel_and_end(self):
+  r=self.rows[-1];self.assertEqual(self.adapter.settled(r)['money']['totalWinRaw'],205)
+  self.assertEqual(self.adapter.next_request({**r,'steps':r['steps'][:-1]}),{'MSGID':'EndGame'})
+  for a,b in [('data bonusAwarded="205"','data bonusAwarded="204"'),('data bonusAwarded="205"','data bonusAwarded="0"'),('data bonusAwarded="205"','data bonusAwarded="-1"'),('data bonusAwarded="205"','data bonusAwarded="205" unknown="1"'),('name="BonusGuarantee"','name="Other"'),('bonusAwarded="Y"','bonusAwarded="N"'),('totalSpinWin="0"','totalSpinWin="205"'),('remainingFreeSpins="0"','remainingFreeSpins="1"'),('lastFreeSpin="Y"','lastFreeSpin="N"')]:
+   bad=copy.deepcopy(r);step=bad['steps'][-2];self.assertIn(a,step['responseXml']);step['responseXml']=step['responsePayload']=step['responseXml'].replace(a,b)
+   with self.assertRaises(FieldError):self.adapter.settled(bad)

@@ -6,6 +6,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';import {checkDemoSour
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),selected=process.env.SG_DEMO_PILOT_PROFILE||'demo-pilot-morepuff-20260930.json';
 const scopes={
+ 'demo-repair-mansion-20261001.json':{gameId:32714,close:'demo-close-mansion-reentry-20261001.json',run:'36823682951',commit:'02880c29750652a82e65b96b670aff85986e9309',sourceHash:'6699d2d0130eda69e64e3e3ca8ecbc8edc7e9847ef9325f387dff04f0b9e7352',complete:152,used:[0,0,0,0,4,0,3,0,5,0,0,0,2,5,0,0,0,5,0,0]},
  'demo-pilot-rhino-20261001.json':{gameId:32799,close:'demo-close-rhino-20261001.json',run:'36821539926',commit:'8eef9e37e9c732ab3be11dcf5ed58216d9cf5730',sourceHash:'276a16364c16997f1279826a30a559ce611f411897d0a3e48530c61a792f8715',complete:51,used:[5,3,5,0,2,0,3,5,0,0,5,4,0,5,5,5,0,0,5,0]},
  'demo-pilot-morepuff-20260930.json':{gameId:32718,close:'demo-close-morepuff-20260930.json',run:'36684942513',commit:'2e70191930c1639d5446aafb90afa683c83a91e2',sourceHash:'9ed50c4e0376120e8a8f2a78a441c72e9a9b231498c7b0094202135076051ead',complete:91,used:[5,0,0,5,1,5,0,5,1,5,1,0,2,0,0,0,0,4,5,0]},
  'demo-pilot-piggies-20260930.json':{gameId:32636,close:'demo-close-piggies-20260930.json',run:'36709321525',commit:'8a4c20a03a63c7e1fa14a58393c07f60f08f8748',sourceHash:'6f1f982a6906e68c73411eddb7ee1ed1ad56d985f2820dbec2d825e3ddbfc029',complete:33,used:[5,0,0,5,0,0,5,0,4,0,5,0,0,0,5,0,0,0,0,5]}

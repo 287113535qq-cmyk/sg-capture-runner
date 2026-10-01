@@ -1543,6 +1543,17 @@
       "featureTypes": {
         "independentFreeGames": 2
       }
+    },
+    "ragingrhino-wms-v1-terminal-guarantee-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "rhino-wms-v1",
+      "gameId": 32799,
+      "betRaw": 40,
+      "buy": 0,
+      "ordinaryBonus": 0,
+      "freeBonus": 1,
+      "feature": "counter-driven-free-terminal-guarantee-v1"
     }
   }
 }

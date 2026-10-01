@@ -9,3 +9,14 @@ export function rhinoFixture(initial,adds={}){const raw={sourceKey:'ragingrhino-
  const responsePayload=`<GameResponse type="${msg}"><Header sessionID="synthetic-${i+1}" gameID="20124" versionID="1_0" isRecovering="N"/><Balances><Balance name="CASH_BALANCE" value="99960"/></Balances>${result}</GameResponse>`;
  raw.steps.push({msgId:msg,requestPayload,responsePayload,responseXml:responsePayload,responseBalance:99960,elapsedMs:1});if(end)break;
  }return raw;}
+
+// Synthetic terminal guarantee: credited once before the separate EndGame acknowledgement.
+export function rhinoGuaranteeFixture(initial=8,adds={4:5},guarantee=205){
+ const raw=rhinoFixture(initial,adds),terminal=raw.steps.length-2;
+ for(let i=terminal;i<raw.steps.length;i++){
+  const step=raw.steps[i];let xml=step.responseXml.replace('value="99960"',`value="${99960+guarantee}"`);
+  if(i===terminal)xml=xml.replace('totalWin="0"',`totalWin="${guarantee}"`).replace('totalFreeSpinsWin="0"',`totalFreeSpinsWin="${guarantee}"`).replace('totalWagerWin="0"',`totalWagerWin="${guarantee}"`).replace('bonusAwarded="N"','bonusAwarded="Y"').replace('</GameResult>',`<Feature index="3" name="BonusGuarantee"><data bonusAwarded="${guarantee}"/></Feature></GameResult>`);
+  step.responseXml=step.responsePayload=xml;step.responseBalance=99960+guarantee;
+ }
+ return raw;
+}

@@ -1,0 +1,13 @@
+# Mansion 重入结果与 Rhino 终局奖励修复（2026-10-01）
+
+Mansion（32714）修复后实际重入，旧129完整保留。独立最多100 BET试采实际新增23完整（21普通、2自然Hard Hat免费完整），另1局重触发时被HARDHAT_PREVIOUS_SLOTS拒绝；24已用、76未用待结清，累计152完整，pending/待写/活租约均0。失败原两帧已AG留样作废，不能续接或重放。
+
+无源重入36823276977:1成功，源36823682951:1失败，固定runtime 02880c29750652a82e65b96b670aff85986e9309。152条Python全文和逐条Mongo receipt相等，129旧完整及Pearl最终proof未变。新的关闭profile已用真实现场内存验证，但本报告准备时尚未线上应用；原Mansion重入profile永久冻结，不能刷新100或借用未用76。
+
+Linux预检06:08:26Z成功，06:14:00Z源派发，间隔5分34秒；相邻阶段连续推进，无定时等待。该指标不代表每游戏完整采集吞吐或所有优化已验证。
+
+Rhino（32799）实际中断14帧说明末次免费奖励205与reel赢额独立。固定官方客户端原始方法已离线执行，结尾明确需要EndGame。Python、Runner与collector已接独立terminal-guarantee-v1 mapping，正金额仅允许最后免费、无同帧重触发、余额与累计金额一致；必须收到独立EndGame才能完整。旧mapping与已应用pilot/close许可不变。
+
+12项Runner/collector/worker及4项Python通过；包括真实worker入口持久化每次intent/response及EndGame后才建完整记录。51旧实采和100历史响应的请求编码回放规范化逐条不变；13私有正负例通过。真实旧奖励链无EndGame响应，完整400金额验证中的EndGame是合成，不能称自然终局已采到，也不能续旧会话。新Rhino重入仍需独立profile、固定Linux、fresh及无源维护。
+
+Pyramids（32721）字段修复已验证2127旧完整不变；正式失败run结算和新许可尚需专门校验，不能把failed source改成success来套旧退休路径。累计完成15/178。

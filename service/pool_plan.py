@@ -58,7 +58,7 @@ def validate_pool_plan(plan):
                 expected.update(maxSteps=1026,featureProfile=feature)
         if 'demoGeneration' in plan:
             filename=os.environ.get('SG_DEMO_PILOT_PROFILE','demo-pilot-beaver-20260930.json')
-            repair_scopes = {'demo-repair-mansion-20261001.json': (32714, 129, 'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2'),
+            repair_scopes = {'demo-repair-rhino-guarantee-20261001.json': (32799, 51, 'ragingrhino-wms-v1-terminal-guarantee-v1'), 'demo-repair-mansion-20261001.json': (32714, 129, 'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2'),
                 'demo-repair-piggies-20261001.json': (32636, 33, 'richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1'),
                 'demo-repair-morepuff-20261001.json': (32718, 91, 'huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1')}
             require(filename in repair_scopes or filename in ('demo-pilot-pyramids-20261001.json','demo-pilot-inca-20261001.json','demo-pilot-rhino-20261001.json','demo-pilot-pearl-20260930.json','demo-pilot-piggies-20260930.json','demo-pilot-mansion-20260930.json','demo-pilot-morepuff-20260930.json','demo-pilot-jinzita-20260930.json','demo-pilot-luxor-20260930.json','demo-pilot-beaver-20260930.json','demo-pilot-replacement-20260930.json','demo-residual-beaver-20260930.json'),'DEMO_PROFILE_PATH')
@@ -78,7 +78,7 @@ def validate_pool_plan(plan):
                     and candidate.get('oldPlanHash') == digest({**expected, 'demoGeneration': candidate['oldGeneration']})
                     and candidate.get('mappingHash') == digest(registry['profiles'][extension])
                     and candidate.get('closureKey') == f"closed-demo-pilot:{expected['trialId']}:{candidate['oldGeneration']}"
-                    and candidate.get('repairKey') == f"game-repair:{expected['trialId']}:{candidate['oldGeneration']}"
+                    and candidate.get('repairKey') == ("game-repair:sg_r1_20261001_32799:06a09fdff1cbd24320a2a0a12229b6e53cc2d5e6185ff13197f9cbf97c9a8554" if game == 32799 else f"game-repair:{expected['trialId']}:{candidate['oldGeneration']}")
                     and all(isinstance(candidate.get(k), str) and re.fullmatch(r'[a-f0-9]{64}', candidate[k])
                             for k in ('mappingHash','closureHash','repairHash','poolHash','campaignHash','batchesHash','recordsHash')),
                     'REPAIR_CANDIDATE_PLAN')

@@ -7,6 +7,7 @@ import {applyDemoPilot} from './demo-pilot-plan.mjs';
 // Explicit repaired feature scopes only. This stage grants no BET and has no
 // source transport. A separate next-game generation/admission is still required.
 const extensions={
+ 32799:'ragingrhino-wms-v1-terminal-guarantee-v1',
  32714:'huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2',
  32636:'richlittlepiggiesworldclass96-round-one-base-v1-size2-free-v1',
  32718:'huffnmorepuffhighlimit96-round-one-base-v1-wheel-megahat-single-v1',

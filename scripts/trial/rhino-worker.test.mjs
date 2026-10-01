@@ -4,16 +4,17 @@ import {analyzer} from '../runner-v2/analyzer.mjs';
 import {protocolHash as hash} from '../runner-v2/protocol-resume.mjs';
 import {onePaidRound} from '../runner-v2/paid-round-evidence.mjs';
 import {runRhinoWorker} from './rhino-worker.mjs';
-import {rhinoFixture} from './rhino-fixture.mjs';
+import {rhinoFixture,rhinoGuaranteeFixture} from './rhino-fixture.mjs';
 import {rhinoPayload,RHINO_ENDPOINT} from './rhino-session.mjs';
 const require=createRequire(import.meta.url);require('../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json'});
 const {rhinoFields}=require('../../collector/sg.rhino.ts');
 const basePlan=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32799'];
 const plan={...basePlan,demoGeneration:'f'.repeat(64)};
+const extensionHash=hash(JSON.parse(fs.readFileSync('service/round_types.json')).profiles['ragingrhino-wms-v1-terminal-guarantee-v1']);
 const profile=JSON.parse(fs.readFileSync('service/round_types.json')).profiles[plan.sourceKey];
-async function run({failDurability=false,unknown=false,formal=false,badLease=false}={}){
+async function run({failDurability=false,unknown=false,formal=false,badLease=false,guarantee=false}={}){
  const plan={...basePlan,...(formal?{countAllocation:'e'.repeat(64)}:{demoGeneration:'f'.repeat(64)})};
- const parser=analyzer({python:process.env.PYTHON||'python3'}),fixture=rhinoFixture(8,{4:5});
+ const parser=analyzer({python:process.env.PYTHON||'python3'}),fixture=guarantee?rhinoGuaranteeFixture():rhinoFixture(8,{4:5});
  let posts=0,pending=null,bootstrap=null,raw=null,record=null;const saved=[];
  const evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
  let finished=false;
@@ -44,7 +45,7 @@ async function run({failDurability=false,unknown=false,formal=false,badLease=fal
    if(unknown&&posts===1)text=text.replace('<GameResult','<GameResult UNKNOWN="1"');}
   posts++;return {ok:true,headers:{getSetCookie:()=>[],get:()=>null},text:async()=>text};
  };
- let error;try{await runRhinoWorker({plan,baseGame:{mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'},shard:0,rpc,mappingHash:hash(profile),prepareRound:rhinoFields,evidence,shouldStop:()=>formal&&evidence.completedThisRun>=1,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
+ let error;try{await runRhinoWorker({plan,baseGame:{mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'},shard:0,rpc,mappingHash:hash(profile),extensionHash,prepareRound:rhinoFields,evidence,shouldStop:()=>formal&&evidence.completedThisRun>=1,requestStop(){},onLease(){},commitSha:'a'.repeat(40),planHash:hash(plan),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'test'});}
  catch(e){error=e;}finally{parser.close();}
  return {error,posts,saved,record,pending,evidence,finished};
 }
@@ -67,4 +68,8 @@ test('Rhino paid-round evidence counts the chain and rejects ambiguous continuat
  const raw=rhinoFixture(8,{4:5});assert(onePaidRound(basePlan,raw));
  const prefix={...raw,steps:raw.steps.slice(0,5)};assert(!onePaidRound(basePlan,prefix));assert(onePaidRound(basePlan,prefix,{abandoned:true}));
  prefix.steps.at(-1).requestPayload=rhinoPayload('Logic','wrong');assert(!onePaidRound(basePlan,prefix,{abandoned:true}));
+});
+
+test('Rhino worker journals terminal guarantee and requires EndGame before one complete record',async()=>{
+ const r=await run({guarantee:true});assert.equal(r.error,undefined);assert.equal(r.posts,16);assert.equal(r.saved.length,16);assert.equal(r.evidence.paidRoundRequests,1);assert.equal(r.record.normalized.money.totalWinRaw,205);assert.equal(r.record.normalized.bonus,1);
 });
