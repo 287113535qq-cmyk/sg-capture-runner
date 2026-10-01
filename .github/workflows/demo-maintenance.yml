@@ -286,6 +286,8 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Settle reviewed shared stop without source requests
         run: node scripts/runner-v2/pyramids-counter-close-control.mjs
+        env:
+          SG_ADAPTER_CLOSE_MODE: ${{ inputs.operation == 'close-pyramids-adapter' && 'super-hold-prefix' || '' }}
 
   count-shared-close:
     if: inputs.operation == 'close-count-shared'
@@ -301,7 +303,6 @@ jobs:
       - name: Configure restricted database transport
         run: node scripts/link/setup-ssh.mjs
         env:
-          SG_ADAPTER_CLOSE_MODE: ${{ inputs.operation == 'close-pyramids-adapter' && 'super-hold-prefix' || '' }}
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
       - name: Install locked parser dependency

@@ -8,7 +8,7 @@ assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287
 const adapter=process.env.SG_ADAPTER_CLOSE_MODE==='super-hold-prefix';
 assert(!process.env.SG_ADAPTER_CLOSE_MODE||adapter,'ADAPTER_CLOSE_OPERATION');
 const sourceName=adapter?'formal-repair-pyramids-fifteen-20261002.json':'formal-repair-pyramids-mixed-20261002.json';
-const load=p=>JSON.parse(fs.readFileSync(p)),profile=load('config/'+(adapter?'count-close-pyramids-super-prefix-20261002.json':'count-close-pyramids-fifteen-20261002.json')),
+const load=p=>JSON.parse(fs.readFileSync(p)),profile=load('config/'+(adapter?'count-close-pyramids-super-prefix-entryfix-20261002.json':'count-close-pyramids-fifteen-20261002.json')),
  source=load('config/'+sourceName),plans=load('config/round-one-plans.json'),plan=applyFormalCount(plans,source)[32721];
 assert(profile.schema===(adapter?'sg-count-adapter-close-profile-v1':'sg-count-counter-close-profile-v1')&&profile.sourceProfileHash===hash(source)
  &&profile.sourceRun===(adapter?'36941485498:1':'36937673870:1')&&profile.completePreserved===(adapter?5111:5024)&&Object.keys(profile.files).length>700,'COUNTER_CLOSE_RUNTIME_SCOPE');
