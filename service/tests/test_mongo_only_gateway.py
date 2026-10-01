@@ -38,6 +38,21 @@ class Collection:
         old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
         if matched:self.rows[row['_id']]=copy.deepcopy(row)
         return SimpleNamespace(matched_count=int(matched))
+    def update_one(self, query, update, upsert=False):
+        assert upsert is False
+        old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
+        if matched:
+            row=copy.deepcopy(old)
+            for path,value in update.get('$set',{}).items():
+                parts=path.split('.');node=row
+                for part in parts[:-1]:node=node.setdefault(part,{})
+                node[parts[-1]]=copy.deepcopy(value)
+            for path in update.get('$unset',{}):
+                parts=path.split('.');node=row
+                for part in parts[:-1]:node=node.get(part,{})
+                node.pop(parts[-1],None)
+            row['version']+=update['$inc']['version'];self.rows[query['_id']]=row
+        return SimpleNamespace(matched_count=int(matched))
 
 
 class GatewayTests(unittest.TestCase):
@@ -47,6 +62,37 @@ class GatewayTests(unittest.TestCase):
                        'trials':{'sg_r1_20260928_32723':{'group':'primary','gameId':32723,'runtimeGameId':33123,'target':299900}}}
         self.g=Gateway(self.db,'primary',self.manifest,sample=lambda:{'rawCounters':True})
     def call(self,op,**kw):return self.g.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+    def test_delta_cas_requires_separate_capability_and_preserves_full_document(self):
+        key='pool:sg_r1_20260928_32723'
+        old={'history':[{'old':1}],'workers':{'0':{'lease':1,'active':{'id':2}},'1':{'lease':9}},'removed':True}
+        self.call('create',collection='state',key=key,value=old)
+        request=dict(collection='state',key=key,version=0,set={'workers.0.lease':3,'workers.0.active':None,'workers.0.extra':{}},unset=['removed'])
+        with self.assertRaisesRegex(Refused,'DELTA_CAS_DISABLED'):self.call('cas_delta',**request)
+        self.manifest['stateDeltaEnabled']=True
+        self.assertTrue(self.call('cas_delta',**request)['replaced'])
+        row=self.call('read',collection='state',key=key)
+        self.assertEqual(row['version'],1);self.assertEqual(row['value']['workers']['1'],old['workers']['1'])
+        self.assertEqual(row['value']['history'],old['history']);self.assertNotIn('removed',row['value'])
+        self.assertIsNone(row['value']['workers']['0']['active'])
+        self.assertFalse(self.call('cas_delta',**request)['replaced']);self.assertEqual(row,self.call('read',collection='state',key=key))
+    def test_delta_cas_rejects_scope_injection_overlap_and_unbounded_payload_without_writes(self):
+        self.manifest['stateDeltaEnabled']=True;key='pool:sg_r1_20260928_32723'
+        self.call('create',collection='state',key=key,value={'a':1});before=copy.deepcopy(self.db['capture_state_v2'].rows)
+        valid=dict(collection='state',key=key,version=0,set={'a':2},unset=[])
+        invalid=[{'collection':'journal'},{'key':'campaign'},{'key':'pool:unknown'},{'version':True},{'query':{}},
+                 {'set':{'a.$bad':1}},{'set':{'a..b':1}},{'set':{'__proto__.x':1}},
+                 {'set':{'a':1,'a.b':2}},{'unset':['a']},{'set':{},'unset':[]},
+                 {'set':{'a':'x'*65536}},{'set':{'k'+str(i):i for i in range(65)}}]
+        for change in invalid:
+            with self.assertRaises(Refused):self.call('cas_delta',**{**valid,**change})
+            self.assertEqual(before,self.db['capture_state_v2'].rows)
+    def test_delta_diagnostic_is_separate_from_existing_game_pools(self):
+        self.manifest['stateDeltaEnabled']=True;key='validation:123:1:delta'
+        self.call('create',collection='state',key=key,value={'stage':0,'retained':[1,2]})
+        self.assertTrue(self.call('hello')['stateDeltaEnabled'])
+        self.assertTrue(self.call('cas_delta',collection='state',key=key,version=0,set={'stage':1},unset=[])['replaced'])
+        self.assertEqual(self.call('read',collection='state',key=key)['value'],{'stage':1,'retained':[1,2]})
+        with self.assertRaises(Refused):self.call('cas_delta',collection='state',key='validation:123:1:other',version=0,set={'stage':1},unset=[])
     def test_parallel_primary_read_is_fixed_secondary_readonly(self):
         request={'schema':'sg-mongo-only-v2','op':'parallel_primary_boundary'}
         with self.assertRaisesRegex(Refused,'GROUP_SCOPE_DENIED'):self.g.dispatch(request)

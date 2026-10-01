@@ -5,7 +5,7 @@ import {repositories} from '../trial/runner-group.mjs';
 // Fixed labels only: document identities, raw values and session fields never
 // enter telemetry. This breakdown is nested within byOperation, not additive.
 export function gatewayDocumentKind(op,fields){
-  if(!['read','create','cas'].includes(op))return null;
+  if(!['read','create','cas','cas_delta'].includes(op))return null;
   if(fields.collection==='journal')return 'journal';
   if(fields.collection!=='state')return 'other';
   if(typeof fields.key==='string'&&fields.key.startsWith('pool:'))return 'statePool';

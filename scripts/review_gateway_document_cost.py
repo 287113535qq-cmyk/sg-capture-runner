@@ -27,7 +27,7 @@ def review(observation, *, run, head, workers=80):
                 assert isinstance(value, (int, float)) and not isinstance(value, bool)
                 assert math.isfinite(value) and value >= 0
                 gateway_total[field] += value
-                if name in ('read', 'create', 'cas'):
+                if name in ('read', 'create', 'cas', 'cas_delta'):
                     operations[field] += value
         for kind, metric in gateway['byDocumentKind'].items():
             for field in FIELDS:

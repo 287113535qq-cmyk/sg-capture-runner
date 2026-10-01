@@ -21,6 +21,17 @@ try {
   const updated=await store.cas('state',key,before,{...value,stage:1});assert(updated);
   assert.equal(await store.cas('state',key,before,{...value,stage:2}),null);
   assert.equal((await store.get('state',key)).value.stage,1);
+  let deltaMetadataReadback=false;
+  if(hello.stateDeltaEnabled===true){
+    store.deltaCas=true;
+    const deltaKey=key+':delta',initial={stage:0,history:[{retained:true}],worker:{active:true,lease:1},removed:true};
+    const beforeDelta=await store.create('state',deltaKey,initial);
+    const next={...initial,stage:1,worker:{active:null,lease:2}};delete next.removed;
+    const afterDelta=await store.cas('state',deltaKey,beforeDelta,next);assert(afterDelta);
+    assert.equal(await store.cas('state',deltaKey,beforeDelta,{...next,stage:99}),null);
+    assert.deepEqual((await store.get('state',deltaKey)).value,next);
+    deltaMetadataReadback=true;
+  }
   console.log(JSON.stringify({gateway:'mongo-only-v2',group:hello.group,resourceGate:gate.status(),
-    metadataReadback:true,staleVersionRejected:true,sourceRequests:0,officialRoundWrites:0}));
+    metadataReadback:true,deltaMetadataReadback,staleVersionRejected:true,sourceRequests:0,officialRoundWrites:0}));
 } finally {transport.close();}

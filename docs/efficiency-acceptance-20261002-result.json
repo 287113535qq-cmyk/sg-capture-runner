@@ -44,10 +44,27 @@
     "methodAndCostEvidenceUtilities": {
       "linuxRun": 36926493277,
       "checks": 6
+    },
+    "rhinoFullCompletion": {
+      "snapshotAt": 1790889637,
+      "gameId": 32799,
+      "completeGames": 16,
+      "mongoFullReadback": 300000,
+      "recordsHash": "16e54fe6f5720cdb733b88357a5fe634a7745aa4697f00be2b6d18913c583b4b",
+      "planHash": "6e5ecd68fb06e855c17ecb15298ae20569451227f792a04db85579b27a390d91",
+      "completedAt": 1790889605.87,
+      "ruleCompleteRounds": 300000,
+      "sourceFrames": 642340,
+      "roundsWithContinuation": 300000,
+      "sourceRequests": 0,
+      "databaseWrites": 0,
+      "repeatedOldGameScan": false,
+      "sourceRun": 36919896773,
+      "auditElapsedSeconds": 933.546
     }
   },
   "pending": [
-    "Full300000 actual game audit proof.",
+    "Bounded delta CAS native deployment, real diagnostic readback and independently bound capture adoption.",
     "Independent subsequent-runtime adoption and measured terminal/readback cost.",
     "Next independently ready game admission and continuous handoff.",
     "Natural unsupported repair terminals and reentry."
@@ -57,5 +74,23 @@
     "No extra BET quota for performance testing.",
     "No completion from Mongo count alone.",
     "No family candidate converted automatically to ready."
-  ]
+  ],
+  "completeGames": 16,
+  "offlineCandidates": {
+    "stateDelta": {
+      "schema": "sg-state-delta-offline-benchmark-v1",
+      "snapshotSha": "a65872b5364828d5d23fce248cdd47fd336153e2886c0e3881e768f777820c02",
+      "workers": 80,
+      "originalUnchanged": true,
+      "exactPatchedValue": true,
+      "fullRequestBytes": 784682,
+      "deltaRequestBytes": 119,
+      "fullSerializeMedianMs": 1.2147700000000001,
+      "deriveAndSerializeDeltaMedianMs": 2.492919999999998,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "onlineGainVerified": false,
+      "requestByteReductionPercent": 99.98483462090375
+    }
+  }
 }

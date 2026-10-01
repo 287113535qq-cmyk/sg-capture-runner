@@ -76,4 +76,5 @@ test('document cost labels cannot expose any key or value',async()=>{
  assert.equal(Object.values(metrics.byDocumentKind).reduce((sum,m)=>sum+m.requestBytes,0),metrics.byOperation.read.requestBytes);
  assert(!JSON.stringify(metrics).includes('private'));assert(!JSON.stringify(metrics).includes('PRIVATE_SECRET'));
  assert.equal(gatewayDocumentKind('resources',{}),null);f.gateway.close();
+ assert.equal(gatewayDocumentKind('cas_delta',{collection:'state',key:'pool:private-trial'}),'statePool');
 });

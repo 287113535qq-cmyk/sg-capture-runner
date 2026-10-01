@@ -7,7 +7,7 @@ import {BatchController} from './batch-controller.mjs';
 import {captureBatch} from '../trial/capture-batch.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
-async function fixture({target=3,baseline=true,ceiling=400,rotation=false,lanes=1}={}){
+async function fixture({target=3,baseline=true,ceiling=400,rotation=false,lanes=1,deltaCas=false}={}){
  const docs=new Map(),rounds=new Map();let failCAS=0,time=100000;
  const commit='c'.repeat(40),activation='d'.repeat(64),session='e'.repeat(64);
  const plan={trialId:'sg_r1_20260928_32723',gameId:32723,buy:0,phase:1,target,betRaw:25,maxSteps:100,sourceKey:'fixture',countAllocation:activation};
@@ -21,13 +21,22 @@ async function fixture({target=3,baseline=true,ceiling=400,rotation=false,lanes=
   const k=r.collection+'/'+r.key,old=docs.get(k);
   if(op==='read')return old?structuredClone(old):null;
   if(op==='create'){if(old)return {created:false};docs.set(k,{version:0,value:structuredClone(r.value)});return {created:true};}
-  if(op==='cas'){
-   if(failCAS-->0||old?.version!==r.version)return {replaced:false};
-   docs.set(k,{version:r.version+1,value:structuredClone(r.value)});return {replaced:true,version:r.version+1};
+  if(op==='cas'||op==='cas_delta'){
+   if(failCAS-->0||old?.version!==r.version)return {replaced:false,version:r.version+1};
+   let value=structuredClone(r.value);
+   if(op==='cas_delta'){
+    value=structuredClone(old.value);
+    for(const [path,next] of Object.entries(r.set)){
+     const parts=path.split('.'),last=parts.pop();let node=value;
+     for(const part of parts)node=node[part];node[last]=structuredClone(next);
+    }
+    for(const path of r.unset){const parts=path.split('.'),last=parts.pop();let node=value;for(const part of parts)node=node[part];delete node[last];}
+   }
+   docs.set(k,{version:r.version+1,value});return {replaced:true,version:r.version+1};
   }throw Error('BAD_OP');
  }};
  const gate={observe(){},status:()=>({allowed:true,maxBatchSize:100}),hold(){}};
- const store=new RunnerState({transport,gate,now:()=>time,sleep:async()=>{}});
+ const store=new RunnerState({transport,gate,now:()=>time,sleep:async()=>{},deltaCas});
  const old={id:1,worker:0,start:1,end:300,sessionHash:'a'.repeat(64),checkpoint:1,journaled:1,pending:null,leaseUntil:0};
  const entries=baseline?[{id:1,worker:0,start:1,end:300,sessionHash:old.sessionHash,closed:true,complete:1,evidenceHash:hash(old)}]:[];
  const spec={schema:'sg-complete-count-v1',activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId:plan.gameId,target,maxSequence:ceiling,baselineBatchCount:entries.length,baselineHash:hash(entries),firstSequence:baseline?301:1};
@@ -52,8 +61,8 @@ async function fixture({target=3,baseline=true,ceiling=400,rotation=false,lanes=
  return {store,docs,rounds,plan,spec,key,pool,ctl,campaign,commit,session,conflict(){failCAS=3;},advance(){time+=600001;},read:async()=>(await store.get('state',pool.key)).value};
 }
 
-for(const lanes of [2,4])test(`${lanes} independent lanes per host conserve exact last seven quotas under contention`,async()=>{
- const f=await fixture({target:7,baseline:false,lanes});
+for(const lanes of [2,4])for(const deltaCas of [false,true])test(`${lanes} independent lanes per host conserve exact last seven quotas under contention (delta=${deltaCas})`,async()=>{
+ const f=await fixture({target:7,baseline:false,lanes,deltaCas});
  const leases=await Promise.all(Array.from({length:20*lanes},(_,index)=>{
   const lane=Math.floor(index/20),host=index%20;
   const worker=host+40*lane;return f.pool.register(worker,{owner:'worker'+worker,sessionHash:hash('session'+worker)});

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {countPermissionReader} from './count-permission-cache.mjs';
 import {stable} from './mongo-writer.mjs';
+import {stateDelta} from './state-delta.mjs';
 import {sessionWorkerAllowed,sessionLayout} from './session-layout.mjs';
 import {allocateCountBatch,completeCountBatch,settleCountBatch,allowCountSessionRotation,checkLedger} from './complete-count.mjs';
 
@@ -8,8 +9,9 @@ const fail=code=>Object.assign(new Error(code),{code});
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
 export class RunnerState {
-  constructor({transport,gate,now=Date.now,sleep=delay,deadline=Infinity}) {
-    Object.assign(this,{transport,gate,now,sleep,deadline});this.lastSample=-Infinity;
+  constructor({transport,gate,now=Date.now,sleep=delay,deadline=Infinity,deltaCas=false}) {
+    assert(typeof deltaCas==='boolean','DELTA_CAS_MODE');
+    Object.assign(this,{transport,gate,now,sleep,deadline,deltaCas});this.lastSample=-Infinity;
   }
   async sample() {
     if(this.now()-this.lastSample>=10_000) {
@@ -51,7 +53,13 @@ export class RunnerState {
   }
   async cas(collection,key,before,value) {
     await this.writable();
-    const result=await this.transport.request('cas',{collection,key,version:before.version,value});
+    const delta=this.deltaCas&&collection==='state'&&(key.startsWith('pool:')||/^validation:[0-9]{1,20}:[0-9]{1,4}:delta$/.test(key))?stateDelta(before.value,value):null;
+    const result=await this.transport.request(delta?'cas_delta':'cas',delta?
+      {collection,key,version:before.version,...delta}:{collection,key,version:before.version,value});
+    if(delta){
+      assert(typeof result?.replaced==='boolean','DELTA_CAS_ACK_REQUIRED');
+      assert(result.version===before.version+1,'DELTA_CAS_ACK_VERSION');
+    }
     return result.replaced?{version:result.version,value}:null;
   }
   async update(collection,key,change,{tries=40}={}) {

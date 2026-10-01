@@ -22,6 +22,13 @@ class DocumentCostTests(unittest.TestCase):
         self.assertEqual(result['documentKinds']['statePool']['responseByteSharePercent'], 80)
         self.assertEqual(result['documentKinds']['statePool']['meanMs'], 15)
 
+    def test_delta_operation_is_nested_once_in_pool_cost(self):
+        x=self.sample();g=x['rows'][0]['rpcMetrics']['gateway']
+        g['byOperation']['cas_delta']=g['byOperation'].pop('read')
+        result=self.check(x)
+        self.assertEqual(result['gatewayOperations']['responseBytes'],500)
+        self.assertEqual(result['documentKinds']['statePool']['responseBytes'],400)
+
     def test_missing_duplicate_foreign_or_failed_observation(self):
         base = self.sample()
         for field, value in [('run', 2), ('head', 'b'*40), ('conclusion', 'failure'), ('rows', [])]:

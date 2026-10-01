@@ -1,3 +1,9 @@
+## 2026-10-02 全量完成与实际传输成本
+
+Rhino 32799 已通过 300000 完整局的 Python 与 Mongo 全文审计，累计完成 16/178。源 run 36919896773 成功；原运行代码未热更新。完成证明 recordsHash 为 `16e54fe6f5720cdb733b88357a5fe634a7745aa4697f00be2b6d18913c583b4b`。原单解析器终审实际耗时 933.546 秒；新的双解析器本机真实留样提速不能代称该次线上提速。
+
+全源80会话统计发现完整池文档主导传输开销，详见 [增量状态优化](ag-state-delta-efficiency-20261002.md)。效率优化尚未全部验收，下一阶段验证受限增量 CAS 的 native I/O 与独立运行采用。下文15款和待审计描述保留为历史记录。
+
 Latest verification: parallel terminal validation of151 retained real records reduced local validation median45.34% (279.35ms to152.68ms per453 validations); synthetic49.03% retained separately. Audit-phase diagnostics passed Linux36927030129; source36919896773 remains unchanged and full300000 proof remains pending. All-optimization-complete=false.
 
 Fresh 1790888672: Rhino Mongo complete300000, activeWorkers0, activeBatches0, auditInProgress=true, final proof absent. Completion remains15/178 until full audit. Parallel audit Linux36925664121 passed and both evidence archives read back; online new-runtime audit and next-game admission remain pending.

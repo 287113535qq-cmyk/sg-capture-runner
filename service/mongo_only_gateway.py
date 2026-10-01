@@ -66,7 +66,8 @@ class Gateway:
             return self.sample()
         if op == 'hello':
             return {'group': self.group, 'database': DATABASE, 'schema': 'sg-mongo-only-v2',
-                    'captureLogicOnServer': False, 'legacyRuntimeEnabled': False}
+                    'captureLogicOnServer': False, 'legacyRuntimeEnabled': False,
+                    'stateDeltaEnabled': self.manifest.get('stateDeltaEnabled') is True}
         if op == 'global_holds':
             # Fixed, read-only cross-group safety records. Their contents and
             # all decisions are calculated by GitHub, not by this transport.
@@ -206,6 +207,39 @@ class Gateway:
             with path.open('rb') as stream:
                 stream.seek(offset); chunk = stream.read(256 * 1024)
             return {'offset': offset, 'size': path.stat().st_size, 'data': base64.b64encode(chunk).decode()}
+        if op == 'cas_delta':
+            need(self.manifest.get('metadataWritesEnabled') is True, 'METADATA_WRITES_DISABLED')
+            need(self.manifest.get('stateDeltaEnabled') is True, 'DELTA_CAS_DISABLED')
+            need(set(r) <= {'schema','op','collection','key','version','set','unset'}, 'DELTA_REQUEST_SCOPE')
+            need(r.get('collection') == 'state', 'DELTA_COLLECTION_SCOPE')
+            key = r.get('key')
+            need(isinstance(key,str), 'DELTA_POOL_SCOPE')
+            diagnostic = re.fullmatch(r'validation:[0-9]{1,20}:[0-9]{1,4}:delta',key)
+            if not diagnostic:
+                need(key.startswith('pool:'), 'DELTA_POOL_SCOPE')
+                trial = key[5:]
+                scope = self.manifest.get('trials',{}).get(trial)
+                need(scope and scope.get('group') == self.group, 'TRIAL_SCOPE_DENIED')
+            expected = r.get('version')
+            need(type(expected) is int and 0 <= expected < 9007199254740991, 'BAD_VERSION')
+            changes, removed = r.get('set'), r.get('unset')
+            need(isinstance(changes,dict) and isinstance(removed,list)
+                 and 1 <= len(changes)+len(removed) <= 64, 'DELTA_SIZE')
+            need(len(json.dumps({'set':changes,'unset':removed},ensure_ascii=False,
+                                separators=(',',':')).encode()) <= 64*1024, 'DELTA_SIZE')
+            paths = list(changes)+removed
+            need(all(isinstance(path,str) and 1 <= len(path.split('.')) <= 16
+                     and all(re.fullmatch(r'[A-Za-z0-9_-]{1,128}',part)
+                             and part not in ('__proto__','prototype','constructor')
+                             for part in path.split('.')) for path in paths), 'DELTA_PATH_SCOPE')
+            need(len(set(paths)) == len(paths)
+                 and not any(a != b and b.startswith(a+'.') for a in paths for b in paths), 'DELTA_PATH_CONFLICT')
+            update = {'$inc':{'version':1}}
+            if changes: update['$set'] = {'value.'+k:v for k,v in changes.items()}
+            if removed: update['$unset'] = {'value.'+k:'' for k in removed}
+            result = self.db['capture_state_v2'].update_one(
+                {'_id':self.group+'/'+key,'version':expected},update,upsert=False)
+            return {'replaced':result.matched_count == 1,'version':expected+1}
         if op in ('read', 'create', 'cas', 'scan'):
             alias = r.get('collection')
             need(alias in COLLECTIONS, 'COLLECTION_NOT_ALLOWED')
