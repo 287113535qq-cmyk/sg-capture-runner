@@ -65,6 +65,30 @@ test('idle canary reads compact fresh counts, honors completion and pauses, and 
  assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending,null);
 });
 
+test('next-batch admission reuses fresh compact control for heartbeat but claim still reads latest pool',async()=>{
+ for(const fault of ['none','hold','changed-after-control']){
+  const f=await fixture(),original=f.store.transport.request.bind(f.store.transport);let poolReads=0;
+  f.store.transport.request=async(op,r)=>{if(op==='read'&&r.key==='pool:'+f.plan.trialId)poolReads++;
+   return original(op,r);};
+  const before=structuredClone(f.docs.get('state/pool:'+f.plan.trialId));let controls=0;
+  f.controller.control=new SourceControl({store:f.store,plan:f.plan,
+   gate:{status:()=>({metrics:{diskFreeBytes:100*1024**3}})},transport:{request:async(op,r)=>{
+    controls++;assert.equal(op,'control_read');assert.deepEqual(r,{trialId:f.plan.trialId,workerId:0});
+    const pool=structuredClone(f.docs.get('state/pool:'+f.plan.trialId));
+    if(fault==='changed-after-control')f.docs.get('state/pool:'+f.plan.trialId).value.workers[0].owner='new-owner';
+    return [{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:{active:fault==='hold'}},
+     {_id:'primary/campaign',value:{enabled:true,activeGame:f.plan.gameId}},
+     {_id:'primary/pool:'+f.plan.trialId,version:pool.version,value:{enabled:true,failure:null,confirmed:pool.value.confirmed,workers:{0:pool.value.workers[0]}}}];
+   }}});f.controller.control.compact=true;
+  const request={owner:f.owned.owner,workerEpoch:f.owned.workerEpoch,shardId:0};
+  if(fault==='none'){await f.controller.next(request);assert.equal(poolReads,1);}
+  else{await assert.rejects(f.controller.next(request),fault==='hold'?/GLOBAL_SOURCE_STOPPED/:/LEASE_LOST/);
+   assert.equal(f.docs.get('state/pool:'+f.plan.trialId).value.nextSequence,before.value.nextSequence);
+   assert.equal(poolReads,fault==='hold'?0:1);}
+  assert.equal(controls,1);
+ }
+});
+
 test('compact source control still freshly rejects peer holds and changed worker fences before intent',async()=>{
  for(const fault of ['hold','worker']){
   const f=await fixture(),requests=[],gate={status:()=>({allowed:true,maxBatchSize:100,metrics:{diskFreeBytes:100*1024**3}})};

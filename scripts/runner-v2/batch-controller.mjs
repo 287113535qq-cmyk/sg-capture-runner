@@ -57,7 +57,9 @@ export class BatchController {
     }catch(error){this.batchSnapshot=null;throw error;}
   }
   async next(r){
-    await this.owned(r);await this.control.allowed({newRound:true});
+    await this.owned(r,{heartbeat:false});
+    const poolSnapshot=await this.control.allowed({newRound:true,workerId:r.shardId});
+    await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
     if(this.pendingFirst.admission?.limit===0){await this.pool.release(this.lease,{resumeSafe:true});return {done:true};}
     this.batch=await this.pool.take(this.lease);
     if(!this.batch){await this.pool.release(this.lease);return {done:true};}
