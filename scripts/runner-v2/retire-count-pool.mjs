@@ -5,15 +5,19 @@ import {MongoWriter} from './mongo-writer.mjs';
 import {checkLedger,settleCountBatch,auditCountBatch} from './complete-count.mjs';
 import {reviewClosedBatchDecoration} from './closed-batch-decoration.mjs';
 import {reviewBeforeOnlyRetirement} from './before-only-retirement.mjs';
+import {reviewHistoryPrefix} from './count-window-history.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
 // private snapshots in bounded pages; retain immutable closed batches verbatim.
-export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,now=Date.now}){
+export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,now=Date.now}){
  assert(Array.isArray(closedBatchDecorations)&&closedBatchDecorations.length<=1
   &&(!closedBatchDecorations.length||(group==='secondary'&&plan.gameId===32721&&closedBatchDecorations[0].batchId===50)), 'COUNT_DECORATION_SCOPE');
  assert(spec.sessionRotation==='closed-batches-v1'&&!pool.enabled&&hash(pool)===expectedPoolHash
   &&pool.planHash===hash(plan)&&Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'COUNT_RETIRE_POOL_UNSAFE');
  checkLedger(pool,plan,spec);
+ if(historyPermit){const saved=(await store.get('journal',`count-run:${plan.trialId}:${historyPermit.run}`))?.value;
+  assert(saved&&hash(saved)===hash(historyPermit),'COUNT_RETIRE_HISTORY_PERMISSION');}
+ const history=historyPermit?await reviewHistoryPrefix({store,plan,pool,spec,permit:historyPermit,retirement:true}):null;
  const prefix=`retired-count:${plan.trialId}:${expectedPoolHash.slice(0,16)}`,save=async(k,v)=>{
   await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'COUNT_RETIRE_READBACK');
  };
@@ -21,8 +25,9 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
  if(before){assert(group==='secondary'&&beforeOnlyRecovery,'COUNT_RETIRE_ALREADY_STARTED');
   await reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
  }else{assert(!beforeOnlyRecovery,'BEFORE_ONLY_MARKER_MISSING');await save(prefix+':before',{schema:'sg-retired-count-before-v1',plan,pool,owner,at:now()});}
- let complete=0,abandoned=0;const digest=createHash('sha256'),settlements=[];
- for(let start=1;start<pool.nextBatchId;start+=100){
+ let complete=history?.complete??0,abandoned=0;const digest=createHash('sha256'),settlements=[];
+ if(history){digest.update('preserved-history:'+hash(history)+'\n');await save(prefix+':history',history);}
+ for(let start=history?history.batchCount+1:1;start<pool.nextBatchId;start+=100){
   await boundary();
   assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===expectedPoolHash,'COUNT_RETIRE_POOL_CHANGED');
   const keys=Array.from({length:Math.min(100,pool.nextBatchId-start)},(_,i)=>`batch:${plan.trialId}:${start+i}`);
@@ -93,6 +98,7 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
   return {...v,retiredCount:prefix};
  });
  const result={schema:'sg-retired-count-result-v1',trialId:plan.trialId,completePreserved:complete,abandonedAttempts:abandoned,
-  recordsHash:digest.digest('hex'),sourceRequests:0,newBetAllowance:0,beforeHash:hash({plan,pool}),at:now()};
+  recordsHash:digest.digest('hex'),sourceRequests:0,newBetAllowance:0,beforeHash:hash({plan,pool}),at:now(),
+  ...(history?{historyReuse:history,currentRecordsRead:complete-history.complete}: {})};
  await save(prefix+':complete',result);return result;
 }

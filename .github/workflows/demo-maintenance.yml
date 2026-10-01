@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      network_profile:
+        description: 'Exact ended network fault closure; grants no source requests'
+        type: choice
+        default: count-network-pearl-20261001.json
+        options: [count-network-pearl-20261001.json, count-network-rhino-canary-20261002.json]
       window_peer_profile:
         description: 'Read-only window audit with an independently pinned healthy peer'
         type: choice
@@ -79,6 +84,8 @@ jobs:
         run: node scripts/runner-v2/count-window-review-control.mjs
       - name: Close reviewed unknown count request without replay or new source permission
         if: inputs.operation == 'close-count-network'
+        env:
+          SG_COUNT_NETWORK_PROFILE: ${{ inputs.network_profile }}
         run: node scripts/runner-v2/count-network-close-control.mjs
       - name: Activate reviewed session layout only after a healthy natural run boundary
         if: inputs.operation == 'activate-session-layout'

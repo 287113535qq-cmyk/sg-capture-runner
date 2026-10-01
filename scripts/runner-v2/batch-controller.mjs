@@ -10,6 +10,7 @@ import {beaverSequence} from '../trial/beaver-protocol.mjs';
 import {PendingFirst} from './pending-first.mjs';
 import {isAdapterGap} from './game-failure-policy.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
+import {canaryWorkerRegistration} from './session-canary.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -304,7 +305,9 @@ export class BatchController {
           &&permit.createdAt<=this.now()&&this.now()<permit.expiresAt
           &&permit.expiresAt-permit.createdAt<=270*60000,'COUNT_RUN_NOT_ADMITTED');
         const old=(await this.store.get('state',this.pool.key))?.value.workers[String(r.shardId)];
-        assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':'),'COUNT_INITIAL_WORKER_LATE');
+        const delayed=this.canarySchedule&&canaryWorkerRegistration({schedule:this.canarySchedule,permit,
+          plan:this.plan,commit:this.pool.commit,run,slot:r.shardId,now:this.now()});
+        assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':')||delayed,'COUNT_INITIAL_WORKER_LATE');
       }
       await this.pendingFirst.admit(r,r.shardId);
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};

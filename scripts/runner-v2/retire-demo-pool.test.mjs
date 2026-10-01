@@ -99,3 +99,20 @@ test('formal retirement Mongo conflict retains reservation and original private 
  assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,100);
  assert(f.get('state','batch:synthetic-demo:106').value.pending);
 });
+test('network retirement reuses admission-bound closed history and audits only current records',async()=>{
+ const f=largeCountFixture(),spec=f.docs.get('journal/'+f.key).value;
+ spec.profileHash='e'.repeat(64);f.pool.countAllocation.specHash=hash(spec);
+ f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);f.args.expectedPoolHash=hash(f.pool);
+ const permit={schema:'sg-count-run-v1',run:'77:1',commit:f.args.commit,profileHash:spec.profileHash,activation:spec.activation,completeBefore:0,
+  historyBoundary:{schema:'sg-count-history-boundary-v1',nextBatchId:106,nextSequence:10501,complete:0,
+   ledgerHash:hash(Array.from({length:105},(_,i)=>f.pool.countAllocation.batches[i+1]))}};
+ f.docs.set('journal/count-run:synthetic-demo:77:1',{value:permit});f.args.historyPermit=permit;
+ const before=hash(f.get('state','batch:synthetic-demo:1').value),r=await retireDemoPool(f.args);
+ assert.equal(r.completePreserved,2);assert.equal(r.currentRecordsRead,2);assert.equal(r.historyReuse.rawRecordsRead,0);
+ assert.equal(r.historyReuse.batchCount,105);assert.equal(hash(f.get('state','batch:synthetic-demo:1').value),before);
+ assert.equal(f.pool.countAllocation.reserved,100);assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,0);
+});
+test('retirement rejects a fabricated history permit before any mutation',async()=>{
+ const f=largeCountFixture();f.args.historyPermit={run:'77:1'};const before=hash([...f.docs]);
+ await assert.rejects(retireDemoPool(f.args),/COUNT_RETIRE_HISTORY_PERMISSION/);assert.equal(hash([...f.docs]),before);
+});

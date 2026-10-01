@@ -53,6 +53,16 @@ export function canaryLanePhase(schedule,slot,now){
  if(now>=schedule.endMs)return 'drain';
  return slot>=40&&now<schedule.secondLaneStartMs?'observe':'capture';
 }
+// Delayed lanes belong to the original admission, not a new late worker run.
+// Only the reviewed second-lane launch window overrides the ordinary 15 minutes.
+export function canaryWorkerRegistration({schedule,permit,plan,commit,run,slot,now}){
+ checkSchedule(schedule);
+ assert(schedule.run===run&&schedule.commit===commit&&schedule.sourcePermitHash===hash(permit)
+  &&schedule.activation===plan.countAllocation&&permit.activation===schedule.activation
+  &&permit.profileHash===schedule.profileHash,'CANARY_REGISTRATION_BINDING');
+ return canarySlots.slice(20).includes(slot)&&Number.isSafeInteger(now)
+  &&now>=schedule.secondLaneStartMs&&now<schedule.secondLaneStartMs+3*minute&&now<schedule.endMs;
+}
 export async function waitCanaryLane({schedule,slot,observe,shouldStop=()=>false,now=Date.now,sleep=ms=>new Promise(r=>setTimeout(r,ms))}){
  checkSchedule(schedule);
  while(!shouldStop()){

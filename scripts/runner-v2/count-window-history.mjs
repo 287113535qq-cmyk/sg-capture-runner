@@ -11,10 +11,10 @@ export function countHistoryBoundary({pool,plan,spec}){
  return {schema:'sg-count-history-boundary-v1',nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,
   complete:pool.confirmed,ledgerHash:hash(prefix)};
 }
-export async function reviewHistoryPrefix({store,plan,pool,spec,permit}){
+export async function reviewHistoryPrefix({store,plan,pool,spec,permit,retirement=false}){
  const ledger=checkLedger(pool,plan,spec),h=permit?.historyBoundary;
  assert(permit?.schema==='sg-count-run-v1'&&/^\d+:1$/.test(permit.run??'')&&/^[a-f0-9]{40}$/.test(permit.commit??'')&&permit.profileHash===spec.profileHash,'HISTORY_SOURCE_BINDING');
- assert(ledger.reserved===0&&pool.enabled&&!pool.failure,'HISTORY_POOL_NOT_SETTLED');
+ assert(!pool.failure&&(retirement===true||(ledger.reserved===0&&pool.enabled)),'HISTORY_POOL_NOT_SETTLED');
  assert(h?.schema==='sg-count-history-boundary-v1'&&Number.isSafeInteger(h.nextBatchId)&&h.nextBatchId>spec.baselineBatchCount
   &&h.nextBatchId<=pool.nextBatchId&&Number.isSafeInteger(h.nextSequence)&&h.nextSequence>0
   &&permit.activation===spec.activation&&permit.completeBefore===h.complete,'HISTORY_PERMISSION');

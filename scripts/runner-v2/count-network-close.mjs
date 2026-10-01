@@ -3,6 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 import {readPoolBatches} from './formal-source-review.mjs';
 import {retireDemoPool} from './retire-demo-pool.mjs';
+import {reviewHistoryPrefix} from './count-window-history.mjs';
 
 // Close a finished run's unknown request and interrupted sessions without source
 // replay. Retain the existing count authorization; issue no new run permission.
@@ -32,8 +33,10 @@ export async function closeCountNetwork({store,transport,gate,parser,plan,profil
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
  assert(permit?.schema==='sg-count-run-v1'&&permit.commit===profile.sourceCommit&&permit.run===profile.sourceRun
   &&permit.activation===spec.activation&&permit.profileHash===spec.profileHash&&hash(permit)===profile.permitHash,'COUNT_NETWORK_PERMISSION');
+ if(permit.historyBoundary)await reviewHistoryPrefix({store,plan,pool,spec,permit,retirement:true});
  assert(hash(batches)===profile.batchesHash&&Object.values(pool.workers).every(w=>w.leaseUntil<=now())
-  &&batches.every(b=>b.leaseUntil<=now()&&!b.failure&&!b.pendingOriginal&&!b.bootstrapAwaiting),'COUNT_NETWORK_BATCHES');
+  &&batches.every(b=>b.leaseUntil<=now()&&(!b.failure||(b.id<permit.historyBoundary?.nextBatchId&&pool.countAllocation.batches[b.id]?.closed))
+   &&!b.pendingOriginal&&!b.bootstrapAwaiting),'COUNT_NETWORK_BATCHES');
  const bad=batches.find(b=>b.id===profile.batchId);
  assert(bad?.pending?.awaiting&&bad.pending.sequence===bad.journaled+1
   &&hash(bad.pending)===profile.pendingHash,'COUNT_NETWORK_UNKNOWN_REQUEST');
@@ -51,7 +54,7 @@ export async function closeCountNetwork({store,transport,gate,parser,plan,profil
  await guarded();await store.update('state',poolKey,v=>{assert(hash(v)===profile.poolHash,'COUNT_NETWORK_POOL_CHANGED');return {...v,enabled:false};});
  const frozen=(await store.get('state',poolKey)).value;
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
-  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,now});
+  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,...(permit.historyBoundary?{historyPermit:permit}:{}),now});
  assert(retired.completePreserved===complete&&retired.abandonedAttempts===abandoned&&retired.sourceRequests===0
   &&retired.newBetAllowance===0&&(!profile.recordsHash||retired.recordsHash===profile.recordsHash),'COUNT_NETWORK_RETIREMENT');
  const after=(await store.get('state',poolKey)).value;
