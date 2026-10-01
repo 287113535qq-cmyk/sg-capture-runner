@@ -23,7 +23,8 @@ function fixture(){
   repository:{full_name:peer.repository},event:'workflow_dispatch',path:'.github/workflows/trial-300k.yml',status:'in_progress',conclusion:null};
  const jobs={total_count:21,jobs:[{name:'formal-admit',status:'completed',conclusion:'success'},...Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'in_progress',conclusion:null}))]};
  const rows=new Map(),transport={async request(op,fields){
-  if(op==='parallel_rhino_count_boundary')return evidence;
+  if(op==='read_many'){assert(fields.keys.length===3);return evidence[fields.collection].filter(r=>fields.keys.includes(r._id.slice('primary/'.length)));}
+  assert.notEqual(op,'parallel_rhino_count_boundary','primary must not use cross-group endpoint');
   assert.equal(fields.collection,'journal');if(op==='read')return rows.has(fields.key)?{value:rows.get(fields.key),version:0}:null;
   assert.equal(op,'create');if(rows.has(fields.key))return {created:false};rows.set(fields.key,fields.value);return {created:true};
  }},store=new RunnerState({transport});store.writable=async()=>{};

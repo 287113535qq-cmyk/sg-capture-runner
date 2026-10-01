@@ -26,7 +26,12 @@ export async function reservationIdentity({read,transport,profile,now=Date.now})
   &&j.jobs.some(job=>job.name==='formal-admit'&&job.status==='completed'&&job.conclusion==='success')
   &&j.jobs.filter(job=>!captures.includes(job)).every(job=>job.status==='completed'&&['success','skipped'].includes(job.conclusion)),
  'BOUNDARY_RESERVATION_CAPTURE');
- const permit=checkCountPeerEvidence(await transport.request('parallel_rhino_count_boundary',{run:peer.run,activation:peer.activation}),peer,r.status,now());
+ const spec='complete-count:'+peer.trialId+':'+peer.activation;
+ // This operation runs on primary. Reuse its own bounded native reads; the
+ // parallel peer endpoint is deliberately restricted to the other group.
+ const state=await transport.request('read_many',{collection:'state',keys:['campaign','pool:'+peer.trialId,'capture-run:'+peer.run]});
+ const journal=await transport.request('read_many',{collection:'journal',keys:['count-run:'+peer.trialId+':'+peer.run,spec,spec+':complete']});
+ const permit=checkCountPeerEvidence({state,journal},peer,r.status,now());
  assert(hash(permit)===profile.sourcePermitHash,'BOUNDARY_RESERVATION_PERMISSION');return r;
 }
 // Only the independent handoff-metadata operation permits this exact live peer.
