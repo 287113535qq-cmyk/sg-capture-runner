@@ -77,7 +77,7 @@ export async function prepareRepairCandidate({store,transport,parser,basePlan,pr
   repairedCandidate:{key,specHash:hash(p),closureKey:p.closureKey,closureHash:p.closureHash,repairKey:p.repairKey}};
  // All old values remain in the immutable before image and original closure.
  // No old batch, receipt, session, sequence range or applied profile is changed.
- for(const k of ['demoGeneration','demoPilotClosed','legacyImport','retiredDemo','drainingProtocol'])delete prepared[k];
+ for(const k of ['demoGeneration','demoPilotClosed','legacyImport','retiredDemo','drainingProtocol','emptyCandidate'])delete prepared[k];
  await store.update('state','pool:'+basePlan.trialId,v=>{assert(hash(v)===hash(scene.pool),'REPAIR_CANDIDATE_POOL_CHANGED');return prepared;});
  const result={schema:'sg-repaired-demo-candidate-complete-v1',profileHash:hash(profile),specHash:hash(p),planHash:hash(basePlan),
   commit,run,completePreserved:scene.completePreserved,recordsHash:scene.recordsHash,poolHash:hash(prepared),repairHash:hash(scene.repair),

@@ -5,7 +5,7 @@ import {fixture as sourceFixture} from './fixtures/demo-next-game.mjs';
 import {nextDemoGame,nextDemoScene} from './demo-next-game.mjs';
 import {DemoFresh} from './demo-fresh.mjs';
 
-function fixture(){
+function fixture(emptyOrigin=false){
  const basePlan=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32718'],registry=JSON.parse(fs.readFileSync('service/round_types.json'));
  const oldGeneration='a'.repeat(64),generation='b'.repeat(64),plan={...basePlan,demoGeneration:oldGeneration},trial=plan.trialId,
   key=`closed-demo-pilot:${trial}:${oldGeneration}`,rk=`game-repair:${trial}:${oldGeneration}`,docs=new Map();
@@ -15,7 +15,7 @@ function fixture(){
  const batch={id:1,worker:0,start:1,end:5,journaled:1,checkpoint:1,sessionHash:'s',leaseUntil:0,pending:null,pendingOriginal:null,bootstrapAwaiting:null,abandonedDemo:ak};
  const evidence=[{key:ak,hash:hash(archive),batchId:1,worker:0,sequence:2,rawHash:hash(pending.raw)}];
  const repair={schema:'sg-game-repair-v1',gameId:32718,trialId:trial,status:'pending-adapter',archiveKey:key+':before',evidence,sourceAllowance:0,requiresNewSession:true};
- const pool={enabled:false,planHash:hash(plan),nextBatchId:2,nextSequence:101,workers:{0:{sessionHash:'s',leaseUntil:0}},demoGeneration:{id:oldGeneration},demoPilotClosed:{key,profileHash:'p',repairKey:rk},legacyImport:{old:'fixed'}};
+ const pool={enabled:false,planHash:hash(plan),nextBatchId:2,nextSequence:101,workers:{0:{sessionHash:'s',leaseUntil:0}},demoGeneration:{id:oldGeneration},demoPilotClosed:{key,profileHash:'p',repairKey:rk},legacyImport:{old:'fixed'},...(emptyOrigin?{emptyCandidate:{key:'historical-empty',specHash:'historical-hash'}}:{})};
  const oldCampaign={activeGame:32718,games:[]},campaign={activeGame:32795,games:[{game_id:32718,status:'parked-protocol',repairKey:rk},{game_id:32795,status:'active'}]};
  const before={schema:'sg-demo-pilot-close-before-v2',profileHash:'p',commit:'c'.repeat(40),run:'1:1',scene:{campaign:oldCampaign}};
  const used=Array(20).fill(0),complete=Array(20).fill(0),abandoned=Array(20).fill(0);used[0]=2;complete[0]=1;abandoned[0]=1;
@@ -55,15 +55,15 @@ test('partial preparation cannot be used or reissued as an applied generation',a
  await assert.rejects(prepareRepairCandidate(f.args),/ALREADY_STARTED/);await assert.rejects(reviewRepairCandidate(f.args));
 });
 
-async function transitionFixture(){
- const f=fixture(),s=await sourceFixture(true),base=f.args.basePlan,p=f.args.profile,sourceBase=s.args.plans[32820];
+async function transitionFixture(emptyOrigin=false){
+ const f=fixture(emptyOrigin),s=await sourceFixture(true),base=f.args.basePlan,p=f.args.profile,sourceBase=s.args.plans[32820];
  for(const [k,v] of s.docs)if(k.includes('synthetic-source')||k==='state/write-permits')f.docs.set(k,structuredClone(v));
  const campaign={enabled:true,activeGame:32820,games:[{game_id:32820,status:'active'},{game_id:32718,status:'parked-protocol',repairKey:f.rk}],protocolValidation:{runKey:s.args.profile.sourceRunKey}};
  f.docs.set('state/campaign',{value:campaign});p.fromGameId=32820;p.repairedCandidate.campaignHash=hash(campaign);
  for(const k of ['sourceGeneration','sourcePlanHash','sourceSpecHash','sourceRunKey'])p[k]=s.args.profile[k];
  const candidateKey=`repaired-demo-candidate:${base.trialId}:${p.generation}`;
  const prepared={...f.pool,enabled:false,planHash:hash(base),confirmed:1,repairedCandidate:{key:candidateKey,specHash:hash(p.repairedCandidate),closureKey:f.key,closureHash:p.repairedCandidate.closureHash,repairKey:f.rk}};
- for(const k of ['demoGeneration','demoPilotClosed','legacyImport','retiredDemo','drainingProtocol'])delete prepared[k];
+ for(const k of ['demoGeneration','demoPilotClosed','legacyImport','retiredDemo','drainingProtocol','emptyCandidate'])delete prepared[k];
  const sourcePlan={...sourceBase,demoGeneration:p.sourceGeneration};
  const scene=await nextDemoScene(f.args.store,base,sourcePlan);scene.pool=prepared;p.sceneHash=hash(scene);
  Object.assign(f.args,{plans:{32718:base,32820:sourceBase},gate:{status:()=>({allowed:true,maxBatchSize:100}),hold(){},observe(){}},transport:{request:async(op,payload)=>{assert.equal(op,'rounds_read');return payload.ids.includes(f.record._id)?[structuredClone(f.record)]:[];}}});
@@ -88,4 +88,12 @@ for(const failure of ['repair-cas','top-complete'])test('repair transition '+fai
  f.args.store.update=async(c,k,fn)=>{if(failure==='repair-cas'&&k===f.rk)throw Error('INJECTED_REPAIR');return update(c,k,fn);};
  f.args.store.create=async(c,k,v)=>{if(failure==='top-complete'&&k===f.top+':complete')throw Error('INJECTED_COMPLETE');return create(c,k,v);};
  await assert.rejects(nextDemoGame(f.args),/INJECTED/);await assert.rejects(f.admit(),/NEXT_GAME_NOT_COMPLETE/);
+});
+
+test('repair of an originally empty candidate archives the old marker and reaches fresh admission',async()=>{
+ const f=await transitionFixture(true),oldClosure=hash(f.closed);await prepareRepairCandidate(f.args);
+ const key=`repaired-demo-candidate:${f.args.basePlan.trialId}:${f.args.profile.generation}`;
+ assert.deepEqual(f.docs.get('journal/'+key+':before').value.scene.pool.emptyCandidate,{key:'historical-empty',specHash:'historical-hash'});
+ assert.equal(f.docs.get('state/pool:'+f.args.basePlan.trialId).value.emptyCandidate,undefined);
+ const r=await nextDemoGame(f.args);assert.equal(r.newBetAllowance,100);assert.equal((await f.admit()).limit,5);assert.equal(hash(f.closed),oldClosure);
 });

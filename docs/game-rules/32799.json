@@ -110,8 +110,8 @@
   "analysisDocumentHashes": {
     "docs/formal-next-candidate-20261001.md": "8b10b1ee6f06e44874632af761ebf5bc1d3c8957797e40c49fe510f0d3cf85bc",
     "docs/inca-free-integration-20261001.md": "ec37f1d56b20688ee09390aed029be7c8a3892e6c15f266d1b5fd0bd2e05472d",
-    "docs/mansion-reentry-rhino-guarantee-20261001-result.json": "cfd1c8a95eb453e9d59dc58175f5a39e1fe3615c16899b96c9916128810ef653",
-    "docs/mansion-reentry-rhino-guarantee-20261001.md": "2f2e44c21e44b007d6114e563afe5ac33a8fd5b94300071445c2b9508ecce6fb",
+    "docs/mansion-reentry-rhino-guarantee-20261001-result.json": "f12a5040adb0b36577d05139e64e3b8a2780e512c238381cec5025ec2d39734b",
+    "docs/mansion-reentry-rhino-guarantee-20261001.md": "46774ab051637ff672f6eadc22cacfa715abe63ee308c16133748fbb0e00078d",
     "docs/pearl-award-repair-20261001.md": "fa71bbf04a08d597b2ab5968c345fd49c3512bf448d02724106bb51f29f3f518",
     "docs/pearl-formal-count-20260930-result.json": "d71e30268917690037a8c8a2de897163c30743ee47eb5f5f13134770d6258bd4",
     "docs/pearl-formal-count-20260930.md": "63faf1315ace0d6da76e9dfb56bfd672d757a29f11b2707f720c4e87a0b1cb6b",
@@ -127,5 +127,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1e8479c87f8fc8285f7a257e629a4da1859b24fd061176766512fbf68da0d5ec"
+  "ruleHash": "d02c01ba298862a57edbb92b9c6b41664b6bbdd5eb3b9f981c83fe69ba24bf84"
 }

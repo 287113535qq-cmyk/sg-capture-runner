@@ -17,13 +17,16 @@
     "totalComplete": 152,
     "used": 24,
     "abandoned": 1,
-    "unusedPendingClose": 76,
+    "unusedPendingClose": 0,
     "pending": 0,
     "outstanding": 0,
     "activeLeases": 0,
     "failure": "HARDHAT_PREVIOUS_SLOTS",
-    "closed": false,
-    "closeProfileHash": "e93934eae2638eec400e95f4143ef00c494807783ecdd8233d459ec5e5ea42b7"
+    "closed": true,
+    "closeProfileHash": "e93934eae2638eec400e95f4143ef00c494807783ecdd8233d459ec5e5ea42b7",
+    "foregone": 76,
+    "closeHash": "140da0b88552f82bf8e94788e73521f954ae0165f2f7045a786b7bf28b79a0b6",
+    "closeRun": "36824473931:1"
   },
   "rhino": {
     "gameId": 32799,
@@ -36,7 +39,11 @@
     "newMapping": "ragingrhino-wms-v1-terminal-guarantee-v1",
     "naturalGuaranteeEndObserved": false,
     "newAdmission": false,
-    "old52Used48ForegoneUnchanged": true
+    "old52Used48ForegoneUnchanged": true,
+    "newProfileHash": "1d9494dffd635eee21392a98fc1156cd242d6e3adc7c2e9fdfa974c75b042aeb",
+    "repairTransitionTests": 15,
+    "pythonProfileVerified": true,
+    "emptyCandidateMarkerArchived": true
   },
   "latency": {
     "linuxSuccessUtc": "2026-10-01T06:08:26Z",
@@ -45,7 +52,7 @@
   },
   "limitations": [
     "Rhino actual abandoned prefix reaches EndGame request only; successful acknowledgement was synthesized offline.",
-    "Mansion failed prefix is retained without replay; 76 unused requires no-source close.",
+    "Mansion failed prefix is retained without replay; 76 unused has been formally foregone.",
     "No new formal collection or session-concurrency benchmark has been authorized by these results."
   ]
 }
