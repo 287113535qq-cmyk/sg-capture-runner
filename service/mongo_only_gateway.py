@@ -73,6 +73,26 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op in ('parallel_rhino_count_boundary', 'parallel_pyramids_count_boundary'):
+            # Two fixed trial scopes; only an attempt-one run identity is variable.
+            # This is database I/O. GitHub verifies ownership, permission and jobs.
+            need(set(r) == {'schema', 'op', 'run', 'activation'}, 'BOUNDARY_SCOPE_DENIED')
+            run = r['run']
+            need(isinstance(run, str) and re.fullmatch(r'[1-9][0-9]{0,14}:1', run), 'BOUNDARY_RUN_SCOPE')
+            activation = r['activation']
+            need(isinstance(activation, str) and re.fullmatch(r'[a-f0-9]{64}', activation), 'BOUNDARY_ACTIVATION_SCOPE')
+            rhino = op == 'parallel_rhino_count_boundary'
+            group, trial, identity = (('primary', 'sg_r1_20261001_32799', (32799,33159,'primary',300000,600000))
+                                      if rhino else ('secondary', 'sg_r1_20260928_32721', (32721,33121,'secondary',299850,600000)))
+            need(self.group != group, 'GROUP_SCOPE_DENIED')
+            scope = self.manifest['trials'].get(trial, {})
+            need(tuple(scope.get(k) for k in ('gameId','runtimeGameId','group','target','maxSequence')) == identity,
+                 'BOUNDARY_TRIAL_SCOPE')
+            ids = [group + '/campaign', group + '/pool:' + trial, group + '/capture-run:' + run]
+            spec = group + '/complete-count:' + trial + ':' + activation
+            keys = [group + '/count-run:' + trial + ':' + run, spec, spec + ':complete']
+            return {'state': list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(3)),
+                    'journal': list(self.db[COLLECTIONS['journal']].find({'_id': {'$in': keys}}, max_time_ms=10000).limit(3))}
         if op == 'parallel_primary_rhino_two_boundary':
             # Fixed native reads only; GitHub verifies run, profile and leases.
             need(self.group == 'secondary', 'GROUP_SCOPE_DENIED')

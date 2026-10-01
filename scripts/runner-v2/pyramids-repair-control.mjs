@@ -4,6 +4,7 @@ import {connectGateway} from './transport.mjs';import {ResourceGate} from './res
 import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
 import {authenticatedRead} from './github-boundary.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {secondaryParallelBoundary,secondaryRepository,observationPrimary} from './secondary-parallel-boundary.mjs';
+import {countPeerBoundary} from './count-peer-boundary.mjs';
 import {pyramidsCountPlan} from './pyramids-count-profile.mjs';import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';
 import {retireStoppedFormal} from './formal-stopped-retire.mjs';import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
@@ -22,8 +23,10 @@ for(const [p,h] of Object.entries(profile.files)){
 const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate();
 const store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
-const github=secondaryParallelBoundary({read,transport,run,commit,primaryRun:entry.primaryRun,allowEndedPrimary:entry.allowEndedPrimary,
- workflowPath:mode==='admit'?'.github/workflows/trial-300k.yml':'.github/workflows/demo-maintenance.yml'});
+assert(!profile.primaryPeer||entry.v2,'PYRAMIDS_PEER_PROFILE_SCOPE');
+const workflowPath=mode==='admit'?'.github/workflows/trial-300k.yml':'.github/workflows/demo-maintenance.yml';
+const github=profile.primaryPeer?countPeerBoundary({read,transport,run,commit,peer:profile.primaryPeer,selfGroup:'secondary',workflowPath}):
+ secondaryParallelBoundary({read,transport,run,commit,primaryRun:entry.primaryRun,allowEndedPrimary:entry.allowEndedPrimary,workflowPath});
 const boundary=async()=>{await github();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
  await checkPrimaryLeases({store,plans});assert((await transport.request('rounds_scan',{trialId:plan.trialId,after:600000})).length===0,'PYRAMIDS_COUNT_NATIVE_CEILING');};
 try{

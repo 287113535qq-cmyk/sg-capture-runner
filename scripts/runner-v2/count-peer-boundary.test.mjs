@@ -1,0 +1,67 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {countPeerBoundary,checkCountPeerDescriptor,checkCountPeerEvidence} from './count-peer-boundary.mjs';
+import {original} from './expired-run-review.mjs';import {stalled,revokedMarker} from './demo-run-fence.mjs';
+import {protocolHash as hash} from './protocol-resume.mjs';
+const repos={primary:'zyzuoyang/sg-capture-runner',secondary:'287113535qq-cmyk/sg-capture-runner'};
+function fixture(group='primary'){
+ const selfGroup=group==='primary'?'secondary':'primary',peer={schema:'sg-count-peer-v1',group,repository:repos[group],
+  gameId:group==='primary'?32799:32721,trialId:group==='primary'?'sg_r1_20261001_32799':'sg_r1_20260928_32721',
+  run:'987654:1',commit:'a'.repeat(40),activation:'b'.repeat(64),profileHash:'c'.repeat(64),lanesPerHost:group==='primary'?2:1};
+ const self={id:123,repository:{full_name:repos[selfGroup]},run_attempt:1,event:'workflow_dispatch',head_sha:'d'.repeat(40),
+  path:'.github/workflows/demo-maintenance.yml',status:'in_progress',conclusion:null};
+ const other={...self,id:987654,repository:{full_name:peer.repository},head_sha:peer.commit,path:'.github/workflows/trial-300k.yml'};
+ const runs=[self,other,...[original,stalled].map(x=>({...self,id:x.id,repository:{full_name:x.repository},head_sha:x.commit,status:'queued',path:other.path}))];
+ const spec={schema:'sg-complete-count-v1',activation:peer.activation,profileHash:peer.profileHash,gameId:peer.gameId,trialId:peer.trialId,
+  target:group==='primary'?300000:299850,planHash:'e'.repeat(64),commit:'f'.repeat(40),...(group==='primary'?{sessionLayout:{lanesPerHost:2}}:{})};
+ const permit={schema:'sg-count-run-v1',activation:peer.activation,profileHash:peer.profileHash,run:peer.run,commit:peer.commit,completeBefore:100,remainingComplete:spec.target-100};
+ const complete={schema:'sg-complete-count-activation-v1',specHash:hash(spec),planHash:spec.planHash,trialId:peer.trialId,commit:spec.commit};
+ const pool={enabled:true,confirmed:100,countAllocation:{specHash:hash(spec),reserved:0},workers:{[group==='primary'?0:20]:{leaseUntil:1000,owner:peer.run+':formal-capture:host'}}};
+ const campaign={group,enabled:true,activeGame:peer.gameId,validationLimit:0,formalCount:{activation:peer.activation,profileHash:peer.profileHash,trialId:peer.trialId},...(group==='primary'?{demoRunRevoked:revokedMarker}:{})};
+ const evidence={state:[{_id:group+'/campaign',value:campaign},{_id:group+'/pool:'+peer.trialId,value:pool},
+  {_id:group+'/capture-run:'+peer.run,value:{gameId:peer.gameId}}],journal:[{_id:group+'/count-run:'+peer.trialId+':'+peer.run,value:permit},
+  {_id:group+'/complete-count:'+peer.trialId+':'+peer.activation,value:spec},{_id:group+'/complete-count:'+peer.trialId+':'+peer.activation+':complete',value:complete}]};
+ const jobs=[{name:group==='primary'?'formal-admit':'pyramids-formal-admit',status:'completed',conclusion:'success'},
+  ...Array.from({length:20},(_,i)=>({name:'capture-'+i,status:'in_progress',conclusion:null})),{name:'verify',status:'completed',conclusion:'success'}];
+ const calls=[];const read=async path=>{
+  if(path.includes('runs?')){const repository=path.split('/actions/')[0].slice(6),status=new URL('https://api.test/'+path).searchParams.get('status');
+   const workflow_runs=runs.filter(r=>r.repository.full_name===repository&&r.status===status);return {total_count:workflow_runs.length,workflow_runs};}
+  const id=Number(path.match(/runs\/(\d+)/)[1]);return path.includes('/jobs?')?{total_count:id===other.id?jobs.length:0,jobs:id===other.id?jobs:[]}:runs.find(r=>r.id===id);
+ };
+ let pending=false;
+ const transport={request:async(op,args)=>{assert(!pending);pending=true;calls.push({op,args});await Promise.resolve();pending=false;
+  return op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:evidence;}};
+ return {args:{read,transport,peer,selfGroup,run:'123:1',commit:self.head_sha,workflowPath:self.path,now:()=>100},peer,pool,campaign,spec,permit,complete,evidence,jobs,runs,other,calls};
+}
+test('both directions accept only an immutable peer and serial native reads',async()=>{
+ for(const group of ['primary','secondary']){const f=fixture(group);await countPeerBoundary(f.args)();assert.equal(f.calls.length,2);
+  assert.deepEqual(f.calls[0].args,{run:f.peer.run,activation:f.peer.activation});assert.equal(f.calls[1].op,'global_holds');}
+});
+test('peer scope rejects foreign game account attempt profile and lanes',()=>{
+ const f=fixture();for(const delta of [{gameId:32795},{repository:repos.secondary},{run:'987654:2'},{commit:'bad'},{activation:'bad'},{profileHash:'bad'},{lanesPerHost:3}])
+  assert.throws(()=>checkCountPeerDescriptor({...f.peer,...delta},'secondary'));
+ assert.throws(()=>checkCountPeerDescriptor(f.peer,'primary'));
+});
+test('native evidence is independently bound to permission spec receipt and owner',()=>{
+ for(const reason of ['permit','spec','receipt','owner','worker','scope','duplicate','marker']){const f=fixture();
+  if(reason==='permit')f.permit.commit='9'.repeat(40);if(reason==='spec')f.spec.target++;if(reason==='receipt')f.complete.specHash='0'.repeat(64);
+  if(reason==='owner')f.pool.workers[0].owner='another-run';if(reason==='worker')f.pool.workers[60]={leaseUntil:1000};
+  if(reason==='scope')f.evidence.state[1]._id='primary/pool:other';if(reason==='duplicate')f.evidence.journal[2]=f.evidence.journal[1];
+  if(reason==='marker')f.campaign.demoRunRevoked={};
+  assert.throws(()=>checkCountPeerEvidence(f.evidence,f.peer,'in_progress',100),undefined,reason);
+ }
+});
+test('other activity failed child changed identity and incomplete admission refuse',async()=>{
+ for(const reason of ['other','failed','wrong','admission','queuedChild','duplicate']){const f=fixture();
+  if(reason==='other')f.runs.push({...f.other,id:999});if(reason==='failed')Object.assign(f.jobs[1],{status:'completed',conclusion:'failure'});
+  if(reason==='wrong')f.other.head_sha='9'.repeat(40);if(reason==='admission')f.jobs[0].conclusion='failure';
+  if(reason==='queuedChild')f.jobs[1].status='queued';if(reason==='duplicate')f.jobs[2].name=f.jobs[1].name;
+  await assert.rejects(countPeerBoundary(f.args)(),undefined,reason);
+ }
+});
+test('ended healthy peer requires closed batches and no live lease; ended failure is never ignored',async()=>{
+ const f=fixture();Object.assign(f.other,{status:'completed',conclusion:'success'});f.jobs.forEach(j=>Object.assign(j,{status:'completed',conclusion:'success'}));
+ await assert.rejects(countPeerBoundary(f.args)(),/ENDED_UNSETTLED/);f.pool.workers[0].leaseUntil=0;await countPeerBoundary(f.args)();
+ f.pool.countAllocation.reserved=1;await assert.rejects(countPeerBoundary(f.args)(),/ENDED_UNSETTLED/);f.pool.countAllocation.reserved=0;
+ f.pool.workers[0].activeBatch={id:1};await assert.rejects(countPeerBoundary(f.args)(),/ENDED_UNSETTLED/);
+ f.other.conclusion='failure';await assert.rejects(countPeerBoundary(f.args)(),/PEER_IDENTITY/);
+});

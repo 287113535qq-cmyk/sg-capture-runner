@@ -81,6 +81,24 @@ class GatewayTests(unittest.TestCase):
         self.call('create',collection='state',key='worker:0',value={'private':True})
         other=Gateway(self.db,'secondary',self.manifest)
         self.assertIsNone(other.dispatch({'schema':'sg-mongo-only-v2','op':'read','collection':'state','key':'worker:0'}))
+    def test_count_peer_scopes_are_reciprocal_fixed_trial_reads_without_writes(self):
+        for group,trial,game,runtime,target,op in (
+            ('primary','sg_r1_20261001_32799',32799,33159,300000,'parallel_rhino_count_boundary'),
+            ('secondary','sg_r1_20260928_32721',32721,33121,299850,'parallel_pyramids_count_boundary')):
+            m=copy.deepcopy(self.manifest);m['trials'][trial]={'group':group,'gameId':game,'runtimeGameId':runtime,'target':target,'maxSequence':600000}
+            reader=Gateway(self.db,'secondary' if group=='primary' else 'primary',m)
+            request={'schema':'sg-mongo-only-v2','op':op,'run':'987654:1','activation':'a'*64}
+            key=group+'/count-run:'+trial+':987654:1';unrelated=group+'/count-run:'+trial+':999:1'
+            self.db['capture_journal_v2'].rows[key]={'_id':key,'value':{}}
+            self.db['capture_journal_v2'].rows[unrelated]={'_id':unrelated,'value':{}}
+            before=copy.deepcopy(self.db['capture_journal_v2'].rows)
+            result=reader.dispatch(request);self.assertEqual([x['_id'] for x in result['journal']],[key])
+            self.assertEqual(self.db['capture_journal_v2'].rows,before)
+            with self.assertRaises(Refused):Gateway(self.db,group,m).dispatch(request)
+            for extra in ({'keys':[]},{'trialId':trial},{'query':{}},{'run':'987654:2'},{'run':'../other'},{'activation':'bad'}):
+                with self.assertRaises(Refused):reader.dispatch({**request,**extra})
+            m['trials'][trial]['maxSequence']=999999
+            with self.assertRaises(Refused):Gateway(self.db,reader.group,m).dispatch(request)
     def test_no_arbitrary_database_query_or_shell(self):
         for op in ('eval','delete','drop','select','exchange_journal','audit','aggregate'):
             with self.assertRaises(Refused):self.call(op)

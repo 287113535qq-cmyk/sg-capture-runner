@@ -13,6 +13,7 @@ import {authorizeInitialCountRuntime} from './count-initial-runtime.mjs';
 import {countControlPolicy} from './count-control-policy.mjs';
 import {checkRhinoObservationRevision} from './rhino-observation-runtime.mjs';
 import {readParentTailFailure} from './parent-tail-failure.mjs';
+import {countPeerBoundary} from './count-peer-boundary.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
@@ -31,8 +32,10 @@ for(const [p,h] of Object.entries(files)){
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'FORMAL_COUNT_RUNTIME_CHANGED');
 }
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer(),read=authenticatedRead(process.env.GH_TOKEN);
-const idle=maintenanceBoundary({read,store,oldProfile:readFile('config/demo-pilot-beaver-20260930.json'),run,commit,
- workflowPath:mode!=='admit'?'.github/workflows/demo-maintenance.yml':'.github/workflows/trial-300k.yml'});
+assert(!revision?.secondaryPeer||isRhino||profile.schema==='sg-session-layout-rhino-v1','COUNT_PEER_PROFILE_SCOPE');
+const workflowPath=mode!=='admit'?'.github/workflows/demo-maintenance.yml':'.github/workflows/trial-300k.yml';
+const idle=revision?.secondaryPeer?countPeerBoundary({read,transport,peer:revision.secondaryPeer,selfGroup:'primary',run,commit,workflowPath}):
+ maintenanceBoundary({read,store,oldProfile:readFile('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath});
 try{
  const boundary=async()=>{
   await idle();await store.writable();assert(gate.status().metrics.diskFreeBytes>=30*1024**3,'DISK_RESERVE_REQUIRED');
