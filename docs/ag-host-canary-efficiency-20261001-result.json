@@ -52,5 +52,25 @@
     "verified": true
   },
   "logIntegrityLocalChecks": 16,
-  "logIntegrityOnlineVerified": false
+  "logIntegrityOnlineVerified": false,
+  "canaryAdmissionLocalChecks": 19,
+  "canaryAdmissionLinuxVerified": true,
+  "canaryAdmissionOnlineApplied": false,
+  "canaryRuntimePreparationLocalChecks": 12,
+  "canaryPreparedRuntimeFiles": 650,
+  "mixedCollectorIndependentVerified": true,
+  "mixedCollectorAdditionalNegativeChecks": 7,
+  "mixedCollectorProductionImported": false,
+  "canaryAdmissionLinux": {
+    "run": "36874519464:1",
+    "commit": "7e6572d33518dcf868f0e4b7164d3736f9ec3efb",
+    "logSha256": "8d99895f15a74ee00f5f8512eaa6cd8542d6d6e92f46240bd1b7b9b4cbc4abca",
+    "startedAt": "2026-10-01T14:12:25Z",
+    "completedAt": "2026-10-01T14:14:36Z",
+    "runnerChecks": 1122,
+    "trialChecks": 148,
+    "collectorChecks": 28,
+    "pythonStorageChecks": 363,
+    "verified": true
+  }
 }
