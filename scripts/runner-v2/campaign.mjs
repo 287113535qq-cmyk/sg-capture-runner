@@ -26,6 +26,13 @@ export class GithubCampaign {
     const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
     return spec?idleAtCountTail(pool,plan,spec,worker,this.now()):idleAtAssignedTail(pool,worker,plan.target,this.now());
   }
+  async idleAtTails(plan,pool,workers){
+    // One parent has one serialized gateway. Read the shared immutable permission
+    // once, then evaluate each independent child's settled slot locally.
+    assert(Array.isArray(workers)&&workers.length>0&&new Set(workers).size===workers.length,'TAIL_WORKERS_REQUIRED');
+    const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
+    return workers.map(worker=>spec?idleAtCountTail(pool,plan,spec,worker,this.now()):idleAtAssignedTail(pool,worker,plan.target,this.now()));
+  }
   async status({runKey}={}){
     const c=(await this.store.get('state','campaign'))?.value;
     const holds=await this.transport.request('global_holds');

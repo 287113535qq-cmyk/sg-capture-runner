@@ -80,7 +80,7 @@ try{
       if(code===0){
         const pool=(await store.get('state','pool:'+next.plan.trialId)).value;
         const workers=Array.from({length:sessionLayout(next.plan)?.lanesPerHost??1},(_,lane)=>sessionWorker(next.plan,Number(process.env.SG_TRIAL_SHARD),group,lane));
-        const idle=await Promise.all(workers.map(worker=>campaign.idleAtTail(next.plan,pool,worker)));
+        const idle=await campaign.idleAtTails(next.plan,pool,workers);
         if(idle.every(Boolean)){
           console.log(JSON.stringify({action:'yield-runner',reason:'REMAINING_RANGES_OWNED_BY_OTHER_WORKERS'}));break;
         }

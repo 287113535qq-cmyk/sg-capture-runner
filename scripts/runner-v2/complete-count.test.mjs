@@ -133,6 +133,15 @@ test('parent worker yields when allocation ceiling is reached without claiming t
  assert.equal((await f.read()).confirmed,2);
 });
 
+test('parent evaluates multiple child tails with one serialized permission read',async()=>{
+ const f=await fixture(),pool=await f.read();pool.workers[0]={activeBatch:null,leaseUntil:0};pool.workers[1]={activeBatch:null,leaseUntil:0};
+ const original=f.campaign.store.get.bind(f.campaign.store);let pending=false,reads=0;
+ f.campaign.store.get=async(...args)=>{assert.equal(pending,false,'shared gateway must remain serial');pending=true;reads++;
+  try{await new Promise(resolve=>setImmediate(resolve));return await original(...args);}finally{pending=false;}};
+ assert.deepEqual(await f.campaign.idleAtTails(f.plan,pool,[0,1]),[false,false]);assert.equal(reads,2);
+ await assert.rejects(f.campaign.idleAtTails(f.plan,pool,[0,0]),/TAIL_WORKERS_REQUIRED/);
+});
+
 test('count controller settles a partial range, rotates session and audits the old immutable batch',async()=>{
  const f=await fixture({target:41,baseline:false,rotation:true});
  const rpc=(op,r={})=>f.ctl.rpc(op,{shardId:0,...r});
