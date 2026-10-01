@@ -8,7 +8,7 @@ export function pyramidsRepairEntry(mode,name,retireName){
  const v2=continuation||name==='formal-repair-pyramids-display-20261001.json';
  assert(v2||name===(mode==='retire'?'formal-count-pyramids-20261001.json':'formal-repair-pyramids-coins-20261001.json'),'PYRAMIDS_REPAIR_PROFILE_PATH');
  const oldName=continuation?'formal-repair-pyramids-display-20261001.json':v2?'formal-repair-pyramids-coins-20261001.json':'formal-count-pyramids-20261001.json';
- assert(!retireName||mode==='retire'&&(continuation?['formal-retire-pyramids-continuation-20261001.json']:v2?['formal-retire-pyramids-display-20261001.json','formal-retire-pyramids-display-entryfix-20261001.json']:['formal-retire-pyramids-coins-20261001.json']).includes(retireName),'PYRAMIDS_RETIRE_PROFILE_PATH');
+ assert(!retireName||mode==='retire'&&(continuation?['formal-retire-pyramids-continuation-20261001.json','formal-retire-pyramids-continuation-entryfix-20261001.json']:v2?['formal-retire-pyramids-display-20261001.json','formal-retire-pyramids-display-entryfix-20261001.json']:['formal-retire-pyramids-coins-20261001.json']).includes(retireName),'PYRAMIDS_RETIRE_PROFILE_PATH');
  return {v2,oldName,parserProfile:mode==='retire'?oldName:name,
   newName:v2?name:'formal-repair-pyramids-coins-20261001.json',
   retireName:retireName??(continuation?'formal-retire-pyramids-continuation-20261001.json':v2?'formal-retire-pyramids-display-20261001.json':'formal-retire-pyramids-coins-20261001.json'),
