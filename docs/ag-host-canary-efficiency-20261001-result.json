@@ -1,0 +1,16 @@
+{
+  "schema": "sg-host-canary-resource-review-v1",
+  "localChecks": 69,
+  "linuxVerified": false,
+  "onlineApplied": false,
+  "throughputGainVerified": false,
+  "backendGateChanged": false,
+  "startupWaitAdded": false,
+  "hostSampleEveryMs": 10000,
+  "hostMaxMinuteBuckets": 360,
+  "oldMissingEvidenceAccepted": false,
+  "canaryActuallyStarted": false,
+  "allOptimizationComplete": false,
+  "sourceRequests": 0,
+  "mongoWrites": 0
+}

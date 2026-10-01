@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {reviewHostResourceWindow} from './host-resource-observation.mjs';
 
 // Bounded numeric telemetry. A bucket proves coverage, not permission to write.
 // AG canary comparison needs the measured interval, rather than startup peaks.
@@ -63,16 +64,19 @@ export function reviewResourceWorkers({run,commit,logSha256,expectedSlots,worker
     &&[20,40,80].includes(expectedSlots.length)&&new Set(expectedSlots).size===expectedSlots.length
     &&layout.length===expectedSlots.length&&expectedSlots.every(v=>Number.isSafeInteger(v)&&layout.includes(v))
     &&Array.isArray(workers)&&workers.length===expectedSlots.length,'RESOURCE_WORKERS_SCOPE');
-  const seen=new Set(),reviews=[];
+  const seen=new Set(),reviews=[],hostReviews=[];
   for(const w of workers){
     assert(expectedSlots.includes(w.slot)&&!seen.has(w.slot)&&w.run===run&&w.commit===commit
       &&w.sourceErrors===0&&w.unknown===0&&w.diagnostics?.schema==='sg-resource-observation-v1',
     'RESOURCE_WORKER_EVIDENCE');
     seen.add(w.slot);reviews.push(reviewResourceWindow(w.diagnostics.windows,startMs,endMs));
+    hostReviews.push(reviewHostResourceWindow(w.hostDiagnostics,startMs,endMs));
   }
   return {schema:'sg-resource-workers-review-v1',run,commit,logSha256,startMs,endMs,
     workers:reviews.length,verified:true,sourceErrors:0,unknown:0,resourceHolds:0,
     resourceEvidenceComplete:true,peakCpuPercent:Math.max(...reviews.map(r=>r.peakCpuPercent)),
     peakMemoryPercent:Math.max(...reviews.map(r=>r.peakMemoryPercent)),
-    minDiskFreeBytes:Math.min(...reviews.map(r=>r.minDiskFreeBytes)),sourceRequests:0,databaseWrites:0};
+    minDiskFreeBytes:Math.min(...reviews.map(r=>r.minDiskFreeBytes)),backendEvidenceComplete:true,hostEvidenceComplete:true,
+    hostPeakCpuPercent:Math.max(...hostReviews.map(r=>r.peakCpuPercent)),
+    hostPeakMemoryPercent:Math.max(...hostReviews.map(r=>r.peakMemoryPercent)),sourceRequests:0,databaseWrites:0};
 }

@@ -7,10 +7,12 @@ import {analyzer} from './analyzer.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 import {localSpool} from './local-spool.mjs';
 import {readResourceHandoff} from './resource-handoff.mjs';
+import {HostResourceObservation} from './host-resource-observation.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
   const resourceReady=readResourceHandoff(gate);
+  const hostResources=new HostResourceObservation();hostResources.start();
   const localStages={};
   const observe=(key,at)=>{try{const m=localStages[key]??={calls:0,totalMs:0};m.calls++;m.totalMs+=performance.now()-at;}catch{}};
   const timedParser={call:async fields=>{const at=performance.now();
@@ -28,6 +30,7 @@ export function connectLocal(plan){
     runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
   return {rpc:async(op,data)=>{await resourceReady;return controller.rpc(op,data);},metrics:()=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
     resourceObservation:gate.diagnostics(),
+    hostResourceObservation:hostResources.diagnostics(),
     localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),
-    close(){parser.close();transport.close();spool.close();}};
+    close(){hostResources.stop();parser.close();transport.close();spool.close();}};
 }

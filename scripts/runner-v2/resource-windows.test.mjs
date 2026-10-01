@@ -1,6 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {ResourceWindows,reviewResourceWindow,reviewResourceWorkers} from './resource-windows.mjs';
 import {ResourceGate} from './resource-gate.mjs';
+import {HostResourceObservation} from './host-resource-observation.mjs';
 function sample(){const w=new ResourceWindows();for(let endMs=10000;endMs<=660000;endMs+=10000)
   w.observe({startMs:endMs-10000,endMs,cpuPercent:20,memoryPercent:40,diskFreeBytes:60*1024**3,allowed:endMs>60000});return w;}
 test('startup pause does not contaminate a later fully covered stable ten minutes',()=>{
@@ -32,11 +33,13 @@ test('actual resource gate records covered intervals without weakening stale che
  now+=30001;assert.equal(g.status().allowed,false);
  assert.equal(g.diagnostics().windows.buckets.at(-1).blocked,true);
 });
+function host(){let now=0;const h=new HostResourceObservation({now:()=>now});
+ for(let i=0;i<=66;i++){now=i*10000;h.observe({sampledAtMs:now,bootId:'host',cpuTicks:[i*20,0,0,i*80,0,0,0,0],memTotalKiB:100,memAvailableKiB:60});}return h.diagnostics();}
 function workers(lanes=2,offset=0){const slots=Array.from({length:lanes*20},(_,i)=>offset+i%20+Math.floor(i/20)*40);
  return {run:'100:1',commit:'a'.repeat(40),logSha256:'b'.repeat(64),
  expectedSlots:slots,startMs:60000,endMs:660000,
  workers:slots.map(slot=>({slot,run:'100:1',commit:'a'.repeat(40),sourceErrors:0,unknown:0,
-  diagnostics:{schema:'sg-resource-observation-v1',windows:sample().diagnostics()}}))};}
+  hostDiagnostics:host(),diagnostics:{schema:'sg-resource-observation-v1',windows:sample().diagnostics()}}))};}
 test('pool resource proof binds all forty lanes and the measured interval',()=>{
  const r=reviewResourceWorkers(workers());assert.equal(r.workers,40);assert.equal(r.sourceRequests,0);
 });
@@ -50,10 +53,11 @@ for(const kind of ['contiguous-two-groups','foreign-host','missing-fourth-lane']
  if(kind==='missing-fourth-lane'){f.expectedSlots[79]=159;f.workers[79].slot=159;}
  assert.throws(()=>reviewResourceWorkers(f));
 });
-for(const kind of ['missing-lane','duplicate-lane','foreign-run','foreign-commit','missing-errors','unknown','old-telemetry'])test('reject pool proof '+kind,()=>{
+for(const kind of ['missing-lane','duplicate-lane','foreign-run','foreign-commit','missing-errors','unknown','old-telemetry','missing-host','host-overload'])test('reject pool proof '+kind,()=>{
  const f=workers(),w=f.workers[3];if(kind==='missing-lane')f.workers.pop();
  if(kind==='duplicate-lane')w.slot=2;if(kind==='foreign-run')w.run='101:1';
  if(kind==='foreign-commit')w.commit='c'.repeat(40);if(kind==='missing-errors')delete w.sourceErrors;
  if(kind==='unknown')w.unknown=1;if(kind==='old-telemetry')delete w.diagnostics.windows;
+ if(kind==='missing-host')delete w.hostDiagnostics;if(kind==='host-overload')w.hostDiagnostics.buckets[3].peakMemoryPercent=95;
  assert.throws(()=>reviewResourceWorkers(f));
 });
