@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {reviewFourLogs} from './session-four-log-review.mjs';
+import {reviewFourLogs,fourReadyWindow} from './session-four-log-review.mjs';
 import {ResourceGate} from './resource-gate.mjs';
 import {HostResourceObservation} from './host-resource-observation.mjs';
 function fixture(){let at=0;const gate=new ResourceGate({now:()=>at}),host=new HostResourceObservation({now:()=>at});
@@ -18,3 +18,24 @@ function fixture(){let at=0;const gate=new ResourceGate({now:()=>at}),host=new H
 function prefixFixture(){const f=fixture();Object.assign(f.report,{fullReadback:false,readbackScope:'current-source-with-preserved-proof-v1',currentSourceFullReadback:true,sourcePermitHash:'d'.repeat(64),complete:2000,sourceComplete:1000,history:{preservedReadbackReused:true,historicalReadbackFresh:false,rawRecordsRead:0,sourcePermitHash:'d'.repeat(64),complete:1000}});return f;}
 test('explicit verified history prefix avoids old raw rescans while all new records remain fully checked',()=>assert.equal(reviewFourLogs(prefixFixture()).safety.workers,80));
 for(const kind of ['hash','scope','count','fresh','new-readback'])test('reject incomplete history evidence '+kind,()=>{const f=prefixFixture();if(kind==='hash')f.report.history.sourcePermitHash='e'.repeat(64);if(kind==='scope')f.report.readbackScope='partial';if(kind==='count')f.report.complete++;if(kind==='fresh')f.report.history.historicalReadbackFresh=true;if(kind==='new-readback')f.report.currentSourceFullReadback=false;assert.throws(()=>reviewFourLogs(f));});
+
+test('a twenty-minute job uses a common warmed ten-minute interval instead of its blocked startup window',()=>{
+ const f=fixture(),interval=fourReadyWindow({rows:f.rows,captureStartMs:0,captureEndMs:1200000});
+ assert.deepEqual(interval,{startMs:180000,endMs:780000,sourceRequests:0,databaseWrites:0});
+ assert.equal(reviewFourLogs({...f,...interval,report:{...f.report,timing:{windows:[{...f.report.timing.windows[0],...interval}]}}}).safety.workers,80);
+});
+test('latest lane readiness moves the common interval once without choosing a better throughput result',()=>{
+ const f=fixture();f.rows[79]=structuredClone(f.rows[79]);f.rows[79].rpcMetrics.resourceObservation.firstReadyAtMs=300001;
+ assert.equal(fourReadyWindow({rows:f.rows,captureStartMs:0,captureEndMs:1200000}).startMs,420000);
+});
+for(const kind of ['missing-ready','missing-host-buckets','late-ready','duplicate-slot','overload'])test('common interval rejects '+kind,()=>{
+ const f=fixture();f.rows[0]=structuredClone(f.rows[0]);
+ if(kind==='missing-ready')delete f.rows[0].rpcMetrics.resourceObservation.firstReadyAtMs;
+ if(kind==='missing-host-buckets')delete f.rows[0].rpcMetrics.hostResourceObservation.buckets;
+ if(kind==='late-ready')f.rows[0].rpcMetrics.resourceObservation.firstReadyAtMs=900000;
+ if(kind==='duplicate-slot')f.rows[0].shardId=f.rows[1].shardId;
+ if(kind!=='overload'){assert.throws(()=>fourReadyWindow({rows:f.rows,captureStartMs:0,captureEndMs:1200000}));return;}
+ const interval=fourReadyWindow({rows:f.rows,captureStartMs:0,captureEndMs:1200000});
+ f.rows[0].rpcMetrics.resourceObservation.windows.buckets.find(b=>b.startMs===interval.startMs).blocked=true;
+ assert.throws(()=>reviewFourLogs({...f,...interval,report:{...f.report,timing:{windows:[{...f.report.timing.windows[0],...interval}]}}}));
+});

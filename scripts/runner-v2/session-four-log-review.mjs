@@ -2,6 +2,27 @@ import assert from 'node:assert/strict';
 import {sessionWindowP95} from './session-canary.mjs';
 import {reviewResourceWorkers} from './resource-windows.mjs';
 const slots=Array.from({length:80},(_,i)=>i%20+40*Math.floor(i/20));
+// Choose one deterministic common interval after all lanes have warmed up.
+// Job start precedes the resource gate and cannot define steady-state traffic.
+// Do not search later windows to hide overloads or select a better result.
+export function fourReadyWindow({rows,captureStartMs,captureEndMs}){
+ assert(Array.isArray(rows)&&rows.length===80&&new Set(rows.map(r=>r.shardId)).size===80
+  &&rows.every(r=>slots.includes(r.shardId))&&Number.isSafeInteger(captureStartMs)
+  &&Number.isSafeInteger(captureEndMs)&&captureEndMs>captureStartMs,'FOUR_READY_SCOPE');
+ let ready=captureStartMs;
+ for(const r of rows){
+  const backend=r.rpcMetrics?.resourceObservation,host=r.rpcMetrics?.hostResourceObservation;
+  assert(r.schema==='sg-capture-performance-v1'&&r.reason==='final'&&r.gameId===32799&&r.sourceErrors===0
+   &&r.sourceRequests>0&&backend?.schema==='sg-resource-observation-v1'
+   &&Number.isSafeInteger(backend.firstReadyAtMs)&&backend.firstReadyAtMs>=0
+   &&host?.schema==='sg-host-resource-observation-v1'&&Array.isArray(host.buckets)&&host.buckets.length>0
+   &&host.buckets.every(b=>Number.isSafeInteger(b.startMs)&&b.startMs%60000===0),'FOUR_READY_EVIDENCE');
+  ready=Math.max(ready,backend.firstReadyAtMs,Math.min(...host.buckets.map(b=>b.startMs))+60000);
+ }
+ const startMs=Math.ceil(ready/60000)*60000+60000,endMs=startMs+600000;
+ assert(endMs<=captureEndMs,'FOUR_READY_INTERVAL_SHORT');
+ return {startMs,endMs,sourceRequests:0,databaseWrites:0};
+}
 // Read-only review. Full current-source records and immutable history proofs precede telemetry.
 export function reviewFourLogs({run,commit,rows,report,logSha256,startMs,endMs}){
  const preserved=report?.fullReadback===false&&report.readbackScope==='current-source-with-preserved-proof-v1'
