@@ -10,7 +10,7 @@ on:
         description: 'Reviewed healthy-run runtime update without additional quota'
         type: choice
         default: ''
-        options: ['', count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
+        options: ['', count-runtime-rhino-two-observation-20261001.json, count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
       formal_profile:
         description: Independent reviewed complete-count profile
         type: choice
@@ -81,7 +81,7 @@ jobs:
       - name: Preserve healthy count allocation and bind reviewed runtime
         if: inputs.operation == 'refresh-count-runtime'
         env:
-          SG_FORMAL_COUNT_PROFILE: ${{ inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' && inputs.formal_profile || inputs.repair_profile }}
+          SG_FORMAL_COUNT_PROFILE: ${{ (inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-two-observation-20261001.json') && inputs.formal_profile || inputs.repair_profile }}
           SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
         run: node scripts/runner-v2/formal-count-control.mjs refresh
       - name: Isolate interrupted pilot and close its unused allowance without source requests
