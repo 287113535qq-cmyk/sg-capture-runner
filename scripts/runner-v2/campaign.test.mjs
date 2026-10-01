@@ -95,6 +95,7 @@ test('parking waits for source owners and refuses to bypass an unknown intent',a
 
 test('full-game audit requires every actual record and marks completion only with history total',async()=>{
   const f=fixture(),plan=f.plans[32723];
+  const progress=[];f.c.auditProgress=row=>progress.push(row);
   await f.store.create('state','campaign',{enabled:true,activeGame:32723,games:[{game_id:32723,status:'active',baseline:299998}]});
   await f.store.create('state','pool:'+plan.trialId,{confirmed:2,workers:{0:{leaseUntil:0,activeBatch:null,sessionHash:'fixed'}}});
   assert.equal((await f.c.select()).action,'audit');
@@ -111,6 +112,10 @@ test('full-game audit requires every actual record and marks completion only wit
   const archives=[...f.docs].filter(([k])=>k.startsWith('journal/game-rules:'));
   assert.equal(archives.length,1);assert.equal(archives[0][1].value.completeRounds,2);
   assert.equal((await f.store.get('state','campaign')).value.games[0].status,'complete');
+  assert.equal(progress[0].event,'failed');assert.equal(progress[0].gameCompletionProved,false);
+  assert.equal(progress.at(-1).event,'proof-committed');assert.equal(progress.at(-1).verified,2);
+  assert.equal(progress.at(-1).gameCompletionProved,true);
+  assert(!JSON.stringify(progress).includes('id1'));
 });
 
 test('late and idle workers cannot continue the next game with a depleted matrix',async()=>{

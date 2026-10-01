@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 import {GameRuleEvidence} from './game-rule-evidence.mjs';
+import {createAuditProgress} from './audit-progress.mjs';
 import {requireShortRun} from './protocol-recovery-core.mjs';
 import {auditSessionOwner} from './demo-session-audit.mjs';
 import {loadCountPermission,auditAllocatedRecord,auditCountBatch,idleAtCountTail} from './complete-count.mjs';
@@ -19,8 +20,8 @@ export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
 }
 
 export class GithubCampaign {
-  constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now}){
-    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now});
+  constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now,auditProgress=()=>{}}){
+    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now,auditProgress});
   }
   async idleAtTail(plan,pool,worker){
     const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
@@ -162,14 +163,17 @@ export class GithubCampaign {
     const countSpec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
     if(countSpec)assert(pool.countAllocation.reserved===0,'COUNT_AUDIT_NOT_READY');
     let after=0,count=0;const digest=createHash('sha256'),rules=new GameRuleEvidence({plan}),sessionAuditCache=new Map();
+    const progress=createAuditProgress({emit:this.auditProgress});
+    try{
     while(true){
       await this.store.writable();
-      const rows=await this.transport.request('rounds_scan',{trialId:plan.trialId,after});if(!rows.length)break;
+      const rows=await progress.run('readback',()=>this.transport.request('rounds_scan',{trialId:plan.trialId,after}));if(!rows.length)break;
       if(this.analyzer.verifyPage){
         assert(rows.length<=100,'AUDIT_PAGE_BOUND');
-        const verified=await this.analyzer.verifyPage(plan,rows);
+        const verified=await progress.run('python',()=>this.analyzer.verifyPage(plan,rows));
         assert(verified?.verified===true&&verified.count===rows.length,'COUNT_AUDIT_UNVERIFIED');
       }
+      await progress.run('recordChecks',async()=>{
       for(const record of rows){
         assert(record.sequence>after && record.fixtureOnly===false && record.buy===0);
         if(countSpec)auditAllocatedRecord({pool,plan,spec:countSpec,record});else assert(record.sequence<=plan.target);
@@ -182,10 +186,13 @@ export class GithubCampaign {
         rules.observeVerified(record);
         digest.update(stable([record._id,record.contentHash])+'\n');after=record.sequence;count++;
       }
+      });
+      progress.page(rows.length,count);
     }
     assert(count===plan.target,'AUDIT_COUNT_INCOMPLETE');
     const proof={trialId:plan.trialId,planHash:hash(plan),fullReadback:count,recordsHash:digest.digest('hex')};
     const archive=rules.finish(proof);
+    await progress.run('commitProof',async()=>{
     await this.store.create('journal',archive.key,archive.value,{immutable:true});
     await this.store.create('journal','game-audit:'+plan.trialId,proof,{immutable:true});
     await this.store.update('state','campaign',v=>{
@@ -193,6 +200,9 @@ export class GithubCampaign {
       const g=v.games.find(x=>x.game_id===plan.gameId);assert(g.baseline+count===300000);
       g.status='complete';g.confirmed=count;g.completed=this.now()/1000;v.activeGame=null;v.audit=null;return v;
     });
+    });
+    progress.finish();
     return proof;
+    }catch(error){progress.failed(error);throw error;}
   }
 }

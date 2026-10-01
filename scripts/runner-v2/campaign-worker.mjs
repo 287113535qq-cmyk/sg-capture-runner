@@ -66,6 +66,7 @@ if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE)){
 }
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
+  auditProgress:row=>console.log(JSON.stringify(row)),
   owner:`${group}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.SG_TRIAL_SHARD||'status'}`});
 let stop=false;
 const childStop=new AbortController();
