@@ -272,6 +272,11 @@
       "missingCloseBalanceMustNotBecomeTerminal": true,
       "sourceRequests": 0,
       "ready": false
+    },
+    "repairXmlDeltaEvidenceBackup": {
+      "verifiedFiles": 6,
+      "bytes": 8696,
+      "sha256": "9cd1a62e1e6a3acb537710c54463e2c53ffb7b7d8db08b57bacc0c10de5881a7"
     }
   },
   "pending": [
@@ -387,5 +392,14 @@
       "exactClaims": true,
       "localMedianReductionPercent": 89.90025702044719
     }
+  },
+  "latestReadonlyStatus": {
+    "at": 1790893343.693173,
+    "completeGames": 16,
+    "activeGames": 0,
+    "otherActiveGithubRuns": 0,
+    "sourceRequests": 0,
+    "databaseWrites": 0,
+    "existingProfilesChanged": 0
   }
 }
