@@ -96,6 +96,6 @@ export class ResourceGate {
       maxBatchSize:allowed?(elapsed<30_000?10:elapsed<60_000?25:100):0,
       metrics:this.latest};
   }
-  diagnostics(){return {schema:'sg-resource-observation-v1',...this.observation,activeHolds:this.holds.size,
-    windows:this.windows.diagnostics(),observationOnly:true};}
+  diagnostics({includeWindows=true}={}){return {schema:'sg-resource-observation-v1',...this.observation,activeHolds:this.holds.size,
+    ...(includeWindows?{windows:this.windows.diagnostics()}:{windowsOmitted:true,retainedMinuteBuckets:this.windows.buckets.size}),observationOnly:true};}
 }

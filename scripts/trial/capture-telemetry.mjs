@@ -31,7 +31,7 @@ export function businessOutcome(result,error){
  return 'incomplete';
 }
 export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=()=>performance.now(),
- resource=()=>({cpu:process.cpuUsage(),rssBytes:process.memoryUsage().rss}),metrics=()=>({}),intervalMs=60000}={}){
+ resource=()=>({cpu:process.cpuUsage(),rssBytes:process.memoryUsage().rss}),metrics=()=>({}),intervalMs=60000,canaryActivity,wallNow=Date.now}={}){
  const start=now();let windowStart=start,lastRounds=0,timer=null,closed=false,connections=null;
  const cumulative={},window={};let errors=0;
  const safe=fn=>{try{return fn();}catch{return undefined;}};
@@ -44,12 +44,13 @@ export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=
    completedThisRun:evidence.completedThisRun,windowComplete:evidence.completedThisRun-lastRounds,
    roundsPerMinute:current>windowStart?rounded((evidence.completedThisRun-lastRounds)*60000/(current-windowStart)):0,
    sourceRequests:evidence.sourceRequests,sourceErrors:errors,bucketUpperBoundsMs:[...bounds,null],
+   ...(canaryActivity?{canarySourceActivity:safe(()=>canaryActivity.diagnostics())}:{}),
    totals:summarize(cumulative),window:summarize(window),
    ...(cpu?{nodeCpuMs:rounded((r.cpu.user+r.cpu.system-resourceStart.cpu.user-resourceStart.cpu.system)/1000)}:{}),
    ...(Number.isFinite(r?.rssBytes)?{rssBytes:r.rssBytes}:{})};
  };
  function report(reason){
-  safe(()=>{const v=snapshot();emit({...v,reason,rpcMetrics:metrics()});
+  safe(()=>{const v=snapshot();emit({...v,reason,rpcMetrics:metrics({final:reason==='final'})});
    windowStart=now();lastRounds=evidence.completedThisRun;for(const key of Object.keys(window))delete window[key];});
  }
  return {
@@ -60,6 +61,7 @@ export function createCaptureTelemetry({gameId,shardId,evidence,emit=()=>{},now=
   sync(key,fn){return (...args)=>{const at=now();try{return fn(...args);}finally{observe(key==='normalize'?'normalize':'local',now()-at);}};},
   async rpc(call,op,data){const at=now();try{return await call(op,data);}finally{observe('rpc.'+(operations.has(op)?op:'other'),now()-at);}},
   async fetch(call,message,...args){
+   safe(()=>canaryActivity?.record(wallNow()));
    const name=messages.has(message)?message:'other',at=now();let response,trace;
    // Observer construction may fail independently. Never retry a source call.
    if(!closed&&!connections)connections=safe(()=>connectionObserver({now}));

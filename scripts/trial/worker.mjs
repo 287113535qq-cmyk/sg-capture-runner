@@ -31,6 +31,7 @@ import {BEAVER_SOURCE,BEAVER_EXTENSION,BEAVER_CFG1_EXTENSION} from './beaver-pro
 import {DEMON_SOURCE,DEMON_EXTENSION} from './demon-protocol.mjs';
 import {QUARTERBACK_SOURCE,QUARTERBACK_EXTENSION,QUARTERBACK_PICK_EXTENSION} from './quarterback-protocol.mjs';
 import {globalShard} from './runner-group.mjs';
+import {canarySourceActivity} from '../runner-v2/session-canary.mjs';
 const require = createRequire(import.meta.url);
 // Linux preflight typechecks this fixed runtime before admission. Avoid building
 // a second TypeScript type graph in every independent capture process; protocol,
@@ -71,13 +72,16 @@ const evidence = {schema:plan.schema,trialId:plan.trialId,game:plan.name,gameId:
 let lease, leaseOwned, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
 let workerError;
-const telemetry=createCaptureTelemetry({gameId:plan.gameId,shardId:shard,evidence,metrics:()=>transport.metrics(),emit:row=>console.log(JSON.stringify(row))});
+const canaryActivity=process.env.SG_CANARY_SCHEDULE?canarySourceActivity(JSON.parse(process.env.SG_CANARY_SCHEDULE),shard):null;
+const telemetry=createCaptureTelemetry({gameId:plan.gameId,shardId:shard,evidence,canaryActivity,metrics:()=>transport.metrics(),emit:row=>console.log(JSON.stringify(row))});
 if(role==='capture')telemetry.start();
 process.on('SIGTERM', () => {stop=true;});
 process.on('SIGINT', () => {stop=true;});
 function owned() {return leaseOwned || {owner,epoch:lease.epoch};}
 const xml = v => String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 async function main() {
+  const canary=typeof transport.canaryReady==='function'?await transport.canaryReady(()=>stop):null;
+  if(canary&&!canary.capture){evidence.result={status:canary.reason,sourceRequests:0};return;}
   if (isPool && plan.configured !== true) {
     if (role === 'capture') throw fail('POOL_NOT_CONFIGURED','storage');
     evidence.result={status:'not_configured',globalSourceEnabled:false};return;
@@ -97,7 +101,7 @@ async function main() {
       shouldStop:()=>stop,requestStop:()=>{stop=true;},onLease:(currentLease,currentOwned)=>{lease=currentLease;leaseOwned=currentOwned;},
       commitSha:process.env.GITHUB_SHA,planHash:hash(canonical(plan)),runId:process.env.GITHUB_RUN_ID,
       runAttempt:process.env.GITHUB_RUN_ATTEMPT,job:process.env.GITHUB_JOB,limit:plan.countAllocation?plan.target:requested,
-      deadline:performance.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000});
+      deadline:performance.now()+(canary?Math.max(0,canary.endMs-Date.now()):Number(process.env.SG_TRIAL_MINUTES||'240')*60000)});
   }
   if(plan.sourceKey===PEARL_SOURCE){
     assert(isPool&&shard!==null&&process.env.SG_PROCESSING_MODE==='github-v2','PEARL_GITHUB_POOL_REQUIRED');

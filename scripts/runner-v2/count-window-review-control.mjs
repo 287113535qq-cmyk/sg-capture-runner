@@ -11,6 +11,9 @@ import {readParentTailFailure} from './parent-tail-failure.mjs';
 import {checkWindowPeerProfile} from './count-window-peer.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';
 import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
+import {sessionCanarySchedule,canaryWindowTiming} from './session-canary.mjs';
+import {loadCanarySourceLog} from './canary-source-log.mjs';
+import {reviewCanaryFinalLogs} from './session-canary-log.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
 assert(profile.gameId===32799&&['sg-formal-count-rhino-v2','sg-session-layout-rhino-v1'].includes(profile.schema),'WINDOW_PROFILE_SCOPE');
@@ -40,10 +43,30 @@ try{
  const captures=jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)),startMs=Math.min(...captures.map(j=>Date.parse(j.started_at))),endMs=Math.max(...captures.map(j=>Date.parse(j.completed_at)));
  // Align numeric timing windows with resource minute buckets. The partial
  // startup minute is excluded, never counted as a stable comparison window.
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
+ let canary;
+ if(process.env.SG_COUNT_RUNTIME_PROFILE){
+  assert(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json','WINDOW_RUNTIME_SCOPE');
+  const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
+  const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${ended.head_sha}`))?.value;
+  canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:ended.head_sha,run:process.env.SG_WINDOW_SOURCE_RUN});
+ }
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
+ let canaryProof;
+ if(canary){
+  const logs=loadCanarySourceLog(ended,jobs);
+  canaryProof=reviewCanaryFinalLogs({schedule:canary,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
+   profileHash:hash(profile),sourcePermitHash:hash(permit)},...logs});
+  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign)
+   &&hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool),'WINDOW_CANARY_SCENE_CHANGED');
+  const key=`session-comparison:${plan.trialId}:${hash(canaryProof.comparison)}`;
+  assert(!(await store.get('journal',key)),'CANARY_COMPARISON_ALREADY_APPLIED');
+  await store.create('journal',key,canaryProof.comparison,{immutable:true});
+  assert(hash((await store.get('journal',key))?.value)===hash(canaryProof.comparison),'CANARY_COMPARISON_READBACK');
+ }
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),
-  previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure}));
+  previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure,
+  ...(canary?{canarySchedule:canary,sourcePermitHash:hash(permit),canaryProof,comparisonHash:hash(canaryProof.comparison),comparisonJournalWrites:1,databaseWrites:1}:{})}));
 }catch(e){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(e.message)?e.message:'WINDOW_REVIEW_FAILED',sourceRequests:0,databaseWrites:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

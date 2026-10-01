@@ -40,8 +40,8 @@ export class HostResourceObservation{
  tick(){try{this.observe(this.sample(this.now()));}catch{this.previous=null;this.bucket(this.now()).blocked=true;}}
  start(){if(!this.timer){this.tick();this.timer=setInterval(()=>this.tick(),10000);this.timer.unref?.();}}
  stop(){if(this.timer)clearInterval(this.timer);this.timer=null;}
- diagnostics(){return {schema:'sg-host-resource-observation-v1',scope:'worker-host',bucketMs:60000,maxBuckets:360,
-  buckets:structuredClone([...this.buckets.values()]),diskMeasured:false,observationOnly:true};}
+ diagnostics({includeWindows=true}={}){return {schema:'sg-host-resource-observation-v1',scope:'worker-host',bucketMs:60000,maxBuckets:360,
+  ...(includeWindows?{buckets:structuredClone([...this.buckets.values()])}:{windowsOmitted:true,retainedMinuteBuckets:this.buckets.size}),diskMeasured:false,observationOnly:true};}
 }
 export function reviewHostResourceWindow(d,startMs,endMs){
  assert(d?.schema==='sg-host-resource-observation-v1'&&d.scope==='worker-host'&&d.diskMeasured===false&&d.observationOnly===true

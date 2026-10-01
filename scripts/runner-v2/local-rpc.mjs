@@ -8,6 +8,10 @@ import {repositories} from '../trial/runner-group.mjs';
 import {localSpool} from './local-spool.mjs';
 import {readResourceHandoff} from './resource-handoff.mjs';
 import {HostResourceObservation} from './host-resource-observation.mjs';
+import fs from 'node:fs';
+import {sessionCanarySchedule,waitCanaryLane} from './session-canary.mjs';
+import {protocolHash as hash} from './protocol-resume.mjs';
+import {formalCountProfilePath} from './formal-count-plan.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
@@ -28,9 +32,27 @@ export function connectLocal(plan){
   const controller=new BatchController({store,transport,gate,analyzer:timedParser,spool,control,plan,
     group:repositories[process.env.GITHUB_REPOSITORY].name,pendingFirstStage:process.env.SG_PENDING_FIRST_STAGE,
     runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
-  return {rpc:async(op,data)=>{await resourceReady;return controller.rpc(op,data);},metrics:()=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
-    resourceObservation:gate.diagnostics(),
-    hostResourceObservation:hostResources.diagnostics(),
+  return {async canaryReady(shouldStop){
+    if(!process.env.SG_CANARY_SCHEDULE){
+      if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json')throw Error('CANARY_SCHEDULE_MISSING');
+      return null;
+    }
+    if(process.env.SG_COUNT_RUNTIME_PROFILE!=='count-runtime-rhino-canary-20261001.json'||plan.gameId!==32799)throw Error('CANARY_WORKER_SCOPE');
+    await resourceReady;
+    const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
+    const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
+    const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit=process.env.GITHUB_SHA;
+    const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`))?.value;
+    const permit=(await store.get('journal',`count-run:${plan.trialId}:${run}`))?.value;
+    const schedule=sessionCanarySchedule({profile,revision,receipt,permit,commit,run});
+    if(hash(schedule)!==hash(JSON.parse(process.env.SG_CANARY_SCHEDULE)))throw Error('CANARY_WORKER_BINDING');
+    const slot=Number(process.env.SG_TRIAL_SHARD)+40*Number(process.env.SG_SESSION_LANE);
+    return waitCanaryLane({schedule,slot,shouldStop,observe:async()=>{
+      const resource=await store.sample();const status=await controller.status();return {...status,resourceAllowed:resource.allowed,resourceReason:resource.reason};
+    }});
+  },rpc:async(op,data)=>{await resourceReady;return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
+    resourceObservation:gate.diagnostics({includeWindows:final}),
+    hostResourceObservation:hostResources.diagnostics({includeWindows:final}),
     localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),
     close(){hostResources.stop();parser.close();transport.close();spool.close();}};
 }

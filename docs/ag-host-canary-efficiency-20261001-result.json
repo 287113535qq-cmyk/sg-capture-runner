@@ -1,7 +1,7 @@
 {
   "schema": "sg-host-canary-resource-review-v1",
   "localChecks": 69,
-  "linuxVerified": false,
+  "linuxVerified": true,
   "onlineApplied": false,
   "throughputGainVerified": false,
   "backendGateChanged": false,
@@ -12,5 +12,20 @@
   "canaryActuallyStarted": false,
   "allOptimizationComplete": false,
   "sourceRequests": 0,
-  "mongoWrites": 0
+  "mongoWrites": 0,
+  "linuxRun": "36867785783:1",
+  "linuxCommit": "35fa09818cf7ef79ccec682e9e5c16b77ef97f94",
+  "linuxLogSha256": "349f820c19ca7392a7bbe2b0b6a011c4a3e83ca0896fa9835c908d4e8b9ddb33",
+  "canaryPreparationLocalChecks": 32,
+  "canarySourceEntryConnected": true,
+  "canaryProfileIssued": false,
+  "canaryComparisonAppliedToFour": false,
+  "canaryLogReviewLocalChecks": 12,
+  "canaryResourceLogLocalChecks": 1,
+  "canaryAffectedLocalChecks": 79,
+  "canaryComparisonEntryConnected": true,
+  "canaryLinuxVerified": false,
+  "resourceProgressHistoryOmitted": true,
+  "resourceFinalHistoryPreserved": true,
+  "resourceLogSyntheticReductionMoreThan": 20
 }
