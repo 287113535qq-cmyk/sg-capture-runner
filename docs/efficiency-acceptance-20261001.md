@@ -30,3 +30,7 @@ Rhino正式计数无源激活36829512294成功，07:17:54Z→07:19:23Z，89秒�
 测速首次维护36830403114在数据库连接之前被COUNT_RUNTIME_REFRESH_SCOPE拒绝：工作流refresh步骤仍读取repair_profile默认Pearl，而本次传入formal_profile Rhino。已逐字段鲜读确认campaign、state、journal、151条全文和Pearl完成证明完全未变。未应用的首份测速profile私有保留；新增入口绑定回归通过，修订profile独立生成，旧已应用正式count profile永久不改。
 
 双会话Rhino入口候选已生成40个不同工作槽与40个不同会话，11负例通过；独立Python与Runner计划一致、7负例通过。会话生成器原0—19限制已在候选中按独立计划许可扩展；尚未production import，后续正式重入须绑定成功测速源和精确计数，不依据候选直接派发。
+
+### 15:36 measurement control entry correction
+
+The first corrected maintenance 36831116015 failed before gateway connection at RHINO_FORMAL_OPERATION. Fresh readback preserves all 151 rounds, campaign, states and journals. The controller now uses an independently tested operation policy: only the bound Rhino v2 measurement refresh is admitted; wrong profiles, modes and unbound refresh remain rejected. Twelve scoped tests pass. No new source request or count write occurred. Stable throughput and multi-session comparisons still await actual runs.

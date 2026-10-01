@@ -2,6 +2,16 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {authorizeInitialCountRuntime,countMeasurementMinutes} from './count-initial-runtime.mjs';
+import {countControlPolicy} from './count-control-policy.mjs';
+test('real control policy admits only bound Rhino measurement refresh and admission',()=>{
+ const profile={schema:'sg-formal-count-rhino-v2'},runtime='count-runtime-rhino-measurement-20261001.json';
+ for(const mode of ['refresh','admit'])assert.equal(countControlPolicy(mode,profile,runtime).initialWindow,true);
+ for(const mode of ['repair','amend','sessions','activate'])assert.throws(()=>countControlPolicy(mode,profile,runtime));
+ for(const schema of ['sg-formal-count-rhino-v1','sg-formal-repair-profile-v2','sg-formal-count-profile-v1'])assert.throws(()=>countControlPolicy('refresh',{schema},runtime));
+ assert.throws(()=>countControlPolicy('refresh',profile,undefined));
+ assert.throws(()=>countControlPolicy('refresh',profile,'count-runtime-pearl-observation-20261001.json'));
+ assert.equal(countControlPolicy('refresh',{schema:'sg-formal-repair-profile-v2'},'count-runtime-pearl-observation-20261001.json').isRepair,true);
+});
 test('measurement maintenance selects formal profile while old refresh keeps repair profile',()=>{
  const workflow=fs.readFileSync('.github/workflows/demo-maintenance.yml','utf8');
  const step=workflow.slice(workflow.indexOf('      - name: Preserve healthy count allocation'),workflow.indexOf('      - name: Isolate interrupted pilot'));
