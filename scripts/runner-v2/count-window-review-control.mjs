@@ -14,6 +14,7 @@ import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {sessionCanarySchedule,canaryWindowTiming} from './session-canary.mjs';
 import {loadCanarySourceLog} from './canary-source-log.mjs';
 import {reviewCanaryFinalLogs} from './session-canary-log.mjs';
+import {reviewFourLogs} from './session-four-log-review.mjs';
 import {checkCanaryAdmission} from './session-canary-admission.mjs';
 assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&/^\d+:1$/.test(process.env.SG_WINDOW_SOURCE_RUN??''),'WINDOW_GITHUB_SCOPE');
 const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
@@ -54,9 +55,17 @@ try{
   canaryRevisionHash=hash(revision);
   canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:ended.head_sha,run:process.env.SG_WINDOW_SOURCE_RUN});
  }
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,historyPermit:canary?permit:undefined,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
+ const four=profile.schema==='sg-session-layout-rhino-v1'&&profile.gameId===32799&&profile.sessionLayout?.lanesPerHost===4;
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,historyPermit:canary||four?permit:undefined,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
- let canaryProof;
+ let canaryProof,fourProof;
+ if(four){
+  assert(!canary,'WINDOW_LAYOUT_CONFLICT');
+  const logs=loadCanarySourceLog(ended,jobs,{expectedCount:80});
+  const window=result.timing.windows.find(w=>w.stableIntervalCandidate&&w.startMs>=Math.ceil(startMs/60000)*60000+600000);
+  assert(window,'FOUR_STABLE_WINDOW_MISSING');
+  fourProof=reviewFourLogs({run:process.env.SG_WINDOW_SOURCE_RUN,commit:ended.head_sha,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,sourcePermitHash:hash(permit)},...logs,startMs:window.startMs,endMs:window.endMs});
+ }
  if(canary){
   const logs=loadCanarySourceLog(ended,jobs);
   canaryProof=reviewCanaryFinalLogs({schedule:canary,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
@@ -73,6 +82,7 @@ try{
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),
   previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure,
+  ...(four?{fourProof}:{}),
   ...(canary?{canarySchedule:canary,sourcePermitHash:hash(permit),canaryProof,comparisonHash:hash(canaryProof.comparison),comparisonJournalWrites:1,databaseWrites:1}:{})}));
 }catch(e){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(e.message)?e.message:'WINDOW_REVIEW_FAILED',sourceRequests:0,databaseWrites:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

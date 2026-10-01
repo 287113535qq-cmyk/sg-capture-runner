@@ -97,7 +97,7 @@ try{
   const key=`count-run:${plan.trialId}:${run}`;assert(!(await store.get('journal',key)),'FORMAL_COUNT_RUN_ALREADY_ADMITTED');
   const permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,
    poolHash:hash(pool),completeBefore:pool.confirmed,remainingComplete:plan.target-pool.confirmed,createdAt:Date.now(),expiresAt:Date.now()+270*60000};
-  if(canaryWindow)permit.historyBoundary=countHistoryBoundary({pool,plan,spec});
+  if(canaryWindow||(profile.gameId===32799&&profile.schema==='sg-session-layout-rhino-v1'&&profile.sessionLayout?.lanesPerHost===4))permit.historyBoundary=countHistoryBoundary({pool,plan,spec});
   if(canaryWindow)await claimSessionCanary({store,plan,profile,revision,permit,inputs:canaryInputs});
   await store.create('journal',key,permit,{immutable:true});
   assert(hash((await store.get('journal',key))?.value)===hash(permit),'FORMAL_COUNT_RUN_READBACK');
