@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
 const cases=[
+ ['count-runtime-rhino-canary-entryfix-20261002.json','416f59261b46136809c41674633231595bdf809dc2b487de64dcf028a96919d5'],
  ['count-boundary-rhino-canary-entryfix-20261001.json','57e51f771637a03d510e46f953f0ab9155ce9a7d64087eb9d7b5fdad3ca391bd'],
  ['formal-retire-pyramids-major-transition-entryfix-20261001.json','23a2419605be82e9bf0b6c359a501bc47b0c2b1015e7b9de8ceb5d88c03f7c62'],
  ['count-fence-rhino-jobless-20261001.json','ba874432291519e2c64c56f75f016f1114fe847ab42dfc928152a01336ac6ffa'],

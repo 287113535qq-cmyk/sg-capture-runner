@@ -9,7 +9,12 @@
   "databaseWrites": 0,
   "runnerTests": 1227,
   "gatewayTests": 17,
-  "deployed": false,
+  "deployed": true,
+  "linuxRun": 36894449174,
+  "nativeGatewaySha256": "004b87aa22c1a1d27dea9256ee1830c3e907581f389c472f71472affef23c9fe",
+  "actualComparisonSourceRun": 36896380706,
+  "longRuntimeBindingTests": 15,
+  "longRuntimeBindingApplied": false,
   "actualThroughputVerified": false,
   "allOptimizationComplete": false
 }
