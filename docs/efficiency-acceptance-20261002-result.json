@@ -277,6 +277,34 @@
       "verifiedFiles": 6,
       "bytes": 8696,
       "sha256": "9cd1a62e1e6a3acb537710c54463e2c53ffb7b7d8db08b57bacc0c10de5881a7"
+    },
+    "compactNativeProjection": {
+      "actualNativeReads": 6,
+      "gatewayHash": "a40d94a60d8133f3d4cd4fb384610712c60676f94b82c7615289cd4cae4f690e",
+      "fullBytesMedian": 54571,
+      "compactBytesMedian": 695,
+      "byteReductionPercent": 98.72642978871562,
+      "fullNativeReadMedianMs": 1.6809538938105106,
+      "compactNativeReadMedianMs": 1.2905008625239134,
+      "allProjectedFieldsEqual": true,
+      "runningWorkerAdoption": false,
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    },
+    "counterFamilyLinux": {
+      "run": 36940040818,
+      "commit": "e971999f839cccc2a7dcf93d2e8882fad59a42fc",
+      "conclusion": "success"
+    },
+    "counterClose": {
+      "run": 36940649445,
+      "conclusion": "success",
+      "completePreserved": 5024,
+      "newMongoReadback": 178,
+      "abandoned": 1,
+      "pending": 0,
+      "reserved": 0,
+      "sourceRequests": 0
     }
   },
   "pending": [
