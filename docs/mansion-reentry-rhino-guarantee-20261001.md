@@ -13,3 +13,5 @@ Rhino（32799）实际中断14帧说明末次免费奖励205与reel赢额独立�
 Pyramids（32721）字段修复已验证2127旧完整不变；正式失败run结算和新许可尚需专门校验，不能把failed source改成success来套旧退休路径。累计完成15/178。
 
 Rhino独立重入profile 1d9494dffd635eee21392a98fc1156cd242d6e3adc7c2e9fdfa974c75b042aeb已生成但尚未应用。真实51/152现场完整prepare→retire→rollover内存验收及Python许可验证通过。该验收发现首次空候选的emptyCandidate标记残留会误走旧准入；现仅在完整旧关闭证明通过后，将旧标记保留在不可变before档案并移出新准备池。15项重入测试含该路径及实际fresh admission；旧profile/额度不改。Mansion新单槽PCFID重触发仅离线候选，尚未生产接入。
+
+14:30 重入维护 36825116162 在公共 profile 文件名入口以 DEMO_PROFILE_PATH 失败，发生在 gateway 连接之前；随后鲜读逐项确认 campaign/state/journal/51条完整记录及Pearl证明均未变。补齐入口文件名，并区分Rhino初次准入与已关闭试点的修复重入。4项入口回归包含工作流所有可选profile，避免仅内存流程通过但CLI入口遗漏。原未应用许可保留私有档案，新许可重新绑定修正版；已应用旧许可不变。

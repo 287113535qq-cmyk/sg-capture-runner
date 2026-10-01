@@ -40,10 +40,14 @@
     "naturalGuaranteeEndObserved": false,
     "newAdmission": false,
     "old52Used48ForegoneUnchanged": true,
-    "newProfileHash": "1d9494dffd635eee21392a98fc1156cd242d6e3adc7c2e9fdfa974c75b042aeb",
+    "newProfileHash": "d03dc36c60fa3bf208126fe7592d70ab16a74a32afe39844817fa160ac565433",
     "repairTransitionTests": 15,
     "pythonProfileVerified": true,
-    "emptyCandidateMarkerArchived": true
+    "emptyCandidateMarkerArchived": true,
+    "failedEntryRun": "36825116162:1",
+    "failedEntryReason": "DEMO_PROFILE_PATH",
+    "failedEntryWrites": 0,
+    "entryRegressionTests": 4
   },
   "latency": {
     "linuxSuccessUtc": "2026-10-01T06:08:26Z",

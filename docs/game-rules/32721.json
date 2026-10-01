@@ -151,7 +151,7 @@
   ],
   "analysisDocumentHashes": {
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
-    "docs/mansion-reentry-rhino-guarantee-20261001.md": "46774ab051637ff672f6eadc22cacfa715abe63ee308c16133748fbb0e00078d",
+    "docs/mansion-reentry-rhino-guarantee-20261001.md": "14c88b927ee2aacffbea2f793bb155496bdde1bbb13f18c07e582fc087858648",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
@@ -167,5 +167,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9db704291ddf0852a66d9c53d5ffe51b66260c10b150bb26b9475aedc8fe8d33"
+  "ruleHash": "a04bfb251a7499f7a7e4d0fafa1052ef9a57817a32e118eb5c7cd36fb8cbcedb"
 }

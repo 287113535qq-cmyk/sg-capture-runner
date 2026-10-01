@@ -262,8 +262,8 @@
     "docs/mansion-native-resolution-20260930.md": "ef8e014dab9edb61f1e6f9d4b6174be6cc493b0ebf60668fe612d498ebbb5cee",
     "docs/mansion-next-review-20260930-result.json": "08e703627f74d5e12c6861ad16ca315ad2bdc4e2f0202fcd3ddaaeb5e0172d15",
     "docs/mansion-next-review-20260930.md": "50a21d6662e13525d4db9ff5cb2ca9b90c0193f5cdda96ce7a7b65c19df49b08",
-    "docs/mansion-reentry-rhino-guarantee-20261001-result.json": "f12a5040adb0b36577d05139e64e3b8a2780e512c238381cec5025ec2d39734b",
-    "docs/mansion-reentry-rhino-guarantee-20261001.md": "46774ab051637ff672f6eadc22cacfa715abe63ee308c16133748fbb0e00078d",
+    "docs/mansion-reentry-rhino-guarantee-20261001-result.json": "ed0d063960d7e6f30cb4f7d5ce08738ebf828018949c6b55c2a021993c7c0535",
+    "docs/mansion-reentry-rhino-guarantee-20261001.md": "14c88b927ee2aacffbea2f793bb155496bdde1bbb13f18c07e582fc087858648",
     "docs/mansion-retrigger-integration-20261001.md": "512799d3c5765b7731ff6ebd8506ae92b00c32f2a144e4fdcd879e81a9e7e1d6",
     "docs/mansion-touchup-integration-20260930-result.json": "683eb1a4f2865bfe7ac8086144f63220b191426bb9d2392ad5b20d8873301950",
     "docs/mansion-touchup-integration-20260930.md": "dcd2707c9d57c4e55f831753efb011afe9c24d25f1f0016d1828efdb3729f67f",
@@ -289,5 +289,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a7b6945fc646bb96c0e53b8aa3baec46b61a5e747c096cb75204bdcb500c1b05"
+  "ruleHash": "61263a3bfb2dd44001dbbb77ac86f596c3f04a71e198ac6e8862d1e926ecb7c3"
 }
