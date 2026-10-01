@@ -38,7 +38,9 @@ try{
  assert(permit?.commit===ended.head_sha&&permit.profileHash===hash(profile)&&permit.activation===spec.activation,'WINDOW_SOURCE_PERMISSION');
  const scans={request:async(op,fields)=>{await store.writable();return transport.request(op,fields);}};
  const captures=jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)),startMs=Math.min(...captures.map(j=>Date.parse(j.started_at))),endMs=Math.max(...captures.map(j=>Date.parse(j.completed_at)));
- const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:windowTiming(startMs,endMs)});
+ // Align numeric timing windows with resource minute buckets. The partial
+ // startup minute is excluded, never counted as a stable comparison window.
+ const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign),'WINDOW_CAMPAIGN_CHANGED');
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),

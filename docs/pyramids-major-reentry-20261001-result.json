@@ -23,5 +23,19 @@
   "repairStatus": "parked-protocol-after-new-mixed-hold",
   "sourceFailure": "UNKNOWN_TRIAL_FEATURE",
   "verificationEntryFailure": "ENOENT_CONFIG_NONE",
-  "onlineSettlementPending": true
+  "onlineSettlementPending": false,
+  "retirement": {
+    "run": "36862512838:1",
+    "commit": "13362e40cef4d46dd3a4325aa66eef36681584fa",
+    "conclusion": "success",
+    "logSha256": "45d22b06a1f5ec7bf4a155bfae109c05b268102e3d2e6290c1d4ee47225b1cf1",
+    "profileHash": "23a2419605be82e9bf0b6c359a501bc47b0c2b1015e7b9de8ceb5d88c03f7c62",
+    "completePreserved": 3627,
+    "reservedAfter": 0,
+    "newAbandoned": 0,
+    "sourceRequests": 0,
+    "newBetAllowance": 0,
+    "oldRecordsHashPreserved": true,
+    "freshAt": 1790858273
+  }
 }

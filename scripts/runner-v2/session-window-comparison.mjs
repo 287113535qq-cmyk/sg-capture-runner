@@ -19,6 +19,10 @@ export function compareSessionWindows({profile,baseline,candidate,baselineSafety
   &&safety[i]?.verified===true&&safety[i].sourceErrors===0&&safety[i].unknown===0
   &&safety[i].resourceHolds===0&&safety[i].resourceEvidenceComplete===true,'COMPARISON_EVIDENCE_INCOMPLETE');
  assert(windows[0].endMs-windows[0].startMs===windows[1].endMs-windows[1].startMs,'COMPARISON_DURATION');
+ for(let i=0;i<2;i++)if(safety[i].schema==='sg-resource-workers-review-v1')assert(
+  safety[i].run===reports[i].sourceRun&&safety[i].commit===reports[i].sourceCommit
+  &&safety[i].startMs===windows[i].startMs&&safety[i].endMs===windows[i].endMs
+  &&safety[i].workers===(i+1)*20,'COMPARISON_RESOURCE_WINDOW_CHANGED');
  const values=windows.map((w,i)=>({lanesPerHost:i+1,durationMs:w.endMs-w.startMs,complete:w.complete,
   requestP95Ms:p95(w),recordsHash:reports[i].recordsHash,errors:0,unknown:0,resourceHolds:0}));
  assert(values.every(w=>Number.isSafeInteger(w.complete)&&w.complete>0&&Number.isFinite(w.requestP95Ms)&&w.requestP95Ms>0)

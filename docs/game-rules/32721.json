@@ -192,7 +192,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
-    "docs/pyramids-major-reentry-20261001-result.json": "40777dc2b68d481f6e2ba2976d84e66bb2715f03787ecd0720f5201fdd75819f",
+    "docs/pyramids-major-reentry-20261001-result.json": "5f1560e6275320c7dfa5c4a930414de67ad86f5866c9235baebf9eda7814b8ff",
     "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1",
     "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "68ebecffd145b665677cabbcd800ea962a4ca3484329e388307df89b0365c3d5",
@@ -205,5 +205,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "04b51692338ddf619552c65fe36724633049dddafc3e2954a85bb785bb19338f"
+  "ruleHash": "25dc56340e2f6b2b4a3bc2f9c5dfe9c8e70c301e33445bec96aab85f9ce8797e"
 }

@@ -1,5 +1,6 @@
 // All thresholds and decisions run on the GitHub Runner. The test server only
 // supplies OS counters; no game, scheduling, journal, or checkpoint logic.
+import {ResourceWindows} from './resource-windows.mjs';
 export const resourcePolicy = Object.freeze({pausePercent:95, resumePercent:90,
   resumeStableMs:60_000, sampleEveryMs:10_000, maxAgeMs:30_000});
 
@@ -7,13 +8,14 @@ export class ResourceGate {
   constructor({now=Date.now}={}) {
     this.now=now; this.previous=null; this.latest=null;
     this.paused=true; this.reason='RESOURCE_SAMPLE_REQUIRED';
-    this.lowSince=null; this.resumedAt=null; this.holds=new Set();this.history=[];
+    this.lowSince=null; this.resumedAt=null; this.holds=new Set();this.history=[];this.windows=new ResourceWindows();
     this.observation={samples:0,everReady:false,pauseTransitionsAfterReady:0,peakCpuPercent:0,peakMemoryPercent:0,minDiskFreeBytes:null,
       firstReadyAtMs:null,lastSampleAtMs:null,afterReadySamples:0,afterReadyPeakCpuPercent:null,afterReadyPeakMemoryPercent:null,afterReadyMinDiskFreeBytes:null};
   }
-  hold(reason) { this.holds.add(reason); }
+  hold(reason) { this.holds.add(reason);this.windows.block(this.now()); }
   releaseHold(reason) { this.holds.delete(reason); }
   pause(reason) {
+    this.windows.block(this.now());
     if(!this.paused&&this.observation.everReady)this.observation.pauseTransitionsAfterReady++;
     this.paused=true; this.reason=reason; this.lowSince=null; this.resumedAt=null;
   }
@@ -78,7 +80,10 @@ export class ResourceGate {
         }
       } else this.lowSince=null;
     }
-    return this.status();
+    const status=this.status();
+    this.windows.observe({startMs:previous.sampledAtMs,endMs:sample.sampledAtMs,
+      cpuPercent:cpu,memoryPercent:memory,diskFreeBytes:sample.diskFreeBytes,allowed:status.allowed});
+    return status;
   }
   status() {
     const now=this.now();
@@ -91,5 +96,6 @@ export class ResourceGate {
       maxBatchSize:allowed?(elapsed<30_000?10:elapsed<60_000?25:100):0,
       metrics:this.latest};
   }
-  diagnostics(){return {schema:'sg-resource-observation-v1',...this.observation,activeHolds:this.holds.size,observationOnly:true};}
+  diagnostics(){return {schema:'sg-resource-observation-v1',...this.observation,activeHolds:this.holds.size,
+    windows:this.windows.diagnostics(),observationOnly:true};}
 }

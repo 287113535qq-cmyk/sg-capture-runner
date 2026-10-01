@@ -11,3 +11,10 @@ for(const bad of ['missing-resource-history','resource-hold','source-error','sta
  if(bad==='no-gain')w.complete=100;if(bad==='worse-tail'){w.histograms['Logic.totalMs'].buckets[9]=0;w.histograms['Logic.totalMs'].buckets[10]=100;}
  assert.throws(()=>compareSessionWindows(f));
 });
+test('numeric resource proof from another window cannot qualify the comparison',()=>{
+ const f=fixture();f.candidateSafety={...f.candidateSafety,schema:'sg-resource-workers-review-v1',
+  run:f.candidate.sourceRun,commit:f.candidate.sourceCommit,workers:40,startMs:60000,endMs:660000};
+ assert.throws(()=>compareSessionWindows(f),/RESOURCE_WINDOW_CHANGED/);
+ f.candidateSafety.startMs=0;f.candidateSafety.endMs=600000;
+ assert.equal(compareSessionWindows(f).candidate.complete,180);
+});

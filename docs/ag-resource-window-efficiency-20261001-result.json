@@ -1,0 +1,16 @@
+{
+  "schema": "sg-resource-window-efficiency-review-v1",
+  "nodeChecks": 53,
+  "linuxVerified": false,
+  "onlineApplied": false,
+  "actualThroughputGainVerified": false,
+  "resourcePolicyChanged": false,
+  "telemetryBucketMs": 60000,
+  "maxBuckets": 360,
+  "windowMs": 600000,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "retiredGameComplete": 3627,
+  "healthyMainCompleteSnapshot": 76597,
+  "allOptimizationComplete": false
+}
