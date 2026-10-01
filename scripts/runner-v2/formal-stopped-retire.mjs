@@ -12,6 +12,7 @@ import {receiptKey} from './durable-queue.mjs';
 export async function retireStoppedFormal({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
  const stamp=now();
  const failed=profile?.schema==='sg-formal-stopped-retire-pyramids-v2';
+ assert(!profile.beforeOnlyRecovery||failed,'BEFORE_ONLY_FORMAL_SCOPE');
  const secondary=failed||profile?.schema==='sg-formal-stopped-retire-pyramids-v1';
  assert(failed||profile.sourceFailure===undefined,'FORMAL_RETIRE_FAILURE_SCOPE');
  assert(!secondary||(profile.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
@@ -70,7 +71,7 @@ export async function retireStoppedFormal({store,transport,gate,parser,plan,prof
   &&hash((await store.get('state',profile.repairKey))?.value)===profile.repairHash,'FORMAL_RETIRE_SCENE_CHANGED');};
  const result=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
   expectedPoolHash:profile.poolHash,commit:profile.sourceCommit,group:secondary?'secondary':'primary',
-  closedBatchDecorations:profile.closedBatchDecorations??[],now});
+  closedBatchDecorations:profile.closedBatchDecorations??[],beforeOnlyRecovery:profile.beforeOnlyRecovery,now});
  assert(result.completePreserved===profile.completePreserved&&result.abandonedAttempts===0
   &&result.sourceRequests===0&&result.newBetAllowance===0,'FORMAL_RETIRE_RESULT');
  const out={schema:'sg-formal-stopped-retire-v1',profileHash:hash(profile),trialId:plan.trialId,

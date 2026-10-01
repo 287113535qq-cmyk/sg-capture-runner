@@ -35,6 +35,8 @@ def execute(request):
         cls = {PYRAMIDS_SOURCE: PyramidsFields, INCA_SOURCE: IncaFields, RHINO_SOURCE: RhinoFields, MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = ((PearlAwardFields if plan.get('featureProfile') == 'additive-free-awards-v2' else PearlRetriggerFields if plan.get('featureProfile') == 'eight-free-retrigger-v1' else PearlFields) if plan['sourceKey'] == PEARL_SOURCE else PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
     adapter = adapters[key]
+    if request.get('op') == 'plan':
+        return {'validated': True}
     op, raw = request['op'], request['raw']
     if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE):
         if op == 'next':

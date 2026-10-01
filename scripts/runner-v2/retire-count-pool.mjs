@@ -4,10 +4,11 @@ import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter} from './mongo-writer.mjs';
 import {checkLedger,settleCountBatch,auditCountBatch} from './complete-count.mjs';
 import {reviewClosedBatchDecoration} from './closed-batch-decoration.mjs';
+import {reviewBeforeOnlyRetirement} from './before-only-retirement.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
 // private snapshots in bounded pages; retain immutable closed batches verbatim.
-export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],now=Date.now}){
+export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,now=Date.now}){
  assert(Array.isArray(closedBatchDecorations)&&closedBatchDecorations.length<=1
   &&(!closedBatchDecorations.length||(group==='secondary'&&plan.gameId===32721&&closedBatchDecorations[0].batchId===50)), 'COUNT_DECORATION_SCOPE');
  assert(spec.sessionRotation==='closed-batches-v1'&&!pool.enabled&&hash(pool)===expectedPoolHash
@@ -16,8 +17,10 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
  const prefix=`retired-count:${plan.trialId}:${expectedPoolHash.slice(0,16)}`,save=async(k,v)=>{
   await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'COUNT_RETIRE_READBACK');
  };
- assert(!(await store.get('journal',prefix+':before')),'COUNT_RETIRE_ALREADY_STARTED');
- await save(prefix+':before',{schema:'sg-retired-count-before-v1',plan,pool,owner,at:now()});
+ const before=(await store.get('journal',prefix+':before'))?.value;
+ if(before){assert(group==='secondary'&&beforeOnlyRecovery,'COUNT_RETIRE_ALREADY_STARTED');
+  await reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
+ }else{assert(!beforeOnlyRecovery,'BEFORE_ONLY_MARKER_MISSING');await save(prefix+':before',{schema:'sg-retired-count-before-v1',plan,pool,owner,at:now()});}
  let complete=0,abandoned=0;const digest=createHash('sha256'),settlements=[];
  for(let start=1;start<pool.nextBatchId;start+=100){
   await boundary();

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 
-export function analyzer({python='python3'}={}) {
-  const child=spawn(python,['-B','scripts/runner-v2/record_fields.py'],{stdio:['pipe','pipe','pipe']});
+export function analyzer({python='python3',env=process.env}={}) {
+  const child=spawn(python,['-B','scripts/runner-v2/record_fields.py'],{stdio:['pipe','pipe','pipe'],env});
   let pending=null,buffer=Buffer.alloc(0),closed=false;
   const reject=code=>{if(pending){clearTimeout(pending.timer);pending.reject(Object.assign(new Error(code),{code}));pending=null;}};
   child.stderr.on('data',()=>{});
