@@ -32,7 +32,10 @@ import {DEMON_SOURCE,DEMON_EXTENSION} from './demon-protocol.mjs';
 import {QUARTERBACK_SOURCE,QUARTERBACK_EXTENSION,QUARTERBACK_PICK_EXTENSION} from './quarterback-protocol.mjs';
 import {globalShard} from './runner-group.mjs';
 const require = createRequire(import.meta.url);
-require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
+// Linux preflight typechecks this fixed runtime before admission. Avoid building
+// a second TypeScript type graph in every independent capture process; protocol,
+// collector and independent Python validation still execute for every record.
+require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json'),transpileOnly:true});
 const { prepareNextgenRound } = require('../../collector/sg.ingest.ts');
 const {pearlFields}=require('../../collector/sg.pearl.ts');
 const {pearlRetriggerFields}=require('../../collector/sg.pearl-retrigger.ts');
