@@ -83,6 +83,10 @@ export class RunnerPool {
   async countPermission(){
     if(this.plan.countAllocation===undefined)return null;
     const pool=(await this.store.get('state',this.key))?.value;assert(pool,'STATE_MISSING');
+    return this.countPermissionForPool(pool);
+  }
+  async countPermissionForPool(pool){
+    if(this.plan.countAllocation===undefined)return null;
     return this.permissionReader({plan:this.plan,pool,commit:this.commit});
   }
   checkCount(value,spec){
@@ -92,8 +96,9 @@ export class RunnerPool {
     this.checkWorker(worker);
     assert(/^[a-f0-9]{64}$/.test(identity.sessionHash));
     assert(typeof identity.owner==='string' && identity.owner.length>0 && identity.owner.length<=180);
-    let epoch;const spec=await this.countPermission();
-    await this.updatePool(value=>{
+    let epoch;
+    await this.updatePool(async value=>{
+      const spec=await this.countPermissionForPool(value);
       this.checkCount(value,spec);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       const old=value.workers[String(worker)];
@@ -123,8 +128,9 @@ export class RunnerPool {
     return worker;
   }
   async take(lease) {
-    this.checkWorker(lease.worker);let batch=null;const spec=await this.countPermission();
-    await this.updatePool(value=>{
+    this.checkWorker(lease.worker);let batch=null;
+    await this.updatePool(async value=>{
+      const spec=await this.countPermissionForPool(value);
       const worker=this.owned(value,lease);
       if(!value.enabled || value.failure)throw fail('POOL_PAUSED');
       this.checkCount(value,spec);
@@ -159,8 +165,8 @@ export class RunnerPool {
     // proof must be calculated from the persisted queue and full Mongo readback
     // by the caller on GitHub; never from a workflow log or highest sequence.
     assert(proof.pending===null && proof.confirmed===batch.end-batch.start+1 && proof.fullReadback===true);
-    const spec=await this.countPermission();
-    await this.updatePool(value=>{
+    await this.updatePool(async value=>{
+      const spec=await this.countPermissionForPool(value);
       const worker=this.owned(value,lease);
       this.checkCount(value,spec);
       if(spec){completeCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,proof});return value;}
@@ -177,8 +183,8 @@ export class RunnerPool {
     });
   }
   async settle(lease,batch,evidence,key){
-    const spec=await this.countPermission();assert(spec,'COUNT_PERMISSION_REQUIRED');
-    await this.updatePool(value=>{
+    await this.updatePool(async value=>{
+      const spec=await this.countPermissionForPool(value);assert(spec,'COUNT_PERMISSION_REQUIRED');
       this.owned(value,lease);
       settleCountBatch({pool:value,plan:this.plan,spec,worker:lease.worker,batch,evidence,key});
       return value;

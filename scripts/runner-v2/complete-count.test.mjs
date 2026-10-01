@@ -201,3 +201,37 @@ test('RunnerPool permission reuse still reads fresh pool and refuses changed cou
  for(let i=0;i<10;i++)await f.pool.countPermission();assert.equal(poolReads,10);assert.equal(journalReads,2);
  f.docs.get('state/'+f.pool.key).value.confirmed=1;await assert.rejects(f.pool.countPermission(),/COUNT_COUNTER/);assert.equal(poolReads,11);
 });
+
+test('count mutations validate the CAS snapshot without a duplicate full pool read',async()=>{
+ const f=await fixture({target:1,baseline:false});let poolReads=0,journalReads=0;
+ const get=f.store.get.bind(f.store);f.store.get=async(c,k)=>{
+  if(c==='state'&&k===f.pool.key)poolReads++;if(c==='journal')journalReads++;return get(c,k);
+ };
+ const lease=await f.pool.register(0,{owner:'first',sessionHash:f.session});assert.equal(poolReads,1);
+ const batch=await f.pool.take(lease);assert.equal(poolReads,2);
+ await f.pool.complete(lease,batch,{pending:null,confirmed:1,fullReadback:true});assert.equal(poolReads,3);
+ assert.equal(journalReads,2);assert.equal((await f.read()).confirmed,1);
+});
+
+test('every conflicted count mutation validates a newly read ledger',async()=>{
+ const f=await fixture({target:1,baseline:false});let poolReads=0,checks=0;
+ const get=f.store.get.bind(f.store);f.store.get=async(c,k)=>{
+  if(c==='state'&&k===f.pool.key)poolReads++;return get(c,k);
+ };
+ const validate=f.pool.countPermissionForPool.bind(f.pool);f.pool.countPermissionForPool=async p=>{checks++;return validate(p);};
+ f.conflict();await f.pool.register(0,{owner:'first',sessionHash:f.session});
+ assert.equal(poolReads,4);assert.equal(checks,4);
+});
+
+test('a ledger changed between failed CAS attempts cannot consume quota',async()=>{
+ const f=await fixture({target:1,baseline:false});
+ const lease=await f.pool.register(0,{owner:'first',sessionHash:f.session});
+ const cas=f.store.cas.bind(f.store);let attempts=0;
+ f.store.cas=async(c,k,b,v)=>{
+  if(k===f.pool.key&&attempts++===0){f.docs.get('state/'+f.pool.key).value.confirmed=1;return null;}
+  return cas(c,k,b,v);
+ };
+ await assert.rejects(f.pool.take(lease),/COUNT_COUNTER/);
+ assert.equal(attempts,1);assert.equal(f.docs.get('state/'+f.pool.key).value.countAllocation.reserved,0);
+ assert.equal(f.docs.get('state/'+f.pool.key).value.workers[0].activeBatch,null);
+});
