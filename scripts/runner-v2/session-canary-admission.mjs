@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {checkSessionCanaryRevision} from './session-canary.mjs';
+import {checkSessionCanaryRevision,isSessionCanaryRuntime} from './session-canary.mjs';
 
 export function checkCanaryDispatchInputs(inputs){
  assert(inputs?.role==='formal-count'&&inputs.allocation==='round-one'&&inputs.round_one_limit==='0'
-  &&inputs.runtime_profile==='count-runtime-rhino-canary-20261001.json'
+  &&isSessionCanaryRuntime(inputs.runtime_profile)
   &&inputs.formal_relay==='none'&&!inputs.relay_parent,'CANARY_RELAY_REQUIRES_COMPARISON');
 }
 

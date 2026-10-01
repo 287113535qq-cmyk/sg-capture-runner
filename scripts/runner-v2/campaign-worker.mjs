@@ -17,7 +17,7 @@ import {rhinoObservationMinutes} from './rhino-observation-runtime.mjs';
 import {rhinoContinuousMinutes} from './rhino-continuous-runtime.mjs';
 import {exportResourceHistory} from './resource-handoff.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {sessionCanarySchedule} from './session-canary.mjs';
+import {sessionCanarySchedule,isSessionCanaryRuntime} from './session-canary.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
 let canary;
@@ -35,7 +35,7 @@ if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-measurement-20261
  if(revision.activation!==plan.countAllocation||receipt?.commit!==process.env.GITHUB_SHA)throw Error('COUNT_MEASUREMENT_SCOPE');
  end=Date.now()+countMeasurementMinutes(revision,receipt)*60000;
 }
-if(['formal-sessions-rhino-two-20261001.json','formal-sessions-rhino-four-20261001.json'].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&!['count-runtime-rhino-canary-20261001.json','count-runtime-rhino-two-observation-20261001.json','count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json','count-runtime-rhino-ag-continuation-entryfix-20261001.json','count-runtime-rhino-ag-dispatchfix-20261001.json','count-runtime-rhino-four-continuous-20261001.json'].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
+if(['formal-sessions-rhino-two-20261001.json','formal-sessions-rhino-four-20261001.json'].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&!['count-runtime-rhino-canary-entryfix-20261002.json','count-runtime-rhino-canary-20261001.json','count-runtime-rhino-two-observation-20261001.json','count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json','count-runtime-rhino-ag-continuation-entryfix-20261001.json','count-runtime-rhino-ag-dispatchfix-20261001.json','count-runtime-rhino-four-continuous-20261001.json'].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
  const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),plan=plans[32799];
  const spec=(await store.get('journal',`complete-count:${plan.trialId}:${plan.countAllocation}`))?.value;
  if(profile.schema!=='sg-session-layout-rhino-v1'||profile.captureMinutes!==20||spec?.commit!==process.env.GITHUB_SHA||spec?.profileHash!==hash(profile))throw Error('COUNT_SESSION_WINDOW_PERMISSION');
@@ -51,7 +51,7 @@ if(['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-conti
  const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
  end=Date.now()+rhinoContinuousMinutes(profile,revision,receipt,process.env.GITHUB_SHA)*60000;
 }
-if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json'){
+if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE)){
  const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8')),plan=plans[32799];
  const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
  const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;

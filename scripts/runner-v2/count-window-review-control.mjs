@@ -1,3 +1,4 @@
+import {isSessionCanaryRuntime} from './session-canary.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
@@ -47,7 +48,7 @@ try{
  // startup minute is excluded, never counted as a stable comparison window.
  let canary,canaryAdmissionHash,canaryRevisionHash;
  if(process.env.SG_COUNT_RUNTIME_PROFILE){
-  assert(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json','WINDOW_RUNTIME_SCOPE');
+  assert(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE),'WINDOW_RUNTIME_SCOPE');
   const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
   const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${ended.head_sha}`))?.value;
   const admission=(await store.get('journal',`session-canary:${plan.trialId}:${hash(revision)}:admit`))?.value;

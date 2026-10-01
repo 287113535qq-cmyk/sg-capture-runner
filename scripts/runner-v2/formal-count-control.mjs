@@ -72,9 +72,11 @@ try{
   const ended=await read(path),jobs=await read(path+'/jobs?filter=all&per_page=100');
   const refresh=initialWindow?authorizeInitialCountRuntime:refreshCountRuntime;
   const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):undefined;
-  const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!revision.sharedClosureKey?readParentTailFailure(ended,jobs):undefined;
+  const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!revision.sharedClosureKey&&!revision.networkClosureKey?readParentTailFailure(ended,jobs):undefined;
   if(profile.sessionLayout?.lanesPerHost===4)await checkFourContinuousProof({store,plan,profile,revision});
-  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,sharedCloseProfile:revision.sharedClosureKey?readFile('config/count-shared-rhino-ready-20261001.json'):undefined})));
+  console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,
+   sharedCloseProfile:revision.sharedClosureKey?readFile('config/count-shared-rhino-ready-20261001.json'):undefined,
+   networkCloseProfile:revision.networkClosureKey?readFile('config/count-network-rhino-canary-20261002.json'):undefined})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
   const jobs=await read(`repos/zyzuoyang/sg-capture-runner/actions/runs/${ended.id}/jobs?filter=all&per_page=100`);

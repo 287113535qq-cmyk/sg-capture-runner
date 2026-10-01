@@ -9,7 +9,7 @@ import {localSpool} from './local-spool.mjs';
 import {readResourceHandoff} from './resource-handoff.mjs';
 import {HostResourceObservation} from './host-resource-observation.mjs';
 import fs from 'node:fs';
-import {sessionCanarySchedule,waitCanaryLane} from './session-canary.mjs';
+import {sessionCanarySchedule,waitCanaryLane,isSessionCanaryRuntime} from './session-canary.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {formalCountProfilePath} from './formal-count-plan.mjs';
 
@@ -34,10 +34,10 @@ export function connectLocal(plan){
     runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
   return {async canaryReady(shouldStop){
     if(!process.env.SG_CANARY_SCHEDULE){
-      if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json')throw Error('CANARY_SCHEDULE_MISSING');
+      if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE))throw Error('CANARY_SCHEDULE_MISSING');
       return null;
     }
-    if(process.env.SG_COUNT_RUNTIME_PROFILE!=='count-runtime-rhino-canary-20261001.json'||plan.gameId!==32799)throw Error('CANARY_WORKER_SCOPE');
+    if(!isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE)||plan.gameId!==32799)throw Error('CANARY_WORKER_SCOPE');
     await resourceReady;
     const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
     const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));

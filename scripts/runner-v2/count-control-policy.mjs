@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {isSessionCanaryRuntime} from './session-canary.mjs';
 
 export function countControlPolicy(mode,profile,runtimeProfile){
  const isRhino=['sg-formal-count-rhino-v1','sg-formal-count-rhino-v2'].includes(profile.schema);
@@ -6,7 +7,7 @@ export function countControlPolicy(mode,profile,runtimeProfile){
  const isRepair=['sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema);
  const initialWindow=runtimeProfile==='count-runtime-rhino-measurement-20261001.json';
  const observationWindow=runtimeProfile==='count-runtime-rhino-two-observation-20261001.json';
- const canaryWindow=runtimeProfile==='count-runtime-rhino-canary-20261001.json';
+ const canaryWindow=isSessionCanaryRuntime(runtimeProfile);
  const fourContinuousCount=runtimeProfile==='count-runtime-rhino-four-continuous-20261001.json';
  const continuousCount=fourContinuousCount||['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json','count-runtime-rhino-ag-continuation-entryfix-20261001.json','count-runtime-rhino-ag-dispatchfix-20261001.json'].includes(runtimeProfile);
  assert(!isSessions||['sessions','admit'].includes(mode)||(mode==='refresh'&&(observationWindow||continuousCount||canaryWindow)),'SESSION_CONTROL_OPERATION');
