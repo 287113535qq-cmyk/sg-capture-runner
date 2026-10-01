@@ -55,7 +55,7 @@
   "logIntegrityOnlineVerified": false,
   "canaryAdmissionLocalChecks": 19,
   "canaryAdmissionLinuxVerified": true,
-  "canaryAdmissionOnlineApplied": false,
+  "canaryAdmissionOnlineApplied": true,
   "canaryRuntimePreparationLocalChecks": 12,
   "canaryPreparedRuntimeFiles": 655,
   "mixedCollectorIndependentVerified": true,
@@ -150,5 +150,24 @@
     },
     "node22LocalAllChecks": 1174
   },
-  "fourSessionOfflineLogReviewChecks": 9
+  "fourSessionOfflineLogReviewChecks": 9,
+  "canarySourceRun": "36886658723:1",
+  "canarySourceCommit": "14c2d194c2ae48525bafdfebd4fd30cea036b948",
+  "canaryRuntimeHash": "9cd63ddb2b897f595f63ae15030a56b372f1973220a529f2e264854f05009792",
+  "canaryRefreshRun": "36886384780:1",
+  "completePreservedAtCanary": 190949,
+  "remainingCompleteAtCanary": 109051,
+  "canaryNewBetAllowance": 0,
+  "naturalBoundaryToDispatchSeconds": 497,
+  "fourWindowEntryConnected": true,
+  "fourWindowLinux": {
+    "run": "36886988114:1",
+    "commit": "a28acf0627a8e676440ae9bf4d89345b7f95f3c6",
+    "verified": true,
+    "jobSeconds": 139,
+    "logSha256": "cc0fb5763d04b02d47effbdffbd12c67b1482e40614fc586c7a4cb9203a3af02"
+  },
+  "actualCanaryComparisonVerified": false,
+  "actualFourSessionVerified": false,
+  "mixedSyntheticOutroSequences": 3
 }
