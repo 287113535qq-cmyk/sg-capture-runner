@@ -1,3 +1,7 @@
+## 2026-10-02 阶段衔接避免预检与在线审查冲突
+
+按AG固定任务领取和结果复用，独立Linux预检可与健康源采集并行，但不能与要求全局静止的无源结算或比较审查重叠。源即将结束时，先确定已派预检能结束，再衔接审查；审查开始后不派新的预检。因OTHER_RUN_ACTIVE拒绝的审查，必须保存原run及零写入证据，待精确活动结束后用独立审查run消费同一源结果，不重采、不重新授额。任何发布或Linux预检前先运行178规则卡生成与check，并核待发布Git内容；避免把可本机发现的stale留到Linux。四路窗口按全槽位实际ready确定唯一稳定十分钟，不搜索更好的后续窗口或隐藏resourcehold。
+
 # AG效率优化：canary与结果复用
 
 同一canary运行revision只能领取一次。按AG持久化task claim，在生成count-run源许可前创建并全文读回不可变canary领取journal，绑定确切run/commit/profile/revision/permit；未知写入确认不得重派。canary显式禁用自动接力，不接受relay_parent，结束后先审查真实比较，再准入扩大通道数。普通健康采集的自动接力继续使用原流程。
