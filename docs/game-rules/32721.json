@@ -35,6 +35,9 @@
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
+      "service/pyramids_major_plan.py",
+      "scripts/runner-v2/pyramids-major-repair-profile.mjs",
+      "scripts/runner-v2/pyramids-major-retirement.mjs",
       "service/pyramids_major_review.py",
       "service/pyramids_hold_review.py",
       "service/pyramids_free_review.py",
@@ -157,6 +160,9 @@
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "795e09079dc425780f001637ea9794c36a4344a1e5e50c00af8215d766e5eaf4",
     "scripts/runner-v2/record_fields.py": "509672199fcb01088ffcff2f99eee4d3f8c4a4419e3065bf0e6146d89c7e2fbf",
+    "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
+    "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
+    "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
     "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
     "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
     "service/pyramids_free_review.py": "3c9ae5a0953225521db9114a2dafcee75e6d93fa6b7f22e21942bf101edda7ce",
@@ -165,7 +171,7 @@
     "scripts/trial/pyramids-free-review.mjs": "a7e1df29deae3229862ca50e0ec775f37cb7c6139dd470aa8d0e7a79e5901697",
     "scripts/trial/pyramids-protocol.mjs": "c944cfefe0b017a2210ed0d6af04cb80a02f208d704af6c6824a4f0bbcdc94b0",
     "collector/sg.pyramids.ts": "bdc54a2a57abdd5469e3770b24776fbcdfb9486b0f1a2033e48e9c42a0e03256",
-    "service/game_rule_catalog.py": "5d74dac64e2d113bb11cc3af53c11926ca712a18f2f6c8559b715c885d93138f"
+    "service/game_rule_catalog.py": "2272bd3a15ed3a0cf6ceb8b0ff50ea37042cc671fcadff9673d839ec46125ecb"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -174,6 +180,7 @@
     "docs/protocol-parking-20260928.md",
     "docs/protocol-parking-result.json",
     "docs/protocol-parking-storage-stop-20260928.md",
+    "docs/pyramids-major-reentry-20261001-result.json",
     "docs/pyramids-next-review-20261001.md",
     "docs/pyramids-pilot-result-20261001.md",
     "docs/sg-throughput-ag-optimization-plan-20261001-result.json",
@@ -185,6 +192,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
+    "docs/pyramids-major-reentry-20261001-result.json": "86820a560f635086ff80dc3452d00784b0ee5bcf2de9953b8a8c895d7e60e323",
     "docs/pyramids-next-review-20261001.md": "861d065e59c08ab50201389122373a4aeb29f1d8a76602b76eac6481c1077856",
     "docs/pyramids-pilot-result-20261001.md": "2e84beca76e525fe0c8aa900e162d018c970f793917491cb27f43a40f816a3b1",
     "docs/sg-throughput-ag-optimization-plan-20261001-result.json": "68ebecffd145b665677cabbcd800ea962a4ca3484329e388307df89b0365c3d5",
@@ -197,5 +205,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "53e366cd9de6620e2da47683f902ce7d29abcd187bd05de0742fa4b17c26dbe1"
+  "ruleHash": "926b16c2668a460106f92b80cc4032ae29d9d4a9173fb3b7251adadda03e6abd"
 }

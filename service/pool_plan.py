@@ -23,6 +23,11 @@ def validate_pool_plan(plan):
                 approved=session_layout_plan(expected, profile)
                 require(plan == approved, 'SESSION_PROFILE_PLAN_CHANGED')
                 return dict(plan)
+            if filename in ('formal-repair-pyramids-major-20261001.json','formal-repair-pyramids-major-entryfix-20261001.json'):
+                from pyramids_major_plan import pyramids_major_plan
+                profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
+                require(plan == pyramids_major_plan(expected, profile), 'PYRAMIDS_MAJOR_REPAIR_PLAN')
+                return dict(plan)
             require(filename in ('formal-repair-pyramids-continuation-20261001.json','formal-repair-pyramids-display-20261001.json','formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-rhino-guarantee-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'), 'FORMAL_COUNT_PROFILE_PATH')
             profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
             repair = filename == 'formal-repair-pearl-20260930.json'

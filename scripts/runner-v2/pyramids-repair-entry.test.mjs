@@ -32,3 +32,8 @@ test('continuation repair keeps the applied display parent and exact ended sourc
 });
 
 test("continuation evidence correction keeps old parser and exact source binding",()=>{const e=pyramidsRepairEntry("retire","formal-repair-pyramids-continuation-20261001.json","formal-retire-pyramids-continuation-entryfix-20261001.json");assert.equal(e.parserProfile,"formal-repair-pyramids-display-20261001.json");assert.equal(e.sourceId,36842835455);assert.equal(e.retireName,"formal-retire-pyramids-continuation-entryfix-20261001.json");});
+
+test('major repair reuses shared closure and never retires an already closed source',()=>{
+ for(const mode of ['activate','admit']){const e=pyramidsRepairEntry(mode,'formal-repair-pyramids-major-20261001.json');assert.equal(e.oldName,'formal-repair-pyramids-continuation-20261001.json');assert.equal(e.sourceId,36848037333);assert.equal(e.v3,true);}
+ assert.throws(()=>pyramidsRepairEntry('retire','formal-repair-pyramids-major-20261001.json'));
+});

@@ -1,6 +1,8 @@
+import {pyramidsMajorRepairPlan} from './pyramids-major-repair-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 export function pyramidsRepairPlan(base,p){
+ if(p?.schema==='sg-formal-repair-pyramids-v3')return pyramidsMajorRepairPlan(base,p);
  const continuation=p?.sourceRun==='36842835455:1';
  const v2=p?.schema==='sg-formal-repair-pyramids-v2';
  assert((!continuation||v2)&&(v2||p?.schema==='sg-formal-repair-pyramids-v1')&&p.gameId===32721&&p.group==='secondary'

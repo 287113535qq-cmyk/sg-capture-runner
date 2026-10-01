@@ -1,0 +1,18 @@
+{
+  "schema": "sg-offline-repair-reentry-review-v1",
+  "gameId": 32721,
+  "completePreserved": 3211,
+  "historicalBaseline": 150,
+  "remainingComplete": 296639,
+  "profile": "formal-repair-pyramids-major-entryfix-20261001.json",
+  "profileHash": "5c7278ed911ed73ca082e611e8556909704e979b9b6447d29591ec8f8cf6a411",
+  "memoryReplay": true,
+  "pythonFullVerification": true,
+  "nativeDeployed": false,
+  "onlineApplied": false,
+  "sourceRequests": 0,
+  "nodeChecks": 53,
+  "pythonPlanChecks": 2,
+  "nativeIoChecks": 16,
+  "onlineNaturalMajorTerminal": false
+}

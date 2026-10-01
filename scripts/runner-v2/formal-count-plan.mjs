@@ -7,7 +7,7 @@ import {sessionLayoutPlan} from './session-layout-profile.mjs';
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
  if(['sg-session-layout-profile-v1','sg-session-layout-rhino-v1'].includes(profile?.schema))return {...plans,[profile.gameId]:sessionLayoutPlan(base,profile)};
- if(['sg-formal-repair-pyramids-v1','sg-formal-repair-pyramids-v2'].includes(profile?.schema))return {...plans,[32721]:pyramidsRepairPlan(base,profile)};
+ if(['sg-formal-repair-pyramids-v1','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v3'].includes(profile?.schema))return {...plans,[32721]:pyramidsRepairPlan(base,profile)};
  if(profile?.schema==='sg-formal-count-pyramids-v1')return {...plans,[32721]:pyramidsCountPlan(base,profile)};
  if(['sg-formal-count-rhino-v1','sg-formal-count-rhino-v2'].includes(profile?.schema)){
   const repaired=profile.schema==='sg-formal-count-rhino-v2';
@@ -49,6 +49,6 @@ export function applyFormalCount(plans,profile){
 export function formalCountProfilePath(env=process.env){
  if(['formal-sessions-pearl-two-20261001.json','formal-sessions-pearl-four-20261001.json','formal-sessions-rhino-two-20261001.json','formal-sessions-rhino-four-20261001.json'].includes(env.SG_FORMAL_COUNT_PROFILE))
   return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
- assert(['formal-repair-pyramids-continuation-20261001.json','formal-repair-pyramids-display-20261001.json','formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-rhino-guarantee-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'].includes(env.SG_FORMAL_COUNT_PROFILE),'FORMAL_COUNT_PROFILE_PATH');
+ assert(['formal-repair-pyramids-major-entryfix-20261001.json','formal-repair-pyramids-major-20261001.json','formal-repair-pyramids-continuation-20261001.json','formal-repair-pyramids-display-20261001.json','formal-repair-pyramids-coins-20261001.json','formal-count-pyramids-20261001.json','formal-count-rhino-20261001.json','formal-count-rhino-guarantee-20261001.json','formal-count-pearl-20260930.json','formal-repair-pearl-20260930.json','formal-repair-pearl-awards-20261001.json'].includes(env.SG_FORMAL_COUNT_PROFILE),'FORMAL_COUNT_PROFILE_PATH');
  return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
 }

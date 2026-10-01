@@ -73,6 +73,15 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'parallel_rhino_jobless_fence':
+            # Two immutable identity proofs only. GitHub decides whether to fence.
+            need(self.group == 'secondary' and set(r) == {'schema', 'op'}, 'BOUNDARY_SCOPE_DENIED')
+            scope = self.manifest['trials'].get('sg_r1_20261001_32799', {})
+            need(tuple(scope.get(k) for k in ('gameId','runtimeGameId','group','target','maxSequence'))
+                 == (32799,33159,'primary',300000,600000), 'BOUNDARY_TRIAL_SCOPE')
+            keys = ['primary/count-run:sg_r1_20261001_32799:36854881370:1',
+                    'primary/count-jobless-revocation:sg_r1_20261001_32799:36854881370:1:complete']
+            return list(self.db[COLLECTIONS['journal']].find({'_id': {'$in': keys}}, max_time_ms=10000).limit(2))
         if op in ('parallel_rhino_count_boundary', 'parallel_pyramids_count_boundary'):
             # Two fixed trial scopes; only an attempt-one run identity is variable.
             # This is database I/O. GitHub verifies ownership, permission and jobs.

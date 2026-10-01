@@ -1,3 +1,4 @@
+import {joblessFencedRead,joblessKey} from './count-jobless-fence.mjs';
 import assert from 'node:assert/strict';
 import {original} from './expired-run-review.mjs';
 import {stalled,revokedMarker} from './demo-run-fence.mjs';
@@ -57,9 +58,17 @@ export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,work
   &&['.github/workflows/demo-maintenance.yml','.github/workflows/trial-300k.yml'].includes(workflowPath),'COUNT_PEER_SELF');
  const selfId=Number(run.split(':')[0]),peerId=Number(peer.run.split(':')[0]);
  return async()=>{
+  let fenceRows;
+  const fencedRead=joblessFencedRead({read,store:{get:async(collection,key)=>{
+   assert(collection==='journal'&&[joblessKey,'count-jobless-revocation:sg_r1_20261001_32799:36854881370:1:complete'].includes(key),'COUNT_PEER_FENCE_SCOPE');
+   if(selfGroup==='primary')return transport.request('read',{collection,key});
+   if(!fenceRows)fenceRows=await transport.request('parallel_rhino_jobless_fence');
+   assert(Array.isArray(fenceRows)&&fenceRows.length===2&&new Set(fenceRows.map(r=>r._id)).size===2,'COUNT_PEER_FENCE_MISSING');
+   return fenceRows.find(r=>r._id==='primary/'+key);
+  }}});
   const start=now(),queries=Object.values(repositories).flatMap(repository=>['in_progress','queued','pending','waiting','requested'].map(status=>({repository,status})));
   for(let i=0;i<queries.length;i+=5){
-   const wave=queries.slice(i,i+5),results=await Promise.allSettled(wave.map(q=>read(`repos/${q.repository}/actions/runs?status=${q.status}&per_page=100`)));
+   const wave=queries.slice(i,i+5),results=await Promise.allSettled(wave.map(q=>fencedRead(`repos/${q.repository}/actions/runs?status=${q.status}&per_page=100`)));
    for(let n=0;n<results.length;n++){
     assert(results[n].status==='fulfilled','COUNT_PEER_LIST_READ');const result=results[n].value,q=wave[n];
     assert(Number.isInteger(result.total_count)&&result.total_count<100&&result.workflow_runs?.length===result.total_count,'COUNT_PEER_LIST_TRUNCATED');

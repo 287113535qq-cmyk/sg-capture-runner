@@ -172,3 +172,23 @@ class GatewayTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+class JoblessFenceReadTests(unittest.TestCase):
+    setUp = GatewayTests.setUp
+    def test_jobless_fence_is_two_exact_readonly_keys(self):
+        m=copy.deepcopy(self.manifest)
+        m['trials']['sg_r1_20261001_32799']={'gameId':32799,'runtimeGameId':33159,'group':'primary','target':300000,'maxSequence':600000}
+        g=Gateway(self.db,'secondary',m)
+        keys=['primary/count-run:sg_r1_20261001_32799:36854881370:1','primary/count-jobless-revocation:sg_r1_20261001_32799:36854881370:1:complete']
+        for k in keys+['primary/count-run:sg_r1_20261001_32799:999:1']:
+            self.db['capture_journal_v2'].rows[k]={'_id':k,'value':{}}
+        request={'schema':'sg-mongo-only-v2','op':'parallel_rhino_jobless_fence'}
+        before=copy.deepcopy(self.db['capture_journal_v2'].rows)
+        self.assertEqual([r['_id'] for r in g.dispatch(request)],keys)
+        self.assertEqual(before,self.db['capture_journal_v2'].rows)
+        for extra in ({'run':'999:1'},{'keys':keys},{'trialId':'other'}):
+            with self.assertRaises(Refused):g.dispatch({**request,**extra})
+        with self.assertRaises(Refused):Gateway(self.db,'primary',m).dispatch(request)
+        m['trials']['sg_r1_20261001_32799']['maxSequence']=999999
+        with self.assertRaises(Refused):Gateway(self.db,'secondary',m).dispatch(request)

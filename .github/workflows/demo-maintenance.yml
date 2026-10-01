@@ -25,7 +25,7 @@ on:
         description: 'Independent reviewed repair permission; old profiles remain frozen'
         type: choice
         default: formal-repair-pearl-20260930.json
-        options: [formal-repair-pyramids-continuation-20261001.json, formal-repair-pyramids-display-20261001.json, formal-repair-pyramids-coins-20261001.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
+        options: [formal-repair-pyramids-major-entryfix-20261001.json, formal-repair-pyramids-major-20261001.json, formal-repair-pyramids-continuation-20261001.json, formal-repair-pyramids-display-20261001.json, formal-repair-pyramids-coins-20261001.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       retire_profile:
         description: 'Exact stopped-count retirement; grants no source requests'
         type: choice
@@ -201,7 +201,7 @@ jobs:
         run: node scripts/runner-v2/pyramids-count-control.mjs activate
 
   pyramids-repair:
-    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && ((inputs.operation == 'retire-pyramids-repair' && (inputs.retire_profile == 'formal-retire-pyramids-coins-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-display-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-display-entryfix-20261001.json' || (inputs.retire_profile == 'formal-retire-pyramids-continuation-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-continuation-entryfix-20261001.json'))) || (inputs.operation == 'activate-pyramids-repair' && (inputs.repair_profile == 'formal-repair-pyramids-coins-20261001.json' || inputs.repair_profile == 'formal-repair-pyramids-display-20261001.json' || inputs.repair_profile == 'formal-repair-pyramids-continuation-20261001.json')) || (inputs.operation == 'amend-pyramids-zero-runtime' && inputs.runtime_profile == 'count-runtime-pyramids-session-20261001.json'))
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && ((inputs.operation == 'retire-pyramids-repair' && (inputs.retire_profile == 'formal-retire-pyramids-coins-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-display-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-display-entryfix-20261001.json' || (inputs.retire_profile == 'formal-retire-pyramids-continuation-20261001.json' || inputs.retire_profile == 'formal-retire-pyramids-continuation-entryfix-20261001.json'))) || (inputs.operation == 'activate-pyramids-repair' && (inputs.repair_profile == 'formal-repair-pyramids-coins-20261001.json' || inputs.repair_profile == 'formal-repair-pyramids-display-20261001.json' || inputs.repair_profile == 'formal-repair-pyramids-continuation-20261001.json' || (inputs.repair_profile == 'formal-repair-pyramids-major-20261001.json' || inputs.repair_profile == 'formal-repair-pyramids-major-entryfix-20261001.json'))) || (inputs.operation == 'amend-pyramids-zero-runtime' && inputs.runtime_profile == 'count-runtime-pyramids-session-20261001.json'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

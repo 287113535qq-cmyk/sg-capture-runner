@@ -65,3 +65,12 @@ test('ended healthy peer requires closed batches and no live lease; ended failur
  f.pool.workers[0].activeBatch={id:1};await assert.rejects(countPeerBoundary(f.args)(),/ENDED_UNSETTLED/);
  f.other.conclusion='failure';await assert.rejects(countPeerBoundary(f.args)(),/PEER_IDENTITY/);
 });
+
+test('running peer isolates only the exact jobless run with complete native denial',async()=>{
+ const f=fixture(),id=36854881370,head='38465d0872529e80bc09c60218892c14581162c0';
+ f.runs.push({...f.other,id,head_sha:head,status:'queued',conclusion:null});
+ const denial={schema:'sg-count-run-revoked-v1',sourceRun:id+':1',sourceCommit:head,trialId:'sg_r1_20261001_32799',revisionHash:'7557938642322bf75bc7339092cbb4d4416351661d598db6cd28b16a608b6122',profileHash:'f'.repeat(64),sourceRequests:0,newBetAllowance:0};
+ const rows=[{_id:'primary/count-run:sg_r1_20261001_32799:'+id+':1',value:denial},{_id:'primary/count-jobless-revocation:sg_r1_20261001_32799:'+id+':1:complete',value:{schema:'sg-count-jobless-fence-complete-v1',denialHash:hash(denial),profileHash:denial.profileHash}}];
+ const old=f.args.transport.request;f.args.transport.request=async(op,args)=>op==='parallel_rhino_jobless_fence'?rows:old(op,args);
+ await countPeerBoundary(f.args)();rows[1].value.denialHash='0'.repeat(64);await assert.rejects(countPeerBoundary(f.args)(),/COUNT_PEER_LIST_READ/);
+});

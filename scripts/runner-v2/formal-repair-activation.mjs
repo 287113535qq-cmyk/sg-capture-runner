@@ -1,3 +1,5 @@
+import {createHash} from 'node:crypto';
+import {reviewPyramidsMajorRetirement} from './pyramids-major-retirement.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {applyFormalCount} from './formal-count-plan.mjs';
@@ -7,12 +9,13 @@ import {receiptKey} from './durable-queue.mjs';
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
- const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const major=profile?.schema==='sg-formal-repair-pyramids-v3';
+ const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
  const continuation=v2&&profile.sourceRun==='36842835455:1';
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -26,7 +29,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  const entry=campaign.games.find(g=>g.game_id===gameId);
  assert(entry?.status==='parked-protocol'&&entry.repairKey===profile.repairKey&&repair
   &&hash(repair)===profile.repairHash&&repair.sourceAllowance===0&&repair.requiresNewSession===true,'FORMAL_REPAIR_QUEUE');
- assert(retired?.schema==='sg-formal-stopped-retire-v1'&&hash(retired)===profile.retirementHash
+ if(major)await reviewPyramidsMajorRetirement({store,profile,pool,retired,oldProfile});
+ else assert(retired?.schema==='sg-formal-stopped-retire-v1'&&hash(retired)===profile.retirementHash
   &&retired.completePreserved===preserved&&retired.recordsHash===profile.recordsHash&&retired.repairKey===profile.repairKey
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&retired.sourceCommit===profile.sourceCommit,'FORMAL_REPAIR_RETIREMENT');
  const oldSpec=await loadCountPermission({store,plan:oldPlan,pool,commit:profile.sourceCommit});
@@ -53,7 +57,8 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
    records.push(...rs);baseline.push({id:b.id,worker:b.worker,start:b.start,end:b.end,sessionHash:b.sessionHash,closed:true,complete:count,evidenceHash:hash(b)});
   }
  }
- assert(records.length===preserved&&hash(records)===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
+ const recordsHash=major?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
+ assert(records.length===preserved&&recordsHash===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId,
   target:plan.target,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,
   sessionRotation:'closed-batches-v1',runAdmission:'unique-github-run-v1',profileHash:hash(profile),parentActivation:oldSpec.activation,
