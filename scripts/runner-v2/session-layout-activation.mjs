@@ -3,6 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {applyFormalCount} from './formal-count-plan.mjs';
 import {loadCountPermission,auditCountBatch,checkLedger} from './complete-count.mjs';
 import {sessionLayout} from './session-layout.mjs';
+import {checkCanaryExpansion} from './session-canary-admission.mjs';
 
 // A natural, healthy run boundary only. No cancellation, request replay, quota
 // reset or mutation of old batches/receipts is part of changing session layout.
@@ -34,6 +35,10 @@ export async function activateSessionLayout({store,plans,profile,parent,ended,jo
     &&w.resourceHolds===0&&/^[a-f0-9]{64}$/.test(w.recordsHash??'')
     &&Number.isFinite(w.requestP95Ms)&&w.requestP95Ms>0)
    &&b.complete>a.complete&&b.requestP95Ms<=a.requestP95Ms,'SESSION_COMPARISON_NOT_IMPROVED');
+  if(plan.gameId===32799){
+   const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
+   await checkCanaryExpansion({store,plan,parent,permit,comparison});
+  }
  }
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
  assert(!(await store.get('journal',key))&&!(await store.get('journal',key+':before')),'SESSION_ACTIVATION_ALREADY_STARTED');

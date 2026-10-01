@@ -102,17 +102,37 @@ test('session handoff rejects '+bad+' before any write',async()=>{
  const count=f.docs.size;await assert.rejects(activateSessionLayout(a));assert.equal(f.docs.size,count);
 });
 
-for(const bad of [null,'missing','foreign-run','slower','errors','unknown','tail-regression','unequal-window','unverified'])
-test('two to four sessions requires stored matched comparison: '+(bad??'valid'),async()=>{
- const f=fixture();await activateSessionLayout(f.args);
+for(const rhino of [false,true])
+for(const bad of [null,'missing','foreign-run','slower','errors','unknown','tail-regression','unequal-window','unverified',...(rhino?['legacy-comparison','missing-claim','changed-claim','missing-host','wrong-window','mixed-log','unsafe-resource']:[])])
+test((rhino?'Rhino':'Pearl')+' two to four sessions requires stored matched comparison: '+(bad??'valid'),async()=>{
+ const f=fixture(rhino);await activateSessionLayout(f.args);
  const parent=f.args.profile,pool=f.docs.get('state/pool:'+f.plan.trialId).value,c=f.docs.get('state/campaign').value;
  const spec=f.docs.get(`journal/complete-count:${f.plan.trialId}:${parent.activation}`).value;
- const permit={schema:'sg-count-run-v1',activation:parent.activation,commit:f.args.commit,run:'88:1',profileHash:hash(parent),completeBefore:12100};
+ const permit={schema:'sg-count-run-v1',activation:parent.activation,commit:f.args.commit,run:'88:1',profileHash:hash(parent),completeBefore:12100,createdAt:0};
  f.set('journal',`count-run:${f.plan.trialId}:88:1`,permit);
  const comparison={schema:'sg-session-comparison-v1',trialId:f.plan.trialId,profileHash:hash(parent),activation:parent.activation,
   run:'88:1',commit:f.args.commit,fullReadback:true,
   baseline:{lanesPerHost:1,durationMs:60000,complete:100,errors:0,unknown:0,resourceHolds:0,recordsHash:hash('baseline'),requestP95Ms:500},
   candidate:{lanesPerHost:2,durationMs:60000,complete:180,errors:0,unknown:0,resourceHolds:0,recordsHash:hash('candidate'),requestP95Ms:450}};
+ if(rhino){
+  comparison.mode='same-run-canary-v1';comparison.sourcePermitHash=hash(permit);comparison.canaryRevisionHash=hash('revision');
+  const claim={schema:'sg-session-canary-admit-v1',trialId:f.plan.trialId,run:permit.run,commit:permit.commit,
+   activation:parent.activation,profileHash:hash(parent),revisionHash:comparison.canaryRevisionHash,
+   sourcePermitHash:hash(permit),createdAt:permit.createdAt,sourceRequests:0,newBetAllowance:0};
+  comparison.canaryAdmissionHash=hash(claim);
+  const key=`session-canary:${f.plan.trialId}:${comparison.canaryRevisionHash}:admit`;
+  if(bad!=='missing-claim')f.set('journal',key,bad==='changed-claim'?{...claim,run:'90:1'}:claim);
+  const resource=(start,end)=>({schema:'sg-resource-workers-review-v1',run:permit.run,commit:permit.commit,workers:40,
+   verified:true,startMs:start*60000,endMs:end*60000,backendEvidenceComplete:true,hostEvidenceComplete:true,
+   resourceEvidenceComplete:true,sourceErrors:0,unknown:0,resourceHolds:0,logSha256:hash('log'),
+   hostPeakCpuPercent:40,hostPeakMemoryPercent:50,peakCpuPercent:20,peakMemoryPercent:30,minDiskFreeBytes:40*1024**3});
+  comparison.baselineResources=resource(6,16);comparison.candidateResources=resource(18,28);
+  if(bad==='legacy-comparison')delete comparison.mode;
+  if(bad==='missing-host')comparison.candidateResources.hostEvidenceComplete=false;
+  if(bad==='wrong-window')comparison.candidateResources.startMs++;
+  if(bad==='mixed-log')comparison.candidateResources.logSha256=hash('other');
+  if(bad==='unsafe-resource')comparison.candidateResources.hostPeakMemoryPercent=95;
+ }
  if(bad==='foreign-run')comparison.run='89:1';
  if(bad==='slower')comparison.candidate.complete=90;
  if(bad==='errors')comparison.candidate.errors=1;

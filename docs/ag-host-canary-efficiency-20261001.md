@@ -41,3 +41,5 @@ AG 的独立通道和 canary 比较对应两种不同的资源来源。现有 Re
 Pyramids组合修复新增独立TypeScript collector离线审查：真实8帧仍是不完整前缀，无规范化完整结果；三条17/19/21帧合成链的金额与Python/JavaScript一致，26个共享负例及7个collector专属负例通过。候选仅覆盖这批证据的组合及非负Hold币，不把任意负币、外部大奖或自然终局视为已验证。尚未production import、没有新mapping许可或源重入；原8帧与3627完整保留。
 
 最终领取与比较绑定的Linux36874519464:1成功，固定源码7e6572d33518dcf868f0e4b7164d3736f9ec3efb，1122项Runner、148项trial、28项collector及363项Python存储检查、178规则卡通过。全日志SHA8d99895f15a74ee00f5f8512eaa6cd8542d6d6e92f46240bd1b7b9b4cbc4abca。19项领取检查保护原许可、一次领取及比较凭证；本机预先整理650个运行文件hash，仍未生成canary profile。实际线上1→2、4会话吞吐与接力尾段尚待验收，全部优化完成标记保持false。
+
+扩容接力新增独立核对：Rhino的2→4会话准入必须消费same-run-canary凭证、原源permit、一次领取journal，以及同一日志对应的两个完整十分钟宿主/后端资源摘要。缺领取、旧摘要、错时间、混合日志或资源超限在任何激活写入前拒绝；既有Pearl已应用代际不改。107项受影响本机检查通过，包含真实激活入口的有效/无效Rhino与Pearl分支；此追加接线尚待Linux。

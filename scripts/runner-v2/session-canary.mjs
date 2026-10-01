@@ -135,6 +135,7 @@ export function compareCanaryWindows({schedule,report,baselineSafety,candidateSa
  return {schema:'sg-session-comparison-v1',mode:'same-run-canary-v1',trialId:'sg_r1_20261001_32799',run:schedule.run,commit:schedule.commit,
   activation:schedule.activation,profileHash:schedule.profileHash,sourcePermitHash:schedule.sourcePermitHash,
   scheduleHash:hash(schedule),recordsHash:report.recordsHash,activityHash:hash(activity),fullReadback:true,
+  baselineResources:baselineSafety,candidateResources:candidateSafety,
   baseline:values[0],candidate:values[1],sourceRequests:0,newBetAllowance:0};
 }
 export function reviewCanaryActivity({schedule,workers,fullReadback,recordsHash,logSha256}){

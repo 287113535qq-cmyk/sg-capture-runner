@@ -44,13 +44,14 @@ try{
  const captures=jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)),startMs=Math.min(...captures.map(j=>Date.parse(j.started_at))),endMs=Math.max(...captures.map(j=>Date.parse(j.completed_at)));
  // Align numeric timing windows with resource minute buckets. The partial
  // startup minute is excluded, never counted as a stable comparison window.
- let canary,canaryAdmissionHash;
+ let canary,canaryAdmissionHash,canaryRevisionHash;
  if(process.env.SG_COUNT_RUNTIME_PROFILE){
   assert(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-canary-20261001.json','WINDOW_RUNTIME_SCOPE');
   const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
   const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${ended.head_sha}`))?.value;
   const admission=(await store.get('journal',`session-canary:${plan.trialId}:${hash(revision)}:admit`))?.value;
   canaryAdmissionHash=checkCanaryAdmission({plan,profile,revision,permit,admission});
+  canaryRevisionHash=hash(revision);
   canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:ended.head_sha,run:process.env.SG_WINDOW_SOURCE_RUN});
  }
  const result=await reviewCountWindow({store,transport:scans,parser,plan,pool,spec,timing:canary?canaryWindowTiming(canary):windowTiming(Math.ceil(startMs/60000)*60000,endMs)});
@@ -61,6 +62,7 @@ try{
   canaryProof=reviewCanaryFinalLogs({schedule:canary,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
    profileHash:hash(profile),sourcePermitHash:hash(permit)},...logs});
   canaryProof.comparison.canaryAdmissionHash=canaryAdmissionHash;
+  canaryProof.comparison.canaryRevisionHash=canaryRevisionHash;
   await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign)
    &&hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool),'WINDOW_CANARY_SCENE_CHANGED');
   const key=`session-comparison:${plan.trialId}:${hash(canaryProof.comparison)}`;
