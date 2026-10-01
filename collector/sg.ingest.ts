@@ -1,4 +1,5 @@
 import {pyramidsFields} from './sg.pyramids';
+import {hasPyramidsMixed,reviewMixedCollector} from './sg.pyramids-mixed';
 import {incaFields} from './sg.inca';
 import {hasHuffRetrigger,huffRetriggerFields} from './sg.huff-retrigger';
 import {validatePiggies} from './sg.piggies';
@@ -16,6 +17,11 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  * them against the raw protocol and its own pinned policy again before writing.
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
+  if(hasPyramidsMixed(raw)){
+    const result=reviewMixedCollector(raw,mapping.typeMappingHash);
+    if(!result.complete||!result.fields||mapping.buy!==0||mapping.bonus!==4)throw Error('SG_PYRAMIDS_MIXED_MAPPING_MISMATCH');
+    return result.fields;
+  }
   if(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'){
     const value=pyramidsFields(raw,mapping.typeMappingHash,mapping.bonus===3);
     if(value.buy!==mapping.buy||value.bonus!==mapping.bonus)throw Error('SG_PYRAMIDS_MAPPING_MISMATCH');

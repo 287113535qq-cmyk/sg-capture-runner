@@ -175,8 +175,11 @@ def types(raw, kind):
     from pyramids_free_review import feature_type as pyramids_free_type
     pyramids_free = source_key == PYRAMIDS_SOURCE and pyramids_free_type(raw)
     from pyramids_major_review import has_major, EXTENSION as PYRAMIDS_MAJOR_EXTENSION
+    from pyramids_mixed_review import has_mixed, EXTENSION as PYRAMIDS_MIXED_EXTENSION
+    pyramids_mixed = source_key == PYRAMIDS_SOURCE and has_mixed(raw)
     pyramids_major = pyramids_free and has_major(raw)
     if pyramids_major: PYRAMIDS_EXTENSION = PYRAMIDS_MAJOR_EXTENSION
+    if pyramids_mixed: PYRAMIDS_EXTENSION = PYRAMIDS_MIXED_EXTENSION
     if source_key == PYRAMIDS_SOURCE:
         pplan={'gameId':32721,'sourceKey':PYRAMIDS_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedpyramidsofra96','LB':'40'}}
         check(PyramidsFields(pplan).next_request(raw) is None, 'INCOMPLETE_ROUND')
@@ -256,7 +259,7 @@ def types(raw, kind):
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
     if pyramids_free:
-        check(kind=='freeGame' and profile.get('featureSelector')==('pyramids-free-major-v1' if pyramids_major else 'pyramids-ten-free-v1'),'FEATURE_TYPE_MAPPING_REQUIRED')
+        check(kind=='freeGame' and profile.get('featureSelector')==('pyramids-free-hold-v1' if pyramids_mixed else 'pyramids-free-major-v1' if pyramids_major else 'pyramids-ten-free-v1'),'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['featureTypes']['independentFreeGames']
     elif piggies_size2:
         check(kind=='freeGame' and profile.get('featureSelector')=='piggies-size2-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')
