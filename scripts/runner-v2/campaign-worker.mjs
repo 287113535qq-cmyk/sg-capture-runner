@@ -14,6 +14,7 @@ import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 import {createStageProgress} from './stage-progress.mjs';
 import {countMeasurementMinutes} from './count-initial-runtime.mjs';
 import {rhinoObservationMinutes} from './rhino-observation-runtime.mjs';
+import {rhinoContinuousMinutes} from './rhino-continuous-runtime.mjs';
 import {exportResourceHistory} from './resource-handoff.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
@@ -32,7 +33,7 @@ if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-measurement-20261
  if(revision.activation!==plan.countAllocation||receipt?.commit!==process.env.GITHUB_SHA)throw Error('COUNT_MEASUREMENT_SCOPE');
  end=Date.now()+countMeasurementMinutes(revision,receipt)*60000;
 }
-if(['formal-sessions-rhino-two-20261001.json','formal-sessions-rhino-four-20261001.json'].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&process.env.SG_COUNT_RUNTIME_PROFILE!=='count-runtime-rhino-two-observation-20261001.json'){
+if(['formal-sessions-rhino-two-20261001.json','formal-sessions-rhino-four-20261001.json'].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&!['count-runtime-rhino-two-observation-20261001.json','count-runtime-rhino-continuous-20261001.json'].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
  const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),plan=plans[32799];
  const spec=(await store.get('journal',`complete-count:${plan.trialId}:${plan.countAllocation}`))?.value;
  if(profile.schema!=='sg-session-layout-rhino-v1'||profile.captureMinutes!==20||spec?.commit!==process.env.GITHUB_SHA||spec?.profileHash!==hash(profile))throw Error('COUNT_SESSION_WINDOW_PERMISSION');
@@ -42,6 +43,11 @@ if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-two-observation-2
  const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8')),plan=plans[32799];
  const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
  end=Date.now()+rhinoObservationMinutes(profile,revision,receipt,process.env.GITHUB_SHA)*60000;
+}
+if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-continuous-20261001.json'){
+ const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8')),plan=plans[32799];
+ const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
+ end=Date.now()+rhinoContinuousMinutes(profile,revision,receipt,process.env.GITHUB_SHA)*60000;
 }
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
