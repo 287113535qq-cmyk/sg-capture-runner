@@ -62,9 +62,15 @@ try{
  if(four){
   assert(!canary,'WINDOW_LAYOUT_CONFLICT');
   const logs=loadCanarySourceLog(ended,jobs,{expectedCount:80});
-  const window=result.timing.windows.find(w=>w.stableIntervalCandidate&&w.startMs>=Math.ceil(startMs/60000)*60000+600000);
+  const window=result.timing.windows.find(w=>w.stableIntervalCandidate&&w.startMs>=Math.ceil(startMs/60000)*60000);
   assert(window,'FOUR_STABLE_WINDOW_MISSING');
-  fourProof=reviewFourLogs({run:process.env.SG_WINDOW_SOURCE_RUN,commit:ended.head_sha,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,sourcePermitHash:hash(permit)},...logs,startMs:window.startMs,endMs:window.endMs});
+  fourProof=reviewFourLogs({run:process.env.SG_WINDOW_SOURCE_RUN,commit:ended.head_sha,report:{...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,profileHash:hash(profile),sourcePermitHash:hash(permit)},...logs,startMs:window.startMs,endMs:window.endMs});
+  await boundary();assert(hash((await store.get('state','campaign'))?.value)===hash(campaign)
+   &&hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool),'WINDOW_FOUR_SCENE_CHANGED');
+  const key=`session-comparison:${plan.trialId}:${hash(fourProof)}`;
+  assert(!(await store.get('journal',key)),'FOUR_RESOURCE_ALREADY_APPLIED');
+  await store.create('journal',key,fourProof,{immutable:true});
+  assert(hash((await store.get('journal',key))?.value)===hash(fourProof),'FOUR_RESOURCE_READBACK');
  }
  if(canary){
   const logs=loadCanarySourceLog(ended,jobs);
@@ -82,7 +88,7 @@ try{
  console.log(JSON.stringify({...result,sourceRun:process.env.SG_WINDOW_SOURCE_RUN,sourceCommit:ended.head_sha,
   sourceSpecHash:hash(spec),sourcePermitHash:hash(permit),campaignHash:hash(campaign),profileHash:hash(profile),
   previousLanesPerHost:plan.sessionLayout?.lanesPerHost??1,completeBefore:permit.completeBefore,nextBatchId:pool.nextBatchId,nextSequence:pool.nextSequence,parentTailFailure,verifyEntryFailure,
-  ...(four?{fourProof}:{}),
+  ...(four?{fourProof,fourSessionProofHash:hash(fourProof),databaseWrites:1}:{}),
   ...(canary?{canarySchedule:canary,sourcePermitHash:hash(permit),canaryProof,comparisonHash:hash(canaryProof.comparison),comparisonJournalWrites:1,databaseWrites:1}:{})}));
 }catch(e){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(e.message)?e.message:'WINDOW_REVIEW_FAILED',sourceRequests:0,databaseWrites:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

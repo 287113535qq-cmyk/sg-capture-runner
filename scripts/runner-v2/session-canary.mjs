@@ -90,7 +90,7 @@ export function canaryWindowTiming(schedule){
   schema:'sg-session-canary-timing-v1',scheduleHash:hash(schedule),
   baseline:groups[0].finish().windows[0],candidate:groups[1].finish().windows[0],sourceRequests:0,databaseWrites:0};}};
 }
-function p95(w){
+export function sessionWindowP95(w){
  const hist=Object.entries(w.histograms??{}).filter(([k])=>k.endsWith('.totalMs')).map(([,h])=>h);
  assert(hist.length&&hist.every(h=>Number.isSafeInteger(h.count)&&h.count>0&&h.buckets?.length===16
   &&h.buckets.every(n=>Number.isSafeInteger(n)&&n>=0)&&h.buckets.reduce((a,b)=>a+b,0)===h.count),'CANARY_HISTOGRAM');
@@ -133,7 +133,7 @@ export function compareCanaryWindows({schedule,report,baselineSafety,candidateSa
   assert(Array.isArray(rows)&&rows.length===40&&new Set(rows.map(r=>r.slot)).size===40,'CANARY_ACTIVITY_SLOTS');
   for(const row of rows)assert(canarySlots.includes(row.slot)&&Number.isSafeInteger(row.sourceRequests)
    &&(phase.activeSlots.includes(row.slot)?row.sourceRequests>0:row.sourceRequests===0),'CANARY_INACTIVE_SOURCE');
-  values.push({lanesPerHost:i+1,durationMs:10*minute,complete:w.complete,requestP95Ms:p95(w),
+  values.push({lanesPerHost:i+1,durationMs:10*minute,complete:w.complete,requestP95Ms:sessionWindowP95(w),
    recordsHash:report.recordsHash,errors:0,unknown:0,resourceHolds:0});
  }
  assert(values.every(w=>Number.isFinite(w.requestP95Ms)&&w.requestP95Ms>0)

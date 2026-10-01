@@ -15,7 +15,7 @@ import {countControlPolicy} from './count-control-policy.mjs';
 import {checkRhinoObservationRevision} from './rhino-observation-runtime.mjs';
 import {readParentTailFailure} from './parent-tail-failure.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';
-import {checkRhinoContinuousRevision} from './rhino-continuous-runtime.mjs';
+import {checkRhinoContinuousRevision,checkFourContinuousProof} from './rhino-continuous-runtime.mjs';
 import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkSessionCanaryRevision} from './session-canary.mjs';
@@ -73,6 +73,7 @@ try{
   const refresh=initialWindow?authorizeInitialCountRuntime:refreshCountRuntime;
   const verifyEntryFailure=ended.id===36839677352&&ended.conclusion==='failure'?readVerifyEntryFailure(ended,jobs):undefined;
   const parentTailFailure=ended.conclusion==='failure'&&!verifyEntryFailure&&!revision.sharedClosureKey?readParentTailFailure(ended,jobs):undefined;
+  if(profile.sessionLayout?.lanesPerHost===4)await checkFourContinuousProof({store,plan,profile,revision});
   console.log(JSON.stringify(await refresh({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,sharedCloseProfile:revision.sharedClosureKey?readFile('config/count-shared-rhino-ready-20261001.json'):undefined})));
  }else if(mode==='amend'){
   const ended=await read('repos/zyzuoyang/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0]);
@@ -88,6 +89,7 @@ try{
   const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
   const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
   if(runtimeProfile){
+   if(profile.sessionLayout?.lanesPerHost===4)await checkFourContinuousProof({store,plan,profile,revision});
    const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${spec.activation}:${commit}`))?.value;
    assert(receipt?.schema==='sg-count-runtime-v2'&&receipt.revisionHash===hash(revision),'COUNT_RUNTIME_REFRESH_NOT_APPLIED');
   }

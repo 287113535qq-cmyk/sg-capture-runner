@@ -6,8 +6,8 @@ function fixture(){let at=0;const gate=new ResourceGate({now:()=>at}),host=new H
  for(let i=0;i<=150;i++){at=i*10000;const s={sampledAtMs:at,bootId:'offline',cpuTicks:[i*20,0,0,i*80,0,0,0,0],memTotalKiB:100,memAvailableKiB:60,diskFreeBytes:50*1024**3};gate.observe(s);host.observe(s);}
  const run='100:1',commit='a'.repeat(40),rows=Array.from({length:80},(_,i)=>({schema:'sg-capture-performance-v1',reason:'final',gameId:32799,
  shardId:i%20+40*Math.floor(i/20),sourceErrors:0,sourceRequests:10,rpcMetrics:{resourceObservation:gate.diagnostics(),hostResourceObservation:host.diagnostics()}}));
- return {run,commit,rows,logSha256:'b'.repeat(64),startMs:120000,endMs:720000,report:{sourceRun:run,sourceCommit:commit,fullReadback:true,recordsHash:'c'.repeat(64),
- timing:{windows:[{startMs:120000,endMs:720000,stableIntervalCandidate:true,missing:0,invalid:0,complete:1000}]}}};}
+ return {run,commit,rows,logSha256:'b'.repeat(64),startMs:120000,endMs:720000,report:{sourceRun:run,sourceCommit:commit,fullReadback:true,trialId:'sg_r1_20261001_32799',activation:'a'.repeat(64),profileHash:'b'.repeat(64),sourcePermitHash:'d'.repeat(64),complete:2000,remainingComplete:298000,recordsHash:'c'.repeat(64),
+ timing:{windows:[{startMs:120000,endMs:720000,stableIntervalCandidate:true,missing:0,invalid:0,complete:1000,histograms:{'BET.totalMs':{count:10,buckets:[0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0]}}}]}}};}
  test('all eighty final observations and the same ten-minute full readback verify with zero permission',()=>{const r=reviewFourLogs(fixture());assert.equal(r.safety.workers,80);assert.equal(r.sourceAllowance,0);assert.equal(r.comparisonApplied,false);});
  for(const kind of ['missing','duplicate','wrong-run','errors','missing-host','missing-readback','unstable','gap'])test('reject '+kind,()=>{const f=fixture();
  if(kind==='missing')f.rows.pop();if(kind==='duplicate')f.rows[79].shardId=0;if(kind==='wrong-run')f.report.sourceRun='101:1';
