@@ -13,7 +13,7 @@ test('wrong target duration increased concurrency missing peer and unbound refre
  for(const patch of [{revisionHash:'f'.repeat(64)},{commit:'f'.repeat(40)},{sourceRequests:1}])assert.throws(()=>rhinoContinuousMinutes(profile,revision,{...receipt,...patch},commit));
 });
 test('continuous entry reaches only refresh and admit for the applied two-session profile',()=>{
- for(const filename of ['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json'])
+ for(const filename of ['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json','count-runtime-rhino-ag-continuation-entryfix-20261001.json'])
  for(const mode of ['refresh','admit'])assert(countControlPolicy(mode,profile,filename).continuousCount);
  for(const mode of ['activate','repair','amend','sessions'])assert.throws(()=>countControlPolicy(mode,profile,'count-runtime-rhino-continuous-20261001.json'));
  assert.throws(()=>countControlPolicy('refresh',{...profile,sessionLayout:{lanesPerHost:4}},'count-runtime-rhino-continuous-20261001.json'));

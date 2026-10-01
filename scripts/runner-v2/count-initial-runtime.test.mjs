@@ -15,7 +15,7 @@ test('real control policy admits only bound Rhino measurement refresh and admiss
 test('measurement maintenance selects formal profile while old refresh keeps repair profile',()=>{
  const workflow=fs.readFileSync('.github/workflows/demo-maintenance.yml','utf8');
  const step=workflow.slice(workflow.indexOf('      - name: Preserve healthy count allocation'),workflow.indexOf('      - name: Isolate interrupted pilot'));
- assert(step.includes("(inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-two-observation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-continuous-20261001.json') && inputs.formal_profile || inputs.repair_profile"));
+ assert(step.includes("(inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-two-observation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-continuous-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-20261001.json' || inputs.runtime_profile == 'count-runtime-rhino-ag-continuation-entryfix-20261001.json') && inputs.formal_profile || inputs.repair_profile"));
  assert(step.includes('SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}'));
 });
 
