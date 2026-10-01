@@ -57,7 +57,7 @@
   "canaryAdmissionLinuxVerified": true,
   "canaryAdmissionOnlineApplied": false,
   "canaryRuntimePreparationLocalChecks": 12,
-  "canaryPreparedRuntimeFiles": 650,
+  "canaryPreparedRuntimeFiles": 655,
   "mixedCollectorIndependentVerified": true,
   "mixedCollectorAdditionalNegativeChecks": 7,
   "mixedCollectorProductionImported": false,
@@ -82,5 +82,19 @@
     "startedAt": "2026-10-01T14:23:46Z",
     "completedAt": "2026-10-01T14:25:22Z"
   },
-  "canaryExpansionOnlineVerified": false
+  "canaryExpansionOnlineVerified": false,
+  "historyReuseLocalChecks": 114,
+  "boundaryReservationLocalChecks": 31,
+  "boundaryReservationProfilePrepared": true,
+  "boundaryReservationOnlineApplied": false,
+  "historyBoundaryLinux": {
+    "run": "36878361048:1",
+    "commit": "9facdb3bb343be4d812b985769a5c14d58de688e",
+    "verified": true,
+    "logSha256": "999d8789df6a2630e4ae3e504e42cadcf6aaff9e8cad43e5c418b00cf0301225",
+    "runnerChecks": 1170,
+    "trialChecks": 148,
+    "collectorChecks": 28,
+    "pythonStorageChecks": 363
+  }
 }
