@@ -5,9 +5,11 @@ const fail=code=>Object.assign(new Error(code),{code,category:'storage'});
 // running on GitHub, decides whether a new source request may be sent.
 export class SourceControl {
   constructor({store,transport,gate,plan}){Object.assign(this,{store,transport,gate,plan});}
-  async allowed({newRound=false,continuation=false}={}) {
+  async allowed({newRound=false,continuation=false,workerId}={}) {
     await this.store.writable();
-    const rows=await this.transport.request('control_read',this.plan?{trialId:this.plan.trialId}:{});
+    if(workerId!==undefined)assert(Number.isSafeInteger(workerId)&&workerId>=0&&workerId<160,'CONTROL_WORKER_SCOPE');
+    const rows=await this.transport.request('control_read',this.plan?{trialId:this.plan.trialId,
+      ...(this.compact===true&&workerId!==undefined?{workerId}: {})}:{});
     const holds=['primary/global-hold','secondary/global-hold'].map(id=>rows.find(x=>x._id===id));
     assert(holds.length===2 && holds.every(Boolean),'GLOBAL_HOLDS_NOT_INITIALIZED');
     if(holds.some(x=>x.value.active))throw fail('GLOBAL_SOURCE_STOPPED');

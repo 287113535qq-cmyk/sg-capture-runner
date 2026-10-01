@@ -46,6 +46,10 @@ export function connectLocal(plan){
     const permit=(await store.get('journal',`count-run:${plan.trialId}:${run}`))?.value;
     const schedule=sessionCanarySchedule({profile,revision,receipt,permit,commit,run});
     if(hash(schedule)!==hash(JSON.parse(process.env.SG_CANARY_SCHEDULE)))throw Error('CANARY_WORKER_BINDING');
+    if(revision.controlReadMode!==undefined){
+      if(revision.controlReadMode!=='compact-worker-v1')throw Error('CANARY_CONTROL_READ_MODE');
+      control.compact=true;
+    }
     controller.canarySchedule=schedule;
     const slot=Number(process.env.SG_TRIAL_SHARD)+40*Number(process.env.SG_SESSION_LANE);
     return waitCanaryLane({schedule,slot,shouldStop,observe:async()=>{

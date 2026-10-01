@@ -109,7 +109,7 @@ export class BatchController {
   async intent(r,begin=false){
     if(begin){this.pendingFirst.beforeNewRequest();this.pendingFirst.beforeBegin(r.sequence);}
     await this.owned(r,{heartbeat:false});
-    const poolSnapshot=await this.control.allowed({newRound:begin,continuation:!begin});
+    const poolSnapshot=await this.control.allowed({newRound:begin,continuation:!begin,workerId:r.shardId});
     await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
     let raw;
     if(begin){
@@ -183,7 +183,7 @@ export class BatchController {
     await this.owned(r,{heartbeat:false});
     if(!frame){
       this.pendingFirst.beforeNewRequest();
-      const poolSnapshot=await this.control.allowed({newRound:true});
+      const poolSnapshot=await this.control.allowed({newRound:true,workerId:r.shardId});
       await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
       assert((['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter)?['Init']:['INIT','REELSTRIP']).includes(r.msgId),'BOOTSTRAP_METHOD');
       await this.update(v=>{assert(!v.pending && !v.bootstrapAwaiting,'BOOTSTRAP_PENDING');v.bootstrapAwaiting={msgId:r.msgId,payload:r.requestPayload};return v;});

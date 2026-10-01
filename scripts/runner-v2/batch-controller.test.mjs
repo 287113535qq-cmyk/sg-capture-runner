@@ -53,6 +53,23 @@ async function fixture(shardId=0){
   return {controller,store,docs,rounds,plan,rpc,lease,owned,identity,
     failResponse(){failResponse=true;},advance(ms){now+=ms;}};
 }
+test('compact source control still freshly rejects peer holds and changed worker fences before intent',async()=>{
+ for(const fault of ['hold','worker']){
+  const f=await fixture(),requests=[],gate={status:()=>({allowed:true,maxBatchSize:100,metrics:{diskFreeBytes:100*1024**3}})};
+  const transport={request:async(op,r)=>{
+   assert.equal(op,'control_read');requests.push(r);
+   const pool=(await f.store.get('state','pool:'+f.plan.trialId)).value;
+   return [{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:{active:fault==='hold'}},
+    {_id:'primary/campaign',value:{enabled:true,activeGame:f.plan.gameId}},
+    {_id:'primary/pool:'+f.plan.trialId,value:{enabled:true,failure:null,workers:{0:{...pool.workers['0'],...(fault==='worker'?{epoch:999}: {})}}}}];
+  }};
+  const c=new SourceControl({store:f.store,transport,gate,plan:f.plan});c.compact=true;f.controller.control=c;
+  await assert.rejects(f.rpc('begin',{...f.owned,sequence:1,attempt:'00000000-0000-0000-0000-000000000001',startBalanceRaw:100000,requestPayload:'MSGID=BET'}),
+   {code:fault==='hold'?'GLOBAL_SOURCE_STOPPED':'LEASE_LOST'});
+  assert.deepEqual(requests,[{trialId:f.plan.trialId,workerId:0}]);
+  assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending,null);
+ }
+});
 
 test('Pyramids and Inca explicit feature gaps isolate the game while validation errors hold shared writes',async()=>{
  for(const [code,local] of [['PYRAMIDS_UNREVIEWED_GSD',true],['PYRAMIDS_UNREVIEWED_FEATURE',true],

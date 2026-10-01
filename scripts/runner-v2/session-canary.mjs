@@ -18,6 +18,8 @@ function checkSchedule(s){
 // An observation schedule cannot create a source permit. All processes share
 // the immutable admission timestamp; process startup never resets the phases.
 export function checkSessionCanaryRevision(profile,revision){
+ if(revision?.controlReadMode!==undefined)assert(revision.controlReadMode==='compact-worker-v1'
+  &&/^[a-f0-9]{64}$/.test(revision.gatewayHash??''),'CANARY_CONTROL_READ_MODE');
  assert(profile?.schema==='sg-session-layout-rhino-v1'&&profile.gameId===32799
   &&profile.sessionLayout?.lanesPerHost===2&&revision?.schema==='sg-count-runtime-refresh-profile-v1'
   &&revision.purpose==='session-canary-v1'&&revision.profileHash===hash(profile)

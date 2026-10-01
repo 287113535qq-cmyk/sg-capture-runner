@@ -96,3 +96,9 @@ test('same-run comparison accepts explicit new-source full readback plus bound p
  for(const change of [{currentSourceFullReadback:false},{complete:13000},{history:{...f.report.history,sourcePermitHash:hash('other')}},
   {history:{...f.report.history,historicalReadbackFresh:true}}])assert.throws(()=>compareCanaryWindows({...f,report:{...f.report,...change}}));
 });
+
+for(const mode of ['compact-worker-v1','unknown'])test('compact control mode is bound to native gateway '+mode,()=>{
+ const f=permission();f.revision.controlReadMode=mode;f.revision.gatewayHash='e'.repeat(64);f.receipt.revisionHash=hash(f.revision);
+ if(mode==='unknown')assert.throws(()=>sessionCanarySchedule(f),/CANARY_CONTROL_READ_MODE/);
+ else {assert(sessionCanarySchedule(f));delete f.revision.gatewayHash;assert.throws(()=>sessionCanarySchedule(f),/CANARY_CONTROL_READ_MODE/);}
+});

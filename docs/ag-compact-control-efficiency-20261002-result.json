@@ -1,0 +1,15 @@
+{
+  "schema": "sg-compact-control-size-review-v1",
+  "actualSnapshot": true,
+  "fullResponseBytes": 801668,
+  "compactMaxResponseBytes": 642,
+  "reductionPercent": 99.9199,
+  "latencyMeasured": false,
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "runnerTests": 1227,
+  "gatewayTests": 17,
+  "deployed": false,
+  "actualThroughputVerified": false,
+  "allOptimizationComplete": false
+}

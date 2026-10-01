@@ -14,10 +14,26 @@ class Collection:
             e=Exception();e.code=11000;raise e
         self.rows[row['_id']] = copy.deepcopy(row)
     def find_one(self, query, **_): return copy.deepcopy(self.rows.get(query['_id']))
-    def find(self, query, **_):
+    def find(self, query, projection=None, **_):
         class Cursor(list):
             def limit(self,n):return self[:n]
-        return Cursor(copy.deepcopy([self.rows[k] for k in query['_id']['$in'] if k in self.rows]))
+        rows=copy.deepcopy([self.rows[k] for k in query['_id']['$in'] if k in self.rows])
+        if projection:
+            out=[]
+            for row in rows:
+                projected={}
+                for path,include in projection.items():
+                    if not include:continue
+                    parts=path.split('.');src=row;dest=projected
+                    for part in parts:
+                        if not isinstance(src,dict) or part not in src:break
+                        src=src[part]
+                    else:
+                        for part in parts[:-1]:dest=dest.setdefault(part,{})
+                        dest[parts[-1]]=copy.deepcopy(src)
+                out.append(projected)
+            rows=out
+        return Cursor(rows)
     def replace_one(self, query, row):
         old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
         if matched:self.rows[row['_id']]=copy.deepcopy(row)
@@ -137,6 +153,25 @@ class GatewayTests(unittest.TestCase):
         self.assertNotIn('primary/unrelated',[x['_id'] for x in rows])
         with self.assertRaises(Refused):self.call('control_read',trialId='not-approved')
         with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch({'schema':'sg-mongo-only-v2','op':'control_read','trialId':'sg_r1_20260928_32723'})
+    def test_compact_control_projects_only_fresh_hold_campaign_and_exact_worker(self):
+        trial='sg_r1_20260928_32723'
+        for key,value in [('global-hold',{'active':False,'private':'omit'}),('campaign',{'enabled':True,'activeGame':32723,'games':['omit']}),
+                          ('pool:'+trial,{'enabled':True,'failure':None,'workers':{'0':{'owner':'fresh','epoch':2},'1':{'owner':'peer'}},'countAllocation':{'large':'omit'}})]:
+            self.call('create',collection='state',key=key,value=value)
+        before=copy.deepcopy(self.db['capture_state_v2'].rows)
+        rows=self.call('control_read',trialId=trial,workerId=0)
+        pool=next(r for r in rows if '/pool:' in r['_id'])
+        self.assertEqual(pool['value'],{'enabled':True,'failure':None,'workers':{'0':{'owner':'fresh','epoch':2}}})
+        self.assertEqual(next(r for r in rows if r['_id']=='primary/global-hold')['value'],{'active':False})
+        self.assertEqual(before,self.db['capture_state_v2'].rows)
+        self.db['capture_state_v2'].rows['primary/global-hold']['value']['active']=True
+        self.db['capture_state_v2'].rows['primary/pool:'+trial]['value']['workers']['0']['epoch']=3
+        next_rows=self.call('control_read',trialId=trial,workerId=0)
+        self.assertTrue(next(r for r in next_rows if r['_id']=='primary/global-hold')['value']['active'])
+        self.assertEqual(next(r for r in next_rows if '/pool:' in r['_id'])['value']['workers']['0']['epoch'],3)
+        for worker in (-1,160,True,'0',{'$where':'anything'}):
+            with self.assertRaises(Refused):self.call('control_read',trialId=trial,workerId=worker)
+        with self.assertRaises(Refused):self.call('control_read',workerId=0)
 
     def test_separate_sequence_ceiling_is_fixed_to_reviewed_pearl_storage_scope(self):
         trial='sg_r1_20260930_32795'

@@ -30,6 +30,7 @@ export function connectGateway() {
     let response;try{response=JSON.parse(line);}catch{reject('GATEWAY_RESPONSE_INVALID');return;}
     if(!response.ok){reject(/^[A-Z_]{1,80}$/.test(response.error)?response.error:'GATEWAY_REJECTED');return;}
     const p=pending;pending=null;clearTimeout(p.timer);
+    metrics.byOperation[p.op].responseBytes=(metrics.byOperation[p.op].responseBytes??0)+Buffer.byteLength(line,'utf8');
     const ms=performance.now()-p.started;metrics.elapsedMs+=ms;metrics.byOperation[p.op].elapsedMs+=ms;
     p.resolve(response.result);
   });

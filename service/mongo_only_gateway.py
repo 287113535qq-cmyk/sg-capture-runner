@@ -138,7 +138,17 @@ class Gateway:
             if r.get('trialId') is not None:
                 trial, _ = self.scope(r)
                 ids.append(self.group + '/pool:' + trial)
-            rows = list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(4))
+            projection = None
+            if 'workerId' in r:
+                worker = r['workerId']
+                need(type(worker) is int and 0 <= worker < 160 and r.get('trialId') is not None, 'CONTROL_WORKER_SCOPE')
+                # Fixed field projection only: no leases, quota or source decisions
+                # execute here. GitHub checks this worker against its own fence.
+                projection = {'_id': 1, 'version': 1, 'value.active': 1,
+                              'value.enabled': 1, 'value.activeGame': 1,
+                              'value.failure': 1, 'value.drainingProtocol': 1,
+                              'value.workers.'+str(worker): 1}
+            rows = list(self.db[COLLECTIONS['state']].find({'_id': {'$in': ids}}, projection=projection, max_time_ms=10000).limit(4))
             return rows
         if op == 'read_many':
             alias, keys = r.get('collection'), r.get('keys')
