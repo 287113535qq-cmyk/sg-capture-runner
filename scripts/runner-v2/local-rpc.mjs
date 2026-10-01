@@ -27,6 +27,7 @@ export function connectLocal(plan){
     group:repositories[process.env.GITHUB_REPOSITORY].name,pendingFirstStage:process.env.SG_PENDING_FIRST_STAGE,
     runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
   return {rpc:async(op,data)=>{await resourceReady;return controller.rpc(op,data);},metrics:()=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
+    resourceObservation:gate.diagnostics(),
     localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),
     close(){parser.close();transport.close();spool.close();}};
 }

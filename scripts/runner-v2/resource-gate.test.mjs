@@ -18,6 +18,13 @@ test('requires baseline and sixty seconds of healthy samples; resumes in small b
   for(let i=0;i<3;i++)f.observe();assert.equal(f.gate.status().maxBatchSize,25);
   for(let i=0;i<3;i++)f.observe();assert.equal(f.gate.status().maxBatchSize,100);
 });
+test('diagnostics separate startup from later resource pauses without relaxing protection',()=>{
+ const f=fixture();f.ready();assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,0);
+ assert.equal(f.observe(96,50).allowed,false);assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,1);
+ f.observe(96,50);assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,1);
+ f.ready();f.advance(30001);assert.equal(f.gate.status().allowed,false);assert.equal(f.gate.diagnostics().pauseTransitionsAfterReady,2);
+ assert.equal(f.gate.diagnostics().peakCpuPercent,96);assert.equal(f.gate.diagnostics().observationOnly,true);
+});
 for(const metric of ['cpu','memory'])test(`${metric} at 95 pauses; both below 90 must remain stable`,()=>{
   const f=fixture();f.ready();
   assert.equal(f.observe(metric==='cpu'?95:10,metric==='memory'?95:50).reason,'RESOURCE_OVERLOAD');

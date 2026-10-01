@@ -8,13 +8,16 @@ export class ResourceGate {
     this.now=now; this.previous=null; this.latest=null;
     this.paused=true; this.reason='RESOURCE_SAMPLE_REQUIRED';
     this.lowSince=null; this.resumedAt=null; this.holds=new Set();this.history=[];
+    this.observation={samples:0,everReady:false,pauseTransitionsAfterReady:0,peakCpuPercent:0,peakMemoryPercent:0,minDiskFreeBytes:null};
   }
   hold(reason) { this.holds.add(reason); }
   releaseHold(reason) { this.holds.delete(reason); }
   pause(reason) {
+    if(!this.paused&&this.observation.everReady)this.observation.pauseTransitionsAfterReady++;
     this.paused=true; this.reason=reason; this.lowSince=null; this.resumedAt=null;
   }
   observe(sample) {
+    this.observation.samples++;
     // Only a new observation can release the handoff hold; invalid samples
     // still pause through the ordinary validation below. Other holds remain.
     this.holds.delete('RESOURCE_HANDOFF_FRESH_REQUIRED');
@@ -52,6 +55,9 @@ export class ResourceGate {
     const cpu=100*(total-delta[3]-delta[4])/total;
     this.history.push(structuredClone(sample));this.history=this.history.slice(-16);
     const memory=100*(sample.memTotalKiB-sample.memAvailableKiB)/sample.memTotalKiB;
+    this.observation.peakCpuPercent=Math.max(this.observation.peakCpuPercent,cpu);
+    this.observation.peakMemoryPercent=Math.max(this.observation.peakMemoryPercent,memory);
+    this.observation.minDiskFreeBytes=this.observation.minDiskFreeBytes===null?sample.diskFreeBytes:Math.min(this.observation.minDiskFreeBytes,sample.diskFreeBytes);
     this.latest={sampledAtMs:sample.sampledAtMs,cpuPercent:cpu,memoryPercent:memory,
       diskFreeBytes:sample.diskFreeBytes};
     if (cpu>=resourcePolicy.pausePercent || memory>=resourcePolicy.pausePercent) {
@@ -71,9 +77,11 @@ export class ResourceGate {
     if (this.latest && (now-this.latest.sampledAtMs>resourcePolicy.maxAgeMs
         || this.latest.sampledAtMs>now+5000)) this.pause('RESOURCE_SAMPLE_STALE');
     const allowed=!this.paused && this.holds.size===0;
+    if(allowed)this.observation.everReady=true;
     const elapsed=this.resumedAt===null?0:Math.max(0,now-this.resumedAt);
     return {allowed,reason:this.holds.size?[...this.holds][0]:this.reason,
       maxBatchSize:allowed?(elapsed<30_000?10:elapsed<60_000?25:100):0,
       metrics:this.latest};
   }
+  diagnostics(){return {schema:'sg-resource-observation-v1',...this.observation,activeHolds:this.holds.size,observationOnly:true};}
 }
