@@ -20,7 +20,7 @@ import {exportResourceHistory} from './resource-handoff.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {sessionCanarySchedule,isSessionCanaryRuntime} from './session-canary.mjs';
 
-const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer();
+const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2});
 let canary;
 let end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
 const store=new RunnerState({transport,gate,deadline:end+(process.env.SG_FORMAL_COUNT_PROFILE?25*60000:0)}),control=new SourceControl({store,transport,gate});

@@ -5,8 +5,8 @@ import {spawnSync} from 'node:child_process';
 import {analyzer} from './analyzer.mjs';
 import {rhinoFixture} from '../trial/rhino-fixture.mjs';
 
-test('real Python pipe verifies every page and rejects corrupt tail without losing the next request',async()=>{
- const parser=analyzer({python:process.env.PYTHON||'python3'});
+for(const auditWorkers of [1,2])test(`real Python pipes (${auditWorkers}) verify every page and reject corrupt tail without losing the next request`,async()=>{
+ const parser=analyzer({python:process.env.PYTHON||'python3',auditWorkers});
  try{
   const plan=JSON.parse(fs.readFileSync('config/round-one-plans.json'))['32799'],raw=rhinoFixture(0),records=[];
   // Derive fields with Python, including its original numeric representation.
