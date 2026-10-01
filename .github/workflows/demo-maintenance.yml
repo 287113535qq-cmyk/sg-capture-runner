@@ -75,7 +75,7 @@ jobs:
       - name: Preserve healthy count allocation and bind reviewed runtime
         if: inputs.operation == 'refresh-count-runtime'
         env:
-          SG_FORMAL_COUNT_PROFILE: ${{ inputs.repair_profile }}
+          SG_FORMAL_COUNT_PROFILE: ${{ inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' && inputs.formal_profile || inputs.repair_profile }}
           SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
         run: node scripts/runner-v2/formal-count-control.mjs refresh
       - name: Isolate interrupted pilot and close its unused allowance without source requests

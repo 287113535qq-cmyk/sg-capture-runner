@@ -1,6 +1,13 @@
 import test from 'node:test';import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {authorizeInitialCountRuntime,countMeasurementMinutes} from './count-initial-runtime.mjs';
+test('measurement maintenance selects formal profile while old refresh keeps repair profile',()=>{
+ const workflow=fs.readFileSync('.github/workflows/demo-maintenance.yml','utf8');
+ const step=workflow.slice(workflow.indexOf('      - name: Preserve healthy count allocation'),workflow.indexOf('      - name: Isolate interrupted pilot'));
+ assert(step.includes("inputs.runtime_profile == 'count-runtime-rhino-measurement-20261001.json' && inputs.formal_profile || inputs.repair_profile"));
+ assert(step.includes('SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}'));
+});
 
 function fixture(){
  const docs=new Map(),commit='b'.repeat(40),fromCommit='a'.repeat(40),activation='c'.repeat(64);
