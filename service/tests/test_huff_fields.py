@@ -68,9 +68,11 @@ class HuffFieldsTests(unittest.TestCase):
             self.assertEqual(self.adapter.settled(value),NativeNextgenFields(PLAN).settled(value))
             self.assertEqual(self.adapter.settled(value)['typeMappingHash'],type_profile(SOURCE)[1])
 
-    def test_counters_can_increase_on_retrigger(self):
+    def test_counter_increase_without_retrigger_evidence_is_rejected(self):
         value=sample();value['steps'].insert(1,exchange('FREE_GAME',6,'1|','FEAT~HARDHAT',TFG=7,CFGG=1))
-        self.assertEqual(self.adapter.settled(value)['bonus'],2)
+        # An increased total requires the reviewed award, board and slot fields.
+        # This old fixture lacks those fields and resets TFG on the next frame.
+        with self.assertRaises(FieldError):self.adapter.settled(value)
 
     def test_unreviewed_named_feature_is_still_rejected(self):
         for fid,gsd in [('2|',''),('1|','FEAT~PAINT'),('1|','PCFID~3|'),('9|','')]:
