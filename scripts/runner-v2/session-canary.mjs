@@ -3,7 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {windowTiming} from './window-timing.mjs';
 
 const minute=60000;
-export const isSessionCanaryRuntime=name=>['count-runtime-rhino-canary-20261001.json','count-runtime-rhino-canary-entryfix-20261002.json'].includes(name);
+export const isSessionCanaryRuntime=name=>['count-runtime-rhino-canary-20261001.json','count-runtime-rhino-canary-finalmetrics-20261002.json','count-runtime-rhino-canary-entryfix-20261002.json'].includes(name);
 export const canarySlots=Object.freeze(Array.from({length:40},(_,i)=>i%20+Math.floor(i/20)*40));
 function checkSchedule(s){
  assert(s?.schema==='sg-session-canary-schedule-v1'&&/^\d+:1$/.test(s.run??'')

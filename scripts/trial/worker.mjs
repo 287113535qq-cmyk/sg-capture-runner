@@ -73,7 +73,7 @@ let lease, leaseOwned, owner, stop = false, lastRequestAt = 0;
 const sessionStart = performance.now();
 let workerError;
 const canaryActivity=process.env.SG_CANARY_SCHEDULE?canarySourceActivity(JSON.parse(process.env.SG_CANARY_SCHEDULE),shard):null;
-const telemetry=createCaptureTelemetry({gameId:plan.gameId,shardId:shard,evidence,canaryActivity,metrics:()=>transport.metrics(),emit:row=>console.log(JSON.stringify(row))});
+const telemetry=createCaptureTelemetry({gameId:plan.gameId,shardId:shard,evidence,canaryActivity,metrics:options=>transport.metrics(options),emit:row=>console.log(JSON.stringify(row))});
 if(role==='capture')telemetry.start();
 process.on('SIGTERM', () => {stop=true;});
 process.on('SIGINT', () => {stop=true;});

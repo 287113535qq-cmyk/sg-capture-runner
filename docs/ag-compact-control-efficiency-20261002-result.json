@@ -17,5 +17,15 @@
   "longRuntimeBindingApplied": false,
   "compactIdleStatusApplied": false,
   "actualThroughputVerified": false,
-  "allOptimizationComplete": false
+  "allOptimizationComplete": false,
+  "actualSourceSucceeded": true,
+  "actualNewComplete": 15370,
+  "actualSourceRequests": 33411,
+  "actualSourceErrors": 0,
+  "sourceShareOfMeasuredSourceRpcPercent": 89.90862318143193,
+  "comparisonReviewRun": 36900843244,
+  "comparisonReviewError": "RESOURCE_WINDOW_SCOPE",
+  "finalResourceHistoriesMissing": true,
+  "workerFinalMetricsForwardingFixed": true,
+  "affectedTests": 74
 }
