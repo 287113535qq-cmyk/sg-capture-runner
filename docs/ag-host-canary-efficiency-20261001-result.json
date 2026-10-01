@@ -12,7 +12,7 @@
   "canaryActuallyStarted": false,
   "allOptimizationComplete": false,
   "sourceRequests": 0,
-  "mongoWrites": 0,
+  "mongoWrites": 1,
   "linuxRun": "36867785783:1",
   "linuxCommit": "35fa09818cf7ef79ccec682e9e5c16b77ef97f94",
   "linuxLogSha256": "349f820c19ca7392a7bbe2b0b6a011c4a3e83ca0896fa9835c908d4e8b9ddb33",
@@ -86,7 +86,7 @@
   "historyReuseLocalChecks": 114,
   "boundaryReservationLocalChecks": 31,
   "boundaryReservationProfilePrepared": true,
-  "boundaryReservationOnlineApplied": false,
+  "boundaryReservationOnlineApplied": true,
   "historyBoundaryLinux": {
     "run": "36878361048:1",
     "commit": "9facdb3bb343be4d812b985769a5c14d58de688e",
@@ -105,5 +105,25 @@
     "reservationWritten": false,
     "logSha256": "06e58be1c03cde47a6224bdeff7f82d62d9bb6b0a5ba0d242ee0274bce6d66db"
   },
-  "boundaryReservationEntryfixProfileHash": "57e51f771637a03d510e46f953f0ab9155ce9a7d64087eb9d7b5fdad3ca391bd"
+  "boundaryReservationEntryfixProfileHash": "57e51f771637a03d510e46f953f0ab9155ce9a7d64087eb9d7b5fdad3ca391bd",
+  "boundaryReservationEntryfixLinux": {
+    "run": "36879745119:1",
+    "commit": "0a3fd291b6058ea248b70ecba86f6dfd06fe2d48",
+    "verified": true,
+    "logSha256": "a8f89abc330d113f197140984f109aae08882e0cd1614d01bdce2b0154d3f6ec"
+  },
+  "boundaryReservationActual": {
+    "run": "36880349088:1",
+    "commit": "9a81832e52eb0624715afd34f768d35c61c1066c",
+    "startedAt": "2026-10-01T14:56:42Z",
+    "completedAt": "2026-10-01T14:58:12Z",
+    "logSha256": "325eff8207c7da3ea2bb8ea991ffdf7e4173bcd4e27f4ae34ae22743c37f33e6",
+    "receiptHash": "f01153c84f5d177822fe24078ad01772cf94f418b201980b8a50941d220050c5",
+    "sourceRequests": 0,
+    "databaseWrites": 1,
+    "newBetAllowance": 0,
+    "fullReadback": true
+  },
+  "mixedSequenceFullFieldsParity": true,
+  "mixedSequenceMappingNegatives": 29
 }
