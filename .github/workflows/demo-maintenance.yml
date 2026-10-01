@@ -15,7 +15,7 @@ on:
         description: Independent reviewed complete-count profile
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-count-pyramids-20261001.json, formal-count-pearl-20260930.json, formal-count-rhino-20261001.json]
+        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-count-pyramids-20261001.json, formal-count-pearl-20260930.json, formal-count-rhino-20261001.json, formal-count-rhino-guarantee-20261001.json]
       repair_profile:
         description: 'Independent reviewed repair permission; old profiles remain frozen'
         type: choice

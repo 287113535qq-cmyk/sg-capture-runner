@@ -28,3 +28,11 @@ test('Rhino repaired reentry uses closed pilot proof while first entry requires 
  assert.doesNotThrow(()=>checkRhinoCandidateSource(first));
  assert.throws(()=>checkRhinoCandidateSource(first,{repair:true}),/RHINO_REPAIR_BOUNDARY_REQUIRED/);
 });
+
+import {formalCountProfilePath} from './formal-count-plan.mjs';
+test('every offered formal profile reaches the common permission path',()=>{
+ for(const path of ['.github/workflows/demo-maintenance.yml','.github/workflows/trial-300k.yml']){
+  const section=fs.readFileSync(path,'utf8').split('      formal_profile:')[1]?.split(/\n      [a-z_]+:/)[0];assert(section);
+  for(const name of section.match(/formal-[a-z0-9-]+\.json/g))assert.equal(formalCountProfilePath({SG_FORMAL_COUNT_PROFILE:name}),'config/'+name);
+ }
+});

@@ -19,25 +19,42 @@ export async function activateFormalCount({store,transport,parser,plans,profile,
   &&campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&campaign.protocolValidation.commit===profile.sourceCommit
   &&campaign.protocolValidation.generation===profile.sourceGeneration,'FORMAL_COUNT_SOURCE_CHANGED');
+ const repaired=profile.schema==='sg-formal-count-rhino-v2';
+ const preserved=repaired?151:100,firstBatch=repaired?17:1;
  const parent=(await store.get('journal',`demo-generation:${base.trialId}:${profile.sourceGeneration}`))?.value;
- assert(parent?.activationStage?.profileHash===profile.sourceProfileHash&&parent.firstBatchId===1
-  &&pool.confirmed===0&&pool.nextBatchId===21,'FORMAL_COUNT_PILOT_LAYOUT');
+ assert(parent?.activationStage?.profileHash===profile.sourceProfileHash&&parent.firstBatchId===firstBatch
+  &&pool.confirmed===(repaired?51:0)&&pool.nextBatchId===firstBatch+20,'FORMAL_COUNT_PILOT_LAYOUT');
  // Pilot accounting deliberately lives in receipts, not pool.confirmed.
  const spent=await reviewSpentDemoGeneration({store,parser,basePlan:base,fromPlan,profile,
   scene:{fromPool:pool,sourceBatches:batches},now});
  assert(spent.spent===100&&spent.verified===100&&spent.newBetAllowance===0,'FORMAL_COUNT_PILOT_UNSPENT');
  const records=[];
+ if(repaired){
+  const ref=profile.repairedBaseline,marker=pool.repairedCandidate;
+  assert(marker?.key===`repaired-demo-candidate:${base.trialId}:${profile.sourceGeneration}`&&ref.key===marker.key,'FORMAL_REPAIRED_BASELINE');
+  const before=(await store.get('journal',ref.key+':before'))?.value,done=(await store.get('journal',ref.key+':complete'))?.value;
+  assert(before&&done&&hash(before)===ref.beforeHash&&hash(done)===ref.completeHash&&done.profileHash===profile.sourceProfileHash
+   &&done.schema==='sg-repaired-demo-candidate-complete-v1'&&done.completePreserved===51&&done.sourceRequests===0&&done.newBetAllowance===0
+   &&done.recordsHash===before.scene.recordsHash&&before.scene.closed.recordsHash===done.recordsHash
+   &&hash(before.scene.batches)===hash(batches.filter(b=>b.id<firstBatch)),'FORMAL_REPAIRED_BASELINE');
+ }
+
  for(const b of batches){
-  assert(b.journaled===b.start+4&&!b.failure,'FORMAL_COUNT_PILOT_LAYOUT');
-  const rs=(await store.getMany('journal',Array.from({length:5},(_,i)=>receiptKey(base.trialId,b.start+i)))).map(r=>r.value);
-  const mongo=await transport.request('rounds_read',{trialId:base.trialId,ids:rs.map(r=>r._id)});
-  assert(hash(mongo.map(hash).sort())===hash(rs.map(hash).sort()),'FORMAL_COUNT_MONGO_CHANGED');records.push(...rs);
+  const prior=repaired&&b.id<firstBatch,count=b.journaled-b.start+1;
+  assert((prior||count===5&&!b.failure)&&Number.isInteger(count)&&count>=0&&count<=100,'FORMAL_COUNT_PILOT_LAYOUT');
+  const rs=count?(await store.getMany('journal',Array.from({length:count},(_,i)=>receiptKey(base.trialId,b.start+i)))).map(r=>r?.value):[];assert(rs.every(Boolean),'FORMAL_COUNT_RECEIPT_MISSING');
+  const mongo=rs.length?await transport.request('rounds_read',{trialId:base.trialId,ids:rs.map(r=>r._id)}):[];
+  assert(hash(mongo.map(hash).sort())===hash(rs.map(hash).sort()),'FORMAL_COUNT_MONGO_CHANGED');for(const r of rs)assert((await parser.call({op:'verify',plan:base,raw:r.raw,record:r})).verified,'FORMAL_COUNT_RECORD_INVALID');records.push(...rs);
  }
  // Rhino already has independently reviewed historical 8+5 continuation
  // evidence. Its new pilot must still observe a complete free round; it need
  // not reproduce the same rare retrigger twice. Preserve applied Pearl rules.
- const requiredFree=profile.schema==='sg-formal-count-rhino-v1'?1:2;
- assert(hash(records)===profile.recordsHash&&records.filter(r=>r.normalized.bonus===1).length>=requiredFree,'FORMAL_COUNT_NATURAL_FREE_REQUIRED');
+ const requiredFree=profile.schema.startsWith('sg-formal-count-rhino-')?1:2;
+ if(repaired){
+  const old=records.filter(r=>r.batchId<firstBatch),done=(await store.get('journal',profile.repairedBaseline.key+':complete')).value;
+  assert(old.length===51&&hash(old)===done.recordsHash&&records.length===151,'FORMAL_REPAIRED_RECORDS');
+ }
+ assert(hash(records)===profile.recordsHash&&records.filter(r=>(!repaired||r.batchId>=firstBatch)&&r.normalized.bonus===1).length>=requiredFree,'FORMAL_COUNT_NATURAL_FREE_REQUIRED');
  const baseline=batches.map(b=>({id:b.id,worker:b.worker,start:b.start,end:b.end,sessionHash:b.sessionHash,
   closed:true,complete:b.journaled-b.start+1,evidenceHash:hash(b)}));
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,
@@ -52,7 +69,7 @@ export async function activateFormalCount({store,transport,parser,plans,profile,
  await save(key,spec);
  await store.update('state','pool:'+plan.trialId,v=>{
   assert(hash(v)===hash(pool),'FORMAL_COUNT_POOL_CHANGED');
-  const next={...v,planHash:hash(plan),confirmed:100,workers:{},countAllocation:{specHash:hash(spec),reserved:0,
+  const next={...v,planHash:hash(plan),confirmed:preserved,workers:{},countAllocation:{specHash:hash(spec),reserved:0,
    batches:Object.fromEntries(baseline.map(b=>[b.id,b]))}};
   delete next.demoGeneration;checkLedger(next,plan,spec);return next;
  });
@@ -62,6 +79,6 @@ export async function activateFormalCount({store,transport,parser,plans,profile,
   return v;
  });
  const result={schema:'sg-complete-count-activation-v1',specHash:hash(spec),trialId:plan.trialId,planHash:hash(plan),commit,
-  run,completePreserved:100,remainingComplete:299900,sourceRequests:0,profileHash:hash(profile)};
+  run,completePreserved:preserved,remainingComplete:plan.target-preserved,sourceRequests:0,profileHash:hash(profile)};
  await save(key+':complete',result);return result;
 }

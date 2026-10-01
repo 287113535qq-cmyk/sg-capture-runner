@@ -14,7 +14,7 @@ assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyz
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
-const isRhino=profile.schema==='sg-formal-count-rhino-v1';
+const isRhino=['sg-formal-count-rhino-v1','sg-formal-count-rhino-v2'].includes(profile.schema);
 const isSessions=profile.schema==='sg-session-layout-profile-v1';
 assert(!isSessions||['sessions','admit'].includes(mode),'SESSION_CONTROL_OPERATION');
 assert(mode!=='sessions'||isSessions,'SESSION_CONTROL_PROFILE');
