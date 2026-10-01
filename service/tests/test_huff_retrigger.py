@@ -14,6 +14,19 @@ def sample():
   steps.append(exchange('FREE_GAME' if i else 'BET',left,'1|','#'.join(k+'~'+v for k,v in g.items()),win=i*100,TFG=total,CFGG=i,RID=int(i>0)))
  return raw(steps)
 class RetriggerTests(unittest.TestCase):
+ def test_single_previous_slot_additive_retrigger_preserves_old_normalization(self):
+  r=sample();old=HuffFields(PLAN).settled(r)
+  for s in r['steps']:
+   for k in ('responsePayload','responseXml'):s[k]=s[k].replace('PCFID~1|1|','PCFID~1|')
+  for i in range(1,len(r['steps'])):self.assertEqual(HuffFields(PLAN).next_request({**r,'steps':r['steps'][:i]}),{'MSGID':'FREE_GAME'})
+  self.assertEqual(HuffFields(PLAN).settled(r),old)
+  wrong_award=copy.deepcopy(r)
+  for k in ('responsePayload','responseXml'):wrong_award['steps'][2][k]=wrong_award['steps'][2][k].replace('CFFGT~1','CFFGT~0')
+  with self.assertRaises(FieldError):HuffFields(PLAN).next_request(wrong_award)
+  s=r['steps'][2]
+  for k in ('responsePayload','responseXml'):s[k]=s[k].replace('PCFID~1|','PCFID~0|')
+  with self.assertRaises(FieldError):HuffFields(PLAN).settled(r)
+
  def test_prefix_and_distinct_settlement(self):
   r=sample();a=HuffFields(PLAN)
   for i in range(1,len(r['steps'])):

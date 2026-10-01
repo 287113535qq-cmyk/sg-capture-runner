@@ -38,6 +38,8 @@ jobs:
         run: |
           python3 -m unittest discover -s scripts -p 'test_analyze_capture_timing.py' -q
           python3 -m unittest discover -s scripts -p 'test_feature_reuse_index.py' -q
+          python3 -m unittest discover -s scripts -p 'test_validate_preflight_runtime.py' -q
+          python3 -m unittest discover -s scripts -p 'test_analyze_performance_logs.py' -q
       - name: Session and startup checks
         run: node --test scripts/trial/*.test.mjs
       - name: GitHub processing and Mongo write backpressure checks

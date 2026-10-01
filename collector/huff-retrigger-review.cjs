@@ -26,7 +26,7 @@ function review(raw){
   if(i===0)assert(total===6&&remaining===6&&!g.PCFID&&!g.FEAT);
   else{
    const added=uint(g.CFFGT);assert(previousRemaining>0&&total===previousTotal+added&&remaining===previousRemaining-1+added);
-   assert(g.FEAT==='HARDHAT'&&(added?['1|1|','1|1']:['1|','1']).includes(g.PCFID));
+   assert(g.FEAT==='HARDHAT'&&(added?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID));
    assert(uint(g.CFTFG)===total&&uint(g.CFNFG)===remaining&&uint(g.CFCFGG)===progress);retriggers+=Number(added>0);
   }
   assert(uint(p.B)===uint(p.AB)&&uint(raw.startBalanceRaw)-uint(p.B)+uint(p.TW)===500);

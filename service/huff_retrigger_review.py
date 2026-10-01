@@ -47,7 +47,7 @@ def review(raw):
             check(prior_remaining>0,'HARDHAT_AFTER_END')
             added=amount(g.get('CFFGT'))
             check(total==prior_total+added and remaining==prior_remaining-1+added,'HARDHAT_COUNTER')
-            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|1|','1|1') if added else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
+            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|','1','1|1|','1|1') if added else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
             check([amount(g.get(k)) for k in ('CFTFG','CFNFG','CFCFGG')]==[total,remaining,progress],'HARDHAT_COUNTER')
             retriggers+=int(added>0)
         prior_total,prior_remaining=total,remaining
@@ -61,8 +61,13 @@ EXTENSION = SOURCE + '-hard-hat-retrigger-v2'
 def has_retrigger(raw):
     if raw.get('sourceKey') != SOURCE:
         return False
+    prior_total = None
     for s in raw.get('steps', []):
-        g = game_state(params(s['responsePayload']).get('GSD', ''))
+        p = params(s['responsePayload']);g = game_state(p.get('GSD', ''))
         if g.get('PCFID', '').rstrip('|') == '1|1' or g.get('FEAT') == 'HARDHAT' and g.get('CFFGT', '0') not in ('0', ''):
             return True
+        total = int(p['TFG']) if re.fullmatch(r'[0-9]+',p.get('TFG','')) else None
+        if g.get('FEAT') == 'HARDHAT' and prior_total is not None and total is not None and total > prior_total:
+            return True
+        prior_total = total
     return False

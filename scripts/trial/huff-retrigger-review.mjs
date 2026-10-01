@@ -29,7 +29,7 @@ export function review(raw){
   else{
    need(priorRemaining>0,'AFTER_END');const added=uint(g.CFFGT);
    need(total===priorTotal+added&&remaining===priorRemaining-1+added,'COUNTER');
-   need(g.FEAT==='HARDHAT'&&(added?['1|1|','1|1']:['1|','1']).includes(g.PCFID),'PREVIOUS_SLOTS');
+   need(g.FEAT==='HARDHAT'&&(added?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID),'PREVIOUS_SLOTS');
    need(uint(g.CFTFG)===total&&uint(g.CFNFG)===remaining&&uint(g.CFCFGG)===progress,'COUNTER');retriggers+=Number(added>0);
   }
   priorTotal=total;priorRemaining=remaining;
@@ -42,5 +42,8 @@ export function review(raw){
 export const HUFF_RETRIGGER_EXTENSION='huffnpuffmoneymansionhighlimit96-round-one-base-v1-hard-hat-retrigger-v2';
 export function hasRetrigger(raw){
  if(raw.sourceKey!=='huffnpuffmoneymansionhighlimit96-round-one-base-v1')return false;
- return raw.steps.some(s=>{const g=parse(parse(s.responsePayload,'&','=').GSD??'','#','~');return (g.PCFID??'').replace(/\|$/,'')==='1|1'||g.FEAT==='HARDHAT'&&!['0','',undefined].includes(g.CFFGT);});
+ let priorTotal;
+ return raw.steps.some(s=>{const p=parse(s.responsePayload,'&','='),g=parse(p.GSD??'','#','~'),total=/^\d+$/.test(p.TFG??'')?Number(p.TFG):undefined;
+  const result=(g.PCFID??'').replace(/\|$/,'')==='1|1'||g.FEAT==='HARDHAT'&&(!['0','',undefined].includes(g.CFFGT)||priorTotal!==undefined&&total!==undefined&&total>priorTotal);
+  priorTotal=total;return result;});
 }

@@ -6,5 +6,9 @@ export function huffRetriggerFields(raw:any,mappingHash:string){
 }
 export function hasHuffRetrigger(raw:any):boolean{
  if(raw.sourceKey!=='huffnpuffmoneymansionhighlimit96-round-one-base-v1')return false;
- return raw.steps.some((s:any)=>{const p=new URLSearchParams(s.responsePayload);const g=Object.fromEntries((p.get('GSD')??'').split('#').filter(Boolean).map(v=>{const i=v.indexOf('~');return [v.slice(0,i),v.slice(i+1)];}));return (g.PCFID??'').replace(/\|$/,'')==='1|1'||g.FEAT==='HARDHAT'&&!['0','',undefined].includes(g.CFFGT);});
+ let priorTotal:number|undefined;
+ return raw.steps.some((s:any)=>{const p=new URLSearchParams(s.responsePayload);const g=Object.fromEntries((p.get('GSD')??'').split('#').filter(Boolean).map(v=>{const i=v.indexOf('~');return [v.slice(0,i),v.slice(i+1)];}));
+  const total=/^\d+$/.test(p.get('TFG')??'')?Number(p.get('TFG')):undefined;
+  const result=(g.PCFID??'').replace(/\|$/,'')==='1|1'||g.FEAT==='HARDHAT'&&(!['0','',undefined].includes(g.CFFGT)||priorTotal!==undefined&&total!==undefined&&total>priorTotal);
+  priorTotal=total;return result;});
 }
