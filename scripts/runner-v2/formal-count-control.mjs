@@ -19,6 +19,7 @@ import {checkRhinoContinuousRevision} from './rhino-continuous-runtime.mjs';
 import {readVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkSessionCanaryRevision} from './session-canary.mjs';
+import {claimSessionCanary,checkCanaryDispatchInputs} from './session-canary-admission.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
@@ -30,6 +31,8 @@ if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===p
 if(observationWindow)checkRhinoObservationRevision(profile,revision);
 if(continuousCount)checkRhinoContinuousRevision(profile,revision);
 if(canaryWindow)checkSessionCanaryRevision(profile,revision);
+const canaryInputs=canaryWindow&&mode==='admit'?JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs:null;
+if(canaryWindow&&mode==='admit')checkCanaryDispatchInputs(canaryInputs);
 const files=revision?.files??profile.files;
 assert(files&&Object.keys(files).length>=300,'FORMAL_COUNT_RUNTIME_MANIFEST');
 if(runtimeProfile)assert(Object.keys(profile.files).every(p=>Object.hasOwn(files,p)),'COUNT_RUNTIME_FILES_MISSING');
@@ -93,6 +96,7 @@ try{
   const key=`count-run:${plan.trialId}:${run}`;assert(!(await store.get('journal',key)),'FORMAL_COUNT_RUN_ALREADY_ADMITTED');
   const permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,
    poolHash:hash(pool),completeBefore:pool.confirmed,remainingComplete:plan.target-pool.confirmed,createdAt:Date.now(),expiresAt:Date.now()+270*60000};
+  if(canaryWindow)await claimSessionCanary({store,plan,profile,revision,permit,inputs:canaryInputs});
   await store.create('journal',key,permit,{immutable:true});
   assert(hash((await store.get('journal',key))?.value)===hash(permit),'FORMAL_COUNT_RUN_READBACK');
   console.log(JSON.stringify({admitted:true,completeBefore:pool.confirmed,remainingComplete:permit.remainingComplete,sourceRequests:0}));
