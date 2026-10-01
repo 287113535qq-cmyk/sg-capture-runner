@@ -101,6 +101,51 @@
       "verifiedFiles": 11,
       "bytes": 10373940,
       "sha256": "67b7d2fdd379c228cec65d432c3f6b5f7594b312d8b03f80e5a62dcca1dc68dd"
+    },
+    "metadataDeltaCost": {
+      "fixtureOnly": true,
+      "pairs": 10,
+      "fullCasMedianMs": 71.501397,
+      "deltaCasMedianMs": 57.4070800000045,
+      "samples": {
+        "full": [
+          129.26492900001176,
+          122.33798799999931,
+          71.501397,
+          79.30922999999893,
+          68.38542799999414,
+          70.56299099999887,
+          70.1870029999991,
+          89.6019920000108,
+          68.05634899999131,
+          69.52578299999004
+        ],
+        "delta": [
+          59.280033999995794,
+          56.99839300000167,
+          56.888366999992286,
+          57.97196900000563,
+          57.935442000001785,
+          57.03292800000054,
+          57.75360000001092,
+          57.117857999997796,
+          57.4070800000045,
+          57.221653000000515
+        ]
+      },
+      "fullReadback": true,
+      "sourceRequests": 0,
+      "gamePoolWrites": 0,
+      "officialRoundWrites": 0,
+      "gameThroughputVerified": false,
+      "run": 36931302541,
+      "commit": "1505dc5b560d10c228f1ee6703247fbadb1c7237",
+      "conclusion": "success",
+      "deltaCasMedianReductionPercent": 19.711946327420005
+    },
+    "metadataCanaryLinux": {
+      "run": 36931351600,
+      "commit": "1505dc5b560d10c228f1ee6703247fbadb1c7237"
     }
   },
   "pending": [
@@ -131,6 +176,21 @@
       "mongoWrites": 0,
       "onlineGainVerified": false,
       "requestByteReductionPercent": 99.98483462090375
+    },
+    "metadataCompression": {
+      "fixtureOnly": false,
+      "snapshotSha": "a65872b5364828d5d23fce248cdd47fd336153e2886c0e3881e768f777820c02",
+      "applicationBytes": 784666,
+      "localDeflateBytes": 185556,
+      "localByteReductionPercent": 76.35223139526882,
+      "deflateMedianMs": 7.231630000000007,
+      "inflateMedianMs": 1.2652199999999993,
+      "exactOriginalBytes": true,
+      "originalUnchanged": true,
+      "onWireBytesMeasured": false,
+      "gameThroughputVerified": false,
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   }
 }

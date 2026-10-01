@@ -6,6 +6,7 @@ import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 import {metadataIoCanary} from './metadata-io-canary.mjs';
+import {metadataCompressionCanary} from './metadata-compression-canary.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate();
 const store=new RunnerState({transport,gate,deadline:Date.now()+180_000});
@@ -22,7 +23,7 @@ try {
   const updated=await store.cas('state',key,before,{...value,stage:1});assert(updated);
   assert.equal(await store.cas('state',key,before,{...value,stage:2}),null);
   assert.equal((await store.get('state',key)).value.stage,1);
-  let deltaMetadataReadback=false,metadataCanary=null;
+  let deltaMetadataReadback=false,metadataCanary=null,compressionCanary=null;
   if(hello.stateDeltaEnabled===true){
     store.deltaCas=true;
     const deltaKey=key+':delta',initial={stage:0,history:[{retained:true}],worker:{active:true,lease:1},removed:true};
@@ -32,8 +33,16 @@ try {
     assert.equal(await store.cas('state',deltaKey,beforeDelta,{...next,stage:99}),null);
     assert.deepEqual((await store.get('state',deltaKey)).value,next);
     deltaMetadataReadback=true;
-    if(process.env.SG_METADATA_IO_CANARY==='fixed-lease-v1')metadataCanary=await metadataIoCanary(store,deltaKey);
+    if(process.env.SG_METADATA_IO_CANARY==='fixed-lease-v1'){
+      metadataCanary=await metadataIoCanary(store,deltaKey);
+      const compressedTransport=connectGateway({compression:true});
+      try{
+        const compressedStore=new RunnerState({transport:compressedTransport,gate});
+        compressionCanary=await metadataCompressionCanary(store,compressedStore,deltaKey,
+          {checkResource:async()=>assert((await store.sample()).allowed,'COMPRESSION_CANARY_RESOURCE')});
+      }finally{compressedTransport.close();}
+    }
   }
   console.log(JSON.stringify({gateway:'mongo-only-v2',group:hello.group,resourceGate:gate.status(),
-    metadataReadback:true,deltaMetadataReadback,metadataCanary,staleVersionRejected:true,sourceRequests:0,officialRoundWrites:0}));
+    metadataReadback:true,deltaMetadataReadback,metadataCanary,compressionCanary,staleVersionRejected:true,sourceRequests:0,officialRoundWrites:0}));
 } finally {transport.close();}

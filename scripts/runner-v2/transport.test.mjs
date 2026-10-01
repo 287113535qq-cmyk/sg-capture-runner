@@ -6,8 +6,9 @@ import {connectGateway,gatewayDocumentKind} from './transport.mjs';
 Object.assign(process.env,{GITHUB_ACTIONS:'true',RUNNER_OS:'Linux',RUNNER_ENVIRONMENT:'github-hosted',
  GITHUB_REPOSITORY:'zyzuoyang/sg-capture-runner',SG_SSH_KEY_FILE:'key',SG_SSH_HOSTS_FILE:'hosts',SG_SSH_HOST:'fixed-host'});
 function fixture(actions,options={}){
- const children=[],writes=[];
- const spawnProcess=(_cmd,args)=>{
+ const children=[],writes=[],argumentsSeen=[];
+  const spawnProcess=(_cmd,args)=>{
+  argumentsSeen.push(args);
   assert(args.includes('StrictHostKeyChecking=yes'));assert(args.includes('IdentitiesOnly=yes'));
   const c=new EventEmitter();c.stdout=new EventEmitter();c.stderr=new EventEmitter();c.stdin=new EventEmitter();
   const action=actions[children.length];children.push(c);
@@ -18,8 +19,18 @@ function fixture(actions,options={}){
    else if(action!=='timeout')c.stdout.emit('data',Buffer.from('{"ok":true,"result":{"saved":true}}\n'));
   });};return c;
  };
- return {gateway:connectGateway({spawnProcess,pause:async()=>{},ackTimeoutMs:20,...options}),children,writes};
+ return {gateway:connectGateway({spawnProcess,pause:async()=>{},ackTimeoutMs:20,...options}),children,writes,argumentsSeen};
 }
+
+test('SSH compression changes only transport codec and preserves the exact request and reconnect protections',async()=>{
+ const plain=fixture(['ok']),compressed=fixture(['disconnect','ok'],{compression:true});
+ const request={collection:'state',key:'validation:1:1:delta'};
+ await plain.gateway.request('read',request);await compressed.gateway.request('read',request);
+ assert(!plain.argumentsSeen[0].includes('-C'));assert(compressed.argumentsSeen.every(a=>a.includes('-C')));
+ assert.deepEqual(compressed.writes[0],plain.writes[0]);assert.deepEqual(compressed.writes[1],plain.writes[0]);
+ assert.equal(compressed.gateway.metrics().initialReadReconnects,1);
+ plain.gateway.close();compressed.gateway.close();assert.throws(()=>connectGateway({compression:'true'}),/COMPRESSION_MODE/);
+});
 test('initial pure read reconnects at most twice, retaining request identity',async()=>{
  const f=fixture(['disconnect','disconnect','ok']);
  assert.deepEqual(await f.gateway.request('read',{key:'fixed'}),{saved:true});

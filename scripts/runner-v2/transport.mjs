@@ -13,14 +13,15 @@ export function gatewayDocumentKind(op,fields){
   return 'stateOther';
 }
 
-export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setTimeout(r,ms)),ackTimeoutMs=60_000}={}) {
+export function connectGateway({spawnProcess=spawn,pause=ms=>new Promise(r=>setTimeout(r,ms)),ackTimeoutMs=60_000,compression=false}={}) {
+  assert(typeof compression==='boolean','GATEWAY_COMPRESSION_MODE');
   assert.equal(process.env.GITHUB_ACTIONS,'true');
   assert.equal(process.env.RUNNER_OS,'Linux');
   assert.equal(process.env.RUNNER_ENVIRONMENT,'github-hosted');
   assert(repositories[process.env.GITHUB_REPOSITORY]);
   const {SG_SSH_KEY_FILE:key,SG_SSH_HOSTS_FILE:hosts,SG_SSH_HOST:host}=process.env;
   assert(key && hosts && host);
-  const args=['-T','-i',key,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes',
+  const args=[...(compression?['-C']:[]),'-T','-i',key,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes',
     '-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o',`UserKnownHostsFile=${hosts}`,
     '-o','ConnectTimeout=15','-o','ServerAliveInterval=10','-o','ServerAliveCountMax=2',`sgcapture@${host}`];
   let child,pending=null,closed=false,disposed=false,busy=false,entry=true,buffer=Buffer.alloc(0);
