@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 export const fourReadRecoveryName='count-runtime-rhino-four-read-recovery-20261002.json';
+export const fourReadRecoveryEntryName='count-runtime-rhino-four-read-recovery-entryfix-20261002.json';
+export const isFourReadRecoveryName=name=>[fourReadRecoveryName,fourReadRecoveryEntryName].includes(name);
 export function checkFourReadRecovery(profile,revision){
  assert(profile?.schema==='sg-session-layout-rhino-v1'&&profile.gameId===32799&&profile.sessionLayout?.lanesPerHost===4
   &&revision?.schema==='sg-count-runtime-refresh-profile-v1'&&revision.purpose==='bounded-four-read-recovery-v1'

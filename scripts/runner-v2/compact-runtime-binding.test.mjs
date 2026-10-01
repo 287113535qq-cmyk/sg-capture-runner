@@ -1,6 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {compactRuntimeBinding,compactLayoutBinding,compactControlInitializer} from './compact-runtime-binding.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {countControlPolicy} from './count-control-policy.mjs';
+import {fourReadRecoveryName,fourReadRecoveryEntryName,fourReadRecoveryMinutes} from './four-read-recovery-runtime.mjs';
 function fixture(){
  const profile=JSON.parse(fs.readFileSync('config/formal-sessions-rhino-two-20261001.json'));
  const revision=JSON.parse(fs.readFileSync('config/count-runtime-rhino-canary-entryfix-20261002.json'));
@@ -8,6 +10,24 @@ function fixture(){
  const receipt={schema:'sg-count-runtime-v2',commit,activation:plan.countAllocation,profileHash:hash(profile),revisionHash:hash(revision),sourceRequests:0,newBetAllowance:0};
  return {plan,profile,revision,receipt,commit};
 }
+test('four-read recovery reaches both count admission and the actual compact initializer',async()=>{
+ const profile=JSON.parse(fs.readFileSync('config/formal-sessions-rhino-four-20261001.json'));
+ const revision=JSON.parse(fs.readFileSync('config/count-runtime-rhino-four-read-recovery-20261002.json'));
+ const commit='a'.repeat(40),plan={gameId:32799,trialId:'sg_r1_20261001_32799',countAllocation:profile.activation};
+ const receipt={schema:'sg-count-runtime-v2',commit,activation:profile.activation,profileHash:hash(profile),revisionHash:hash(revision),initialReadFailureHash:revision.initialReadFailureHash,sourceRequests:0,newBetAllowance:0};
+ for(const runtimeName of [fourReadRecoveryName,fourReadRecoveryEntryName]){
+  for(const mode of ['refresh','admit'])assert(countControlPolicy(mode,profile,runtimeName).fourReadRecovery);
+  assert.equal(fourReadRecoveryMinutes(profile,revision,receipt,commit),20);
+  const control={};let reads=0;
+  await compactControlInitializer({plan,runtimeName,commit,resourceReady:Promise.resolve(),readRevision:()=>revision,
+   readProfile:()=>profile,readReceipt:async()=>{reads++;return receipt;},control})();
+  assert.equal(reads,1);assert.equal(control.compact,true);
+ }
+ assert.throws(()=>compactRuntimeBinding({plan,profile,revision,receipt:{...receipt,initialReadFailureHash:null},commit}),/COMPACT_INITIAL_READ_FAILURE_BINDING/);
+ assert.throws(()=>compactRuntimeBinding({plan,profile,revision:{...revision,captureMinutes:220},receipt,commit}));
+ const entry=fs.readFileSync('scripts/runner-v2/campaign-worker.mjs','utf8');
+ assert(entry.includes('[fourReadRecoveryName,fourReadRecoveryEntryName,'));assert(entry.includes('if(isFourReadRecoveryName(process.env.SG_COUNT_RUNTIME_PROFILE))'));
+});
 test('compact applies only after immutable applied runtime binds this plan',()=>assert.equal(compactRuntimeBinding(fixture()),true));
 test('legacy runtimes retain full control reads',()=>assert.equal(compactRuntimeBinding({revision:{}}),false));
 test('independent long runtime may preserve optimization without minting quota',()=>{

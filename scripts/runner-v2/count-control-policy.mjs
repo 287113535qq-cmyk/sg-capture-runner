@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {isSessionCanaryRuntime} from './session-canary.mjs';
-import {fourReadRecoveryName} from './four-read-recovery-runtime.mjs';
+import {isFourReadRecoveryName} from './four-read-recovery-runtime.mjs';
 
 export function countControlPolicy(mode,profile,runtimeProfile){
  const isRhino=['sg-formal-count-rhino-v1','sg-formal-count-rhino-v2'].includes(profile.schema);
@@ -9,7 +9,7 @@ export function countControlPolicy(mode,profile,runtimeProfile){
  const initialWindow=runtimeProfile==='count-runtime-rhino-measurement-20261001.json';
  const observationWindow=runtimeProfile==='count-runtime-rhino-two-observation-20261001.json';
  const canaryWindow=isSessionCanaryRuntime(runtimeProfile);
- const fourReadRecovery=runtimeProfile===fourReadRecoveryName;
+ const fourReadRecovery=isFourReadRecoveryName(runtimeProfile);
  const fourContinuousCount=runtimeProfile==='count-runtime-rhino-four-continuous-20261001.json';
  const continuousCount=fourContinuousCount||['count-runtime-rhino-continuous-20261001.json','count-runtime-rhino-ag-continuation-20261001.json','count-runtime-rhino-ag-continuation-entryfix-20261001.json','count-runtime-rhino-ag-dispatchfix-20261001.json'].includes(runtimeProfile);
  assert(!isSessions||['sessions','admit'].includes(mode)||(mode==='refresh'&&(observationWindow||continuousCount||canaryWindow||fourReadRecovery)),'SESSION_CONTROL_OPERATION');

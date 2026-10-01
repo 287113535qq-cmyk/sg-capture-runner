@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
 const cases=[
+ ['count-runtime-rhino-four-read-recovery-20261002.json','1ce0f732f28154190309e17ec3233f475b412e4f12ab41702ee2211f8a6e7e6e'],
  ['formal-sessions-rhino-four-20261001.json','05c1b00111fcfa6cc26e37a69a3233091cbb6d1ef140c97fd6738882dbb4c9cd'],
  ['count-runtime-rhino-canary-finalmetrics-20261002.json','19b2259275a3f3373edab8341774971dbe51ca05f259e86f15602fa135683e69'],
  ['count-network-rhino-canary-20261002.json','fd8cf18b8a0a00e921f3464c787f236bcdd0250ccafcc015d9c0bb172f896984'],

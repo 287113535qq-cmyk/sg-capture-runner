@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 
 // Immutable runtime receipt selects the optimization; environment flags cannot.
 export function compactRuntimeBinding({plan,profile,revision,receipt,commit}) {
@@ -8,7 +9,7 @@ export function compactRuntimeBinding({plan,profile,revision,receipt,commit}) {
   assert(plan?.gameId===32799&&plan.countAllocation===profile?.activation
     &&profile.schema==='sg-session-layout-rhino-v1'&&[2,4].includes(profile.sessionLayout?.lanesPerHost)
     &&revision.schema==='sg-count-runtime-refresh-profile-v1'
-    &&['session-canary-v1','continuous-count-v1','continuous-four-count-v1'].includes(revision.purpose)
+    &&['session-canary-v1','continuous-count-v1','continuous-four-count-v1','bounded-four-read-recovery-v1'].includes(revision.purpose)
     &&(revision.purpose!=='continuous-four-count-v1'||profile.sessionLayout.lanesPerHost===4)
     &&(revision.purpose!=='continuous-count-v1'||profile.sessionLayout.lanesPerHost===2)
     &&revision.activation===plan.countAllocation&&revision.profileHash===hash(profile)
@@ -17,6 +18,10 @@ export function compactRuntimeBinding({plan,profile,revision,receipt,commit}) {
     &&receipt.commit===commit&&receipt.activation===plan.countAllocation
     &&receipt.profileHash===hash(profile)&&receipt.revisionHash===hash(revision)
     &&receipt.sourceRequests===0&&receipt.newBetAllowance===0,'COMPACT_RUNTIME_RECEIPT');
+  if(revision.purpose==='bounded-four-read-recovery-v1'){
+    checkFourReadRecovery(profile,revision);
+    assert(receipt.initialReadFailureHash===revision.initialReadFailureHash,'COMPACT_INITIAL_READ_FAILURE_BINDING');
+  }
   return true;
 }
 
