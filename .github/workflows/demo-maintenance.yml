@@ -12,9 +12,8 @@ on:
         default: '100'
       evidence_profile:
         description: 'Immutable ended-run evidence closure; zero source allowance'
-        type: choice
+        type: string
         default: count-close-pyramids-evidence-20261002.json
-        options: [count-close-pyramids-evidence-20261002.json]
       network_profile:
         description: 'Exact ended network fault closure; grants no source requests'
         type: choice

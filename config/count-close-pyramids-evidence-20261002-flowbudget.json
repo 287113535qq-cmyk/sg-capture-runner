@@ -36,7 +36,7 @@
   "abandonedAttempts": 5,
   "sourceLogSha256": "0035e4dd6c0cbb564740516d2a301fb47cf41250691edbcc6a25f7f51b1e3492",
   "files": {
-    ".github/workflows/demo-maintenance.yml": "da5c4868051d0533a9591159a316a0ded0ea2b9f7584bf00012beadf037a06b4",
+    ".github/workflows/demo-maintenance.yml": "8680531e729d32e86dd115a7eb703c03ffc2b3738ec56496290a6ed509551dd9",
     ".github/workflows/field-verification.yml": "bcc5ef0137bbac991fa08ff38346abf54b126c04e317c48fc1e6c33d747b5d57",
     ".github/workflows/link-verification.yml": "6da7920312135017aa7c0c9f02293f04b9c0ef9474b2014ad2513923fe7bb582",
     ".github/workflows/mongo-io-check.yml": "0679eac00bab645d11c604fb111bd7803261814d8fa4fcfc993c966e0449803b",
@@ -559,7 +559,7 @@
     "scripts/runner-v2/verify-entry-failure.test.mjs": "44be3e64f61c81dac2ef0bf3c65202fdb8e201e506becc7baa050bf85b82c845",
     "scripts/runner-v2/window-timing.mjs": "ee3a35f9cf59c50be28826c5d1a52accc60e9c2ffa23162b44560f3891df7e47",
     "scripts/runner-v2/window-timing.test.mjs": "3e151e808fc3c648887b742fd69409d246f5db18e59707eddd1240441adcdf7b",
-    "scripts/runner-v2/workflow-choice-scope.test.mjs": "0daeb72d201a44d8ae580d020f69e146832f9ae6eee276657d64352153005359",
+    "scripts/runner-v2/workflow-choice-scope.test.mjs": "f3743d85f6730f6f56ac7a570908676e408a953bbf05e95709826a6c5cab99e8",
     "scripts/runner-v2/zero-source-evidence.py": "1b1a20c4f6f0cfd974f1f0a91a64766b87056142ffaa280647c4bb1aae318371",
     "scripts/source_timing_report.py": "919f44447b3935fdb1d513422aea9be32c891a3cf30423a273d929dafb6088ee",
     "scripts/test_analyze_capture_timing.py": "5fa62421d769accee5eaaeb552fe8a2a58776b668e7d694ec33afc74aab2b893",
@@ -848,5 +848,13 @@
     "service/veryfruity_cash_review.py": "abc923f158c84b89f0c275e118ad5ad7de2dff665d7a321a41386871b07654e5",
     "service/veryfruity_review.py": "37acd0b51c1648d8dcb3e57216470ba8d0c029b7e2d92dd422d21dc352958f94",
     "service/work_pool.py": "a286a35167b86fba284ca11f3f4900dd965c4a9b1068b32d45de5a75f95e4dfc"
+  },
+  "dispatchRejection": {
+    "commit": "4c15995ed3523899c06f8b9bb363600c57340979",
+    "profileHash": "8ca46a1686e7eb8231e1c5d32092104056875f0515f485f4b55c21acb3dfaacb",
+    "httpStatus": 422,
+    "runCreated": false,
+    "sourceRequests": 0,
+    "mongoWrites": 0
   }
 }
