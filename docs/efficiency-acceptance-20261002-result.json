@@ -616,14 +616,37 @@
       "bytes": 1035618,
       "sha256": "25c9e8ec0c9ba02a79274b53efdd68def1c9ad5358ac3ebadbf4a97f0ad43379",
       "oldRawRecordsRepeated": 0
+    },
+    "sfgtActualReentry": {
+      "preflightRun": 36950805533,
+      "activationRun": 36951206572,
+      "sourceRun": 36951574835,
+      "runtime": "e2383403cb09d36c34aafcdbc49d9a1948831a06",
+      "preflightToSourceDispatchSeconds": 463.0,
+      "activationStepSeconds": 181.0,
+      "actualReentry": true,
+      "completePreserved": 5713,
+      "remainingComplete": 294137,
+      "newQuota": 0,
+      "matchedWholeCaptureGainMeasured": false,
+      "appliedProfileHash": "ea7929295dc8f5098b2d392262b563cf4158c87051987c8c71e62cd9b727fcf9",
+      "sourceAdmissionVerified": true,
+      "sourceConclusion": "failure",
+      "confirmedPreserved": 5713,
+      "completeBuffered": 74,
+      "interruptedPrefixes": 2,
+      "firstFailure": "PYRAMIDS_FREE_COUNTERS",
+      "naturalRetriggerCounters": [
+        10,
+        20
+      ]
     }
   },
   "pending": [
-    "Independently activated subsequent capture adoption and measured in-game delta CAS benefit.",
-    "Independent subsequent-runtime adoption and measured terminal/readback cost.",
-    "Next independently ready game admission and continuous handoff.",
-    "Natural unsupported repair terminals and reentry.",
-    "Actual adoption of Super Hold gap classification and controlWorker/controlFull telemetry after immutable prior-run closure."
+    "Matched actual capture throughput and resource window for the independently admitted optimized runtime.",
+    "New two-worker bounded audit of a naturally completed 300000-round game.",
+    "An independently ready next game and actual automatic cross-game handoff.",
+    "Natural unsupported feature terminals in the remaining independent repair queue."
   ],
   "prohibitedShortcuts": [
     "No current-runtime hot patch.",

@@ -61,6 +61,16 @@ class PyramidsFreeSequence(NativeNextgenFields):
             check(len(grid)==5 and all(len(r)==3 and all(0<=x<=15 for x in r) for r in grid),'PYRAMIDS_FREE_GRID')
         check('IIFS' not in gsd or gsd['IIFS'] in ({'1'} if index == 0 else {'0','1'}), 'PYRAMIDS_FREE_UNREVIEWED_GSD')
 
+    def validate_counters(self, n, t, c, previous):
+        check(self.reviewed_free_total in (10,15) and t == self.reviewed_free_total and t == n + c and 0 <= n <= t and 0 <= c <= t, 'PYRAMIDS_FREE_COUNTERS')
+
+    def validate_progress(self, n, t, c, previous):
+        if previous is not None:
+            pn, pt, pc = previous
+            check(pn > 0 and c == pc + 1 and t == pt and n == pn - 1, 'PYRAMIDS_FREE_PROGRESS')
+            if n == 0:
+                check(pn == 1 and t == pt, 'PYRAMIDS_FREE_TERMINAL')
+
     def sequence(self, raw):
         check(raw.get('protocol') == 'nextgen' and raw.get('sourceKey') == SOURCE, 'PYRAMIDS_FREE_PROFILE_REQUIRED')
         steps = raw.get('steps')
@@ -107,17 +117,14 @@ class PyramidsFreeSequence(NativeNextgenFields):
             check(amount(step.get('elapsedMs')) <= 300000, 'INVALID_TRIAL_TIMING')
             check(all(k in p for k in ('NFG', 'TFG', 'CFGG')), 'PYRAMIDS_FREE_MISSING_COUNTER')
             n, t, c = (amount(p[k]) for k in ('NFG', 'TFG', 'CFGG'))
-            check(self.reviewed_free_total in (10,15) and t == self.reviewed_free_total and t == n + c and 0 <= n <= t and 0 <= c <= t, 'PYRAMIDS_FREE_COUNTERS')
+            self.validate_counters(n, t, c, previous)
             check(p.get('GCT', '0') == '0', 'UNSUPPORTED_PYRAMIDS_FREE_TERMINATION')
             check(('FGRS' not in gsd or amount(gsd['FGRS']) == n)
                   and ('CFGC' not in gsd or amount(gsd['CFGC']) == c), 'UNSUPPORTED_PYRAMIDS_FREE_NESTED_COUNTER')
             if previous is None:
                 check(n > 0 and c == 0 and p.get('IFG') == '0', 'PYRAMIDS_FREE_EMPTY_TRIGGER')
             else:
-                pn, pt, pc = previous
-                check(pn > 0 and c == pc + 1 and t == pt and n == pn - 1, 'PYRAMIDS_FREE_PROGRESS')
-                if n == 0:
-                    check(pn == 1 and t == pt, 'PYRAMIDS_FREE_TERMINAL')
+                self.validate_progress(n, t, c, previous)
             previous = n, t, c
         return {'MSGID': 'FREE_GAME'} if previous[0] else None
 

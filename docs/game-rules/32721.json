@@ -281,10 +281,10 @@
     "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
     "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
     "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
-    "service/pyramids_free_review.py": "febefba194ca56edd87156a89377dca958efb605ebdfd0f9d3922e129f1d65f1",
+    "service/pyramids_free_review.py": "fa168ebd85f75f233238b151710c78e4206500a44d8df1ccf74e46f914d5d975",
     "service/pyramids_fields.py": "f5626a4476130b77e798abe16867007fa467f542837cab047c5480e7d5cd6350",
     "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
-    "scripts/trial/pyramids-free-review.mjs": "4e304b8f458bf688c89f320b5083f12ef9177388b59edb724539c6719a584349",
+    "scripts/trial/pyramids-free-review.mjs": "15b49d36da4b44108711a396df2a53d334c758b33112cedfec4a15898759881d",
     "scripts/trial/pyramids-protocol.mjs": "6e9dba04feb602342b8b91f88ab9006c393c77816098939007c55f3fa401c3ee",
     "collector/sg.pyramids.ts": "a1c83d8ee4724cee527f5dd45306efc511eb454ab87a5d2fd87ff33befcfc905",
     "service/pyramids_mixed_prefix.py": "21c53e48823b9611a00c9511e15d9de37b62d61d9350ad985e5c33fa3e00df55",
@@ -328,5 +328,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5c9d4a7b073279d001fa55d9416dec471b3ebaeedc66fefe8b90d89dd8ede452"
+  "ruleHash": "278de0efe7f85fabc7f957b3e4ed1c90391db15f2464fe32648319015888c20f"
 }
