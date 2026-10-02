@@ -40,9 +40,9 @@ REVIEWED = {
          'HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.']),
     32721: entry('nextgen-hold-extensions', dict(protocol='nextgen-payload', session='same-PID',
         requests='BET-FREE_GAME', counters='TFG=NFG+CFGG-plus-2-or-4', terminal='isolated-hold-outro-and-request-BET'),
-        ['service/pyramids_hold_review.py','scripts/trial/pyramids-hold-review.mjs','service/pyramids_free_review.py','scripts/trial/pyramids-free-review.mjs','service/pyramids_major_review.py','service/pyramids_fields.py','scripts/trial/pyramids-protocol.mjs','collector/sg.pyramids.ts'],
-        ['Isolated Hold (+2/+4) and ten-free mappings are integrated independently in Python/Runner/collector. Major free-coin extension was actually reentered; new source added416 full rounds, total3627 Mongo (plus150 historical). Unknown mixed feature then parked; zero-source retirement preserved3627 and released reservations. Reentry does not prove all feature exits.',
-         'Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different unreviewed extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while NFG/TFG/CFGG reset to6/6/0; official helpers and independent full-XML prefix validation agree. Hold exit with outer free remaining continues FREE_GAME; terminal and resumption shapes remain synthetic. Mixed production mapping, external jackpots and arbitrary negative codes remain unsupported; reuse geometry/transport, independently review counter-domain transitions and payout accounting.']),
+        ['service/pyramids_hold_review.py','scripts/trial/pyramids-hold-review.mjs','service/pyramids_free_review.py','scripts/trial/pyramids-free-review.mjs','service/pyramids_major_review.py','service/pyramids_fields.py','scripts/trial/pyramids-protocol.mjs','collector/sg.pyramids.ts','service/pyramids_super_free_review.py','scripts/trial/pyramids-super-free-review.mjs','collector/sg.pyramids-super-free.ts'],
+        ['Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.',
+         'Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.']),
     32720: entry('nextgen-independent-free', dict(protocol='nextgen-payload', session='same-PID',
         requests='BET-FREE_GAME', counters='TFG=NFG+CFGG', terminal='explicit-NFG0-and-game-exits'),
         ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts'],
@@ -162,7 +162,7 @@ if __name__ == '__main__':
         result = build() if args.game is None else dict(gameId=args.game, candidates=recommend(args.game), captureAuthorization=False)
     text = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
     if args.output:
-        args.output.write_text(text, encoding='utf-8')
+        args.output.write_text(text, encoding='utf-8', newline='\n')
         print(json.dumps({'output': str(args.output), 'games': len(result.get('games', [])), 'captureAuthorization': False}))
     else:
         print(text)

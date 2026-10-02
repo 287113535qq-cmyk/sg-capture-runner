@@ -8,6 +8,38 @@ import argparse,concurrent.futures,glob,hashlib,json,os,pathlib,signal,subproces
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
+def save_result(path,result):
+    """Publish each completed round atomically; an interrupted comparison is incomplete."""
+    path=pathlib.Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    temporary=path.with_suffix('.tmp')
+    with temporary.open('w',encoding='utf-8') as stream:
+        json.dump(result,stream);stream.flush();os.fsync(stream.fileno())
+    os.replace(temporary,path)
+
+def compare_results(runs):
+    """A reversed pair must independently improve with the same complete inventory."""
+    if len(runs)!=4 or [r.get('workers') for r in runs]!=[1,2,2,1]:
+        return {'accepted':False,'reason':'COMPARISON_INCOMPLETE'}
+    expected={name:len(commands) for name,commands in tasks()}
+    for run in runs:
+        groups=run.get('groups',[])
+        if not run.get('passed') or len(groups)!=len(expected) or {g['group'] for g in groups}!=set(expected):
+            return {'accepted':False,'reason':'COMPARISON_CHECKS_FAILED'}
+        for group in groups:
+            if not group.get('passed') or len(group['commands'])!=expected[group['group']] or any(c['exitCode'] for c in group['commands']):
+                return {'accepted':False,'reason':'COMPARISON_CHECKS_FAILED'}
+    # Bind command inventories as well as group names; a shorter list is not speedup.
+    inventories=[{g['group']:[c['argvHash'] for c in g['commands']] for g in r['groups']} for r in runs]
+    if any(i!=inventories[0] for i in inventories[1:]):
+        return {'accepted':False,'reason':'COMPARISON_INVENTORY_CHANGED'}
+    times=[r['elapsedSeconds'] for r in runs]
+    if any(not isinstance(t,(int,float)) or not 0<t<900 for t in times):
+        return {'accepted':False,'reason':'COMPARISON_COST_INVALID'}
+    gains=[100*(times[0]-times[1])/times[0],100*(times[3]-times[2])/times[3]]
+    return {'accepted':all(g>0 for g in gains),'reason':'BOTH_PAIRS_IMPROVED' if all(g>0 for g in gains) else 'NO_REPEATABLE_GAIN',
+            'pairedReductionPercent':gains,'serialSeconds':[times[0],times[3]],'parallelSeconds':[times[1],times[2]],
+            'captureThroughputVerified':False}
+
 def tasks(root=ROOT):
     def node(pattern):
         files=sorted(glob.glob(str(root/pattern)));assert files,'PREFLIGHT_TEST_SET_EMPTY'
@@ -60,19 +92,23 @@ def run_checks(inventory,workers):
             'groups':sorted(results,key=lambda r:r['group'])}
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=(1,2,3),default=1)
+    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=(1,2,3),default=2)
     parser.add_argument('--compare',action='store_true');args=parser.parse_args()
     assert os.name=='posix','FIXED_PREFLIGHT_REQUIRES_LINUX'
     inventory=tasks();out={'schema':'sg-offline-preflight-v1','cpuCount':os.cpu_count(),'sourceRequests':0,'mongoWrites':0}
+    path=ROOT/'.local'/'offline-preflight-result.json'
+    out.update(runs=[],passed=False,complete=False)
+    save_result(path,out)
     if args.compare:
         # Reverse order in the second pair: first-run caches cannot by
         # themselves justify enabling concurrent checks.
-        out['runs']=[run_checks(inventory,w) for w in (1,2,2,1)]
         out['pairedComparison']=True
+        for workers in (1,2,2,1):
+            out['runs'].append(run_checks(inventory,workers));save_result(path,out)
+        out['comparison']=compare_results(out['runs'])
     else:out['runs']=[run_checks(inventory,args.workers)]
     out['passed']=all(r['passed'] for r in out['runs'])
-    directory=ROOT/'.local';directory.mkdir(exist_ok=True)
-    (directory/'offline-preflight-result.json').write_text(json.dumps(out))
+    out['complete']=True;save_result(path,out)
     summary={**out,'runs':[{**r,'groups':[{**g,'commands':[{k:v for k,v in c.items() if k!='log'}
         for c in g['commands']]} for g in r['groups']]} for r in out['runs']]}
     print(json.dumps(summary),flush=True);return 0 if out['passed'] else 1

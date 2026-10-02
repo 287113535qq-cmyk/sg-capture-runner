@@ -1,5 +1,5 @@
-import contextlib,io,pathlib,sys,tempfile,time,unittest
-from run_offline_preflight import run_checks,run_group,tasks
+import contextlib,copy,io,json,pathlib,sys,tempfile,time,unittest
+from run_offline_preflight import run_checks,run_group,tasks,compare_results,save_result
 
 class OfflinePreflightTests(unittest.TestCase):
     def test_failure_is_joined_and_does_not_hide_independent_group(self):
@@ -23,3 +23,23 @@ class OfflinePreflightTests(unittest.TestCase):
         self.assertEqual(len(commands),13)
         self.assertTrue(any('pool-e2e-fixture.mjs' in ' '.join(c) for c in commands))
         self.assertFalse(any('gh' in c or 'ssh' in c for c in commands))
+    def test_comparison_requires_both_pairs_and_identical_complete_checks(self):
+        runs=[{'workers':w,'elapsedSeconds':seconds,'passed':True,'groups':[
+            {'group':name,'passed':True,'commands':[{'exitCode':0,'argvHash':str(i)} for i in range(len(commands))]}
+            for name,commands in tasks()]} for w,seconds in [(1,100),(2,70),(2,75),(1,90)]]
+        self.assertTrue(compare_results(runs)['accepted'])
+        bad=copy.deepcopy(runs);bad[2]['elapsedSeconds']=95
+        self.assertFalse(compare_results(bad)['accepted'])
+        bad=copy.deepcopy(runs);bad[2]['groups'][0]['commands'].pop()
+        self.assertFalse(compare_results(bad)['accepted'])
+        bad=copy.deepcopy(runs);bad[2]['groups'][0]['commands'][0]['argvHash']='changed'
+        self.assertFalse(compare_results(bad)['accepted'])
+        self.assertFalse(compare_results(runs[:3])['accepted'])
+    def test_partial_result_survives_as_explicitly_incomplete(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=pathlib.Path(directory)/'result.json'
+            save_result(path,{'runs':[{'passed':True}],'complete':False,'passed':False})
+            self.assertFalse(json.loads(path.read_text())['complete'])
+            save_result(path,{'runs':[],'complete':True,'passed':True})
+            self.assertTrue(json.loads(path.read_text())['complete'])
+            self.assertFalse(path.with_suffix('.tmp').exists())

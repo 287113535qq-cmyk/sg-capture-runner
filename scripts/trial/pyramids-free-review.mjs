@@ -14,7 +14,7 @@ function pairs(text,sep='&',eq='='){
   }return p;
 }
 function integer(v){check(typeof v==='string'&&/^\d+$/.test(v)&&Number.isSafeInteger(Number(v)),'INVALID_NUMBER');return Number(v);}
-export function pyramidsFreeSequence(raw,{reviewedMajor=false,freeTotal=10}={}){
+export function pyramidsFreeSequence(raw,{reviewedMajor=false,freeTotal=10,superFree=false}={}){
   check([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
   check(raw.sourceKey===PYRAMIDS_FREE_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'PYRAMIDS_FREE_PROFILE_REQUIRED');
   const special=raw.steps.some(s=>['1','1|'].includes(pairs(s.responsePayload).FID));
@@ -36,7 +36,8 @@ export function pyramidsFreeSequence(raw,{reviewedMajor=false,freeTotal=10}={}){
       const gsd=pairs(p.GSD??'','#','~');
       if(index===0)baseCoins=gsd.BGCL;
       else if(gsd.BGCL!==undefined)check(baseCoins!==undefined&&gsd.BGCL===baseCoins,'PYRAMIDS_BASE_COINS_CHANGED');
-      check(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'].includes(k)),'PYRAMIDS_FREE_UNREVIEWED_GSD');
+      check(Object.keys(gsd).every(k=>['BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS',...(superFree?['SFGT']:[])].includes(k)),'PYRAMIDS_FREE_UNREVIEWED_GSD');
+      if(superFree)check(index===0?gsd.SFGT==='1':['0','1'].includes(gsd.SFGT??'0'),'PYRAMIDS_SUPER_FREE_FLAG');
       if(gsd.CLBN!==undefined)check(index>0&&gsd.CL!==undefined&&gsd.CLBN===gsd.CL,'PYRAMIDS_FREE_COIN_ALIAS');
       if(gsd.FSRS!==undefined){const stops=gsd.FSRS.split(';');if(stops.at(-1)==='')stops.pop();check(index>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(integer);}
       let unreviewedCoin=false;
@@ -71,8 +72,8 @@ export function pyramidsFreeSequence(raw,{reviewedMajor=false,freeTotal=10}={}){
   }
   return {next:previous.n?'FREE_GAME':null,special,last};
 }
-export function pyramidsFreeReview(raw){
- const {next,last}=pyramidsFreeSequence(raw);
+export function pyramidsFreeReview(raw,options){
+ const {next,last}=pyramidsFreeSequence(raw,options);
  if(next)return{complete:false,next,sourceRequests:0,captureAuthorized:false};
  const end=integer(last.B),win=integer(last.TW);check(raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Number.isSafeInteger(raw.startBalanceRaw)&&raw.startBalanceRaw>=0,'TRIAL_PROFILE_REQUIRED');
  check(raw.startBalanceRaw-end+win===20&&end===integer(last.AB),'STAKE_MISMATCH');

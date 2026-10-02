@@ -10,7 +10,7 @@ on:
         description: Fixed independent offline check groups; no capture lanes
         type: choice
         options: ['1', '2', '3']
-        default: '1'
+        default: '2'
 permissions:
   contents: read
 concurrency:
@@ -39,7 +39,7 @@ jobs:
       - name: Fixed offline checks with joined results and bounded concurrency
         env:
           SG_PREFLIGHT_COMPARE: ${{ inputs.compare_preflight && 'true' || 'false' }}
-          SG_PREFLIGHT_WORKERS: ${{ inputs.check_workers || '1' }}
+          SG_PREFLIGHT_WORKERS: ${{ inputs.check_workers || '2' }}
         run: |
           if [ "$SG_PREFLIGHT_COMPARE" = true ]; then
             python3 scripts/run_offline_preflight.py --compare

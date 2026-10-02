@@ -543,6 +543,50 @@
       "sourceRequestsForAnalysis": 0,
       "mongoWritesForAnalysis": 0,
       "limitation": "Unmatched protocol shapes and different completed counts cannot establish overall throughput gain."
+    },
+    "offlinePreflightConcurrency": {
+      "run": 36949273176,
+      "commit": "fce2c58930423002941a60db2d0f848ded5bed52",
+      "logSha256": "8079a581198ef025a3d2cc69faaa73a558c435197c8945fc27cebb4ebb95c723",
+      "comparison": {
+        "accepted": true,
+        "reason": "BOTH_PAIRS_IMPROVED",
+        "pairedReductionPercent": [
+          20.122075500895782,
+          15.93454516589246
+        ],
+        "serialSeconds": [
+          103.77164924200002,
+          98.00102087899995
+        ],
+        "parallelSeconds": [
+          82.89063963300003,
+          82.385003944
+        ],
+        "captureThroughputVerified": false
+      },
+      "fixedCommandsPerRound": 13,
+      "rounds": 4,
+      "allChecksPassed": true,
+      "sameHost": true,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "captureThroughputVerified": false,
+      "scope": "offline preflight groups only"
+    },
+    "sfgtLocalIntegration": {
+      "oldCompleteNormsUnchanged": 5713,
+      "verificationMs": 1341.9102999614552,
+      "naturalPrefixFrames": 1,
+      "naturalPrefixRoute": "FREE_GAME",
+      "naturalRawUnchanged": true,
+      "mappingHash": "83b027649a79d6bf214149dfdee382d49e246cf489505307f4519c76580fc759",
+      "bonus": 7,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "naturalTerminalObserved": false,
+      "sourceAuthorized": false,
+      "wholeGameReady": false
     }
   },
   "pending": [

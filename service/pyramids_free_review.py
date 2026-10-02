@@ -18,12 +18,13 @@ def feature_type(raw):
 
 class PyramidsFreeSequence(NativeNextgenFields):
     reviewed_free_total = 10
+    extra_gsd = frozenset()
     def __init__(self, plan):
         check(plan.get('gameId') == 32721 and plan.get('sourceKey') == SOURCE, 'PYRAMIDS_FREE_PROFILE_REQUIRED')
         super().__init__(plan)
 
     def validate_gsd(self, gsd, index):
-        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'}, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
+        check(set(gsd) <= {'BGRS','IIFS','VA','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'} | self.extra_gsd, 'PYRAMIDS_FREE_UNREVIEWED_GSD')
         # Original PZa/rC also maps free-frame CL. Ancillary CLBN/FSRS/IIFS
         # do not affect the official projection; accept only reviewed shapes.
         if 'CLBN' in gsd:

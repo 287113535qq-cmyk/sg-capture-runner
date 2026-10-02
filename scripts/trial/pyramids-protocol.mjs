@@ -3,7 +3,8 @@ import {pyramidsFreeSequence,PYRAMIDS_FREE_EXTENSION} from './pyramids-free-revi
 import {reviewMixedSequence,pyramidsHasMixed} from './pyramids-mixed-review.mjs';
 import {pyramidsHasFifteen,reviewFifteenSequence,PYRAMIDS_FIFTEEN_EXTENSION} from './pyramids-fifteen-review.mjs';
 import {pyramidsHasSuperHold,pyramidsSuperHoldReview,PYRAMIDS_SUPER_HOLD_EXTENSION} from './pyramids-super-hold-review.mjs';
-export {PYRAMIDS_SUPER_HOLD_EXTENSION};
+import {pyramidsHasSuperFree,pyramidsSuperFreeReview,PYRAMIDS_SUPER_FREE_EXTENSION} from './pyramids-super-free-review.mjs';
+export {PYRAMIDS_SUPER_HOLD_EXTENSION,PYRAMIDS_SUPER_FREE_EXTENSION};
 export {PYRAMIDS_SOURCE,PYRAMIDS_FREE_EXTENSION,PYRAMIDS_FIFTEEN_EXTENSION};
 export const PYRAMIDS_MAJOR_EXTENSION=PYRAMIDS_SOURCE+'-pyramids-free-major-v1';
 export const PYRAMIDS_MIXED_EXTENSION=PYRAMIDS_SOURCE+'-pyramids-free-hold-v1';
@@ -13,6 +14,7 @@ function pairs(text){const p=Object.create(null);need(typeof text==='string','PY
 function uint(v){need(typeof v==='string'&&/^\d+$/.test(v)&&Number.isSafeInteger(+v),'PYRAMIDS_NUMBER');return +v;}
 export function pyramidsSequence(raw){
  need(raw.sourceKey===PYRAMIDS_SOURCE&&raw.protocol==='nextgen'&&raw.steps?.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
+ if(pyramidsHasSuperFree(raw)){const result=pyramidsSuperFreeReview(raw);return {...result,free:true,superFree:true};}
  if(pyramidsHasSuperHold(raw)){const result=pyramidsSuperHoldReview(raw);return {...result,free:false,superHold:true,last:pairs(raw.steps.at(-1).responsePayload)};}
  if(pyramidsHasFifteen(raw)){const result=reviewFifteenSequence(raw);return {...result,free:true,fifteen:true,last:pairs(raw.steps.at(-1).responsePayload)};}
  if(pyramidsHasMixed(raw)){const result=reviewMixedSequence(raw);return {...result,free:true,mixed:true,last:pairs(raw.steps.at(-1).responsePayload)};}
@@ -27,11 +29,11 @@ export function pyramidsSequence(raw){
 }
 export function pyramidsNextRequest(raw){if(!raw.steps.length)return{MSGID:'BET'};const{next}=pyramidsSequence(raw);return next?{MSGID:next}:null;}
 export function pyramidsMapping(raw,baseHash,extensionHash){
- const{next,free,mixed,fifteen,superHold,last}=pyramidsSequence(raw);need(!next,'INCOMPLETE_ROUND');
+ const{next,free,mixed,fifteen,superHold,superFree,last}=pyramidsSequence(raw);need(!next,'INCOMPLETE_ROUND');
  const end=uint(last.B),win=uint(last.TW);
  need(raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Number.isSafeInteger(raw.startBalanceRaw)&&raw.startBalanceRaw>=0&&raw.startBalanceRaw-end+win===20&&end===uint(last.AB),'PYRAMIDS_MONEY');
  if(raw.steps.at(-1).responseBalance!==undefined)need(Number(raw.steps.at(-1).responseBalance)===end,'PYRAMIDS_BALANCE');
  const major=free&&pyramidsHasMajor(raw);
- const typeMappingHash=superHold?extensionHash?.superHold:free?(fifteen?extensionHash?.fifteen:mixed?extensionHash?.mixed:major?extensionHash?.major:typeof extensionHash==='object'?extensionHash.free:extensionHash):baseHash;need(typeof typeMappingHash==='string'&&/^[a-f0-9]{64}$/.test(typeMappingHash),'PYRAMIDS_MAPPING_REQUIRED');
- return{buy:0,bonus:superHold?6:free?(fifteen?5:mixed?4:major?3:2):raw.steps.length>1?1:0,typeMappingHash};
+ const typeMappingHash=superFree?extensionHash?.superFree:superHold?extensionHash?.superHold:free?(fifteen?extensionHash?.fifteen:mixed?extensionHash?.mixed:major?extensionHash?.major:typeof extensionHash==='object'?extensionHash.free:extensionHash):baseHash;need(typeof typeMappingHash==='string'&&/^[a-f0-9]{64}$/.test(typeMappingHash),'PYRAMIDS_MAPPING_REQUIRED');
+ return{buy:0,bonus:superFree?7:superHold?6:free?(fifteen?5:mixed?4:major?3:2):raw.steps.length>1?1:0,typeMappingHash};
 }

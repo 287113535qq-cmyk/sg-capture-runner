@@ -25,12 +25,13 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false){
  requireP([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
  const hold=!free&&(raw.steps.length>1||count(fields(raw.steps[0].responsePayload).NFG??'0')>0);
  requireP(!superHold||hold,'PYRAMIDS_SUPER_HOLD_SCOPE');
+ requireP(!superFree||free&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_SUPER_FREE_SCOPE');
  let observedMajor=false;
  let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{
@@ -45,7 +46,8 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
    const t=count(p.TFG),c=count(p.CFGG),g=fields(p.GSD??'','#','~');requireP(n+c===t,'PYRAMIDS_COUNTERS');
    if(free){
     requireP(t===freeTotal&&n<=t&&c<=t,'PYRAMIDS_FREE_COUNTERS');
-    requireP(Object.keys(g).every(k=>['BGRS','VA','IIFS','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS'].includes(k)),'PYRAMIDS_FREE_GSD');
+    requireP(Object.keys(g).every(k=>['BGRS','VA','IIFS','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS',...(superFree?['SFGT']:[])].includes(k)),'PYRAMIDS_FREE_GSD');
+    if(superFree)requireP(i===0?g.SFGT==='1':['0','1'].includes(g.SFGT??'0'),'PYRAMIDS_SUPER_FREE_FLAG');
     if(g.CLBN!==undefined)requireP(i>0&&g.CL!==undefined&&g.CLBN===g.CL,'PYRAMIDS_FREE_COIN_ALIAS');
     if(g.FSRS!==undefined){const stops=g.FSRS.split(';');if(stops[stops.length-1]==='')stops.pop();requireP(i>0&&stops.length===5,'PYRAMIDS_FREE_STOPS');stops.forEach(count);}
     let unreviewedCoin=false;
