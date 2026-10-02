@@ -9,14 +9,15 @@ import {receiptKey} from './durable-queue.mjs';
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
+ const superHold=profile?.schema==='sg-formal-repair-pyramids-v6';
  const fifteen=profile?.schema==='sg-formal-repair-pyramids-v5';
  const mixed=profile?.schema==='sg-formal-repair-pyramids-v4',major=profile?.schema==='sg-formal-repair-pyramids-v3';
- const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=superHold||fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
  const continuation=v2&&profile.sourceRun==='36842835455:1';
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=superHold?5111:fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(superHold?'sg-formal-repair-pyramids-v5':fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -31,9 +32,10 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  assert(entry?.status==='parked-protocol'&&entry.repairKey===profile.repairKey&&repair
   &&hash(repair)===profile.repairHash&&repair.sourceAllowance===0&&repair.requiresNewSession===true,'FORMAL_REPAIR_QUEUE');
  if(major)await reviewPyramidsMajorRetirement({store,profile,pool,retired,oldProfile});
- else assert(retired?.schema===(fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
+ else assert(retired?.schema===(superHold||fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
   &&retired.completePreserved===preserved&&retired.recordsHash===profile.recordsHash&&retired.repairKey===profile.repairKey
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&retired.sourceCommit===profile.sourceCommit,'FORMAL_REPAIR_RETIREMENT');
+ if(superHold)assert(retired.sourceRun==='36941485498:1'&&retired.activation===oldProfile.activation&&retired.abandonedAttempts===1&&retired.unknownAttempts===0&&retired.newBetAllowance===0,'PYRAMIDS_SUPER_HOLD_RETIREMENT');
  if(fifteen)assert(retired.sourceRun==='36937673870:1'&&retired.activation===oldProfile.activation&&retired.abandonedAttempts===1&&retired.unknownAttempts===0&&retired.newBetAllowance===0,'PYRAMIDS_FIFTEEN_RETIREMENT');
  if(mixed)assert(retired.sourceRun===profile.sourceRun&&retired.profileHash==='23a2419605be82e9bf0b6c359a501bc47b0c2b1015e7b9de8ceb5d88c03f7c62'
   &&retired.trialId===plan.trialId&&retired.newAbandoned===0,'PYRAMIDS_MIXED_RETIREMENT');
@@ -57,11 +59,14 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
    assert(rs.every(Boolean),'FORMAL_REPAIR_RECEIPT');
    const mongo=rs.length?await transport.request('rounds_read',{trialId:plan.trialId,ids:rs.map(r=>r._id)}):[];
    assert(hash(mongo.map(hash).sort())===hash(rs.map(hash).sort()),'FORMAL_REPAIR_MONGO');
-   for(const r of rs)assert((await parser.call({op:'verify',plan,raw:r.raw,record:r})).verified,'FORMAL_REPAIR_PYTHON');
+   if(rs.length&&typeof parser.verifyPage==='function'){
+    const checked=await parser.verifyPage(plan,rs);
+    assert(checked?.verified===true&&checked.count===rs.length,'FORMAL_REPAIR_PYTHON');
+   }else for(const r of rs)assert((await parser.call({op:'verify',plan,raw:r.raw,record:r})).verified,'FORMAL_REPAIR_PYTHON');
    records.push(...rs);baseline.push({id:b.id,worker:b.worker,start:b.start,end:b.end,sessionHash:b.sessionHash,closed:true,complete:count,evidenceHash:hash(b)});
   }
  }
- const recordsHash=major||fifteen?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
+ const recordsHash=major||fifteen||superHold?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
  assert(records.length===preserved&&recordsHash===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId,
   target:plan.target,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,

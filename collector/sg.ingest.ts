@@ -1,5 +1,6 @@
 import {pyramidsFields} from './sg.pyramids';
 import {hasPyramidsFifteen,fifteenFields} from './sg.pyramids-fifteen';
+import {hasPyramidsSuperHold,superHoldFields} from './sg.pyramids-super-hold';
 import {hasPyramidsMixed,reviewMixedCollector} from './sg.pyramids-mixed';
 import {incaFields} from './sg.inca';
 import {hasHuffRetrigger,huffRetriggerFields} from './sg.huff-retrigger';
@@ -18,6 +19,10 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  * them against the raw protocol and its own pinned policy again before writing.
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
+  if(hasPyramidsSuperHold(raw)){
+    if(mapping.buy!==0||mapping.bonus!==6)throw Error('SG_PYRAMIDS_SUPER_HOLD_MAPPING_MISMATCH');
+    return superHoldFields(raw,mapping.typeMappingHash);
+  }
   if(hasPyramidsFifteen(raw)){
     if(mapping.buy!==0||mapping.bonus!==5)throw Error('SG_PYRAMIDS_FIFTEEN_MAPPING_MISMATCH');
     return fifteenFields(raw,mapping.typeMappingHash);

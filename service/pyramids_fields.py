@@ -6,6 +6,7 @@ from round_fields import check, params, derive
 from pyramids_major_review import has_major, PyramidsMajorSequence
 from pyramids_mixed_review import has_mixed, review_mixed_sequence
 from pyramids_fifteen_review import has_fifteen,review_fifteen
+from pyramids_super_hold_review import has_super_hold,PyramidsSuperHoldSequence
 
 
 def hold_type(raw):
@@ -14,6 +15,7 @@ def hold_type(raw):
 
 class PyramidsFields(NativeNextgenFields):
     def next_request(self, raw):
+        if has_super_hold(raw):return PyramidsSuperHoldSequence(self.plan).sequence(raw)
         if has_fifteen(raw):
             r=review_fifteen(self.plan,raw)
             return None if r['complete'] else {'MSGID':'FREE_GAME'}
@@ -26,7 +28,7 @@ class PyramidsFields(NativeNextgenFields):
 
     def settled(self, raw):
         check(self.next_request(raw) is None, 'INCOMPLETE_ROUND')
-        if has_fifteen(raw) or has_mixed(raw):return derive(raw)
+        if has_super_hold(raw) or has_fifteen(raw) or has_mixed(raw):return derive(raw)
         if feature_type(raw):
             (PyramidsMajorSequence if has_major(raw) else PyramidsFreeSequence)(self.plan).settled(raw)
             return derive(raw)

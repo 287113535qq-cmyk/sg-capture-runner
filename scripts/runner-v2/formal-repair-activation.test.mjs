@@ -56,3 +56,20 @@ test('second repair inherits2596 and66 retired ranges without reclaiming old att
  const pool=f.docs.get('state/'+f.poolKey).value;assert.equal(pool.nextSequence,6601);assert.equal(pool.confirmed,2596);assert.deepEqual(pool.workers,{});
  await assert.rejects(activateFormalRepair(f.args));
 });
+test('bounded Python verification preserves serial activation results and never rewrites retained records',async()=>{
+ const serial=fixture(),paged=fixture();let pages=0,verified=0;
+ paged.args.parser.verifyPage=async(plan,records)=>{
+  assert(records.length>0&&records.length<=100);assert.equal(plan.featureProfile,paged.plan.featureProfile);
+  pages++;verified+=records.length;return {verified:true,count:records.length};
+ };
+ paged.args.parser.call=async()=>{throw Error('UNEXPECTED_SERIAL_VERIFICATION');};
+ assert.deepEqual(await activateFormalRepair(paged.args),await activateFormalRepair(serial.args));
+ assert.equal(hash([...paged.docs]),hash([...serial.docs]));assert.equal(verified,961);assert.equal(pages,40);
+});
+test('missing or partial batch verification cannot produce an activation or modify the closed pool',async()=>{
+ for(const result of [{verified:false,count:5},{verified:true,count:4},null]){
+  const f=fixture(),before=hash([...f.docs]);f.args.parser.verifyPage=async()=>result;
+  await assert.rejects(activateFormalRepair(f.args),/FORMAL_REPAIR_PYTHON/);
+  assert.equal(hash([...f.docs]),before);
+ }
+});

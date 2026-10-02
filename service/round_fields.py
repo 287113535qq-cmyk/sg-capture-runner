@@ -174,6 +174,8 @@ def types(raw, kind):
     from pyramids_fields import SOURCE as PYRAMIDS_SOURCE, EXTENSION as PYRAMIDS_EXTENSION, hold_type, PyramidsFields
     from pyramids_free_review import feature_type as pyramids_free_type
     pyramids_free = source_key == PYRAMIDS_SOURCE and pyramids_free_type(raw)
+    from pyramids_super_hold_review import has_super_hold, EXTENSION as PYRAMIDS_SUPER_HOLD_EXTENSION
+    pyramids_super = source_key == PYRAMIDS_SOURCE and has_super_hold(raw)
     from pyramids_major_review import has_major, EXTENSION as PYRAMIDS_MAJOR_EXTENSION
     from pyramids_mixed_review import has_mixed, EXTENSION as PYRAMIDS_MIXED_EXTENSION
     from pyramids_fifteen_review import has_fifteen, EXTENSION as PYRAMIDS_FIFTEEN_EXTENSION
@@ -183,6 +185,7 @@ def types(raw, kind):
     if pyramids_major: PYRAMIDS_EXTENSION = PYRAMIDS_MAJOR_EXTENSION
     if pyramids_mixed: PYRAMIDS_EXTENSION = PYRAMIDS_MIXED_EXTENSION
     if pyramids_fifteen: PYRAMIDS_EXTENSION = PYRAMIDS_FIFTEEN_EXTENSION
+    if pyramids_super: PYRAMIDS_EXTENSION = PYRAMIDS_SUPER_HOLD_EXTENSION
     if source_key == PYRAMIDS_SOURCE:
         pplan={'gameId':32721,'sourceKey':PYRAMIDS_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedpyramidsofra96','LB':'40'}}
         check(PyramidsFields(pplan).next_request(raw) is None, 'INCOMPLETE_ROUND')
@@ -233,7 +236,7 @@ def types(raw, kind):
     luxor_type = source_key == LUXOR_SOURCE and luxor_feature_type(raw)
     foam_type = source_key == QUARTERBACK_SOURCE and is_foam(raw)
     beaver_cfg1 = beaver_type and cfg1_type(raw)
-    profile, mapping_hash = type_profile(PYRAMIDS_EXTENSION if pyramids_free else INCA_EXTENSION if inca_type else SIZE2_EXTENSION if piggies_size2 else MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
+    profile, mapping_hash = type_profile(PYRAMIDS_EXTENSION if pyramids_free or pyramids_super else INCA_EXTENSION if inca_type else SIZE2_EXTENSION if piggies_size2 else MOREPUFF_EXTENSION if morepuff_type else JINZITA_EXTENSION if jinzita_type else LUXOR_EXTENSION if luxor_type else (CFG1_EXTENSION if beaver_cfg1 else BEAVER_EXTENSION) if beaver_type else (PICK_EXTENSION if is_pick(raw) else QUARTERBACK_EXTENSION) if foam_type else (NESTED_EXTENSION if nested_type else DEMON_EXTENSION) if demon_type else HUFF_EXTENSION if huff_type else EXTENSION if has_jackpot else source_key)
     check(profile is not None and profile['protocol'] == raw['protocol'], 'TYPE_MAPPING_REQUIRED')
     check(not profile.get('fixtureOnly') or raw.get('fixtureOnly') is True, 'FIXTURE_TYPE_PROFILE_ONLY')
     protocol = raw['protocol']
@@ -261,7 +264,10 @@ def types(raw, kind):
           or (mode['kind'] == 'enhanced' and buy >= 11)), 'INVALID_BUY_MAPPING')
     has_free = kind in {'freeGame', 'freeFeature'}
     bonus = 0
-    if pyramids_free:
+    if pyramids_super:
+        check(kind=='freeGame' and profile.get('featureSelector')=='pyramids-super-hold-cash-v1','FEATURE_TYPE_MAPPING_REQUIRED')
+        bonus=profile['featureTypes']['superHoldCash']
+    elif pyramids_free:
         check(kind=='freeGame' and profile.get('featureSelector')==('pyramids-fifteen-free-v1' if pyramids_fifteen else 'pyramids-free-hold-v1' if pyramids_mixed else 'pyramids-free-major-v1' if pyramids_major else 'pyramids-ten-free-v1'),'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['featureTypes']['independentFreeGames']
     elif piggies_size2:

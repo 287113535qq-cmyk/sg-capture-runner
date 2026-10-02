@@ -1,9 +1,11 @@
+import {pyramidsSuperHoldRepairPlan} from './pyramids-super-hold-repair-profile.mjs';
 import {pyramidsFifteenRepairPlan} from './pyramids-fifteen-repair-profile.mjs';
 import {pyramidsMajorRepairPlan} from './pyramids-major-repair-profile.mjs';
 import {pyramidsMixedRepairPlan} from './pyramids-mixed-repair-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 export function pyramidsRepairPlan(base,p){
+ if(p?.schema==='sg-formal-repair-pyramids-v6')return pyramidsSuperHoldRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v5')return pyramidsFifteenRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v4')return pyramidsMixedRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v3')return pyramidsMajorRepairPlan(base,p);

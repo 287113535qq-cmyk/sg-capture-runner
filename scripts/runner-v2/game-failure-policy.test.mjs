@@ -7,6 +7,7 @@ test('only explicit known adapter gaps permit game isolation',()=>{
   assert(isAdapterGap('PYRAMIDS_FREE_COIN_PREFIX_ONLY'));
   assert(isAdapterGap('PYRAMIDS_FREE_UNREVIEWED_COIN'));
   assert(isAdapterGap('PYRAMIDS_SUPER_HOLD_PREFIX_ONLY'));
+  assert(isAdapterGap('PYRAMIDS_SUPER_HOLD_SCOPE'));
   assert.equal(isAdapterGap('PYRAMIDS_FREE_COIN'),false);
   for(const code of ['HUFF_UNKNOWN_TOUCHUP_FIELD','HUFF_FRAME_EXIT_NOT_ADAPTED',
     'HUFF_COMBINED_EXIT_NOT_ADAPTED','HUFF_TOUCHUP_PROGRESS_NOT_ADAPTED','HARDHAT_FEATURE','HARDHAT_UNREVIEWED',
