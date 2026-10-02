@@ -7,10 +7,17 @@ import {checkParentTailFailure} from './parent-tail-failure.mjs';
 import {checkVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {checkInitialReadFailure} from './initial-read-failure.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
+import {checkActionContinuousRevision} from './action-continuous-runtime.mjs';
 
 // A completed, healthy run may move to a reviewed runtime without minting quota.
 // Only immutable authorization is added; campaign, pool, batches and records stay intact.
 export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,initialReadFailure,sharedCloseProfile,networkCloseProfile,now=Date.now}){
+ const action=revision.purpose==='continuous-action-v1';
+ if(action){
+  checkActionContinuousRevision({plan,profile,revision});
+  assert(ended.conclusion==='success'&&!parentTailFailure&&!verifyEntryFailure&&!initialReadFailure
+   &&!revision.sharedClosureKey&&!revision.networkClosureKey,'ACTION_CONTINUOUS_PARENT_NOT_HEALTHY');
+ }
  const shared=revision.sharedClosureKey?await readSharedRuntimeProof({store,plan,profile,revision,ended,jobs,approved:sharedCloseProfile}):null;
  const network=revision.networkClosureKey?await readNetworkRuntimeProof({store,plan,profile,revision,ended,jobs,approved:networkCloseProfile}):null;
  const verify=verifyEntryFailure?checkVerifyEntryFailure({ended,jobs,evidence:verifyEntryFailure}):null;
@@ -29,7 +36,7 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
   &&revision.expiresAt-revision.createdAt<=7200000,'COUNT_REFRESH_PROFILE');
  assert(`${ended.id}:${ended.run_attempt}`===revision.sourceRun&&ended.status==='completed'
   &&(ended.conclusion==='success'||tail||verify||shared||network||initial)&&ended.head_sha===revision.fromCommit
-  &&ended.repository.full_name==='zyzuoyang/sg-capture-runner'
+  &&ended.repository.full_name===(action?'287113535qq-cmyk/sg-capture-runner':'zyzuoyang/sg-capture-runner')
   &&ended.path==='.github/workflows/trial-300k.yml','COUNT_REFRESH_SOURCE');
  assert(tail||verify||shared||network||initial||(jobs.total_count===jobs.jobs.length&&jobs.jobs.length<100
   &&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
