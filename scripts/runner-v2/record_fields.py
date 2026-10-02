@@ -73,7 +73,6 @@ def execute(request):
     if op == 'classify':
         # Full evidence verification precedes optional gameplay interpretation.
         # A classification gap cannot change the original receipt or quota.
-        assert plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION,RESUME_ACTION_VERSION)
         record = request['record']
         assert execute({'op': 'verify', 'plan': plan, 'raw': raw,
                         'record': record}) == {'verified': True}
@@ -82,6 +81,9 @@ def execute(request):
         result = {'schema': 'sg-round-analysis-v1', 'recordId': record['_id'],
                   'contentHash': record['contentHash'], 'rawHash': record['rawHash'],
                   'sourceAllowance': 0}
+        if plan.get('featureProfile') not in (ACTION_VERSION, DIRECT_ACTION_VERSION, RESUME_ACTION_VERSION):
+            return {**result, 'status': 'review-required',
+                    'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         try:
             classified = PyramidsFields(plan).settled(raw)
         except FieldError as exc:

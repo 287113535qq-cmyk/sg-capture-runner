@@ -3,6 +3,8 @@ import {spawnSync} from 'node:child_process';import {createRequire} from 'node:m
 import {captureBatch} from '../trial/capture-batch.mjs';
 import {veryFruityActionNext,veryFruityActionMapping,ACTION_CONTRACT_HASH} from '../trial/veryfruity-action-protocol.mjs';
 import {BatchController} from './batch-controller.mjs';import {DurableQueue} from './durable-queue.mjs';import {MongoWriter} from './mongo-writer.mjs';
+import {exportConfirmedAnalysisPage,analyzeConfirmedTask} from './confirmed-analysis-task.mjs';
+import {protocolHash as hash} from './protocol-resume.mjs';
 const require=createRequire(import.meta.url);
 require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json'),transpileOnly:true});
 const {veryFruityActionFields}=require('../../collector/sg.veryfruity-action.ts');
@@ -37,6 +39,20 @@ test('real capture controller persists each XML before continuing, independently
  assert.equal(index,2);assert.equal(result.checkpoint,1);assert.equal(mongo.size,1);assert.equal(evidence.completedThisRun,1);
  const r=[...mongo.values()][0];assert.equal(r.bonus,null);assert.equal(r.normalized.classificationStatus,'pending');
  assert.deepEqual(analyze(plan,{op:'verify',raw:r.raw,record:r}),{verified:true});
+ const sidecar=analyze(plan,{op:'classify',raw:r.raw,record:r});
+ assert.equal(sidecar.status,'review-required');assert.equal(sidecar.reason,'GAMEPLAY_CLASSIFIER_UNAVAILABLE');
+ assert.equal(sidecar.sourceAllowance,0);assert.equal(r.bonus,null);
+ const before=hash(r),annotations=new Map();
+ const page=await exportConfirmedAnalysisPage({store:{get:async()=>({value:{games:[{game_id:32812}]}}),getMany:async()=>[{value:r}]},
+  transport:{request:async()=>[r]},parser:{call:async q=>analyze(plan,q)},plan,limit:1});
+ assert.equal(page.tasks.length,1);
+ const annotationStore={create:async(c,k,v)=>{assert.equal(c,'journal');assert(!annotations.has(k));annotations.set(k,structuredClone(v));},get:async(c,k)=>annotations.has(k)?{value:annotations.get(k)}:null};
+ const analysisResult=await analyzeConfirmedTask({task:page.tasks[0],store:annotationStore,parser:{call:async q=>analyze(plan,q)},
+  commit:'a'.repeat(40),independentReview:async()=>assert.fail('No unknown gameplay classification')});
+ assert.equal(analysisResult.status,'review-required');assert.equal(analysisResult.originalRecordsChanged,0);assert.equal(analysisResult.captureAuthorization,false);
+ assert.equal(hash(r),before);assert.equal(annotations.size,1);
+ const changed=structuredClone(page.tasks[0]);changed.readback.bet++;
+ await assert.rejects(analyzeConfirmedTask({task:changed,store:annotationStore,parser:{call:async()=>assert.fail('Bad readback never reaches classifier')},commit:'a'.repeat(40)}));
  assert(events.indexOf('readback')>events.indexOf('record'));assert(!events.includes('classify'));
 });
 test('new handler alone never authorizes an unconfigured live plan',()=>{

@@ -1,6 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {reviewCaptureHandoff} from './runner-v2/capture-handoff.mjs';
 import {deliverCaptureFault} from './runner-v2/capture-fault-delivery.mjs';
+import {deliverConfirmedAnalysis} from './runner-v2/confirmed-analysis-task.mjs';
 // Deliberately local file I/O only. No GitHub client, subprocess, source client,
 // credentials or dispatch authority. Online consumer revalidates every gate.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dir=path.join(root,'.local','capture-handoff-worker');
@@ -16,7 +17,9 @@ try{
    try{
     const r=JSON.parse(fs.readFileSync(path.join(dir,'inbox',name),'utf8'));
     if(hash(r)+'.json'!==name)throw Error('CAPTURE_READY_SCOPE');
-    if(r.schema==='sg-capture-fault-export-v1'){
+    if(r.schema==='sg-confirmed-round-analysis-task-v1'){
+      result=deliverConfirmedAnalysis(root,r);
+    }else if(r.schema==='sg-capture-fault-export-v1'){
       result=deliverCaptureFault(root,r);
     }else{
     if(!/^[a-z0-9][a-z0-9-]*\.json$/.test(r.profile??''))throw Error('CAPTURE_READY_SCOPE');

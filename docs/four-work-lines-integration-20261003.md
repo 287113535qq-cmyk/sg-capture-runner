@@ -39,4 +39,12 @@ VeryFruity 的真实第三次源留样已在内存执行正式 shared-stop → r
 
 通用 interrupted-close 复用既有 bootstrap retirement 的全文与 hash 验证，以第 2 批为付费边界；不改原代际 firstBatchId，也不将第 1 批 Init 算作新下注。16 项结案与反例检查通过。故障导出另增加缺批次/乱序拒绝，不能悄悄推进游标丢失故障；导出与交付 2 项检查通过。
 
-最新四个本机程序已重新加载当前准备代码，均没有源权限。实际 prepared 库存仍为 0，协议程序目前仍是结构观察器。跨机器自动收取、独立语义消费、真实修复重入、下一款接替及该留样线上无源结案尚未验收；源保持关闭。本段不授予旧已过期许可或新额度。
+该段为结案前记录，以下实际执行结果覆盖其未完成状态。
+
+## 实际无源结案及独立分析消费
+
+37061116774:1 已成功执行固定 VeryFruity 无源结案。原 Init 与付费响应逐字保留，1 已用、99 未用正式注销；完整数0，在途、待写均0，池禁用，两个全局保护已按原绑定解除。独立 repair 状态 pending-adapter、sourceAllowance0、requiresNewSessiontrue。closeHash 为 5ca70e754fa2b78ec45a3a67e804471a395fb67e7977dbe717b69e69cbb29b97。已应用 config/demo-close-veryfruity-adapter-20261003.json 永久冻结，canonical 为 622e070f1852255996e32c0b8c60c237579f743df9059e36410bebcd9c6b77b7。没有发送 EndGame、续接旧局、增加源额度或新增完整局。
+
+协议分析消费新增完整局入口：从不可变 receipt 与 Mongo 全文相等的记录产出独立任务，capture-handoff 投递 protocol-analysis inbox；分析程序重新执行完整验证后保存独立不可变 annotation。未具备玩法分类器的已确认流程返回 review-required，不改原记录、不阻断捕获、不把 bonus null 猜成普通玩法。分析失败隔离单项；不同代码版本使用独立结果与领取键。首次扫描尚未提交的 receipt 保留复查集合，乱序、截断或全文不同不允许推进导出。
+
+VeryFruity、Pyramids 两种动作通道的专项回放确认采集路径不调用 classify，分类只在落库全文验证之后独立执行。该消费接线及测试不等于自然新终局、真实线上分析任务交付或全链路验收。跨机器持续导出、独立 gate 产出与出版、真实修复重入、下一款接替仍需完成。prepared 仍0，累计17/178，本阶段新完整0；按用户要求保持采集关闭。
