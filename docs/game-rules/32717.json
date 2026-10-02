@@ -116,7 +116,7 @@
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
-    "docs/four-work-lines-integration-20261003.md": "4c6005491e83ef2a9dd3fbbd319f79bc9b98165f7f072c8e50a9243d8946af5c",
+    "docs/four-work-lines-integration-20261003.md": "59a8ccecb774da50adff1c9731fd47524e84630d87252eb3766f0f91fefcd4a9",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
     "docs/huff-goals-feature-inventory-20260928.json": "abd5a79e417d75582b164759bdf88a197786cbfb54d8ccdcf836cd708be2c6f0",
     "docs/huff-goals-natural-feature-stop-20260928-result.json": "a427c96348176c416d42aaa3747a1ba955952a28143206d1ead55c26c1b3a93e",
@@ -134,5 +134,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "97fd0d913a480d54c496b5d92cdcc6d1eb69e31a72bccb69a7bc7811ebff8420"
+  "ruleHash": "07930c210d0fac14a6fecbb140848deed30e54dbe50987d26ff3c676bbede05b"
 }
