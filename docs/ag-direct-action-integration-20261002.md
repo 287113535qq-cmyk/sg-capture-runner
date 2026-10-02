@@ -23,3 +23,5 @@ Python、Runner 与 collector 采用独立的 `pyramids-action-v2` 动作合同�
 修正后的接力入口在固定 73dd4b68166261fdd4a8eb00330824e7b5e127b9 的 Linux 36994306799 完整预检成功。该检查与 canary 观察并行，未增加源额度或重扫旧 raw。
 
 刷新 36994724661 实际失败于 DIRECT_RELAY_BATCH_OPEN，源请求零、intentCreated false；鲜读确认未创建 runtime 回执。原 23 个已关闭历史批次的 failure 留档标记触发了过严条件。修正仅在 baseline 内复用既有逐批 hash 审查；当前批次仍拒绝 failure。历史标记不清除、篡改仍拒绝。实际 1523 批次、134846 完整在内存正式 refresh 入口通过且全部输入 hash 不变。旧 runtime 文件保留；独立 historyfix runtime hash 37a52253ec1c515b6a01a7e419bd433f02d9e9b51980a4600c73f3cae6b0fd83 尚未应用。主窗口和自动接力尚未开始，优化验收未完成。
+
+独立 historyfix 运行 68c1632aa90ad3219ab3dc9d686caeb585c0677a 已通过 Linux 37007407662；唯一无源刷新 37007727619 success，真实许可回执及1523批次全部读回通过。修正增量15文件、934807字节双端逐文件验证，SHA dca6ce5f4475106e6811acc756d6fb982c44ebe6b8e4b66ab0191720841d2030，引用旧canary档案且不重复2000原文。主窗口37008008283已唯一派发、准入运行中；source上限15分钟/20台各一路，沿用165004剩余目标，十分钟资源与自动尾段尚未验收。

@@ -68,5 +68,13 @@
   "failedRefreshCreatedRuntimeReceipts": 0,
   "relayHistoryFixRuntimeHash": "37a52253ec1c515b6a01a7e419bd433f02d9e9b51980a4600c73f3cae6b0fd83",
   "relayHistoryFixMemoryActualBatches": 1523,
-  "relayHistoryFixMemoryPassed": true
+  "relayHistoryFixMemoryPassed": true,
+  "relayHistoryFixLinuxRun": 37007407662,
+  "relayHistoryFixLinuxSuccess": true,
+  "relayHistoryFixRefreshRun": 37007727619,
+  "relayHistoryFixRefreshSuccess": true,
+  "relayHistoryFixRuntimeApplied": true,
+  "mainSourceRun": 37008008283,
+  "mainSourceRuntime": "68c1632aa90ad3219ab3dc9d686caeb585c0677a",
+  "mainSourceStatus": "in_progress-admission"
 }
