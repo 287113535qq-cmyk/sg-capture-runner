@@ -1,11 +1,21 @@
 import {PEARL_SOURCE,pearlReview,pearlRequest} from '../trial/pearl-protocol.mjs';
 import {RHINO_SOURCE,rhinoReview,rhinoRequest} from '../trial/rhino-protocol.mjs';
+import {VERYFRUITY_SOURCE,veryFruityActionNext,veryFruityActionMapping,veryFruityActionIntent} from '../trial/veryfruity-action-protocol.mjs';
 
 // WMS labels both paid and free exchanges Logic. Count the reviewed round
 // boundary, never the number of Logic messages or repeated stake attributes.
 export function onePaidRound(plan,raw,{abandoned=false}={}){
  const steps=raw?.steps;
  if(!Array.isArray(steps)||!steps.length)return false;
+ if(plan.gameId===32812&&plan.adapter===VERYFRUITY_SOURCE){
+  try{
+   if(steps.length>1026||steps[0].msgId!=='Logic')return false;
+   if(!abandoned){veryFruityActionMapping(plan,raw);return veryFruityActionNext(plan,raw)===null;}
+   const prior={...raw,steps:steps.slice(0,-1)},last=steps.at(-1),next=veryFruityActionNext(plan,prior);
+   if(!next||last.msgId!==next.MSGID)return false;
+   veryFruityActionIntent(plan,prior,last.requestPayload);return true;
+  }catch{return false;}
+ }
  if(plan.gameId===32799&&plan.adapter==='rhino-wms-v1'){
   try{
    if(raw.sourceKey!==RHINO_SOURCE||raw.protocol!=='wms'||steps.length>1026)return false;

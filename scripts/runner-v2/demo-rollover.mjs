@@ -12,7 +12,8 @@ export async function rolloverDemo({store,transport,parser,boundary,oldPlan,plan
  assert(typeof boundary==='function'&&/^[a-f0-9]{64}$/.test(plan.demoGeneration)&&/^[a-f0-9]{40}$/.test(commit)
   &&/^\d+:1$/.test(run)&&expiresAt>now()&&expiresAt-now()<=7200000,'ROLLOVER_SCOPE');
  const idle=!!idleProfile;if(idle){checkSecondaryIdleProfile(idleProfile,oldPlan);assert(!fromPlan&&!formalSource&&activationStage?.profileHash===hash(idleProfile),'ROLLOVER_IDLE_SCOPE');}
- const secondaryNext=!!secondaryNextProfile;if(secondaryNext){checkSecondaryNextProfile(secondaryNextProfile,oldPlan);assert(!idle&&!formalSource&&fromPlan.gameId===32719&&activationStage?.profileHash===hash(secondaryNextProfile),'ROLLOVER_SECONDARY_SCOPE');}
+ const secondaryNext=!!secondaryNextProfile;if(secondaryNext){checkSecondaryNextProfile(secondaryNextProfile,oldPlan);assert(!idle&&activationStage?.profileHash===hash(secondaryNextProfile)
+  &&(oldPlan.gameId===32812?formalSource?.kind==='complete'&&fromPlan.gameId===32721:!formalSource&&fromPlan.gameId===32719),'ROLLOVER_SECONDARY_SCOPE');}
  const stripped={...plan};delete stripped.demoGeneration;
  assert(hash(stripped)===hash(oldPlan)&&plan.buy===0&&plan.phase===1&&(idle||fromPlan.gameId!==plan.gameId),'ROLLOVER_PLAN_CHANGED');
  const get=async(c,k)=>(await store.get(c,k))?.value;

@@ -26,6 +26,7 @@ from inca_fields import IncaFields, SOURCE as INCA_SOURCE
 from jinzita_fields import JinzitaSequence, SOURCE as JINZITA_SOURCE
 from morepuff_fields import MorepuffSequence, SOURCE as MOREPUFF_SOURCE
 from luxor_fields import LuxorSequence, SOURCE as LUXOR_SOURCE
+from veryfruity_action_fields import VeryFruityActionFields, SOURCE as VERYFRUITY_SOURCE
 
 adapters = {}
 
@@ -43,6 +44,8 @@ def execute(request):
             adapters[key]=PyramidsDirectActionFields(plan)
         if plan['sourceKey']==PYRAMIDS_SOURCE and plan.get('featureProfile')==RESUME_ACTION_VERSION:
             adapters[key]=PyramidsResumeActionFields(plan)
+        if plan['sourceKey']==VERYFRUITY_SOURCE:
+            adapters[key]=VeryFruityActionFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
@@ -87,7 +90,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': code}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

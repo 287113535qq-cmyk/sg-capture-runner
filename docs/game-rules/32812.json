@@ -6,11 +6,43 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "veryfruity-wms-action-v1",
+  "planHash": "bd6510dbe71c27c9565758f2d990c73d2bbc373ee343042442f90404f355449a",
+  "parameters": {
+    "trialId": "sg_r1_20261003_32812",
+    "runtimeSlug": "very-fruity",
+    "buy": 0,
+    "betRaw": 20,
+    "requestParams": null,
+    "maxSteps": 1026
+  },
+  "roundRule": {
+    "family": "native-nextgen-v1",
+    "messages": [
+      "BET",
+      "FREE_GAME"
+    ],
+    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
+    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
+    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
+    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "files": [
+      "service/native_nextgen_fields.py",
+      "service/round_fields.py",
+      "scripts/runner-v2/record_fields.py"
+    ],
+    "fields": {
+      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
+      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
+      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
+      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
+      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "B / AB": "终帧两个余额必须一致。",
+      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+    }
+  },
   "typeMappings": {},
   "mappingHashes": {},
   "configuredNaturalBonusCodes": null,
@@ -18,8 +50,16 @@
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
+    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
+    "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
+    "scripts/runner-v2/record_fields.py": "7bddbb9e3bae25dc9b9a89f5a6e9eb2754034c49c5ce6b6796c7afc25ea4a5a5",
     "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
   },
   "reviewDocuments": [],
@@ -42,5 +82,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "160fd6995ca67ffbcedcd5bbbf00589f56faa39368338e69acff2a441d657e24"
+  "ruleHash": "4facda13b04e3209d973bc08638dbc7f872d280cf1e56ba1b109b84537ce0d25"
 }

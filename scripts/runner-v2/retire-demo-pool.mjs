@@ -10,7 +10,8 @@ import {retireCountPool} from './retire-count-pool.mjs';
 // private analysis journal and removed from active batches. No source transport.
 export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,now=Date.now}){
  assert(typeof boundary==='function'&&plan.buy===0&&plan.phase===1&&typeof owner==='string'&&owner.length>0,'RETIRE_SCOPE');
- assert(group==='primary'||(group==='secondary'&&[32719,32721].includes(plan.gameId)&&plan.trialId===`sg_r1_20260928_${plan.gameId}`),'RETIRE_GROUP_SCOPE');
+ assert(group==='primary'||(group==='secondary'&&([32719,32721].includes(plan.gameId)&&plan.trialId===`sg_r1_20260928_${plan.gameId}`
+  ||plan.gameId===32812&&plan.trialId==='sg_r1_20261003_32812'&&plan.adapter==='veryfruity-wms-action-v1'&&plan.runnerGroup==='secondary')),'RETIRE_GROUP_SCOPE');
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
  const countSpec=pool?await loadCountPermission({store,plan,pool,commit}):null;

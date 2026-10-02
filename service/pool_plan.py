@@ -14,6 +14,13 @@ def validate_pool_plan(plan):
     if plan.get('campaignId'):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         expected=plans.get(str(plan.get('gameId')))
+        if plan.get('gameId')==32812:
+            require('countAllocation' not in plan and 'demoGeneration' in plan
+                and os.environ.get('SG_DEMO_PILOT_PROFILE')=='demo-pilot-veryfruity-action-20261003.json','VERYFRUITY_FINITE_PROFILE_REQUIRED')
+            from veryfruity_demo_plan import veryfruity_demo_plan
+            profile=json.loads((Path(__file__).resolve().parents[1]/'config/demo-pilot-veryfruity-action-20261003.json').read_text(encoding='utf-8'))
+            require(plan==veryfruity_demo_plan(expected,profile),'VERYFRUITY_DEMO_PLAN_CHANGED')
+            return dict(plan)
         if 'countAllocation' in plan:
             require('demoGeneration' not in plan and plan.get('gameId') in (32721,32795,32799), 'FORMAL_COUNT_SCOPE')
             filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')

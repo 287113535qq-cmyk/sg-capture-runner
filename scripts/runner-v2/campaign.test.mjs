@@ -25,6 +25,16 @@ function fixture(){
   return {c,store,rows,holds,plans,docs,calls};
 }
 
+test('prepared consumer narrows ready list and cannot admit a needs-adapter game',async()=>{
+ const f=fixture();await f.store.create('state','campaign',{enabled:true,activeGame:null,games:[
+   {game_id:32723,status:'ready',baseline:299998},{game_id:32726,status:'ready',baseline:299998}]});
+ f.c.preparedSelector=async({readyGameIds})=>{assert.deepEqual(readyGameIds,[32723,32726]);return 32726;};
+ assert.equal((await f.c.select()).plan.gameId,32726);
+ const g=fixture();await g.store.create('state','campaign',{enabled:true,activeGame:null,games:[{game_id:32723,status:'needs-adapter',baseline:299998}]});
+ g.c.preparedSelector=async()=>32723;await assert.rejects(g.c.select(),/PREPARED_GAME_NOT_ADMITTED/);
+ assert.equal((await g.store.get('state','campaign')).value.activeGame,null);
+});
+
 test('run outcome distinguishes workflow success, parked game, pending audit and complete game without writes',async()=>{
  const f=fixture(),trial=f.plans[32723].trialId;
  await f.store.create('state','capture-run:11:1',{gameId:32723});

@@ -847,5 +847,47 @@
       "currencyMultiplier": "1"
     },
     "protocol": "wms"
+  },
+  "32812": {
+    "schema": "sg-work-pool-v1",
+    "configured": true,
+    "trialId": "sg_r1_20261003_32812",
+    "target": 300000,
+    "workers": 20,
+    "gameId": 32812,
+    "runtimeGameId": 33172,
+    "name": "Very Fruity",
+    "runtimeSlug": "very-fruity",
+    "sourceKey": "veryfruity-wms-action-v1",
+    "mode": "demo",
+    "buy": 0,
+    "betRaw": 20,
+    "maxSteps": 1026,
+    "mongoBatchSize": 100,
+    "minRequestIntervalMs": 0,
+    "database": "sg_capture_staging_v1",
+    "collection": "official_rounds",
+    "productionGamePoolWrites": false,
+    "campaignId": "sg_round_one_20260928",
+    "phase": 1,
+    "adapter": "veryfruity-wms-action-v1",
+    "protocol": "wms",
+    "runnerGroup": "secondary",
+    "featureProfile": "veryfruity-action-v1",
+    "actionContractHash": "04afbd9bb13aeb75ad24aa8ff21e5e01323602435e7c097cf13c1c525f8f05fb",
+    "requestHeader": {
+      "affiliate": "0",
+      "ccyCode": "",
+      "channel": "I",
+      "freePlay": "Y",
+      "gameCodeRGI": "veryfruity",
+      "gameID": "20206",
+      "glsID": "65535",
+      "lang": "en_US",
+      "promotions": "N",
+      "userID": "null",
+      "userType": "C",
+      "versionID": "1_0"
+    }
   }
 }

@@ -44,7 +44,8 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
     if (pending) {
       raw = pending.raw; attempt = pending.attempt; sequence = pending.sequence; pending = null;
     } else {
-      if (state.balance < 2500) {
+      if(plan.adapter==='veryfruity-wms-action-v1'&&state.balance<plan.betRaw)throw fail('DEMO_BALANCE_EXHAUSTED');
+      if (plan.adapter!=='veryfruity-wms-action-v1'&&state.balance < 2500) {
         const previous = state.balance;
         state.balance = await bootstrap();
         if (state.balance <= previous) throw fail('DEMO_BALANCE_REFRESH_FAILED');
@@ -81,7 +82,8 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       if (remaining > 0 && raw.steps.length < plan.maxSteps) {
         following = {sequence, requestPayload:payload(continuation.MSGID,continuation)};
       } else if (normalized && sequence < sequenceTarget && evidence.completedThisRun + 1 < limit
-          && !shouldStop() && performance.now() + 2000 < deadline && normalized.money.endBalanceRaw >= 2500) {
+          && !shouldStop() && performance.now() + 2000 < deadline
+          && normalized.money.endBalanceRaw >= (plan.adapter==='veryfruity-wms-action-v1'?plan.betRaw:2500)) {
         following = {sequence:sequence + 1, attempt:randomUUID(), startBalanceRaw:normalized.money.endBalanceRaw,
           requestPayload:payload(startMessage)};
       }

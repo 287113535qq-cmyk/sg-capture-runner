@@ -9,7 +9,7 @@ const integer=value=>{
 const session=value=>{need(typeof value==='string'&&value.length>0&&value.length<=1024,'VERYFRUITY_ACTION_SESSION');return value;};
 const walk=node=>[node,...children(node).flatMap(walk)];
 export function reviewVeryFruityActions(raw,{expectedHeader,maxSteps=1026}){
- need(expectedHeader&&expectedHeader.freePlay==='Y'&&expectedHeader.promotions==='N'
+ need(expectedHeader&&expectedHeader.gameCodeRGI==='veryfruity'&&expectedHeader.freePlay==='Y'&&expectedHeader.promotions==='N'
   &&['gameID','versionID','ccyCode','lang'].every(k=>typeof expectedHeader[k]==='string'),'VERYFRUITY_ACTION_IDENTITY');
  need(Number.isSafeInteger(maxSteps)&&maxSteps>0&&maxSteps<=1026&&Array.isArray(raw?.steps)
   &&raw.steps.length>0&&raw.steps.length<=maxSteps,'VERYFRUITY_ACTION_BUDGET');

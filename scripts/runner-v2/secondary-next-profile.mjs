@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {checkVeryFruityNextProfile} from './veryfruity-next-profile.mjs';
 export const PYRAMIDS_LEGACY_HASH='72b7cdcaef7ef9ccfab1a417476bf420946d06efef4580fe840934cb2f87bb8b';
 export function checkSecondaryNextProfile(p,plan){
+ if(p?.gameId===32812)return checkVeryFruityNextProfile(p,plan);
  assert(p?.schema==='sg-demo-next-game-v1'&&p.group==='secondary'&&p.workerOffset===20
   &&p.gameId===32721&&p.fromGameId===32719&&plan.gameId===32721&&plan.runtimeGameId===33121
   &&plan.trialId==='sg_r1_20260928_32721'&&plan.buy===0&&plan.phase===1&&plan.target===299850

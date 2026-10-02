@@ -171,7 +171,7 @@
 | [32809](32809.json) | Sword of Destiny | not-documented | 待确认 |
 | [32810](32810.json) | The Legend of Big Foot | not-documented | 待确认 |
 | [32811](32811.json) | Triple Cash Wheel | not-documented | 待确认 |
-| [32812](32812.json) | Very Fruity | not-documented | 待确认 |
+| [32812](32812.json) | Very Fruity | implemented-subset | 待确认 |
 | [32813](32813.json) | Volts and Bolts | not-documented | 待确认 |
 | [32814](32814.json) | Wild Streets | not-documented | 待确认 |
 | [32815](32815.json) | Zeus God of Thunder | not-documented | 待确认 |

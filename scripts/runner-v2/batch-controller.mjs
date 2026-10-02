@@ -133,7 +133,7 @@ export class BatchController {
     if(begin){
       assert(Number.isSafeInteger(r.startBalanceRaw)&&r.startBalanceRaw>=this.plan.betRaw);
       assert(/^[0-9a-f-]{36}$/.test(r.attempt),'INVALID_ATTEMPT');
-      raw={fixtureOnly:false,protocol:['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter)?'wms':'nextgen',sourceKey:this.plan.sourceKey,
+      raw={fixtureOnly:false,protocol:['pearl-wms-v1','rhino-wms-v1','veryfruity-wms-action-v1'].includes(this.plan.adapter)?'wms':'nextgen',sourceKey:this.plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:r.startBalanceRaw,steps:[]};
       const contract=actionContract(this.plan);
       if(contract){raw.requestFlowVersion=contract.version;raw.actionContractHash=contract.hash;}
@@ -218,7 +218,7 @@ export class BatchController {
       this.pendingFirst.beforeNewRequest();
       const poolSnapshot=await this.control.allowed({newRound:true,workerId:r.shardId});
       await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
-      assert((['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter)?['Init']:['INIT','REELSTRIP']).includes(r.msgId),'BOOTSTRAP_METHOD');
+      assert((['pearl-wms-v1','rhino-wms-v1','veryfruity-wms-action-v1'].includes(this.plan.adapter)?['Init']:['INIT','REELSTRIP']).includes(r.msgId),'BOOTSTRAP_METHOD');
       await this.update(v=>{assert(!v.pending && !v.bootstrapAwaiting,'BOOTSTRAP_PENDING');v.bootstrapAwaiting={msgId:r.msgId,payload:r.requestPayload};return v;});
       return {intentDurable:true};
     }
@@ -227,7 +227,7 @@ export class BatchController {
     assert(before.bootstrapAwaiting?.payload===r.step.requestPayload,'BOOTSTRAP_RESPONSE_MISMATCH');
     const key=`bootstrap:${this.plan.trialId}:${this.batch.id}:${hash(r.step)}`;
     await this.store.create('journal',key,{worker:this.lease.worker,step:r.step},{immutable:true});
-    if(['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter))await this.analyzer.call({op:'bootstrap',plan:this.plan,raw:{},step:r.step});
+    if(['pearl-wms-v1','rhino-wms-v1','veryfruity-wms-action-v1'].includes(this.plan.adapter))await this.analyzer.call({op:'bootstrap',plan:this.plan,raw:{},step:r.step});
     await this.update(v=>{assert(stable(v.bootstrapAwaiting)===stable(before.bootstrapAwaiting));v.bootstrapAwaiting=null;return v;});
     this.spool.confirmed();
     return {responseDurable:true};

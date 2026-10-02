@@ -21,8 +21,8 @@ export function idleAtAssignedTail(pool,worker,target,now=Date.now()){
 }
 
 export class GithubCampaign {
-  constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now,auditProgress=()=>{}}){
-    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now,auditProgress});
+  constructor({store,transport,control,analyzer,plans,group,owner,commit=process.env.GITHUB_SHA,now=Date.now,auditProgress=()=>{},preparedSelector=null}){
+    Object.assign(this,{store,transport,control,analyzer,plans,group,owner,commit,now,auditProgress,preparedSelector});
   }
   async idleAtTail(plan,pool,worker){
     const spec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
@@ -144,10 +144,16 @@ export class GithubCampaign {
       if(pool?.enabled&&!pool.failure)return {action:'capture',plan};
       return {action:'stop',reason:pool?.failure || 'POOL_NOT_READY'};
     }
+    // Optional independent preparation consumer. It can narrow the existing
+    // ready list, never turn an unadmitted game into ready or allocate quota.
+    const preparedGame=this.preparedSelector?await this.preparedSelector({group:this.group,
+      readyGameIds:c.games.filter(g=>g.status==='ready').map(g=>g.game_id)}):undefined;
+    if(this.preparedSelector&&preparedGame===null)return {action:'stop',reason:'PREPARED_INVENTORY_EMPTY'};
+    if(this.preparedSelector)assert(c.games.some(g=>g.status==='ready'&&g.game_id===preparedGame),'PREPARED_GAME_NOT_ADMITTED');
     let selected;
     await this.store.update('state','campaign',v=>{
       if(v.activeGame){selected=v.activeGame;return null;}
-      const next=v.games.find(x=>x.status==='ready');if(!next)return null;
+      const next=v.games.find(x=>x.status==='ready'&&(!this.preparedSelector||x.game_id===preparedGame));if(!next)return null;
       assert(this.plans[next.game_id],'UNADAPTED_GAME_NOT_ALLOCATABLE');
       assert(next.baseline+this.plans[next.game_id].target===300000,'TARGET_CHANGED');
       next.status='active';v.activeGame=next.game_id;selected=next.game_id;return v;

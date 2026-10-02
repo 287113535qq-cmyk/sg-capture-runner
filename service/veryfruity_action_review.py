@@ -5,7 +5,7 @@ from veryfruity_review import uint, CLIENT_SHA256
 
 
 def review_actions(raw, *, expected_header, max_steps=1026):
-    check(isinstance(expected_header, dict) and expected_header.get('freePlay') == 'Y'
+    check(isinstance(expected_header, dict) and expected_header.get('gameCodeRGI') == 'veryfruity' and expected_header.get('freePlay') == 'Y'
           and expected_header.get('promotions') == 'N'
           and all(isinstance(expected_header.get(k), str) for k in ('gameID', 'versionID', 'ccyCode', 'lang')),
           'VERYFRUITY_ACTION_IDENTITY')
