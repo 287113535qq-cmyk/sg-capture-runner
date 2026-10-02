@@ -1,5 +1,9 @@
 # Pyramids 请求流程与玩法解析分离
 
+最新线上验收覆盖下文准备阶段的“结清未执行”：无源维护36966858037:1已成功，固定runtime9b9f746c1bf861b227052cd4d2eec96323ab04d8；日志SHA da852edaf9f527e3b1b7019cd560a18a17df62d37f586fb3671716c78f2d33cd。16913完整、1122实际补写、3中断留样作废、reserved0、活worker0、hold解除、activeGame空、repair pending-adapter/sourceAllowance0。以100条分页171页鲜读16913条Mongo，全部与持久化receipt全文相等；recordsHash493099eb67e9e5ef20346762ba3098707adda51460a4e6f4dbc256a62cc091e4。维护没有SG请求，没有授予新BET。
+
+独立JavaScript流程通道已增加，采用同一固定客户端已证明的动作出口，保留完整XML/会话/钱包/内外层计数检查；与Python在免费前缀、混合前缀、内层结束但外层仍继续、恢复外层、普通缺省状态及坏原文负例上分别验证。16913真实旧完整在JavaScript与Python两端均得到终局候选；JavaScript本机回放390毫秒仅是离线诊断成本，不是线上采集提速。两个实现均不修改原文，不批准完整记录、不授源。实际capture入口、独立终局原文待审通道和新profile准入仍待接通，不能将本次结清或诊断称为效率优化全部完成。
+
 已核对本地AG：`src/ag.round.ts:657`从响应读取nextAction，非终局时按精确请求/已支持动作继续；`src/ag.mongo.ts:178`独立验证终局与回放请求链；`src/ag.scheduler.ts:332`对确定的协议错误停款。AG仍解析必要流程、选择及金额证据，不能概括成不做解析或任何响应都继续。
 
 SG旧Pyramids next_request会调用完整玩法校验，真实三帧已由固定官方客户端证明继续FREE_GAME，却因FGTHNS白名单和HNSID范围拒绝。新增独立Python流程检查及Runner `review_flow`诊断入口，只识别会话、原文、消息、内外层进度和钱包证据，不解释GSD展示值。未知展示键保留原文；FID混合、内层结束仍有外层免费时明确继续。终局仅返回terminalCandidate，始终complete=false、captureAuthorized=false。
