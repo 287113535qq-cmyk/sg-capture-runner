@@ -3,9 +3,10 @@ import {createHash} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';
 import {GameRuleEvidence} from './game-rule-evidence.mjs';
 import {createAuditProgress} from './audit-progress.mjs';
+import {countAuditMetadata} from './count-audit-metadata.mjs';
 import {requireShortRun} from './protocol-recovery-core.mjs';
 import {auditSessionOwner} from './demo-session-audit.mjs';
-import {loadCountPermission,auditAllocatedRecord,auditCountBatch,idleAtCountTail} from './complete-count.mjs';
+import {loadCountPermission,idleAtCountTail} from './complete-count.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // Release the hosted-runner slot while the last ranges belong to other workers.
@@ -163,6 +164,7 @@ export class GithubCampaign {
     const countSpec=await loadCountPermission({store:this.store,plan,pool,commit:this.commit});
     if(countSpec)assert(pool.countAllocation.reserved===0,'COUNT_AUDIT_NOT_READY');
     let after=0,count=0;const digest=createHash('sha256'),rules=new GameRuleEvidence({plan}),sessionAuditCache=new Map();
+    const verifyBatch=countSpec?countAuditMetadata({store:this.store,plan,pool,spec:countSpec}):null;
     const progress=createAuditProgress({emit:this.auditProgress});
     try{
     while(true){
@@ -176,9 +178,8 @@ export class GithubCampaign {
       await progress.run('recordChecks',async()=>{
       for(const record of rows){
         assert(record.sequence>after && record.fixtureOnly===false && record.buy===0);
-        if(countSpec)auditAllocatedRecord({pool,plan,spec:countSpec,record});else assert(record.sequence<=plan.target);
-        if(countSpec)await auditCountBatch({store:this.store,plan,pool,spec:countSpec,record,cache:sessionAuditCache});
-        else await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
+        if(countSpec)await verifyBatch(record);else assert(record.sequence<=plan.target);
+        if(!countSpec)await auditSessionOwner({store:this.store,plan,pool,record,cache:sessionAuditCache});
         if(!this.analyzer.verifyPage){
           const verified=await this.analyzer.call({op:'verify',plan,raw:record.raw,record});
           if(countSpec)assert(verified?.verified===true,'COUNT_AUDIT_UNVERIFIED');
@@ -201,6 +202,7 @@ export class GithubCampaign {
       g.status='complete';g.confirmed=count;g.completed=this.now()/1000;v.activeGame=null;v.audit=null;return v;
     });
     });
+    if(verifyBatch){try{this.auditProgress(verifyBatch.summary());}catch{}}
     progress.finish();
     return proof;
     }catch(error){progress.failed(error);throw error;}
