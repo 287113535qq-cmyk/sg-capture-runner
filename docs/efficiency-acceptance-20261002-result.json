@@ -369,6 +369,44 @@
       "sourceRequestsForAnalysis": 0,
       "mongoWritesForAnalysis": 0,
       "limitation": "Unmatched protocol shapes and different completed counts cannot establish overall throughput gain."
+    },
+    "adapterCloseEntryfix": {
+      "actualCloseRun": 36944092275,
+      "completePreserved": 5111,
+      "newMongoFullReadback": 87,
+      "newPythonFullVerified": 87,
+      "abandonedAttempts": 1,
+      "pending": 0,
+      "reserved": 0,
+      "poolEnabled": false,
+      "repairStatus": "pending-adapter",
+      "recordsHash": "4fb9e24fb9ded80ff45904791293a52742aa2a063572f83529b83d5611675d6a",
+      "oldJournalsUnchanged": true,
+      "sourceRequests": 0,
+      "newBetAllowance": 0
+    },
+    "retirementBoundedLocal": {
+      "schema": "sg-retirement-bounded-verify-offline-v1",
+      "pairs": 3,
+      "recordsPerReplay": 5111,
+      "serialMs": [
+        4298.8442,
+        4263.4791,
+        4236.0581
+      ],
+      "parallelMs": [
+        3361.081,
+        3364.3649,
+        3359.5904
+      ],
+      "serialMedianMs": 4263.4791,
+      "parallelMedianMs": 3361.081,
+      "localPhaseReductionPercent": 21.165768116466186,
+      "recordsHash": "4fb9e24fb9ded80ff45904791293a52742aa2a063572f83529b83d5611675d6a",
+      "sameRetirementAndMongoResult": true,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "onlineGainVerified": false
     }
   },
   "pending": [

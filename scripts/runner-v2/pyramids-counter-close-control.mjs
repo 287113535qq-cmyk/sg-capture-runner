@@ -17,7 +17,7 @@ for(const[p,h]of Object.entries(profile.files)){
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'COUNTER_CLOSE_RUNTIME_CHANGED');
 }
 process.env.SG_FORMAL_COUNT_PROFILE=sourceName;
-const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer(),
+const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer({auditWorkers:2}),
  read=authenticatedRead(process.env.GH_TOKEN),commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const github=countPeerBoundary({read,transport,peer:profile.primaryPeer,selfGroup:'secondary',run,commit,
  workflowPath:'.github/workflows/demo-maintenance.yml',maintenanceHoldHash:profile.holdHash});

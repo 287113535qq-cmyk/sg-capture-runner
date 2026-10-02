@@ -116,3 +116,29 @@ test('retirement rejects a fabricated history permit before any mutation',async(
  const f=largeCountFixture();f.args.historyPermit={run:'77:1'};const before=hash([...f.docs]);
  await assert.rejects(retireDemoPool(f.args),/COUNT_RETIRE_HISTORY_PERMISSION/);assert.equal(hash([...f.docs]),before);
 });
+test('closed-batches retirement uses bounded verification and preserves the serial result',async()=>{
+ const serial=countedFixture(),batched=countedFixture();
+ for(const f of [serial,batched]){
+  const spec=f.docs.get('journal/'+f.key).value;spec.sessionRotation='closed-batches-v1';
+  f.pool.countAllocation.specHash=hash(spec);f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);
+  f.args.expectedPoolHash=hash(f.pool);
+ }
+ let pages=0;batched.args.parser.verifyPage=async(plan,records)=>{
+  pages++;assert.equal(records.length,2);assert.deepEqual(records.map(r=>r.sequence),[1,2]);
+  return {verified:true,count:records.length};
+ };
+ const a=await retireDemoPool(serial.args),b=await retireDemoPool(batched.args);
+ assert.equal(pages,1);assert.deepEqual(a,b);assert.equal(hash([...serial.mongo]),hash([...batched.mongo]));
+ assert.equal(hash(serial.get('state','pool:synthetic-demo')),hash(batched.get('state','pool:synthetic-demo')));
+});
+
+test('failed bounded retirement verification keeps pending, reservation and Mongo intact',async()=>{
+ for(const result of [{verified:false,count:2},{verified:true,count:1}]){
+  const f=countedFixture(),spec=f.docs.get('journal/'+f.key).value;spec.sessionRotation='closed-batches-v1';
+  f.pool.countAllocation.specHash=hash(spec);f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);
+  f.args.expectedPoolHash=hash(f.pool);f.args.parser.verifyPage=async()=>result;
+  await assert.rejects(retireDemoPool(f.args),/COUNT_RETIRE_RECORD_INVALID/);
+  assert.equal(f.mongo.size,0);assert(f.get('state','batch:synthetic-demo:1').value.pending);
+  assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,100);
+ }
+});

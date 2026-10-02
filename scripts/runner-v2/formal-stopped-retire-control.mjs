@@ -22,7 +22,7 @@ for(const [p,h] of Object.entries(profile.files)){
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'FORMAL_RETIRE_RUNTIME_CHANGED');
 }
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000});
-const parser=analyzer(),read=authenticatedRead(process.env.GH_TOKEN);
+const parser=analyzer({auditWorkers:2}),read=authenticatedRead(process.env.GH_TOKEN);
 const idle=maintenanceBoundary({read,store,oldProfile:readFile('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/demo-maintenance.yml'});
 try{
  const boundary=async()=>{

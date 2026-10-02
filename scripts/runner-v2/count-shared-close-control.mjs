@@ -17,7 +17,7 @@ for(const [p,h]of Object.entries(profile.files)){
  assert(createHash('sha256').update(fs.readFileSync(p,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'SHARED_CLOSE_RUNTIME_CHANGED');
 }
 process.env.SG_FORMAL_COUNT_PROFILE=`${root?'formal-repair-pyramids-continuation':'formal-sessions-rhino-two'}-20261001.json`;
-const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer();
+const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer({auditWorkers:2});
 const read=authenticatedRead(process.env.GH_TOKEN),commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,
  idle=sharedCloseBoundary({read,repository,run,commit});
 try{
