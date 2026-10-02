@@ -16,4 +16,4 @@ Final telemetry contained 20 worker reports, zero source errors and no pause tra
 
 Private incremental evidence was verified at both locations: `ag-action-canary-final-20261002`, 25 files, 2,286,627 archive bytes, SHA256 `6c88553351901dc3d1df3e31ba0531d87f74d176ad850864ca5be998fc6274dc`. It includes only the new 2,000 full records and references the prior archive for the old 16,913.
 
-The successor continuous runtime is being connected to the same original activation and remaining ledger. It has not been applied or dispatched. Full resource-window validation, controlled concurrency comparison and actual cross-game relay remain incomplete. All efficiency optimizations are not yet complete.
+The successor continuous runtime has since been applied, and source run 36973608232:1 is in progress. See [actual continuous entry](ag-action-continuous-entry-20261002.md). Full resource-window validation, controlled concurrency comparison and actual cross-game relay remain incomplete. All efficiency optimizations are not yet complete.
