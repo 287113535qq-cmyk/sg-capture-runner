@@ -111,7 +111,7 @@
   ],
   "analysisDocumentHashes": {
     "docs/efficiency-acceptance-20261001.md": "4f29172fae7bda5e8f01e795c0ca9558f719ead0e621f83de3a77bda729bbaad",
-    "docs/efficiency-acceptance-20261002-result.json": "63c5f8a5b47054e839bfa51c9bd599e97d3d3a89576e9f375ecd37cca2b24feb",
+    "docs/efficiency-acceptance-20261002-result.json": "df50b8509ff3a3e70fa2e967731ecc353b61cb80c028c54f42b2ef3880e87ef3",
     "docs/formal-next-candidate-20261001.md": "8b10b1ee6f06e44874632af761ebf5bc1d3c8957797e40c49fe510f0d3cf85bc",
     "docs/inca-free-integration-20261001.md": "ec37f1d56b20688ee09390aed029be7c8a3892e6c15f266d1b5fd0bd2e05472d",
     "docs/mansion-reentry-rhino-guarantee-20261001-result.json": "ed0d063960d7e6f30cb4f7d5ce08738ebf828018949c6b55c2a021993c7c0535",
@@ -131,5 +131,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "029e26fae637621c77777b3de624dcc6d22f79daf84023be53c59829d9cc5f2b"
+  "ruleHash": "d5b9c1fa4db276689c0bb2ea644c779a34f5ec9c62f86c3aeaf3be8a407daab2"
 }

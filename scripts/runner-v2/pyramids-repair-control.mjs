@@ -25,7 +25,7 @@ const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.en
 const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate();
 const store=new RunnerState({transport,gate,deadline:Date.now()+30*60000}),parser=analyzer({auditWorkers:2,env:{...process.env,SG_FORMAL_COUNT_PROFILE:entry.parserProfile}});
 assert(!profile.primaryPeer||entry.v2,'PYRAMIDS_PEER_PROFILE_SCOPE');
-assert(!(entry.v3||entry.v4||entry.v5||entry.v6||entry.v7)||profile.primaryPeer,'PYRAMIDS_MAJOR_PEER_REQUIRED');
+assert(!(entry.v3||entry.v4||entry.v5||entry.v6||entry.v7||entry.v8)||profile.primaryPeer,'PYRAMIDS_MAJOR_PEER_REQUIRED');
 const workflowPath=mode==='admit'?'.github/workflows/trial-300k.yml':'.github/workflows/demo-maintenance.yml';
 const github=profile.primaryPeer?countPeerBoundary({read,transport,run,commit,peer:profile.primaryPeer,selfGroup:'secondary',workflowPath}):
  secondaryParallelBoundary({read,transport,run,commit,primaryRun:entry.primaryRun,allowEndedPrimary:entry.allowEndedPrimary,workflowPath});

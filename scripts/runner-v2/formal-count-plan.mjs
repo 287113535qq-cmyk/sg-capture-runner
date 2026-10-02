@@ -7,7 +7,7 @@ import {sessionLayoutPlan} from './session-layout-profile.mjs';
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
  if(['sg-session-layout-profile-v1','sg-session-layout-rhino-v1'].includes(profile?.schema))return {...plans,[profile.gameId]:sessionLayoutPlan(base,profile)};
- if(['sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v1','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v4'].includes(profile?.schema))return {...plans,[32721]:pyramidsRepairPlan(base,profile)};
+ if(['sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v1','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v4'].includes(profile?.schema))return {...plans,[32721]:pyramidsRepairPlan(base,profile)};
  if(profile?.schema==='sg-formal-count-pyramids-v1')return {...plans,[32721]:pyramidsCountPlan(base,profile)};
  if(['sg-formal-count-rhino-v1','sg-formal-count-rhino-v2'].includes(profile?.schema)){
   const repaired=profile.schema==='sg-formal-count-rhino-v2';
@@ -47,6 +47,7 @@ export function applyFormalCount(plans,profile){
 }
 
 export function formalCountProfilePath(env=process.env){
+ if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-retrigger-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-super-free-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-super-hold-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-fifteen-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;

@@ -5,7 +5,9 @@ import {pyramidsMixedRepairPlan} from './pyramids-mixed-repair-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {pyramidsSuperFreeRepairPlan} from './pyramids-super-free-repair-profile.mjs';
+import {pyramidsRetriggerRepairPlan} from './pyramids-retrigger-repair-profile.mjs';
 export function pyramidsRepairPlan(base,p){
+ if(p?.schema==='sg-formal-repair-pyramids-v8')return pyramidsRetriggerRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v7')return pyramidsSuperFreeRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v6')return pyramidsSuperHoldRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v5')return pyramidsFifteenRepairPlan(base,p);

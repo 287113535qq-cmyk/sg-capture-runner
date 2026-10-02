@@ -4,6 +4,7 @@ import {observationPrimary,rhinoTwoPrimary} from './secondary-parallel-boundary.
 // An entry selects immutable parent evidence; it never creates quota or chooses a peer dynamically.
 export function pyramidsRepairEntry(mode,name,retireName){
  assert(['retire','activate','admit'].includes(mode),'PYRAMIDS_REPAIR_OPERATION');
+ if(name==='formal-repair-pyramids-retrigger-20261002.json'){assert(mode!=='retire'&&!retireName,'PYRAMIDS_RETRIGGER_INDEPENDENT_CLOSURE');return {v2:true,v8:true,oldName:'formal-repair-pyramids-super-free-20261002.json',parserProfile:name,newName:name,sourceId:36951574835};}
  if(name==='formal-repair-pyramids-super-free-20261002.json'){assert(mode!=='retire'&&!retireName,'PYRAMIDS_SUPER_FREE_INDEPENDENT_CLOSURE');return {v2:true,v7:true,oldName:'formal-repair-pyramids-super-hold-20261002.json',parserProfile:name,newName:name,sourceId:36946815410};}
  if(name==='formal-repair-pyramids-super-hold-20261002.json'){assert(mode!=='retire'&&!retireName,'PYRAMIDS_SUPER_HOLD_INDEPENDENT_CLOSURE');return {v2:true,v6:true,oldName:'formal-repair-pyramids-fifteen-20261002.json',parserProfile:name,newName:name,sourceId:36941485498};}
  if(name==='formal-repair-pyramids-fifteen-20261002.json'){assert(mode!=='retire'&&!retireName,'PYRAMIDS_FIFTEEN_INDEPENDENT_CLOSURE');return {v2:true,v5:true,oldName:'formal-repair-pyramids-mixed-20261002.json',parserProfile:name,newName:name,sourceId:36937673870};}

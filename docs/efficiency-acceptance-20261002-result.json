@@ -640,6 +640,27 @@
         10,
         20
       ]
+    },
+    "retriggerClosure": {
+      "run": 36953208987,
+      "runtime": "65d4ca2147309968691235d55c41aac11ee1d2f4",
+      "completePreserved": 5787,
+      "newMongoFullReadback": 74,
+      "abandonedAttempts": 2,
+      "reservedAfter": 0,
+      "sourceRequests": 0,
+      "repairSourceAllowance": 0,
+      "globalHoldAfter": false
+    },
+    "retriggerIntegration": {
+      "runtime": "724b34d3a8315e7c159b726566e33447331a6e46",
+      "linuxRun": 36954091788,
+      "oldCompleteNormsUnchanged": 5787,
+      "naturalPrefixFrames": 3,
+      "naturalTerminalObserved": false,
+      "mappingHash": "55ea09b9c021c8ad53effe8d74bda38b08ac1b263f8d67f2f2cde62088752a8c",
+      "bonus": 8,
+      "sourceAuthorized": false
     }
   },
   "pending": [

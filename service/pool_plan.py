@@ -17,6 +17,11 @@ def validate_pool_plan(plan):
         if 'countAllocation' in plan:
             require('demoGeneration' not in plan and plan.get('gameId') in (32721,32795,32799), 'FORMAL_COUNT_SCOPE')
             filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')
+            if filename=='formal-repair-pyramids-retrigger-20261002.json':
+                from pyramids_retrigger_plan import pyramids_retrigger_plan
+                profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
+                require(plan==pyramids_retrigger_plan(expected,profile),'PYRAMIDS_RETRIGGER_REPAIR_PLAN')
+                return plan
             if filename=='formal-repair-pyramids-super-free-20261002.json':
                 from pyramids_super_free_plan import pyramids_super_free_plan
                 profile=json.loads((Path(__file__).resolve().parents[1]/'config'/filename).read_text(encoding='utf-8'))
