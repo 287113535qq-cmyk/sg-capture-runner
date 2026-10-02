@@ -6,8 +6,15 @@
   "remainingComplete": 167004,
   "historicalBaseline": 150,
   "totalTarget": 300000,
-  "resourceBudget": {"maxFrames": 1026, "maxRawBytes": 4194304},
-  "positiveFrameCounts": [17, 121, 1026],
+  "resourceBudget": {
+    "maxFrames": 1026,
+    "maxRawBytes": 4194304
+  },
+  "positiveFrameCounts": [
+    17,
+    121,
+    1026
+  ],
   "negativeCases": 12,
   "threeIndependentImplementationsAgreeOffline": true,
   "oldNormalizationCompared": 132846,
@@ -20,5 +27,15 @@
   "automaticRelayVerifiedOnline": false,
   "newProfileApplied": false,
   "sourceRequests": 0,
-  "allOptimizationsComplete": false
+  "allOptimizationsComplete": false,
+  "linuxRun": 36992089806,
+  "linuxRuntime": "9c3bb2fdca9111783281a99d5e001d7412a674a5",
+  "linuxSuccess": true,
+  "linuxStartedAt": "2026-10-02T09:50:30Z",
+  "linuxCompletedAt": "2026-10-02T09:51:56Z",
+  "profileHash": "2bde56b5d7af4086256d3e3912630a1b6d137e751ab0ef34024ebb7b21d51f33",
+  "profilePrepared": true,
+  "activationMemoryUnchangedBatches": 1503,
+  "activationMemoryHistoricalRawReads": 0,
+  "closureFinalArchiveSHA": "2b3f49fa4db9750b875874fa00ec3113db78e3ff44865befe4f3bacb4fc8c41e"
 }
