@@ -11,6 +11,35 @@ def report(worker=0):
 
 
 class PerformanceTests(unittest.TestCase):
+    def test_nested_costs_are_separate_and_do_not_export_unknown_fields(self):
+        row = report()
+        row['rpcMetrics'] = {'localStages': {'byStage': {
+            'analyzer.record': {'calls': 5, 'totalMs': 20},
+            'private-session': {'value': 'must-not-export'}}},
+            'gateway': {'byOperation': {'read': {'requests': 10, 'elapsedMs': 40}},
+                        'byDocumentKind': {'statePool': {'requests': 4, 'elapsedMs': 30}}}}
+        result = aggregate([row, row, report(1)])
+        self.assertEqual(result['workerElapsedMs'], 2000)
+        nested = result['nestedDiagnostics']
+        self.assertTrue(nested['nestedWithinRpc'])
+        self.assertTrue(nested['sectionsOverlap'])
+        self.assertEqual(nested['localStages']['reportCoverage'], 1)
+        self.assertEqual(nested['localStages']['totals']['analyzer.record']['count'], 5)
+        self.assertNotIn('private-session', nested['localStages']['totals'])
+        self.assertEqual(nested['gatewayDocuments']['totals']['statePool']['totalMs'], 30)
+
+    def test_missing_nested_evidence_is_not_filled_with_zero_reports(self):
+        result = aggregate([report()])
+        self.assertEqual(result['nestedDiagnostics']['localStages']['reportCoverage'], 0)
+        self.assertEqual(result['nestedDiagnostics']['localStages']['totals'], {})
+
+    def test_invalid_nested_numeric_cost_rejected(self):
+        for value in (float('nan'), -1, True, '40'):
+            row = report()
+            row['rpcMetrics'] = {'gateway': {'byOperation': {'read': {'requests': 1, 'elapsedMs': value}}}}
+            with self.assertRaisesRegex(ValueError, 'INVALID_NESTED_METRIC'):
+                aggregate([row])
+
     def test_duplicate_archive_entries_are_counted_once(self):
         result = aggregate([report(), report(), report(1)])
         self.assertEqual(result['complete'], 10)

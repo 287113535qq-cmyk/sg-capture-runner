@@ -716,11 +716,21 @@
     },
     "veryFruityDifferenceReview": {
       "gameId": 32812,
-      "tests": 4,
+      "tests": 5,
       "syntheticPrefixes": 7,
+      "selectedSessionTransitions": 2,
       "productionImported": false,
       "captureAuthorization": false,
       "naturalXmlObserved": false
+    },
+    "nestedCaptureCostDiagnostics": {
+      "sourceRun": 36955443358,
+      "workersObserved": 19,
+      "expectedWorkers": 20,
+      "tests": 6,
+      "sourceRequestsForAnalysis": 0,
+      "databaseReadsForAnalysis": 0,
+      "completeWindowAccepted": false
     }
   },
   "pending": [

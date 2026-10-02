@@ -338,7 +338,7 @@
     "docs/throughput-fourth-batch-20261001.md"
   ],
   "analysisDocumentHashes": {
-    "docs/ag-veryfruity-difference-review-20261002.md": "75474845326a0352582916c2ee0c776f83789f50d69b49ede61f6887357de28d",
+    "docs/ag-veryfruity-difference-review-20261002.md": "89633b1dfc73c93c496ffb8292e344cc7c9d093e5884ef6710136669f3ee5f9e",
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
     "docs/mansion-reentry-rhino-guarantee-20261001.md": "14c88b927ee2aacffbea2f793bb155496bdde1bbb13f18c07e582fc087858648",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
@@ -357,5 +357,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f841df162ea34ec2be74913dd4c2d1826fa5fa67c4a5bc24a666749a887e1787"
+  "ruleHash": "e28e3e57d97d7e6783bbdc7453314d04927e5e20d8fda099d36d717af7ae29ca"
 }

@@ -2,7 +2,9 @@
 
 按AG固定任务和结果复用方式，32812主线准备独立于32721金币修复。复用固定官方客户端SHA73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2与已执行的请求、继承关系、计数、金额字段方法，不重跑整个客户端。
 
-本次新增service/veryfruity_review.py独立离线FSInfo校验。七个合成前缀核对freeSpinNumber/freeSpinsTotal；缺字段、显示解析器可吞掉的小数/尾缀/NaN、不安全整数、跳帧、金额回退、未审核重触发、max-win、会话轮换及终态之后继续响应均拒绝。四项专项通过。此模块未接生产imports，没有独立mapping、native范围或源许可。
+本次新增service/veryfruity_review.py独立离线FSInfo校验。七个合成前缀核对freeSpinNumber/freeSpinsTotal；缺字段、显示解析器可吞掉的小数/尾缀/NaN、不安全整数、跳帧、金额回退、未审核重触发、max-win、错用旧会话及终态之后继续响应均拒绝。五项专项通过。此模块未接生产imports，没有独立mapping、native范围或源许可。
+
+增量执行实际选择的VC Spin.handleSpinSuccess和其BL父方法，确认响应Header.sessionID直接成为下一请求会话；两个合成轮换均通过，缺sessionID抛错。其余响应解析器是明确的桩，不能代称自然XML或身份验证。独立候选现验证相邻请求使用前一响应会话，不错误拒绝正常轮换，也不允许复用更早会话。
 
 计数达到总数只给出下一请求EndGame的假设，不标记完整大局。完整结算仍需原始XML、独立身份与下注金额、wallet移动及EndGame读回证据；不能复制Pearl的readyForEndGame或Rhino的WagerInfo。现有旧Mongo记录0，尚无自然XML。该款仍为准备中，不能称ready或启动。
 

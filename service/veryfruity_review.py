@@ -24,7 +24,9 @@ def review_free_prefix(frames, *, step_limit=1000):
 
     Total increments are observed facts, not a fixed assumed initial award.
     A changed total is reported as needing award review and not accepted as a
-    verified retrigger. Max-win and counter-overrun exits remain unreviewed.
+    verified retrigger. The fixed selected response method sets the session for
+    the next request; this validates that link, not session authenticity.
+    Max-win and counter-overrun exits remain unreviewed.
     """
     check(isinstance(step_limit, int) and not isinstance(step_limit, bool)
           and 1 <= step_limit <= 1000, 'VERYFRUITY_REVIEW_LIMIT')
@@ -39,7 +41,6 @@ def review_free_prefix(frames, *, step_limit=1000):
         check(all(isinstance(v, str) and 0 < len(v) <= 1024 for v in (request_session, response_session)),
               'VERYFRUITY_REVIEW_SESSION')
         check(session is None or request_session == session, 'VERYFRUITY_REVIEW_SESSION')
-        check(response_session == request_session, 'VERYFRUITY_SESSION_ROTATION_NOT_REVIEWED')
         session = response_session
         free = frame['FSInfo']
         check(isinstance(free, dict) and set(free) == FREE_FIELDS, 'VERYFRUITY_FREE_FIELDS')

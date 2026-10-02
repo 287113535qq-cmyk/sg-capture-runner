@@ -50,6 +50,16 @@ class VeryFruityReviewTests(unittest.TestCase):
         with self.assertRaises(FieldError):
             review_free_prefix(raw)
 
+    def test_response_session_is_used_by_the_next_request(self):
+        raw = sample()
+        for i, frame in enumerate(raw):
+            frame['requestSession'] = 'fixture-' + str(i)
+            frame['responseSession'] = 'fixture-' + str(i + 1)
+        self.assertEqual(review_free_prefix(raw)['nextRequestHypothesis'], 'EndGame')
+        raw[3]['requestSession'] = 'fixture-old'
+        with self.assertRaisesRegex(FieldError, 'VERYFRUITY_REVIEW_SESSION'):
+            review_free_prefix(raw)
+
 
 if __name__ == '__main__':
     unittest.main()
