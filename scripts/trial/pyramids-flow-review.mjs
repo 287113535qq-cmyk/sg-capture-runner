@@ -18,7 +18,11 @@ export function reviewPyramidsFlow(plan,raw){
  check(plan.gameId===32721&&plan.sourceKey===PYRAMIDS_SOURCE&&plan.betRaw===20,'FLOW_PROFILE');
  check(raw.sourceKey===PYRAMIDS_SOURCE&&raw.protocol==='nextgen'&&raw.fixtureOnly===false
   &&raw.roundFieldsVersion==='sg-round-fields-v1','FLOW_RAW_SCOPE');
- check(Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'FLOW_STEPS');
+ const budget=plan.actionResourceBudget;
+ if(budget!==undefined)check(plan.maxSteps===1026&&budget!==null
+  &&Object.keys(budget).length===2&&budget.maxFrames===1026&&budget.maxRawBytes===4194304,'FLOW_RESOURCE_PROFILE');
+ check(Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=(budget?.maxFrames??100),'FLOW_STEPS');
+ if(budget)check(Buffer.byteLength(JSON.stringify(raw),'utf8')<=budget.maxRawBytes,'FLOW_RESOURCE_BYTES');
  const start=amount(raw.startBalanceRaw);check(start>=20,'FLOW_STAKE');
  let previous,player,win=0,n=0,outer=null;
  for(const [index,step]of raw.steps.entries()){

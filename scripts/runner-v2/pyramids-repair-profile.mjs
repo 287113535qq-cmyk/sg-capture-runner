@@ -9,7 +9,9 @@ import {pyramidsRetriggerRepairPlan} from './pyramids-retrigger-repair-profile.m
 import {pyramidsCashCoinsRepairPlan} from './pyramids-cash-coins-repair-profile.mjs';
 import {pyramidsSuperCoinsRepairPlan} from './pyramids-super-coins-repair-profile.mjs';
 import {pyramidsActionRepairPlan} from './pyramids-action-repair-profile.mjs';
+import {pyramidsActionBudgetPlan} from './pyramids-action-budget-profile.mjs';
 export function pyramidsRepairPlan(base,p){
+ if(p?.schema==='sg-formal-action-budget-profile-v1')return pyramidsActionBudgetPlan(base,p);
  if(p?.schema==='sg-formal-action-profile-v1')return pyramidsActionRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v10')return pyramidsSuperCoinsRepairPlan(base,p);
  if(p?.schema==='sg-formal-repair-pyramids-v9')return pyramidsCashCoinsRepairPlan(base,p);

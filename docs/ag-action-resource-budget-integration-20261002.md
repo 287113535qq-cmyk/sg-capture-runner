@@ -1,0 +1,13 @@
+# AG action resource budget integration
+
+The action loop now separates gameplay counters from bounded frame and raw-data use. A new independent Pyramids authorization can bind 1026 frames and 4 MiB without changing the applied 100-frame parent. The independent JavaScript and Python plan validators bind the actual closed source, 49593 preserved records, 250257 remaining records and the immutable closure/retirement hashes. No new profile has been applied and capture remains stopped.
+
+The controller checks the frame limit before persisting a following request intent. Already received responses are persisted before any frame or byte rejection; they cannot disappear from the main pending record because a post-response limit check fails. Known action, progress, session, XML and wallet checks remain in place. A synthetic 121-frame flow passes only with the explicit new budget; the old plan, malformed budgets and oversized raw data are rejected.
+
+Retirement proof reuse is connected to the new activation branch. It freshly checks every closed batch and immutable settlement in pages of at most 100, plus the completed native retirement and closure. It explicitly reports historicalReadbackFresh=false and rawRecordsRead=0. This avoids repeating the already completed full record readback; it does not claim a new Mongo readback. Legacy activation branches retain their existing verification.
+
+A fresh native read at 1790925630 found 660 closed batches, 49593 complete, no pending and no live worker/batch leases. The actual snapshot was replayed through the production activation function in memory: all 660 batch hashes and the next sequence remained unchanged, the inherited remaining count was 250257 and no raw-record read was performed. This was an offline activation, not a live pool change. Tampered history, missing settlement, live lease and altered closure cases reject.
+
+Validation: 41 Node tests across flow parity, controller durability, plan scope, parent freezing, capture, activation and retirement proof reuse; 8 Python flow tests. Independent Python plan validation additionally checks the new resource profile and negative bindings. Source requests and Mongo writes in this work: zero.
+
+Still required before source dispatch: the new fixed profile path and independent Python runtime selection, compact/delta initializer binding, bounded canary admission and workflow/worker entry, then a single combined Linux preflight and fresh online activation/readback. Resource-window acceptance, matched concurrency throughput and real automatic relay are still unproven. Optimization is not complete; game completion remains 16/178. No ended attempt may be resumed and no old canary/runtime claim may be reused.

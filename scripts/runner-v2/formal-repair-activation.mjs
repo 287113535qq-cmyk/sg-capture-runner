@@ -5,10 +5,12 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {applyFormalCount} from './formal-count-plan.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {reviewActionBudgetHistory} from './action-budget-history.mjs';
 
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
+ const budget=profile?.schema==='sg-formal-action-budget-profile-v1';
  const action=profile?.schema==='sg-formal-action-profile-v1';
  const superCoins=profile?.schema==='sg-formal-repair-pyramids-v10';
  const cashCoins=profile?.schema==='sg-formal-repair-pyramids-v9';
@@ -17,12 +19,12 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  const superHold=profile?.schema==='sg-formal-repair-pyramids-v6';
  const fifteen=profile?.schema==='sg-formal-repair-pyramids-v5';
  const mixed=profile?.schema==='sg-formal-repair-pyramids-v4',major=profile?.schema==='sg-formal-repair-pyramids-v3';
- const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=action||superCoins||cashCoins||retrigger||superFree||superHold||fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=budget||action||superCoins||cashCoins||retrigger||superFree||superHold||fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
  const continuation=v2&&profile.sourceRun==='36842835455:1';
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=action?16913:superCoins?8391:cashCoins?7503:retrigger?5787:superFree?5713:superHold?5111:fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(action?'sg-formal-repair-pyramids-v10':superCoins?'sg-formal-repair-pyramids-v9':cashCoins?'sg-formal-repair-pyramids-v8':retrigger?'sg-formal-repair-pyramids-v7':superFree?'sg-formal-repair-pyramids-v6':superHold?'sg-formal-repair-pyramids-v5':fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-action-profile-v1','sg-formal-repair-pyramids-v10','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=budget?profile.completePreserved:action?16913:superCoins?8391:cashCoins?7503:retrigger?5787:superFree?5713:superHold?5111:fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(budget?'sg-formal-action-profile-v1':action?'sg-formal-repair-pyramids-v10':superCoins?'sg-formal-repair-pyramids-v9':cashCoins?'sg-formal-repair-pyramids-v8':retrigger?'sg-formal-repair-pyramids-v7':superFree?'sg-formal-repair-pyramids-v6':superHold?'sg-formal-repair-pyramids-v5':fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-action-budget-profile-v1','sg-formal-action-profile-v1','sg-formal-repair-pyramids-v10','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -37,7 +39,7 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  assert(entry?.status==='parked-protocol'&&entry.repairKey===profile.repairKey&&repair
   &&hash(repair)===profile.repairHash&&repair.sourceAllowance===0&&repair.requiresNewSession===true,'FORMAL_REPAIR_QUEUE');
  if(major)await reviewPyramidsMajorRetirement({store,profile,pool,retired,oldProfile});
- else assert(retired?.schema===(superCoins||cashCoins||superFree?'sg-count-parked-close-v1':action||retrigger||superHold||fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
+ else assert(retired?.schema===(superCoins||cashCoins||superFree?'sg-count-parked-close-v1':budget||action||retrigger||superHold||fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
   &&retired.completePreserved===preserved&&retired.recordsHash===profile.recordsHash&&retired.repairKey===profile.repairKey
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&retired.sourceCommit===profile.sourceCommit,'FORMAL_REPAIR_RETIREMENT');
  if(action)assert(retired.sourceRun===profile.sourceRun&&retired.activation===oldProfile.activation
@@ -54,8 +56,9 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  const oldSpec=await loadCountPermission({store,plan:oldPlan,pool,commit:profile.sourceCommit});
  assert(hash(oldSpec)===profile.oldSpecHash&&pool.countAllocation.reserved===0
   &&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=stamp),'FORMAL_REPAIR_UNSETTLED');
- const records=[],baseline=[];
- for(let start=1;start<pool.nextBatchId;start+=100){
+ const history=budget?await reviewActionBudgetHistory({store,plan:oldPlan,pool,spec:oldSpec,profile,closed:retired,now}):null;
+ const records=[],baseline=history?.baseline??[];
+ for(let start=1;!budget&&start<pool.nextBatchId;start+=100){
   const rows=await store.getMany('state',Array.from({length:Math.min(100,pool.nextBatchId-start)},(_,i)=>`batch:${plan.trialId}:${start+i}`));
   assert(rows.every(Boolean),'FORMAL_REPAIR_BATCH_MISSING');
   for(const {value:b} of rows){
@@ -79,11 +82,12 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
   }
  }
  const recordsHash=action||superCoins||cashCoins||retrigger||major||fifteen||superHold||superFree?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
- assert(records.length===preserved&&recordsHash===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
+ assert(budget?history.review.complete===preserved:records.length===preserved&&recordsHash===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId,
   target:plan.target,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,
   sessionRotation:'closed-batches-v1',runAdmission:'unique-github-run-v1',profileHash:hash(profile),parentActivation:oldSpec.activation,
-  parentSpecHash:hash(oldSpec),sourceRecordsHash:profile.recordsHash,repairKey:profile.repairKey};
+  parentSpecHash:hash(oldSpec),sourceRecordsHash:profile.recordsHash,repairKey:profile.repairKey,
+  ...(history?{historyReuse:history.review}: {})};
  await boundary();
  assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===profile.poolHash
   &&hash((await store.get('state','campaign'))?.value)===profile.campaignHash

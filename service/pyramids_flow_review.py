@@ -4,6 +4,7 @@ The pinned client routes active FID0/FID1 layers to FREE_GAME. Ancillary
 GSD values are retained verbatim, not interpreted as payout or route rules.
 """
 import re
+import json
 import xml.etree.ElementTree as ET
 from native_nextgen_fields import NativeNextgenFields
 from pyramids_hold_review import SOURCE
@@ -16,7 +17,14 @@ def review_pyramids_flow(plan, raw):
     check(raw.get('sourceKey') == SOURCE and raw.get('protocol') == 'nextgen'
           and raw.get('fixtureOnly') is False and raw.get('roundFieldsVersion') == VERSION, 'FLOW_RAW_SCOPE')
     steps = raw.get('steps')
-    check(isinstance(steps, list) and 0 < len(steps) <= 100, 'FLOW_STEPS')
+    budget = plan.get('actionResourceBudget')
+    if 'actionResourceBudget' in plan:
+        check(plan.get('maxSteps') == 1026 and isinstance(budget, dict)
+              and budget == {'maxFrames': 1026, 'maxRawBytes': 4194304}, 'FLOW_RESOURCE_PROFILE')
+    check(isinstance(steps, list) and 0 < len(steps) <= (budget['maxFrames'] if budget else 100), 'FLOW_STEPS')
+    if budget:
+        check(len(json.dumps(raw, separators=(',', ':'), ensure_ascii=False).encode('utf-8'))
+              <= budget['maxRawBytes'], 'FLOW_RESOURCE_BYTES')
     parser = NativeNextgenFields(plan)
     start = amount(raw.get('startBalanceRaw'))
     check(start >= 20, 'FLOW_STAKE')

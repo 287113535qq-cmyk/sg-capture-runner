@@ -144,6 +144,16 @@ export class BatchController {
       assert(current.pending && current.pending.sequence===r.sequence && current.pending.awaiting===null,'PENDING_INTENT_CONFLICT');
       raw=current.pending.raw;
     }
+    // Stop before creating an intent or issuing another source request. A
+    // response already received must still be persisted even if it is too big.
+    assert(raw.steps.length<this.plan.maxSteps,'ROUND_STEP_LIMIT');
+    if(this.plan.actionResourceBudget){
+      const budget=this.plan.actionResourceBudget;
+      assert(this.plan.gameId===32721&&this.plan.featureProfile===ACTION_VERSION
+        &&this.plan.maxSteps===1026&&Object.keys(budget).length===2
+        &&budget.maxFrames===1026&&budget.maxRawBytes===4194304,'FLOW_RESOURCE_PROFILE');
+      assert(Buffer.byteLength(JSON.stringify(raw),'utf8')<budget.maxRawBytes,'FLOW_RESOURCE_BYTES');
+    }
     await this.analyzer.call({op:'intent',plan:this.plan,raw,payload:r.requestPayload});
     await this.update(value=>{
       assert(!value.failure,'BATCH_HALTED');
@@ -167,13 +177,15 @@ export class BatchController {
     const stored=await this.update(value=>{
       const p=value.pending;
       assert(p && p.sequence===r.sequence && p.awaiting===r.step.requestPayload,'RESPONSE_WITHOUT_INTENT');
-      assert(p.raw.steps.length<this.plan.maxSteps,'ROUND_STEP_LIMIT');
       p.raw.steps.push(r.step);p.awaiting=null;return value;
     });
     const pending=stored.value.pending;let next,record;
     this.spool.confirmed();
     if(r.step.sourceRejected)throw fail('SOURCE_REJECTED','source_protocol');
     try{
+      assert(pending.raw.steps.length<=this.plan.maxSteps,'ROUND_STEP_LIMIT');
+      if(this.plan.actionResourceBudget)assert(Buffer.byteLength(JSON.stringify(pending.raw),'utf8')
+        <=this.plan.actionResourceBudget.maxRawBytes,'FLOW_RESOURCE_BYTES');
       next=await this.analyzer.call({op:'next',plan:this.plan,raw:pending.raw});
       if(!next)record=await this.analyzer.call({op:'record',plan:this.plan,raw:pending.raw,
         normalized:r.normalized,sequence:r.sequence,attempt:pending.attempt,

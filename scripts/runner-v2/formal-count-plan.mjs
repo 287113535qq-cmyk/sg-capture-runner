@@ -4,9 +4,11 @@ import {pyramidsCountPlan} from './pyramids-count-profile.mjs';
 import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';
 import {sessionLayoutPlan} from './session-layout-profile.mjs';
 import {pyramidsActionRepairPlan} from './pyramids-action-repair-profile.mjs';
+import {pyramidsActionBudgetPlan} from './pyramids-action-budget-profile.mjs';
 
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
+ if(profile?.schema==='sg-formal-action-budget-profile-v1')return {...plans,[32721]:pyramidsActionBudgetPlan(base,profile)};
  if(profile?.schema==='sg-formal-action-profile-v1')return {...plans,[32721]:pyramidsActionRepairPlan(base,profile)};
  if(['sg-session-layout-profile-v1','sg-session-layout-rhino-v1'].includes(profile?.schema))return {...plans,[profile.gameId]:sessionLayoutPlan(base,profile)};
  if(['sg-formal-repair-pyramids-v10','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v1','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v4'].includes(profile?.schema))return {...plans,[32721]:pyramidsRepairPlan(base,profile)};

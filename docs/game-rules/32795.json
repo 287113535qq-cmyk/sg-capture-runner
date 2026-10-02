@@ -90,7 +90,7 @@
     "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254",
     "scripts/trial/pearl-session.mjs": "5f38f7633a5abd76ba4e224955462aac4a6deb6791dc5474723c20857b5e34b5",
     "scripts/trial/pearl-worker.mjs": "e035df8eec0fd31459f2bc32331de82da26198172e32efab51c6dfeb1fec9283",
-    "scripts/runner-v2/formal-repair-activation.mjs": "f940e5d4388fcc6bbcda2026b8fdcffaf2ed021c2e230daeec8b01eca46c346a",
+    "scripts/runner-v2/formal-repair-activation.mjs": "92f09679b2b899384f1a8e29e11fb667cbd0524459a787b0e848dce50699a14b",
     "scripts/runner-v2/paid-round-evidence.mjs": "ce1fa52cd84f34cae15b5fd366a979948e62a32fa5b45b8c66dad97df820a703",
     "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
     "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
@@ -147,5 +147,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "cfdef1b99636cb2508cdbc43e8f2d4e17c732f745f4b53f4a738fc34cba4a87c"
+  "ruleHash": "a18b449a174846d46e6b831f76536b41d778b93298d1eccb5bd3f0e6a6efd9bb"
 }

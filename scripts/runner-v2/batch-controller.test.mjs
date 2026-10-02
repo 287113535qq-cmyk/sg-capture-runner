@@ -53,6 +53,27 @@ async function fixture(shardId=0){
   return {controller,store,docs,rounds,plan,rpc,lease,owned,identity,
     failResponse(){failResponse=true;},advance(ms){now+=ms;}};
 }
+test('frame budget stops before next intent and persists any already received response before rejecting',async()=>{
+ const f=await fixture();f.plan.maxSteps=1;
+ await f.rpc('begin',{...f.owned,sequence:1,attempt:'12345678-1234-1234-1234-123456789abc',startBalanceRaw:100,
+  requestPayload:'first'});
+ const step={requestPayload:'first',responsePayload:'retained-full-response'};
+ // Simulate a response whose pending prefix already reaches the cap. This
+ // checks the receive path independently of the pre-request protection.
+ await f.controller.update(v=>{v.pending.raw.steps.push({responsePayload:'prefix'});return v;});
+ await assert.rejects(f.controller.exchange({...f.owned,shardId:0,sequence:1,step}),/ROUND_STEP_LIMIT/);
+ const saved=(await f.store.get('state',f.controller.batchKey)).value;
+ assert.equal(saved.pending.awaiting,null);assert.deepEqual(saved.pending.raw.steps.at(-1),step);
+ assert.equal(saved.pending.raw.steps.length,2);assert.equal(saved.journaled,0);
+ assert.equal(f.rounds.size,0);
+ const g=await fixture();g.plan.maxSteps=1;
+ await g.rpc('begin',{...g.owned,sequence:1,attempt:'12345678-1234-1234-1234-123456789abc',startBalanceRaw:100,requestPayload:'first'});
+ await g.controller.update(v=>{v.pending.raw.steps.push(step);v.pending.awaiting=null;return v;});
+ let parsed=0;g.controller.analyzer={call:async()=>{parsed++;}};
+ await assert.rejects(g.controller.intent({...g.owned,shardId:0,sequence:1,requestPayload:'next'}),/ROUND_STEP_LIMIT/);
+ assert.equal(parsed,0);assert.equal((await g.store.get('state',g.controller.batchKey)).value.pending.awaiting,null);
+});
+
 test('idle canary reads compact fresh counts, honors completion and pauses, and rejects incomplete projection',async()=>{
  const f=await fixture();f.controller.control.compact=true;let value={enabled:true,failure:null,confirmed:0},reads=0;
  f.controller.transport={request:async(op,r)=>{reads++;assert.equal(op,'control_read');assert.deepEqual(r,{trialId:f.plan.trialId,workerId:40});return [{_id:'primary/pool:'+f.plan.trialId,value:structuredClone(value)}];}};

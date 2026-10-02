@@ -10,10 +10,19 @@ sys.path[:0]=['service','service/tests','scripts/runner-v2']
 from test_pyramids_flow_review import PLAN,flow_sample,mixed_prefix,frame,rewrite
 from pyramids_flow_review import review_pyramids_flow
 cases=[]
-def add(name,raw):
- try: result=review_pyramids_flow(PLAN,raw);accepted=True
+def add(name,raw,plan=PLAN):
+ try: result=review_pyramids_flow(plan,raw);accepted=True
  except Exception: result=None;accepted=False
- cases.append(dict(name=name,raw=raw,accepted=accepted,result=result))
+ cases.append(dict(name=name,plan=plan,raw=raw,accepted=accepted,result=result))
+budget={**PLAN,'maxSteps':1026,'actionResourceBudget':{'maxFrames':1026,'maxRawBytes':4194304}}
+long=flow_sample();long['steps']=[frame('BET',120,120,0)]+[frame('FREE_GAME',n,120,120-n) for n in range(119,-1,-1)]
+for step in long['steps']:step['methodName']='processGameMessage'
+add('121-frames-bound-budget',long,budget)
+add('old-plan-still-limits-frames',long)
+add('budget-null-rejected',long,{**budget,'actionResourceBudget':None})
+add('budget-extra-key-rejected',long,{**budget,'actionResourceBudget':{**budget['actionResourceBudget'],'unbounded':True}})
+add('budget-wrong-plan-rejected',long,{**budget,'maxSteps':100})
+oversize=copy.deepcopy(long);oversize['retainedDisplay']='x'*4194304;add('raw-bytes-limit',oversize,budget)
 full=flow_sample()
 large=flow_sample();large['steps']=large['steps'][:2]
 rewrite(large['steps'][0],NFG=100,TFG=100,CFGG=0)
@@ -44,12 +53,12 @@ for kind in ('xml','session','method','missing','after_terminal'):
  add(kind,raw)
 print(json.dumps(dict(plan=PLAN,cases=cases)))
 `;
- const p=spawnSync(process.env.PYTHON??'python',['-B','-c',script],{encoding:'utf8',env:{...process.env,PYTHONUTF8:'1'}});
+ const p=spawnSync(process.env.PYTHON??'python',['-B','-c',script],{encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,PYTHONUTF8:'1'}});
  assert.equal(p.status,0,p.stderr);const {plan,cases}=JSON.parse(p.stdout);
  for(const c of cases){
   const before=JSON.stringify(c.raw);
-  if(c.accepted)assert.deepEqual(reviewPyramidsFlow(plan,c.raw),c.result,c.name);
-  else assert.throws(()=>reviewPyramidsFlow(plan,c.raw),undefined,c.name);
+  if(c.accepted)assert.deepEqual(reviewPyramidsFlow(c.plan??plan,c.raw),c.result,c.name);
+  else assert.throws(()=>reviewPyramidsFlow(c.plan??plan,c.raw),undefined,c.name);
   assert.equal(JSON.stringify(c.raw),before);
  }
  assert(cases.some(c=>c.name==='inner-terminal-keeps-outer-free'&&c.result.next));
