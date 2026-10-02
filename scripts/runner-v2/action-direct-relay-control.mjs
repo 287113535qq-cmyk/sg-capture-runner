@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {DIRECT_ACTION_RELAY_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow} from './action-direct-relay-runtime.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
 import {loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
 import {DIRECT_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
@@ -66,8 +66,8 @@ try{
     const root='repos/287113535qq-cmyk/sg-capture-runner/actions/runs/'+process.env.GITHUB_RUN_ID;
     const source=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
     const logs=await loadDirectCaptureLogs({source,jobs,commit});
-    const pool=await get('pool:'+plan.trialId);
-    const resourceReview=reviewDirectSourceResource({run,commit,...logs,completeDelta:pool.confirmed-permit.completeBefore});
+    const completeDelta=await directRelayCompleteDelta({store,trialId:plan.trialId,permit});
+    const resourceReview=reviewDirectSourceResource({run,commit,...logs,completeDelta});
     console.log(JSON.stringify(await relayDirectActionRun({store,base,plan,profile,revision,commit,inputs,source,jobs,binding,
      resourceReview,repository:process.env.GITHUB_REPOSITORY,boundary,
      createIntent:async(k,v)=>{await store.writable();const r=await transport.request('create',{collection:'journal',key:k,value:v});claimed=r.created===true;return claimed;},

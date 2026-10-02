@@ -6,6 +6,12 @@ import {checkLedger,loadCountPermission,auditCountBatch} from './complete-count.
 import {relayFormalRun} from './formal-relay.mjs';
 
 export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-relay-20261002.json';
+export async function directRelayCompleteDelta({store,trialId,permit}){
+ const pool=(await store.get('state','pool:'+trialId))?.value;
+ assert(Number.isSafeInteger(pool?.confirmed)&&Number.isSafeInteger(permit?.completeBefore)
+  &&pool.confirmed>=permit.completeBefore,'DIRECT_RELAY_RESOURCE_COUNT');
+ return pool.confirmed-permit.completeBefore;
+}
 const hex=n=>new RegExp(`^[a-f0-9]{${n}}$`);
 const runId=/^\d+:1$/;
 

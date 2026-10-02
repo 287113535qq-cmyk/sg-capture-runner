@@ -3,7 +3,15 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {DIRECT_ACTION_CANARY,ACTION_RESOURCE_BUDGET,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-direct-action-protocol.mjs';
 import {admitBudgetCanary} from './action-budget-canary.mjs';
-import {checkDirectRelayRevision,checkDirectRelayResource,refreshDirectRelayRuntime,admitDirectRelay,directRelayWindow,relayDirectActionRun} from './action-direct-relay-runtime.mjs';
+import {checkDirectRelayRevision,checkDirectRelayResource,refreshDirectRelayRuntime,admitDirectRelay,directRelayWindow,relayDirectActionRun,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
+
+test('resource completion delta reads the mutable state pool and rejects missing or regressed counts',async()=>{
+ const calls=[],store={get:async(collection,key)=>{calls.push([collection,key]);return collection==='state'?{value:{confirmed:134946}}:null;}};
+ assert.equal(await directRelayCompleteDelta({store,trialId:'trial',permit:{completeBefore:134846}}),100);
+ assert.deepEqual(calls,[['state','pool:trial']]);
+ await assert.rejects(directRelayCompleteDelta({store:{get:async()=>null},trialId:'trial',permit:{completeBefore:134846}}),/DIRECT_RELAY_RESOURCE_COUNT/);
+ await assert.rejects(directRelayCompleteDelta({store,trialId:'trial',permit:{completeBefore:134947}}),/DIRECT_RELAY_RESOURCE_COUNT/);
+});
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 import {createRequire} from 'node:module';
