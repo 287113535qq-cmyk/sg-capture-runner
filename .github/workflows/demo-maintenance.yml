@@ -431,6 +431,7 @@ jobs:
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.repair_profile }}
       SG_ANALYSIS_AFTER: ${{ inputs.analysis_after }}
       SG_ANALYSIS_LIMIT: ${{ inputs.analysis_limit }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
