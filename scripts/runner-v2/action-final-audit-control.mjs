@@ -3,16 +3,17 @@ import {connectGateway} from './transport.mjs';import {ResourceGate} from './res
 import {SourceControl} from './control.mjs';import {GithubCampaign} from './campaign.mjs';import {analyzer} from './analyzer.mjs';
 import {authenticatedRead} from './github-boundary.mjs';import {countPeerBoundary} from './count-peer-boundary.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';import {checkDirectFinalAudit} from './action-final-audit.mjs';
+import {actionFinalAuditEnvironment} from './action-final-audit-runtime.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','DIRECT_AUDIT_GITHUB');
 const name=process.argv[2]??'count-audit-pyramids-direct-action-20261002.json';
-assert(['count-audit-pyramids-direct-action-20261002.json','count-audit-pyramids-network-action-20261002.json'].includes(name),'DIRECT_AUDIT_FILE');
+assert(['count-audit-pyramids-direct-action-20261002.json','count-audit-pyramids-network-action-20261002.json','count-audit-pyramids-network-entryfix-20261002.json'].includes(name),'DIRECT_AUDIT_FILE');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),permission=load('config/'+name);
 for(const [path,h]of Object.entries(permission.files))assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(path)&&!path.includes('..')
  &&createHash('sha256').update(fs.readFileSync(path,'utf8').replace(/\r\n/g,'\n')).digest('hex')===h,'DIRECT_AUDIT_RUNTIME_CHANGED');
-const runtimeName=name==='count-audit-pyramids-network-action-20261002.json'?'count-runtime-pyramids-network-continuation-20261002.json':'count-runtime-pyramids-resume-verified-continuation-20261002.json';
+const runtimeName=name==='count-audit-pyramids-direct-action-20261002.json'?'count-runtime-pyramids-resume-verified-continuation-20261002.json':'count-runtime-pyramids-network-continuation-20261002.json';
 const profile=load('config/formal-repair-pyramids-resume-action-20261002.json'),revision=load('config/'+runtimeName),
  plans=load('config/round-one-plans.json'),base=plans[32721],plan=pyramidsDirectActionPlan(base,profile);plans[32721]=plan;
-const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2}),
+const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2,env:actionFinalAuditEnvironment()}),
  store=new RunnerState({transport,gate,deadline:Date.now()+40*60000}),commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const github=countPeerBoundary({read,transport,peer:profile.primaryPeer,selfGroup:'secondary',run,commit,workflowPath:'.github/workflows/demo-maintenance.yml'});
 const boundary=async()=>{await github();await store.writable();await checkPrimaryLeases({store,plans});

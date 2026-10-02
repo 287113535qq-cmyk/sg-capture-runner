@@ -6,7 +6,7 @@ on:
         description: 'Independent source-free final audit; binds an ended successful source'
         type: choice
         default: count-audit-pyramids-direct-action-20261002.json
-        options: [count-audit-pyramids-direct-action-20261002.json, count-audit-pyramids-network-action-20261002.json]
+        options: [count-audit-pyramids-direct-action-20261002.json, count-audit-pyramids-network-action-20261002.json, count-audit-pyramids-network-entryfix-20261002.json]
       analysis_after:
         description: 'Last receipt sequence reviewed; bounded independent analysis only'
         type: string
