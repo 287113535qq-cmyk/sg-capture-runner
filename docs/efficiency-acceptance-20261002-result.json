@@ -769,7 +769,15 @@
       "profileCreated": false,
       "sourceRequests": 0,
       "mongoWrites": 0,
-      "linuxPreflight": "pending"
+      "linuxPreflight": {
+        "failedRun": 36960170508,
+        "reason": "old negative-coin fixture error-code expectations; corrected without relaxing XML or mapping"
+      },
+      "independentReentryScopeChecks": {
+        "python": 4,
+        "node": 19,
+        "profileCreated": false
+      }
     }
   },
   "pending": [

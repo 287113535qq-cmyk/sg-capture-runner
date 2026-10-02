@@ -79,8 +79,10 @@ test('super hold display boolean stays on reviewed trigger and preserves explici
 test('official negative coin symbols isolate only valid geometry, never malformed coin data',()=>{
  for(const coin of ['-4','-2']){
   const raw=structuredClone(fixture.cases[0].raw);raw.steps[1].responsePayload=raw.steps[1].responsePayload.replace('GSD=BGRS~1;2;3;4;5;','GSD=CL~0;0;'+coin+';|');
-  assert.throws(()=>nextRequest(raw),/PYRAMIDS_FREE_UNREVIEWED_COIN/);
-  assert.throws(()=>prepareNextgenRound(raw,{buy:0,bonus:2,typeMappingHash:fixture.extension}),/PYRAMIDS_FREE_UNREVIEWED_COIN/);
+  // Known cash symbols now select an independent handler. This old fixture
+  // deliberately lacks the required original XML, so it still cannot enter.
+  assert.throws(()=>nextRequest(raw),/PYRAMIDS_RETRIGGER_XML/);
+  assert.throws(()=>prepareNextgenRound(raw,{buy:0,bonus:2,typeMappingHash:fixture.extension}),/SG_PYRAMIDS_COIN_MAPPING_MISMATCH/);
  }
  for(const coin of ['0;0;-3;|3;0;20;|','0;0;-3;|0;0;20;|','0;0;-5;|','-1;0;-3;|']){
   const raw=structuredClone(fixture.cases[0].raw);raw.steps[1].responsePayload=raw.steps[1].responsePayload.replace('GSD=BGRS~1;2;3;4;5;','GSD=CL~'+coin);

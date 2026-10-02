@@ -9,17 +9,18 @@ import {receiptKey} from './durable-queue.mjs';
 // A new immutable authorization inherits every closed range and completed
 // record. It cannot reset the target, reclaim discarded ranges or reuse sessions.
 export async function activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run,now=Date.now}){
+ const cashCoins=profile?.schema==='sg-formal-repair-pyramids-v9';
  const retrigger=profile?.schema==='sg-formal-repair-pyramids-v8';
  const superFree=profile?.schema==='sg-formal-repair-pyramids-v7';
  const superHold=profile?.schema==='sg-formal-repair-pyramids-v6';
  const fifteen=profile?.schema==='sg-formal-repair-pyramids-v5';
  const mixed=profile?.schema==='sg-formal-repair-pyramids-v4',major=profile?.schema==='sg-formal-repair-pyramids-v3';
- const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=retrigger||superFree||superHold||fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
+ const v2=profile?.schema==='sg-formal-repair-pyramids-v2',pyramids=cashCoins||retrigger||superFree||superHold||fifteen||mixed||major||v2||profile?.schema==='sg-formal-repair-pyramids-v1',gameId=pyramids?32721:32795;
  const stamp=now(),plan=applyFormalCount(plans,profile)[gameId],oldPlan=applyFormalCount(plans,oldProfile)[gameId];
  const continuation=v2&&profile.sourceRun==='36842835455:1';
- const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=retrigger?5787:superFree?5713:superHold?5111:fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
- assert(oldProfile.schema===(retrigger?'sg-formal-repair-pyramids-v7':superFree?'sg-formal-repair-pyramids-v6':superHold?'sg-formal-repair-pyramids-v5':fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
- assert(['sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
+ const awards=profile.schema==='sg-formal-repair-profile-v2',preserved=cashCoins?7503:retrigger?5787:superFree?5713:superHold?5111:fifteen?5024:mixed?3627:major?3211:continuation?2590:v2?2127:pyramids?1658:awards?2596:961,remaining=plan.target-preserved;
+ assert(oldProfile.schema===(cashCoins?'sg-formal-repair-pyramids-v8':retrigger?'sg-formal-repair-pyramids-v7':superFree?'sg-formal-repair-pyramids-v6':superHold?'sg-formal-repair-pyramids-v5':fifteen?'sg-formal-repair-pyramids-v4':mixed?'sg-formal-repair-pyramids-v3':major||continuation?'sg-formal-repair-pyramids-v2':v2?'sg-formal-repair-pyramids-v1':pyramids?'sg-formal-count-pyramids-v1':awards?'sg-formal-repair-profile-v1':'sg-formal-count-profile-v1'),'FORMAL_REPAIR_PARENT_SCOPE');
+ assert(['sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v4','sg-formal-repair-pyramids-v3','sg-formal-repair-pyramids-v2','sg-formal-repair-pyramids-v1','sg-formal-repair-profile-v1','sg-formal-repair-profile-v2'].includes(profile.schema)&&profile.oldProfileHash===hash(oldProfile)
   &&profile.createdAt<=stamp&&stamp<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??'')&&profile.activation!==oldProfile.activation,'FORMAL_REPAIR_SCOPE');
  const key=`complete-count:${plan.trialId}:${profile.activation}`;
@@ -34,9 +35,10 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
  assert(entry?.status==='parked-protocol'&&entry.repairKey===profile.repairKey&&repair
   &&hash(repair)===profile.repairHash&&repair.sourceAllowance===0&&repair.requiresNewSession===true,'FORMAL_REPAIR_QUEUE');
  if(major)await reviewPyramidsMajorRetirement({store,profile,pool,retired,oldProfile});
- else assert(retired?.schema===(superFree?'sg-count-parked-close-v1':retrigger||superHold||fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
+ else assert(retired?.schema===(cashCoins||superFree?'sg-count-parked-close-v1':retrigger||superHold||fifteen?'sg-count-shared-close-v1':'sg-formal-stopped-retire-v1')&&hash(retired)===profile.retirementHash
   &&retired.completePreserved===preserved&&retired.recordsHash===profile.recordsHash&&retired.repairKey===profile.repairKey
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&retired.sourceCommit===profile.sourceCommit,'FORMAL_REPAIR_RETIREMENT');
+ if(cashCoins)assert(retired.sourceRun==='36955443358:1'&&retired.activation===oldProfile.activation&&retired.profileHash==='2d556dc5ffa052e8715d376fcee831e05b80eb97aa25227d0e2b98dfdbab11cb'&&retired.abandonedAlready===1&&retired.newAbandoned===0&&retired.requiresNewSession===true,'PYRAMIDS_CASH_COINS_RETIREMENT');
  if(retrigger)assert(retired.sourceRun==='36951574835:1'&&retired.activation===oldProfile.activation&&retired.abandonedAttempts===2&&retired.unknownAttempts===0&&retired.requiresNewSession===true&&retired.newBetAllowance===0,'PYRAMIDS_RETRIGGER_RETIREMENT');
  if(superFree)assert(retired.sourceRun==='36946815410:1'&&retired.activation===oldProfile.activation&&retired.abandonedAlready===1&&retired.newAbandoned===0&&retired.requiresNewSession===true&&retired.newBetAllowance===0,'PYRAMIDS_SUPER_FREE_RETIREMENT');
  if(superHold)assert(retired.sourceRun==='36941485498:1'&&retired.activation===oldProfile.activation&&retired.abandonedAttempts===1&&retired.unknownAttempts===0&&retired.newBetAllowance===0,'PYRAMIDS_SUPER_HOLD_RETIREMENT');
