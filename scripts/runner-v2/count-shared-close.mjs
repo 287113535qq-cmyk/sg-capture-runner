@@ -13,6 +13,10 @@ import {pyramidsHoldReview} from '../trial/pyramids-hold-review.mjs';
 // Close the faulty game first; the peer hold continues to protect both groups.
 export async function closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
  const group=profile?.group,root=group==='secondary';
+ const evidence=profile?.schema==='sg-count-evidence-close-profile-v1',faulty=root||evidence;
+ if(evidence)assert(profile.disposition==='interrupted-abandoned-without-replay'
+  &&/^[A-Z][A-Z_]{0,79}$/.test(profile.faultCode)&&/^[a-f0-9]{64}$/.test(profile.sourceProfileHash),
+  'EVIDENCE_CLOSE_SCOPE');
  const retrigger=profile?.schema==='sg-count-retrigger-close-profile-v1';
  if(retrigger)assert(root&&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'&&plan.target===299850
   &&profile.sourceRun==='36951574835:1'&&profile.sourceCommit==='e2383403cb09d36c34aafcdbc49d9a1948831a06'
@@ -30,7 +34,7 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&profile.sourceCommit==='a66e2c7ac642c87ecedbbe9ddde5194bcae4de36'
   &&profile.sourceProfileHash==='f32e340466c2c02d725b93e87a92a493f013157275f6ea7ff699d47712ee8892'
   &&profile.completePreserved===5024&&profile.abandonedAttempts===1,'COUNTER_CLOSE_FIXED_SCOPE');
- assert(['primary','secondary'].includes(group)&&(counter||adapter||retrigger||profile.schema==='sg-count-shared-close-profile-v1')
+ assert(['primary','secondary'].includes(group)&&(evidence||counter||adapter||retrigger||profile.schema==='sg-count-shared-close-profile-v1')
   &&profile.gameId===plan.gameId&&profile.trialId===plan.trialId&&profile.planHash===hash(plan)
   &&profile.sourceAllowance===0&&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt<=7200000&&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'SHARED_CLOSE_PROFILE');
@@ -49,11 +53,11 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&(counter?pool&&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true:pool?.enabled&&!pool.failure)
   &&hash(pool)===profile.poolHash,'SHARED_CLOSE_SCENE');
  assert(hash(hold)===profile.holdHash&&hold.active&&hold.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'
-  &&hold.details?.code===(adapter?'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY':counter||retrigger?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
-  &&(!(counter||adapter||retrigger)||hold.details.category==='source_protocol'&&hold.details.cooldownUntil===0),'SHARED_CLOSE_HOLD');
+  &&hold.details?.code===(evidence?profile.faultCode:adapter?'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY':counter||retrigger?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
+  &&(!(evidence||counter||adapter||retrigger)||hold.details.category==='source_protocol'&&hold.details.cooldownUntil===0),'SHARED_CLOSE_HOLD');
  const spec=await loadCountPermission({store,plan,pool,commit:profile.sourceCommit}),batches=await readPoolBatches(store,plan,pool);
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
- assert(!(counter||adapter||retrigger)||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
+ assert(!(evidence||counter||adapter||retrigger)||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
  assert(permit?.schema==='sg-count-run-v1'&&permit.commit===profile.sourceCommit&&permit.run===profile.sourceRun
   &&permit.activation===spec.activation&&permit.profileHash===spec.profileHash&&hash(permit)===profile.permitHash,'SHARED_CLOSE_PERMISSION');
  assert(hash(batches)===profile.batchesHash&&Object.values(pool.workers).every(w=>w.leaseUntil<=now())
@@ -61,10 +65,17 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  const complete=batches.reduce((n,b)=>n+b.journaled-b.start+1,0),abandoned=batches.filter(b=>b.pending).length;
  assert(complete===profile.completePreserved&&abandoned===profile.abandonedAttempts
   &&complete>=pool.confirmed&&complete<=plan.target,'SHARED_CLOSE_COUNTS');
- if(root){
+ if(faulty){
   const fault=batches.find(b=>b.id===hold.details.batchId);
   assert(hold.details.trialId===plan.trialId&&fault?.pending&&hash(fault.pending)===profile.faultPendingHash,'SHARED_CLOSE_FAULT');
-  if(retrigger){
+  if(evidence){
+   // Retirement preserves the exact pending original without resuming it.
+   // Its unknown game semantics are not a prerequisite to zero-source cleanup.
+   assert(fault.pending.raw?.fixtureOnly===false&&fault.pending.raw.steps?.length>0
+    &&fault.pending.raw.steps.every(s=>typeof s.requestPayload==='string'&&s.requestPayload.length>0
+     &&typeof s.responsePayload==='string'&&s.responsePayload.length>0
+     &&typeof s.responseXml==='string'&&s.responseXml.length>0),'EVIDENCE_CLOSE_RAW_REQUIRED');
+  }else if(retrigger){
    assert(fault.pending.raw.steps.length===3&&fault.pending.raw.steps[0].msgId==='BET'&&fault.pending.raw.steps.slice(1).every(s=>s.msgId==='FREE_GAME'),'RETRIGGER_CLOSE_PREFIX');
    assert.throws(()=>pyramidsFreeSequence(fault.pending.raw),/^Error: PYRAMIDS_FREE_COUNTERS$/,'RETRIGGER_CLOSE_OLD_SCOPE');
    const reviewed=reviewPyramidsRetrigger(fault.pending.raw);assert(reviewed.complete===false&&reviewed.next==='FREE_GAME','RETRIGGER_CLOSE_DIAGNOSIS');
@@ -94,13 +105,13 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  const after=(await store.get('state',poolKey)).value;
  assert(after.confirmed===complete&&checkLedger(after,plan,spec).reserved===0
   &&Object.values(after.workers).every(w=>!w.activeBatch&&w.leaseUntil<=now()),'SHARED_CLOSE_UNSETTLED');
- const repairKey=root?`game-repair:${plan.trialId}:${hash(after)}`:null;
+ const repairKey=faulty?`game-repair:${plan.trialId}:${hash(after)}`:null;
  const result={schema:'sg-count-shared-close-v1',profileHash:hash(profile),sourceRun:profile.sourceRun,sourceCommit:profile.sourceCommit,
   trialId:plan.trialId,activation:spec.activation,completePreserved:complete,abandonedAttempts:abandoned,unknownAttempts:0,
   retirement:after.retiredCount,retirementHash:hash(retired),recordsHash:retired.recordsHash,repairKey,
   sourceRequests:0,newBetAllowance:0,requiresNewSession:true,group,commit,run,at:now()};
  await save(key+':settled',result);await guarded();
- if(root){
+ if(faulty){
   await store.create('state',repairKey,{schema:'sg-game-repair-v1',gameId:plan.gameId,trialId:plan.trialId,status:'pending-adapter',
    archiveKey:key+':before',evidence:[{key:after.retiredCount+':complete',hash:hash(retired)}],sourceAllowance:0,requiresNewSession:true});
   await store.update('state',poolKey,v=>{assert(hash(v)===hash(after),'SHARED_CLOSE_POOL_CHANGED');return {...v,failure:'PROTOCOL_VALIDATION_FAILED',countSharedClosure:key};});

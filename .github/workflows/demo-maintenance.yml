@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      evidence_profile:
+        description: 'Immutable ended-run evidence closure; zero source allowance'
+        type: choice
+        default: count-close-pyramids-evidence-20261002.json
+        options: [count-close-pyramids-evidence-20261002.json]
       network_profile:
         description: 'Exact ended network fault closure; grants no source requests'
         type: choice
@@ -48,7 +53,7 @@ on:
         options: [demo-repair-rhino-guarantee-20261001.json, demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [close-count-evidence, close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -58,7 +63,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   maintain:
-    if: github.repository == 'zyzuoyang/sg-capture-runner' && inputs.operation != 'close-pyramids-counter' && inputs.operation != 'close-pyramids-retrigger' && inputs.operation != 'close-pyramids-parked' && inputs.operation != 'close-pyramids-adapter' && inputs.operation != 'close-count-shared' && inputs.operation != 'revoke-rhino-jobless' && inputs.operation != 'reserve-rhino-canary-boundary'
+    if: github.repository == 'zyzuoyang/sg-capture-runner' && inputs.operation != 'close-count-evidence' && inputs.operation != 'close-pyramids-counter' && inputs.operation != 'close-pyramids-retrigger' && inputs.operation != 'close-pyramids-parked' && inputs.operation != 'close-pyramids-adapter' && inputs.operation != 'close-count-shared' && inputs.operation != 'revoke-rhino-jobless' && inputs.operation != 'reserve-rhino-canary-boundary'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -293,6 +298,29 @@ jobs:
         run: node scripts/runner-v2/pyramids-counter-close-control.mjs
         env:
           SG_ADAPTER_CLOSE_MODE: ${{ inputs.operation == 'close-pyramids-retrigger' && 'ten-retrigger' || inputs.operation == 'close-pyramids-adapter' && 'super-hold-prefix' || '' }}
+
+  count-evidence-close:
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'close-count-evidence'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+      SG_EVIDENCE_CLOSE_PROFILE: ${{ inputs.evidence_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Preserve complete records and retire original interrupted evidence
+        run: node scripts/runner-v2/count-evidence-close-control.mjs
 
   count-shared-close:
     if: inputs.operation == 'close-count-shared'
