@@ -1,0 +1,9 @@
+# Pyramids 首BET双层状态停止后的无源结清准备
+
+固定失败运行36983664943:1，源版本a4708c41fc9cf263cc1ca8849d2c4c8d9357e0b5。完整数据132846，包含原51593和本轮81253；本轮80500已Mongo/receipt/Python逐条全文核对，另外753完整receipt独立Python通过。1中断原文保持不变，不续接、不重放。
+
+新config/count-close-pyramids-evidence-20261002-layered.json绑定fresh 1503批次、原sourceProfile、实际run/jobs、pool/campaign/hold、permit和首帧原文hash。canonical d8bb56f705a200ca468d0483c566cfb49086a35d964c4dc32d364a81cb93959a，824运行文件，源许可0。尚未应用，不能称线上已结清。
+
+实际正式closeCountShared→retireCountPool内存回放完整通过：132846逐条验证和全文比对、753仅内存补写、1归档、reserved0/hold解除、独立repair额度0，读取页最大100。整段内存回放约29.7秒，不能作为线上速度；原始记录按文件段读取，未再次构造超出Node字符串上限的全文字符串。
+
+旧应用profile、activation、运行permit及记录哈希不变。无源维护采用现有通用证据结清入口；私有双份备份、Linux预检及fresh身份和租约验收仍待完成。首BET新opt-in尚未由新的独立采集契约采用；资源10分钟窗口和自动接力尚未真实验收，不称全部效率优化完成。

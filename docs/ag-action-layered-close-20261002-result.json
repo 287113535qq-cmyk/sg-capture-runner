@@ -1,0 +1,27 @@
+{
+  "profile": {
+    "profileHash": "d8bb56f705a200ca468d0483c566cfb49086a35d964c4dc32d364a81cb93959a",
+    "completePreserved": 132846,
+    "toFlush": 753,
+    "abandoned": 1,
+    "sourceAllowance": 0,
+    "files": 824,
+    "applied": false
+  },
+  "replay": {
+    "memoryOnly": true,
+    "actualSourceRun": "36983664943:1",
+    "completePreserved": 132846,
+    "completeFlush": 753,
+    "abandoned": 1,
+    "maxPage": 100,
+    "sourceRequests": 0,
+    "onlineMongoWrites": 0,
+    "actualClosureApplied": false,
+    "closureHash": "1dd6087b09763fa7ef03f575dac7cc8f362666cfbeec1b055ede0b2b8ff3b9c8"
+  },
+  "runtimePreflight": "pending",
+  "privateBackup": "pending",
+  "closureApplied": false,
+  "allOptimizationsComplete": false
+}
