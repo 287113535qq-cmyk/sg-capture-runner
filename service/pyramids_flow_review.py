@@ -11,7 +11,7 @@ from pyramids_hold_review import SOURCE
 from round_fields import amount, check, params, VERSION
 
 
-def review_pyramids_flow(plan, raw, *, direct_layered_entry=False):
+def review_pyramids_flow(plan, raw, *, direct_layered_entry=False, resume_retrigger=False):
     check(plan.get('gameId') == 32721 and plan.get('sourceKey') == SOURCE
           and plan.get('betRaw') == 20, 'FLOW_PROFILE')
     check(raw.get('sourceKey') == SOURCE and raw.get('protocol') == 'nextgen'
@@ -95,7 +95,9 @@ def review_pyramids_flow(plan, raw, *, direct_layered_entry=False):
                 check(pn > 0 and outer == (pn - 1, pt, pc + 1) and c == 0 and n == t and n > 0,
                       'FLOW_ENTER_HOLD')
             elif pf == '0|1' and fid == '1':
-                check(pn == 0 and po[0] > 0 and t == po[1] and c == po[2] + 1 and n == po[0] - 1,
+                check(pn == 0 and po[0] > 0 and c == po[2] + 1
+                      and (t >= po[1] and n == po[0] - 1 + t - po[1]
+                           if resume_retrigger else t == po[1] and n == po[0] - 1),
                       'FLOW_RESUME_FREE')
             else:
                 check(False, 'FLOW_TRANSITION_UNPROVEN')

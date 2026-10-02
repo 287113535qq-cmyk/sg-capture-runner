@@ -44,8 +44,8 @@
   "canaryRun": 36993535131,
   "canaryStatus": "success",
   "canaryNewComplete": 2000,
-  "currentComplete": 134846,
-  "currentRemainingComplete": 165004,
+  "currentComplete": 143794,
+  "currentRemainingComplete": 156056,
   "canaryFullMongoReceiptEquality": true,
   "canaryIndependentPythonFullVerification": true,
   "canaryContinuationRounds": 36,
@@ -76,5 +76,12 @@
   "relayHistoryFixRuntimeApplied": true,
   "mainSourceRun": 37008008283,
   "mainSourceRuntime": "68c1632aa90ad3219ab3dc9d686caeb585c0677a",
-  "mainSourceStatus": "in_progress-admission"
+  "mainSourceStatus": "completed-failure",
+  "mainSourceError": "FLOW_RESUME_FREE",
+  "mainSourceNewCompleteJournaled": 8948,
+  "mainSourceNewCompleteMongo": 7900,
+  "mainSourceAwaitingFlush": 1048,
+  "mainSourceInterruptedAttempts": 3,
+  "mainSourceSourceErrors": 0,
+  "currentCompleteMongoConfirmed": 142746
 }

@@ -14,7 +14,7 @@ function amount(v){
   &&Number.isSafeInteger(Number(v))&&Number(v)>=0,'FLOW_NUMBER');return Number(v);
 }
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-export function reviewPyramidsFlow(plan,raw,{directLayeredEntry=false}={}){
+export function reviewPyramidsFlow(plan,raw,{directLayeredEntry=false,resumeRetrigger=false}={}){
  check(plan.gameId===32721&&plan.sourceKey===PYRAMIDS_SOURCE&&plan.betRaw===20,'FLOW_PROFILE');
  check(raw.sourceKey===PYRAMIDS_SOURCE&&raw.protocol==='nextgen'&&raw.fixtureOnly===false
   &&raw.roundFieldsVersion==='sg-round-fields-v1','FLOW_RAW_SCOPE');
@@ -78,7 +78,8 @@ export function reviewPyramidsFlow(plan,raw,{directLayeredEntry=false}={}){
    }else if(pf==='1'&&fid==='0|1'){
     check(pn>0&&same(outer,[pn-1,pt,pc+1])&&c===0&&n===t&&n>0,'FLOW_ENTER_HOLD');
    }else if(pf==='0|1'&&fid==='1'){
-    check(pn===0&&po[0]>0&&t===po[1]&&c===po[2]+1&&n===po[0]-1,'FLOW_RESUME_FREE');
+    check(pn===0&&po[0]>0&&c===po[2]+1
+     &&(resumeRetrigger?t>=po[1]&&n===po[0]-1+t-po[1]:t===po[1]&&n===po[0]-1),'FLOW_RESUME_FREE');
    }else check(false,'FLOW_TRANSITION_UNPROVEN');
   }
   const b=amount(p.B),ab=amount(p.AB),tw=amount(p.TW);
