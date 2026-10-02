@@ -1,8 +1,19 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {newInventory,claimPreparation,finishPreparation,selectPrepared,preparationGates} from './preparation-inventory.mjs';
+import {newInventory,claimPreparation,finishPreparation,selectPrepared,preparationGates,rejectPreparedRevision} from './preparation-inventory.mjs';
 const games=[{gameId:1,name:'repair'},{gameId:2,name:'next'},{gameId:3,name:'done'}];
 const proof=id=>({schema:'sg-reusable-preparation-v1',gameId:id,revisionHash:'a'.repeat(64),sourceAllowance:0,
   gates:Object.fromEntries(preparationGates.map(k=>[k,{verified:true,evidenceHash:'b'.repeat(64)}]))});
+test('capture failure removes only its prepared revision and leaves other work runnable',async()=>{
+  const q=newInventory(games),c=claimPreparation(q,{owner:'p',now:0});
+  finishPreparation(q,c,{status:'prepared',proof:proof(1)},1);
+  const failure={gameId:1,proofHash:q.tasks[0].proofHash,reason:'BOOTSTRAP_REENTRY_PENDING',evidenceHash:'c'.repeat(64),now:2};
+  assert.equal(rejectPreparedRevision(q,{...failure,proofHash:'d'.repeat(64)}),false);
+  assert.equal(rejectPreparedRevision(q,failure),true);
+  assert.equal(q.tasks[0].status,'blocked');assert.equal(q.tasks[0].proof,null);
+  assert.equal((await selectPrepared(q,{verifyReusable:async()=>assert.fail(),admitFresh:async()=>assert.fail()})).action,'waiting-prepared');
+  assert.equal(claimPreparation(q,{owner:'p',now:3}).gameId,2);
+  assert.equal(rejectPreparedRevision(q,failure),false);
+});
 test('independent repair worker does not wait for admission backlog',()=>{
   const q=newInventory(games,{1:'parked-protocol'});
   assert.equal(claimPreparation(q,{owner:'repair',now:0,lane:'repair'}).gameId,1);

@@ -45,6 +45,18 @@ export function invalidatePreparation(inventory,gameId,reason){
   const task=inventory.tasks.find(t=>t.gameId===gameId);assert(task&&!task.claim,'PREPARATION_BUSY');
   task.status='queued';task.reason=reason;task.proof=null;delete task.proofHash;inventory.revision++;
 }
+// A real capture failure revokes only the matching prepared revision. A late
+// failure from an older runtime must not remove a newer reviewed preparation.
+export function rejectPreparedRevision(inventory,{gameId,proofHash,reason,evidenceHash,now}){
+  assert(typeof reason==='string'&&reason.length>0&&/^[a-f0-9]{64}$/.test(evidenceHash)
+    &&Number.isSafeInteger(now),'PREPARATION_FAILURE_EVIDENCE');
+  const task=inventory.tasks.find(t=>t.gameId===gameId);
+  if(!task||task.status!=='prepared'||task.proofHash!==proofHash)return false;
+  assert(!task.claim,'PREPARATION_BUSY');
+  task.rejectedProofHash=proofHash;task.failureEvidenceHash=evidenceHash;
+  task.status='blocked';task.reason=reason;task.proof=null;delete task.proofHash;
+  task.updatedAt=now;inventory.revision++;return true;
+}
 export async function selectPrepared(inventory,{verifyReusable,admitFresh}){
   assert(typeof verifyReusable==='function'&&typeof admitFresh==='function','PREPARATION_ADMISSION_REQUIRED');
   for(const task of inventory.tasks.filter(t=>t.status==='prepared')){

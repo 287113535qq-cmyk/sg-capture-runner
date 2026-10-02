@@ -106,11 +106,26 @@ class VeryFruityActionFields:
         check(len(stakes)==1 and not len(stakes[0]) and isinstance(stakes[0].text,str), 'VERYFRUITY_INIT_STAKES')
         values=stakes[0].text.split('|')
         if values[-1]=='': values.pop()
-        check(0<len(values)<=100 and 1 in [uint(v) for v in values], 'VERYFRUITY_INIT_STAKES')
+        # Official Init.parseStakes advertises total stakes. Logic sends
+        # perLine=1,total=20 for the fixed 20-line wager.
+        check(0<len(values)<=100 and self.plan['betRaw'] in [uint(v) for v in values], 'VERYFRUITY_INIT_STAKES')
+        if stakes[0].get('count') is not None:
+            check(uint(stakes[0].get('count')) == len(values), 'VERYFRUITY_INIT_STAKES')
+        if stakes[0].get('defaultIndex') is not None:
+            check(uint(stakes[0].get('defaultIndex')) < len(values), 'VERYFRUITY_INIT_STAKES')
         currencies=[n for n in nodes if n.tag=='CurrencyMultiplier']
-        check(len(currencies)==1 and not len(currencies[0]) and currencies[0].text=='1', 'VERYFRUITY_INIT_CURRENCY')
+        information=[n for n in nodes if n.tag=='CurrencyInformation']
+        accounts=r.findall('AccountData')
+        # Official Init.parseCurrency defaults to 1 when information is absent.
+        check(len(accounts)<=1 and len(information)<=1 and len(currencies)<=1
+              and (not information or (len(accounts)==1 and information[0] in list(accounts[0])
+                   and len(currencies)==1 and currencies[0] in list(information[0])))
+              and (not currencies or len(information)==1)
+              and (not currencies or (not len(currencies[0]) and currencies[0].text=='1')),
+              'VERYFRUITY_INIT_CURRENCY')
         paylines=[n for n in nodes if n.tag=='PaylineInfo']
-        check(len(paylines)==1 and len(paylines[0].findall('Payline'))==20, 'VERYFRUITY_INIT_LINES')
+        check(len(paylines)==1 and len(paylines[0].findall('Payline'))==20
+              and paylines[0].findall('Payline')[19].get('selectable')=='Y', 'VERYFRUITY_INIT_LINES')
         pages=[n for n in nodes if n.tag=='PageInfo']
         check(len(pages)<=1 and (not pages or uint(pages[0].get('pageCount'))<=1), 'VERYFRUITY_INIT_PAGES')
         balances=one(r,'Balances');cash=one(balances,'Balance')

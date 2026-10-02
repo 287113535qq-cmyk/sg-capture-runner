@@ -33,9 +33,20 @@ export function veryFruityInit(plan,text){
  need(!nodes.some(n=>['GameResult','Error','Errors','Recovery','Pick','Gamble'].includes(n.tag)),'VERYFRUITY_INIT_REVIEW');
  const stakes=nodes.filter(n=>n.tag==='Stakes');need(stakes.length===1,'VERYFRUITY_INIT_STAKES');
  const textOf=n=>n.children.map(c=>c.text??'').join('');const values=textOf(stakes[0]).split('|');if(values.at(-1)==='')values.pop();
- need(values.length>0&&values.length<=100&&values.map(uint).includes(1),'VERYFRUITY_INIT_STAKES');
- const currencies=nodes.filter(n=>n.tag==='CurrencyMultiplier');need(currencies.length===1&&textOf(currencies[0])==='1','VERYFRUITY_INIT_CURRENCY');
- const lines=nodes.filter(n=>n.tag==='PaylineInfo');need(lines.length===1&&children(lines[0]).filter(n=>n.tag==='Payline').length===20,'VERYFRUITY_INIT_LINES');
+ // Official Init.parseStakes contains total stakes, not per-line stakes.
+ need(values.length>0&&values.length<=100&&values.map(uint).includes(plan.betRaw),'VERYFRUITY_INIT_STAKES');
+ if(stakes[0].a.count!==undefined)need(uint(stakes[0].a.count)===values.length,'VERYFRUITY_INIT_STAKES');
+ if(stakes[0].a.defaultIndex!==undefined)need(uint(stakes[0].a.defaultIndex)<values.length,'VERYFRUITY_INIT_STAKES');
+ const currencies=nodes.filter(n=>n.tag==='CurrencyMultiplier'),information=nodes.filter(n=>n.tag==='CurrencyInformation');
+ const accounts=children(root).filter(n=>n.tag==='AccountData');
+ // Official Init.parseCurrency defaults to 1 without CurrencyInformation.
+ need(accounts.length<=1&&information.length<=1&&currencies.length<=1
+  &&(!information.length||(accounts.length===1&&children(accounts[0]).includes(information[0])
+   &&currencies.length===1&&children(information[0]).includes(currencies[0])))
+  &&(!currencies.length||information.length===1)
+  &&(!currencies.length||(!children(currencies[0]).length&&textOf(currencies[0])==='1')),'VERYFRUITY_INIT_CURRENCY');
+ const lines=nodes.filter(n=>n.tag==='PaylineInfo'),lineNodes=lines.length===1?children(lines[0]).filter(n=>n.tag==='Payline'):[];
+ need(lineNodes.length===20&&lineNodes[19].a.selectable==='Y','VERYFRUITY_INIT_LINES');
  const pages=nodes.filter(n=>n.tag==='PageInfo');need(pages.length<=1&&(!pages.length||uint(pages[0].a.pageCount)<=1),'VERYFRUITY_INIT_PAGES');
  return result;
 }

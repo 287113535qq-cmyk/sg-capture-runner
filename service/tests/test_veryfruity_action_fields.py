@@ -27,14 +27,14 @@ class VeryFruityEvidenceTests(unittest.TestCase):
         r=E.Element('GameResponse',type='Init')
         E.SubElement(r,'Header',gameID='20206',versionID='1_0',ccyCode='',lang='en_US',isRecovering='N',sessionID='next')
         b=E.SubElement(r,'Balances');E.SubElement(b,'Balance',name='CASH_BALANCE',value='1000')
-        E.SubElement(r,'Stakes').text='1|2|5|'
-        E.SubElement(r,'CurrencyMultiplier').text='1'
-        lines=E.SubElement(r,'PaylineInfo')
-        for i in range(20):E.SubElement(lines,'Payline',index=str(i))
+        E.SubElement(r,'Stakes',count='15',defaultIndex='3',type='0').text='20|40|80|100|200|400|500|1000|2000|4000|5000|10000|20000|40000|50000'
+        E.SubElement(r,'AccountData')
+        lines=E.SubElement(E.SubElement(r,'Paylines',gameMode='0'),'PaylineInfo',paylineCount='20',default='19')
+        for i in range(20):E.SubElement(lines,'Payline',index=str(i),selectable='Y' if i==19 else 'N')
         text=E.tostring(r,encoding='unicode')
         step={'msgId':'Init','requestPayload':E.tostring(q,encoding='unicode'),'responsePayload':text,'responseXml':text,'responseBalance':1000}
         self.assertEqual(adapter.bootstrap(step),{'validated':True})
-        for bad in (text.replace('1|2|5|','2|5|'),text.replace('value="1000"','value="999"'),text.replace('isRecovering="N"','isRecovering="Y"'),text.replace('</GameResponse>','<Recovery/></GameResponse>')):
+        for bad in (text.replace('20|40|','1|40|'),text.replace('count="15"','count="14"'),text.replace('defaultIndex="3"','defaultIndex="15"'),text.replace('<AccountData />','<AccountData><CurrencyInformation/></AccountData>'),text.replace('<AccountData />','<AccountData><CurrencyInformation><CurrencyMultiplier>2</CurrencyMultiplier></CurrencyInformation></AccountData>'),text.replace('value="1000"','value="999"'),text.replace('isRecovering="N"','isRecovering="Y"'),text.replace('</GameResponse>','<Recovery/></GameResponse>')):
             with self.assertRaises(FieldError):adapter.bootstrap({**step,'responseXml':bad,'responsePayload':bad})
 
     def test_original_xml_round_only_completes_after_ack_and_preserves_pending_classification(self):

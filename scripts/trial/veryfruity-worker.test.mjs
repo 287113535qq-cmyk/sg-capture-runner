@@ -10,7 +10,7 @@ const validate=(plan,op,raw,step)=>python('import json,sys;from veryfruity_actio
 async function run({unknownAck=false,badInit=false,badLease=false}={}){
  const f=fixture(),plan={...f.plan,schema:'sg-work-pool-v1',trialId:'offline',demoGeneration:'a'.repeat(64),runnerGroup:'secondary',maxSteps:1026,target:1};
  let pending=null,bootstrap=null,raw=null,posts=0,record=null;const saved=[],evidence={sourceRequests:0,paidRoundRequests:0,completedThisRun:0};
- const init='<GameResponse type="Init"><Header gameID="20206" versionID="1_0" ccyCode="" lang="en_US" isRecovering="N" sessionID="fixture-0"/><Balances><Balance name="CASH_BALANCE" value="1000"/></Balances><Stakes>1|2|</Stakes><CurrencyMultiplier>1</CurrencyMultiplier><PaylineInfo>'+Array.from({length:20},(_,i)=>`<Payline index="${i}"/>`).join('')+'</PaylineInfo></GameResponse>';
+ const init='<GameResponse type="Init"><Header gameID="20206" versionID="1_0" ccyCode="" lang="en_US" isRecovering="N" sessionID="fixture-0"/><Balances><Balance name="CASH_BALANCE" value="1000"/></Balances><Stakes count="3" defaultIndex="0">20|40|80</Stakes><AccountData/><Paylines gameMode="0"><PaylineInfo paylineCount="20" default="19">'+Array.from({length:20},(_,i)=>`<Payline index="${i}" selectable="${i===19?'Y':'N'}"/>`).join('')+'</PaylineInfo></Paylines></GameResponse>';
  const rpc=async(op,d)=>{
   if(op==='register')return {workerEpoch:1};if(op==='next')return {durable:0,sequenceTarget:1,batchId:1,epoch:1,shortRunLimit:badLease?6:1,pendingRound:null};
   if(op==='bootstrap_intent'){bootstrap=d.requestPayload;return {};}
@@ -20,7 +20,7 @@ async function run({unknownAck=false,badInit=false,badLease=false}={}){
   if(op==='release')return {status:'partial',checkpoint:record?1:0};if(op==='status')return {confirmed:record?1:0};throw Error('UNEXPECTED_RPC');
  };
  const fetchImpl=async(url,options)=>{assert.equal(url,VERYFRUITY_ENDPOINT);assert.equal(options.body,bootstrap??pending);assert.equal(options.redirect,'manual');
-  const text=posts++===0?(badInit?init.replace('1|2|','2|'):init):f.raw.steps[posts-2].responseXml;
+  const text=posts++===0?(badInit?init.replace('20|40|80','1|40|80'):init):f.raw.steps[posts-2].responseXml;
   return {ok:true,headers:{getSetCookie:()=>[],get:()=>null},text:async()=>text};};
  let error;try{await runVeryFruityWorker({plan,baseGame:{mode:'demo',sessionId:'Free:offline',operatorId:'offline'},shard:20,rpc,
   prepareRound:r=>validate(plan,'settled',r),evidence,shouldStop:()=>false,requestStop(){},onLease(){},commitSha:'b'.repeat(40),planHash:'c'.repeat(64),fetchImpl,limit:1,runId:'1',runAttempt:'1',job:'offline'});}catch(e){error=e;}

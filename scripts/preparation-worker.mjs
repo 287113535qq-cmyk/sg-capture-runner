@@ -1,6 +1,6 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';import {randomUUID} from 'node:crypto';
-import {newInventory,claimPreparation,finishPreparation} from './runner-v2/preparation-inventory.mjs';
+import {newInventory,claimPreparation,finishPreparation,rejectPreparedRevision} from './runner-v2/preparation-inventory.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -52,6 +52,15 @@ try{
   const once=process.argv.includes('--once');let waiting=false;
   do{
     const q=load(stateFile);
+    for(const task of q.tasks.filter(t=>t.status==='prepared')){
+      const failureFile=path.join(dir,task.gameId+'-failure.json');
+      if(fs.existsSync(failureFile)){
+        const failure=load(failureFile);
+        if(rejectPreparedRevision(q,{...failure,gameId:task.gameId,now:Date.now()})){
+          save(q);log({action:'prepared-revision-rejected',gameId:task.gameId,reason:failure.reason});
+        }
+      }
+    }
     // Finished immutable reviews arrive independently. Retry only when new
     // evidence exists, never on a timer with the same failed input.
     for(const task of q.tasks.filter(t=>t.lane===lane&&t.status==='blocked')){
