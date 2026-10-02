@@ -39,7 +39,8 @@ def review_actions(raw, *, expected_header, max_steps=1026):
         fields = list(result.iter('FSInfo'))
         check(len(fields) <= 1 and all(f in list(result) for f in fields), 'VERYFRUITY_ACTION_AMBIGUOUS_FREE')
         bg = one(result, 'BGInfo')
-        check(bg.get('isMaxWin') == '0' and bg.get('mysterySymbol') == '0', 'VERYFRUITY_ACTION_UNREVIEWED_EXIT')
+        # Official updateMysterySymbol changes artwork, not the next request.
+        check(bg.get('isMaxWin') == '0', 'VERYFRUITY_ACTION_UNREVIEWED_EXIT')
         if not fields:
             check(free is None, 'VERYFRUITY_ACTION_MISSING_FREE')
             next_action = 'EndGame'

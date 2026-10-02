@@ -32,6 +32,17 @@ test('ordinary and growing free action chains reconcile raw cumulative wallet in
  assert.equal(reviewVeryFruitySettlement(free(),options).winRaw,32);
  const prefix=free();prefix.steps.pop();assert.equal(reviewVeryFruitySettlement(prefix,options).endGameAcknowledged,false);
 });
+
+test('artwork and absent or empty bet metadata cannot block a correctly reconciled action',()=>{
+ for(const replacement of ['betID=""','']){
+  const r=structuredClone(raw);
+  r.steps[0].responseXml=r.steps[0].responsePayload=r.steps[0].responseXml.replace(/betID="[^"]*"/,replacement).replace('mysterySymbol="0"','mysterySymbol="2"');
+  const before=JSON.stringify(r),result=reviewVeryFruitySettlement(r,options),p=independent(r);
+  assert.equal(p.status,0,p.stderr);assert.deepEqual(result,JSON.parse(p.stdout));
+  assert.equal(result.endGameAcknowledged,true);assert.equal(result.moneyEvidenceVerified,true);
+  assert.equal(result.bonus,null);assert.equal(JSON.stringify(r),before);
+ }
+});
 test('wrong cumulative cash, hidden extra debit, malformed request currency, ambiguous balance and forged terminal fail both independent readers',()=>{
  const mutations=[r=>edit(r.steps[2],'totalWagerWin="25"','totalWagerWin="26"'),
   r=>edit(r.steps[1],'value="1005"','value="985"'),r=>edit(r.steps.at(-1),'value="1012"','value="1011"'),

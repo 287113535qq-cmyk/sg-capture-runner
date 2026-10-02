@@ -1,0 +1,1614 @@
+{
+  "schema": "sg-prepared-publication-v1",
+  "sourceAllowance": 0,
+  "inventory": {
+    "schema": "sg-preparation-inventory-v1",
+    "revision": 0,
+    "sourceAllowance": 0,
+    "tasks": [
+      {
+        "gameId": 32749,
+        "name": "5 Treasures",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32750,
+        "name": "88 Fortunes",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32751,
+        "name": "88 Fortunes Megaways",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32752,
+        "name": "Acorn Pixie",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32753,
+        "name": "Action Bank Plus",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32754,
+        "name": "Arthur and the Round Table",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32755,
+        "name": "Blazing X Asia",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32756,
+        "name": "Celestial King",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32757,
+        "name": "Cheshire Cat",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32758,
+        "name": "Cool Jewels",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32759,
+        "name": "Crystal Forest",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32760,
+        "name": "Dancing Drums",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32761,
+        "name": "Dancing Drums Explosion",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32762,
+        "name": "Desert Cats",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32763,
+        "name": "Dr. Jekyll Goes Wild",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32764,
+        "name": "Dragon Spin",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32765,
+        "name": "Drop and Lock Deep Sea Magic",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32766,
+        "name": "Eureka Blast Superlock",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32767,
+        "name": "Fire Queen",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32768,
+        "name": "Frozen Inferno",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32769,
+        "name": "Fu Dao Le",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32770,
+        "name": "Giant's Gold",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32771,
+        "name": "Golden Chief",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32772,
+        "name": "Heidi's Bier Haus",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32773,
+        "name": "Hercules High & Mighty",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32774,
+        "name": "Himalayas - Roof of the World",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32775,
+        "name": "Hula Hula Nights",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32776,
+        "name": "Invaders of Planet Moolah",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32777,
+        "name": "Jin Ji Bao Xi Endless Treasure Megaways",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32778,
+        "name": "Jin Ji Bao Xi Endless Treasures",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32779,
+        "name": "Jinse Dao Dragon",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32780,
+        "name": "King of Babylon Action Spins",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32781,
+        "name": "Kings Honour",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32782,
+        "name": "Knight's Keep",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32783,
+        "name": "Kronos",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32784,
+        "name": "Kronos Unleashed",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32785,
+        "name": "Lady Of Egypt",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32786,
+        "name": "Legend of Fortune",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32787,
+        "name": "Legend of the Pharaohs",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32788,
+        "name": "Lock It Link Night Life",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32441,
+        "name": "300 Shields Extreme",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32442,
+        "name": "7s on Fire Power Mix",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32443,
+        "name": "A Hot Hot Blazing Christmas",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32464,
+        "name": "Big Spinner",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32471,
+        "name": "Book of Sevens",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32474,
+        "name": "Carnival Cow Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32476,
+        "name": "Chain Reactors Deluxe",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32477,
+        "name": "Cherry 8",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32486,
+        "name": "Colossal Splash Ink & Win",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32489,
+        "name": "Dancing Drums Link",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32497,
+        "name": "Dragon Jin Long Jin Bao",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32500,
+        "name": "Dragon Spin Cross Link Fire",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32501,
+        "name": "Dragon Spin Cross Link Water",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32502,
+        "name": "Dragon Unleashed - Prosperity Packets",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32503,
+        "name": "Dragon Unleashed Three Legends",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32504,
+        "name": "Dragon Unleashed Treasured Happiness",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32514,
+        "name": "Ever After",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32529,
+        "name": "Gold Fish Feeding Time Deluxe Treasure",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32530,
+        "name": "Gold Fish Feeding Time! Treasure",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32532,
+        "name": "Golden Fire Link Dragon Song",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32536,
+        "name": "Gorilla Go Wilder",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32544,
+        "name": "Huff N' Lots of Puff",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32545,
+        "name": "Huff N' More Puff",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32547,
+        "name": "Huff N' Puff High Rise",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32548,
+        "name": "Huff N' Puff Money Mansion",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32550,
+        "name": "Hurricane Horse Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32555,
+        "name": "Hypercharged Temple of Atlantis",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32588,
+        "name": "Merlin's Money Burst",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32590,
+        "name": "Mighty Monkey Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32595,
+        "name": "Money Raid Wapiti",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32614,
+        "name": "Quick Hit Blitz Blue",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32615,
+        "name": "Quick Hit Blitz Gold",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32616,
+        "name": "Quick Hit Blitz Purple",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32617,
+        "name": "Quick Hit Blitz Red",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32618,
+        "name": "Quick Hit Link Fire",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32620,
+        "name": "Quick Hit Ultra Pays Monkey's Fortune",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32621,
+        "name": "Quick Hit Ultra Pays Wolf Mountain",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32626,
+        "name": "Reign of The Mountain King",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32629,
+        "name": "Rich Little Hens Founding Feathers",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32630,
+        "name": "Rich Little Hens Rule of the Roost",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32631,
+        "name": "Rich Little Hens World Class",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32632,
+        "name": "Rich Little Hens World Class Christmas Edition",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32633,
+        "name": "Rich Little Piggies Hog Wild",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32634,
+        "name": "Rich Little Piggies Meal Ticket",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32635,
+        "name": "Rich Little Piggies Meal Ticket Christmas Edition",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32636,
+        "name": "Rich Little Piggies World Class",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32637,
+        "name": "Rich Little Piggies World Class Halloween Edition",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32641,
+        "name": "Rockets! Red Glare",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32644,
+        "name": "Shields of the Wild",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32651,
+        "name": "Squid Game One More Game",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32666,
+        "name": "The Wild 3",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32671,
+        "name": "Thunder Drums Samurai Storm",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32681,
+        "name": "Trinity Pots Rising Wilds",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32686,
+        "name": "Ultimate Fire Link Cash Falls Olvera Street",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32687,
+        "name": "Ultimate Fire Link China Street",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32689,
+        "name": "Ultimate Fire Link Olvera Street",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32691,
+        "name": "Ultimate Fire Link Rue Royale",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32703,
+        "name": "Blazin Hot 7s Big Bonus",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32704,
+        "name": "Blazin' Hot 7s Bigger Bonus",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32705,
+        "name": "Dancing Drums Link Fortune",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32706,
+        "name": "Dancing Drums Link High Limit",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32707,
+        "name": "Dancing Drums Prosperity",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32708,
+        "name": "Direct Hit featuring Money Zone",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32709,
+        "name": "Duo Fu Duo Cai Grand Dragons",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32711,
+        "name": "Hoppily Ever After",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32712,
+        "name": "Hot Hot Blazing Lock",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32713,
+        "name": "Huff N Even More Puff High Limit",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32714,
+        "name": "Huff N Puff Money Mansion High Limit",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32715,
+        "name": "Huff N' Even More Puff",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32716,
+        "name": "Huff N’ Even More Puff Grand",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32717,
+        "name": "Huff N' Lots of Goals!",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32718,
+        "name": "Huff N' More Puff High Limit",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32719,
+        "name": "Hypercharged Inca Jungle",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32720,
+        "name": "Hypercharged Jinzita",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32721,
+        "name": "Hypercharged Pyramids of Ra",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32722,
+        "name": "Jinse Dao Tiger",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32723,
+        "name": "La Bomba",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32724,
+        "name": "Lock It Link Diamonds",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32725,
+        "name": "Medusa",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32726,
+        "name": "Medusa 2",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32727,
+        "name": "Medusa Megaways",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32728,
+        "name": "Money Raid Kodiak",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32729,
+        "name": "Perfect Peacock Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32730,
+        "name": "Pillars of Asgard",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32731,
+        "name": "Polterheist",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32732,
+        "name": "Quick Hit Ultra Pays Eagle's Peak",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32733,
+        "name": "Raging Rhino Rampage",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32734,
+        "name": "Rise of the Mountain King",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32735,
+        "name": "Squid Game Gganbu",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32736,
+        "name": "Squid Game One Lucky Day",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32737,
+        "name": "Starmania",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32738,
+        "name": "Terrific Tiger Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32739,
+        "name": "The Demon Code",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32740,
+        "name": "Ultimate Fire Link Cash Falls By The Bay",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32741,
+        "name": "Ultimate Fire Link Cash Falls China Street",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32742,
+        "name": "Ultimate Fire Link Cash Falls Glacier Gold",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32743,
+        "name": "Ultimate Fire Link Country Lights",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32744,
+        "name": "Ultimate Fire Link River Walk",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32745,
+        "name": "Wonderhounds",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32746,
+        "name": "Xiao Fu Bao",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32747,
+        "name": "Xiao Fu Bao 2",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32748,
+        "name": "Zeus II",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32789,
+        "name": "Lucky Tree",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32790,
+        "name": "Marvelous Mouse Coin Combo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32791,
+        "name": "Mighty Black Knight",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32792,
+        "name": "Montezuma",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32793,
+        "name": "Nemo's Voyage",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32794,
+        "name": "OMG Kittens",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32795,
+        "name": "Pearl of the Caribbean",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32796,
+        "name": "Pharaoh's Dream",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32797,
+        "name": "Quick Hit Super Wheel Wild Red",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32798,
+        "name": "Quick Hit Ultra Pays - Sun Dragon",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32799,
+        "name": "Raging Rhino",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32800,
+        "name": "Raging Rhino Megaways",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32801,
+        "name": "Road to Riches Free Spins",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32802,
+        "name": "Road to Riches Gold Pots",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32803,
+        "name": "Road to Riches Race Day",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32804,
+        "name": "Road to Riches Twilight Dream",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32805,
+        "name": "Soldier of Rome",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32806,
+        "name": "Spartacus Gladiator of Rome",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32807,
+        "name": "Spartacus Megaways",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32808,
+        "name": "Spirit of the River",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32809,
+        "name": "Sword of Destiny",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32810,
+        "name": "The Legend of Big Foot",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32811,
+        "name": "Triple Cash Wheel",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32812,
+        "name": "Very Fruity",
+        "lane": "repair",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32813,
+        "name": "Volts and Bolts",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32814,
+        "name": "Wild Streets",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32815,
+        "name": "Zeus God of Thunder",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32816,
+        "name": "Zeus III",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32820,
+        "name": "Beaver Las Vegas",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32821,
+        "name": "Book of Fusion",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32832,
+        "name": "Key To Success",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32833,
+        "name": "Panda Pow",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32835,
+        "name": "Pyramids of Luxor",
+        "lane": "repair",
+        "status": "queued",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32836,
+        "name": "Quarterback Fields of Glory",
+        "lane": "admission",
+        "status": "complete",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32837,
+        "name": "Road Trip 66",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      },
+      {
+        "gameId": 32839,
+        "name": "The Green Machine Bingo",
+        "lane": "admission",
+        "status": "blocked",
+        "attempt": 0,
+        "claim": null,
+        "proof": null
+      }
+    ]
+  },
+  "bindings": {}
+}

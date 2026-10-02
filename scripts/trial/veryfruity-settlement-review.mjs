@@ -22,7 +22,7 @@ export function reviewVeryFruitySettlement(raw,{expectedHeader,stakePerLine,payl
   if(logic){
    const bet=one(q,'Stake'),count=one(q,'PaylineCount');
    need(!children(bet).length&&eq(bet.a,{perLine:stakePerLine,total:String(stake)})&&!children(count).length&&eq(count.a,{count:paylineCount}),'VERYFRUITY_MONEY_STAKE');
-   const g=one(r,'GameResult');need(g.a.stake===String(stake)&&g.a.stakePerLine===stakePerLine&&g.a.paylineCount===paylineCount&&typeof g.a.betID==='string'&&g.a.betID.length>0&&g.a.betID.length<=256,'VERYFRUITY_MONEY_STAKE');
+   const g=one(r,'GameResult');need(g.a.stake===String(stake)&&g.a.stakePerLine===stakePerLine&&g.a.paylineCount===paylineCount,'VERYFRUITY_MONEY_STAKE');
    total=money(total+money(g.a.totalWin));need(money(one(g,'BGInfo').a.totalWagerWin)===total,'VERYFRUITY_MONEY_CUMULATIVE');
   }
   const balances=one(r,'Balances'),cash=one(balances,'Balance');

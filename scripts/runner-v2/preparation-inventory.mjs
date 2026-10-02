@@ -35,6 +35,7 @@ export function finishPreparation(inventory,claim,result,now){
     for(const gate of preparationGates)assert(proof.gates?.[gate]?.verified===true
       &&/^[a-f0-9]{64}$/.test(proof.gates[gate].evidenceHash),'PREPARATION_GATE_MISSING');
     task.proof=structuredClone(proof);task.proofHash=hash(proof);
+    task.reason=null;
   }else{
     assert(typeof result.reason==='string'&&result.reason.length>0,'PREPARATION_BLOCK_REASON');
     task.reason=result.reason;

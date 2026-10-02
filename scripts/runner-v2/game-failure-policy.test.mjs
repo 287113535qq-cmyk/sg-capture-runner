@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {isAdapterGap} from './game-failure-policy.mjs';
+test('Very Fruity known flow gaps park one game; money, identity and durability remain protected',()=>{
+ assert(isAdapterGap('VERYFRUITY_ACTION_UNREVIEWED_EXIT'));
+ assert(isAdapterGap('VERYFRUITY_ACTION_UNREVIEWED_ROUTE'));
+ for(const code of ['VERYFRUITY_MONEY_STAKE','VERYFRUITY_MONEY_MOVEMENT','VERYFRUITY_ACTION_SESSION','VERYFRUITY_ACTION_IDENTITY','VERYFRUITY_ACTION_PROGRESS','ANALYZER_TIMEOUT','SOURCE_REJECTED'])assert.equal(isAdapterGap(code),false);
+});
 test('only explicit known adapter gaps permit game isolation',()=>{
   assert(isAdapterGap('UNSUPPORTED_BEAVER_NESTED_FEATURE'));
   assert(isAdapterGap('HUFF_UNREVIEWED_FEATURE_SLOTS'));

@@ -23,6 +23,7 @@ import {stateWriteInitializer} from './state-write-binding.mjs';
 import {ACTION_CANARY_RUNTIME} from './action-canary-contract.mjs';
 import {RESUME_ACTION_PROFILE,DIRECT_ACTION_PROFILE} from './pyramids-direct-action-profile.mjs';
 import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
+import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2});
 let canary;
@@ -69,7 +70,12 @@ if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE)){
  canary=sessionCanarySchedule({profile,revision,receipt,permit,commit:process.env.GITHUB_SHA,run});end=canary.endMs;
 }
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
+const publicationPath='config/prepared-inventory.json';
+const preparedSelector=fs.existsSync(publicationPath)?publishedPreparedSelector({
+ publication:JSON.parse(fs.readFileSync(publicationPath,'utf8')),plans,
+ readEvidence:ref=>JSON.parse(fs.readFileSync(ref,'utf8'))}):null;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
+  preparedSelector,
   auditProgress:row=>console.log(JSON.stringify(row)),
   owner:`${group}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}:${process.env.SG_TRIAL_SHARD||'status'}`});
 let stop=false;

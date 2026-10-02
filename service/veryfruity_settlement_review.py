@@ -38,8 +38,7 @@ def review_settlement(raw, *, expected_header, stake_per_line, payline_count):
                   and not len(count) and count.attrib == {'count': payline_count}, 'VERYFRUITY_MONEY_STAKE')
             g = one(r, 'GameResult')
             check(g.get('stake') == str(stake) and g.get('stakePerLine') == stake_per_line
-                  and g.get('paylineCount') == payline_count
-                  and 0 < len(g.get('betID', '')) <= 256, 'VERYFRUITY_MONEY_STAKE')
+                  and g.get('paylineCount') == payline_count, 'VERYFRUITY_MONEY_STAKE')
             total = amount(total + uint(g.get('totalWin')))
             check(uint(one(g, 'BGInfo').get('totalWagerWin')) == total, 'VERYFRUITY_MONEY_CUMULATIVE')
         balances = one(r, 'Balances')

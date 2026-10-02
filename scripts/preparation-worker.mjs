@@ -1,6 +1,9 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';import {randomUUID} from 'node:crypto';
 import {newInventory,claimPreparation,finishPreparation,rejectPreparedRevision} from './runner-v2/preparation-inventory.mjs';
+import {applyWorkLineEvent} from './runner-v2/work-line-events.mjs';
+import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
+import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -8,6 +11,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const lane=process.argv.find(a=>a.startsWith('--lane='))?.split('=')[1];
 if(!['admission','repair'].includes(lane))throw new Error('PREPARATION_LANE_REQUIRED');
 const dir=path.join(root,'.local','preparation-worker',lane);fs.mkdirSync(dir,{recursive:true});
+fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});
 const stateFile=path.join(dir,'inventory.json'),lockFile=path.join(dir,'producer.lock');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const save=value=>{
@@ -52,6 +56,36 @@ try{
   const once=process.argv.includes('--once');let waiting=false;
   do{
     const q=load(stateFile);
+    for(const name of fs.readdirSync(path.join(dir,'inbox')).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
+      const rejected=path.join(dir,name+'.rejected');if(fs.existsSync(rejected))continue;
+      try{
+        const event=load(path.join(dir,'inbox',name));
+        if(hash(event)+'.json'!==name)throw Error('WORK_LINE_EVENT_CHANGED');
+        if(q.tasks.find(t=>t.gameId===event.gameId)?.claim)continue;
+        if(applyWorkLineEvent(q,event,lane,Date.now())){save(q);log({action:event.kind,gameId:event.gameId});}
+      }catch(error){
+        fs.writeFileSync(rejected,JSON.stringify({at:Date.now(),status:'event-requires-review',code:/^[A-Z_]+$/.test(error.message)?error.message:'INVALID_EVENT',sourceAllowance:0}),{flag:'wx'});
+        log({action:'event-requires-review',event:name});
+      }
+    }
+    // Once a independently reviewed publication includes its applied-profile
+    // handoff, publish it without waiting for the next conversational turn.
+    // No profile is generated and no permission is renewed here.
+    if(lane==='admission')for(const task of q.tasks.filter(t=>t.status==='prepared')){
+      const resultFile=path.join(dir,task.gameId+'-result.json');
+      if(!fs.existsSync(resultFile))continue;
+      const result=load(resultFile),handoff=result.captureHandoff;
+      if(handoff&&handoff.gameId===task.gameId&&hash(result.proof)===task.proofHash){
+        publishImmutableInbox(path.join(root,'.local','capture-handoff-worker','inbox'),
+          {...handoff,preparationProof:task.proof,preparationProofHash:task.proofHash});
+      }
+    }
+    if(lane==='repair')for(const task of q.tasks.filter(t=>t.status==='prepared'&&t.failureEvidenceHash)){
+      const event={schema:'sg-work-line-event-v1',kind:'repair-verified',gameId:task.gameId,
+        sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,rejectedProofHash:task.rejectedProofHash,
+        evidenceHash:hash(task.proof),proof:task.proof};
+      publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);
+    }
     for(const task of q.tasks.filter(t=>t.status==='prepared')){
       const failureFile=path.join(dir,task.gameId+'-failure.json');
       if(fs.existsSync(failureFile)){
@@ -67,7 +101,8 @@ try{
       const resultFile=path.join(dir,task.gameId+'-result.json');
       if(fs.existsSync(resultFile)&&fs.statSync(resultFile).mtimeMs>task.updatedAt){task.status='queued';q.revision++;}
     }
-    const claim=claimPreparation(q,{owner,now:Date.now(),leaseMs:600000,lane});save(q);
+    const beforeClaim=hash(q),claim=claimPreparation(q,{owner,now:Date.now(),leaseMs:600000,lane});
+    if(hash(q)!==beforeClaim)save(q);
     if(!claim){
       if(!waiting)log({action:'waiting-evidence',reason:'NO_RUNNABLE_PREPARATION',completedAdmission:false});
       waiting=true;if(once)break;
@@ -76,8 +111,19 @@ try{
     waiting=false;log({action:'preparing',gameId:claim.gameId,lane:claim.lane});
     const resultFile=path.join(dir,claim.gameId+'-result.json');
     if(fs.existsSync(resultFile)){
-      try{finishPreparation(q,claim,load(resultFile),Date.now());save(q);log({action:q.tasks.find(t=>t.gameId===claim.gameId).status,gameId:claim.gameId});continue;}
-      catch{finishPreparation(q,claim,{status:'blocked',reason:'PREPARATION_RECEIPT_INVALID'},Date.now());save(q);continue;}
+      try{
+        const result=load(resultFile),task=q.tasks.find(t=>t.gameId===claim.gameId);
+        // A failed revision may not be re-approved by its old receipt.
+        if(task.rejectedProofHash&&result.status==='prepared'&&hash(result.proof)===task.rejectedProofHash)throw Error('PREPARATION_FAILED_REVISION');
+        finishPreparation(q,claim,result,Date.now());save(q);
+        log({action:task.status,gameId:claim.gameId});continue;
+      }
+      catch{
+        if(q.tasks.find(t=>t.gameId===claim.gameId)?.claim?.token===claim.claim.token){
+          finishPreparation(q,claim,{status:'blocked',reason:'PREPARATION_RECEIPT_INVALID'},Date.now());save(q);
+        }else log({action:'publication-requires-review',gameId:claim.gameId});
+        continue;
+      }
     }
     const reference=index.games.find(g=>g.gameId===claim.gameId);
     fs.writeFileSync(path.join(dir,claim.gameId+'-reuse.json'),JSON.stringify(reference,null,2)+'\n');

@@ -33,7 +33,9 @@ export function reviewVeryFruityActions(raw,{expectedHeader,maxSteps=1026}){
   const result=results[0],all=walk(result),fields=all.filter(n=>n.tag==='FSInfo');
   need(fields.length<=1&&fields.every(n=>children(result).includes(n)),'VERYFRUITY_ACTION_AMBIGUOUS_FREE');
   const bg=one(result,'BGInfo');
-  need(bg.a.isMaxWin==='0'&&bg.a.mysterySymbol==='0','VERYFRUITY_ACTION_UNREVIEWED_EXIT');
+  // The fixed client uses mysterySymbol only to update symbol artwork. It is
+  // not an action selector. Keep the raw value for independent classification.
+  need(bg.a.isMaxWin==='0','VERYFRUITY_ACTION_UNREVIEWED_EXIT');
   if(!fields.length){need(free===undefined,'VERYFRUITY_ACTION_MISSING_FREE');next='EndGame';continue;}
   const f=fields[0],current=integer(f.a.freeSpinNumber),total=integer(f.a.freeSpinsTotal);
   need(total>0&&total<=maxSteps&&current<=total&&!children(f).length,'VERYFRUITY_ACTION_COUNTER');
