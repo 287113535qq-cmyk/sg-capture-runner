@@ -407,6 +407,22 @@
       "sourceRequests": 0,
       "mongoWrites": 0,
       "onlineGainVerified": false
+    },
+    "superHoldIntegration": {
+      "localPassed": true,
+      "actualPrefixFrames": 2,
+      "naturalTerminalObserved": false,
+      "retainedRecordsVerified": 5111,
+      "sourceRequests": 0,
+      "profileHash": "140025dee8b6f121c08e3f8b71d50c326db627c556529049ba850e64d249294f",
+      "profileApplied": false
+    },
+    "repairActivationBoundedVerification": {
+      "localPassed": true,
+      "serialAndPagedResultsIdentical": true,
+      "maxRecordsPerPage": 100,
+      "partialResultsRejected": true,
+      "onlineGainMeasured": false
     }
   },
   "pending": [
