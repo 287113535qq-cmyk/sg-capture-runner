@@ -5,6 +5,8 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
 import {applyFormalCount,formalCountProfilePath} from './formal-count-plan.mjs';
 import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';
+import {compactControlInitializer} from './compact-runtime-binding.mjs';
+import {stateWriteInitializer} from './state-write-binding.mjs';
 const plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8')),base=plans[32721];
 function fixture(){
  const plan={...base,countAllocation:'a'.repeat(64),featureProfile:ACTION_VERSION,actionContractHash:ACTION_CONTRACT_HASH};
@@ -38,4 +40,21 @@ test('both admission implementations reject changed closure quota contract and c
   const {profile}=fixture();profile[k]=v;assert.throws(()=>pyramidsActionRepairPlan(base,profile),k);
   assert.notEqual(independent(profile).status,0,k);
  }
+});
+test('actual worker optimization initializers accept the action receipt but refuse another commit',async()=>{
+ const {plan,profile}=fixture(),commit='f'.repeat(40);
+ const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,profileHash:hash(profile),
+  planHash:hash(plan),trialId:plan.trialId,gameId:32721,target:plan.target,sourceRecordsHash:profile.recordsHash};
+ const complete={schema:'sg-complete-count-activation-v1',specHash:hash(spec),commit,profileHash:hash(profile),
+  planHash:hash(plan),trialId:plan.trialId,sourceRequests:0,completePreserved:16913,remainingComplete:282937};
+ const control={},key=`complete-count:${plan.trialId}:${profile.activation}`;
+ const readReceipt=async k=>k===key?spec:k===key+':complete'?complete:null;
+ await compactControlInitializer({plan,commit,resourceReady:Promise.resolve(),readProfile:()=>profile,
+  readReceipt,control})();assert.equal(control.compact,true);
+ const store={get:async(_c,k)=>({value:await readReceipt(k)}),transport:{request:async op=>{
+  assert.equal(op,'hello');return {group:'secondary',captureLogicOnServer:false,stateDeltaEnabled:true};}}};
+ assert.equal(await stateWriteInitializer({store,commit,group:'secondary',readProfile:()=>profile})(plan),true);
+ assert.equal(store.deltaCas,true);
+ await assert.rejects(compactControlInitializer({plan,commit:'e'.repeat(40),resourceReady:Promise.resolve(),
+  readProfile:()=>profile,readReceipt,control}),/COMPACT_REPAIR_RECEIPT/);
 });

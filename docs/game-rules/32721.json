@@ -429,8 +429,8 @@
     "docs/throughput-fourth-batch-20261001.md"
   ],
   "analysisDocumentHashes": {
-    "docs/ag-pyramids-action-channel-20261002-result.json": "fea75baef346edd216b1857b13a5706298a98324548bc7d2c9195ac1dbb67343",
-    "docs/ag-pyramids-action-channel-20261002.md": "92ae16c5d263cc07cde6196c0c6d2ab6df0886a22a477180a157687c03e32259",
+    "docs/ag-pyramids-action-channel-20261002-result.json": "e92ece11e75ea392687694b8c168e6995cf2842cfee9300a5f966c9ea5614c07",
+    "docs/ag-pyramids-action-channel-20261002.md": "3037baf842b7ab356c071972b16090503c4e3737efa47bd6cd53bfbaa985c5a4",
     "docs/ag-veryfruity-difference-review-20261002.md": "a4a0a46356672a6238089fa4cbbaa10f59cbe85a5ed34acc8c81ef5351d2e15a",
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
     "docs/mansion-reentry-rhino-guarantee-20261001.md": "14c88b927ee2aacffbea2f793bb155496bdde1bbb13f18c07e582fc087858648",
@@ -450,5 +450,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0384f002d02f5e4087af294c2ea316e2bf1f8647f2e91a9b41cf1721960e2caf"
+  "ruleHash": "4bd94e62bf9c47608f9c7694c1b0fa2b4d71217f8a54de76700e981b05e9fa1c"
 }

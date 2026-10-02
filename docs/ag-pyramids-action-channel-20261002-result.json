@@ -11,8 +11,15 @@
   "independentClassificationJournal": true,
   "sourceRequests": 0,
   "mongoWrites": 0,
-  "actualReentry": false,
-  "linuxVerified": false,
+  "actualReentry": true,
+  "activationRun": "36969614155:1",
+  "activationCommit": "1b831e373a3c861b8537b499d0c81e5bd5333d4a",
+  "appliedProfileHash": "c86e5cb9a5c68b9952497503accbdd107c3f89d86395063513c77914b377355b",
+  "linuxVerified": true,
+  "linuxRun": 36969345736,
+  "workerInitializerCorrectionOfflineVerified": true,
+  "workerInitializerCorrectionLinuxVerified": false,
+  "correctedRuntimeAdmitted": false,
   "liveCanaryVerified": false,
   "allOptimizationsComplete": false
 }
