@@ -770,16 +770,25 @@
       "sourceRequests": 0,
       "mongoWrites": 0,
       "linuxPreflight": {
-        "failedRun": 36960170508,
-        "reason": "old negative-coin fixture error-code expectations; corrected without relaxing XML or mapping"
+        "run": 36960667571,
+        "success": true,
+        "commit": "dd058f848725f776ae7d8eb1e37b31a2000d9b20",
+        "offlineSeconds": 116.659449851,
+        "commands": 13,
+        "checkWorkers": 2
       },
       "independentReentryScopeChecks": {
         "python": 4,
         "node": 19,
         "profileCreated": false
       },
-      "actualReentry": false,
-      "actualRecordsMemoryReentryVerified": 7503
+      "actualReentry": true,
+      "actualRecordsMemoryReentryVerified": 7503,
+      "maintenanceRun": 36960884593,
+      "appliedProfileHash": "8f387e5caf6a563cb10cab7fc62f657ed4af3eaae280844f3cf1a8297ff90f0d",
+      "sourceRun": 36961087858,
+      "sourceStatus": "started-admission-not-yet-observed",
+      "appliedFreezeChecks": 1
     }
   },
   "pending": [
