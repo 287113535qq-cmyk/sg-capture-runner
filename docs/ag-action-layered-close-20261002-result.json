@@ -1,12 +1,13 @@
 {
   "profile": {
-    "profileHash": "d8bb56f705a200ca468d0483c566cfb49086a35d964c4dc32d364a81cb93959a",
+    "profileHash": "c37a373fbf4ee1e38b63f1d8051ff4786b6cc13e20521c50ea175ef7062f8658",
     "completePreserved": 132846,
     "toFlush": 753,
     "abandoned": 1,
     "sourceAllowance": 0,
     "files": 824,
-    "applied": false
+    "applied": false,
+    "previousUnappliedHash": "d8bb56f705a200ca468d0483c566cfb49086a35d964c4dc32d364a81cb93959a"
   },
   "replay": {
     "memoryOnly": true,
@@ -20,7 +21,12 @@
     "actualClosureApplied": false,
     "closureHash": "1dd6087b09763fa7ef03f575dac7cc8f362666cfbeec1b055ede0b2b8ff3b9c8"
   },
-  "runtimePreflight": "pending",
+  "runtimePreflight": {
+    "firstRun": 36986434983,
+    "conclusion": "failure",
+    "reason": "TEST_PYTHON_DEFAULT_MISSING",
+    "entryFixPrepared": true
+  },
   "privateBackup": "pending",
   "closureApplied": false,
   "allOptimizationsComplete": false

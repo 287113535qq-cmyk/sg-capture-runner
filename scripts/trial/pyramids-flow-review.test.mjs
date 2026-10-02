@@ -74,7 +74,7 @@ from test_pyramids_free_review import raw
 s=frame('BET',6,6,0,'0|1|');s['methodName']='processGameMessage'
 rewrite(s,GSD='FGRS~10#FGTS~10#CFGC~0')
 print(json.dumps({'plan':PLAN,'raw':raw([s])}))`;
- const p=spawnSync(process.env.PYTHON,['-c',script],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);
+ const p=spawnSync(process.env.PYTHON??'python3',['-c',script],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);
  const {plan,raw}=JSON.parse(p.stdout);
  assert.throws(()=>reviewPyramidsFlow(plan,raw),/FLOW_TRIGGER/);
  assert.deepEqual(reviewPyramidsFlow(plan,raw,{directLayeredEntry:true}).next,{MSGID:'FREE_GAME'});
