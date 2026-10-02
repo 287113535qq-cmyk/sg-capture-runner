@@ -2,6 +2,10 @@ name: SG offline preflight
 on:
   workflow_dispatch:
     inputs:
+      veryfruity_static_config:
+        description: Read the fixed Very Fruity static identity configuration; no game requests
+        type: boolean
+        default: false
       compare_preflight:
         description: Compare the same offline checks in reversed serial/parallel order
         type: boolean
@@ -17,6 +21,19 @@ concurrency:
   group: sg-preparation
   cancel-in-progress: false
 jobs:
+  veryfruity-static-identity:
+    if: ${{ inputs.veryfruity_static_config }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+      - name: Read only the exact fixed static configuration
+        run: node scripts/trial/veryfruity-static-config.mjs
   preflight:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.compare_preflight && 20 || 10 }}

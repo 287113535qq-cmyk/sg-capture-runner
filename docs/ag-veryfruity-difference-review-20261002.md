@@ -2,6 +2,8 @@
 
 2026-10-03 增量：新增独立 `veryfruity-action-review.mjs`，读取原始请求/响应 XML 的身份、会话、FSInfo 进度和已核对退出路由。未知展示节点及字段原样保留，不调用普通现金玩法白名单；免费总数增长按当前官方计数出口继续，而非先解释奖励图案。三项差异测试覆盖新增展示字段、增长、跳帧、错会话、重复 FSInfo、未知 Pick、max-win 和错误出口。EndGame 应答只表示路由结束，结果始终 complete/moneyVerified/captureAuthorization=false，不能拿流程通过替代金额终审。现未 production import、未新准入，仍不得称 ready。此前严格现金候选保持不变，供独立金额核验。
 
+独立 Python 原始 XML 流程实现与 JS 差异回放一致。启动身份不从 OGS runtimeId 33172 或 nogsgameid 500194 猜 GLS ID：固定客户端 Engine.configure 实际先合并 URL，再读 `config/engine-gls.json`，仅填尚为空的配置；Adapter.setupPaths 指定 `content/veryfruity/app/`。本机固定启动资料确认 demo 与 game=veryfruity，但缓存不含该静态 JSON。新增 GitHub 可选固定静态配置读取，默认关闭，只取该精确资源路径，无 Init/Logic/EndGame、凭据、Mongo 或源许可；仅输出非敏感 GLS identity 与原文件 SHA，不能据此自动 ready。缺文件、身份或网络失败明确拒绝，不复制 Pearl ID。
+
 按AG固定任务和结果复用方式，32812主线准备独立于32721金币修复。复用固定官方客户端SHA73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2与已执行的请求、继承关系、计数、金额字段方法，不重跑整个客户端。
 
 本次新增service/veryfruity_review.py独立离线FSInfo校验。七个合成前缀核对freeSpinNumber/freeSpinsTotal；缺字段、显示解析器可吞掉的小数/尾缀/NaN、不安全整数、跳帧、金额回退、未审核重触发、max-win、错用旧会话及终态之后继续响应均拒绝。五项专项通过。此模块未接生产imports，没有独立mapping、native范围或源许可。
