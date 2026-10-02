@@ -60,5 +60,13 @@
   "relayRuntimeHash": "cbe3ab632740b5e9a9f6bf65025ea26a7dc31f6d35940e3ed777647f9ddde0fc",
   "relayFixLinuxRun": 36994306799,
   "relayFixLinuxRuntime": "73dd4b68166261fdd4a8eb00330824e7b5e127b9",
-  "relayFixLinuxSuccess": true
+  "relayFixLinuxSuccess": true,
+  "relayRefreshRun": 36994724661,
+  "relayRefreshResult": "failure",
+  "relayRefreshError": "DIRECT_RELAY_BATCH_OPEN",
+  "relayRefreshSourceRequests": 0,
+  "failedRefreshCreatedRuntimeReceipts": 0,
+  "relayHistoryFixRuntimeHash": "37a52253ec1c515b6a01a7e419bd433f02d9e9b51980a4600c73f3cae6b0fd83",
+  "relayHistoryFixMemoryActualBatches": 1523,
+  "relayHistoryFixMemoryPassed": true
 }

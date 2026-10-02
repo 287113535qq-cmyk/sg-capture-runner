@@ -5,7 +5,7 @@ import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {checkLedger,loadCountPermission,auditCountBatch} from './complete-count.mjs';
 import {relayFormalRun} from './formal-relay.mjs';
 
-export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-relay-20261002.json';
+export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-relay-historyfix-20261002.json';
 export async function directRelayCompleteDelta({store,trialId,permit}){
  const pool=(await store.get('state','pool:'+trialId))?.value;
  assert(Number.isSafeInteger(pool?.confirmed)&&Number.isSafeInteger(permit?.completeBefore)
@@ -105,7 +105,8 @@ async function settledCount({store,plan,pool,spec,now}){
   }
   for(const [i,row]of rows.entries()){
    const b=row.value,id=ids[i];
-   assert(b.id===id&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.failure
+   assert(b.id===id&&!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting
+    &&(id<=spec.baselineBatchCount||!b.failure)
     &&b.leaseUntil<=now()&&b.checkpoint===b.journaled&&pool.countAllocation.batches[id].closed,
     'DIRECT_RELAY_BATCH_OPEN');
    cache.set(`batch:${plan.trialId}:${id}`,b);

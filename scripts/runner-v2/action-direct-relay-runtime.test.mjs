@@ -46,7 +46,7 @@ function fixture(){
 async function relayFixture(){
  const f=fixture();let at=f.now();f.now=()=>at;f.advance=ms=>{at+=ms;};
  const b={id:1,worker:20,start:1,end:160000,sessionHash:'a'.repeat(64),pending:null,
-  checkpoint:132846,journaled:132846,leaseUntil:0};
+  checkpoint:132846,journaled:132846,leaseUntil:0,failure:'CLOSED_HISTORICAL_FAILURE'};
  f.docs.set(`batch:${f.plan.trialId}:1`,b);f.pool.countAllocation.batches[1].evidenceHash=hash(b);
  f.spec.sessionRotation='closed-batches-v1';f.spec.baselineHash=hash([f.pool.countAllocation.batches[1]]);
  f.complete.specHash=hash(f.spec);f.pool.countAllocation.specHash=hash(f.spec);
@@ -89,7 +89,7 @@ function resource(f,parent){return {schema:'sg-resource-workers-review-v1',run:p
 async function childReady(f,parent){
  f.advance(900001);f.addBatch(1000);
  const inputs={role:'formal-count',allocation:'round-one',round_one_limit:'0',formal_profile:'formal-repair-pyramids-direct-action-20261002.json',
-  runtime_profile:'count-runtime-pyramids-direct-action-relay-20261002.json',formal_relay:'same-allocation-v1'};
+  runtime_profile:'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json',formal_relay:'same-allocation-v1'};
  const source={...f.ended,id:Number(parent.run.split(':')[0]),head_sha:f.commit,status:'in_progress',head_branch:'runtime-direct-relay'};
  const createIntent=async(k,v)=>{if(f.docs.has(k))return false;f.docs.set(k,structuredClone(v));return true;};
  let dispatched=0;
@@ -152,8 +152,18 @@ test('runtime refuses quota, windows, resource budget or obsolete contract expan
  assert.throws(()=>directRelayWindow({...f,...f.binding,permit:{...root,expiresAt:root.expiresAt+1},now:f.now()}));
 });
 
+test('closed baseline failure remains hash-bound; current batch failures cannot enter a tail',async()=>{
+ const f=await relayFixture(),root=await admitDirectRelay(f);await childReady(f,root);
+ const old=f.docs.get(`batch:${f.plan.trialId}:1`),prior=old.failure;
+ old.failure='ALTERED_HISTORY';
+ await assert.rejects(admitDirectRelay({...f,run:'202:1',parentRun:root.run}),/COUNT_AUDIT_HISTORY_CHANGED/);
+ old.failure=prior;
+ f.docs.get(`batch:${f.plan.trialId}:3`).failure='CURRENT_FAILURE';
+ await assert.rejects(admitDirectRelay({...f,run:'202:1',parentRun:root.run}),/DIRECT_RELAY_BATCH_OPEN/);
+});
+
 test('actual projection and delta entry select the new receipt; workflow separates canary/main/tail and old runtimes',async()=>{
- const f=await relayFixture(),runtimeName='count-runtime-pyramids-direct-action-relay-20261002.json',control={};
+ const f=await relayFixture(),runtimeName='count-runtime-pyramids-direct-action-relay-historyfix-20261002.json',control={};
  const args={...f,runtimeName,control,resourceReady:Promise.resolve(),readProfile:()=>f.profile,
   readRevision:()=>f.revision,readReceipt:async k=>(await f.store.get('journal',k))?.value};
  await compactControlInitializer(args)();assert.equal(control.compact,true);
