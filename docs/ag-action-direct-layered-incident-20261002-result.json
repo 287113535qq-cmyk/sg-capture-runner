@@ -18,7 +18,10 @@
   "newOptInProductionImported": false,
   "sourceRequestsForReview": 0,
   "logSha256": "bec094e79a4f36efca4c389a8f2531a722f37c00d898c7bcfdb6bda6d6056215",
-  "fullDeltaAudit": "pending",
+  "fullDeltaAudit": "80500-Mongo-receipt-Python-passed",
   "resourceTenMinuteReview": "not-achieved",
-  "automaticRelay": "not-applied"
+  "automaticRelay": "not-applied",
+  "unflushedComplete": 753,
+  "pending": 1,
+  "reserved": 1800
 }
