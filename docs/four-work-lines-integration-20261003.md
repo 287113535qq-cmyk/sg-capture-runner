@@ -48,3 +48,9 @@ VeryFruity 的真实第三次源留样已在内存执行正式 shared-stop → r
 协议分析消费新增完整局入口：从不可变 receipt 与 Mongo 全文相等的记录产出独立任务，capture-handoff 投递 protocol-analysis inbox；分析程序重新执行完整验证后保存独立不可变 annotation。未具备玩法分类器的已确认流程返回 review-required，不改原记录、不阻断捕获、不把 bonus null 猜成普通玩法。分析失败隔离单项；不同代码版本使用独立结果与领取键。首次扫描尚未提交的 receipt 保留复查集合，乱序、截断或全文不同不允许推进导出。
 
 VeryFruity、Pyramids 两种动作通道的专项回放确认采集路径不调用 classify，分类只在落库全文验证之后独立执行。该消费接线及测试不等于自然新终局、真实线上分析任务交付或全链路验收。跨机器持续导出、独立 gate 产出与出版、真实修复重入、下一款接替仍需完成。prepared 仍0，累计17/178，本阶段新完整0；按用户要求保持采集关闭。
+
+历史真实 Pyramids 完整局经 capture-handoff → protocol-analysis 两个实际本机进程完成交接和独立分类，注释保存到独立本机 journal，原记录 hash 不变。首次实际回放暴露原计划 profile 环境绑定缺失，修正为只从固定已应用配置中选择精确 planHash 匹配的分析环境；不同计划切换独立 Python 子进程。此验收使用既有私有全文读回快照，不代称新鲜远程持续送达、服务器 annotation 写入或自然新终局。
+
+Linux 37062379997、37062740812、37063082387 已分别通过消费入口、实际 profile 绑定和准备出版编译器的完整预检。出版编译器逐项绑定六项实际 gate receipt、当前计划及 group，供现有在线 prepared selector 核验，不创建源许可；缺证明、错计划及空线上 ready 不选择游戏。编译器测试通过不能代替真实 gate 生产与修复重入。
+
+结案及本机交接证据增量 work-lines-adapter-close-final-v2-20261003 已双份逐文件读回：25 files、1141922 bytes、SHA256 3762b69d167acc36c34cb7fb14c6a912ae58f4734e21f1dd0ecf553796aebd5c，引用此前私有档案，不重复复制旧原始局。最新口径及剩余缺项见同名 result.json，四线全部验收仍为 false。

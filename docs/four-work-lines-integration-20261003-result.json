@@ -1,0 +1,88 @@
+{
+  "at": 1790974440,
+  "runtime": "e9f113d06880918fc81a2b7520502f6a186b33ef",
+  "completeGames": 17,
+  "sourceRequestsThisStage": 0,
+  "newCompleteGames": 0,
+  "prepared": 0,
+  "allFourLinesAccepted": false,
+  "actualClosure": {
+    "run": "37061116774:1",
+    "used": 1,
+    "foregone": 99,
+    "complete": 0,
+    "pending": 0,
+    "unconfirmedWrites": 0,
+    "closedHash": "5ca70e754fa2b78ec45a3a67e804471a395fb67e7977dbe717b69e69cbb29b97",
+    "newBetAllowance": 0
+  },
+  "linux": [
+    {
+      "run": 37062379997,
+      "conclusion": "success"
+    },
+    {
+      "run": 37062740812,
+      "conclusion": "success"
+    },
+    {
+      "run": 37063082387,
+      "conclusion": "success"
+    }
+  ],
+  "independentAnalysis": {
+    "historicalRealRecordReplay": true,
+    "workerRuntime": "3b2157c60ede8022c154d85d66540790948f891c",
+    "status": "classified",
+    "sourceRequests": 0,
+    "mongoWrites": 0,
+    "originalRecordsChanged": 0,
+    "freshRemoteDeliveryAccepted": false
+  },
+  "remaining": [
+    "continuous-remote-evidence-delivery",
+    "independent-gate-producers-and-publication",
+    "actual-repair-reentry-and-next-ready-handoff"
+  ],
+  "lanes": {
+    "admission": {
+      "revision": 1368,
+      "counts": {
+        "blocked": 152,
+        "complete": 17,
+        "queued": 9
+      },
+      "active": [],
+      "prepared": []
+    },
+    "repair": {
+      "revision": 117,
+      "counts": {
+        "queued": 151,
+        "complete": 17,
+        "blocked": 10
+      },
+      "active": [],
+      "prepared": []
+    }
+  },
+  "privateBackup": {
+    "name": "work-lines-adapter-close-final-v2-20261003",
+    "files": 25,
+    "bytes": 1141922,
+    "sha256": "3762b69d167acc36c34cb7fb14c6a912ae58f4734e21f1dd0ecf553796aebd5c",
+    "bothReadbackVerified": true
+  },
+  "acceptanceBackup": {
+    "name": "work-lines-analysis-acceptance-20261003",
+    "files": 10,
+    "bytes": 506059,
+    "sha256": "6a13eff6323ea6b04435fe1d5a1259b3df69470dea6fffb950db903fffbd82e0",
+    "bothReadbackVerified": true
+  },
+  "finalGithubRead": {
+    "bothSourcesDisabled": true,
+    "otherActive": 0,
+    "exactExcludedQueued": 3
+  }
+}
