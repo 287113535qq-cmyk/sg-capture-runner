@@ -1,6 +1,7 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {observeProtocolTask} from './runner-v2/protocol-analysis-task.mjs';
 import {analyzeConfirmedTask} from './runner-v2/confirmed-analysis-task.mjs';
+import {offlineAnalysisEnvironment} from './runner-v2/offline-analysis-environment.mjs';
 import {analyzer} from './runner-v2/analyzer.mjs';
 import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {spawnSync} from 'node:child_process';import {createRequire} from 'node:module';
@@ -9,7 +10,7 @@ fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});fs.mkdirSync(path.join(dir
 fs.mkdirSync(path.join(dir,'annotations'),{recursive:true});
 const identity=spawnSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8',windowsHide:true});
 if(identity.status!==0||! /^[a-f0-9]{40}$/.test(identity.stdout.trim()))throw Error('ANALYSIS_RUNTIME_REQUIRED');
-const commit=identity.stdout.trim();let parser,prepare;
+const commit=identity.stdout.trim();let parser,prepare,parserPlanHash;
 const annotation={create:async(c,k,value)=>{
  if(c!=='journal')throw Error('ANALYSIS_JOURNAL_SCOPE');
  const file=path.join(dir,'annotations',hash(k)+'.json');
@@ -36,7 +37,8 @@ try{
    try{
     if(confirmed){
      const bundled=process.env.LOCALAPPDATA?path.join(process.env.LOCALAPPDATA,'Programs','Python','Python314','python.exe'):null;
-     parser??=analyzer({python:process.env.PYTHON||(bundled&&fs.existsSync(bundled)?bundled:'python3'),env:{...process.env,PYTHONUTF8:'1'}});
+     if(parserPlanHash!==task.planHash){parser?.close();parser=null;parserPlanHash=task.planHash;}
+     parser??=analyzer({python:process.env.PYTHON||(bundled&&fs.existsSync(bundled)?bundled:'python3'),env:offlineAnalysisEnvironment(root,task.plan)});
      result=await analyzeConfirmedTask({task,store:annotation,parser,commit,independentReview:async(raw,_plan,classified)=>{
       if(!prepare){const require=createRequire(import.meta.url);require('../collector/node_modules/ts-node').register({project:path.join(root,'collector','tsconfig.json'),transpileOnly:true});prepare=require('../collector/sg.ingest.ts').prepareNextgenRound;}
       return prepare(raw,{buy:0,bonus:classified.bonus,typeMappingHash:classified.typeMappingHash});
