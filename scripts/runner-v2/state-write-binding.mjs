@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
-import {ACTION_CONTINUOUS_RUNTIME,checkActionContinuousBinding} from './action-continuous-runtime.mjs';
+import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,checkActionContinuousBinding} from './action-continuous-runtime.mjs';
 
 // A newly applied activation selects metadata I/O. Capability alone, old
 // profiles, or environment booleans cannot enable a changed write path.
@@ -22,7 +22,7 @@ export function stateWriteInitializer({store,commit,group,resourceReady=Promise.
       const spec=(await store.get('journal',journal))?.value;
       const complete=(await store.get('journal',journal+':complete'))?.value;
       let activationCommit=commit;
-      if(runtimeName===ACTION_CANARY_RUNTIME||runtimeName===ACTION_CONTINUOUS_RUNTIME){
+      if(runtimeName===ACTION_CANARY_RUNTIME||[ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME].includes(runtimeName)){
         const revision=readRevision(runtimeName);
         const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${key}:${commit}`))?.value;
         (runtimeName===ACTION_CANARY_RUNTIME?checkActionCanaryBinding:checkActionContinuousBinding)({plan,profile,revision,receipt,spec,complete,commit});

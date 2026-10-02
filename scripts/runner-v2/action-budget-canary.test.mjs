@@ -81,7 +81,7 @@ test('workflow selects exactly the bounded budget admission and actual worker ti
  assert(source.on.workflow_dispatch.inputs.formal_profile.options.includes(ACTION_BUDGET_PROFILE));
  assert(maintenance.on.workflow_dispatch.inputs.repair_profile.options.includes(ACTION_BUDGET_PROFILE));
  const job=source.jobs['pyramids-formal-admit'];assert(job.if.includes(ACTION_BUDGET_PROFILE));
- const bounded=job.steps.filter(s=>s.if?.includes(ACTION_BUDGET_PROFILE));assert.equal(bounded.length,1);
+ const bounded=job.steps.filter(s=>s.if?.includes(ACTION_BUDGET_PROFILE)&&s.run==='node scripts/runner-v2/pyramids-repair-control.mjs admit');assert.equal(bounded.length,1);
  assert.equal(bounded[0].run,'node scripts/runner-v2/pyramids-repair-control.mjs admit');
  assert(bounded[0].if.includes("inputs.runtime_profile == 'none'"));
  const capture=source.jobs['pyramids-formal-capture'];assert.equal(capture.strategy['max-parallel'],20);

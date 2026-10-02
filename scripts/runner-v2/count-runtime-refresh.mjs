@@ -8,11 +8,12 @@ import {checkVerifyEntryFailure} from './verify-entry-failure.mjs';
 import {checkInitialReadFailure} from './initial-read-failure.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {checkActionContinuousRevision} from './action-continuous-runtime.mjs';
+import {budgetCanaryWindow} from './action-budget-canary.mjs';
 
 // A completed, healthy run may move to a reviewed runtime without minting quota.
 // Only immutable authorization is added; campaign, pool, batches and records stay intact.
 export async function refreshCountRuntime({store,plan,profile,revision,ended,jobs,commit,run,boundary,parentTailFailure,verifyEntryFailure,initialReadFailure,sharedCloseProfile,networkCloseProfile,now=Date.now}){
- const action=revision.purpose==='continuous-action-v1';
+ const action=['continuous-action-v1','continuous-action-budget-v1'].includes(revision.purpose);
  if(action){
   checkActionContinuousRevision({plan,profile,revision});
   assert(ended.conclusion==='success'&&!parentTailFailure&&!verifyEntryFailure&&!initialReadFailure
@@ -51,6 +52,15 @@ export async function refreshCountRuntime({store,plan,profile,revision,ended,job
  assert(permit?.schema==='sg-count-run-v1'&&permit.commit===revision.fromCommit
   &&permit.run===revision.sourceRun&&permit.activation===spec.activation&&permit.profileHash===spec.profileHash
   &&hash(permit)===revision.sourcePermitHash,'COUNT_REFRESH_PERMIT');
+ if(revision.purpose==='continuous-action-budget-v1'){
+  const complete=(await store.get('journal',`complete-count:${plan.trialId}:${profile.activation}:complete`))?.value;
+  budgetCanaryWindow({plan,profile,spec,complete,commit:revision.fromCommit,permit,
+   run:revision.sourceRun,now:now()});
+  const claim=(await store.get('journal',`action-budget-canary-run:${plan.trialId}:${profile.activation}`))?.value;
+  assert(claim?.schema==='sg-action-budget-canary-run-v1'&&claim.run===revision.sourceRun
+   &&claim.commit===revision.fromCommit&&claim.profileHash===hash(profile)&&claim.sourceRequests===0
+   &&permit.completeBefore+2000===revision.completePreserved,'ACTION_BUDGET_CANARY_PARENT_PROOF');
+ }
  assert(!tail||permit.completeBefore+tail.childComplete===revision.completePreserved,'COUNT_REFRESH_CHILD_COUNT');
  assert(!verify||permit.completeBefore+verify.childComplete===revision.completePreserved,'COUNT_REFRESH_CHILD_COUNT');
  assert(!initial||permit.completeBefore+initial.childComplete===revision.completePreserved,'COUNT_REFRESH_CHILD_COUNT');

@@ -3,17 +3,19 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 
 export const ACTION_CONTINUOUS_RUNTIME='count-runtime-pyramids-action-continuous-20261002.json';
+export const ACTION_BUDGET_CONTINUOUS_RUNTIME='count-runtime-pyramids-action-budget-continuous-20261002.json';
 
 // A healthy action-channel run can authorize a reviewed successor executable.
 // Classification annotations are independent and never part of source quota.
 export function checkActionContinuousRevision({plan,profile,revision}){
- assert(profile?.schema==='sg-formal-action-profile-v1'
-  &&hash(profile)==='c86e5cb9a5c68b9952497503accbdd107c3f89d86395063513c77914b377355b'
+ const budget=profile?.schema==='sg-formal-action-budget-profile-v1';
+ assert(profile?.schema===(budget?'sg-formal-action-budget-profile-v1':'sg-formal-action-profile-v1')
+  &&hash(profile)===(budget?'d9ecf7db02603aab784d125c5a1721f5e9d62534f337f3846ad6d773e7281527':'c86e5cb9a5c68b9952497503accbdd107c3f89d86395063513c77914b377355b')
   &&plan?.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
   &&plan.buy===0&&plan.phase===1&&plan.target===299850
   &&plan.countAllocation===profile.activation&&hash(plan)===profile.planHash,'ACTION_CONTINUOUS_PROFILE');
  assert(revision?.schema==='sg-count-runtime-refresh-profile-v1'
-  &&revision.purpose==='continuous-action-v1'&&revision.gameId===plan.gameId
+  &&revision.purpose===(budget?'continuous-action-budget-v1':'continuous-action-v1')&&revision.gameId===plan.gameId
   &&revision.activation===profile.activation&&revision.profileHash===hash(profile)
   &&revision.planHash===hash(plan)&&/^[0-9]+:1$/.test(revision.sourceRun??'')
   &&/^[a-f0-9]{40}$/.test(revision.fromCommit??'')
@@ -26,6 +28,11 @@ export function checkActionContinuousRevision({plan,profile,revision}){
   &&revision.actionContractHash===profile.actionContractHash
   &&revision.controlReadMode===profile.controlReadMode&&revision.gatewayHash===profile.gatewayHash
   &&revision.stateWriteMode===profile.stateWriteMode,'ACTION_CONTINUOUS_REVISION');
+ if(budget)assert(revision.sourceRun==='36979713737:1'
+  &&revision.fromCommit==='e77f7ce345f40f063819dcbce3fc77e27f5ce3d0'
+  &&revision.completePreserved===51593&&revision.remainingComplete===248257
+  &&hash(revision.actionResourceBudget)===hash(profile.actionResourceBudget),
+  'ACTION_BUDGET_CONTINUOUS_PARENT');
  return {captureMinutes:15,maxWorkers:20,lanesPerHost:1};
 }
 

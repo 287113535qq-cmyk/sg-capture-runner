@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {ACTION_CONTINUOUS_RUNTIME,checkActionContinuousRevision,admitActionContinuous} from './action-continuous-runtime.mjs';
+import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,checkActionContinuousRevision,admitActionContinuous} from './action-continuous-runtime.mjs';
 import {refreshCountRuntime} from './count-runtime-refresh.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {authenticatedRead} from './github-boundary.mjs';
@@ -9,10 +9,12 @@ import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';import {analyze
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner',
  'ACTION_CONTINUOUS_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['refresh','admit'].includes(mode),'ACTION_CONTINUOUS_OPERATION');
-assert(process.env.SG_COUNT_RUNTIME_PROFILE===ACTION_CONTINUOUS_RUNTIME
- &&process.env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-20261002.json','ACTION_CONTINUOUS_PATH');
+const budget=process.env.SG_COUNT_RUNTIME_PROFILE===ACTION_BUDGET_CONTINUOUS_RUNTIME;
+const runtimeName=budget?ACTION_BUDGET_CONTINUOUS_RUNTIME:ACTION_CONTINUOUS_RUNTIME;
+assert(process.env.SG_COUNT_RUNTIME_PROFILE===runtimeName
+ &&process.env.SG_FORMAL_COUNT_PROFILE===(budget?'formal-repair-pyramids-action-budget-20261002.json':'formal-repair-pyramids-action-20261002.json'),'ACTION_CONTINUOUS_PATH');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),plans=load('config/round-one-plans.json');
-const profile=load('config/'+process.env.SG_FORMAL_COUNT_PROFILE),revision=load('config/'+ACTION_CONTINUOUS_RUNTIME);
+const profile=load('config/'+process.env.SG_FORMAL_COUNT_PROFILE),revision=load('config/'+runtimeName);
 const plan=pyramidsRepairPlan(plans[32721],profile);checkActionContinuousRevision({plan,profile,revision});
 assert(Object.keys(revision.files??{}).length>=Object.keys(profile.files).length
  &&Object.keys(profile.files).every(p=>Object.hasOwn(revision.files,p)),'ACTION_CONTINUOUS_FILES_REQUIRED');
@@ -25,7 +27,7 @@ const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.en
 if(mode==='admit'){
  const i=load(process.env.GITHUB_EVENT_PATH).inputs;
  assert(i.role==='formal-count'&&i.allocation==='round-one'&&i.round_one_limit==='0'
-  &&i.formal_profile===process.env.SG_FORMAL_COUNT_PROFILE&&i.runtime_profile===ACTION_CONTINUOUS_RUNTIME
+  &&i.formal_profile===process.env.SG_FORMAL_COUNT_PROFILE&&i.runtime_profile===runtimeName
   &&i.formal_relay==='none'&&!i.relay_parent,'ACTION_CONTINUOUS_DISPATCH');
 }
 const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate();
