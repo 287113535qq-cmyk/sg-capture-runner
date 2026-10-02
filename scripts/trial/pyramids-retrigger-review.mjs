@@ -1,7 +1,12 @@
-// Separate offline +10 cash retrigger scope. No source authorization.
-import {pyramidsFreeSequence,pyramidsFreeReview} from './pyramids-free-review.mjs';
+// Separate +10 cash retrigger validation. No source authorization.
+import {pyramidsFreeSequence,pyramidsFreeReview,PYRAMIDS_FREE_SOURCE} from './pyramids-free-review.mjs';
 import {parseXml,one,children} from './pearl-protocol.mjs';
 const need=(v,e)=>{if(!v)throw Error(e);};
+export const PYRAMIDS_RETRIGGER_EXTENSION=PYRAMIDS_FREE_SOURCE+'-pyramids-ten-retrigger-v1';
+export function pyramidsHasRetrigger(raw){
+ return raw?.sourceKey===PYRAMIDS_FREE_SOURCE&&raw.steps?.length>0&&new URLSearchParams(raw.steps[0].responsePayload).get('TFG')==='10'
+  &&raw.steps.slice(1).some(s=>/^\d+$/.test(new URLSearchParams(s.responsePayload).get('TFG')??'')&&Number(new URLSearchParams(s.responsePayload).get('TFG'))>10);
+}
 export function reviewPyramidsRetrigger(raw){
  for(const step of raw.steps){
   const xml=parseXml(step.responseXml),success=one(xml,'SUCCESS'),payload=one(xml,'PAYLOAD');

@@ -8,7 +8,7 @@ import {protocolPolicy} from './protocol-policy.mjs';
 import {quarterbackNextRequest} from '../trial/quarterback-protocol.mjs';
 import {beaverSequence} from '../trial/beaver-protocol.mjs';
 import {PendingFirst} from './pending-first.mjs';
-import {isAdapterGap} from './game-failure-policy.mjs';
+import {isAdapterGap,reviewedAdapterFailure} from './game-failure-policy.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
 import {canaryWorkerRegistration} from './session-canary.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
@@ -166,6 +166,7 @@ export class BatchController {
         normalized:r.normalized,sequence:r.sequence,attempt:pending.attempt,
         sessionHash:this.identity.sessionHash,worker:this.lease.worker,batchId:this.batch.id});
     }catch(error){
+      error.code=reviewedAdapterFailure(error.code,pending.raw);
       const unsupported=isAdapterGap(error.code);
       await this.update(value=>({...value,failure:unsupported?'PROTOCOL_VALIDATION_FAILED':'RESPONSE_VALIDATION_REQUIRES_REVIEW',
         ...(unsupported?{adapterFailureCode:error.code}:{})}));

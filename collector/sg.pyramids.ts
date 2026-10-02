@@ -25,13 +25,14 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false,retriggerTen=false){
  requireP([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
  const hold=!free&&(raw.steps.length>1||count(fields(raw.steps[0].responsePayload).NFG??'0')>0);
  requireP(!superHold||hold,'PYRAMIDS_SUPER_HOLD_SCOPE');
  requireP(!superFree||free&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_SUPER_FREE_SCOPE');
+ requireP(!retriggerTen||free&&!superHold&&!superFree&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_RETRIGGER_SCOPE');
  let observedMajor=false;
  let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{
@@ -45,7 +46,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
    requireP((p.GCT??'0')==='0'&&(p.FRBAL??'0')==='0','PYRAMIDS_TERMINATION');
    const t=count(p.TFG),c=count(p.CFGG),g=fields(p.GSD??'','#','~');requireP(n+c===t,'PYRAMIDS_COUNTERS');
    if(free){
-    requireP(t===freeTotal&&n<=t&&c<=t,'PYRAMIDS_FREE_COUNTERS');
+    requireP((retriggerTen?t>=10&&t<=100&&t%10===0:t===freeTotal)&&n<=t&&c<=t,'PYRAMIDS_FREE_COUNTERS');
     requireP(Object.keys(g).every(k=>['BGRS','VA','IIFS','FGRS','CFGC','FGVABN','BGCL','CL','CLBN','FSRS',...(superFree?['SFGT']:[])].includes(k)),'PYRAMIDS_FREE_GSD');
     if(superFree)requireP(i===0?g.SFGT==='1':['0','1'].includes(g.SFGT??'0'),'PYRAMIDS_SUPER_FREE_FLAG');
     if(g.CLBN!==undefined)requireP(i>0&&g.CL!==undefined&&g.CLBN===g.CL,'PYRAMIDS_FREE_COIN_ALIAS');
@@ -63,7 +64,8 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
     requireP(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
     requireP((g.IIFS===undefined||(i?['0','1']:['1']).includes(g.IIFS))&&(g.FGRS===undefined||count(g.FGRS)===n)&&(g.CFGC===undefined||count(g.CFGC)===c),'PYRAMIDS_FREE_NESTED');
     if(g.FGVABN!==undefined)grid(g.FGVABN);
-    requireP(i?c===played+1&&n===prior-1&&t===total:n===freeTotal&&c===0&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');
+    requireP(i?c===played+1&&(retriggerTen?(t===total||t===total+10)&&n===prior-1+t-total:n===prior-1&&t===total):n===freeTotal&&c===0&&t===freeTotal&&p.IFG==='0','PYRAMIDS_FREE_PROGRESS');
+    if(retriggerTen&&n===0)requireP(prior===1&&t===total,'PYRAMIDS_RETRIGGER_TERMINAL');
    }else{
     holdGsd(g);requireP(superHold?g.SHNST==='1':g.SHNST===undefined||i===0,'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY');
     requireP(n<=99&&t>=6&&t<=98&&c<=98,'PYRAMIDS_COUNTERS');

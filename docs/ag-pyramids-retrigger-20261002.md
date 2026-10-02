@@ -1,11 +1,13 @@
 # Pyramids重触发差异与无源结案
 
-源36951574835:1/runtime e2383403cb09d36c34aafcdbc49d9a1948831a06结束失败。5713局已确认完整不变；74局完整响应已持久日志、尚未Mongo读回；2条免费半局已完整保存，awaiting均null。全局保护首个原因PYRAMIDS_FREE_COUNTERS，其他worker跟随GLOBAL_SOURCE_STOPPED。不能把74日志直接计入完成数，不重发旧BET/FREE。
+源36951574835:1/runtime e2383403cb09d36c34aafcdbc49d9a1948831a06结束失败。无源维护36953208987已成功：74条完整记录补写并全文读回，5787完整保留；2条免费半局留样作废，reserved清零，pending与活worker清零，单款停池进入独立repair，共享hold已解除。新增源请求0，不重发旧BET/FREE。
 
-实际新三帧为BET 10/10/0、FREE 9/10/1、FREE 18/20/2。固定官方客户端原counter/route/outro方法复用，三帧均FREE_GAME、Spin、未settled；+10奖励后的完整20步出口仅合成。新独立离线候选复用金额、PID、XML全文、GSD及旧计数算法的分步检查，严格初始10、逐步CFGG+1、TFG不变或+10、NFG=旧NFG-1+增量，总数上限100。混合、进一步功能、未知字段、跳计数、错XML/金额/session保持拒绝；没有production mapping或新source许可。旧10/15/SFGT默认范围不变。
+实际新三帧为BET 10/10/0、FREE 9/10/1、FREE 18/20/2。固定官方客户端原counter/route/outro方法复用，三帧均FREE_GAME、Spin、未settled；+10奖励后的完整20步出口仅合成。独立校验复用金额、PID、XML全文、GSD及旧计数算法的分步检查，严格初始10、逐步CFGG+1、TFG不变或+10、NFG=旧NFG-1+增量，总数上限100。混合、进一步功能、未知字段、跳计数、错XML/金额/session保持拒绝。旧10/15/SFGT默认范围不变。
+
+Python/Runner/collector及capture入口已接独立pyramids-ten-retrigger-v1/bonus8，mappingHash55ea09b9c021c8ad53effe8d74bda38b08ac1b263f8d67f2f2cde62088752a8c。5787条实际旧完整规范化逐条相等，真实3帧仍只能FREE且不能settled，原文不变；14项Python、5项独立JS、2项collector及TS typecheck通过。完整合成金额由Python与collector独立一致，错mapping/prefix/12组负例均拒绝。尚无下一代source profile、激活或源许可，不能把合成终局称自然终局/整款ready。
 
 11项Python（新候选+原范围）及独立JS候选、原关闭/激活边界通过。真实三帧Python复核只判未完成FREE，原文不变。真实5787条内存无源结案调用正式closeCountShared→retireDemoPool，两Python165页逐条校验、74仅内存补写、2仅内存作废、原5713Mongo和全部旧journal不变、reserved清零。7个许可/场景负例在写入前拒绝；最大页100。不是线上结案。
 
-独立无源许可config/count-close-pyramids-retrigger-20261002.json canonical d490121298afb03d52d211812d249d991c1359c02e47e49345f8475efd5a0bad，745文件，只绑定上述已结束源、5787日志完整和2中断，源额度0。统一Linux及线上维护尚待完成；不解除保护或派源以探测规则。
+独立无源许可config/count-close-pyramids-retrigger-20261002.json canonical d490121298afb03d52d211812d249d991c1359c02e47e49345f8475efd5a0bad已应用永久冻结，745文件，源额度0。Linux36952790635和维护36953208987均成功。5787条recordsHash为656c64a4430f731a2afb31110756bb79a01988bb5602f7c6edb29d0b1dbb8433。后续不能重关或改已应用许可。
 
-AG参考：固定任务与独立claim、故障保全/确定性分类、完全持久化后才能finish。当前合法重触发在旧范围内仍触发全局保护，后续须单独接入其分类与完整映射；不能把所有PYRAMIDS_FREE_COUNTERS宽松归为适配缺口，因为坏计数仍应硬拒绝。下一款准备与该修复独立；真实跨款自动接力和300000新版终审尚未验收，所有优化未完成。
+AG参考：固定任务与独立claim、故障保全/确定性分类、完全持久化后才能finish。新增分类只对全文XML、金额、PID、GSD和逐帧进度验证通过、仍未完成的独立+10 cash前缀转为PYRAMIDS_RETRIGGER_NOT_ADAPTED，并沿现有AG路径保全、flush、park单款。坏计数/错XML/session/钱和未知分支继续共享保护；不给新请求或终局许可。真实3帧回放原文不变、20项控制器及负例测试通过，尚待统一Linux验证。完整production映射与下一独立准入尚未完成。下一款准备与该修复独立；真实跨款自动接力和300000新版终审尚未验收，所有优化未完成。

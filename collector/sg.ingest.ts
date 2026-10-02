@@ -1,4 +1,5 @@
 import {hasPyramidsSuperFree,superFreeFields} from './sg.pyramids-super-free';
+import {hasPyramidsRetrigger,retriggerFields} from './sg.pyramids-retrigger';
 import {pyramidsFields} from './sg.pyramids';
 import {hasPyramidsFifteen,fifteenFields} from './sg.pyramids-fifteen';
 import {hasPyramidsSuperHold,superHoldFields} from './sg.pyramids-super-hold';
@@ -20,6 +21,10 @@ import { ROUND_FIELDS_VERSION } from './sg.fields';
  * them against the raw protocol and its own pinned policy again before writing.
  */
 export function prepareNextgenRound(raw: any, mapping: { buy: number; bonus: number; typeMappingHash: string }) {
+  if(hasPyramidsRetrigger(raw)){
+    if(mapping.buy!==0||mapping.bonus!==8)throw Error('SG_PYRAMIDS_RETRIGGER_MAPPING_MISMATCH');
+    return retriggerFields(raw,mapping.typeMappingHash);
+  }
   if(hasPyramidsSuperFree(raw)){
     if(mapping.buy!==0||mapping.bonus!==7)throw Error('SG_PYRAMIDS_SUPER_FREE_MAPPING_MISMATCH');
     return superFreeFields(raw,mapping.typeMappingHash);

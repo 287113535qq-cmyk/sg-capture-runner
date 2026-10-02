@@ -1,7 +1,16 @@
-"""Independent offline +10 cash retrigger scope, without source permission."""
+"""Independent +10 cash retrigger validation, without source permission."""
 import xml.etree.ElementTree as ET
-from pyramids_free_review import PyramidsFreeSequence
-from round_fields import check
+from pyramids_free_review import PyramidsFreeSequence, SOURCE
+from round_fields import check, params
+
+EXTENSION = SOURCE + '-pyramids-ten-retrigger-v1'
+
+def has_retrigger(raw):
+    steps = raw.get('steps', [])
+    return (raw.get('sourceKey') == SOURCE and bool(steps)
+            and params(steps[0]['responsePayload']).get('TFG') == '10'
+            and any(params(s['responsePayload']).get('TFG', '0').isdigit()
+                    and int(params(s['responsePayload']).get('TFG', '0')) > 10 for s in steps[1:]))
 
 class PyramidsRetriggerSequence(PyramidsFreeSequence):
     def validate_counters(self, n, t, c, previous):

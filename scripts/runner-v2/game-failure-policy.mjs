@@ -1,3 +1,4 @@
+import {reviewPyramidsRetrigger} from '../trial/pyramids-retrigger-review.mjs';
 // Only explicit adapter gaps are game-local. Source rejections, ambiguous
 // replies, money errors and storage failures retain the shared stop policy.
 const adapterGaps = new Set([
@@ -8,6 +9,7 @@ const adapterGaps = new Set([
   'UNSUPPORTED_PYRAMIDS_FREE_NESTED_COUNTER', 'UNSUPPORTED_PYRAMIDS_FREE_TERMINATION',
   'PYRAMIDS_FREE_COIN_PREFIX_ONLY', 'PYRAMIDS_FREE_UNREVIEWED_COIN',
   'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY', 'PYRAMIDS_SUPER_HOLD_SCOPE',
+  'PYRAMIDS_RETRIGGER_NOT_ADAPTED',
   'UNSUPPORTED_INCA_NESTED_COUNTER', 'UNSUPPORTED_INCA_TERMINATION',
   'UNKNOWN_TRIAL_FEATURE', 'UNKNOWN_JACKPOT_FEATURE', 'HUFF_FEATURE_NOT_ADAPTED',
   'UNSUPPORTED_BEAVER_NESTED_FEATURE', 'MOREPUFF_FEATURE_NOT_ADAPTED',
@@ -24,3 +26,16 @@ const adapterGaps = new Set([
   'RHINO_UNKNOWN_FEATURE', 'RHINO_FEATURE', 'RHINO_WILD_MULTIPLIER',
 ]);
 export const isAdapterGap = code => adapterGaps.has(code);
+
+// Counter errors alone remain shared failures. Only a fully validated,
+// unfinished +10 cash prefix may be parked as an adapter gap; this does not
+// authorize another request or approve a terminal record.
+export function reviewedAdapterFailure(code,raw){
+  if(code!=='PYRAMIDS_FREE_COUNTERS'||raw?.steps?.length<3)return code;
+  try{
+    const result=reviewPyramidsRetrigger(raw);
+    if(result.complete||result.next!=='FREE_GAME')return code;
+    const totals=raw.steps.map(s=>Number(new URLSearchParams(s.responsePayload).get('TFG')));
+    return totals.some((t,i)=>i>0&&t===totals[i-1]+10)?'PYRAMIDS_RETRIGGER_NOT_ADAPTED':code;
+  }catch{return code;}
+}
