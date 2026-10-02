@@ -16,6 +16,11 @@ on:
         description: 'Exact ended run id:attempt for AG parking only; no source permission'
         type: string
         default: ''
+      parked_close_profile:
+        description: 'Exact already parked count evidence; no source allowance'
+        type: choice
+        default: count-close-pyramids-sfgt-20261002.json
+        options: [count-close-pyramids-sfgt-20261002.json, count-close-pyramids-retrigger-coin-20261002.json]
       runtime_profile:
         description: 'Reviewed healthy-run runtime update without additional quota'
         type: choice
@@ -372,4 +377,6 @@ jobs:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
       - name: Settle parked count without source or allowance
+        env:
+          SG_PARKED_CLOSE_PROFILE: ${{ inputs.parked_close_profile || 'count-close-pyramids-sfgt-20261002.json' }}
         run: node scripts/runner-v2/count-parked-close-control.mjs

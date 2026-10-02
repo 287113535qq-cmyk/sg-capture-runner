@@ -5,7 +5,7 @@ import zipfile
 
 
 def extract(path, expected_count=40):
-    assert expected_count in (40, 80), 'UNSUPPORTED_FINAL_ROW_COUNT'
+    assert expected_count in (20, 40, 80), 'UNSUPPORTED_FINAL_ROW_COUNT'
     rows = []
     names = set()
     with zipfile.ZipFile(path) as archive:

@@ -10,7 +10,7 @@ with zipfile.ZipFile(sys.argv[1],'w',compression=zipfile.ZIP_DEFLATED) as z:
   lines=[]
   for lane in range(int(sys.argv[3])):
    row={'schema':'sg-capture-performance-v1','reason':'final','worker':host+40*lane,'fixture':'x'*150000}
-   if sys.argv[2]=='missing' and host==19 and lane==1: continue
+   if sys.argv[2]=='missing' and host==19 and lane==int(sys.argv[3])-1: continue
    lines.append('2026-10-01T00:00:00Z '+json.dumps(row))
   content='\\n'.join(lines)+'\\n'
   name=str(host+1)+'_capture-'+str(host)+'.txt'
@@ -37,4 +37,14 @@ test('four-session ZIP preserves eighty unique large final rows and rejects wron
  assert.throws(()=>extractCanaryLog(f.file,{python}));
  assert.throws(()=>extractCanaryLog(f.file,{python,expectedCount:60}),/CANARY_LOG_ROW_COUNT/);
  }finally{f.close();}
+});
+
+test('single-lane offline diagnostics require all twenty finals and keep download scope unchanged',()=>{
+ for(const mode of ['valid','missing','duplicate','malformed']){
+  const f=fixture(mode,1);try{
+   if(mode==='valid')assert.equal(extractCanaryLog(f.file,{python,expectedCount:20}).length,20);
+   else assert.throws(()=>extractCanaryLog(f.file,{python,expectedCount:20}));
+  }finally{f.close();}
+ }
+ assert.throws(()=>loadCanarySourceLog({}, {}, {expectedCount:20}),/CANARY_LOG_ROW_COUNT/);
 });

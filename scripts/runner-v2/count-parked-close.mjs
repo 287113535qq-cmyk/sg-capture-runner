@@ -8,12 +8,16 @@ import {retireDemoPool} from './retire-demo-pool.mjs';
 // AG already parked this generation and saved its interrupted attempt. Reuse
 // that evidence, settle its existing allocations, and leave repair independent.
 export async function closeParkedCount({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
- assert(profile?.schema==='sg-count-parked-close-profile-v1'&&profile.group==='secondary'
+ const coin=profile?.schema==='sg-count-parked-coin-close-profile-v1';
+ const binding=coin?{sourceRun:'36955443358:1',sourceCommit:'3a4efb77f104cb23306b635ccfdddbd1daa5340d',
+  profileHash:'9b5be7e5e018d9be4c7c09adda0dcac84bbae82c75e3d3c4d5c1fcc1b4982a34',complete:7503,frames:15}:
+  {sourceRun:'36946815410:1',sourceCommit:'72b02e1a85d9bcfa92e246dd3dbedffefa38568e',
+   profileHash:'140025dee8b6f121c08e3f8b71d50c326db627c556529049ba850e64d249294f',complete:5713,frames:1};
+ assert((coin||profile?.schema==='sg-count-parked-close-profile-v1')&&profile.group==='secondary'
   &&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'&&plan.target===299850
-  &&profile.planHash===hash(plan)&&profile.sourceRun==='36946815410:1'
-  &&profile.sourceCommit==='72b02e1a85d9bcfa92e246dd3dbedffefa38568e'
-  &&profile.sourceProfileHash==='140025dee8b6f121c08e3f8b71d50c326db627c556529049ba850e64d249294f'
-  &&profile.completePreserved===5713&&profile.abandonedAlready===1&&profile.sourceAllowance===0
+  &&profile.planHash===hash(plan)&&profile.sourceRun===binding.sourceRun
+  &&profile.sourceCommit===binding.sourceCommit&&profile.sourceProfileHash===binding.profileHash
+  &&profile.completePreserved===binding.complete&&profile.abandonedAlready===1&&profile.sourceAllowance===0
   &&Number.isSafeInteger(profile.createdAt)&&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt<=7200000&&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??''),'PARKED_COUNT_CLOSE_SCOPE');
  assert(ended?.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
@@ -38,8 +42,11 @@ export async function closeParkedCount({store,transport,gate,parser,plan,profile
   &&permit.profileHash===spec.profileHash&&permit.commit===profile.sourceCommit&&hash(permit)===profile.permitHash,'PARKED_COUNT_CLOSE_PERMISSION');
  const abandoned=(await store.get('journal',profile.abandonedKey))?.value;
  assert(abandoned&&hash(abandoned)===profile.abandonedHash&&abandoned.disposition==='interrupted-abandoned-without-replay'
-  &&abandoned.pending?.awaiting===null&&abandoned.pending.raw.steps.length===1
+  &&abandoned.pending?.awaiting===null&&abandoned.pending.raw.steps.length===binding.frames
   &&abandoned.pending.raw.steps[0].msgId==='BET'&&abandoned.pending.raw.steps[0].responseXml?.length>0,'PARKED_COUNT_CLOSE_ABANDONED');
+ if(coin)assert(abandoned.pending.raw.steps.slice(1).every(s=>s.msgId==='FREE_GAME'&&s.responseXml?.length>0)
+  &&batches.some(b=>b.abandonedDemo===profile.abandonedKey&&b.adapterFailureCode==='PYRAMIDS_FREE_UNREVIEWED_COIN'),
+  'PARKED_COUNT_CLOSE_COIN_ARCHIVE');
  const key=`count-parked-close:${plan.trialId}:${profile.sourceRun}`;
  assert(!await store.get('journal',key+':before'),'PARKED_COUNT_CLOSE_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'PARKED_COUNT_CLOSE_READBACK');};
@@ -50,11 +57,11 @@ export async function closeParkedCount({store,transport,gate,parser,plan,profile
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,expectedPoolHash:profile.poolHash,
   commit:profile.sourceCommit,group:'secondary',closedBatchDecorations:profile.closedBatchDecorations??[],now});
  const after=(await store.get('state','pool:'+plan.trialId)).value;
- assert(retired.completePreserved===5713&&retired.recordsHash===profile.recordsHash&&retired.abandonedAttempts===0
-  &&after.confirmed===5713&&checkLedger(after,plan,spec).reserved===0
+ assert(retired.completePreserved===binding.complete&&retired.recordsHash===profile.recordsHash&&retired.abandonedAttempts===0
+  &&after.confirmed===binding.complete&&checkLedger(after,plan,spec).reserved===0
   &&Object.values(after.workers).every(w=>!w.activeBatch&&w.leaseUntil<=now()),'PARKED_COUNT_CLOSE_RESULT');
  const out={schema:'sg-count-parked-close-v1',profileHash:hash(profile),sourceRun:profile.sourceRun,sourceCommit:profile.sourceCommit,
-  trialId:plan.trialId,activation:spec.activation,completePreserved:5713,abandonedAlready:1,newAbandoned:0,
+  trialId:plan.trialId,activation:spec.activation,completePreserved:binding.complete,abandonedAlready:1,newAbandoned:0,
   recordsHash:retired.recordsHash,retirement:after.retiredCount,retirementHash:hash(retired),repairKey:profile.parkedRepair.key,
   sourceRequests:0,newBetAllowance:0,requiresNewSession:true,commit,run,at:now()};
  await guarded();await save(key+':complete',out);return out;

@@ -661,6 +661,41 @@
       "mappingHash": "55ea09b9c021c8ad53effe8d74bda38b08ac1b263f8d67f2f2cde62088752a8c",
       "bonus": 8,
       "sourceAuthorized": false
+    },
+    "retriggerActualReentry": {
+      "preflightRun": 36954765337,
+      "activationRun": 36955086530,
+      "sourceRun": 36955443358,
+      "runtime": "3a4efb77f104cb23306b635ccfdddbd1daa5340d",
+      "preflightToSourceDispatchSeconds": 399.31267619132996,
+      "activationJobSeconds": 190.0,
+      "actualReentry": true,
+      "completePreserved": 5787,
+      "remainingComplete": 294063,
+      "newQuota": 0,
+      "matchedWholeCaptureGainMeasured": false,
+      "activationReadbackDocuments": 6
+    },
+    "retriggerActualSource": {
+      "sourceRun": "36955443358:1",
+      "sourceCommit": "3a4efb77f104cb23306b635ccfdddbd1daa5340d",
+      "newComplete": 1716,
+      "mongoFullReadback": 1716,
+      "independentPythonVerified": true,
+      "oldCompletePreservedByPriorProof": 5787,
+      "totalCompleteReceipts": 7503,
+      "bonusCounts": {
+        "0": 1697,
+        "1": 15,
+        "7": 1,
+        "2": 3
+      },
+      "verificationMs": 519.4982999819331,
+      "poolCheckpoint": 7187,
+      "newSourceRequestsForReview": 0,
+      "mongoWrites": 0,
+      "closureApplied": false,
+      "allOptimizationsComplete": false
     }
   },
   "pending": [

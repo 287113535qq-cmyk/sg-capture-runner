@@ -3,7 +3,9 @@ import {createHash} from 'node:crypto';import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 
 export function extractCanaryLog(path,{python='python3',expectedCount=40}={}){
- assert([40,80].includes(expectedCount),'CANARY_LOG_ROW_COUNT');
+ // Offline diagnostics also cover one lane. This does not expand the separate
+ // authenticated canary download or grant any capture permission.
+ assert([20,40,80].includes(expectedCount),'CANARY_LOG_ROW_COUNT');
  return JSON.parse(execFileSync(python,[fileURLToPath(new URL('./canary-log-extract.py',import.meta.url)),path,String(expectedCount)],
   {maxBuffer:32*1024**2,timeout:30000,stdio:['ignore','pipe','pipe']}));
 }
