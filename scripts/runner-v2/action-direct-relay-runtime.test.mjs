@@ -3,7 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {DIRECT_ACTION_CANARY,ACTION_RESOURCE_BUDGET,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-direct-action-protocol.mjs';
 import {admitBudgetCanary} from './action-budget-canary.mjs';
-import {checkDirectRelayRevision,checkDirectRelayResource,refreshDirectRelayRuntime,admitDirectRelay,directRelayWindow,relayDirectActionRun,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
+import {checkDirectRelayRevision,checkDirectRelayResource,refreshDirectRelayRuntime,admitDirectRelay,directRelayWindow,relayDirectActionRun,directRelayCompleteDelta,directRelayTargetReached} from './action-direct-relay-runtime.mjs';
 
 test('resource completion delta reads the mutable state pool and rejects missing or regressed counts',async()=>{
  const calls=[],store={get:async(collection,key)=>{calls.push([collection,key]);return collection==='state'?{value:{confirmed:134946}}:null;}};
@@ -267,4 +267,42 @@ test('verified continuation binds actual compact/delta and explicit workflow pro
  assert(direct.length>0&&direct.every(s=>s.if.includes(runtimeName)));
  }
  assert.equal(receipt.resourceReviewHash,f.revision.resourceReviewHash);
+});
+
+async function recoveryFixture(){
+ const f=await relayFixture(true),root=await admitDirectRelay(f);f.addBatch(111083);f.advance(900001);
+ const previousRevision=structuredClone(f.revision),prior=f.binding.receipt,priorCommit=f.commit,review=resource(f,root);
+ f.revision={...previousRevision,schema:'sg-count-runtime-refresh-profile-v2',purpose:'direct-action-log-recovery-v1',
+ previousRevisionName:'count-runtime-pyramids-resume-action-relay-20261002.json',previousRevisionHash:hash(previousRevision),
+ previousReceiptHash:hash(prior),resourceRootRun:root.run,resourceReviewHash:hash(review),activationCommit:f.spec.commit,
+ sourceRun:root.run,fromCommit:priorCommit,sourcePermitHash:hash(root),poolHash:hash(f.pool),campaignHash:hash(f.campaign),
+ completePreserved:f.pool.confirmed,remainingComplete:f.plan.target-f.pool.confirmed,createdAt:f.now(),expiresAt:f.now()+7200000};
+ f.ended={...f.ended,id:Number(root.run.split(':')[0]),head_sha:priorCommit,conclusion:'failure'};
+ f.jobs.jobs.forEach((j,i)=>j.id=1000+i);
+ f.jobs.jobs.push({id:9999,name:'verify',status:'completed',conclusion:'failure',steps:[{name:'Continue direct action once after complete resource evidence',conclusion:'failure'}]});f.jobs.total_count++;
+ f.parentEnded=f.ended;f.previousRevision=previousRevision;f.recoveryResourceReview=review;f.commit='f'.repeat(40);f.run='301:1';return f;
+}
+test('log-only aggregate failure recovers independently after every capture, resource and settlement proof; original budget stays fixed',async()=>{
+ const f=await recoveryFixture(),pool=hash(f.pool),profile=hash(f.profile),spec=hash(f.spec);
+ const receipt=await refreshDirectRelayRuntime(f);assert.equal(receipt.completePreserved,256877);
+ assert.equal(hash(f.pool),pool);assert.equal(hash(f.profile),profile);assert.equal(hash(f.spec),spec);
+ assert.equal(hash(f.docs.get(`direct-action-resource:${f.plan.trialId}:${f.revision.sourceRun}`)),f.revision.resourceReviewHash);
+ f.binding={spec:f.spec,complete:f.complete,receipt};f.run='302:1';
+ const permit=await admitDirectRelay(f);assert.equal(permit.remainingComplete,42973);
+ assert.equal(permit.historyBoundary.complete,256877);
+});
+test('recovery refuses gameplay failures, other failed verify steps, live leases, existing dispatch, count and evidence differences without writes',async()=>{
+ for(const mutate of [f=>f.jobs.jobs[0].conclusion='failure',f=>f.jobs.jobs.at(-1).steps[0].name='Other failure',
+ f=>f.recoveryResourceReview.hostEvidenceComplete=false,
+ f=>f.pool.workers[20]={activeBatch:1,leaseUntil:f.now()+1000},
+ f=>f.docs.set(`count-relay:${f.plan.trialId}:${f.revision.sourceRun}:intent`,{}),
+ f=>f.docs.get(`batch:${f.plan.trialId}:3`).checkpoint--]){
+ const f=await recoveryFixture();mutate(f);const before=hash([...f.docs]);await assert.rejects(refreshDirectRelayRuntime(f));assert.equal(hash([...f.docs]),before);
+ }
+});
+test('target stop needs complete settled readback receipts, but does not require a new ten-minute window or dispatch',async()=>{
+ const f=await relayFixture(true);assert.equal(await directRelayTargetReached(f),false);
+ f.addBatch(f.plan.target-f.pool.confirmed);assert.equal(await directRelayTargetReached(f),true);
+ f.docs.get(`batch:${f.plan.trialId}:3`).checkpoint--;
+ await assert.rejects(directRelayTargetReached(f),/BATCH_OPEN/);
 });

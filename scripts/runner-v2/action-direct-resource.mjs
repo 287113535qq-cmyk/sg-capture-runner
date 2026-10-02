@@ -6,13 +6,19 @@ import {promisify} from 'node:util';
 import {reviewResourceWorkers} from './resource-windows.mjs';
 const execute=promisify(execFile);
 
-export function directCaptureJobs({source,jobs,commit}){
+export function directCaptureJobs({source,jobs,commit,verifyOnlyFailure=false}){
  assert(source?.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
   &&Number.isSafeInteger(source.id)&&source.run_attempt===1&&source.head_sha===commit
   &&source.event==='workflow_dispatch'&&source.path==='.github/workflows/trial-300k.yml'
   &&['in_progress','completed'].includes(source.status)
-  &&(source.status!=='completed'||source.conclusion==='success')
+  &&(source.status!=='completed'||source.conclusion==='success'||verifyOnlyFailure&&source.conclusion==='failure')
   &&jobs?.total_count===jobs.jobs?.length&&jobs.total_count<100,'DIRECT_RESOURCE_SOURCE');
+ if(verifyOnlyFailure)assert(source.status==='completed'&&source.conclusion==='failure'
+  &&jobs.jobs.filter(j=>j.name==='verify'&&j.status==='completed'&&j.conclusion==='failure').length===1
+  &&jobs.jobs.find(j=>j.name==='verify')?.steps?.filter(s=>s.conclusion==='failure').length===1
+  &&jobs.jobs.find(j=>j.name==='verify')?.steps?.find(s=>s.conclusion==='failure')?.name==='Continue direct action once after complete resource evidence'
+  &&jobs.jobs.every(j=>j.status==='completed'&&(j.name==='verify'?j.conclusion==='failure':['success','skipped'].includes(j.conclusion))),
+  'DIRECT_RESOURCE_VERIFY_ONLY_FAILURE');
  const captures=Array.from({length:20},(_,i)=>{
   const found=jobs.jobs.filter(j=>j.name==='capture-'+i);
   assert(found.length===1&&found[0].status==='completed'&&found[0].conclusion==='success'
@@ -33,8 +39,12 @@ export function extractDirectJobFinal(text,slot){
 // Capture-job logs are available before the aggregate run ends. Download only
 // those authenticated successful jobs, saving raw logs privately. The digest
 // binds the ordered job-ID/log-SHA manifest, not a nonexistent run ZIP.
-export async function loadDirectCaptureLogs({source,jobs,commit,download=async id=>{
- const result=await execute('gh',['api',`repos/287113535qq-cmyk/sg-capture-runner/actions/jobs/${id}/logs`],
+export function directJobLogArgs(id){
+ assert(Number.isSafeInteger(id)&&id>0,'DIRECT_RESOURCE_JOB_ID');
+ return ['api',`repos/287113535qq-cmyk/sg-capture-runner/actions/jobs/${id}/logs`,'--allow-escape-sequences'];
+}
+export async function loadDirectCaptureLogs({source,jobs,commit,verifyOnlyFailure=false,download=async id=>{
+ const result=await execute('gh',directJobLogArgs(id),
   {encoding:'buffer',maxBuffer:32*1024**2,timeout:60000});return result.stdout;
 },save=async(id,bytes)=>{
  fs.mkdirSync('.local/direct-action-resource',{recursive:true});
@@ -42,7 +52,7 @@ export async function loadDirectCaptureLogs({source,jobs,commit,download=async i
  if(fs.existsSync(path))assert(fs.readFileSync(path).equals(bytes),'DIRECT_RESOURCE_LOG_CHANGED');
  else fs.writeFileSync(path,bytes,{flag:'wx'});
 }}){
- const captures=directCaptureJobs({source,jobs,commit}),rows=[],manifest=[];
+ const captures=directCaptureJobs({source,jobs,commit,verifyOnlyFailure}),rows=[],manifest=[];
  // Four independent read-only downloads; no source or storage business call.
  for(let first=0;first<captures.length;first+=4){
   const results=await Promise.allSettled(captures.slice(first,first+4).map(async(job,i)=>{

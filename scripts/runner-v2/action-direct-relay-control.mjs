@@ -1,6 +1,6 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,RESUME_ACTION_CONTINUOUS_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
-import {loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,RESUME_ACTION_CONTINUOUS_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta,directRelayTargetReached} from './action-direct-relay-runtime.mjs';
+import {directCaptureJobs,loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
 import {DIRECT_ACTION_PROFILE,RESUME_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {authenticatedRead} from './github-boundary.mjs';
@@ -50,7 +50,14 @@ try{
   const ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
   const previousRevision=runtimeName===RESUME_ACTION_CONTINUOUS_RUNTIME?load('config/'+RESUME_ACTION_RELAY_RUNTIME):null;
   const parentEnded=previousRevision?await read('repos/287113535qq-cmyk/sg-capture-runner/actions/runs/'+revision.resourceRootRun.split(':')[0]):null;
-  const receipt=await refreshDirectRelayRuntime({store,base,plan,profile,revision,previousRevision,parentEnded,ended,jobs,commit,run,boundary});
+  let recoveryResourceReview;
+  if(revision.purpose==='direct-action-log-recovery-v1'){
+   const logs=await loadDirectCaptureLogs({source:ended,jobs,commit:revision.fromCommit,verifyOnlyFailure:true});
+   const permit=(await store.get('journal',`count-run:${plan.trialId}:${revision.sourceRun}`))?.value;
+   const completeDelta=await directRelayCompleteDelta({store,trialId:plan.trialId,permit});
+   recoveryResourceReview=reviewDirectSourceResource({run:revision.sourceRun,commit:revision.fromCommit,...logs,completeDelta});
+  }
+  const receipt=await refreshDirectRelayRuntime({store,base,plan,profile,revision,previousRevision,parentEnded,recoveryResourceReview,ended,jobs,commit,run,boundary});
   console.log(JSON.stringify({refreshed:true,completePreserved:receipt.completePreserved,remainingComplete:receipt.remainingComplete,sourceRequests:0}));
  }else{
   if(mode==='admit'&&inputs.relay_parent)await waitFormalRelayParent({store,read,plan,profile,
@@ -69,6 +76,10 @@ try{
    else{
     const root='repos/287113535qq-cmyk/sg-capture-runner/actions/runs/'+process.env.GITHUB_RUN_ID;
     const source=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
+    directCaptureJobs({source,jobs,commit});
+    if(await directRelayTargetReached({store,plan,spec:binding.spec}))
+     console.log(JSON.stringify({continued:false,reason:'TARGET_REACHED'}));
+    else{
     const logs=await loadDirectCaptureLogs({source,jobs,commit});
     const completeDelta=await directRelayCompleteDelta({store,trialId:plan.trialId,permit});
     const resourceReview=reviewDirectSourceResource({run,commit,...logs,completeDelta});
@@ -82,6 +93,7 @@ try{
       try{await api('actions/workflows/trial-300k.yml/dispatches','POST',{ref,inputs});}
       finally{await api('actions/workflows/trial-300k.yml/disable','PUT');}
      }})));
+    }
    }
   }
  }

@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {directCaptureJobs,extractDirectJobFinal,loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
+import {directJobLogArgs,directCaptureJobs,extractDirectJobFinal,loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
 import {ResourceWindows} from './resource-windows.mjs';import {HostResourceObservation} from './host-resource-observation.mjs';
 
 function fixture(){
@@ -44,3 +44,13 @@ test('missing common ten-minute coverage and unhealthy host telemetry cannot aut
  const g=fixture();g.rows[0].rpcMetrics.hostResourceObservation.buckets[3].peakMemoryPercent=95;
  assert.throws(()=>reviewDirectSourceResource({...args,rows:g.rows}));
 });
+
+ test('raw job logs explicitly allow terminal control bytes; failed aggregate is limited to the sole relay verification step',()=>{
+ assert.deepEqual(directJobLogArgs(123),['api','repos/287113535qq-cmyk/sg-capture-runner/actions/jobs/123/logs','--allow-escape-sequences']);
+ assert.throws(()=>directJobLogArgs('123'));
+ const f=fixture();f.source.status='completed';f.source.conclusion='failure';
+ f.jobs.jobs.push({id:12345,name:'verify',status:'completed',conclusion:'failure',steps:[{name:'Continue direct action once after complete resource evidence',conclusion:'failure'}]});f.jobs.total_count++;
+ assert.throws(()=>directCaptureJobs(f));assert.equal(directCaptureJobs({...f,verifyOnlyFailure:true}).length,20);
+ f.jobs.jobs.at(-1).steps[0].name='Audit every completed round in the selected trial';
+ assert.throws(()=>directCaptureJobs({...f,verifyOnlyFailure:true}));
+ });

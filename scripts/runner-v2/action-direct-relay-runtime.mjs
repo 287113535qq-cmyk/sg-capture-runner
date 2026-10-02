@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
+import {directCaptureJobs} from './action-direct-resource.mjs';
 import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {checkLedger,loadCountPermission,auditCountBatch} from './complete-count.mjs';
 import {relayFormalRun} from './formal-relay.mjs';
@@ -10,6 +11,7 @@ export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-r
 export const RESUME_ACTION_RELAY_RUNTIME='count-runtime-pyramids-resume-action-relay-20261002.json';
 export const RESUME_ACTION_CONTINUOUS_RUNTIME='count-runtime-pyramids-resume-verified-continuation-20261002.json';
 export const DIRECT_ACTION_RELAY_RUNTIMES=[DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,RESUME_ACTION_CONTINUOUS_RUNTIME];
+const recovery=revision=>revision?.purpose==='direct-action-log-recovery-v1';
 const continued=revision=>revision?.schema==='sg-count-runtime-refresh-profile-v2';
 export async function directRelayCompleteDelta({store,trialId,permit}){
  const pool=(await store.get('state','pool:'+trialId))?.value;
@@ -26,7 +28,7 @@ export function checkDirectRelayRevision({base,plan,profile,revision}){
  assert(hash(pyramidsDirectActionPlan(base,profile))===hash(plan),'DIRECT_RELAY_PLAN');
  const continuation=continued(revision);
  if(continuation)assert(profile.featureProfile==='pyramids-action-v3'
-  &&revision.purpose==='direct-action-verified-continuation-v1'
+  &&['direct-action-verified-continuation-v1','direct-action-log-recovery-v1'].includes(revision.purpose)
   &&revision.previousRevisionName===RESUME_ACTION_RELAY_RUNTIME
   &&hex(64).test(revision.previousRevisionHash??'')&&hex(64).test(revision.previousReceiptHash??'')
   &&hex(64).test(revision.resourceReviewHash??'')&&runId.test(revision.resourceRootRun??'')
@@ -133,6 +135,14 @@ async function settledCount({store,plan,pool,spec,now}){
  }
  assert(count===pool.confirmed,'DIRECT_RELAY_COUNT_CHANGED');return count;
 }
+export async function directRelayTargetReached({store,plan,spec,now=Date.now}){
+ const pool=(await store.get('state','pool:'+plan.trialId))?.value;
+ assert(Number.isSafeInteger(pool?.confirmed)&&pool.confirmed<=plan.target,'DIRECT_RELAY_TARGET_COUNT');
+ if(pool.confirmed<plan.target)return false;
+ assert(checkLedger(pool,plan,spec).reserved===0
+  &&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=now()),'DIRECT_RELAY_TARGET_NOT_SETTLED');
+ await settledCount({store,plan,pool,spec,now});return true;
+}
 function idle(pool,campaign,plan,profile,spec,now){
  assert(pool?.enabled&&!pool.failure&&checkLedger(pool,plan,spec).reserved===0
   &&Object.values(pool.workers).every(w=>!w.activeBatch&&w.leaseUntil<=now())
@@ -152,10 +162,10 @@ export async function refreshDirectRelayRuntime(args){
  checkDirectRelayRevision({base,plan,profile,revision});time(revision,now);
  assert(runId.test(run??'')&&hex(40).test(commit??'')&&commit!==revision.fromCommit
   &&`${ended?.id}:${ended?.run_attempt}`===revision.sourceRun&&ended.head_sha===revision.fromCommit
-  &&ended.status==='completed'&&ended.conclusion==='success'&&ended.event==='workflow_dispatch'
+  &&ended.status==='completed'&&(ended.conclusion==='success'||recovery(revision)&&ended.conclusion==='failure')&&ended.event==='workflow_dispatch'
   &&ended.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
   &&ended.path==='.github/workflows/trial-300k.yml'&&jobs?.total_count===jobs.jobs?.length
-  &&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&['success','skipped'].includes(j.conclusion))
+  &&jobs.jobs.length<100&&jobs.jobs.every(j=>j.status==='completed'&&(['success','skipped'].includes(j.conclusion)||recovery(revision)&&j.name==='verify'&&j.conclusion==='failure'))
   &&Array.from({length:20},(_,i)=>'capture-'+i).every(n=>jobs.jobs.filter(j=>j.name===n&&j.conclusion==='success').length===1),
   'DIRECT_RELAY_CANARY_SOURCE');
  await boundary();
@@ -172,13 +182,20 @@ export async function refreshDirectRelayRuntime(args){
   assert(hash(prior)===revision.previousReceiptHash,'DIRECT_RELAY_PREVIOUS_RECEIPT');
   const proof={base,plan,profile,revision:previous,spec,complete,receipt:prior,commit:revision.fromCommit};
   directRelayWindow({...proof,run:revision.sourceRun,permit,now:now()});
-  assert(permit.windowIndex===2&&permit.rootRun===revision.resourceRootRun
+  assert(permit.windowIndex===(recovery(revision)?1:2)&&permit.rootRun===revision.resourceRootRun
    &&permit.expiresAt<=now()&&hash(permit)===revision.sourcePermitHash,'DIRECT_RELAY_PREVIOUS_TAIL');
-  const resource=(await store.get('journal',`direct-action-resource:${plan.trialId}:${permit.rootRun}`))?.value;
+  const resource=recovery(revision)?args.recoveryResourceReview:(await store.get('journal',`direct-action-resource:${plan.trialId}:${permit.rootRun}`))?.value;
   assert(checkDirectRelayResource({resourceReview:resource,parentRun:permit.rootRun,commit:revision.fromCommit})===revision.resourceReviewHash
-   &&permit.resourceReviewHash===revision.resourceReviewHash,'DIRECT_RELAY_PREVIOUS_RESOURCE');
+   &&(recovery(revision)||permit.resourceReviewHash===revision.resourceReviewHash),'DIRECT_RELAY_PREVIOUS_RESOURCE');
+  if(recovery(revision)){
+   directCaptureJobs({source:ended,jobs,commit:revision.fromCommit,verifyOnlyFailure:true});
+   assert(revision.sourceRun===revision.resourceRootRun&&resource.startMs>=permit.createdAt&&resource.endMs<=now(),
+    'DIRECT_RELAY_RECOVERY_WINDOW');
+   for(const key of [`count-relay:${plan.trialId}:${permit.rootRun}:intent`,`direct-action-relay-child:${plan.trialId}:${permit.rootRun}`])
+    assert(!(await store.get('journal',key)),'DIRECT_RELAY_RECOVERY_ALREADY_CONTINUED');
+  }
   const parent=args.parentEnded;
-  assert(`${parent?.id}:${parent?.run_attempt}`===permit.rootRun&&parent.status==='completed'&&parent.conclusion==='success'
+  assert(`${parent?.id}:${parent?.run_attempt}`===permit.rootRun&&parent.status==='completed'&&(parent.conclusion==='success'||recovery(revision)&&parent.conclusion==='failure')
    &&parent.head_sha===revision.fromCommit&&parent.event==='workflow_dispatch'
    &&parent.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
    &&parent.path==='.github/workflows/trial-300k.yml','DIRECT_RELAY_PREVIOUS_PARENT');
@@ -203,6 +220,13 @@ export async function refreshDirectRelayRuntime(args){
  checkDirectRelayBinding({base,plan,profile,revision,spec,complete,receipt,commit});
  const key=`count-runtime:${plan.trialId}:${profile.activation}:${commit}`;
  assert(!(await store.get('journal',key)),'DIRECT_RELAY_ALREADY_REFRESHED');
+ if(recovery(revision)){
+  const resourceKey=`direct-action-resource:${plan.trialId}:${revision.resourceRootRun}`;
+  const existing=(await store.get('journal',resourceKey))?.value;
+  if(existing)assert(hash(existing)===revision.resourceReviewHash,'DIRECT_RELAY_RESOURCE_CHANGED');
+  else await store.create('journal',resourceKey,args.recoveryResourceReview,{immutable:true});
+  assert(hash((await store.get('journal',resourceKey))?.value)===revision.resourceReviewHash,'DIRECT_RELAY_RESOURCE_READBACK');
+ }
  await store.create('journal',key,receipt,{immutable:true});
  assert(hash((await store.get('journal',key))?.value)===hash(receipt),'DIRECT_RELAY_REFRESH_READBACK');return receipt;
 }

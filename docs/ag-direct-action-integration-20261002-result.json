@@ -216,5 +216,20 @@
     "requiresPriorTenMinuteResourceEvidence": true,
     "newQuota": 0,
     "focusedChecks": 43
+  },
+  "logRecovery": {
+    "sourceRun": "37016740078:1",
+    "sourceConclusion": "failure",
+    "captureJobsSuccess": 20,
+    "newComplete": 111083,
+    "totalComplete": 256877,
+    "remainingComplete": 42973,
+    "cause": "gh-terminal-escape-output-refusal",
+    "actualJobLogsRead": 20,
+    "actualResourceWindowVerified": true,
+    "actualMemoryBatches": 2762,
+    "linuxVerified": false,
+    "onlineApplied": false,
+    "automaticTailVerified": false
   }
 }
