@@ -808,12 +808,19 @@
       "oldNormalizedUnchanged": true,
       "naturalCombinedTerminalObserved": false,
       "captureAuthorization": false,
-      "actualReentry": false,
+      "actualReentry": true,
       "closeRun": 36962300874,
       "closeRuntime": "17d5ef9e79fc6906acb71f70706dab6ea1192c3b",
       "reservedAfter": 0,
       "sourceRequestsForClosure": 0,
-      "newAbandoned": 0
+      "newAbandoned": 0,
+      "activationRun": 36963419952,
+      "sourceRun": 36963756989,
+      "sourceRuntime": "4c22abda58d86233776496c2d05942a9a4ef5a62",
+      "appliedProfileHash": "758c973008b947c479c083b7eae4d1592fd23ae16022891162a17f1e015dc094",
+      "fullReadbackPreserved": 8391,
+      "remainingOriginalTarget": 291459,
+      "naturalCombinationTerminalObserved": false
     }
   },
   "pending": [
