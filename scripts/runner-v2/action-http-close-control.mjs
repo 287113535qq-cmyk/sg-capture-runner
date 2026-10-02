@@ -19,8 +19,8 @@ import {countPeerBoundary} from './count-peer-boundary.mjs';
 // The generic retirement never reads unknown gameplay fields to resume a round.
 assert(process.env.GITHUB_ACTIONS==='true'
  &&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','SECONDARY_GITHUB_REQUIRED');
-const name='count-network-pyramids-http-20261002.json';
-assert(/^count-network-pyramids-http-20261002\.json$/.test(name??''),'EVIDENCE_PROFILE_FILE');
+const name=process.env.SG_COUNT_NETWORK_PROFILE;
+assert(['count-network-pyramids-http-20261002.json','count-network-pyramids-http-entryfix-20261002.json'].includes(name),'EVIDENCE_PROFILE_FILE');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load('config/'+name);
 assert(profile.schema==='sg-count-network-http-close-profile-v1'&&profile.group==='secondary'
  &&profile.gameId===32721&&profile.trialId==='sg_r1_20260928_32721'

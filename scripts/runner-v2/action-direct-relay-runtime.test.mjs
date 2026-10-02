@@ -320,6 +320,38 @@ test('independent final audit reuses reached original count permission without n
  const f=await finalAuditFixture(),before=hash([...f.docs]);assert.equal((await checkDirectFinalAudit(f)).verified,true);
  assert.equal(hash([...f.docs]),before);
 });
+
+async function httpContinuationFixture(){
+ const f=await recoveryFixture(),receipt=await refreshDirectRelayRuntime(f);
+ f.binding={spec:f.spec,complete:f.complete,receipt};f.run='302:1';const permit=await admitDirectRelay(f);
+ const previousRevision=structuredClone(f.revision),parentEnded=structuredClone(f.ended);f.addBatch(8825);f.advance(900001);
+ f.jobs.jobs.filter(j=>j.name.startsWith('capture-')).forEach(j=>j.conclusion='failure');
+ f.jobs.jobs.push({name:'pyramids-formal-admit',status:'completed',conclusion:'success'});f.jobs.total_count++;
+ const key=`count-network-close:${f.plan.trialId}:${f.run}`,before={pool:structuredClone(f.pool),campaign:structuredClone(f.campaign),hold:{active:true}};
+ const closed={schema:'sg-count-network-http-close-profile-v1',sourceRun:f.run,sourceCommit:f.commit,sourceProfileHash:hash(f.profile),jobsHash:hash(f.jobs),permitHash:hash(permit),httpStatus:502,sourceAllowance:0,poolHash:hash(before.pool),campaignHash:hash(before.campaign),holdHash:hash(before.hold)};
+ const retired={completePreserved:f.pool.confirmed,abandonedAttempts:2};f.pool.retiredCount='retired-synthetic';f.docs.set(f.pool.retiredCount+':complete',retired);f.pool.countNetworkClosure=key;
+ const closure={schema:'sg-count-network-close-v1',profileHash:hash(closed),sourceRun:f.run,sourceCommit:f.commit,activation:f.profile.activation,completePreserved:f.pool.confirmed,abandonedAttempts:2,unknownAttempts:1,sourceRequests:0,newBetAllowance:0,requiresNewSession:true,retirement:f.pool.retiredCount,retirementHash:hash(retired)};
+ f.docs.set(key+':complete',closure);f.docs.set(key+':settled',structuredClone(closure));f.docs.set(key+':before',{...before,profileHash:hash(closed)});f.docs.set('global-hold',{active:false,countNetworkClosure:key});
+ f.revision={...previousRevision,purpose:'direct-action-http-continuation-v1',previousRevisionName:'count-runtime-pyramids-resume-verified-continuation-20261002.json',previousRevisionHash:hash(previousRevision),previousReceiptHash:hash(receipt),networkClosureKey:key,networkClosureHash:hash(closure),networkProfileHash:hash(closed),sourceRun:f.run,fromCommit:f.commit,sourcePermitHash:hash(permit),poolHash:hash(f.pool),campaignHash:hash(f.campaign),completePreserved:f.pool.confirmed,remainingComplete:f.plan.target-f.pool.confirmed,createdAt:f.now(),expiresAt:f.now()+7200000};
+ f.ended={...f.ended,id:302,head_sha:f.commit};f.previousRevision=previousRevision;f.parentEnded=parentEnded;f.networkProfile=closed;f.commit='1'.repeat(40);f.run='401:1';return f;
+}
+test('HTTP continuation requires actual zero-source closure and starts a fresh window with original remaining count',async()=>{
+ const f=await httpContinuationFixture(),profile=hash(f.profile),spec=hash(f.spec),receipt=await refreshDirectRelayRuntime(f);
+ f.binding={spec:f.spec,complete:f.complete,receipt};f.run='402:1';const permit=await admitDirectRelay(f);
+ assert.equal(permit.completeBefore,265702);assert.equal(permit.remainingComplete,34148);assert.equal(permit.expiresAt-permit.createdAt,900000);
+ assert.equal(hash(f.profile),profile);assert.equal(hash(f.spec),spec);assert.equal(receipt.networkClosureHash,f.revision.networkClosureHash);
+ const runtimeName='count-runtime-pyramids-network-continuation-20261002.json',control={};
+ const args={...f,runtimeName,control,resourceReady:Promise.resolve(),readProfile:()=>f.profile,readRevision:()=>f.revision,readReceipt:async k=>(await f.store.get('journal',k))?.value};
+ await compactControlInitializer(args)();assert(control.compact);assert.equal(await stateWriteInitializer({...args,group:'secondary'})(f.plan),true);
+ const yaml=createRequire(process.cwd()+'/collector/package.json')('js-yaml'),trial=yaml.load(fs.readFileSync('.github/workflows/trial-300k.yml','utf8')),maintenance=yaml.load(fs.readFileSync('.github/workflows/demo-maintenance.yml','utf8'));
+ assert(trial.on.workflow_dispatch.inputs.runtime_profile.options.includes(runtimeName));assert(maintenance.on.workflow_dispatch.inputs.runtime_profile.options.includes(runtimeName));
+ assert(trial.jobs['pyramids-formal-admit'].steps.find(s=>s.run==='node scripts/runner-v2/action-direct-relay-control.mjs admit').if.includes(runtimeName));
+});
+test('HTTP continuation refuses missing closure, unflushed history, wrong fault scope, changed hold or duplicate relay',async()=>{
+ for(const mutate of [f=>f.docs.delete(f.revision.networkClosureKey+':complete'),f=>f.networkProfile.httpStatus=401,f=>f.docs.get('global-hold').active=true,f=>f.docs.get('retired-synthetic:complete').completePreserved--,f=>f.docs.get(`batch:${f.plan.trialId}:4`).checkpoint--,f=>f.docs.set(`count-relay:${f.plan.trialId}:302:1:intent`,{}),f=>f.revision.networkClosureHash='0'.repeat(64)]){
+  const f=await httpContinuationFixture();mutate(f);const before=hash([...f.docs]);await assert.rejects(refreshDirectRelayRuntime(f));assert.equal(hash([...f.docs]),before);
+ }
+});
 test('final audit refuses live source, failed jobs, under target, quota, runtime or receipt mismatch',async()=>{
  for(const mutate of [f=>f.source.status='in_progress',f=>f.jobs.jobs[0].conclusion='failure',f=>f.pool.confirmed--,
  f=>f.permission.newBetAllowance=1,f=>f.permission.revisionHash='0'.repeat(64),f=>f.permission.receiptHash='0'.repeat(64)]){
