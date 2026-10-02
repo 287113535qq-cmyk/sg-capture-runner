@@ -182,6 +182,8 @@ def types(raw, kind):
     pyramids_retrigger = source_key == PYRAMIDS_SOURCE and has_retrigger(raw)
     from pyramids_coin_review import has_cash_coins, EXTENSION as PYRAMIDS_COIN_EXTENSION
     pyramids_coins = source_key == PYRAMIDS_SOURCE and has_cash_coins(raw)
+    from pyramids_super_coin_review import has_super_coins, EXTENSION as PYRAMIDS_SUPER_COIN_EXTENSION
+    pyramids_super_coins = source_key == PYRAMIDS_SOURCE and has_super_coins(raw)
     from pyramids_major_review import has_major, EXTENSION as PYRAMIDS_MAJOR_EXTENSION
     from pyramids_mixed_review import has_mixed, EXTENSION as PYRAMIDS_MIXED_EXTENSION
     from pyramids_fifteen_review import has_fifteen, EXTENSION as PYRAMIDS_FIFTEEN_EXTENSION
@@ -195,6 +197,7 @@ def types(raw, kind):
     if pyramids_super_free: PYRAMIDS_EXTENSION = PYRAMIDS_SUPER_FREE_EXTENSION
     if pyramids_retrigger: PYRAMIDS_EXTENSION = PYRAMIDS_RETRIGGER_EXTENSION
     if pyramids_coins: PYRAMIDS_EXTENSION = PYRAMIDS_COIN_EXTENSION
+    if pyramids_super_coins: PYRAMIDS_EXTENSION = PYRAMIDS_SUPER_COIN_EXTENSION
     if source_key == PYRAMIDS_SOURCE:
         pplan={'gameId':32721,'sourceKey':PYRAMIDS_SOURCE,'betRaw':20,'requestParams':{'BPL':'1','GN':'hyperchargedpyramidsofra96','LB':'40'}}
         check(PyramidsFields(pplan).next_request(raw) is None, 'INCOMPLETE_ROUND')
@@ -277,7 +280,7 @@ def types(raw, kind):
         check(kind=='freeGame' and profile.get('featureSelector')=='pyramids-super-hold-cash-v1','FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['featureTypes']['superHoldCash']
     elif pyramids_free:
-        check(kind=='freeGame' and profile.get('featureSelector')==('pyramids-cash-coins-v1' if pyramids_coins else 'pyramids-ten-retrigger-v1' if pyramids_retrigger else 'pyramids-super-free-v1' if pyramids_super_free else 'pyramids-fifteen-free-v1' if pyramids_fifteen else 'pyramids-free-hold-v1' if pyramids_mixed else 'pyramids-free-major-v1' if pyramids_major else 'pyramids-ten-free-v1'),'FEATURE_TYPE_MAPPING_REQUIRED')
+        check(kind=='freeGame' and profile.get('featureSelector')==('pyramids-super-cash-coins-v1' if pyramids_super_coins else 'pyramids-cash-coins-v1' if pyramids_coins else 'pyramids-ten-retrigger-v1' if pyramids_retrigger else 'pyramids-super-free-v1' if pyramids_super_free else 'pyramids-fifteen-free-v1' if pyramids_fifteen else 'pyramids-free-hold-v1' if pyramids_mixed else 'pyramids-free-major-v1' if pyramids_major else 'pyramids-ten-free-v1'),'FEATURE_TYPE_MAPPING_REQUIRED')
         bonus=profile['featureTypes']['independentFreeGames']
     elif piggies_size2:
         check(kind=='freeGame' and profile.get('featureSelector')=='piggies-size2-free-v1','FEATURE_TYPE_MAPPING_REQUIRED')

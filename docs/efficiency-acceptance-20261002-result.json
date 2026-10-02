@@ -797,6 +797,23 @@
       "faultFrames": 8,
       "pending": 0,
       "closureApplied": false
+    },
+    "pyramidsSuperCashCoins": {
+      "featureProfile": "pyramids-super-cash-coins-v1",
+      "typeMappingHash": "151c2d1567d4b0102c89881cf2c1d5fe52fada3e9971bd96d0eb8fd8c1daa67a",
+      "mappingRegistered": true,
+      "pythonNodeCollectorVerified": true,
+      "actualPrefixesVerified": 8,
+      "oldCompleteVerified": 8391,
+      "oldNormalizedUnchanged": true,
+      "naturalCombinedTerminalObserved": false,
+      "captureAuthorization": false,
+      "actualReentry": false,
+      "closeRun": 36962300874,
+      "closeRuntime": "17d5ef9e79fc6906acb71f70706dab6ea1192c3b",
+      "reservedAfter": 0,
+      "sourceRequestsForClosure": 0,
+      "newAbandoned": 0
     }
   },
   "pending": [

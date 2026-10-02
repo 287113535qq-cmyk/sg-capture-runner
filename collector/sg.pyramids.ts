@@ -25,7 +25,7 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false,retriggerTen=false,reviewedCashCoins=false){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false,retriggerTen=false,reviewedCashCoins=false,superCoins=false){
  requireP([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
@@ -33,7 +33,8 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
  requireP(!superHold||hold,'PYRAMIDS_SUPER_HOLD_SCOPE');
  requireP(!superFree||free&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_SUPER_FREE_SCOPE');
  requireP(!retriggerTen||free&&!superHold&&!superFree&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_RETRIGGER_SCOPE');
- requireP(!reviewedCashCoins||free&&retriggerTen&&!superHold&&!superFree&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_COIN_SCOPE');
+ requireP(!superCoins||free&&superFree&&reviewedCashCoins&&!retriggerTen&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_SUPER_COIN_SCOPE');
+ requireP(!reviewedCashCoins||free&&(superCoins||retriggerTen&&!superFree)&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_COIN_SCOPE');
  let observedMajor=false;
  let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{

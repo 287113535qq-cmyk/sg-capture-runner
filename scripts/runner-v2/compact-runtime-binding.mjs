@@ -42,7 +42,7 @@ export function compactLayoutBinding({plan,profile,spec,complete,commit}) {
 // A later repaired allocation can adopt the same fixed worker projection.
 // Applied older repair profiles never acquire this mode implicitly.
 export function compactRepairBinding({plan,profile,spec,complete,commit}) {
-  assert(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9'].includes(profile?.schema)
+  assert(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10'].includes(profile?.schema)
     &&profile.controlReadMode==='compact-worker-v1'
     &&/^[a-f0-9]{64}$/.test(profile.gatewayHash??''),'COMPACT_REPAIR_MODE');
   assert(plan?.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
@@ -76,7 +76,7 @@ export function compactControlInitializer({plan,runtimeName,commit,resourceReady
       await resourceReady;
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
       const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
-      control.compact=(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
+      control.compact=(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
     }
     const revision=readRevision(runtimeName);
     if(revision.controlReadMode===undefined)return;
