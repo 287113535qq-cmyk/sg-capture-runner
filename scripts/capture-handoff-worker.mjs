@@ -18,7 +18,7 @@ try{
     const p=JSON.parse(fs.readFileSync(path.join(root,'config',r.profile),'utf8'));
     if(p.generation!==r.generation||hash(p)!==r.profileHash||p.expiresAt<=Date.now())throw Error('CAPTURE_READY_PROFILE_STALE');
     result={schema:'sg-capture-dispatch-task-v1',status:'online-fresh-admission-required',receipt:r,
-      workflow:'.github/workflows/trial-300k.yml',inputs:{role:'fresh-short',allocation:'round-one',round_one_limit:'5',pilot_profile:r.profile},
+      workflow:'.github/workflows/trial-300k.yml',inputs:{role:'demo-fresh-short',round_limit:'100',allocation:'round-one',round_one_limit:'5',pilot_profile:r.profile},
       sourceAllowance:0,sourceRequests:0,dispatched:false};
    }catch{result={status:'capture-handoff-input-requires-review',sourceAllowance:0,sourceRequests:0,dispatched:false};}
    const temp=dest+'.tmp',fd=fs.openSync(temp,'wx');fs.writeFileSync(fd,JSON.stringify(result,null,2)+'\n');fs.fsyncSync(fd);fs.closeSync(fd);fs.renameSync(temp,dest);

@@ -14,8 +14,9 @@ export async function demoRuntimeCommit({store,plan,spec,campaign}){
   &&hash(before.spec)===hash(spec)&&before.campaign.protocolValidation.commit===spec.commit
   &&(campaign.group==='secondary'?
    (((plan.gameId===32719&&before.sourceRunKey==='capture-run:36764738887:1'&&spec.completePreserved===67&&done.completePreserved===67&&before.pool.confirmed===67)
+    ||(plan.gameId===32812&&before.sourceRunKey==='capture-run:37043477601:1'&&spec.commit==='1ce222b8b42ac0da116f599e0ea931b9fa8ec309'&&spec.completePreserved===0&&done.completePreserved===0&&before.pool.confirmed===0&&before.campaign.protocolValidation.runKey===before.sourceRunKey&&before.evidence?.length===20&&before.evidence.every(e=>e.sourceRequests===0&&e.paidRoundRequests===0&&e.completedThisRun===0&&e.error==='DEMO_FRESH_GROUP_CHANGED'))
     ||(plan.gameId===32721&&before.sourceRunKey===null&&before.sourceActivationRun==='36772084996:1'&&spec.run===before.sourceActivationRun&&spec.commit==='f0a531912a963acb6ad72cf695d4a60e605c73fa'&&spec.completePreserved===1262&&done.completePreserved===1262&&before.pool.confirmed===1262))&&spec.group==='secondary'&&spec.workerOffset===20&&before.group==='secondary'&&done.group==='secondary'
-    &&before.campaign.protocolValidation.runKey===null
+    &&(before.campaign.protocolValidation.runKey===null||plan.gameId===32812)
     &&before.pool.nextBatchId===spec.firstBatchId):
    (before.pool.nextBatchId===1&&before.pool.confirmed===0))&&Object.keys(before.pool.workers).length===0,'DEMO_RUNTIME_REBIND_INVALID');
  return done.commit;

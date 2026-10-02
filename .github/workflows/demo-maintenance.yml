@@ -65,7 +65,7 @@ on:
         options: [demo-pilot-veryfruity-action-revision3-20261003.json, demo-repair-rhino-guarantee-20261001.json, demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [close-pyramids-http, audit-pyramids-direct-complete, refresh-pyramids-action-runtime, amend-pyramids-action-runtime, analyze-pyramids-rounds, close-count-evidence, close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [amend-veryfruity-zero-runtime, close-pyramids-http, audit-pyramids-direct-complete, refresh-pyramids-action-runtime, amend-pyramids-action-runtime, analyze-pyramids-rounds, close-count-evidence, close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -511,3 +511,28 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Close the exact ended HTTP failure without replay
         run: node scripts/runner-v2/action-http-close-control.mjs
+
+  veryfruity-zero-runtime:
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'amend-veryfruity-zero-runtime'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      GH_TOKEN: ${{ github.token }}
+      SG_DEMO_PILOT_PROFILE: demo-pilot-veryfruity-action-revision3-20261003.json
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Bind verified zero-source failure to corrected runtime without adding quota
+        run: node scripts/runner-v2/veryfruity-next-control.mjs amend

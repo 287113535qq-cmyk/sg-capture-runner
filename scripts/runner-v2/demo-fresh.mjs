@@ -12,7 +12,7 @@ export class DemoFresh{
   const residual=s?.schema==='sg-demo-generation-residual-v1';
   assert((s?.schema==='sg-demo-generation-v1'||residual)&&hash(s)===p.demoFresh&&s.planHash===hash(this.plan)&&s.trialId===this.plan.trialId&&s.gameId===this.plan.gameId&&s.generation===this.plan.demoGeneration&&(await demoRuntimeCommit({store:this.store,plan:this.plan,spec:s,campaign:c}))===p.commit
    &&s.perWorker===5&&s.workers===20&&done?.schema==='sg-demo-generation-complete-v1'&&done.specHash===hash(s)&&done.commit===s.commit&&done.run===s.run,'DEMO_FRESH_NOT_COMPLETE');
-  assert(secondary?(s.group==='secondary'&&s.workerOffset===20&&[32719,32721].includes(this.plan.gameId)&&s.activationStage):(!s.group&&!s.workerOffset),'DEMO_FRESH_GROUP_CHANGED');
+  assert(secondary?(s.group==='secondary'&&s.workerOffset===20&&[32719,32721,32812].includes(this.plan.gameId)&&s.activationStage):(!s.group&&!s.workerOffset),'DEMO_FRESH_GROUP_CHANGED');
   if(s.activationStage){
    const a=s.activationStage,expected=`next-demo-game:${this.plan.trialId}:${this.plan.demoGeneration}`,completed=await get('journal',expected+':complete');
    assert(a.key===expected&&/^[a-f0-9]{64}$/.test(a.profileHash)&&completed?.schema==='sg-next-demo-game-complete-v1'
