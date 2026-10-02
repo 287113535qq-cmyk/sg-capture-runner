@@ -187,7 +187,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "d6e9193999fd945db8df5e8dc3b8f19dfde2af1ce4b0db6c460d8b82cf122ddd",
+    "scripts/runner-v2/record_fields.py": "0298ea2d4a9e4985a148141cc363faed56b48b00fb3ddf27a8aeb374d62330ff",
     "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
@@ -198,7 +198,7 @@
     "scripts/trial/huff-retrigger-review.mjs": "a58e14419fcc2515829b014d0439baeff184482d814561c74e58c4a3fd708eb5",
     "collector/huff-retrigger-review.cjs": "8ee6f23d3bc002c694a67248e7a4d7ba958547e200e33e55ef9543adc46d1db5",
     "collector/sg.huff-retrigger.ts": "24fee383a0f30b621ebe620d8b8f1f3429dcf3b21c49506711f06986b3603913",
-    "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
+    "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -277,7 +277,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "84783e670b61cba1edb3ca89b3b7c9b885b9e5c476ae687a4965894439f8335a",
+    "docs/rules.md": "adac05665a78f0a541cb1cbf1ed2ee5400c05efc7f60230dfb1aeb44fc166727",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -289,5 +289,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d270bf9b977c8a2ba9e539a33fcc1b8522501825ca0ed6bb99b3b1351b6a10a1"
+  "ruleHash": "95b9731a7b48c55edf2adbb493f700484e62831a726216541f7dfb4a3c4c31af"
 }

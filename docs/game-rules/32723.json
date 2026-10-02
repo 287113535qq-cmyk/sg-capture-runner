@@ -92,8 +92,8 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "d6e9193999fd945db8df5e8dc3b8f19dfde2af1ce4b0db6c460d8b82cf122ddd",
-    "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
+    "scripts/runner-v2/record_fields.py": "0298ea2d4a9e4985a148141cc363faed56b48b00fb3ddf27a8aeb374d62330ff",
+    "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -112,7 +112,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
-    "docs/rules.md": "84783e670b61cba1edb3ca89b3b7c9b885b9e5c476ae687a4965894439f8335a",
+    "docs/rules.md": "adac05665a78f0a541cb1cbf1ed2ee5400c05efc7f60230dfb1aeb44fc166727",
     "docs/runner-io-optimization-20260928-result.json": "65737b1c9b3448ff642b1db40a82013309989c2ea775e16a99eb35f35e67ccea",
     "docs/runner-io-optimization-20260928.md": "ebd1a592c2b9379f6f237223f1de9398dacda14d0b279ad6c6a46914911856ba"
   },
@@ -123,5 +123,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6a52d42e900e82790189d2bd94ddbb2e481e88c42d75f6a134c5db265d294d89"
+  "ruleHash": "db84c325878a395feef116cf64e4e28c0eecdff10540763fafa64996793709df"
 }

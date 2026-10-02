@@ -90,12 +90,12 @@
     "collector/sg.pearl-retrigger.ts": "bfa8c98548cf1d3e0aad5d3254040e397bade6e73de5ba51558eac28868d3254",
     "scripts/trial/pearl-session.mjs": "5f38f7633a5abd76ba4e224955462aac4a6deb6791dc5474723c20857b5e34b5",
     "scripts/trial/pearl-worker.mjs": "e035df8eec0fd31459f2bc32331de82da26198172e32efab51c6dfeb1fec9283",
-    "scripts/runner-v2/formal-repair-activation.mjs": "20fa291bfcbe086d7a0e3de5df2ab5f710271c191bee94810dff6d622580f699",
+    "scripts/runner-v2/formal-repair-activation.mjs": "f940e5d4388fcc6bbcda2026b8fdcffaf2ed021c2e230daeec8b01eca46c346a",
     "scripts/runner-v2/paid-round-evidence.mjs": "ce1fa52cd84f34cae15b5fd366a979948e62a32fa5b45b8c66dad97df820a703",
     "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
     "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
     "collector/sg.pearl-award.ts": "28124369ee49cf0794df8351aa76c83f763ef83bb64d7eb9eb74542a27c4802b",
-    "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
+    "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -137,7 +137,7 @@
     "docs/rhino-ag-close-20261001.md": "188f8b2c22360f74a320f74460500ad8fcd3f9128b76e3b3c0df998535ad3270",
     "docs/rhino-formal-preparation-20261001.md": "56531514617342eef9a729ca096b2173c4a9ab5609edca4a80bdc8ab36e8822d",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "84783e670b61cba1edb3ca89b3b7c9b885b9e5c476ae687a4965894439f8335a",
+    "docs/rules.md": "adac05665a78f0a541cb1cbf1ed2ee5400c05efc7f60230dfb1aeb44fc166727",
     "docs/secondary-idle-preparation-20261001.md": "aa935a133e88f2b09121b787fab1cc793b30417ea8e71a7b28558f089c997bca"
   },
   "observations": {
@@ -147,5 +147,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "517e12e44c605d2e219b8f53a9110fa8e022720a16b39a4dbb76a9787c8169d2"
+  "ruleHash": "b84ea0a6e478e56fe0ad3acb2b33513c6bc6a3007bd7ee4905a47366607c5bb9"
 }

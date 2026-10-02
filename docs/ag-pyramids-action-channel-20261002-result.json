@@ -1,0 +1,18 @@
+{
+  "gameId": 32721,
+  "actionVersion": "pyramids-action-v1",
+  "actionContractHash": "48b7828e83ef70533f6c04092946c4bcd9a6ade27ed90a3be3f722f7d04d54cd",
+  "completePreserved": 16913,
+  "remainingComplete": 282937,
+  "actualRecordsMemoryReentryPassed": true,
+  "oldRecordsAndBatchesUnchanged": true,
+  "newClassificationStatus": "pending",
+  "newBonusBeforeClassification": null,
+  "independentClassificationJournal": true,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "actualReentry": false,
+  "linuxVerified": false,
+  "liveCanaryVerified": false,
+  "allOptimizationsComplete": false
+}

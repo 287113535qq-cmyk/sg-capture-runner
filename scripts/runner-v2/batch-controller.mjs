@@ -11,6 +11,7 @@ import {PendingFirst} from './pending-first.mjs';
 import {isAdapterGap,reviewedAdapterFailure} from './game-failure-policy.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
 import {canaryWorkerRegistration} from './session-canary.mjs';
+import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -125,6 +126,10 @@ export class BatchController {
       assert(/^[0-9a-f-]{36}$/.test(r.attempt),'INVALID_ATTEMPT');
       raw={fixtureOnly:false,protocol:['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter)?'wms':'nextgen',sourceKey:this.plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:r.startBalanceRaw,steps:[]};
+      if(this.plan.featureProfile===ACTION_VERSION){
+        assert(this.plan.gameId===32721&&this.plan.actionContractHash===ACTION_CONTRACT_HASH,'ACTION_PROFILE_REQUIRED');
+        raw.requestFlowVersion=ACTION_VERSION;raw.actionContractHash=ACTION_CONTRACT_HASH;
+      }
     }else{
       assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
       const current=this.batchSnapshot.value;this.batchOwned(current);

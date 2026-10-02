@@ -145,6 +145,12 @@ def contract(game_id):
         native['fields']['GSD.CL=-3'] = '旧major-v1/bonus3标识保留，官方-3实际为Minor；旧作用域不变。新cash-coins-v1/bonus9支持首FID1/TFG10、FREE CL中-4/-3/-2即Mini/Minor/Major及已审+10重触发；首BET/BGCL负值和Grand-1仍拒绝。'
         native['fields']['B / AB / responseBalance'] = 'cash-coins-v1逐帧B=start-20+累计TW；未结算AB及账户responseBalance=start-20，现金终局AB=B。不由显示金币因子推算TW。'
         native['bounds'] += ' 最新7503完整已实际结清、原15帧作废不重放；新金币三方接线及17Python/11Runner相关检查通过，1716最近完整规范化不变。15真实前缀仍未完成，金币终局为合成；尚无新准入，不称整款ready或效率验收完成。'
+        native['files'] += ['service/pyramids_action_fields.py','service/pyramids_action_plan.py','service/pyramids_flow_review.py','scripts/trial/pyramids-action-protocol.mjs','scripts/trial/pyramids-flow-review.mjs','collector/sg.pyramids-action.ts','scripts/runner-v2/round-analysis-journal.mjs','scripts/runner-v2/pyramids-action-analysis.mjs','scripts/runner-v2/pyramids-action-repair-profile.mjs']
+        native['actionChannel'] = {'version':'pyramids-action-v1','actions':['BET','FREE_GAME'],
+            'capture':'请求身份、XML、已知动作计数和金额完整核验后保存全文证据；陌生展示字段不要求先分类。',
+            'classification':'新证据 bonus=null/classificationStatus=pending；独立全文读回后写不可变分析journal，不改原记录或额度。',
+            'bounds':'独立新profile才可准入；未知请求、未知FID、终局证据缺失或金额错误仍拒绝。离线入口已验证，线上采用未验收，不代表全部玩法或全部游戏通用准入。'}
+        native['bounds'] += ' 最新关闭已保留16913完整、1122积压实际全文补齐、3中断作废；新动作通道正式准入内存回放通过，保留旧规范化与批次，剩余282937。未派新源。'
     elif game_id == 32720:
         native.update({'family': 'jinzita-standalone-free-v1',
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',
