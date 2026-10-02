@@ -42,7 +42,7 @@
   "activationRuntime": "c432574dd22a200f3a258e39e00b201a491ab02a",
   "activationSuccess": true,
   "canaryRun": 36993535131,
-  "canaryStatus": "running-resource-observation",
+  "canaryStatus": "success",
   "canaryNewComplete": 2000,
   "currentComplete": 134846,
   "currentRemainingComplete": 165004,
@@ -51,5 +51,14 @@
   "canaryContinuationRounds": 36,
   "canaryMaxFrames": 31,
   "canarySavedRoundFrames": 2472,
-  "sourceRequestsForActivationAndAudit": 0
+  "sourceRequestsForActivationAndAudit": 0,
+  "canarySourceErrors": 0,
+  "canaryWorkersSuccess": 20,
+  "canaryCommonHealthyResourceMinutes": 3,
+  "canaryFiveMinuteObservationComplete": true,
+  "relayRuntimePrepared": true,
+  "relayRuntimeHash": "cbe3ab632740b5e9a9f6bf65025ea26a7dc31f6d35940e3ed777647f9ddde0fc",
+  "relayFixLinuxRun": 36994306799,
+  "relayFixLinuxRuntime": "73dd4b68166261fdd4a8eb00330824e7b5e127b9",
+  "relayFixLinuxSuccess": true
 }
