@@ -47,7 +47,9 @@ export function reviewPyramidsFlow(plan,raw){
   check(ordinary||['0','0|','1','1|','0|1','0|1|'].includes(encoded),'FLOW_FEATURE');
   const fid=ordinary?'base':encoded.replace(/\|$/,'');
   const t=ordinary?0:amount(p.TFG),c=ordinary?0:amount(p.CFGG);n=ordinary?0:amount(p.NFG);
-  check(n+c===t&&t<=100,'FLOW_COUNTERS');
+  // Awards may increase the total beyond 100. Progress, rather than a
+  // display-counter ceiling, proves the already known continuation route.
+  check(n+c===t,'FLOW_COUNTERS');
   const g=Object.create(null);
   for(const segment of (p.GSD??'').split('#').filter(Boolean)){
    const parts=segment.split('~');check(parts.length===2&&/^[A-Z][A-Z0-9_]*$/.test(parts[0])
@@ -57,7 +59,7 @@ export function reviewPyramidsFlow(plan,raw){
   if(fid==='0|1'){
    check(['FGRS','FGTS','CFGC'].every(k=>Object.hasOwn(g,k)),'FLOW_OUTER_REQUIRED');
    outer=['FGRS','FGTS','CFGC'].map(k=>amount(g[k]));
-   check(outer[0]+outer[2]===outer[1]&&outer[1]<=100,'FLOW_OUTER_COUNTERS');
+   check(outer[0]+outer[2]===outer[1],'FLOW_OUTER_COUNTERS');
   }
   if(previous===undefined)check(fid!=='0|1'&&c===0,'FLOW_TRIGGER');
   else{

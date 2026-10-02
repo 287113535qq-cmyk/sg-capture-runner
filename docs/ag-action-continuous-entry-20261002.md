@@ -15,3 +15,10 @@ The new admission and compact/delta bindings passed 71 targeted tests plus the w
 Private preparation archive `ag-action-continuous-prepare-20261002` contains 17 files, 102,268 bytes, SHA256 `e188605f2e38f21213bb54fe45739f3c34b1fc4c688dda7ec1cccb9126ee3c21`. Applied-entry archive `ag-action-continuous-entry-20261002` contains 15 files, 351,295 bytes, SHA256 `00c00deab70a82e5734def266ebd240439700653f54479105c8d59cf0088c0e1`. Both locations verified file bytes and hashes; old raw records are referenced, not exported again.
 
 Full resource-window acceptance, matched controlled concurrency throughput comparison, final audit of this running source and actual cross-game automatic relay are still outstanding. No claim of all efficiency optimizations complete is made. The first-round completed-game count remains 16/178.
+# 最新停采核验
+
+源运行 `36973608232:1` 已以 failure 结束，当前没有采集。新增 29900 条完整记录及 29900 个收据全部通过独立 Python 校验和 Mongo 全文比较，已确认总数 48813。另有 780 条完整持久收据尚未写入 Mongo，独立验证通过；补写读回后才可计入 49593。五个已响应中断局不续接、不重放。
+
+真实第 99 帧将 TFG 从 100 增至 102，NFG/CFGG 仍满足进度关系。错误来自请求流程代码的任意总次数 100 上限。已移除内外免费总次数上限，保留 XML、身份、金额和逐帧进度验证；实际 99 帧原文回放仍只证明下一步 FREE_GAME，不能计完整。8 项 Python 和 4 项 Node 测试通过。原已应用计划 maxSteps=100 尚未改变，需要独立资源预算准入，不能直接重新派发旧许可。
+
+通用无源结案内存回放使用 49593 条完整记录、780 条补写和 5 个中断留样，最大读取页 100，未执行线上写入。独立候选 `count-close-pyramids-evidence-20261002-flowbudget.json` 尚未应用；已应用旧 profile、runtime、源额度不改。完整资源窗口、吞吐对比和真实自动接力仍未全部验收。

@@ -55,7 +55,8 @@ def review_pyramids_flow(plan, raw):
         check(ordinary or encoded_fid in ('0', '0|', '1', '1|', '0|1', '0|1|'), 'FLOW_FEATURE')
         fid = 'base' if ordinary else encoded_fid.removesuffix('|')
         n, t, c = (0, 0, 0) if ordinary else tuple(amount(p.get(k)) for k in ('NFG', 'TFG', 'CFGG'))
-        check(n + c == t and t <= 100, 'FLOW_COUNTERS')
+        # Natural awards can exceed 100; counter progress still must agree.
+        check(n + c == t, 'FLOW_COUNTERS')
         g = {}
         for segment in p.get('GSD', '').split('#'):
             if not segment:
@@ -68,7 +69,7 @@ def review_pyramids_flow(plan, raw):
         if fid == '0|1':
             check(all(k in g for k in ('FGRS', 'CFGC', 'FGTS')), 'FLOW_OUTER_REQUIRED')
             outer = tuple(amount(g[k]) for k in ('FGRS', 'FGTS', 'CFGC'))
-            check(outer[0] + outer[2] == outer[1] and outer[1] <= 100, 'FLOW_OUTER_COUNTERS')
+            check(outer[0] + outer[2] == outer[1], 'FLOW_OUTER_COUNTERS')
         if previous is None:
             check(fid != '0|1' and c == 0, 'FLOW_TRIGGER')
         else:

@@ -15,6 +15,12 @@ def add(name,raw):
  except Exception: result=None;accepted=False
  cases.append(dict(name=name,raw=raw,accepted=accepted,result=result))
 full=flow_sample()
+large=flow_sample();large['steps']=large['steps'][:2]
+rewrite(large['steps'][0],NFG=100,TFG=100,CFGG=0)
+rewrite(large['steps'][1],NFG=101,TFG=102,CFGG=1)
+add('large-award-valid-progress',large)
+bad_large=copy.deepcopy(large);rewrite(bad_large['steps'][1],NFG=100,TFG=102,CFGG=2)
+add('large-award-invalid-progress',bad_large)
 for length in range(1,len(full['steps'])+1):add('free-prefix-'+str(length),{**full,'steps':full['steps'][:length]})
 mixed=mixed_prefix()
 for length in range(1,4):add('mixed-prefix-'+str(length),{**mixed,'steps':mixed['steps'][:length]})

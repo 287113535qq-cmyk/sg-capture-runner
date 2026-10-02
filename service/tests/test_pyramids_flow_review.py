@@ -26,6 +26,17 @@ def mixed_prefix():
 
 
 class PyramidsFlowTests(unittest.TestCase):
+    def test_large_awards_keep_known_route_but_do_not_relax_progress(self):
+        value = flow_sample()
+        value['steps'] = value['steps'][:2]
+        rewrite(value['steps'][0], NFG=100, TFG=100, CFGG=0)
+        rewrite(value['steps'][1], NFG=101, TFG=102, CFGG=1)
+        self.assertEqual(review_pyramids_flow(PLAN, value)['next'], {'MSGID': 'FREE_GAME'})
+        self.assertFalse(review_pyramids_flow(PLAN, value)['terminalCandidate'])
+        rewrite(value['steps'][1], NFG=100, TFG=102, CFGG=2)
+        with self.assertRaisesRegex(FieldError, 'FLOW_PROGRESS'):
+            review_pyramids_flow(PLAN, value)
+
     def test_ordinary_response_omits_feature_state_but_free_cannot(self):
         value = flow_sample()
         value['steps'] = value['steps'][:1]
