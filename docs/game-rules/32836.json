@@ -158,7 +158,7 @@
     "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
     "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
     "collector/sg.quarterback.ts": "d0adf1af448549c586e1692b83ad93ca2050086ced42ef4b0cd802cdfcfb181f",
-    "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
+    "service/game_rule_catalog.py": "8e62aa59cd81eb443baea77b17c68493f2e5a48eb175baec802b7a6dca118baa"
   },
   "reviewDocuments": [
     "docs/quarterback-observation-20260929.md",
@@ -218,5 +218,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ee5761fb835acaf5f774ebb7023d74963fcf33a487d9f1cb208b89d107efa7b7"
+  "ruleHash": "5f71ac14e1d2d29766749be1840f1bba6369d6e62c3dca8f2405fcfad3af3eae"
 }

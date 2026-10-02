@@ -14,6 +14,7 @@ import {canaryWorkerRegistration} from './session-canary.mjs';
 import {actionContract} from '../trial/pyramids-action-contracts.mjs';
 import {claimActionCanaryWorker} from './action-canary-contract.mjs';
 import {claimBudgetCanaryWorker} from './action-budget-canary.mjs';
+import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -285,7 +286,7 @@ export class BatchController {
           const current=(await this.store.get('state',this.batchKey)).value;this.batchOwned(current);
           assert(!current.bootstrapAwaiting && !current.pending?.awaiting,'UNKNOWN_SOURCE_OUTCOME');
           assert(current.checkpoint===current.journaled,'UNCONFIRMED_QUEUE');
-          let abandoned=null;
+          let abandoned=null,workLineFault=null;
           if(current.pending){
             const key=`abandoned-demo:${this.plan.trialId}:${current.id}:${hash(current.pending)}`;
             const evidence={schema:'sg-abandoned-demo-v1',trialId:this.plan.trialId,batchId:current.id,
@@ -295,13 +296,18 @@ export class BatchController {
               pendingOriginal:current.pendingOriginal??null,sourceRequests:0};
             await this.store.create('journal',key,evidence,{immutable:true});
             assert(hash((await this.store.get('journal',key))?.value)===hash(evidence),'ABANDON_READBACK_FAILED');
+            const receipt=captureFaultReceipt({plan:this.plan,batch:current,archiveKey:key,archive:evidence,group:this.group});
+            const faultKey=`capture-fault:${this.plan.trialId}:${current.id}:${hash(receipt)}`;
+            await this.store.create('journal',faultKey,receipt,{immutable:true});
+            assert(hash((await this.store.get('journal',faultKey))?.value)===hash(receipt),'CAPTURE_FAULT_READBACK_FAILED');
+            workLineFault=faultKey;
             abandoned=key;
           }
           // A lane can discover a sibling's protocol stop just after its own
           // batch settled. Do not decorate that immutable snapshot with nulls.
           if(current.pending||current.pendingOriginal||current.protocolResume||current.leaseUntil!==0||abandoned)await this.update(v=>{assert(hash(v)===hash(current),'BATCH_VERSION_CHANGED');
             return {...v,pending:null,pendingOriginal:null,protocolResume:null,leaseUntil:0,
-              ...(abandoned?{abandonedDemo:abandoned}:{})};});
+              ...(abandoned?{abandonedDemo:abandoned,workLineFault}:{})};});
         }
         if(this.lease)await this.pool.release(this.lease);
       }catch(error){

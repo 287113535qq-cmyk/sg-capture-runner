@@ -30,3 +30,12 @@ test('a parked protocol game continues once to the next ready game without reope
   const short=fixture();short.campaign.games[0].status='parked-protocol';short.campaign.validationLimit=5;
   assert.equal((await continueAfterGame(short.args)).continued,false);
 });
+
+test('real continuation consumes the independent prepared selector before creating any dispatch intent',async()=>{
+ const f=fixture();f.campaign.games[0].status='parked-protocol';
+ f.args.group='primary';let checks=0;
+ f.args.preparedSelector=async({group,readyGameIds})=>{checks++;assert.equal(group,'primary');assert.deepEqual(readyGameIds,[2]);return null;};
+ assert.equal((await continueAfterGame(f.args)).reason,'PREPARED_INVENTORY_EMPTY');assert.equal(f.dispatches(),0);
+ f.args.preparedSelector=async()=>2;assert.equal((await continueAfterGame(f.args)).continued,true);assert.equal(f.dispatches(),1);assert.equal(checks,1);
+ const foreign=fixture();foreign.args.preparedSelector=async()=>3;await assert.rejects(continueAfterGame(foreign.args),/NOT_ADMITTED/);assert.equal(foreign.dispatches(),0);
+});

@@ -1,9 +1,10 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
-import {spawnSync} from 'node:child_process';import {randomUUID} from 'node:crypto';
+import {spawnSync} from 'node:child_process';import {randomUUID,createHash} from 'node:crypto';
 import {newInventory,claimPreparation,finishPreparation,rejectPreparedRevision} from './runner-v2/preparation-inventory.mjs';
 import {applyWorkLineEvent} from './runner-v2/work-line-events.mjs';
 import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
+import {preparationHandlers,preparationInputHash,reviewedPreparation,preparationSourceHash} from './runner-v2/preparation-handlers.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -30,13 +31,36 @@ let lock;
 try{lock=fs.openSync(lockFile,'wx');}catch{throw new Error('PREPARATION_PRODUCER_ALREADY_OWNED');}
 fs.writeFileSync(lock,JSON.stringify({pid:process.pid,startedAt:Date.now()}));fs.fsyncSync(lock);
 let stopping=false;process.on('SIGINT',()=>{stopping=true;});process.on('SIGTERM',()=>{stopping=true;});
-const owner=randomUUID(),python=process.env.PYTHON||'python';
+const bundledPython=process.env.LOCALAPPDATA?path.join(process.env.LOCALAPPDATA,'Programs','Python','Python314','python.exe'):null;
+const owner=randomUUID(),python=process.env.PYTHON||(bundledPython&&fs.existsSync(bundledPython)?bundledPython:'python');
 const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>!/^SG_|TOKEN|SECRET|PASSWORD/i.test(k)));
-Object.assign(env,{PYTHONUTF8:'1',PYTHONPATH:path.join(root,'service')+path.delimiter+path.join(root,'service','tests')});
+Object.assign(env,{PYTHON:python,PYTHONUTF8:'1',PYTHONPATH:path.join(root,'service')+path.delimiter+path.join(root,'service','tests')});
+let commandDeadline=null;
 function run(exe,args,label){
-  const r=spawnSync(exe,args,{cwd:root,env,encoding:'utf8',timeout:180000,maxBuffer:4*1024*1024,windowsHide:true});
+  const timeout=commandDeadline?Math.max(1,Math.min(180000,commandDeadline-Date.now())):180000;
+  if(commandDeadline&&commandDeadline<=Date.now())return false;
+  const r=spawnSync(exe,args,{cwd:root,env,encoding:'utf8',timeout,maxBuffer:4*1024*1024,windowsHide:true});
   fs.writeFileSync(path.join(dir,label+'.log'),(r.stdout??'')+(r.stderr??'')+(r.error?.message??''));
   return r.status===0&&!r.error;
+}
+const bytesHash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const sourceHash=p=>preparationSourceHash(fs.readFileSync(p,'utf8'));
+function inputsFor(gameId,index){
+ const reference=index.games.find(g=>g.gameId===gameId),handler=preparationHandlers[gameId];
+ const cardFile=path.join(root,'docs','game-rules',gameId+'.json');
+ const ruleFiles=fs.existsSync(cardFile)?load(cardFile).roundRule?.files??[]:[];
+ const files=[...Object.keys(reference?.references??{}),...(handler?.node??[]),
+  ...ruleFiles,...(handler?.python??[]).map(n=>'service/tests/'+n)];
+ const fileHashes=Object.fromEntries([...new Set(files)].sort().map(p=>[p,fs.existsSync(path.join(root,p))?sourceHash(path.join(root,p)):'missing']));
+ const revisionHash=hash({gameId,fileHashes,handler:handler??null});
+ const evidenceDir=path.join(root,'.local','preparation-worker','evidence',String(gameId));
+ const receipts=[];
+ if(fs.existsSync(evidenceDir))for(const name of fs.readdirSync(evidenceDir).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
+  try{const receipt=load(path.join(evidenceDir,name));if(hash(receipt)+'.json'===name)receipts.push(receipt);}catch{/* Invalid evidence never becomes ready. */}
+ }
+ const resultFile=path.join(dir,gameId+'-result.json');
+ return {reference,handler,fileHashes,revisionHash,receipts,evidenceDir,
+  inputHash:preparationInputHash({gameId,reference,fileHashes,evidenceHashes:[hash({python,worker:sourceHash(path.join(root,'scripts','preparation-worker.mjs'))}),...receipts.map(hash),...(fs.existsSync(resultFile)?[bytesHash(resultFile)]:[])]})};
 }
 try{
   if(!fs.existsSync(stateFile)){
@@ -72,6 +96,7 @@ try{
     // handoff, publish it without waiting for the next conversational turn.
     // No profile is generated and no permission is renewed here.
     if(lane==='admission')for(const task of q.tasks.filter(t=>t.status==='prepared')){
+      if(task.proof?.revisionHash!==inputsFor(task.gameId,index).revisionHash)continue;
       const resultFile=path.join(dir,task.gameId+'-result.json');
       if(!fs.existsSync(resultFile))continue;
       const result=load(resultFile),handoff=result.captureHandoff;
@@ -81,12 +106,18 @@ try{
       }
     }
     if(lane==='repair')for(const task of q.tasks.filter(t=>t.status==='prepared'&&t.failureEvidenceHash)){
+      if(task.proof?.revisionHash!==inputsFor(task.gameId,index).revisionHash)continue;
       const event={schema:'sg-work-line-event-v1',kind:'repair-verified',gameId:task.gameId,
         sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,rejectedProofHash:task.rejectedProofHash,
         evidenceHash:hash(task.proof),proof:task.proof};
       publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);
     }
     for(const task of q.tasks.filter(t=>t.status==='prepared')){
+      const current=inputsFor(task.gameId,index);
+      if(task.proof?.revisionHash!==current.revisionHash){
+        task.status='queued';task.proof=null;delete task.proofHash;
+        task.reason='PREPARATION_IMPLEMENTATION_CHANGED';q.revision++;save(q);continue;
+      }
       const failureFile=path.join(dir,task.gameId+'-failure.json');
       if(fs.existsSync(failureFile)){
         const failure=load(failureFile);
@@ -95,11 +126,11 @@ try{
         }
       }
     }
-    // Finished immutable reviews arrive independently. Retry only when new
-    // evidence exists, never on a timer with the same failed input.
+    // Compare content, including implementation changes, rather than timestamps.
+    // Retry the affected game once per input revision, not every idle tick.
     for(const task of q.tasks.filter(t=>t.lane===lane&&t.status==='blocked')){
-      const resultFile=path.join(dir,task.gameId+'-result.json');
-      if(fs.existsSync(resultFile)&&fs.statSync(resultFile).mtimeMs>task.updatedAt){task.status='queued';q.revision++;}
+      const input=inputsFor(task.gameId,index);
+      if(task.inputHash!==input.inputHash){task.status='queued';q.revision++;}
     }
     const beforeClaim=hash(q),claim=claimPreparation(q,{owner,now:Date.now(),leaseMs:600000,lane});
     if(hash(q)!==beforeClaim)save(q);
@@ -109,10 +140,21 @@ try{
       await new Promise(resolve=>setTimeout(resolve,5000));continue;
     }
     waiting=false;log({action:'preparing',gameId:claim.gameId,lane:claim.lane});
+    commandDeadline=claim.claim.until-5000;
+    const input=inputsFor(claim.gameId,index),task=q.tasks.find(t=>t.gameId===claim.gameId);
+    task.inputHash=input.inputHash;task.revisionHash=input.revisionHash;
     const resultFile=path.join(dir,claim.gameId+'-result.json');
-    if(fs.existsSync(resultFile)){
+    let savedResult=null;
+    try{if(fs.existsSync(resultFile))savedResult=load(resultFile);}catch{
+      finishPreparation(q,claim,{status:'blocked',reason:'PREPARATION_RECEIPT_INVALID'},Date.now());save(q);continue;
+    }
+    if(savedResult&&(savedResult.proof?.revisionHash===input.revisionHash||savedResult.revisionHash===input.revisionHash)){
       try{
-        const result=load(resultFile),task=q.tasks.find(t=>t.gameId===claim.gameId);
+        const result=savedResult;
+        if(result.status==='prepared'){
+          const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts});
+          if(reviewed.status!=='prepared'||hash(reviewed.proof)!==hash(result.proof))throw Error('PREPARATION_RECEIPT_EVIDENCE_MISSING');
+        }
         // A failed revision may not be re-approved by its old receipt.
         if(task.rejectedProofHash&&result.status==='prepared'&&hash(result.proof)===task.rejectedProofHash)throw Error('PREPARATION_FAILED_REVISION');
         finishPreparation(q,claim,result,Date.now());save(q);
@@ -125,16 +167,37 @@ try{
         continue;
       }
     }
-    const reference=index.games.find(g=>g.gameId===claim.gameId);
+    const reference=input.reference;
     fs.writeFileSync(path.join(dir,claim.gameId+'-reuse.json'),JSON.stringify(reference,null,2)+'\n');
     let reason='ADAPTER_DIFFERENCE_EVIDENCE_REQUIRED';
-    if(claim.gameId===32812){
-      const node=run(process.execPath,['--test','scripts/trial/veryfruity-session.test.mjs','scripts/trial/veryfruity-worker.test.mjs','scripts/runner-v2/veryfruity-next-profile.test.mjs'],'32812-local-node');
-      const py=run(python,['-m','unittest','discover','-s','service/tests','-p','test_veryfruity_action_fields.py'],'32812-local-python');
-      reason=node&&py?'LOCAL_VERIFIED_LINUX_NATIVE_ACTIVATION_PENDING':'LOCAL_CHECK_FAILED';
-    }else if(claim.gameId===32719){
-      reason=run(python,['-m','unittest','discover','-s','service/tests','-p','test_inca_hold_action_review.py'],'32719-local-python')
-        ?'REPAIR_LOCAL_VERIFIED_INTEGRATION_REENTRY_PENDING':'REPAIR_LOCAL_CHECK_FAILED';
+    if(input.handler){
+      const existingLocal=input.receipts.filter(r=>r.schema==='sg-preparation-gate-v1'&&r.gameId===claim.gameId
+        &&r.revisionHash===input.revisionHash&&r.gate==='local'&&r.verified===true&&r.sourceAllowance===0);
+      if(existingLocal.length){
+        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts});
+        task.missingGates=reviewed.missingGates??[];
+        finishPreparation(q,claim,reviewed,Date.now());save(q);
+        log({action:reviewed.status,gameId:claim.gameId,lane:claim.lane,missingGates:task.missingGates,localChecksReused:true});continue;
+      }
+      const label=claim.gameId+'-'+input.revisionHash;
+      const node=run(process.execPath,['--test',...input.handler.node],label+'-node');
+      let py=true;for(const name of input.handler.python){
+        const ok=run(python,['-m','unittest','discover','-s','service/tests','-p',name],label+'-'+name);py=ok&&py;
+      }
+      if(node&&py){
+        const logs=[label+'-node',...input.handler.python.map(n=>label+'-'+n)];
+        const receipt={schema:'sg-preparation-gate-v1',gate:'local',gameId:claim.gameId,
+          revisionHash:input.revisionHash,verified:true,sourceAllowance:0,
+          supportingHashes:logs.map(n=>bytesHash(path.join(dir,n+'.log')))};
+        publishImmutableInbox(input.evidenceDir,receipt);
+        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,
+          receipts:[...input.receipts.filter(r=>r.gate!=='local'||r.revisionHash!==input.revisionHash),receipt]});
+        task.missingGates=reviewed.missingGates??[];
+        task.inputHash=inputsFor(claim.gameId,index).inputHash;
+        finishPreparation(q,claim,reviewed,Date.now());save(q);
+        log({action:reviewed.status,gameId:claim.gameId,lane:claim.lane,missingGates:task.missingGates});continue;
+      }
+      reason='LOCAL_CHECK_FAILED';
     }
     finishPreparation(q,claim,{status:'blocked',reason},Date.now());save(q);
     log({action:'blocked',gameId:claim.gameId,lane:claim.lane,reason});

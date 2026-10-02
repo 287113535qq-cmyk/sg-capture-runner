@@ -65,6 +65,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         text = '游戏32714 "32717": sg_r1_20260928_32714 f7a518927e0c13343bc30c034d7613167dd1b98801150aeb162ffb32636be509'
         self.assertEqual(set(GAME_ID_PATTERN.findall(text)), {'32714', '32717'})
 
+    def test_veryfruity_documents_action_flow_instead_of_nextgen_feature_fields(self):
+        rule = self.cards[32812]['roundRule']
+        self.assertEqual(rule['messages'], ['Init', 'Logic', 'EndGame'])
+        self.assertEqual(rule['family'], 'veryfruity-wms-action-v1')
+        self.assertIn('classification pending', rule['complete'])
+        self.assertIn('service/veryfruity_action_fields.py', rule['files'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,29 +18,34 @@
     "maxSteps": 1026
   },
   "roundRule": {
-    "family": "native-nextgen-v1",
+    "family": "veryfruity-wms-action-v1",
     "messages": [
-      "BET",
-      "FREE_GAME"
+      "Init",
+      "Logic",
+      "EndGame"
     ],
-    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "上一帧经校验的 NFG>0 才请求 FREE_GAME。",
-    "complete": "最终 NFG=0（普通 BET 缺失时当前实现按 0 判断）且完整序列、XML、金额与 buy0 全部校验通过。FREE_GAME 必须显式含 NFG。",
-    "bounds": "当前仅接受 FID 缺失/空/0/0|；拒绝 FS_*、NFR_*、CFG、ABPM 及其他未知玩法。不能据此认定游戏只有一种玩法。",
+    "start": "独立新会话Init核固定游戏身份、Stake总额20及20条Payline；首Logic perLine1、paylines20实际下注20。",
+    "continue": "按官方选中GLS引擎的动作出口：普通Logic转EndGame；FSInfo按freeSpinNumber/freeSpinsTotal继续Logic，进度到总数转EndGame。响应sessionID绑定下一请求。",
+    "complete": "EndGame完整确认且余额保持、完整原文、身份、逐Logic累计赢分及实际扣款独立核验后才完成。玩法bonus为null/classification pending，不影响已验证流程与金额。",
+    "bounds": "mysterySymbol用于符号显示、空betID为元数据，均不单独阻断流程。未知动作、MaxWin出口、错误身份/计数/金额或未确认EndGame仍拒绝。实际第三试点只保存一帧Logic、0完整；未续接旧局，源关闭，四线尚未完整验收。",
     "files": [
-      "service/native_nextgen_fields.py",
-      "service/round_fields.py",
+      "service/veryfruity_action_fields.py",
+      "service/veryfruity_action_review.py",
+      "service/veryfruity_settlement_review.py",
+      "scripts/trial/veryfruity-action-protocol.mjs",
+      "scripts/trial/veryfruity-action-review.mjs",
+      "scripts/trial/veryfruity-settlement-review.mjs",
+      "scripts/trial/veryfruity-session.mjs",
+      "scripts/trial/veryfruity-worker.mjs",
+      "collector/sg.veryfruity-action.ts",
       "scripts/runner-v2/record_fields.py"
     ],
     "fields": {
-      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
-      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
-      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
-      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
-      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
-      "B / AB": "终帧两个余额必须一致。",
-      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
-      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+      "Header": "固定游戏/版本/币种/语言；响应轮换sessionID。",
+      "Stake / GameResult": "perLine1、20条Payline、total stake20；betID不决定金额。",
+      "FSInfo": "总数与逐帧进度守恒，不依赖固定玩法次数。",
+      "Balances": "初值-20+累计奖，EndGame确认余额不变。",
+      "mysterySymbol": "展示数据原样保留；玩法分类独立处理。"
     }
   },
   "typeMappings": {},
@@ -57,10 +62,17 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
+    "service/veryfruity_action_fields.py": "181f0dd6e29cb64627024f88c7faf367198aad1804fe454a0766e30aa8c2e016",
+    "service/veryfruity_action_review.py": "7730ad90b35ac54e79db5ba6b16b246762db553aa4a0cc079bd12b4c9c3ceb1c",
+    "service/veryfruity_settlement_review.py": "b2c716e4cf3269be50eafa22beae42cb4da4c24703f23fd6165f38aefe68a73e",
+    "scripts/trial/veryfruity-action-protocol.mjs": "480d1f5a1aea91120bee078b707c21b2305178cdfcf6d3eade18e2c25f81b89f",
+    "scripts/trial/veryfruity-action-review.mjs": "ccac5a86e37485d4ed643f552cbf2d37dfd492329acbe5ff7fd7406e4c3c7e67",
+    "scripts/trial/veryfruity-settlement-review.mjs": "e70b39c90436eb58a701fe15c6ec094e68b77b59a9e23e27b22fb4e9ed722355",
+    "scripts/trial/veryfruity-session.mjs": "40a7580f993611c6146d64664dc17c71d465e4da32a5c9c93121008c8914ad75",
+    "scripts/trial/veryfruity-worker.mjs": "3c81416f5b8b7d835fd511685fcc8a0e36cd1e1477a7abd67cf6255f06878906",
+    "collector/sg.veryfruity-action.ts": "4ac0ec5ea294c948cbb8ee3133cb3b7c53fa2f41079d529d0feff2eded59642f",
     "scripts/runner-v2/record_fields.py": "7bddbb9e3bae25dc9b9a89f5a6e9eb2754034c49c5ce6b6796c7afc25ea4a5a5",
-    "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
+    "service/game_rule_catalog.py": "8e62aa59cd81eb443baea77b17c68493f2e5a48eb175baec802b7a6dca118baa"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -82,5 +94,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4facda13b04e3209d973bc08638dbc7f872d280cf1e56ba1b109b84537ce0d25"
+  "ruleHash": "df64d1867da3cc238b4e67d9c5019bed2c62fd5704f7e0bd20296408756dc44b"
 }

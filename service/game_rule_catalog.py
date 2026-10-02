@@ -54,6 +54,14 @@ def contract(game_id):
             'bounds': '累计2596完整已全文保全及结清；本轮1635新完整后首次15免费触发被旧8范围拒绝。新v2三方检查保留2596旧规范化；15及多次授予完整链仍为合成，真实15仅触发帧；旧局不续接，MaxWin/BigBet/未知分支拒绝，新v2已在独立冻结许可下完成重入，源任务36744028113正在采集；后续36744028113因网络未知请求停止，累计25392完整及自然17帧免费链已独立审计；896待写和14中断已无源结清，36753473985续采派发，原目标和许可不变。',
             'files': ['service/pearl_fields.py', 'scripts/trial/pearl-protocol.mjs', 'collector/sg.pearl.ts', 'service/pearl_retrigger_fields.py', 'scripts/trial/pearl-retrigger-protocol.mjs', 'collector/sg.pearl-retrigger.ts', 'scripts/trial/pearl-session.mjs', 'scripts/trial/pearl-worker.mjs', 'scripts/runner-v2/formal-repair-activation.mjs', 'scripts/runner-v2/paid-round-evidence.mjs', 'service/pearl_award_fields.py', 'scripts/trial/pearl-award-protocol.mjs', 'collector/sg.pearl-award.ts'],
             'fields': {'Header.sessionID': '按响应轮换，会话值私有。', 'FSInfo': '旧v1仍首次8/后续0或8；新v2独立许可按授予计数守恒，与总数、进度、bonusAwarded及完整终局共同验证。', 'BGInfo.totalWagerWin': '等于逐Logic累加totalWin。', 'Balances': '唯一CASH_BALANCE，初值-200+累计奖。', 'EndGame': '必须收到确认，不用额外Logic探测终态。'}})
+    elif game_id == 32812:
+        native.update({'family':'veryfruity-wms-action-v1','messages':['Init','Logic','EndGame'],
+            'start':'独立新会话Init核固定游戏身份、Stake总额20及20条Payline；首Logic perLine1、paylines20实际下注20。',
+            'continue':'按官方选中GLS引擎的动作出口：普通Logic转EndGame；FSInfo按freeSpinNumber/freeSpinsTotal继续Logic，进度到总数转EndGame。响应sessionID绑定下一请求。',
+            'complete':'EndGame完整确认且余额保持、完整原文、身份、逐Logic累计赢分及实际扣款独立核验后才完成。玩法bonus为null/classification pending，不影响已验证流程与金额。',
+            'bounds':'mysterySymbol用于符号显示、空betID为元数据，均不单独阻断流程。未知动作、MaxWin出口、错误身份/计数/金额或未确认EndGame仍拒绝。实际第三试点只保存一帧Logic、0完整；未续接旧局，源关闭，四线尚未完整验收。',
+            'files':['service/veryfruity_action_fields.py','service/veryfruity_action_review.py','service/veryfruity_settlement_review.py','scripts/trial/veryfruity-action-protocol.mjs','scripts/trial/veryfruity-action-review.mjs','scripts/trial/veryfruity-settlement-review.mjs','scripts/trial/veryfruity-session.mjs','scripts/trial/veryfruity-worker.mjs','collector/sg.veryfruity-action.ts','scripts/runner-v2/record_fields.py'],
+            'fields':{'Header':'固定游戏/版本/币种/语言；响应轮换sessionID。','Stake / GameResult':'perLine1、20条Payline、total stake20；betID不决定金额。','FSInfo':'总数与逐帧进度守恒，不依赖固定玩法次数。','Balances':'初值-20+累计奖，EndGame确认余额不变。','mysterySymbol':'展示数据原样保留；玩法分类独立处理。'}})
     elif game_id == 32799:
         native.update({'family':'rhino-wms-free-retrigger-v1','messages':['Init','Logic','EndGame'],
             'start':'独立新会话Init核验BetMultipliers/CreditBets，首Logic实际下注40，WagerInfo固定betMultiplier1。',

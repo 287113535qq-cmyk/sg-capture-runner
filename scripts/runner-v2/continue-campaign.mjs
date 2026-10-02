@@ -6,6 +6,8 @@ import {continueAfterGame} from './continue-core.mjs';
 import {repositories} from '../trial/runner-group.mjs';
 import {continuationHasOtherRun} from './continuation-boundary.mjs';
 import {authenticatedRead} from './github-boundary.mjs';
+import fs from 'node:fs';
+import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 
 const repo=process.env.GITHUB_REPOSITORY,runId=process.env.GITHUB_RUN_ID,attempt=process.env.GITHUB_RUN_ATTEMPT;
 assert(repositories[repo] && process.env.GH_TOKEN);
@@ -17,7 +19,13 @@ async function api(suffix,options={}){
   assert(response.ok,'CONTINUATION_API_FAILED');return response.status===204?null:response.json();
 }
 try{
-  const result=await continueAfterGame({store,transport,runId,attempt,github:{
+  // Same reviewed inventory as capture selection, before spending a matrix run.
+  // This prevents an empty preparation queue from dispatching old ready rows.
+  const publication=JSON.parse(fs.readFileSync('config/prepared-inventory.json','utf8'));
+  const preparedSelector=publishedPreparedSelector({publication,
+    plans:JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8')),
+    readEvidence:ref=>JSON.parse(fs.readFileSync(ref,'utf8'))});
+  const result=await continueAfterGame({store,transport,runId,attempt,preparedSelector,group:repositories[repo].name,github:{
     hasOtherRun:()=>continuationHasOtherRun({read:authenticatedRead(process.env.GH_TOKEN),store,repository:repo,runId}),
     dispatch:()=>api('dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs:{role:'capture',allocation:'round-one',round_one_limit:'0',active_shards:'20'}})})
   }});
