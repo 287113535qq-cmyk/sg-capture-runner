@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {createRequire} from 'node:module';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {applyFormalCount} from './formal-count-plan.mjs';
-import {ACTION_BUDGET_CONTINUOUS_RUNTIME,checkActionContinuousRevision,actionContinuousWindow} from './action-continuous-runtime.mjs';
+import {ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,checkActionContinuousRevision,actionContinuousWindow} from './action-continuous-runtime.mjs';
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 
@@ -69,7 +69,19 @@ test('actual workflow selects only the independent continuous admission and fift
  const evaluate=value=>Function('return ('+value.replace(/inputs\.(\w+)/g,(m,key)=>JSON.stringify(inputs[key]))+')')();
  const admissions=source.jobs['pyramids-formal-admit'].steps.filter(s=>s.run?.endsWith(' admit')&&s.if&&evaluate(s.if));
  assert.equal(admissions.length,1);assert.equal(admissions[0].run,'node scripts/runner-v2/action-continuous-control.mjs admit');
+ const environment={...source.env,...source.jobs['pyramids-formal-admit'].env,...admissions[0].env};
+ const resolve=value=>typeof value==='string'&&value.startsWith('${{')?evaluate(value.slice(3,-2).trim()):value;
+ assert.equal(resolve(environment.SG_COUNT_RUNTIME_PROFILE),ACTION_BUDGET_CONTINUOUS_RUNTIME,
+  'selected admission process must receive its runtime profile');
+ assert.equal(resolve(environment.SG_FORMAL_COUNT_PROFILE),inputs.formal_profile);
  const expression=source.jobs['pyramids-formal-capture'].env.SG_TRIAL_MINUTES.slice(3,-2).trim();
  assert.equal(evaluate(expression),'15');
+ inputs.runtime_profile=ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME;
+ assert(source.on.workflow_dispatch.inputs.runtime_profile.options.includes(inputs.runtime_profile));
+ assert(maintenance.on.workflow_dispatch.inputs.runtime_profile.options.includes(inputs.runtime_profile));
+ assert.equal(evaluate(expression),'15');
+ const fixed=source.jobs['pyramids-formal-admit'].steps.filter(s=>s.run?.endsWith(' admit')&&s.if&&evaluate(s.if));
+ assert.equal(fixed.length,1);assert.equal(fixed[0].run,'node scripts/runner-v2/action-continuous-control.mjs admit');
+ assert.equal(resolve({...source.jobs['pyramids-formal-admit'].env,...fixed[0].env}.SG_COUNT_RUNTIME_PROFILE),inputs.runtime_profile);
  inputs.runtime_profile='none';assert.equal(evaluate(expression),'5');
 });

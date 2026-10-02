@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,checkActionContinuousRevision,admitActionContinuous} from './action-continuous-runtime.mjs';
+import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,checkActionContinuousRevision,admitActionContinuous} from './action-continuous-runtime.mjs';
 import {refreshCountRuntime} from './count-runtime-refresh.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {authenticatedRead} from './github-boundary.mjs';
@@ -9,8 +9,8 @@ import {pyramidsRepairPlan} from './pyramids-repair-profile.mjs';import {analyze
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner',
  'ACTION_CONTINUOUS_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['refresh','admit'].includes(mode),'ACTION_CONTINUOUS_OPERATION');
-const budget=process.env.SG_COUNT_RUNTIME_PROFILE===ACTION_BUDGET_CONTINUOUS_RUNTIME;
-const runtimeName=budget?ACTION_BUDGET_CONTINUOUS_RUNTIME:ACTION_CONTINUOUS_RUNTIME;
+const budget=[ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME].includes(process.env.SG_COUNT_RUNTIME_PROFILE);
+const runtimeName=budget?process.env.SG_COUNT_RUNTIME_PROFILE:ACTION_CONTINUOUS_RUNTIME;
 assert(process.env.SG_COUNT_RUNTIME_PROFILE===runtimeName
  &&process.env.SG_FORMAL_COUNT_PROFILE===(budget?'formal-repair-pyramids-action-budget-20261002.json':'formal-repair-pyramids-action-20261002.json'),'ACTION_CONTINUOUS_PATH');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),plans=load('config/round-one-plans.json');

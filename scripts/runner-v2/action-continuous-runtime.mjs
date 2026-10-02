@@ -4,6 +4,7 @@ import {loadCountPermission,checkLedger} from './complete-count.mjs';
 
 export const ACTION_CONTINUOUS_RUNTIME='count-runtime-pyramids-action-continuous-20261002.json';
 export const ACTION_BUDGET_CONTINUOUS_RUNTIME='count-runtime-pyramids-action-budget-continuous-20261002.json';
+export const ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME='count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json';
 
 // A healthy action-channel run can authorize a reviewed successor executable.
 // Classification annotations are independent and never part of source quota.

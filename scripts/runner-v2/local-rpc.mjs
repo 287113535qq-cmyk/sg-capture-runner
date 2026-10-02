@@ -15,7 +15,7 @@ import {formalCountProfilePath} from './formal-count-plan.mjs';
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 import {ACTION_CANARY_RUNTIME,actionCanaryWindow} from './action-canary-contract.mjs';
-import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,actionContinuousWindow} from './action-continuous-runtime.mjs';
+import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,actionContinuousWindow} from './action-continuous-runtime.mjs';
 import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
 import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {observeBudgetWindow} from './action-budget-observation.mjs';
@@ -63,7 +63,7 @@ export function connectLocal(plan){
       controller.actionCanaryProof=proof;budgetObservationEnd=Date.now()+profile.canary.observationMinutes*60000;
       return window;
     }
-    if([ACTION_CANARY_RUNTIME,ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
+    if([ACTION_CANARY_RUNTIME,ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
       await resourceReady;
       const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
       const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8'));
