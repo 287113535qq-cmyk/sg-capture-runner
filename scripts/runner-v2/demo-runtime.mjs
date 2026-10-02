@@ -1,8 +1,16 @@
 import assert from 'node:assert/strict';import {protocolHash as hash} from './protocol-resume.mjs';
+import {readBootstrapRetirement} from './bootstrap-retirement.mjs';
 // A narrowly reviewed zero-source rebind changes code authority, never quota,
 // generation, sessions, expiration or any immutable generation document.
 export async function demoRuntimeCommit({store,plan,spec,campaign}){
- const p=campaign.protocolValidation;if(!p?.runtimeRebind)return spec.commit;
+ const p=campaign.protocolValidation;
+ if(p?.bootstrapRebind){
+  const r=await readBootstrapRetirement({store,plan,spec,campaign});
+  assert(!r.before.input.campaign.protocolValidation.bootstrapRebind
+   &&await demoRuntimeCommit({store,plan,spec,campaign:r.before.input.campaign})===r.done.originalCommit,'BOOTSTRAP_PARENT_RUNTIME');
+  return r.done.commit;
+ }
+ if(!p?.runtimeRebind)return spec.commit;
  const a=p.runtimeRebind,before=(await store.get('journal',a.key+':before'))?.value,done=(await store.get('journal',a.key+':complete'))?.value;
  assert(a.key===`demo-zero-source-rebind:${plan.trialId}:${plan.demoGeneration}`
   &&done?.schema==='sg-demo-zero-source-rebind-complete-v1'&&hash(done)===a.completeHash

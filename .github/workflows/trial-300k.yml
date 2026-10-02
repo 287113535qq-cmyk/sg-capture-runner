@@ -1000,7 +1000,12 @@ jobs:
         run: node scripts/runner-v2/secondary-next-control.mjs admit
       - name: Admit independent Very Fruity action pilot
         if: inputs.pilot_profile == 'demo-pilot-veryfruity-action-revision3-20261003.json'
-        run: node scripts/runner-v2/veryfruity-next-control.mjs admit
+        run: |
+          if [ -f config/demo-bootstrap-veryfruity-20261003.json ]; then
+            node scripts/runner-v2/veryfruity-bootstrap-control.mjs admit
+          else
+            node scripts/runner-v2/veryfruity-next-control.mjs admit
+          fi
   fresh-capture:
     needs: [secondary-admit]
     name: fresh-capture-${{ matrix.shard }}

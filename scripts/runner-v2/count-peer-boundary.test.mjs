@@ -1,8 +1,18 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {countPeerBoundary,checkCountPeerDescriptor,checkCountPeerEvidence} from './count-peer-boundary.mjs';
+import {countPeerBoundary,checkCountPeerDescriptor,checkCountPeerEvidence,checkCountPeerHolds} from './count-peer-boundary.mjs';
 import {original} from './expired-run-review.mjs';import {stalled,revokedMarker} from './demo-run-fence.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 const repos={primary:'zyzuoyang/sg-capture-runner',secondary:'287113535qq-cmyk/sg-capture-runner'};
+test('bootstrap maintenance permits only its exact original storage hold, never an unrelated failure',()=>{
+ const hold={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{code:'VERYFRUITY_INIT_STAKES',category:'storage',trialId:'sg_r1_20261003_32812',cooldownUntil:0}};
+ const rows=[{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:hold}];
+ checkCountPeerHolds(rows,'secondary',hash(hold),'VERYFRUITY_INIT_STAKES','storage',true);
+ for(const mutate of [h=>h.details.trialId='sg_r1_20260928_32721',h=>h.details.code='SOURCE_NETWORK_OUTCOME_UNKNOWN',h=>h.details.cooldownUntil=1]){
+  const changed=structuredClone(rows);mutate(changed[1].value);
+  assert.throws(()=>checkCountPeerHolds(changed,'secondary',hash(changed[1].value),'VERYFRUITY_INIT_STAKES','storage',true));
+ }
+ assert.throws(()=>checkCountPeerHolds(rows,'secondary',hash(hold),'VERYFRUITY_INIT_STAKES','storage',false));
+});
 function fixture(group='primary'){
  const selfGroup=group==='primary'?'secondary':'primary',peer={schema:'sg-count-peer-v1',group,repository:repos[group],
   gameId:group==='primary'?32799:32721,trialId:group==='primary'?'sg_r1_20261001_32799':'sg_r1_20260928_32721',
