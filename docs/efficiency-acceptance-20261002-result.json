@@ -587,6 +587,35 @@
       "naturalTerminalObserved": false,
       "sourceAuthorized": false,
       "wholeGameReady": false
+    },
+    "sfgtIntegrationLinux": {
+      "run": 36950102859,
+      "commit": "ace2ce23f0a1c81abe6aaef3b9211e7b5c50e0e3",
+      "logSha256": "3dc822758402d58b78b36f9194201305911177798ed704fdada8e7092acf8ebd",
+      "workers": 2,
+      "elapsedCheckSeconds": 115.33567027899998,
+      "commands": 13,
+      "passed": true,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "runtimeProof": {
+        "validatedCommit": "ace2ce23f0a1c81abe6aaef3b9211e7b5c50e0e3",
+        "currentCommit": "ace2ce23f0a1c81abe6aaef3b9211e7b5c50e0e3",
+        "runtimeTrees": {
+          "scripts": "53046eec77a6eb1e1d949bed1be3c8b81bfc3bb5",
+          "service": "88866542ad5dd4b22ae3233d99ea9ef0c1700d4d",
+          "collector": "6908dcbdf0a4ce37a1f27f825fa9c0ae0cc7fcc7",
+          ".github": "8be13996cd853a4133dadfae3195f8ca6aae0e63"
+        },
+        "runtimeIdentical": true,
+        "sourceAllowance": 0
+      }
+    },
+    "preflightSfgtEvidenceBackup": {
+      "verifiedFiles": 22,
+      "bytes": 1035618,
+      "sha256": "25c9e8ec0c9ba02a79274b53efdd68def1c9ad5358ac3ebadbf4a97f0ad43379",
+      "oldRawRecordsRepeated": 0
     }
   },
   "pending": [
