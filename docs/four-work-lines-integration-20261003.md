@@ -33,3 +33,10 @@ GitHub实际BatchController.stop路径新增不可变capture-fault回执，并�
 实际continue-campaign入口现在与campaign-worker共用出版prepared selector，在创建下一整组派发意图前验证已有ready与准备证据；库存为空不派发，旧款parked不重开源额度。源码补线的27项控制器/故障交接/固定处理器测试、8项接力与库存测试、7项规则卡检查通过；这些不是自然新游戏实采证据。上一次Linux37056064715已经成功，覆盖此前5fd6a58，不能冒充覆盖本节后续修改。
 
 Very Fruity规则卡纠正为实际Init/Logic/EndGame动作通道，原来默认BET/FREE_GAME描述不适用于该款。累计完成仍17/178；源保持关闭。仍需完成独立gate产出/出版、远程故障回执持续交付、真实修复重新准入及真实下一款接替，才能宣布四线闭环。
+# 无源结案入口增量
+
+VeryFruity 的真实第三次源留样已在内存执行正式 shared-stop → retire → interrupted-close：1 已用、99 注销、0 完整、pending 0，原 Init 批次及已应用 profile 的 hash 不变，线上写入和源请求均为 0。这是实际留样回放，并非线上结案。新 v2 诊断限定该已结束源运行及原错误，使用当前独立 Python 动作/金额验证得到 EndGame 前缀，结案不发送 EndGame。已有旧 v1 关闭语义保留。
+
+通用 interrupted-close 复用既有 bootstrap retirement 的全文与 hash 验证，以第 2 批为付费边界；不改原代际 firstBatchId，也不将第 1 批 Init 算作新下注。16 项结案与反例检查通过。故障导出另增加缺批次/乱序拒绝，不能悄悄推进游标丢失故障；导出与交付 2 项检查通过。
+
+最新四个本机程序已重新加载当前准备代码，均没有源权限。实际 prepared 库存仍为 0，协议程序目前仍是结构观察器。跨机器自动收取、独立语义消费、真实修复重入、下一款接替及该留样线上无源结案尚未验收；源保持关闭。本段不授予旧已过期许可或新额度。

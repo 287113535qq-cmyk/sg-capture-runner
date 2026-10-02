@@ -5,6 +5,7 @@ import {retireReviewedBootstrap,readBootstrapRetirement} from './bootstrap-retir
 import {reviewVeryFruityBootstrapFailure} from './bootstrap-failure-review.mjs';
 import {veryFruityPayload} from '../trial/veryfruity-session.mjs';
 import {DemoFresh} from './demo-fresh.mjs';
+import {interruptedBatchBoundary} from './interrupted-batch-boundary.mjs';
 const original=JSON.parse(fs.readFileSync('config/demo-pilot-veryfruity-action-revision3-20261003.json'));
 const plan=applyDemoPilot(JSON.parse(fs.readFileSync('config/round-one-plans.json')),original)[32812];
 function fixture(){
@@ -66,4 +67,14 @@ test('mismatched scene, expiry, paid records and partial writes cannot unblock s
   assert.equal(f.docs.get('state/global-hold').active,true);
   assert.equal(f.docs.get('journal/'+f.input.bootstrapKey).step.responseXml,f.input.bootstrap.step.responseXml);
  }
+});
+
+test('close boundary reuses retired Init proof without rewriting quota or generation',async()=>{
+ const f=fixture();await retireReviewedBootstrap(f);
+ const campaign=f.docs.get('state/campaign'),specHash=hash(f.spec),before=hash([...f.docs]);
+ assert.equal(await interruptedBatchBoundary({store:f.store,plan,spec:f.spec,campaign}),2);
+ assert.equal(hash(f.spec),specHash);assert.equal(hash([...f.docs]),before);
+ f.docs.get('state/batch:'+plan.trialId+':1').bootstrapRetired.frameHash='0'.repeat(64);
+ await assert.rejects(interruptedBatchBoundary({store:f.store,plan,spec:f.spec,campaign}));
+ await assert.rejects(interruptedBatchBoundary({store:f.store,plan:{...plan,gameId:32811},spec:f.spec,campaign}));
 });

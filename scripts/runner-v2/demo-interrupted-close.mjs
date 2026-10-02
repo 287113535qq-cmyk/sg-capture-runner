@@ -4,6 +4,7 @@ import {onePaidRound} from './paid-round-evidence.mjs';
 import {demoRuntimeCommit} from './demo-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {interruptedBatchBoundary} from './interrupted-batch-boundary.mjs';
 
 const closeKey=p=>`closed-demo-pilot:${p.trialId}:${p.demoGeneration}`;
 const repairKey=p=>`game-repair:${p.trialId}:${p.demoGeneration}`;
@@ -43,7 +44,8 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
   &&top?.schema==='sg-next-demo-game-complete-v1'&&top.profileHash===profile.sourceProfileHash&&top.generation===plan.demoGeneration
   &&top.commit===spec.commit&&top.run===spec.run&&top.newBetAllowance===100&&top.sourceRequests===0,'AG_CLOSE_ACTIVATION');
  const secondary=campaign?.group==='secondary',offset=secondary?20:0;
- assert(secondary?(spec.group==='secondary'&&spec.workerOffset===20&&[32719,32721].includes(plan.gameId)&&plan.trialId===`sg_r1_20260928_${plan.gameId}`):(!spec.group&&!spec.workerOffset),'AG_CLOSE_GROUP_SCOPE');
+ const firstPaidBatch=await interruptedBatchBoundary({store,plan,spec,campaign});
+ assert(Number.isSafeInteger(firstPaidBatch)&&firstPaidBatch>=spec.firstBatchId&&firstPaidBatch<=pool.nextBatchId,'AG_CLOSE_BOOTSTRAP_BOUNDARY');
  const game=campaign?.games.find(g=>g.game_id===plan.gameId);
  if(profile.parkedRepair)await reviewParkedPilot({store,plan,scene,binding:profile.parkedRepair});
  assert((profile.parkedRepair?campaign.activeGame===null&&game?.status==='parked-protocol':campaign.activeGame===plan.gameId&&game?.status==='parking-protocol')&&campaign.protocolValidation?.runKey===profile.sourceRunKey
@@ -63,11 +65,11 @@ export async function reviewInterruptedPilot({store,transport,parser,basePlan,pl
    assert(r.trialId===plan.trialId&&r.batchId===b.id&&r.shardId===b.worker&&r.sequence===b.start+i&&r.sourceSessionHash===b.sessionHash
     &&onePaidRound(plan,r.raw),'AG_CLOSE_RECEIPT_CHANGED');
    assert((await parser.call({op:'verify',plan:basePlan,raw:r.raw,record:r})).verified,'AG_CLOSE_RECORD_INVALID');records.push(r);
-   if(b.id>=spec.firstBatchId)complete[b.worker-offset]++;
+   if(b.id>=firstPaidBatch)complete[b.worker-offset]++;
   }
-  if(b.id>=spec.firstBatchId&&b.abandonedDemo){evidence.push(await abandonedEvidence(store,plan,b));abandoned[b.worker-offset]++;}
+  if(b.id>=firstPaidBatch&&b.abandonedDemo){evidence.push(await abandonedEvidence(store,plan,b));abandoned[b.worker-offset]++;}
  }
- const used=complete.map((n,w)=>n+abandoned[w]),newBatches=batches.filter(b=>b.id>=spec.firstBatchId);
+ const used=complete.map((n,w)=>n+abandoned[w]),newBatches=batches.filter(b=>b.id>=firstPaidBatch);
  assert(records.length===profile.completePreserved&&new Set(records.map(r=>r._id)).size===records.length&&new Set(records.map(r=>r.sequence)).size===records.length
   &&budget(used)&&hash(used)===hash(profile.usedByWorker)&&hash(complete)===hash(profile.completeByWorker)
   &&sum(abandoned)>0&&sum(used)<100,'AG_CLOSE_COUNTS');

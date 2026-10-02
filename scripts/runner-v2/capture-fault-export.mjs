@@ -14,7 +14,8 @@ export async function exportCaptureFaultPage({store,plan,publication,afterBatchI
  const end=Math.min(afterBatchId+limit,pool.nextBatchId-1);
  assert(afterBatchId<=pool.nextBatchId-1,'CAPTURE_FAULT_EXPORT_CURSOR');
  const keys=Array.from({length:end-afterBatchId},(_,i)=>`batch:${plan.trialId}:${afterBatchId+i+1}`);
- const batches=keys.length?await store.getMany('state',keys):[];assert(batches.length===keys.length,'CAPTURE_FAULT_EXPORT_ROWS');
+ const batches=keys.length?await store.getMany('state',keys):[];
+ assert(batches.length===keys.length&&batches.every((r,i)=>r?.value?.id===afterBatchId+i+1),'CAPTURE_FAULT_EXPORT_ROWS');
  const exports=[];
  for(const stored of batches){
   const b=stored?.value;if(!b?.workLineFault)continue;

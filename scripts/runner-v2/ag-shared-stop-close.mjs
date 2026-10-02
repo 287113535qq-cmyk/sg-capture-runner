@@ -3,13 +3,14 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {interruptedScene,closeInterruptedPilot} from './demo-interrupted-close.mjs';
 import {freezeFinishedDemo} from './freeze-finished-demo.mjs';
 import {retireDemoPool} from './retire-demo-pool.mjs';
+import {reviewAdapterStopDiagnosis} from './adapter-stop-diagnosis.mjs';
 
 // No source transport. Convert one reviewed adapter-only shared stop into the
 // existing retirement and zero-allowance repair closure. Release the exact
 // original hold last; a new/different fault always remains held.
 export async function closeReviewedAdapterStop({store,transport,gate,parser,basePlan,plan,profile,boundary,commit,run,now=Date.now}){
- assert(profile.schema==='sg-ag-shared-stop-close-v1'&&profile.newBetAllowance===0&&profile.planHash===hash(plan)
-  &&profile.code==='HUFF_UNREVIEWED_FEATURE_SLOTS'&&profile.createdAt<=now()&&now()<profile.expiresAt
+ assert(['sg-ag-shared-stop-close-v1','sg-ag-shared-stop-close-v2'].includes(profile.schema)&&profile.newBetAllowance===0&&profile.planHash===hash(plan)
+  &&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt===7200000,'AG_RECLASSIFY_SCOPE');
  await boundary();const scene=await interruptedScene(store,plan),hold=await store.get('state','global-hold');
  assert(hash(scene)===profile.sceneHash&&hash(hold?.value)===profile.holdHash,'AG_RECLASSIFY_SCENE');
@@ -21,11 +22,7 @@ export async function closeReviewedAdapterStop({store,transport,gate,parser,base
  assert(bad?.failure==='RESPONSE_VALIDATION_REQUIRES_REVIEW'&&pending?.awaiting===null&&!bad.pendingOriginal&&!bad.bootstrapAwaiting
   &&hash(pending)===profile.pendingHash&&pending.sequence===bad.journaled+1,'AG_RECLASSIFY_PENDING');
  assert(scene.batches.every(b=>b===bad||!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting),'AG_RECLASSIFY_OTHER_PENDING');
- const steps=pending.raw?.steps;
- assert(Array.isArray(steps)&&steps.length>0&&steps[0].msgId==='BET'&&steps.filter(s=>s.msgId==='BET').length===1
-  &&steps.every(s=>s.responseXml&&s.responsePayload),'AG_RECLASSIFY_RAW');
- let code=null;try{await parser.call({op:'next',plan:basePlan,raw:pending.raw});}catch(e){code=e.code;}
- assert(code===profile.code,'AG_RECLASSIFY_DIAGNOSIS');
+ await reviewAdapterStopDiagnosis({plan,basePlan,profile,pending,parser});
  assert(scene.campaign.activeGame===plan.gameId&&scene.campaign.protocolValidation?.runKey===profile.sourceRunKey
   &&scene.pool.planHash===hash(plan)&&!scene.pool.demoPilotClosed,'AG_RECLASSIFY_GENERATION');
  const key=`ag-shared-stop:${plan.trialId}:${plan.demoGeneration}`;
@@ -37,7 +34,7 @@ export async function closeReviewedAdapterStop({store,transport,gate,parser,base
  const abandonedKey=`abandoned-demo:${plan.trialId}:${bad.id}:${hash(pending)}`;
  await save(abandonedKey,{schema:'sg-abandoned-demo-v1',trialId:plan.trialId,batchId:bad.id,reason:profile.code,
   disposition:'interrupted-abandoned-without-replay',pending,pendingOriginal:null,sourceRequests:0});
- const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary,owner:'ag-retire:'+run,expectedPoolHash:frozenHash,commit,now});
+ const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary,owner:'ag-retire:'+run,expectedPoolHash:frozenHash,commit,group:scene.campaign.group??'primary',now});
  assert(retired.completePreserved===profile.completePreserved&&retired.abandonedAttempts===1,'AG_RECLASSIFY_COUNTS');
  await boundary();
  await store.update('state',`batch:${plan.trialId}:${bad.id}`,v=>{
