@@ -60,7 +60,7 @@ on:
         options: [demo-repair-rhino-guarantee-20261001.json, demo-pilot-pyramids-20261001.json, demo-pilot-inca-20261001.json, demo-repair-mansion-20261001.json, demo-repair-piggies-20261001.json, demo-repair-morepuff-20261001.json, demo-pilot-rhino-20261001.json, demo-pilot-pearl-20260930.json, demo-pilot-morepuff-20260930.json, demo-pilot-mansion-20260930.json, demo-pilot-piggies-20260930.json]
       operation:
         type: choice
-        options: [refresh-pyramids-action-runtime, amend-pyramids-action-runtime, analyze-pyramids-rounds, close-count-evidence, close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
+        options: [audit-pyramids-direct-complete, refresh-pyramids-action-runtime, amend-pyramids-action-runtime, analyze-pyramids-rounds, close-count-evidence, close-pyramids-retrigger, close-pyramids-parked, close-pyramids-adapter, close-pyramids-counter, reserve-rhino-canary-boundary, revoke-rhino-jobless, close-count-shared, review-count-window, finalize-ended-source, activate-session-layout, amend-pyramids-zero-runtime, retire-pyramids-repair, activate-pyramids-repair, refresh-count-runtime, activate-pyramids-count, secondary-next, secondary-close-interrupted, secondary-idle, close-count-network, rollover, retire-finished, residual, next-game, close-pilot, close-interrupted-pilot, close-reviewed-adapter-stop, rebind-zero-source, activate-formal-count, amend-formal-runtime, retire-stopped-formal, activate-formal-repair]
         default: rollover
 permissions:
   contents: read
@@ -458,3 +458,24 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Classify confirmed receipts without changing originals or requesting games
         run: node scripts/runner-v2/pyramids-action-analysis.mjs
+
+  pyramids-direct-final-audit:
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'audit-pyramids-direct-complete'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Configure restricted secondary database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked parser dependency
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Audit the reached original target without source requests
+        run: node scripts/runner-v2/action-final-audit-control.mjs

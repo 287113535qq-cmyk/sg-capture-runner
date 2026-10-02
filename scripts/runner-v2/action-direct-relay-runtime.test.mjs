@@ -306,3 +306,23 @@ test('target stop needs complete settled readback receipts, but does not require
  f.docs.get(`batch:${f.plan.trialId}:3`).checkpoint--;
  await assert.rejects(directRelayTargetReached(f),/BATCH_OPEN/);
 });
+import {checkDirectFinalAudit} from './action-final-audit.mjs';
+async function finalAuditFixture(){
+ const f=await relayFixture(true);await admitDirectRelay(f);f.addBatch(f.plan.target-f.pool.confirmed);
+ f.source={...f.ended,id:Number(f.run.split(':')[0]),head_sha:f.commit,status:'completed',conclusion:'success'};
+ f.jobs.jobs.forEach((j,i)=>j.id=1000+i);
+ f.permission={schema:'sg-direct-final-audit-v1',gameId:32721,trialId:f.plan.trialId,sourceRun:f.run,sourceCommit:f.commit,
+ profileHash:hash(f.profile),revisionHash:hash(f.revision),specHash:hash(f.spec),receiptHash:hash(f.binding.receipt),target:f.plan.target,
+ createdAt:f.now(),expiresAt:f.now()+7200000,sourceRequests:0,newBetAllowance:0};
+ return {...f,...f.binding};
+}
+test('independent final audit reuses reached original count permission without new source quota or writes',async()=>{
+ const f=await finalAuditFixture(),before=hash([...f.docs]);assert.equal((await checkDirectFinalAudit(f)).verified,true);
+ assert.equal(hash([...f.docs]),before);
+});
+test('final audit refuses live source, failed jobs, under target, quota, runtime or receipt mismatch',async()=>{
+ for(const mutate of [f=>f.source.status='in_progress',f=>f.jobs.jobs[0].conclusion='failure',f=>f.pool.confirmed--,
+ f=>f.permission.newBetAllowance=1,f=>f.permission.revisionHash='0'.repeat(64),f=>f.permission.receiptHash='0'.repeat(64)]){
+ const f=await finalAuditFixture();mutate(f);await assert.rejects(checkDirectFinalAudit(f));
+ }
+});
