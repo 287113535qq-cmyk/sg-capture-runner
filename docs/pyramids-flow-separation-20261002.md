@@ -15,3 +15,5 @@ SG旧Pyramids next_request会调用完整玩法校验，真实三帧已由固定
 通用结清控制器用实际16913记录/1122待写/3半局回放通过；使用未来租约到期时间，仅内存模拟，不代称线上结清。随后鲜读1790916582确认checkpoint15791、新Mongo7400、新完整receipt8522、reserved1800、pending3、futureWorkers0；真实写入0。新增维护入口`close-count-evidence`及固定Pyramids范围控制器，独立不可变证据profile尚待生成、Linux与线上维护尚未执行；不能据此开源。
 
 维护边界只在无源workflow接受完整hash绑定的故障代码；来源类别必须source_protocol、peer hold必须无活动，源入口不接受该放行。测试覆盖改hash/改故障代码/活租约/未结束jobs/未知请求/缺原文/额度差异/Mongo冲突及部分归档，原共享结清及网络结清回归通过。
+
+鲜读1790916723核全321个候选batch，3 pending，无活租约/未知请求。生成独立`config/count-close-pyramids-evidence-20261002.json`，canonical `1e369e480738586185d205f1d10ef2df68aeb2b20069617154cf46126a233dfc`、791运行文件，固定已结束源36963756989:1及原v10，源许可0。以实际时间重放正式结清入口通过，未使用未来租约到期假设；16913全量独立验证、1122仅内存补写、3归档、repair额度0。该凭证尚未线上应用；采集流程入口仍未采用独立流程通道。
