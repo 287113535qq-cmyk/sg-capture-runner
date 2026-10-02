@@ -415,7 +415,13 @@
       "retainedRecordsVerified": 5111,
       "sourceRequests": 0,
       "profileHash": "140025dee8b6f121c08e3f8b71d50c326db627c556529049ba850e64d249294f",
-      "profileApplied": false
+      "profileApplied": true,
+      "linuxRun": 36946196394,
+      "activationRun": 36946527554,
+      "sourceRun": 36946815410,
+      "actualReentry": true,
+      "preflightToSourceDispatchSeconds": 300,
+      "activationStepSeconds": 103
     },
     "repairActivationBoundedVerification": {
       "localPassed": true,
