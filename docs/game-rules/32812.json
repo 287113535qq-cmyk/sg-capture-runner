@@ -26,12 +26,14 @@
   "analysisDocuments": [
     "docs/ag-audit-phase-efficiency-20261002.md",
     "docs/ag-preparation-method-reuse-20261002.md",
+    "docs/ag-veryfruity-difference-review-20261002.md",
     "docs/efficiency-acceptance-20261002-result.json"
   ],
   "analysisDocumentHashes": {
     "docs/ag-audit-phase-efficiency-20261002.md": "576baa598e76f991877fdf435641e758f6a3ace9e1c8c7a58be9f12b0159d542",
     "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9",
-    "docs/efficiency-acceptance-20261002-result.json": "666dbec2659105e4c93211ce240e6fd8003acf3a3fea6b50eea7ce51b81b0bfd"
+    "docs/ag-veryfruity-difference-review-20261002.md": "75474845326a0352582916c2ee0c776f83789f50d69b49ede61f6887357de28d",
+    "docs/efficiency-acceptance-20261002-result.json": "823ca48e1852f893f88da03878a7ae8aa303faf45b0525a3eac1a30172b62415"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -40,5 +42,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5a00529e8b502a850de84a96b2dd58824035a98e37662ff999ca4bbd5bc83301"
+  "ruleHash": "8869afaf33d588fbac8566db7dac0da87bff2f2c0aeeed3ac94c594d01843174"
 }

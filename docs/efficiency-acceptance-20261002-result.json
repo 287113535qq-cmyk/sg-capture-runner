@@ -696,6 +696,31 @@
       "mongoWrites": 0,
       "closureApplied": false,
       "allOptimizationsComplete": false
+    },
+    "retriggerCoinActualClose": {
+      "sourceRun": "36955443358:1",
+      "sourceCommit": "3a4efb77f104cb23306b635ccfdddbd1daa5340d",
+      "completePreserved": 7503,
+      "abandonedAlready": 1,
+      "newAbandoned": 0,
+      "recordsHash": "11f76cc6db83acfc439ddb4cea67ed1e842fc2312db2d3ee03c6a1fc38cbe5f6",
+      "sourceRequests": 0,
+      "newBetAllowance": 0,
+      "profileHash": "2d556dc5ffa052e8715d376fcee831e05b80eb97aa25227d0e2b98dfdbab11cb",
+      "maintenanceRun": 36956679875,
+      "readbackAt": 1790909058,
+      "reserved": 0,
+      "activeWorkers": 0,
+      "holdActive": false,
+      "closureApplied": true
+    },
+    "veryFruityDifferenceReview": {
+      "gameId": 32812,
+      "tests": 4,
+      "syntheticPrefixes": 7,
+      "productionImported": false,
+      "captureAuthorization": false,
+      "naturalXmlObserved": false
     }
   },
   "pending": [
