@@ -20,6 +20,7 @@ import {exportResourceHistory} from './resource-handoff.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {sessionCanarySchedule,isSessionCanaryRuntime} from './session-canary.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
+import {ACTION_CANARY_RUNTIME} from './action-canary-contract.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2});
 let canary;
@@ -75,6 +76,8 @@ process.on('SIGTERM',()=>{stop=true;childStop.abort();});process.on('SIGINT',()=
 const sleep=()=>new Promise(r=>setTimeout(r,10000));
 const stages=createStageProgress({emit:row=>console.log(JSON.stringify(row))});
 const ensureStateWrite=stateWriteInitializer({store,commit:process.env.GITHUB_SHA,
+  runtimeName:process.env.SG_COUNT_RUNTIME_PROFILE,
+  readRevision:name=>JSON.parse(fs.readFileSync('config/'+name,'utf8')),
   group:repositories[process.env.GITHUB_REPOSITORY].name,
   readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'))});
 async function capture(plan){
@@ -101,6 +104,7 @@ try{
       if(next.action==='wait'){await sleep();continue;}
       if(next.action==='audit'){console.log(JSON.stringify(await stages.run('audit',()=>campaign.audit(next.plan))));break;}
       const code=await stages.run('capture',()=>capture(next.plan));
+      if(process.env.SG_COUNT_RUNTIME_PROFILE===ACTION_CANARY_RUNTIME){if(code!==0)process.exitCode=2;break;}
       if(Number(process.env.SG_POOL_RUN_LIMIT || '0')>0 || (await store.get('state','campaign')).value.validationLimit>0){if(code!==0)process.exitCode=2;break;}
       // A failed child is evidence requiring review. Repeating its startup can
       // otherwise loop forever before registration without producing any data.

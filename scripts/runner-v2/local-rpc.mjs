@@ -14,6 +14,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {formalCountProfilePath} from './formal-count-plan.mjs';
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
+import {ACTION_CANARY_RUNTIME,actionCanaryWindow} from './action-canary-contract.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
@@ -40,10 +41,25 @@ export function connectLocal(plan){
     readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')),
     readReceipt:async key=>(await store.get('journal',key))?.value});
   const ensureStateWrite=stateWriteInitializer({store,commit:process.env.GITHUB_SHA,
+    runtimeName:process.env.SG_COUNT_RUNTIME_PROFILE,
+    readRevision:name=>JSON.parse(fs.readFileSync('config/'+name,'utf8')),
     group:repositories[process.env.GITHUB_REPOSITORY].name,resourceReady,
     readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'))});
   return {async canaryReady(shouldStop){
     await ensureControlMode();
+    if(process.env.SG_COUNT_RUNTIME_PROFILE===ACTION_CANARY_RUNTIME){
+      await resourceReady;
+      const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
+      const revision=JSON.parse(fs.readFileSync('config/'+ACTION_CANARY_RUNTIME,'utf8'));
+      const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
+      const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+      const read=async k=>(await store.get('journal',k))?.value;
+      const proof={plan,profile,revision,commit,run,spec:await read(key),complete:await read(key+':complete'),
+        receipt:await read(`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`),
+        permit:await read(`count-run:${plan.trialId}:${run}`)};
+      const window=actionCanaryWindow({...proof,now:Date.now()});
+      controller.actionCanaryProof=proof;return window;
+    }
     if(!process.env.SG_CANARY_SCHEDULE){
       if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE))throw Error('CANARY_SCHEDULE_MISSING');
       return null;

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
+import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
 
 // Immutable runtime receipt selects the optimization; environment flags cannot.
 export function compactRuntimeBinding({plan,profile,revision,receipt,commit}) {
@@ -83,6 +84,13 @@ export function compactControlInitializer({plan,runtimeName,commit,resourceReady
     await resourceReady;
     const profile=readProfile();
     const receipt=await readReceipt(`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`);
+    if(runtimeName===ACTION_CANARY_RUNTIME){
+      assert(revision.controlReadMode===profile.controlReadMode&&revision.gatewayHash===profile.gatewayHash,'ACTION_CANARY_COMPACT_MODE');
+      const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+      const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
+      checkActionCanaryBinding({plan,profile,revision,receipt,spec,complete,commit});
+      control.compact=compactRepairBinding({plan,profile,spec,complete,commit:spec.commit});return;
+    }
     control.compact=compactRuntimeBinding({plan,profile,revision,receipt,commit});
   })();
 }

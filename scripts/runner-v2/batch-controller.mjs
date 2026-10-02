@@ -12,6 +12,7 @@ import {isAdapterGap,reviewedAdapterFailure} from './game-failure-policy.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
 import {canaryWorkerRegistration} from './session-canary.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
+import {claimActionCanaryWorker} from './action-canary-contract.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -59,11 +60,18 @@ export class BatchController {
   }
   async next(r){
     await this.owned(r,{heartbeat:false});
+    if(this.actionCanaryProof&&this.actionCanaryBatchTaken){
+      await this.pool.release(this.lease);return {done:true};
+    }
     const poolSnapshot=await this.control.allowed({newRound:true,workerId:r.shardId});
     await this.pool.heartbeat(this.lease,{snapshot:poolSnapshot});
     if(this.pendingFirst.admission?.limit===0){await this.pool.release(this.lease,{resumeSafe:true});return {done:true};}
     this.batch=await this.pool.take(this.lease);
     if(!this.batch){await this.pool.release(this.lease);return {done:true};}
+    if(this.actionCanaryProof){
+      assert(this.actionCanaryClaim&&this.batch.end-this.batch.start+1<=100,'ACTION_CANARY_BATCH_LIMIT');
+      this.actionCanaryBatchTaken=true;
+    }
     this.pendingFirst.checkLease(this.batch);
     this.batchKey=`batch:${this.plan.trialId}:${this.batch.id}`;
     const existing=await this.store.create('state',this.batchKey,{...this.batch,owner:null,epoch:0,sessionHash:this.identity.sessionHash,
@@ -324,6 +332,8 @@ export class BatchController {
         assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':')||delayed,'COUNT_INITIAL_WORKER_LATE');
       }
       await this.pendingFirst.admit(r,r.shardId);
+      if(this.actionCanaryProof)this.actionCanaryClaim=await claimActionCanaryWorker({store:this.store,
+        proof:this.actionCanaryProof,identity:r,now:this.now()});
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }
     if(op==='next')return this.next(r);

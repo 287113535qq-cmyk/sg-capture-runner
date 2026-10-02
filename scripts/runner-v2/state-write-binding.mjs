@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
 
 // A newly applied activation selects metadata I/O. Capability alone, old
 // profiles, or environment booleans cannot enable a changed write path.
-export function stateWriteInitializer({store,commit,group,resourceReady=Promise.resolve(),readProfile}) {
+export function stateWriteInitializer({store,commit,group,resourceReady=Promise.resolve(),readProfile,runtimeName,readRevision}) {
   const ready=new Map();
   return plan=>{
     const key=plan.countAllocation;
@@ -19,12 +20,20 @@ export function stateWriteInitializer({store,commit,group,resourceReady=Promise.
       const journal=`complete-count:${plan.trialId}:${key}`;
       const spec=(await store.get('journal',journal))?.value;
       const complete=(await store.get('journal',journal+':complete'))?.value;
+      let activationCommit=commit;
+      if(runtimeName===ACTION_CANARY_RUNTIME){
+        const revision=readRevision(runtimeName);
+        const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${key}:${commit}`))?.value;
+        checkActionCanaryBinding({plan,profile,revision,receipt,spec,complete,commit});
+        assert(group==='secondary'&&revision.stateWriteMode===profile.stateWriteMode,'ACTION_CANARY_STATE_MODE');
+        activationCommit=spec.commit;
+      }
       assert(spec?.schema==='sg-complete-count-v1'&&spec.activation===key
-        &&spec.commit===commit&&spec.profileHash===hash(profile)
+        &&spec.commit===activationCommit&&spec.profileHash===hash(profile)
         &&spec.planHash===hash(plan)&&spec.trialId===plan.trialId
         &&spec.gameId===plan.gameId,'STATE_WRITE_SPEC');
       assert(complete?.schema==='sg-complete-count-activation-v1'
-        &&complete.specHash===hash(spec)&&complete.commit===commit
+        &&complete.specHash===hash(spec)&&complete.commit===activationCommit
         &&complete.profileHash===hash(profile)&&complete.planHash===hash(plan)
         &&complete.trialId===plan.trialId,'STATE_WRITE_COMPLETE');
       const hello=await store.transport.request('hello');

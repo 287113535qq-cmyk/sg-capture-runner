@@ -136,7 +136,7 @@ async function main() {
   assert(Number.isSafeInteger(poolLimit) && poolLimit>=0);
   const limit=isPool?(poolLimit>0?Math.min(plan.target,poolLimit):plan.target):Number(process.env.SG_TRIAL_LIMIT || '1');
   assert(Number.isSafeInteger(limit) && limit>=1 && limit<=plan.target);
-  const deadline=performance.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000;
+  const deadline=performance.now()+(canary?Math.max(0,canary.endMs-Date.now()):Number(process.env.SG_TRIAL_MINUTES || '240')*60000);
   const cookies=new Map();
   async function post(payload, msgId) {
     const delay=requestIntervalMs-(Date.now()-lastRequestAt);
