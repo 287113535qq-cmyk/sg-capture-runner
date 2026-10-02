@@ -435,7 +435,7 @@ jobs:
           SG_PARKED_CLOSE_PROFILE: ${{ inputs.parked_close_profile || 'count-close-pyramids-sfgt-20261002.json' }}
         run: node scripts/runner-v2/count-parked-close-control.mjs
   pyramids-analysis:
-    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'analyze-pyramids-rounds' && inputs.repair_profile == 'formal-repair-pyramids-action-20261002.json'
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'analyze-pyramids-rounds' && (inputs.repair_profile == 'formal-repair-pyramids-action-20261002.json' || inputs.repair_profile == 'formal-repair-pyramids-direct-action-20261002.json' || inputs.repair_profile == 'formal-repair-pyramids-resume-action-20261002.json')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:

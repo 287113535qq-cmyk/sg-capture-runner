@@ -408,7 +408,7 @@
     "scripts/trial/pyramids-flow-review.mjs": "e4442126d0f2db29beb11f056cf8715922ca61bf50078c821cce1759f48584d7",
     "collector/sg.pyramids-action.ts": "115a4ece4a74060c9b31b81f54b9879a771919c292310b4f981b10612c42dabe",
     "scripts/runner-v2/round-analysis-journal.mjs": "ce4ea10e8b77ebf1bbb9d02f6685e383bd157abd0bc80524ef166d5a7a0fec65",
-    "scripts/runner-v2/pyramids-action-analysis.mjs": "67a8da87ea9f9a5a351c9e9e5d462f8e459ffc106855fbfe9bd79543a5a38239",
+    "scripts/runner-v2/pyramids-action-analysis.mjs": "cc2c2e2e3e7397eaffc6a67e5d375842b6b740bedb5d77ac958f1f7f31119b36",
     "scripts/runner-v2/pyramids-action-repair-profile.mjs": "7756a9b9bd5cbc61f822c5c1680ab73d75a507dd068357bc7bd858f932501037",
     "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
   },
@@ -450,5 +450,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "61cda759566c6dc3d651f6d3a71d90b50ce394274cd03251eedc6f9219a7471d"
+  "ruleHash": "f8f041e9e64eb5ae99bb4c79036e67fc2464b17e6cd89cd0c3a1f5b97aeb07e7"
 }

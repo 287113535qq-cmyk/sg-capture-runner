@@ -2,19 +2,19 @@ import fs from 'node:fs';import assert from 'node:assert/strict';import path fro
 import {createRequire} from 'node:module';import {createHash} from 'node:crypto';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {analyzer} from './analyzer.mjs';
-import {pyramidsActionRepairPlan} from './pyramids-action-repair-profile.mjs';
+import {actionAnalysisPlan} from './action-analysis-binding.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIMES,checkDirectRelayBinding} from './action-direct-relay-runtime.mjs';
 import {loadCountPermission} from './complete-count.mjs';import {receiptKey} from './durable-queue.mjs';
 import {analyzeConfirmedRound} from './round-analysis-journal.mjs';
 import {stable} from './mongo-writer.mjs';
 import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
 import {ACTION_CONTINUOUS_RUNTIME,checkActionContinuousBinding} from './action-continuous-runtime.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','SECONDARY_GITHUB_REQUIRED');
-assert(process.env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-20261002.json','ACTION_ANALYSIS_PROFILE');
+
 const load=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 const profile=load('config/'+process.env.SG_FORMAL_COUNT_PROFILE);
-const plan=pyramidsActionRepairPlan(load('config/round-one-plans.json')[32721],profile);
-const runtimeName=process.env.SG_COUNT_RUNTIME_PROFILE;
-assert(!runtimeName||[ACTION_CANARY_RUNTIME,ACTION_CONTINUOUS_RUNTIME].includes(runtimeName),'ACTION_ANALYSIS_RUNTIME_SCOPE');
+const runtimeName=process.env.SG_COUNT_RUNTIME_PROFILE,base=load('config/round-one-plans.json')[32721];
+const plan=actionAnalysisPlan({base,profile,name:process.env.SG_FORMAL_COUNT_PROFILE,runtimeName});
 const revision=runtimeName?load('config/'+runtimeName):null;
 for(const [file,hash]of Object.entries(revision?.files??profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(file)&&!file.includes('..'),'ANALYSIS_FILE_SCOPE');
@@ -35,7 +35,7 @@ try{
   const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
   const spec=(await store.get('journal',key))?.value,complete=(await store.get('journal',key+':complete'))?.value;
   const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${process.env.GITHUB_SHA}`))?.value;
-  (runtimeName===ACTION_CANARY_RUNTIME?checkActionCanaryBinding:checkActionContinuousBinding)({plan,profile,revision,receipt,spec,complete,commit:process.env.GITHUB_SHA});
+  (DIRECT_ACTION_RELAY_RUNTIMES.includes(runtimeName)?checkDirectRelayBinding:runtimeName===ACTION_CANARY_RUNTIME?checkActionCanaryBinding:checkActionContinuousBinding)({base,plan,profile,revision,receipt,spec,complete,commit:process.env.GITHUB_SHA});
  }
  const receipts=await store.getMany('journal',Array.from({length:limit},(_,i)=>receiptKey(plan.trialId,after+i+1)));
  const records=receipts.filter(Boolean).map(r=>r.value).filter(r=>r.normalized?.classificationStatus==='pending');
