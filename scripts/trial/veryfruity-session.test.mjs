@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';import path from 'node:path';
 import {veryFruitySession,veryFruityPayload,veryFruityInit} from './veryfruity-session.mjs';
 import {ACTION_CONTRACT_HASH} from './veryfruity-action-protocol.mjs';
-const py=process.env.PYTHON??'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe';
+const py=process.env.PYTHON??(process.platform==='win32'?'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe':'python3');
 function fixture(){const r=spawnSync(py,['-c','import json;from test_veryfruity_action_fields import fixture;p,r=fixture();print(json.dumps(p))'],{encoding:'utf8',env:{...process.env,PYTHONPATH:['service','service/tests'].join(path.delimiter)}});assert.equal(r.status,0,r.stderr);return JSON.parse(r.stdout);}
 test('new demo session binds generation, run and worker; formal and wrong group are rejected',()=>{
  const p={...fixture(),trialId:'offline',demoGeneration:'a'.repeat(64),runnerGroup:'secondary'},b={mode:'demo',sessionId:'Free:offline',operatorId:'offline'};

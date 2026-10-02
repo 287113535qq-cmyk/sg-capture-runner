@@ -3,7 +3,7 @@ import {runVeryFruityWorker} from './veryfruity-worker.mjs';
 import {veryFruityActionNext} from './veryfruity-action-protocol.mjs';
 import {veryFruityPayload,VERYFRUITY_ENDPOINT} from './veryfruity-session.mjs';
 import {onePaidRound} from '../runner-v2/paid-round-evidence.mjs';
-const py=process.env.PYTHON??'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe';
+const py=process.env.PYTHON??(process.platform==='win32'?'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe':'python3');
 function python(code,q){const p=spawnSync(py,['-B','-c',code],{encoding:'utf8',env:{...process.env,PYTHONPATH:['service','service/tests'].join(path.delimiter),PYTHONUTF8:'1'},input:JSON.stringify(q)});assert.equal(p.status,0,p.stderr);return JSON.parse(p.stdout);}
 const fixture=()=>python('import json;from test_veryfruity_action_fields import fixture;p,r=fixture();print(json.dumps({"plan":p,"raw":r}))');
 const validate=(plan,op,raw,step)=>python('import json,sys;from veryfruity_action_fields import VeryFruityActionFields;q=json.load(sys.stdin);a=VeryFruityActionFields(q["plan"]);v=a.bootstrap(q["step"]) if q["op"]=="bootstrap" else a.validate_intent(q["raw"],q["step"]) if q["op"]=="intent" else a.settled(q["raw"]);print(json.dumps(v))',{plan,op,raw,step});

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {VERYFRUITY_SOURCE,ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/veryfruity-action-protocol.mjs';
-export const VERYFRUITY_PILOT_FILE='demo-pilot-veryfruity-action-20261003.json';
+export const VERYFRUITY_PILOT_FILE='demo-pilot-veryfruity-action-revision2-20261003.json';
 export function checkVeryFruityNextProfile(p,plan){
  assert(p?.schema==='sg-demo-next-game-v1'&&p.group==='secondary'&&p.workerOffset===20
   &&p.gameId===32812&&p.fromGameId===32721&&p.completePreserved===0&&p.abandonedAttempts===0
