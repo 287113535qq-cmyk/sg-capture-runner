@@ -1,8 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';import {receiptKey} from './durable-queue.mjs';
 import {closeCountNetwork} from './count-network-close.mjs';
-function fixture(){
- const plan={trialId:'synthetic-demo',gameId:32820,phase:1,buy:0},pool={enabled:false,nextBatchId:2,workers:{7:{leaseUntil:0}}},pending={sequence:3,attempt:'unfinished',awaiting:null,raw:{steps:[{msgId:'BET'}]}};
+function fixture(http=false){
+ const plan={trialId:http?'sg_r1_20260928_32721':'synthetic-demo',gameId:http?32721:32820,phase:1,buy:0},pool={enabled:false,nextBatchId:2,workers:{7:{leaseUntil:0}}},pending={sequence:3,attempt:'unfinished',awaiting:null,raw:{steps:[{msgId:'BET'}]}};
  pool.planHash=hash(plan);
  const batch={id:1,worker:7,start:1,end:100,epoch:0,leaseUntil:0,checkpoint:0,journaled:2,sessionHash:'session',pending,failure:'PROTOCOL_VALIDATION_FAILED'};
  const docs=new Map([['state/pool:'+plan.trialId,{value:pool}],['state/batch:'+plan.trialId+':1',{value:batch}],['state/write-permits',{value:{limit:1,slots:{}}}]]),mongo=new Map();let failAt=null,corrupt=false,busy=false;
@@ -12,8 +12,8 @@ function fixture(){
  const args={store,transport,plan,parser:{call:async({record})=>({verified:record.raw.synthetic===true})},gate:{status:()=>({allowed:true,maxBatchSize:100}),hold(){}},boundary:async()=>assert(!busy,'BUSY'),owner:'test',now:()=>100,expectedPoolHash:hash(pool)};
  return {args,docs,mongo,get,fail:k=>failAt=k,corrupt:()=>corrupt=true,busy:()=>busy=true,batch};
 }
-function countedFixture(){
- const f=fixture(),plan=f.args.plan,pool=f.docs.get('state/pool:'+plan.trialId).value;
+function countedFixture(http=false){
+ const f=fixture(http),plan=f.args.plan,pool=f.docs.get('state/pool:'+plan.trialId).value;
  plan.target=200;plan.countAllocation='a'.repeat(64);f.args.commit='b'.repeat(40);
  f.batch.sessionHash='c'.repeat(64);pool.workers[7].sessionHash=f.batch.sessionHash;
  pool.workers[7].activeBatch={id:1,worker:7,start:1,end:100};pool.nextSequence=101;pool.confirmed=0;
@@ -28,8 +28,8 @@ function countedFixture(){
 
 
 
-export function network(){
- const f=countedFixture(),pool=f.pool,plan=f.args.plan;pool.enabled=true;pool.failure=null;f.batch.failure=null;f.batch.pending.awaiting='unknown-synthetic-request';
+export function network(http=false){
+ const f=countedFixture(http),pool=f.pool,plan=f.args.plan;pool.enabled=true;pool.failure=null;f.batch.failure=null;f.batch.pending.awaiting='unknown-synthetic-request';
  const spec=f.docs.get('journal/'+f.key).value;spec.sessionRotation='closed-batches-v1';spec.profileHash='e'.repeat(64);
  pool.countAllocation.specHash=hash(spec);f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);
  const campaign={enabled:true,activeGame:plan.gameId,formalCount:{activation:plan.countAllocation}},hold={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{trialId:plan.trialId,batchId:1,code:'SOURCE_NETWORK_OUTCOME_UNKNOWN',category:'source_network',cooldownUntil:0}};
@@ -39,7 +39,13 @@ export function network(){
  const jobs={total_count:22,jobs:['formal-admit','verify',...Array.from({length:20},(_,i)=>'capture-'+i)].map(name=>({name,status:'completed',conclusion:name.startsWith('capture-')?'failure':'success'}))};
  const profile={schema:'sg-count-network-close-profile-v1',trialId:plan.trialId,gameId:plan.gameId,planHash:hash(plan),sourceAllowance:0,createdAt:1,expiresAt:1000,sourceCommit:spec.commit,sourceRun:'77:1',jobsHash:hash(jobs),poolHash:hash(pool),campaignHash:hash(campaign),holdHash:hash(hold),batchesHash:hash([f.batch]),pendingHash:hash(f.batch.pending),batchId:1,permitHash:hash(permit),completePreserved:2,abandonedAttempts:1,unknownAttempts:1};
  f.args.store.cas=async(c,k,before,value)=>{assert.equal(hash(f.get(c,k)),hash(before));f.docs.set(c+'/'+k,{value:structuredClone(value)});return {value};};
- return {...f,args:{...f.args,profile,ended,jobs,commit:'f'.repeat(40),run:'88:1'}};
+ if(http){
+ ended.repository.full_name='287113535qq-cmyk/sg-capture-runner';jobs.jobs[0].name='pyramids-formal-admit';jobs.jobs[1].conclusion='failure';
+ hold.details.code='SOURCE_HTTP_REJECTED';hold.details.category='source_http';permit.completeBefore=0;
+ Object.assign(profile,{schema:'sg-count-network-http-close-profile-v1',group:'secondary',httpStatus:502,faultCode:'SOURCE_HTTP_REJECTED',httpEvidenceHash:hash({sourceRun:'77:1',commit:spec.commit,outcomes:[{complete:2}]})});
+ profile.jobsHash=hash(jobs);profile.holdHash=hash(hold);profile.permitHash=hash(permit);
+ }
+ return {...f,args:{...f.args,...(http?{httpEvidence:{sourceRun:'77:1',commit:spec.commit,outcomes:[{complete:2}]}}:{}),profile,ended,jobs,commit:'f'.repeat(40),run:'88:1'}};
 }
 test('network cleanup flushes complete records and abandons unknown, preserving activation and original count ceiling',async()=>{
  const f=network(),activation=hash(f.get('journal',f.key)),r=await closeCountNetwork(f.args);
@@ -59,4 +65,14 @@ for(const cause of ['expired','lease','hold','scene','jobs','pending','count','p
 test('network cleanup keeps exact shared protection after Mongo conflict or partial archive',async()=>{
  for(const fault of ['mongo','archive']){const f=network();if(fault==='mongo')f.corrupt();else f.fail('count-network-close:synthetic-demo:77:1:settled');
  await assert.rejects(closeCountNetwork(f.args));assert.equal(f.get('state','global-hold').value.active,true);assert.equal(f.get('state','pool:synthetic-demo').value.enabled,false);await assert.rejects(closeCountNetwork(f.args));}
+});
+
+test('secondary HTTP 502 closure preserves complete receipts and unknown request without replay',async()=>{
+ const f=network(true),r=await closeCountNetwork(f.args);assert.equal(r.completePreserved,2);assert.equal(r.unknownAttempts,1);
+ assert.equal(f.get('state','global-hold').value.active,false);assert.equal(r.sourceRequests,0);
+});
+test('HTTP closure rejects an unrelated category, unbound status evidence or changed complete count',async()=>{
+ for(const mutate of [f=>f.args.profile.httpStatus=401,f=>f.args.httpEvidence.commit='0'.repeat(40),f=>f.docs.get('state/global-hold').value.details.category='source_protocol']){
+ const f=network(true);mutate(f);await assert.rejects(closeCountNetwork(f.args));
+ }
 });

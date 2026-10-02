@@ -7,18 +7,23 @@ import {reviewHistoryPrefix} from './count-window-history.mjs';
 
 // Close a finished run's unknown request and interrupted sessions without source
 // replay. Retain the existing count authorization; issue no new run permission.
-export async function closeCountNetwork({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
- assert(profile?.schema==='sg-count-network-close-profile-v1'&&profile.planHash===hash(plan)
+export async function closeCountNetwork({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,httpEvidence,now=Date.now}){
+ const http=profile?.schema==='sg-count-network-http-close-profile-v1';
+ if(http)assert(profile.group==='secondary'&&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
+  &&profile.httpStatus===502&&profile.faultCode==='SOURCE_HTTP_REJECTED'
+  &&hash(httpEvidence)===profile.httpEvidenceHash,'COUNT_NETWORK_HTTP_SCOPE');
+ assert((http||profile?.schema==='sg-count-network-close-profile-v1')&&profile.planHash===hash(plan)
   &&profile.trialId===plan.trialId&&profile.gameId===plan.gameId&&profile.sourceAllowance===0
   &&profile.createdAt<=now()&&now()<profile.expiresAt&&profile.expiresAt-profile.createdAt<=7200000
   &&/^[a-f0-9]{40}$/.test(commit??'')&&/^\d+:1$/.test(run??''),'COUNT_NETWORK_PROFILE');
- assert(ended?.repository?.full_name==='zyzuoyang/sg-capture-runner'&&ended.status==='completed'
+ assert(ended?.repository?.full_name===(http?'287113535qq-cmyk/sg-capture-runner':'zyzuoyang/sg-capture-runner')&&ended.status==='completed'
   &&ended.conclusion==='failure'&&ended.head_sha===profile.sourceCommit&&`${ended.id}:${ended.run_attempt}`===profile.sourceRun
   &&ended.path==='.github/workflows/trial-300k.yml','COUNT_NETWORK_RUN');
  assert(jobs?.total_count===jobs.jobs?.length&&jobs.jobs.every(j=>j.status==='completed')
   &&jobs.jobs.filter(j=>/^capture-\d+$/.test(j.name)).length===20
   &&Array.from({length:20},(_,i)=>`capture-${i}`).every(n=>jobs.jobs.some(j=>j.name===n))
-  &&['formal-admit','verify'].every(n=>jobs.jobs.some(j=>j.name===n&&j.conclusion==='success'))
+  &&(http?jobs.jobs.some(j=>j.name==='pyramids-formal-admit'&&j.conclusion==='success')
+  &&jobs.jobs.some(j=>j.name==='verify'&&j.conclusion==='failure'):['formal-admit','verify'].every(n=>jobs.jobs.some(j=>j.name===n&&j.conclusion==='success')))
   &&hash(jobs)===profile.jobsHash,'COUNT_NETWORK_JOBS');
  await boundary();const poolKey='pool:'+plan.trialId,campaign=(await store.get('state','campaign'))?.value,
   pool=(await store.get('state',poolKey))?.value,hold=(await store.get('state','global-hold'))?.value;
@@ -27,7 +32,7 @@ export async function closeCountNetwork({store,transport,gate,parser,plan,profil
   &&pool?.enabled&&!pool.failure&&hash(pool)===profile.poolHash,'COUNT_NETWORK_SCENE');
  assert(hash(hold)===profile.holdHash&&hold.active&&hold.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'
   &&hold.details?.trialId===plan.trialId&&hold.details.batchId===profile.batchId
-  &&hold.details.code==='SOURCE_NETWORK_OUTCOME_UNKNOWN'&&hold.details.category==='source_network'
+  &&hold.details.code===(http?'SOURCE_HTTP_REJECTED':'SOURCE_NETWORK_OUTCOME_UNKNOWN')&&hold.details.category===(http?'source_http':'source_network')
   &&hold.details.cooldownUntil===0,'COUNT_NETWORK_HOLD');
  const spec=await loadCountPermission({store,plan,pool,commit:profile.sourceCommit}),batches=await readPoolBatches(store,plan,pool);
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
@@ -44,6 +49,8 @@ export async function closeCountNetwork({store,transport,gate,parser,plan,profil
   unknown=batches.filter(b=>b.pending?.awaiting).length;
  assert(complete===profile.completePreserved&&abandoned===profile.abandonedAttempts&&unknown===profile.unknownAttempts
   &&unknown===1&&complete>=pool.confirmed&&complete<=plan.target,'COUNT_NETWORK_COUNTS');
+ if(http)assert(httpEvidence.sourceRun===profile.sourceRun&&httpEvidence.commit===profile.sourceCommit
+  &&httpEvidence.outcomes.reduce((n,r)=>n+r.complete,0)===complete-permit.completeBefore,'COUNT_NETWORK_HTTP_COUNTS');
  const key=`count-network-close:${plan.trialId}:${profile.sourceRun}`;
  assert(!await store.get('journal',key+':before'),'COUNT_NETWORK_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'COUNT_NETWORK_READBACK');};
@@ -54,7 +61,7 @@ export async function closeCountNetwork({store,transport,gate,parser,plan,profil
  await guarded();await store.update('state',poolKey,v=>{assert(hash(v)===profile.poolHash,'COUNT_NETWORK_POOL_CHANGED');return {...v,enabled:false};});
  const frozen=(await store.get('state',poolKey)).value;
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
-  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,...(permit.historyBoundary?{historyPermit:permit}:{}),now});
+  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,...(http?{group:'secondary'}:{}),...(permit.historyBoundary?{historyPermit:permit}:{}),now});
  assert(retired.completePreserved===complete&&retired.abandonedAttempts===abandoned&&retired.sourceRequests===0
   &&retired.newBetAllowance===0&&(!profile.recordsHash||retired.recordsHash===profile.recordsHash),'COUNT_NETWORK_RETIREMENT');
  const after=(await store.get('state',poolKey)).value;

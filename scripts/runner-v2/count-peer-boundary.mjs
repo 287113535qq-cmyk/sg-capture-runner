@@ -58,7 +58,8 @@ export function checkCountPeerEvidence(evidence,peer,status,now=Date.now()){
   'COUNT_PEER_ENDED_UNSETTLED');
  return permit;
 }
-export function checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash,maintenanceFaultCode){
+export function checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash,maintenanceFaultCode,maintenanceFaultCategory){
+ assert(!maintenanceFaultCategory||maintenanceFaultCategory==='source_http'&&maintenanceFaultCode==='SOURCE_HTTP_REJECTED','COUNT_PEER_HTTP_SCOPE');
  assert(!maintenanceFaultCode||maintenanceHoldHash&&/^[A-Z][A-Z_]{0,79}$/.test(maintenanceFaultCode),'COUNT_PEER_FAULT_SCOPE');
  assert(holds?.length===2&&new Set(holds.map(r=>r._id)).size===2
   &&['primary/global-hold','secondary/global-hold'].every(id=>holds.some(r=>r._id===id)),'GLOBAL_HOLD');
@@ -67,11 +68,11 @@ export function checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash,maintena
   assert(selfGroup==='secondary'&&hash(own)===maintenanceHoldHash&&own.active
    &&own.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'
    &&(maintenanceFaultCode?own.details?.code===maintenanceFaultCode:['PYRAMIDS_FREE_COUNTERS','PYRAMIDS_SUPER_HOLD_PREFIX_ONLY'].includes(own.details?.code))
-   &&own.details.category==='source_protocol'&&own.details.trialId==='sg_r1_20260928_32721'
+   &&own.details.category===(maintenanceFaultCategory??'source_protocol')&&own.details.trialId==='sg_r1_20260928_32721'
    &&own.details.cooldownUntil===0&&holds.find(r=>r._id==='primary/global-hold')?.value.active===false,'GLOBAL_HOLD');
  }else assert(holds.every(r=>r?.value?.active===false),'GLOBAL_HOLD');
 }
-export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,workflowPath,maintenanceHoldHash,maintenanceFaultCode,now=Date.now}){
+export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,workflowPath,maintenanceHoldHash,maintenanceFaultCode,maintenanceFaultCategory,now=Date.now}){
  const fixed=checkCountPeerDescriptor(peer,selfGroup),selfRepo=repositories[selfGroup];
  assert(!maintenanceHoldHash||workflowPath==='.github/workflows/demo-maintenance.yml'
   &&selfGroup==='secondary'&&/^[a-f0-9]{64}$/.test(maintenanceHoldHash),'COUNT_PEER_MAINTENANCE_HOLD_SCOPE');
@@ -127,7 +128,7 @@ export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,work
   if(r.status==='completed'&&evidence.state?.find(d=>d._id===peer.group+'/campaign')?.value.activeGame===null)
    assert(jobs.jobs.filter(j=>j.name==='verify'&&j.status==='completed'&&j.conclusion==='success').length===1,'COUNT_PEER_FINISHED_AUDIT');
   checkCountPeerEvidence(evidence,peer,r.status,now());
-  const holds=await transport.request('global_holds');checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash,maintenanceFaultCode);
+  const holds=await transport.request('global_holds');checkCountPeerHolds(holds,selfGroup,maintenanceHoldHash,maintenanceFaultCode,maintenanceFaultCategory);
   assert(now()-start<=30000,'GITHUB_EVIDENCE_STALE');
  };
 }
