@@ -83,5 +83,31 @@
   "mainSourceAwaitingFlush": 1048,
   "mainSourceInterruptedAttempts": 3,
   "mainSourceSourceErrors": 0,
-  "currentCompleteMongoConfirmed": 142746
+  "currentCompleteMongoConfirmed": 142746,
+  "resumeClosure": {
+    "run": "37011499771:1",
+    "profileHash": "6b27d1953e56bfbcbc840ca130963190c63a62b926c3ecbfd39b40299a91ccc8",
+    "completePreserved": 143794,
+    "fullMongoNewReadback": 1048,
+    "originalPendingRawUnchanged": 3,
+    "allBatchesClosed": true,
+    "pending": 0,
+    "reserved": 0,
+    "poolEnabled": false,
+    "holdsActive": false,
+    "repairStatus": "pending-adapter",
+    "closureHash": "6c44645db3111765134cd6f7024e1669a0e1caeb926a9afd4fd4b9e3ace9a16a",
+    "retirementHash": "e3a897500ce6ab44544aa44bcefcf6807a4c65bd15bcba326e15009e7c3ba80c",
+    "recordsHash": "43e5c87e97500dc30cc95efc21bfb7ad468b1eac7f96fba11d71f5501470c045",
+    "sourceRequests": 0,
+    "newBetAllowance": 0,
+    "allOptimizationsComplete": false
+  },
+  "resumeSourceStatus": "not-started",
+  "resumeProfileApplied": false,
+  "historyPermitReuse": {
+    "localEntryTestsPassed": true,
+    "onlineMeasured": false,
+    "historicalReadbackFresh": false
+  }
 }

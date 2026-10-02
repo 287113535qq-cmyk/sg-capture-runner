@@ -129,7 +129,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "181746a2aaf5ab9cba5eebacc7fc0907c348c2adbf4ee5b4b99d6a1602708d3d",
+    "scripts/runner-v2/record_fields.py": "3c01eeddae8800a41d8714ce1943915470510f3136176e1952306f6c370e388c",
     "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
     "scripts/trial/squid-protocol.mjs": "645d73295cc08a43fce4949b680b1370301f53ae78a7487743ce3ec14b8e9d0e",
     "service/game_rule_catalog.py": "a311297d5164a2f7010d9927f18d7ed96a06a19bd01260ecb976f10d0d7aee34"
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "aecc359941521ac117a7e721c42488140def851dff478eb16cd0700ac3b56143"
+  "ruleHash": "a81a48cecab677aa485c2e91189c0fabdb2115639d93259b62d7e315f4bca97a"
 }

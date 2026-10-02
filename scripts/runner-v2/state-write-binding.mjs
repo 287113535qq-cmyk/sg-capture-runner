@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {DIRECT_ACTION_RELAY_RUNTIME,checkDirectRelayBinding} from './action-direct-relay-runtime.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,DIRECT_ACTION_RELAY_RUNTIMES,checkDirectRelayBinding} from './action-direct-relay-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
 import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,checkActionContinuousBinding} from './action-continuous-runtime.mjs';
@@ -24,7 +24,7 @@ export function stateWriteInitializer({store,commit,group,resourceReady=Promise.
       const spec=(await store.get('journal',journal))?.value;
       const complete=(await store.get('journal',journal+':complete'))?.value;
       let activationCommit=commit;
-      if(runtimeName===DIRECT_ACTION_RELAY_RUNTIME){
+      if(DIRECT_ACTION_RELAY_RUNTIMES.includes(runtimeName)){
         const base=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))[32721],revision=readRevision(runtimeName);
         const receipt=(await store.get('journal',`count-runtime:${plan.trialId}:${key}:${commit}`))?.value;
         checkDirectRelayBinding({base,plan,profile,revision,receipt,spec,complete,commit});

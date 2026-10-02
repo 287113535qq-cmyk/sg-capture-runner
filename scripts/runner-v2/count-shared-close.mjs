@@ -99,7 +99,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  await guarded();await store.update('state',poolKey,v=>{assert(hash(v)===profile.poolHash,'SHARED_CLOSE_POOL_CHANGED');return {...v,enabled:false};});
  const frozen=(await store.get('state',poolKey)).value;
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
-  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],now});
+  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],
+  historyPermit:evidence&&permit.historyBoundary?permit:undefined,now});
  assert(retired.completePreserved===complete&&retired.abandonedAttempts===abandoned&&retired.sourceRequests===0
   &&retired.newBetAllowance===0,'SHARED_CLOSE_RETIREMENT');
  const after=(await store.get('state',poolKey)).value;

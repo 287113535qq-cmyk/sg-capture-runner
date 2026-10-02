@@ -4,8 +4,11 @@ import {pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {checkLedger,loadCountPermission,auditCountBatch} from './complete-count.mjs';
 import {relayFormalRun} from './formal-relay.mjs';
+import {countHistoryBoundary} from './count-window-history.mjs';
 
 export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-relay-historyfix-20261002.json';
+export const RESUME_ACTION_RELAY_RUNTIME='count-runtime-pyramids-resume-action-relay-20261002.json';
+export const DIRECT_ACTION_RELAY_RUNTIMES=[DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME];
 export async function directRelayCompleteDelta({store,trialId,permit}){
  const pool=(await store.get('state','pool:'+trialId))?.value;
  assert(Number.isSafeInteger(pool?.confirmed)&&Number.isSafeInteger(permit?.completeBefore)
@@ -210,6 +213,7 @@ export async function admitDirectRelay(args){
   &&hash((await store.get('state','campaign'))?.value)===hash(campaign),'DIRECT_RELAY_SCENE_CHANGED');
  const createdAt=now(),permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,
   poolHash:hash(pool),completeBefore:pool.confirmed,remainingComplete:plan.target-pool.confirmed,
+  historyBoundary:countHistoryBoundary({pool,plan,spec:binding.spec}),
   runtimeRevisionHash:hash(revision),rootRun,windowIndex,createdAt,
   expiresAt:createdAt+(windowIndex===1?limits.captureMinutes:limits.tailCaptureMinutes)*60000,
   ...(resourceReviewHash?{resourceReviewHash}:{})};

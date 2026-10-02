@@ -1,7 +1,7 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {DIRECT_ACTION_RELAY_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
 import {loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
-import {DIRECT_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
+import {DIRECT_ACTION_PROFILE,RESUME_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
 import {RunnerState} from './state-store.mjs';import {authenticatedRead} from './github-boundary.mjs';
 import {countPeerBoundary} from './count-peer-boundary.mjs';import {checkPrimaryLeases} from './lease-boundary.mjs';
@@ -9,10 +9,11 @@ import {analyzer} from './analyzer.mjs';import {formalRelayInputs,waitFormalRela
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','DIRECT_RELAY_GITHUB');
 const mode=process.argv[2];assert(['refresh','admit','relay'].includes(mode),'DIRECT_RELAY_OPERATION');
-assert(process.env.SG_COUNT_RUNTIME_PROFILE===DIRECT_ACTION_RELAY_RUNTIME
- &&process.env.SG_FORMAL_COUNT_PROFILE===DIRECT_ACTION_PROFILE,'DIRECT_RELAY_PATH');
+const resumed=process.env.SG_FORMAL_COUNT_PROFILE===RESUME_ACTION_PROFILE;
+const profileName=resumed?RESUME_ACTION_PROFILE:DIRECT_ACTION_PROFILE,runtimeName=resumed?RESUME_ACTION_RELAY_RUNTIME:DIRECT_ACTION_RELAY_RUNTIME;
+assert(process.env.SG_COUNT_RUNTIME_PROFILE===runtimeName&&process.env.SG_FORMAL_COUNT_PROFILE===profileName,'DIRECT_RELAY_PATH');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),plans=load('config/round-one-plans.json'),base=plans[32721];
-const profile=load('config/'+DIRECT_ACTION_PROFILE),revision=load('config/'+DIRECT_ACTION_RELAY_RUNTIME);
+const profile=load('config/'+profileName),revision=load('config/'+runtimeName);
 const plan=pyramidsDirectActionPlan(base,profile);plans[32721]=plan;
 checkDirectRelayRevision({base,plan,profile,revision});
 assert(Object.keys(revision.files??{}).length>=Object.keys(profile.files).length
@@ -24,7 +25,7 @@ for(const [path,digest]of Object.entries(revision.files)){
 const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const inputs=mode!=='refresh'?formalRelayInputs(load(process.env.GITHUB_EVENT_PATH).inputs):null;
 if(inputs)assert(inputs.role==='formal-count'&&inputs.allocation==='round-one'&&inputs.round_one_limit==='0'
- &&inputs.formal_profile===DIRECT_ACTION_PROFILE&&inputs.runtime_profile===DIRECT_ACTION_RELAY_RUNTIME
+ &&inputs.formal_profile===profileName&&inputs.runtime_profile===runtimeName
  &&inputs.formal_relay==='same-allocation-v1','DIRECT_RELAY_DISPATCH');
 const read=authenticatedRead(process.env.GH_TOKEN),transport=connectGateway(),gate=new ResourceGate();
 const store=new RunnerState({transport,gate,deadline:Date.now()+15*60000}),parser=analyzer({auditWorkers:2});

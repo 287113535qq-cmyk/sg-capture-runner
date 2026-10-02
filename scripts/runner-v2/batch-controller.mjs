@@ -343,7 +343,7 @@ export class BatchController {
         assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':')||delayed,'COUNT_INITIAL_WORKER_LATE');
       }
       await this.pendingFirst.admit(r,r.shardId);
-      if(this.actionCanaryProof)this.actionCanaryClaim=await (['sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1'].includes(this.actionCanaryProof.profile.schema)?claimBudgetCanaryWorker:claimActionCanaryWorker)({store:this.store,
+      if(this.actionCanaryProof)this.actionCanaryClaim=await (['sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(this.actionCanaryProof.profile.schema)?claimBudgetCanaryWorker:claimActionCanaryWorker)({store:this.store,
         proof:this.actionCanaryProof,identity:r,now:this.now()});
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }

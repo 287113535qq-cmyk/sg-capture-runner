@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {DIRECT_ACTION_RELAY_RUNTIME,checkDirectRelayBinding} from './action-direct-relay-runtime.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,DIRECT_ACTION_RELAY_RUNTIMES,checkDirectRelayBinding} from './action-direct-relay-runtime.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
@@ -46,7 +46,7 @@ export function compactLayoutBinding({plan,profile,spec,complete,commit}) {
 // A later repaired allocation can adopt the same fixed worker projection.
 // Applied older repair profiles never acquire this mode implicitly.
 export function compactRepairBinding({plan,profile,spec,complete,commit}) {
-  assert(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1'].includes(profile?.schema)
+  assert(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile?.schema)
     &&profile.controlReadMode==='compact-worker-v1'
     &&/^[a-f0-9]{64}$/.test(profile.gatewayHash??''),'COMPACT_REPAIR_MODE');
   assert(plan?.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'
@@ -80,14 +80,14 @@ export function compactControlInitializer({plan,runtimeName,commit,resourceReady
       await resourceReady;
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
       const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
-      control.compact=(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
+      control.compact=(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
     }
     const revision=readRevision(runtimeName);
     if(revision.controlReadMode===undefined)return;
     await resourceReady;
     const profile=readProfile();
     const receipt=await readReceipt(`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`);
-    if(runtimeName===DIRECT_ACTION_RELAY_RUNTIME){
+    if(DIRECT_ACTION_RELAY_RUNTIMES.includes(runtimeName)){
       const base=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'))[32721];
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
       const spec=await readReceipt(key),complete=await readReceipt(key+':complete');

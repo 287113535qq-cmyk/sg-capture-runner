@@ -1,3 +1,5 @@
+export {RESUME_ACTION_PROFILE} from './pyramids-resume-action-profile.mjs';
+import {pyramidsResumeActionPlan} from './pyramids-resume-action-profile.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-direct-action-protocol.mjs';
@@ -10,6 +12,7 @@ export const DIRECT_ACTION_CANARY=Object.freeze({captureMinutes:5,observationMin
 // Independent authorization. The applied parent and its discarded attempts
 // remain immutable; this plan inherits only its verified completed records.
 export function pyramidsDirectActionPlan(base,p){
+ if(p?.schema==='sg-formal-direct-action-profile-v2')return pyramidsResumeActionPlan(base,p);
  const required={schema:'sg-formal-direct-action-profile-v1',gameId:32721,group:'secondary',workerOffset:20,
   basePlanHash:hash(base),completePreserved:132846,remainingComplete:167004,historicalBaseline:150,
   totalTarget:300000,maxSequence:600000,sessionRotation:'closed-batches-v1',sourceAllowance:0,

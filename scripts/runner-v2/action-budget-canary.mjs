@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_BUDGET_PROFILE,ACTION_BUDGET_CANARY,pyramidsActionBudgetPlan} from './pyramids-action-budget-profile.mjs';
-import {DIRECT_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
+import {RESUME_ACTION_PROFILE,DIRECT_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {checkLedger,loadCountPermission} from './complete-count.mjs';
 
 export function checkBudgetCanaryInputs(inputs){
  assert(inputs?.role==='formal-count'&&inputs.allocation==='round-one'&&inputs.round_one_limit==='0'
-  &&[ACTION_BUDGET_PROFILE,DIRECT_ACTION_PROFILE].includes(inputs.formal_profile)&&inputs.runtime_profile==='none'
+  &&[ACTION_BUDGET_PROFILE,DIRECT_ACTION_PROFILE,RESUME_ACTION_PROFILE].includes(inputs.formal_profile)&&inputs.runtime_profile==='none'
   &&inputs.formal_relay==='none'&&!inputs.relay_parent,'ACTION_BUDGET_DISPATCH');
 }
 export function budgetCanaryBinding({plan,profile,spec,complete,commit}){
- assert(['sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1'].includes(profile?.schema)&&hash(profile.canary)===hash(ACTION_BUDGET_CANARY)
+ assert(['sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile?.schema)&&hash(profile.canary)===hash(ACTION_BUDGET_CANARY)
   &&plan?.countAllocation===profile.activation&&hash(plan)===profile.planHash,'ACTION_BUDGET_CANARY_PROFILE');
  assert(/^[a-f0-9]{40}$/.test(commit??'')&&spec?.schema==='sg-complete-count-v1'&&spec.commit===commit
   &&spec.activation===profile.activation&&spec.profileHash===hash(profile)&&spec.planHash===hash(plan)
@@ -34,7 +34,7 @@ export function budgetCanaryWindow(proof){
  return {capture:now<permit.expiresAt,endMs:permit.expiresAt,reason:'ACTION_BUDGET_CANARY_WINDOW_ENDED'};
 }
 export async function admitBudgetCanary({store,base,plan,profile,commit,run,boundary,now=Date.now}){
- assert(hash((profile?.schema==='sg-formal-direct-action-profile-v1'?pyramidsDirectActionPlan:pyramidsActionBudgetPlan)(base,profile))===hash(plan),'ACTION_BUDGET_CANARY_PLAN');
+ assert(hash((['sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile?.schema)?pyramidsDirectActionPlan:pyramidsActionBudgetPlan)(base,profile))===hash(plan),'ACTION_BUDGET_CANARY_PLAN');
  await boundary();const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
  const spec=await loadCountPermission({store,plan,pool,commit}),key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
  const complete=(await store.get('journal',key+':complete'))?.value;budgetCanaryBinding({plan,profile,spec,complete,commit});

@@ -16,8 +16,8 @@ import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 import {ACTION_CANARY_RUNTIME,actionCanaryWindow} from './action-canary-contract.mjs';
 import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,actionContinuousWindow} from './action-continuous-runtime.mjs';
-import {DIRECT_ACTION_PROFILE} from './pyramids-direct-action-profile.mjs';
-import {DIRECT_ACTION_RELAY_RUNTIME,directRelayWindow} from './action-direct-relay-runtime.mjs';
+import {RESUME_ACTION_PROFILE,DIRECT_ACTION_PROFILE} from './pyramids-direct-action-profile.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,DIRECT_ACTION_RELAY_RUNTIMES,directRelayWindow} from './action-direct-relay-runtime.mjs';
 import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
 import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {observeBudgetWindow} from './action-budget-observation.mjs';
@@ -54,17 +54,17 @@ export function connectLocal(plan){
   let budgetObservationEnd;
   return {async canaryReady(shouldStop){
     await ensureControlMode();
-    if(process.env.SG_COUNT_RUNTIME_PROFILE===DIRECT_ACTION_RELAY_RUNTIME){
+    if(DIRECT_ACTION_RELAY_RUNTIMES.includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
       await resourceReady;
       const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=load(formalCountProfilePath());
-      const base=load('config/round-one-plans.json')[32721],revision=load('config/'+DIRECT_ACTION_RELAY_RUNTIME);
+      const base=load('config/round-one-plans.json')[32721],revision=load('config/'+process.env.SG_COUNT_RUNTIME_PROFILE);
       const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`,read=async k=>(await store.get('journal',k))?.value;
       return directRelayWindow({base,plan,profile,revision,commit,run,spec:await read(key),complete:await read(key+':complete'),
         receipt:await read(`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`),
         permit:await read(`count-run:${plan.trialId}:${run}`),now:Date.now()});
     }
-    if([ACTION_BUDGET_PROFILE,DIRECT_ACTION_PROFILE].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&!process.env.SG_COUNT_RUNTIME_PROFILE){
+    if([ACTION_BUDGET_PROFILE,DIRECT_ACTION_PROFILE,RESUME_ACTION_PROFILE].includes(process.env.SG_FORMAL_COUNT_PROFILE)&&!process.env.SG_COUNT_RUNTIME_PROFILE){
       await resourceReady;
       const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
       const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;

@@ -15,7 +15,7 @@ test('resource completion delta reads the mutable state pool and rejects missing
 import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 import {createRequire} from 'node:module';
-function fixture(){
+function fixture(resumed=false){
  const base=JSON.parse(fs.readFileSync('config/round-one-plans.json'))[32721],old=JSON.parse(fs.readFileSync('config/formal-repair-pyramids-action-budget-20261002.json'));
  const closed=JSON.parse(fs.readFileSync('docs/ag-action-layered-close-20261002-result.json')),at=1000000,commit='d'.repeat(40);
  const profile={...old,schema:'sg-formal-direct-action-profile-v1',activation:'b'.repeat(64),completePreserved:132846,remainingComplete:167004,
@@ -24,15 +24,22 @@ function fixture(){
   nativeRetirementHash:closed.retirementHash,closureProfileHash:closed.profileHash,recordsHash:closed.recordsHash,
   oldSpecHash:'e15d9b016f8ea3e183899779483b555b185ce70d49172c5811038c3c1006a111',actionResourceBudget:{...ACTION_RESOURCE_BUDGET},
   canary:{...DIRECT_ACTION_CANARY},createdAt:at,expiresAt:at+7200000};
+ if(resumed){const parent=JSON.parse(fs.readFileSync('config/formal-repair-pyramids-direct-action-20261002.json'));
+ Object.assign(profile,{schema:'sg-formal-direct-action-profile-v2',completePreserved:143794,remainingComplete:156056,
+ oldProfileHash:hash(parent),sourceRun:'37008008283:1',sourceCommit:'68c1632aa90ad3219ab3dc9d686caeb585c0677a',
+ retirementKey:'count-shared-close:'+base.trialId+':37008008283:1:complete',
+ closureProfileHash:'6b27d1953e56bfbcbc840ca130963190c63a62b926c3ecbfd39b40299a91ccc8',
+ featureProfile:'pyramids-action-v3',actionContractHash:'f02e993ea8ef8ab7b0ef3a6af0b5241965923bf3f96e23eeb43372fa2fc6184f'});}
  profile.planHash=hash({...base,countAllocation:profile.activation,featureProfile:profile.featureProfile,actionContractHash:profile.actionContractHash,
   maxSteps:1026,actionResourceBudget:profile.actionResourceBudget});const plan=pyramidsDirectActionPlan(base,profile);
- const item={id:1,worker:20,start:1,end:160000,sessionHash:'a'.repeat(64),closed:true,complete:132846,evidenceHash:'c'.repeat(64)};
+ const preserved=profile.completePreserved;
+ const item={id:1,worker:20,start:1,end:160000,sessionHash:'a'.repeat(64),closed:true,complete:preserved,evidenceHash:'c'.repeat(64)};
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),profileHash:hash(profile),gameId:32721,
   trialId:plan.trialId,target:plan.target,maxSequence:600000,firstSequence:160001,baselineBatchCount:1,baselineHash:hash([item]),
-  sourceRecordsHash:profile.recordsHash,historyReuse:{closureHash:profile.retirementHash,complete:132846,rawRecordsRead:0,historicalReadbackFresh:false}};
+  sourceRecordsHash:profile.recordsHash,historyReuse:{closureHash:profile.retirementHash,complete:preserved,rawRecordsRead:0,historicalReadbackFresh:false}};
  const complete={schema:'sg-complete-count-activation-v1',specHash:hash(spec),commit,profileHash:hash(profile),planHash:hash(plan),
-  trialId:plan.trialId,completePreserved:132846,remainingComplete:167004,sourceRequests:0};
- const pool={enabled:true,failure:null,confirmed:132846,nextBatchId:2,nextSequence:160001,workers:{},
+  trialId:plan.trialId,completePreserved:preserved,remainingComplete:profile.remainingComplete,sourceRequests:0};
+ const pool={enabled:true,failure:null,confirmed:preserved,nextBatchId:2,nextSequence:160001,workers:{},
   countAllocation:{specHash:hash(spec),reserved:0,batches:{1:item}}};
  const campaign={enabled:true,group:'secondary',activeGame:32721,formalCount:{activation:profile.activation,profileHash:hash(profile)}};
  const key='complete-count:'+plan.trialId+':'+profile.activation,docs=new Map([[key,spec],[key+':complete',complete],['pool:'+plan.trialId,pool],['campaign',campaign]]);
@@ -43,10 +50,10 @@ function fixture(){
  return {base,profile,plan,spec,complete,commit,store,docs,pool,campaign,run:'123:1',now:()=>at,boundary:async()=>{}};
 }
 
-async function relayFixture(){
- const f=fixture();let at=f.now();f.now=()=>at;f.advance=ms=>{at+=ms;};
+async function relayFixture(resumed=false){
+ const f=fixture(resumed);let at=f.now();f.now=()=>at;f.advance=ms=>{at+=ms;};
  const b={id:1,worker:20,start:1,end:160000,sessionHash:'a'.repeat(64),pending:null,
-  checkpoint:132846,journaled:132846,leaseUntil:0,failure:'CLOSED_HISTORICAL_FAILURE'};
+  checkpoint:f.profile.completePreserved,journaled:f.profile.completePreserved,leaseUntil:0,failure:'CLOSED_HISTORICAL_FAILURE'};
  f.docs.set(`batch:${f.plan.trialId}:1`,b);f.pool.countAllocation.batches[1].evidenceHash=hash(b);
  f.spec.sessionRotation='closed-batches-v1';f.spec.baselineHash=hash([f.pool.countAllocation.batches[1]]);
  f.complete.specHash=hash(f.spec);f.pool.countAllocation.specHash=hash(f.spec);
@@ -103,6 +110,7 @@ async function childReady(f,parent){
 
 test('fresh healthy canary refreshes once; root and actual relay function preserve quota and stop after one tail',async()=>{
  const f=await relayFixture(),before=hash(f.pool),root=await admitDirectRelay(f);
+ assert.equal(root.historyBoundary.complete,134846);assert.equal(root.historyBoundary.nextBatchId,3);assert.equal(root.historyBoundary.nextSequence,f.pool.nextSequence);
  assert.equal(root.expiresAt-root.createdAt,900000);assert.equal(hash(f.pool),before);
  await assert.rejects(admitDirectRelay({...f,run:'203:1'}),/ALREADY_CLAIMED/);
  await childReady(f,root);
@@ -183,3 +191,17 @@ test('actual projection and delta entry select the new receipt; workflow separat
  const refresh=maintenance.jobs['pyramids-repair'].steps.filter(s=>s.run==='node scripts/runner-v2/action-direct-relay-control.mjs refresh');
  assert.equal(refresh.length,1);assert(refresh[0].if.includes(runtimeName));
 });
+
+ test('resume v3 activation binds actual compact, delta and root history permission independently of applied v2',async()=>{
+ const f=await relayFixture(true),runtimeName='count-runtime-pyramids-resume-action-relay-20261002.json',control={};
+ const args={...f,runtimeName,control,resourceReady:Promise.resolve(),readProfile:()=>f.profile,
+ readRevision:()=>f.revision,readReceipt:async k=>(await f.store.get('journal',k))?.value};
+ await compactControlInitializer(args)();assert.equal(control.compact,true);
+ assert.equal(await stateWriteInitializer({...args,group:'secondary'})(f.plan),true);
+ const root=await admitDirectRelay(f);assert.equal(root.completeBefore,145794);
+ assert.equal(root.historyBoundary.complete,145794);assert.equal(root.historyBoundary.nextBatchId,3);
+ assert.equal(root.remainingComplete,154056);assert.equal(f.plan.featureProfile,'pyramids-action-v3');
+ for(const [k,v] of Object.entries({completePreserved:143795,sourceAllowance:1,oldProfileHash:'a'.repeat(64),
+ actionContractHash:'088e6c2f90a9110b4335b2741723e39ef8b1bbbb11815644093e35f4dbd4f866'}))
+ assert.throws(()=>pyramidsDirectActionPlan(f.base,{...f.profile,[k]:v}));
+ });
