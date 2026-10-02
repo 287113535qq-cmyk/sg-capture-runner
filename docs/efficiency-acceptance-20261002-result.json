@@ -731,6 +731,32 @@
       "sourceRequestsForAnalysis": 0,
       "databaseReadsForAnalysis": 0,
       "completeWindowAccepted": false
+    },
+    "veryFruityOrdinaryCashCandidate": {
+      "gameId": 32812,
+      "pythonTests": 8,
+      "jsTests": 4,
+      "reuseIndexTests": 7,
+      "syntheticCashChains": 3,
+      "originalBaseExitCases": 3,
+      "productionImported": false,
+      "naturalXmlObserved": false,
+      "walletTimingVerified": false,
+      "captureAuthorization": false,
+      "sourceRequests": 0,
+      "databaseWrites": 0
+    },
+    "pyramidsOfficialCoinMeaningReview": {
+      "originalHelpersExecuted": 2,
+      "signedSymbols": {
+        "-4": "Mini",
+        "-3": "Minor",
+        "-2": "Major"
+      },
+      "naturalTerminalObserved": false,
+      "productionScopeExpanded": false,
+      "existingProfilesChanged": 0,
+      "captureAuthorization": false
     }
   },
   "pending": [

@@ -6,8 +6,10 @@ class ReuseIndexTests(unittest.TestCase):
         traits={'protocol':'wms-xml','session':'response-rotation','requests':'Logic-EndGame'}
         evidence={key:dict(kind='official-client',sha256='a'*64) for key in traits}
         rows=recommend_observed(dict(traits=traits,evidence=evidence))
-        self.assertEqual({r['referenceGameId'] for r in rows},{32795,32799})
-        self.assertTrue(all('terminal' in r['missingTraits'] and not r['ready'] and not r['captureAuthorization'] for r in rows))
+        self.assertEqual({r['referenceGameId'] for r in rows},{32795,32799,32812})
+        self.assertTrue(all(not r['ready'] and not r['captureAuthorization'] for r in rows))
+        self.assertTrue(all('terminal' in r['missingTraits'] for r in rows if r['referenceGameId'] != 32812))
+        self.assertIn('counters', next(r for r in rows if r['referenceGameId'] == 32812)['missingTraits'])
         with self.assertRaises(ValueError):recommend_observed(dict(traits=traits,evidence={}))
         with self.assertRaises(ValueError):recommend_observed(dict(traits={**traits,'FID':2},evidence=evidence))
         self.assertEqual(recommend(32441),[])
@@ -43,6 +45,14 @@ class ReuseIndexTests(unittest.TestCase):
         self.assertEqual(match['scope'],'transport-only')
         self.assertIn('counters',match['differences'])
         self.assertIn('terminal',match['differences'])
+        self.assertFalse(match['captureAuthorization'])
+
+    def test_veryfruity_partial_review_does_not_inherit_settlement(self):
+        match = next(x for x in recommend(32812) if x['referenceGameId'] == 32795)
+        self.assertEqual(match['scope'], 'transport-only')
+        self.assertIn('terminal', match['differences'])
+        self.assertIn('counters', match['differences'])
+        self.assertTrue(any('unverified' in text for text in match['requiredReview']))
         self.assertFalse(match['captureAuthorization'])
 
 if __name__ == '__main__':

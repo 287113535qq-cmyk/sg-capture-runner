@@ -2905,12 +2905,12 @@
       "references": {
         "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
         "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
-        "service/pyramids_free_review.py": "febefba194ca56edd87156a89377dca958efb605ebdfd0f9d3922e129f1d65f1",
-        "scripts/trial/pyramids-free-review.mjs": "4e304b8f458bf688c89f320b5083f12ef9177388b59edb724539c6719a584349",
+        "service/pyramids_free_review.py": "fa168ebd85f75f233238b151710c78e4206500a44d8df1ccf74e46f914d5d975",
+        "scripts/trial/pyramids-free-review.mjs": "15b49d36da4b44108711a396df2a53d334c758b33112cedfec4a15898759881d",
         "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
-        "service/pyramids_fields.py": "f5626a4476130b77e798abe16867007fa467f542837cab047c5480e7d5cd6350",
-        "scripts/trial/pyramids-protocol.mjs": "6e9dba04feb602342b8b91f88ab9006c393c77816098939007c55f3fa401c3ee",
-        "collector/sg.pyramids.ts": "a1c83d8ee4724cee527f5dd45306efc511eb454ab87a5d2fd87ff33befcfc905",
+        "service/pyramids_fields.py": "bab5da6706aaaad4c3641031aa89d91fafda43d83a2015d5df0a20b3a1f7061a",
+        "scripts/trial/pyramids-protocol.mjs": "fba01cf04fed868f1119fd523cfda47dbc288ef4e315dfce64fe07ef4142e4ce",
+        "collector/sg.pyramids.ts": "892a9c7a6251acebbf2fd8501b5edaa0d18551f79a920d9475298196817dd5f6",
         "service/pyramids_super_free_review.py": "6b40330ab3b44128551c1414008f799c7f91d1d576266cb64913511d61f0520d",
         "scripts/trial/pyramids-super-free-review.mjs": "4520e2a0c0c39cae0d5996f087a23eacb195537826cf4ec5eebbe3a855101ff5",
         "collector/sg.pyramids-super-free.ts": "27b79626081c402c4028d3679087f83e2b107cf33b023fc96d39361b1987feb6"
@@ -3595,6 +3595,48 @@
             "No readyForEndGame in this client; do not copy the Pearl terminal condition."
           ],
           "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32812,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "counters": {
+              "target": "total-progress-remaining",
+              "reference": "freeSpinNumber-freeSpinsTotal"
+            },
+            "initialFree": {
+              "target": 8,
+              "reference": null
+            },
+            "retriggerAward": {
+              "target": 8,
+              "reference": null
+            },
+            "terminal": {
+              "target": "readyForEndGame-EndGame",
+              "reference": null
+            }
+          },
+          "referenceFiles": [
+            "service/veryfruity_review.py",
+            "service/veryfruity_cash_review.py",
+            "scripts/trial/veryfruity-cash-review.mjs"
+          ],
+          "requiredReview": [
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; The ended run now has25392 independently verified complete records including a natural17-frame free chain; current continuation preserves its original target.",
+            "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
+            "Stake encoding, feature XML, maximum-win exits and session identity are game-specific.",
+            "Pinned selected Very Fruity client methods confirm response-session rotation and ordinary EndGame routing. This is offline reviewed evidence, not production admission.",
+            "Stake perLine/total and PaylineCount differ from Pearl isBigBet and Rhino WagerInfo; no inherited identity or wager permission.",
+            "Original XML ordinary cash candidate has independent Python/JS agreement on synthetic chains only. Wallet timing, exact identity, natural XML and feature settlement remain unverified. No capture mapping or source quota.",
+            "FSInfo uses freeSpinNumber/freeSpinsTotal/fsWinnings/originalScatterWin. End counters do not prove cash settlement; do not inherit Pearl readyForEndGame or Rhino lastFreeSpin."
+          ],
+          "captureAuthorization": false
         }
       ],
       "captureAuthorization": false
@@ -3682,6 +3724,47 @@
             "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; The ended run now has25392 independently verified complete records including a natural17-frame free chain; current continuation preserves its original target.",
             "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
             "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32812,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "counters": {
+              "target": "total-progress-remaining",
+              "reference": "freeSpinNumber-freeSpinsTotal"
+            },
+            "initialFree": {
+              "target": 8,
+              "reference": null
+            },
+            "retriggerAward": {
+              "target": 5,
+              "reference": null
+            },
+            "terminal": {
+              "target": "lastFreeSpin-EndGame",
+              "reference": null
+            }
+          },
+          "referenceFiles": [
+            "service/veryfruity_review.py",
+            "service/veryfruity_cash_review.py",
+            "scripts/trial/veryfruity-cash-review.mjs"
+          ],
+          "requiredReview": [
+            "Natural historical 8+5 chain and independent three-language validators reviewed. Formal reentry and two-lane capture are active; this is a reusable feature reference, not authorization for another game.",
+            "No readyForEndGame in this client; do not copy the Pearl terminal condition.",
+            "Pinned selected Very Fruity client methods confirm response-session rotation and ordinary EndGame routing. This is offline reviewed evidence, not production admission.",
+            "Stake perLine/total and PaylineCount differ from Pearl isBigBet and Rhino WagerInfo; no inherited identity or wager permission.",
+            "Original XML ordinary cash candidate has independent Python/JS agreement on synthetic chains only. Wallet timing, exact identity, natural XML and feature settlement remain unverified. No capture mapping or source quota.",
+            "FSInfo uses freeSpinNumber/freeSpinsTotal/fsWinnings/originalScatterWin. End counters do not prove cash settlement; do not inherit Pearl readyForEndGame or Rhino lastFreeSpin."
           ],
           "captureAuthorization": false
         }
@@ -3811,11 +3894,106 @@
     {
       "gameId": 32812,
       "name": "Very Fruity",
-      "status": "unclassified",
-      "group": null,
-      "traits": {},
-      "references": {},
-      "candidates": [],
+      "status": "reviewed-traits",
+      "group": "wms-ordinary-and-free-review",
+      "traits": {
+        "protocol": "wms-xml",
+        "session": "response-rotation",
+        "requests": "Logic-EndGame",
+        "counters": "freeSpinNumber-freeSpinsTotal"
+      },
+      "references": {
+        "service/veryfruity_review.py": "37acd0b51c1648d8dcb3e57216470ba8d0c029b7e2d92dd422d21dc352958f94",
+        "service/veryfruity_cash_review.py": "abc923f158c84b89f0c275e118ad5ad7de2dff665d7a321a41386871b07654e5",
+        "scripts/trial/veryfruity-cash-review.mjs": "0ad94825857cba1b235d84de147a994aee09cb0d22b3a72e04ab23ccfa298645"
+      },
+      "candidates": [
+        {
+          "referenceGameId": 32795,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "counters": {
+              "target": "freeSpinNumber-freeSpinsTotal",
+              "reference": "total-progress-remaining"
+            },
+            "initialFree": {
+              "target": null,
+              "reference": 8
+            },
+            "retriggerAward": {
+              "target": null,
+              "reference": 8
+            },
+            "terminal": {
+              "target": null,
+              "reference": "readyForEndGame-EndGame"
+            }
+          },
+          "referenceFiles": [
+            "scripts/trial/pearl-retrigger-protocol.mjs",
+            "service/pearl_retrigger_fields.py",
+            "collector/sg.pearl-retrigger.ts",
+            "service/pearl_award_fields.py",
+            "scripts/trial/pearl-award-protocol.mjs"
+          ],
+          "requiredReview": [
+            "Pinned selected Very Fruity client methods confirm response-session rotation and ordinary EndGame routing. This is offline reviewed evidence, not production admission.",
+            "Stake perLine/total and PaylineCount differ from Pearl isBigBet and Rhino WagerInfo; no inherited identity or wager permission.",
+            "Original XML ordinary cash candidate has independent Python/JS agreement on synthetic chains only. Wallet timing, exact identity, natural XML and feature settlement remain unverified. No capture mapping or source quota.",
+            "FSInfo uses freeSpinNumber/freeSpinsTotal/fsWinnings/originalScatterWin. End counters do not prove cash settlement; do not inherit Pearl readyForEndGame or Rhino lastFreeSpin.",
+            "The frozen v1 scope was8. A real initial15 trigger led to separately admitted counter-driven v2; The ended run now has25392 independently verified complete records including a natural17-frame free chain; current continuation preserves its original target.",
+            "Counter-driven v2 has since been independently activated; never reuse a prior applied profile for a different game.",
+            "Stake encoding, feature XML, maximum-win exits and session identity are game-specific."
+          ],
+          "captureAuthorization": false
+        },
+        {
+          "referenceGameId": 32799,
+          "scope": "transport-only",
+          "common": {
+            "protocol": "wms-xml",
+            "requests": "Logic-EndGame",
+            "session": "response-rotation"
+          },
+          "differences": {
+            "counters": {
+              "target": "freeSpinNumber-freeSpinsTotal",
+              "reference": "total-progress-remaining"
+            },
+            "initialFree": {
+              "target": null,
+              "reference": 8
+            },
+            "retriggerAward": {
+              "target": null,
+              "reference": 5
+            },
+            "terminal": {
+              "target": null,
+              "reference": "lastFreeSpin-EndGame"
+            }
+          },
+          "referenceFiles": [
+            "scripts/trial/rhino-protocol.mjs",
+            "service/rhino_fields.py",
+            "collector/sg.rhino.ts"
+          ],
+          "requiredReview": [
+            "Pinned selected Very Fruity client methods confirm response-session rotation and ordinary EndGame routing. This is offline reviewed evidence, not production admission.",
+            "Stake perLine/total and PaylineCount differ from Pearl isBigBet and Rhino WagerInfo; no inherited identity or wager permission.",
+            "Original XML ordinary cash candidate has independent Python/JS agreement on synthetic chains only. Wallet timing, exact identity, natural XML and feature settlement remain unverified. No capture mapping or source quota.",
+            "FSInfo uses freeSpinNumber/freeSpinsTotal/fsWinnings/originalScatterWin. End counters do not prove cash settlement; do not inherit Pearl readyForEndGame or Rhino lastFreeSpin.",
+            "Natural historical 8+5 chain and independent three-language validators reviewed. Formal reentry and two-lane capture are active; this is a reusable feature reference, not authorization for another game.",
+            "No readyForEndGame in this client; do not copy the Pearl terminal condition."
+          ],
+          "captureAuthorization": false
+        }
+      ],
       "captureAuthorization": false
     },
     {

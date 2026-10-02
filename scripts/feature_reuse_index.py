@@ -16,6 +16,15 @@ def entry(group, traits, files, differences):
 
 
 REVIEWED = {
+    32812: entry('wms-ordinary-and-free-review', dict(protocol='wms-xml',
+        session='response-rotation', requests='Logic-EndGame',
+        counters='freeSpinNumber-freeSpinsTotal'),
+        ['service/veryfruity_review.py', 'service/veryfruity_cash_review.py',
+         'scripts/trial/veryfruity-cash-review.mjs'],
+        ['Pinned selected Very Fruity client methods confirm response-session rotation and ordinary EndGame routing. This is offline reviewed evidence, not production admission.',
+         'Stake perLine/total and PaylineCount differ from Pearl isBigBet and Rhino WagerInfo; no inherited identity or wager permission.',
+         'Original XML ordinary cash candidate has independent Python/JS agreement on synthetic chains only. Wallet timing, exact identity, natural XML and feature settlement remain unverified. No capture mapping or source quota.',
+         'FSInfo uses freeSpinNumber/freeSpinsTotal/fsWinnings/originalScatterWin. End counters do not prove cash settlement; do not inherit Pearl readyForEndGame or Rhino lastFreeSpin.']),
     32795: entry('wms-free-retrigger', dict(protocol='wms-xml', session='response-rotation',
         requests='Logic-EndGame', counters='total-progress-remaining', terminal='readyForEndGame-EndGame',
         initialFree=8, retriggerAward=8),
