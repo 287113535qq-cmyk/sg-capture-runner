@@ -16,9 +16,9 @@ def validate_pool_plan(plan):
         expected=plans.get(str(plan.get('gameId')))
         if plan.get('gameId')==32812:
             require('countAllocation' not in plan and 'demoGeneration' in plan
-                and os.environ.get('SG_DEMO_PILOT_PROFILE')=='demo-pilot-veryfruity-action-revision2-20261003.json','VERYFRUITY_FINITE_PROFILE_REQUIRED')
+                and os.environ.get('SG_DEMO_PILOT_PROFILE')=='demo-pilot-veryfruity-action-revision3-20261003.json','VERYFRUITY_FINITE_PROFILE_REQUIRED')
             from veryfruity_demo_plan import veryfruity_demo_plan
-            profile=json.loads((Path(__file__).resolve().parents[1]/'config/demo-pilot-veryfruity-action-revision2-20261003.json').read_text(encoding='utf-8'))
+            profile=json.loads((Path(__file__).resolve().parents[1]/'config/demo-pilot-veryfruity-action-revision3-20261003.json').read_text(encoding='utf-8'))
             require(plan==veryfruity_demo_plan(expected,profile),'VERYFRUITY_DEMO_PLAN_CHANGED')
             return dict(plan)
         if 'countAllocation' in plan:
