@@ -51,6 +51,7 @@ export function applyFormalCount(plans,profile){
 }
 
 export function formalCountProfilePath(env=process.env){
+ if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-budget-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-super-coins-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-cash-coins-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;

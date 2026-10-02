@@ -221,7 +221,9 @@ async function main() {
 
 }
 try {
-  await main();evidence.outcome='success';
+  await main();
+  if(transport.observeCanaryWindow)evidence.canaryObservation=await transport.observeCanaryWindow(()=>stop);
+  evidence.outcome='success';
 } catch(error) {
   workerError=error;evidence.outcome='stopped';evidence.error=failureCode(error);
   if(error.httpStatus)evidence.httpStatus=error.httpStatus;

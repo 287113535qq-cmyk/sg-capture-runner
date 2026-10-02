@@ -3,6 +3,10 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
 
 export const ACTION_RESOURCE_BUDGET=Object.freeze({maxFrames:1026,maxRawBytes:4194304});
+export const ACTION_BUDGET_PROFILE='formal-repair-pyramids-action-budget-20261002.json';
+export const ACTION_BUDGET_CANARY=Object.freeze({captureMinutes:5,observationMinutes:5,maxWorkers:20,
+ maxBatchesPerWorker:1,maxPaidPerWorker:100,maxPaidRequests:2000,lanesPerHost:1,
+ automaticRelay:false,requiresNewSession:true});
 // Independent authorization. The applied parent and its discarded attempts
 // remain immutable; this plan inherits only its verified completed records.
 export function pyramidsActionBudgetPlan(base,p){
@@ -22,7 +26,8 @@ export function pyramidsActionBudgetPlan(base,p){
   featureProfile:ACTION_VERSION,actionContractHash:ACTION_CONTRACT_HASH,classificationMode:'independent-journal'};
  assert(base?.gameId===32721&&base.trialId==='sg_r1_20260928_32721'&&base.phase===1&&base.buy===0
   &&base.target===299850&&Object.entries(required).every(([k,v])=>p?.[k]===v)
-  &&/^[a-f0-9]{64}$/.test(p.activation??'')&&hash(p.actionResourceBudget)===hash(ACTION_RESOURCE_BUDGET),'ACTION_BUDGET_SCOPE');
+  &&/^[a-f0-9]{64}$/.test(p.activation??'')&&hash(p.actionResourceBudget)===hash(ACTION_RESOURCE_BUDGET)
+  &&hash(p.canary)===hash(ACTION_BUDGET_CANARY),'ACTION_BUDGET_SCOPE');
  const plan={...base,countAllocation:p.activation,featureProfile:ACTION_VERSION,actionContractHash:ACTION_CONTRACT_HASH,
   maxSteps:ACTION_RESOURCE_BUDGET.maxFrames,actionResourceBudget:{...ACTION_RESOURCE_BUDGET}};
  assert(hash(plan)===p.planHash&&!plan.demoGeneration&&!plan.sessionLayout,'ACTION_BUDGET_PLAN');return plan;

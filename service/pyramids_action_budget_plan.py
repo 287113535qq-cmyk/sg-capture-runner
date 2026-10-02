@@ -20,7 +20,10 @@ def pyramids_action_budget_plan(base, p):
         'controlReadMode':'compact-worker-v1','stateWriteMode':'versioned-delta-v1',
         'gatewayHash':'a40d94a60d8133f3d4cd4fb384610712c60676f94b82c7615289cd4cae4f690e',
         'featureProfile':ACTION_VERSION,'actionContractHash':CONTRACT_HASH,'classificationMode':'independent-journal',
-        'actionResourceBudget':{'maxFrames':1026,'maxRawBytes':4194304}}
+        'actionResourceBudget':{'maxFrames':1026,'maxRawBytes':4194304},
+        'canary':{'captureMinutes':5,'observationMinutes':5,'maxWorkers':20,'maxBatchesPerWorker':1,
+                  'maxPaidPerWorker':100,'maxPaidRequests':2000,'lanesPerHost':1,
+                  'automaticRelay':False,'requiresNewSession':True}}
     require(base.get('gameId') == 32721 and base.get('trialId') == 'sg_r1_20260928_32721'
             and base.get('phase') == 1 and base.get('buy') == 0 and base.get('target') == 299850
             and all(p.get(k) == v for k, v in required.items()) and isinstance(p.get('activation'), str)

@@ -16,6 +16,9 @@ import {compactControlInitializer} from './compact-runtime-binding.mjs';
 import {stateWriteInitializer} from './state-write-binding.mjs';
 import {ACTION_CANARY_RUNTIME,actionCanaryWindow} from './action-canary-contract.mjs';
 import {ACTION_CONTINUOUS_RUNTIME,actionContinuousWindow} from './action-continuous-runtime.mjs';
+import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
+import {budgetCanaryWindow} from './action-budget-canary.mjs';
+import {observeBudgetWindow} from './action-budget-observation.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
@@ -46,8 +49,20 @@ export function connectLocal(plan){
     readRevision:name=>JSON.parse(fs.readFileSync('config/'+name,'utf8')),
     group:repositories[process.env.GITHUB_REPOSITORY].name,resourceReady,
     readProfile:()=>JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'))});
+  let budgetObservationEnd;
   return {async canaryReady(shouldStop){
     await ensureControlMode();
+    if(process.env.SG_FORMAL_COUNT_PROFILE===ACTION_BUDGET_PROFILE){
+      await resourceReady;
+      const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
+      const commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
+      const key=`complete-count:${plan.trialId}:${plan.countAllocation}`,read=async k=>(await store.get('journal',k))?.value;
+      const proof={plan,profile,commit,run,spec:await read(key),complete:await read(key+':complete'),
+        permit:await read(`count-run:${plan.trialId}:${run}`)};
+      const window=budgetCanaryWindow({...proof,now:Date.now()});
+      controller.actionCanaryProof=proof;budgetObservationEnd=Date.now()+profile.canary.observationMinutes*60000;
+      return window;
+    }
     if([ACTION_CANARY_RUNTIME,ACTION_CONTINUOUS_RUNTIME].includes(process.env.SG_COUNT_RUNTIME_PROFILE)){
       await resourceReady;
       const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
@@ -81,7 +96,9 @@ export function connectLocal(plan){
     return waitCanaryLane({schedule,slot,shouldStop,observe:async()=>{
       const resource=await store.sample();const status=await controller.status({workerId:slot});return {...status,resourceAllowed:resource.allowed,resourceReason:resource.reason};
     }});
-  },rpc:async(op,data)=>{await resourceReady;await ensureControlMode();await ensureStateWrite(plan);return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
+  },observeCanaryWindow:async shouldStop=>budgetObservationEnd===undefined?null:
+    observeBudgetWindow({endMs:budgetObservationEnd,sample:()=>store.sample(),shouldStop}),
+    rpc:async(op,data)=>{await resourceReady;await ensureControlMode();await ensureStateWrite(plan);return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
     resourceObservation:gate.diagnostics({includeWindows:final}),
     hostResourceObservation:hostResources.diagnostics({includeWindows:final}),
     localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),

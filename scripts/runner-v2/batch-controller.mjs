@@ -13,6 +13,7 @@ import {faultCapsule} from './fault-capsule.mjs';
 import {canaryWorkerRegistration} from './session-canary.mjs';
 import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
 import {claimActionCanaryWorker} from './action-canary-contract.mjs';
+import {claimBudgetCanaryWorker} from './action-budget-canary.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
 const fail=(code,category='storage')=>Object.assign(new Error(code),{code,category});
 
@@ -344,7 +345,7 @@ export class BatchController {
         assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':')||delayed,'COUNT_INITIAL_WORKER_LATE');
       }
       await this.pendingFirst.admit(r,r.shardId);
-      if(this.actionCanaryProof)this.actionCanaryClaim=await claimActionCanaryWorker({store:this.store,
+      if(this.actionCanaryProof)this.actionCanaryClaim=await (this.actionCanaryProof.profile.schema==='sg-formal-action-budget-profile-v1'?claimBudgetCanaryWorker:claimActionCanaryWorker)({store:this.store,
         proof:this.actionCanaryProof,identity:r,now:this.now()});
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }

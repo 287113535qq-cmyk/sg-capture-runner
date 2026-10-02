@@ -20,7 +20,7 @@ on:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
         default: formal-count-pearl-20260930.json
-        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-sessions-rhino-two-20261001.json, formal-sessions-rhino-four-20261001.json, formal-repair-pyramids-retrigger-20261002.json, formal-repair-pyramids-cash-coins-20261002.json, formal-repair-pyramids-super-coins-20261002.json, formal-repair-pyramids-action-20261002.json, formal-repair-pyramids-super-free-20261002.json, formal-repair-pyramids-super-hold-20261002.json, formal-repair-pyramids-fifteen-20261002.json, formal-repair-pyramids-mixed-20261002.json, formal-repair-pyramids-major-entryfix-20261001.json, formal-repair-pyramids-major-20261001.json, formal-repair-pyramids-continuation-20261001.json, formal-repair-pyramids-display-20261001.json, formal-repair-pyramids-coins-20261001.json, formal-count-pyramids-20261001.json, formal-count-rhino-guarantee-20261001.json, formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
+        options: [formal-sessions-pearl-two-20261001.json, formal-sessions-pearl-four-20261001.json, formal-sessions-rhino-two-20261001.json, formal-sessions-rhino-four-20261001.json, formal-repair-pyramids-retrigger-20261002.json, formal-repair-pyramids-cash-coins-20261002.json, formal-repair-pyramids-super-coins-20261002.json, formal-repair-pyramids-action-20261002.json, formal-repair-pyramids-action-budget-20261002.json, formal-repair-pyramids-super-free-20261002.json, formal-repair-pyramids-super-hold-20261002.json, formal-repair-pyramids-fifteen-20261002.json, formal-repair-pyramids-mixed-20261002.json, formal-repair-pyramids-major-entryfix-20261001.json, formal-repair-pyramids-major-20261001.json, formal-repair-pyramids-continuation-20261001.json, formal-repair-pyramids-display-20261001.json, formal-repair-pyramids-coins-20261001.json, formal-count-pyramids-20261001.json, formal-count-rhino-guarantee-20261001.json, formal-count-rhino-20261001.json, formal-count-pearl-20260930.json, formal-repair-pearl-20260930.json, formal-repair-pearl-awards-20261001.json]
       pilot_profile:
         description: 'Profile for demo-fresh-short only; requires completed independent activation'
         type: choice
@@ -873,7 +873,7 @@ jobs:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
         run: node scripts/runner-v2/campaign-worker.mjs capture
   pyramids-formal-admit:
-    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && (inputs.formal_profile == 'formal-count-pyramids-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-display-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-continuation-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-entryfix-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-mixed-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-fifteen-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-hold-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-free-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-retrigger-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-cash-coins-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-coins-20261002.json' || inputs.formal_profile == 'formal-repair-pyramids-action-20261002.json'))))))))))
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && (inputs.formal_profile == 'formal-count-pyramids-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-display-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-continuation-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-entryfix-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-mixed-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-fifteen-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-hold-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-free-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-retrigger-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-cash-coins-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-coins-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-action-20261002.json' || inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json')))))))))))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -906,6 +906,9 @@ jobs:
         env:
           SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
         run: node scripts/runner-v2/pyramids-zero-runtime-control.mjs admit
+      - name: Admit independent resource-budget canary
+        if: inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' && inputs.runtime_profile == 'none'
+        run: node scripts/runner-v2/pyramids-repair-control.mjs admit
       - name: Admit one bounded action canary on the original allocation
         if: inputs.formal_profile == 'formal-repair-pyramids-action-20261002.json' && inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json'
         env:
@@ -929,7 +932,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_SHARD: ${{ matrix.shard }}
-      SG_TRIAL_MINUTES: ${{ inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-continuous-20261002.json' && '15' || '240' }}
+      SG_TRIAL_MINUTES: ${{ inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-continuous-20261002.json' && '15' || '240' }}
       SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
       SG_POOL_RUN_LIMIT: '0'
       SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}

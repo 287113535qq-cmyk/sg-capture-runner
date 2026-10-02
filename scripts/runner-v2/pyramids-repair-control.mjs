@@ -10,6 +10,7 @@ import {pyramidsCountPlan} from './pyramids-count-profile.mjs';import {pyramidsR
 import {retireStoppedFormal} from './formal-stopped-retire.mjs';import {activateFormalRepair} from './formal-repair-activation.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 import {pyramidsRepairEntry} from './pyramids-repair-entry.mjs';
+import {checkBudgetCanaryInputs,admitBudgetCanary} from './action-budget-canary.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY===secondaryRepository,'SECONDARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['retire','activate','admit'].includes(mode),'PYRAMIDS_REPAIR_OPERATION');
 const entry=pyramidsRepairEntry(mode,process.env.SG_FORMAL_COUNT_PROFILE,process.env.SG_FORMAL_RETIRE_PROFILE),{oldName,newName}=entry;
@@ -54,6 +55,9 @@ try{
   console.log(JSON.stringify(await retireStoppedFormal({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run})));
  }else if(mode==='activate'){
   console.log(JSON.stringify(await activateFormalRepair({store,transport,parser,plans,profile,oldProfile,boundary,commit,run})));
+ }else if(entry.budget){
+  checkBudgetCanaryInputs(JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs);
+  console.log(JSON.stringify(await admitBudgetCanary({store,base:plans[32721],plan,profile,commit,run,boundary})));
  }else{
   await boundary();const pool=(await store.get('state','pool:'+plan.trialId))?.value,c=(await store.get('state','campaign'))?.value;
   const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
