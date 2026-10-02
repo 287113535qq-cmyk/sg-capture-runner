@@ -1,33 +1,25 @@
 {
-  "profile": {
-    "profileHash": "c37a373fbf4ee1e38b63f1d8051ff4786b6cc13e20521c50ea175ef7062f8658",
-    "completePreserved": 132846,
-    "toFlush": 753,
-    "abandoned": 1,
-    "sourceAllowance": 0,
-    "files": 824,
-    "applied": false,
-    "previousUnappliedHash": "d8bb56f705a200ca468d0483c566cfb49086a35d964c4dc32d364a81cb93959a"
-  },
-  "replay": {
-    "memoryOnly": true,
-    "actualSourceRun": "36983664943:1",
-    "completePreserved": 132846,
-    "completeFlush": 753,
-    "abandoned": 1,
-    "maxPage": 100,
-    "sourceRequests": 0,
-    "onlineMongoWrites": 0,
-    "actualClosureApplied": false,
-    "closureHash": "1dd6087b09763fa7ef03f575dac7cc8f362666cfbeec1b055ede0b2b8ff3b9c8"
-  },
-  "runtimePreflight": {
-    "firstRun": 36986434983,
-    "conclusion": "failure",
-    "reason": "TEST_PYTHON_DEFAULT_MISSING",
-    "entryFixPrepared": true
-  },
-  "privateBackup": "pending",
-  "closureApplied": false,
-  "allOptimizationsComplete": false
+  "run": "36989338343:1",
+  "profileHash": "c37a373fbf4ee1e38b63f1d8051ff4786b6cc13e20521c50ea175ef7062f8658",
+  "completePreserved": 132846,
+  "fullMongoNewReadback": 753,
+  "originalPendingRawUnchanged": 1,
+  "allBatchesClosed": true,
+  "pending": 0,
+  "reserved": 0,
+  "poolEnabled": false,
+  "holdsActive": false,
+  "repairStatus": "pending-adapter",
+  "closureHash": "d4db796e229fcef91cccdc8325acf3fa0bb8f94b3ec260508252b8f2695fd720",
+  "retirementHash": "fd6e9bb3c75d077c0af84193ffa66cfb3eb9463bbeeeb2b135a1114d2709d0e0",
+  "recordsHash": "e7897eb2d190bd18222c0146fe24ae6c395f885ea76a87d5c176dba8cc7bd8e2",
+  "sourceRequests": 0,
+  "newBetAllowance": 0,
+  "allOptimizationsComplete": false,
+  "runtime": "dfbb02df6e4478350fc16cadad234d9806797bfa",
+  "maintenanceCreatedAt": "2026-10-02T09:21:48Z",
+  "maintenanceStartedAt": "2026-10-02T09:21:48Z",
+  "maintenanceCompletedAt": "2026-10-02T09:29:58Z",
+  "closureApplied": true,
+  "newActionProfileApplied": false
 }

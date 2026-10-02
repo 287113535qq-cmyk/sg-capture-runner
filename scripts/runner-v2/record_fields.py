@@ -20,6 +20,7 @@ from beaver_fields import BeaverSequence, SOURCE as BEAVER_SOURCE
 
 from pyramids_fields import PyramidsFields, SOURCE as PYRAMIDS_SOURCE
 from pyramids_action_fields import PyramidsActionFields, ACTION_VERSION
+from pyramids_direct_action_fields import PyramidsDirectActionFields, ACTION_VERSION as DIRECT_ACTION_VERSION
 from inca_fields import IncaFields, SOURCE as INCA_SOURCE
 from jinzita_fields import JinzitaSequence, SOURCE as JINZITA_SOURCE
 from morepuff_fields import MorepuffSequence, SOURCE as MOREPUFF_SOURCE
@@ -35,8 +36,10 @@ def execute(request):
         plan = validate_pool_plan(plan)
         cls = {PYRAMIDS_SOURCE: PyramidsFields, INCA_SOURCE: IncaFields, RHINO_SOURCE: RhinoFields, MOREPUFF_SOURCE: MorepuffSequence, JINZITA_SOURCE: JinzitaSequence, LUXOR_SOURCE: LuxorSequence, BEAVER_SOURCE: BeaverSequence, SQUID_SOURCE: SquidFields, HUFF_SOURCE: HuffFields, DEMON_SOURCE: DemonFields, QUARTERBACK_SOURCE: QuarterbackFields}.get(plan['sourceKey'], NativeNextgenFields)
         adapters[key] = ((PearlAwardFields if plan.get('featureProfile') == 'additive-free-awards-v2' else PearlRetriggerFields if plan.get('featureProfile') == 'eight-free-retrigger-v1' else PearlFields) if plan['sourceKey'] == PEARL_SOURCE else PiggiesFields if plan['sourceKey'] == PIGGIES_SOURCE else cls)(plan)
-        if plan['sourceKey']==PYRAMIDS_SOURCE and plan.get('featureProfile')==ACTION_VERSION:
+        if plan['sourceKey']==PYRAMIDS_SOURCE and plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION):
             adapters[key]=PyramidsActionFields(plan)
+        if plan['sourceKey']==PYRAMIDS_SOURCE and plan.get('featureProfile')==DIRECT_ACTION_VERSION:
+            adapters[key]=PyramidsDirectActionFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
@@ -64,7 +67,7 @@ def execute(request):
     if op == 'classify':
         # Full evidence verification precedes optional gameplay interpretation.
         # A classification gap cannot change the original receipt or quota.
-        assert plan.get('featureProfile') == ACTION_VERSION
+        assert plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION)
         record = request['record']
         assert execute({'op': 'verify', 'plan': plan, 'raw': raw,
                         'record': record}) == {'verified': True}
@@ -89,9 +92,9 @@ def execute(request):
         if op == 'bootstrap':
             return adapter.bootstrap(request['step'])
     if op == 'next':
-        return adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile')==ACTION_VERSION else {'MSGID':'BET'}
+        return adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION) else {'MSGID':'BET'}
     if op == 'intent':
-        next_step=adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile')==ACTION_VERSION else {'MSGID':'BET'}
+        next_step=adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION) else {'MSGID':'BET'}
         assert next_step is not None
         parsed=adapter.request_params(request['payload'],next_step['MSGID'])
         assert all(parsed.get(k)==v for k,v in next_step.items())

@@ -11,7 +11,7 @@ import {PendingFirst} from './pending-first.mjs';
 import {isAdapterGap,reviewedAdapterFailure} from './game-failure-policy.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
 import {canaryWorkerRegistration} from './session-canary.mjs';
-import {ACTION_VERSION,ACTION_CONTRACT_HASH} from '../trial/pyramids-action-protocol.mjs';
+import {actionContract} from '../trial/pyramids-action-contracts.mjs';
 import {claimActionCanaryWorker} from './action-canary-contract.mjs';
 import {claimBudgetCanaryWorker} from './action-budget-canary.mjs';
 const hash=value=>createHash('sha256').update(stable(value)).digest('hex');
@@ -135,10 +135,8 @@ export class BatchController {
       assert(/^[0-9a-f-]{36}$/.test(r.attempt),'INVALID_ATTEMPT');
       raw={fixtureOnly:false,protocol:['pearl-wms-v1','rhino-wms-v1'].includes(this.plan.adapter)?'wms':'nextgen',sourceKey:this.plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:r.startBalanceRaw,steps:[]};
-      if(this.plan.featureProfile===ACTION_VERSION){
-        assert(this.plan.gameId===32721&&this.plan.actionContractHash===ACTION_CONTRACT_HASH,'ACTION_PROFILE_REQUIRED');
-        raw.requestFlowVersion=ACTION_VERSION;raw.actionContractHash=ACTION_CONTRACT_HASH;
-      }
+      const contract=actionContract(this.plan);
+      if(contract){raw.requestFlowVersion=contract.version;raw.actionContractHash=contract.hash;}
     }else{
       assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');
       const current=this.batchSnapshot.value;this.batchOwned(current);
@@ -150,7 +148,7 @@ export class BatchController {
     assert(raw.steps.length<this.plan.maxSteps,'ROUND_STEP_LIMIT');
     if(this.plan.actionResourceBudget){
       const budget=this.plan.actionResourceBudget;
-      assert(this.plan.gameId===32721&&this.plan.featureProfile===ACTION_VERSION
+      assert(this.plan.gameId===32721&&actionContract(this.plan)!==null
         &&this.plan.maxSteps===1026&&Object.keys(budget).length===2
         &&budget.maxFrames===1026&&budget.maxRawBytes===4194304,'FLOW_RESOURCE_PROFILE');
       assert(Buffer.byteLength(JSON.stringify(raw),'utf8')<budget.maxRawBytes,'FLOW_RESOURCE_BYTES');
@@ -345,7 +343,7 @@ export class BatchController {
         assert(this.now()-permit.createdAt<=15*60000||old?.owner?.startsWith(run+':')||delayed,'COUNT_INITIAL_WORKER_LATE');
       }
       await this.pendingFirst.admit(r,r.shardId);
-      if(this.actionCanaryProof)this.actionCanaryClaim=await (this.actionCanaryProof.profile.schema==='sg-formal-action-budget-profile-v1'?claimBudgetCanaryWorker:claimActionCanaryWorker)({store:this.store,
+      if(this.actionCanaryProof)this.actionCanaryClaim=await (['sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1'].includes(this.actionCanaryProof.profile.schema)?claimBudgetCanaryWorker:claimActionCanaryWorker)({store:this.store,
         proof:this.actionCanaryProof,identity:r,now:this.now()});
       this.identity=r;this.lease=await this.pool.register(r.shardId,r);return {workerEpoch:this.lease.epoch};
     }

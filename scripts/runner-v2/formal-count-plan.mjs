@@ -6,8 +6,11 @@ import {sessionLayoutPlan} from './session-layout-profile.mjs';
 import {pyramidsActionRepairPlan} from './pyramids-action-repair-profile.mjs';
 import {pyramidsActionBudgetPlan} from './pyramids-action-budget-profile.mjs';
 
+import {pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
+
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
+ if(profile?.schema==='sg-formal-direct-action-profile-v1')return {...plans,[32721]:pyramidsDirectActionPlan(base,profile)};
  if(profile?.schema==='sg-formal-action-budget-profile-v1')return {...plans,[32721]:pyramidsActionBudgetPlan(base,profile)};
  if(profile?.schema==='sg-formal-action-profile-v1')return {...plans,[32721]:pyramidsActionRepairPlan(base,profile)};
  if(['sg-session-layout-profile-v1','sg-session-layout-rhino-v1'].includes(profile?.schema))return {...plans,[profile.gameId]:sessionLayoutPlan(base,profile)};
@@ -51,6 +54,7 @@ export function applyFormalCount(plans,profile){
 }
 
 export function formalCountProfilePath(env=process.env){
+ if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-direct-action-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-budget-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-super-coins-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;

@@ -10,7 +10,7 @@ export async function reviewActionBudgetHistory({store,plan,pool,spec,profile,cl
   &&closed.completePreserved===profile.completePreserved&&closed.recordsHash===profile.recordsHash
   &&closed.sourceRun===profile.sourceRun&&closed.sourceCommit===profile.sourceCommit
   &&closed.profileHash===profile.closureProfileHash&&closed.retirementHash===profile.nativeRetirementHash
-  &&closed.abandonedAttempts===5&&closed.unknownAttempts===0&&closed.requiresNewSession===true
+  &&closed.abandonedAttempts===(profile.schema==='sg-formal-direct-action-profile-v1'?1:5)&&closed.unknownAttempts===0&&closed.requiresNewSession===true
   &&closed.sourceRequests===0&&closed.newBetAllowance===0,'ACTION_BUDGET_CLOSURE');
  assert(!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.retiredCount===closed.retirement
   &&pool.countSharedClosure+':complete'===profile.retirementKey,'ACTION_BUDGET_CLOSED_POOL');

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {nextRequest, roundMapping} from './squid-protocol.mjs';
-import {ACTION_VERSION,ACTION_CONTRACT_HASH} from './pyramids-action-protocol.mjs';
+import {actionContract} from './pyramids-action-contracts.mjs';
 
 export function fail(code, category='source_protocol', extra={}) {
   return Object.assign(new Error(code), {code, category, ...extra});
@@ -52,10 +52,8 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       }
       raw = {fixtureOnly:false, protocol, sourceKey:plan.sourceKey,
         roundFieldsVersion:'sg-round-fields-v1', startBalanceRaw:state.balance, steps:[]};
-      if(plan.featureProfile===ACTION_VERSION){
-        assert(plan.gameId===32721&&plan.actionContractHash===ACTION_CONTRACT_HASH,'ACTION_PROFILE_REQUIRED');
-        raw.requestFlowVersion=ACTION_VERSION;raw.actionContractHash=ACTION_CONTRACT_HASH;
-      }
+      const contract=actionContract(plan);
+      if(contract){raw.requestFlowVersion=contract.version;raw.actionContractHash=contract.hash;}
       if (prepared) {
         assert.equal(prepared.sequence, sequence); assert.equal(prepared.startBalanceRaw, state.balance);
         attempt = prepared.attempt; prepared = null;

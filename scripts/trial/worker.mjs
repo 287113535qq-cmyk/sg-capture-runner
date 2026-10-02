@@ -1,6 +1,6 @@
 import {PYRAMIDS_SOURCE,PYRAMIDS_FREE_EXTENSION,PYRAMIDS_MAJOR_EXTENSION,PYRAMIDS_MIXED_EXTENSION,PYRAMIDS_FIFTEEN_EXTENSION,PYRAMIDS_SUPER_HOLD_EXTENSION} from './pyramids-protocol.mjs';
 import {PYRAMIDS_SUPER_COIN_EXTENSION} from './pyramids-super-coin-review.mjs';
-import {ACTION_VERSION,pyramidsActionNext} from './pyramids-action-protocol.mjs';
+import {actionContract} from './pyramids-action-contracts.mjs';
 import {PYRAMIDS_COIN_EXTENSION} from './pyramids-coin-review.mjs';
 import {INCA_SOURCE,INCA_EXTENSION,INCA_COIN_EXTENSION} from './inca-protocol.mjs';
 import {PIGGIES_SOURCE,PIGGIES_SIZE2_EXTENSION} from './piggies-protocol.mjs';
@@ -199,10 +199,10 @@ async function main() {
   }
   const state={};
   const capture=async (currentLease,currentOwned)=>{
-    const action=plan.featureProfile===ACTION_VERSION;
+    const contract=actionContract(plan),action=contract!==null;
     const result=await captureBatch({plan,lease:currentLease,owned:currentOwned,rpc,post,payload,bootstrap,
-      prepareRound:telemetry.sync('normalize',action?raw=>captureCollector('pyramidsAction').prepareNextgenActionRound(raw,plan):prepareNextgenRound),
-      ...(action?{route:raw=>pyramidsActionNext(plan,raw),mapping:()=>({})}:{}),
+      prepareRound:telemetry.sync('normalize',action?raw=>captureCollector(contract.collectorKind).prepareNextgenActionRound(raw,plan):prepareNextgenRound),
+      ...(action?{route:raw=>contract.next(plan,raw),mapping:()=>({})}:{}),
       mappingHash,extensionHash,evidence,state,shouldStop:()=>stop,requestStop:()=>{stop=true;},
       deadline,limit:currentLease.shortRunLimit===undefined?limit:Math.min(limit,currentLease.shortRunLimit),exchangeOperation,onProgress:()=>telemetry.progress()});
     evidence.result=result;
