@@ -104,16 +104,28 @@ export function countPeerBoundary({read,transport,peer,selfGroup,run,commit,work
     }
    }
   }
-  for(const old of [original,stalled]){
-   const prefix=`repos/${old.repository}/actions/runs/${old.id}`,r=await read(prefix),jobs=await read(prefix+'/jobs?filter=all&per_page=100');
+  // Independent read-only identities share bounded waves, never an authorization
+  // cache. Native reads remain serial on the single gateway transport.
+  const oldPrefixes=[original,stalled].map(old=>`repos/${old.repository}/actions/runs/${old.id}`);
+  const peerPrefix=`repos/${peer.repository}/actions/runs/${peerId}`;
+  const paths=oldPrefixes.flatMap(prefix=>[prefix,prefix+'/jobs?filter=all&per_page=100']);
+  paths.push(`repos/${selfRepo}/actions/runs/${selfId}`,peerPrefix,peerPrefix+'/jobs?filter=all&per_page=100');
+  const identities=[];
+  for(let first=0;first<paths.length;first+=4){
+   const results=await Promise.allSettled(paths.slice(first,first+4).map(path=>read(path)));
+   assert(results.every(result=>result.status==='fulfilled'),'COUNT_PEER_IDENTITY_READ');
+   identities.push(...results.map(result=>result.value));
+  }
+  for(const [index,old] of [original,stalled].entries()){
+   const [r,jobs]=identities.slice(index*2,index*2+2);
    assert(r.id===old.id&&r.head_sha===old.commit&&r.run_attempt===1&&r.repository?.full_name===old.repository
     &&r.event==='workflow_dispatch'&&r.path==='.github/workflows/trial-300k.yml'&&r.status==='queued'&&r.conclusion===null
     &&jobs.total_count===0&&jobs.jobs?.length===0,'COUNT_PEER_OLD_RUN');
   }
-  const self=await read(`repos/${selfRepo}/actions/runs/${selfId}`);
+  const self=identities[4];
   assert(self.id===selfId&&self.run_attempt===1&&self.head_sha===commit&&self.repository?.full_name===selfRepo
    &&self.event==='workflow_dispatch'&&self.path===workflowPath&&self.status==='in_progress'&&self.conclusion===null,'COUNT_PEER_SELF_IDENTITY');
-  const prefix=`repos/${peer.repository}/actions/runs/${peerId}`,r=await read(prefix),jobs=await read(prefix+'/jobs?filter=all&per_page=100');
+  const [r,jobs]=identities.slice(5);
   assert(r.id===peerId&&r.run_attempt===1&&r.head_sha===peer.commit&&r.repository?.full_name===peer.repository
    &&r.event==='workflow_dispatch'&&r.path==='.github/workflows/trial-300k.yml'
    &&(r.status==='in_progress'&&r.conclusion===null||r.status==='completed'&&r.conclusion==='success'),'COUNT_PEER_IDENTITY');

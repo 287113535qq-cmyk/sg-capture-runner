@@ -1,5 +1,7 @@
 # Very Fruity 差异准备与当前准入边界
 
+2026-10-03 增量：新增独立 `veryfruity-action-review.mjs`，读取原始请求/响应 XML 的身份、会话、FSInfo 进度和已核对退出路由。未知展示节点及字段原样保留，不调用普通现金玩法白名单；免费总数增长按当前官方计数出口继续，而非先解释奖励图案。三项差异测试覆盖新增展示字段、增长、跳帧、错会话、重复 FSInfo、未知 Pick、max-win 和错误出口。EndGame 应答只表示路由结束，结果始终 complete/moneyVerified/captureAuthorization=false，不能拿流程通过替代金额终审。现未 production import、未新准入，仍不得称 ready。此前严格现金候选保持不变，供独立金额核验。
+
 按AG固定任务和结果复用方式，32812主线准备独立于32721金币修复。复用固定官方客户端SHA73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2与已执行的请求、继承关系、计数、金额字段方法，不重跑整个客户端。
 
 本次新增service/veryfruity_review.py独立离线FSInfo校验。七个合成前缀核对freeSpinNumber/freeSpinsTotal；缺字段、显示解析器可吞掉的小数/尾缀/NaN、不安全整数、跳帧、金额回退、未审核重触发、max-win、错用旧会话及终态之后继续响应均拒绝。五项专项通过。此模块未接生产imports，没有独立mapping、native范围或源许可。

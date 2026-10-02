@@ -36,6 +36,32 @@ test('both directions accept only an immutable peer and serial native reads',asy
  for(const group of ['primary','secondary']){const f=fixture(group);await countPeerBoundary(f.args)();assert.equal(f.calls.length,2);
   assert.deepEqual(f.calls[0].args,{run:f.peer.run,activation:f.peer.activation});assert.equal(f.calls[1].op,'global_holds');}
 });
+
+test('independent identity reads run in bounded waves and every boundary rereads them',async()=>{
+ const f=fixture(),read=f.args.read;let active=0,peak=0,identities=0;
+ f.args.read=async path=>{
+  if(path.includes('runs?'))return read(path);
+  identities++;active++;peak=Math.max(peak,active);
+  try{await new Promise(resolve=>setTimeout(resolve,2));return await read(path);}finally{active--;}
+ };
+ const boundary=countPeerBoundary(f.args);await boundary();await boundary();
+ assert.equal(peak,4);assert.equal(identities,14);assert.equal(active,0);
+ assert.equal(f.calls.length,4);
+});
+
+test('failed identity read settles its whole wave and prevents native authorization',async()=>{
+ const f=fixture(),read=f.args.read;let ended=0,active=0;
+ f.args.read=async path=>{
+  if(path.includes('runs?'))return read(path);
+  active++;
+  try{await new Promise(resolve=>setTimeout(resolve,2));
+   if(path.includes('/'+original.id+'/jobs?'))throw new Error('read unavailable');
+   return await read(path);
+  }finally{active--;ended++;}
+ };
+ await assert.rejects(countPeerBoundary(f.args)(),/COUNT_PEER_IDENTITY_READ/);
+ assert.equal(active,0);assert.equal(ended,4);assert.equal(f.calls.length,0);
+});
 test('peer scope rejects foreign game account attempt profile and lanes',()=>{
  const f=fixture();for(const delta of [{gameId:32795},{repository:repos.secondary},{run:'987654:2'},{commit:'bad'},{activation:'bad'},{profileHash:'bad'},{lanesPerHost:3}])
   assert.throws(()=>checkCountPeerDescriptor({...f.peer,...delta},'secondary'));

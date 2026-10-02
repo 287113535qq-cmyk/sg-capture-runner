@@ -32,8 +32,8 @@
   "analysisDocumentHashes": {
     "docs/ag-audit-phase-efficiency-20261002.md": "576baa598e76f991877fdf435641e758f6a3ace9e1c8c7a58be9f12b0159d542",
     "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9",
-    "docs/ag-veryfruity-difference-review-20261002.md": "a4a0a46356672a6238089fa4cbbaa10f59cbe85a5ed34acc8c81ef5351d2e15a",
-    "docs/efficiency-acceptance-20261002-result.json": "5611012a529a6ddb347eb1ef229555294c9631c8f710560fa87d809ce4f3f570"
+    "docs/ag-veryfruity-difference-review-20261002.md": "45e7c0e5a95028edd4ef6eaadda623f45a12491492b546ef9a21852a579c6558",
+    "docs/efficiency-acceptance-20261002-result.json": "7267b1d4a98ddfdeb07bb1dec2a1866119da7181ba2f00bd1e09db41f00864bf"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -42,5 +42,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a8a52820b5a534fe7a94319943e6d01f419c9f4067255a92ae8a83a82cdb2432"
+  "ruleHash": "2690d890ed0eff0af63f49c285021954bd27b38c4f6a03d6df7b4d6f7e1fa0bc"
 }

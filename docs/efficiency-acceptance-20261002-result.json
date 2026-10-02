@@ -821,13 +821,88 @@
       "fullReadbackPreserved": 8391,
       "remainingOriginalTarget": 291459,
       "naturalCombinationTerminalObserved": false
+    },
+    "pyramidsFullCompletion": {
+      "snapshotAt": 1790957009,
+      "gameId": 32721,
+      "completeGames": 17,
+      "historicalBaseline": 150,
+      "mongoFullReadback": 299850,
+      "totalComplete": 300000,
+      "recordsHash": "c175c4c727247bb031f3308d86f3a76662be9009a4deca0f71fd545ef08ee870",
+      "planHash": "f8ceefb8ea99e2f479e78b3802bde93c1d511ffbcd06c79ac91a413b6e61ec3a",
+      "completedAt": 1790956644.098,
+      "auditRun": 37030230405,
+      "auditCommit": "ffe8e818165ddacfa81fb8a2b486f3157dadb81f",
+      "auditElapsedSeconds": 102.316,
+      "phases": {
+        "readback": {
+          "calls": 3000,
+          "elapsedMs": 47962.38974599962
+        },
+        "python": {
+          "calls": 2999,
+          "elapsedMs": 51622.3696109991
+        },
+        "recordChecks": {
+          "calls": 2999,
+          "elapsedMs": 2586.0875619998988
+        },
+        "commitProof": {
+          "calls": 1,
+          "elapsedMs": 17.79734299998381
+        }
+      },
+      "batchMetadata": {
+        "schema": "sg-count-audit-metadata-v1",
+        "allocatedRecords": 299850,
+        "verifiedBatches": 3262,
+        "metadataBlocks": 33,
+        "bulkReads": 50,
+        "elapsedMs": 102315.75231000001,
+        "sourceRequests": 0,
+        "observationOnly": true
+      },
+      "sourceFrames": 350955,
+      "roundsWithContinuation": 3865,
+      "normalizedBonusCounts": {
+        "0": 16717,
+        "1": 152,
+        "2": 36,
+        "5": 1,
+        "6": 2,
+        "7": 2,
+        "9": 1,
+        "10": 2,
+        "unclassified": 282937
+      },
+      "sourceRequestsForReview": 0,
+      "mongoWritesForReview": 0,
+      "repeatedCompletedGameScan": false,
+      "wholeAuditMatchedGainVerified": false,
+      "allOptimizationsComplete": false
+    },
+    "pyramidsFinalEvidenceBackup": {
+      "verifiedFiles": 17,
+      "bytes": 290936,
+      "sha256": "bf807c722ae8f1fb83273b6b29c2bf9281191ee7327087944ac50ceae785a349",
+      "streamChunkMaxBytes": 262144
+    },
+    "boundedIdentityReadLocal": {
+      "maxConcurrentReads": 4,
+      "rechecksEveryBoundary": true,
+      "failedWaveFullyJoined": true,
+      "nativeTransportSerial": true,
+      "onlineGainVerified": false,
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   },
   "pending": [
     "Matched actual capture throughput and resource window for the independently admitted optimized runtime.",
-    "New two-worker bounded audit of a naturally completed 300000-round game.",
     "An independently ready next game and actual automatic cross-game handoff.",
-    "Natural unsupported feature terminals in the remaining independent repair queue."
+    "Natural unsupported feature terminals in the remaining independent repair queue.",
+    "Retirement boundary costs: retain fresh mutable identity/lease/hold checks while reducing independent read latency; no online gain accepted yet."
   ],
   "prohibitedShortcuts": [
     "No current-runtime hot patch.",
@@ -835,7 +910,7 @@
     "No completion from Mongo count alone.",
     "No family candidate converted automatically to ready."
   ],
-  "completeGames": 16,
+  "completeGames": 17,
   "offlineCandidates": {
     "stateDelta": {
       "schema": "sg-state-delta-offline-benchmark-v1",
@@ -938,10 +1013,9 @@
     }
   },
   "latestReadonlyStatus": {
-    "at": 1790893343.693173,
-    "completeGames": 16,
+    "at": 1790957009,
+    "completeGames": 17,
     "activeGames": 0,
-    "otherActiveGithubRuns": 0,
     "sourceRequests": 0,
     "databaseWrites": 0,
     "existingProfilesChanged": 0

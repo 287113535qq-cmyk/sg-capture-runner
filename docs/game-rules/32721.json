@@ -417,6 +417,7 @@
     "docs/ag-pyramids-action-channel-20261002-result.json",
     "docs/ag-pyramids-action-channel-20261002.md",
     "docs/ag-veryfruity-difference-review-20261002.md",
+    "docs/efficiency-acceptance-20261002-result.json",
     "docs/inca-pilot-result-20261001.md",
     "docs/mansion-reentry-rhino-guarantee-20261001.md",
     "docs/protocol-parking-20260928.md",
@@ -431,7 +432,8 @@
   "analysisDocumentHashes": {
     "docs/ag-pyramids-action-channel-20261002-result.json": "e92ece11e75ea392687694b8c168e6995cf2842cfee9300a5f966c9ea5614c07",
     "docs/ag-pyramids-action-channel-20261002.md": "3037baf842b7ab356c071972b16090503c4e3737efa47bd6cd53bfbaa985c5a4",
-    "docs/ag-veryfruity-difference-review-20261002.md": "a4a0a46356672a6238089fa4cbbaa10f59cbe85a5ed34acc8c81ef5351d2e15a",
+    "docs/ag-veryfruity-difference-review-20261002.md": "45e7c0e5a95028edd4ef6eaadda623f45a12491492b546ef9a21852a579c6558",
+    "docs/efficiency-acceptance-20261002-result.json": "7267b1d4a98ddfdeb07bb1dec2a1866119da7181ba2f00bd1e09db41f00864bf",
     "docs/inca-pilot-result-20261001.md": "fe9febe2ebcd7efe1e074294f6eb38a2894928cfccde8dcd078f7fd7313bf29c",
     "docs/mansion-reentry-rhino-guarantee-20261001.md": "14c88b927ee2aacffbea2f793bb155496bdde1bbb13f18c07e582fc087858648",
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
@@ -450,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f8f041e9e64eb5ae99bb4c79036e67fc2464b17e6cd89cd0c3a1f5b97aeb07e7"
+  "ruleHash": "718f07dc367231d8a41aaf534944bba19c10273fc6a4a958322e2a210dcf0e90"
 }
