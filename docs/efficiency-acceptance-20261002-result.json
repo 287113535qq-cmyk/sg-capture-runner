@@ -757,6 +757,19 @@
       "productionScopeExpanded": false,
       "existingProfilesChanged": 0,
       "captureAuthorization": false
+    },
+    "pyramidsCashCoinsIntegration": {
+      "mapping": "c1a7ad375d9a9f82bf9710a2d61c618923ba06af9dc7febe92bf86e8dd852f1c",
+      "pythonChecks": 17,
+      "nodeChecks": 11,
+      "collectorTypecheck": true,
+      "naturalPrefixesReviewed": 15,
+      "naturalTerminalObserved": false,
+      "oldNormalizedRecordsPreserved": 1716,
+      "profileCreated": false,
+      "sourceRequests": 0,
+      "mongoWrites": 0,
+      "linuxPreflight": "pending"
     }
   },
   "pending": [

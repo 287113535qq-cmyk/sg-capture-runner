@@ -24,10 +24,14 @@ class MajorReviewTests(unittest.TestCase):
             PyramidsFreeSequence(PLAN).sequence(raw)
 
     def test_invalid_geometry_symbols_alias_xml_counter_and_money_rejected(self):
-        for text in ('0;0;-5;|','0;0;-2;|','0;0;-4;|','3;0;-3;|','0;5;-3;|',
+        for text in ('0;0;-5;|','0;0;-1;|','3;0;-3;|','0;5;-3;|',
                      '0;0;-3;|0;0;20;|','0;0;-3;|3;0;-4;|','0;0;-0;|'):
             raw=major_sample();rewrite(raw['steps'][1],GSD='CL~'+text)
             with self.subTest(text=text),self.assertRaises(FieldError):PyramidsFields(PLAN).settled(raw)
+        for symbol in (-4, -2):
+            raw=major_sample();rewrite(raw['steps'][1],GSD=f'CL~0;0;{symbol};|')
+            with self.assertRaises(FieldError):PyramidsMajorSequence(PLAN).settled(raw)
+            self.assertEqual(PyramidsFields(PLAN).settled(raw)['bonus'],9)
         for index,changes in ((0,{'GSD':'CL~0;0;-3;|'}),(1,{'GSD':'BGCL~0;0;-3;|'}),
                 (1,{'GSD':'CL~0;0;-3;|#CLBN~0;0;20;|'}),(1,{'CFGG':0}),
                 (1,{'GCT':1}),(10,{'B':99990,'AB':99990})):

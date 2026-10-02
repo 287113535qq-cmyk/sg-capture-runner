@@ -20,7 +20,7 @@
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
   "settlement": null,
   "codeSources": {
-    "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
+    "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -33,7 +33,7 @@
     "docs/ag-audit-phase-efficiency-20261002.md": "576baa598e76f991877fdf435641e758f6a3ace9e1c8c7a58be9f12b0159d542",
     "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9",
     "docs/ag-veryfruity-difference-review-20261002.md": "a4a0a46356672a6238089fa4cbbaa10f59cbe85a5ed34acc8c81ef5351d2e15a",
-    "docs/efficiency-acceptance-20261002-result.json": "1a48c856528782e56b8f24c7eabcac31cb2e15a69c5a6e00f1700dafd72fe782"
+    "docs/efficiency-acceptance-20261002-result.json": "270c19f33c7ed282a39d3f9f2095240ece6e559984a6444765de2c175cf2e99f"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -42,5 +42,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "3fa4a84f8a5ac9b8bab980446f71970b0d02202b624d3fc8c954a8ed1cf6a0b8"
+  "ruleHash": "250f8fe580ca1e11806f93fc0938531d63171e15d86a02bcd7007b029c4651cf"
 }

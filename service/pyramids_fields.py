@@ -9,6 +9,7 @@ from pyramids_fifteen_review import has_fifteen,review_fifteen
 from pyramids_super_hold_review import has_super_hold,PyramidsSuperHoldSequence
 from pyramids_super_free_review import has_super_free,PyramidsSuperFreeSequence
 from pyramids_retrigger_review import has_retrigger,PyramidsRetriggerSequence
+from pyramids_coin_review import has_cash_coins,PyramidsCoinSequence
 
 
 def hold_type(raw):
@@ -17,6 +18,7 @@ def hold_type(raw):
 
 class PyramidsFields(NativeNextgenFields):
     def next_request(self, raw):
+        if has_cash_coins(raw):return PyramidsCoinSequence(self.plan).sequence(raw)
         if has_retrigger(raw):return PyramidsRetriggerSequence(self.plan).sequence(raw)
         if has_super_free(raw):return PyramidsSuperFreeSequence(self.plan).sequence(raw)
         if has_super_hold(raw):return PyramidsSuperHoldSequence(self.plan).sequence(raw)
@@ -32,6 +34,9 @@ class PyramidsFields(NativeNextgenFields):
 
     def settled(self, raw):
         check(self.next_request(raw) is None, 'INCOMPLETE_ROUND')
+        if has_cash_coins(raw):
+            PyramidsCoinSequence(self.plan).settled(raw)
+            return derive(raw)
         if has_retrigger(raw) or has_super_free(raw) or has_super_hold(raw) or has_fifteen(raw) or has_mixed(raw):return derive(raw)
         if feature_type(raw):
             (PyramidsMajorSequence if has_major(raw) else PyramidsFreeSequence)(self.plan).settled(raw)

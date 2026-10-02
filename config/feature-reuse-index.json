@@ -1063,12 +1063,16 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -1406,12 +1410,16 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -1857,13 +1865,17 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -2194,13 +2206,17 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -2518,14 +2534,18 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
             "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
             "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -2813,13 +2833,17 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -2905,15 +2929,18 @@
       "references": {
         "service/pyramids_hold_review.py": "bdfe0ed22be2e1181ff5ea3cf5d119c9a6aca8ddd0c0543ab1a7bda5a05adaa8",
         "scripts/trial/pyramids-hold-review.mjs": "73b3923a17766787f2246329602b8d7a7992ae01bcdc932ab712624a40786093",
-        "service/pyramids_free_review.py": "fa168ebd85f75f233238b151710c78e4206500a44d8df1ccf74e46f914d5d975",
-        "scripts/trial/pyramids-free-review.mjs": "15b49d36da4b44108711a396df2a53d334c758b33112cedfec4a15898759881d",
+        "service/pyramids_free_review.py": "ff1ac871615f8250819db8a7581c014baea1f3a5f6c8e5b231d75da5afe95137",
+        "scripts/trial/pyramids-free-review.mjs": "86433dd7be27019a8edb6bb61fccef3a5502489b55bf937020120e7e054fad5c",
         "service/pyramids_major_review.py": "a3136bc38ea4f8990d17d3139c246799d44be643435bdc6f57898c231aa71906",
-        "service/pyramids_fields.py": "bab5da6706aaaad4c3641031aa89d91fafda43d83a2015d5df0a20b3a1f7061a",
-        "scripts/trial/pyramids-protocol.mjs": "fba01cf04fed868f1119fd523cfda47dbc288ef4e315dfce64fe07ef4142e4ce",
-        "collector/sg.pyramids.ts": "892a9c7a6251acebbf2fd8501b5edaa0d18551f79a920d9475298196817dd5f6",
+        "service/pyramids_fields.py": "06864e699457a4a7923d078258a2d88ea7ae533c32f9ad0767279c7bc53678d0",
+        "scripts/trial/pyramids-protocol.mjs": "853bd756c59599937c06ca2916dd7f07f99264f9c455bbc170ec2ce51d2a046c",
+        "collector/sg.pyramids.ts": "ac7a253169433f85964892f91a23ba451129b42d12f52eb698093ef0a093f225",
         "service/pyramids_super_free_review.py": "6b40330ab3b44128551c1414008f799c7f91d1d576266cb64913511d61f0520d",
         "scripts/trial/pyramids-super-free-review.mjs": "4520e2a0c0c39cae0d5996f087a23eacb195537826cf4ec5eebbe3a855101ff5",
-        "collector/sg.pyramids-super-free.ts": "27b79626081c402c4028d3679087f83e2b107cf33b023fc96d39361b1987feb6"
+        "collector/sg.pyramids-super-free.ts": "27b79626081c402c4028d3679087f83e2b107cf33b023fc96d39361b1987feb6",
+        "service/pyramids_coin_review.py": "de6b1a1546adab204252fecbaab2139e8971782c7a99854301e1ed066d7a1548",
+        "scripts/trial/pyramids-coin-review.mjs": "cdebfbac4376f076ad6b47ffac65d815775fb7519f1928532bf6a08a48cad105",
+        "collector/sg.pyramids-coins.ts": "45eb54f07a4715e55f54e2215423c405db945e7c1f79d28ae3338a48b44b6202"
       },
       "candidates": [
         {
@@ -2941,7 +2968,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "Size2 projection now has independent Python/Runner/collector mapping and capture/controller tests. Old33 records remain unchanged; natural size2 terminal and independent reentry remain outstanding."
           ],
           "captureAuthorization": false
@@ -2974,7 +3002,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "Isolated HardHat duplicate1|1 slots now have an additive counter-validated mapping; natural retrigger terminal and new admission remain outstanding. Mixed TouchUp/Mansion transitions still require separate evidence.",
             "Do not transfer FID meanings or treat NFG0 alone as terminal."
           ],
@@ -3008,7 +3037,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "FID2 is Wheel; WHSTOP and combined features decide continuation.",
             "Additive MegaHat single-free mapping supports only the reviewed two-frame prefix plus a strict synthetic one-free exit; retriggers, new awards and frame features remain unsupported. Natural terminal and new admission still outstanding."
           ],
@@ -3043,7 +3073,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "Pinned official Inca methods confirm FID1 FreeSpins, FID0 HoldNSpin and FGRS/CFGC overrides; independently reviewed, not inferred from the name.",
             "Finite source run preserved94 records and closed29 used/71 foregone; no natural free terminal. Coin/free repair now has independent Python/Runner/collector mapping and capture checks; all94 old records unchanged. No repair reentry; continuations/terminal remain synthetic.",
             "HoldNSpin has separate real trigger evidence and reviewed outro, but no natural terminal. Do not inherit Pyramids award semantics or Jinzita broader progression."
@@ -3075,7 +3106,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "FID1 means free spins here; FGRS/CFGC and GCT require independent checks.",
             "Independent free terminal is synthetic evidence, not whole-game coverage."
           ],
@@ -3106,7 +3138,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -3137,7 +3170,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence."
           ],
@@ -3170,7 +3204,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "Pick count and selection parameters are specific to this game; free-to-jackpot remains unsupported."
           ],
           "captureAuthorization": false
@@ -3202,7 +3237,8 @@
           ],
           "requiredReview": [
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota.",
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled."
           ],
           "captureAuthorization": false
@@ -4251,13 +4287,17 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "FID1/CFG1 is independent free; CFG0 selects a different feature.",
             "Independent free terminal is synthetic evidence.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -4573,13 +4613,17 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "FID2 means free spins here; switching to respin/cascade is not a terminal.",
             "Independent free terminal is synthetic evidence.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },
@@ -4889,12 +4933,16 @@
             "collector/sg.pyramids.ts",
             "service/pyramids_super_free_review.py",
             "scripts/trial/pyramids-super-free-review.mjs",
-            "collector/sg.pyramids-super-free.ts"
+            "collector/sg.pyramids-super-free.ts",
+            "service/pyramids_coin_review.py",
+            "scripts/trial/pyramids-coin-review.mjs",
+            "collector/sg.pyramids-coins.ts"
           ],
           "requiredReview": [
             "Foam and Pick A Ball use different FP and terminal counter shapes; completed game must not be resampled.",
             "Isolated Hold (+2/+4), ten-free, mixed free-to-hold, fifteen-free and Super Hold mappings have separate reviewed scopes. Applied Super Hold source reached5713 complete, then a natural SFGT trigger parked independently. Zero-source parked retirement preserved5713 and released reservations. SFGT cash mapping reuses reviewed ten-free counters with a separate flag/XML gate and bonus7; its trigger is natural, terminal synthetic and independent reentry outstanding. Reentry never proves all feature exits.",
-            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate reviewed mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting."
+            "Official FID0=HoldNSpin/FID1=FreeSpins; Inca has the same enum but different extension/coin behavior. Free-frame CL=-3 has a separate historical mapping. A real eight-frame Free-to-Hold prefix preserves outer FGRS3/CFGC7/FGTS10 while inner counters reset6/6/0; independent mixed mapping is integrated. External jackpots, arbitrary negative symbols, SFGT retriggers and SFGT mixed features remain unsupported. Reuse geometry/transport/counters only after reviewing domain transitions, flags, natural request routes and payout accounting.",
+            "The ended retrigger run retained7503 complete records and its15-frame signed-coin prefix was abandoned without replay. Official CL=-4/-3/-2 are Mini/Minor/Major; JPV supplies display factors, not TW settlement. Independent bonus9 cash-coins mapping verifies cumulative B=start-20+TW and pending AB=start-20, with responseBalance=AB. All15 natural prefixes remain unfinished; complete cash exits are synthetic. Reentry requires a new independently reviewed profile and does not inherit source quota."
           ],
           "captureAuthorization": false
         },

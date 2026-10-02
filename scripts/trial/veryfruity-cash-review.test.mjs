@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {reviewVeryFruityCash} from './veryfruity-cash-review.mjs';
 // Independent validators consume the same original XML; all identities synthetic.
-const python=process.env.SG_REVIEW_PYTHON??'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe';
+const python=process.env.SG_REVIEW_PYTHON??process.env.PYTHON??(process.platform==='win32'?'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe':'python3');
 const fixture=spawnSync(python,['-c','import json; from service.tests.test_veryfruity_cash_review import sample,HEADER; print(json.dumps({"header":HEADER,"raws":[sample(x) for x in (0,20,125)]}))'],{env:{...process.env,PYTHONPATH:'service',PYTHONUTF8:'1'},encoding:'utf8'});
 assert.equal(fixture.status,0,fixture.stderr);
 const {header,raws}=JSON.parse(fixture.stdout);

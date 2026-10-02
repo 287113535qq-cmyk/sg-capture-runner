@@ -19,6 +19,10 @@ def feature_type(raw):
 class PyramidsFreeSequence(NativeNextgenFields):
     reviewed_free_total = 10
     extra_gsd = frozenset()
+    def reviewed_negative_coin(self, key, index, value):
+        # Legacy extension identifiers remain immutable. Its -3 label denotes
+        # the official Minor symbol, despite the historical code name.
+        return getattr(self, 'reviewed_major', False) and index > 0 and key == 'CL' and value == -3
     def __init__(self, plan):
         check(plan.get('gameId') == 32721 and plan.get('sourceKey') == SOURCE, 'PYRAMIDS_FREE_PROFILE_REQUIRED')
         super().__init__(plan)
@@ -50,8 +54,7 @@ class PyramidsFreeSequence(NativeNextgenFields):
                 x,y,value = map(int,cells)
                 check(0 <= x < 3 and 0 <= y < 5 and value <= 9007199254740991 and (x,y) not in seen, 'PYRAMIDS_FREE_COIN')
                 seen.add((x,y))
-                unreviewed_coin |= value < 0 and not (getattr(self, 'reviewed_major', False)
-                    and index > 0 and key == 'CL' and cells[2] == '-3')
+                unreviewed_coin |= value < 0 and not self.reviewed_negative_coin(key, index, value)
         # Known official coin symbols are an adapter gap, not corrupt money.
         # Validate every position first so a malformed later coin stays a hard fault.
         check(not unreviewed_coin, 'PYRAMIDS_FREE_UNREVIEWED_COIN')

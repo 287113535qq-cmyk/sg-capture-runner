@@ -1747,6 +1747,38 @@
       "featureTypes": {
         "independentFreeGames": 8
       }
+    },
+    "hyperchargedpyramidsofra96-round-one-base-v1-pyramids-cash-coins-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32721,
+        "runtimeGameId": 33121,
+        "sourceId": "862c73ec-8599-4af4-a0b2-0c5416fdf730"
+      },
+      "featureSelector": "pyramids-cash-coins-v1",
+      "featureTypes": {
+        "independentFreeGames": 9
+      }
     }
   }
 }

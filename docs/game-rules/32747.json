@@ -90,9 +90,9 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
-    "service/round_fields.py": "fd28ad38c14d25c3ec71822c9e44ddaadf24848ab4263193a9939d923970c1c4",
+    "service/round_fields.py": "98f6f5701520acb152e59d864e01e12985c49ad3456bfe5c4ffbb6c2dde65a53",
     "scripts/runner-v2/record_fields.py": "25ffcda8ce14b328ce31ca87eb6a2656d2347071b6d09363a13afa71e84d2989",
-    "service/game_rule_catalog.py": "3afbb89da2a663fe5a2b5996bf18e1985f4554929d3778113182501b2691ef0e"
+    "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fcf3fa321362607ba57123bbeae70845da76adcec5385c5c2e4bf60ec285b4d3"
+  "ruleHash": "1b64df47f748d2e4325e2752ded52348e97f5d246a75688cdbfe95546a1e4f2c"
 }

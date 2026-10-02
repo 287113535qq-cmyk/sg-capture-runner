@@ -141,6 +141,10 @@ def contract(game_id):
         native['files'] += ['service/pyramids_mixed_prefix.py','service/pyramids_mixed_review.py','scripts/trial/pyramids-mixed-prefix.mjs','scripts/trial/pyramids-mixed-review.mjs','collector/sg.pyramids-mixed.ts','service/pyramids_mixed_plan.py','scripts/runner-v2/pyramids-mixed-repair-profile.mjs']
         native['bounds'] += ' 混合功能重新准入v4准备保留3627完整、原目标剩余296223，采用有界增量CAS；真实全文在内存重入通过，线上未应用。已完成Rhino的精确终审凭证可释放同级队列阻塞，仍核零租约和固定源身份。'
         native['fields']['GSD.FGTS / FGRS / CFGC'] = 'free-hold-v1/bonus4独立混合入口：外层免费10次，进入Hold时内层6/6/0，内层期间外层冻结，Hold累计奖励核TW后恢复外层。实际8帧仅前缀，17/19/21帧终局为合成；不授额度、不续旧会话、未重入。'
+        native['files'] += ['service/pyramids_coin_review.py','scripts/trial/pyramids-coin-review.mjs','collector/sg.pyramids-coins.ts']
+        native['fields']['GSD.CL=-3'] = '旧major-v1/bonus3标识保留，官方-3实际为Minor；旧作用域不变。新cash-coins-v1/bonus9支持首FID1/TFG10、FREE CL中-4/-3/-2即Mini/Minor/Major及已审+10重触发；首BET/BGCL负值和Grand-1仍拒绝。'
+        native['fields']['B / AB / responseBalance'] = 'cash-coins-v1逐帧B=start-20+累计TW；未结算AB及账户responseBalance=start-20，现金终局AB=B。不由显示金币因子推算TW。'
+        native['bounds'] += ' 最新7503完整已实际结清、原15帧作废不重放；新金币三方接线及17Python/11Runner相关检查通过，1716最近完整规范化不变。15真实前缀仍未完成，金币终局为合成；尚无新准入，不称整款ready或效率验收完成。'
     elif game_id == 32720:
         native.update({'family': 'jinzita-standalone-free-v1',
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',

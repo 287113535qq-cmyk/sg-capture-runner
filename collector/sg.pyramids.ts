@@ -25,7 +25,7 @@ function holdGsd(g:Record<string,string>){
   else matrix(g[k]);
  }
 }
-export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false,retriggerTen=false){
+export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,freeTotal=10,superHold=false,superFree=false,retriggerTen=false,reviewedCashCoins=false){
  requireP([10,15].includes(freeTotal),'PYRAMIDS_UNREVIEWED_FREE_TOTAL');
  requireP(raw.sourceKey==='hyperchargedpyramidsofra96-round-one-base-v1'&&raw.protocol==='nextgen'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1'&&Array.isArray(raw.steps)&&raw.steps.length>0&&raw.steps.length<=100,'PYRAMIDS_PROFILE');
  const free=raw.steps.some((s:any)=>['1','1|'].includes(fields(s.responsePayload).FID));
@@ -33,6 +33,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
  requireP(!superHold||hold,'PYRAMIDS_SUPER_HOLD_SCOPE');
  requireP(!superFree||free&&!superHold&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_SUPER_FREE_SCOPE');
  requireP(!retriggerTen||free&&!superHold&&!superFree&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_RETRIGGER_SCOPE');
+ requireP(!reviewedCashCoins||free&&retriggerTen&&!superHold&&!superFree&&!reviewedMajor&&freeTotal===10,'PYRAMIDS_COIN_SCOPE');
  let observedMajor=false;
  let prior=0,total=0,played=0,firstWin=0,pid:string|undefined,baseCoins:string|undefined,last:Record<string,string>={};
  raw.steps.forEach((s:any,i:number)=>{
@@ -59,7 +60,7 @@ export function pyramidsFields(raw:any,mappingHash:string,reviewedMajor=false,fr
      }
      const seen=new Set<string>(),coins=matrix(g[key]);
      requireP(coins.length<=15,'PYRAMIDS_FREE_COIN');
-     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&(v>=0||[-4,-3,-2].includes(v))&&!seen.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);observedMajor ||= i>0&&key==='CL'&&v===-3;unreviewedCoin ||= v<0&&!(reviewedMajor&&i>0&&key==='CL'&&v===-3);}
+     for(const coin of coins){const [x,y,v]=coin,pos=x+','+y;requireP(coin.length===3&&x>=0&&x<3&&y>=0&&y<5&&(v>=0||[-4,-3,-2].includes(v))&&!seen.has(pos)&&!/(^|[;|])-0([;|]|$)/.test(g[key]),'PYRAMIDS_FREE_COIN');seen.add(pos);observedMajor ||= i>0&&key==='CL'&&v===-3;unreviewedCoin ||= v<0&&!(i>0&&key==='CL'&&(reviewedMajor&&v===-3||reviewedCashCoins&&[-4,-3,-2].includes(v)));}
     }
     requireP(!unreviewedCoin,'PYRAMIDS_FREE_UNREVIEWED_COIN');
     requireP((g.IIFS===undefined||(i?['0','1']:['1']).includes(g.IIFS))&&(g.FGRS===undefined||count(g.FGRS)===n)&&(g.CFGC===undefined||count(g.CFGC)===c),'PYRAMIDS_FREE_NESTED');
