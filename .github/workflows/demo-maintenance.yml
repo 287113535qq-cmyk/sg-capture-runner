@@ -2,6 +2,11 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      direct_audit_profile:
+        description: 'Independent source-free final audit; binds an ended successful source'
+        type: choice
+        default: count-audit-pyramids-direct-action-20261002.json
+        options: [count-audit-pyramids-direct-action-20261002.json, count-audit-pyramids-network-action-20261002.json]
       analysis_after:
         description: 'Last receipt sequence reviewed; bounded independent analysis only'
         type: string
@@ -479,7 +484,7 @@ jobs:
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Audit the reached original target without source requests
-        run: node scripts/runner-v2/action-final-audit-control.mjs
+        run: node scripts/runner-v2/action-final-audit-control.mjs ${{ inputs.direct_audit_profile }}
 
   pyramids-http-close:
     if: github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.operation == 'close-pyramids-http'
