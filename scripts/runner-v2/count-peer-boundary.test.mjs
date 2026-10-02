@@ -3,6 +3,20 @@ import {countPeerBoundary,checkCountPeerDescriptor,checkCountPeerEvidence,checkC
 import {original} from './expired-run-review.mjs';import {stalled,revokedMarker} from './demo-run-fence.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 const repos={primary:'zyzuoyang/sg-capture-runner',secondary:'287113535qq-cmyk/sg-capture-runner'};
+test('display adapter retirement binds only the exact VeryFruity hold, with no source boundary permission',()=>{
+ const hold={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{code:'VERYFRUITY_ACTION_UNREVIEWED_EXIT',category:'source_protocol',trialId:'sg_r1_20261003_32812',cooldownUntil:0}};
+ const rows=[{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:hold}];
+ checkCountPeerHolds(rows,'secondary',hash(hold),hold.details.code,'source_protocol',false,true);
+ assert.throws(()=>checkCountPeerHolds(rows,'secondary',hash(hold),hold.details.code,'source_protocol'));
+ for(const cause of ['primary','code','category','trial','cooldown']){
+  const r=structuredClone(rows);if(cause==='primary')r[0].value.active=true;
+  if(cause==='code')r[1].value.details.code='INVALID_SOURCE_MONEY';
+  if(cause==='category')r[1].value.details.category='storage';
+  if(cause==='trial')r[1].value.details.trialId='sg_r1_20260928_32721';
+  if(cause==='cooldown')r[1].value.details.cooldownUntil=1;
+  assert.throws(()=>checkCountPeerHolds(r,'secondary',hash(r[1].value),hold.details.code,'source_protocol',false,true));
+ }
+});
 test('bootstrap maintenance permits only its exact original storage hold, never an unrelated failure',()=>{
  const hold={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{code:'VERYFRUITY_INIT_STAKES',category:'storage',trialId:'sg_r1_20261003_32812',cooldownUntil:0}};
  const rows=[{_id:'primary/global-hold',value:{active:false}},{_id:'secondary/global-hold',value:hold}];

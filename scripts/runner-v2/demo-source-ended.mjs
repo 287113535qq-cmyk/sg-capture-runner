@@ -3,7 +3,10 @@ import {checkVeryFruityNextProfile} from './veryfruity-next-profile.mjs';
 export function checkDemoSourceEnded({ended,jobs,profile,closing=false,repository='zyzuoyang/sg-capture-runner'}){
  const veryfruity=!closing&&profile.gameId===32812;
  if(veryfruity)checkVeryFruityNextProfile(profile,profile.basePlan);
- assert(repository==='zyzuoyang/sg-capture-runner'||(repository==='287113535qq-cmyk/sg-capture-runner'&&profile.group==='secondary'&&profile.workerOffset===20&&(veryfruity||closing&&[32719,32721].includes(profile.gameId)||!closing&&profile.gameId===32721&&profile.fromGameId===32719&&profile.sourceClosureHash==='6c4638ed879867f611a3aeffb6e97a40ba2b8cdeaa90d211f669711549c4425c')),'SOURCE_REPOSITORY_SCOPE');
+ const veryClose=closing&&profile.schema==='sg-ag-shared-stop-close-v2'&&profile.gameId===32812
+  &&profile.trialId==='sg_r1_20261003_32812'&&profile.sourceRunKey==='capture-run:37053154321:1'
+  &&profile.sourceCommit==='54e5fa3c63bf7766d02a443e5bdd07c10a290412'&&profile.newBetAllowance===0;
+ assert(repository==='zyzuoyang/sg-capture-runner'||(repository==='287113535qq-cmyk/sg-capture-runner'&&profile.group==='secondary'&&profile.workerOffset===20&&(veryfruity||veryClose||closing&&[32719,32721].includes(profile.gameId)||!closing&&profile.gameId===32721&&profile.fromGameId===32719&&profile.sourceClosureHash==='6c4638ed879867f611a3aeffb6e97a40ba2b8cdeaa90d211f669711549c4425c')),'SOURCE_REPOSITORY_SCOPE');
  assert('capture-run:'+ended.id+':'+ended.run_attempt===profile.sourceRunKey&&ended.run_attempt===1
   &&ended.head_sha===profile.sourceCommit&&ended.status==='completed'
   &&ended.path==='.github/workflows/trial-300k.yml'&&ended.repository?.full_name===repository
