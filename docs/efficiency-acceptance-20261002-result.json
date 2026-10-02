@@ -429,6 +429,120 @@
       "maxRecordsPerPage": 100,
       "partialResultsRejected": true,
       "onlineGainMeasured": false
+    },
+    "parkedCountSettlement": {
+      "sourceRun": 36946815410,
+      "preflightRun": 36948460166,
+      "maintenanceRun": 36948774850,
+      "runtime": "faf82556aad4cff4489bc09ec4359c2977d678b5",
+      "completePreserved": 5713,
+      "oldCompleteUnchanged": 5111,
+      "newComplete": 602,
+      "newMongoFullReadback": 602,
+      "newPythonFullVerified": 602,
+      "newAbandoned": 0,
+      "abandonedAlready": 1,
+      "pending": 0,
+      "reserved": 0,
+      "repairStatus": "pending-adapter",
+      "sourceRequests": 0,
+      "newBetAllowance": 0,
+      "recordsHash": "16db53f48d254a8ba850a3628859693ff4096dfeaeefac39f47833b3327be432",
+      "cost": {
+        "schema": "sg-retirement-cost-v1",
+        "verifiedRecords": 5713,
+        "verificationPages": 156,
+        "verificationMs": 1867.8531790000561,
+        "fullReadbackMs": 2100.329803000117,
+        "boundedBatchVerification": true,
+        "elapsedMs": 55449.727794000006,
+        "sourceRequests": 0,
+        "observationOnly": true
+      },
+      "matchedOldComparison": false,
+      "wholeGameReady": false
+    },
+    "superHoldSourceAdoption": {
+      "sourceRun": 36946815410,
+      "workersWithFinalMetrics": 19,
+      "workersWithoutFinalMetrics": 1,
+      "completeThisRun": 602,
+      "actualDeltaCasRequests": 47,
+      "controlReadRequests": 747,
+      "controlReadBytes": 1366986,
+      "controlBytesPerRequest": 1829.9678714859438,
+      "previousFullBytesPerRequest": 50868.19651442308,
+      "compactAdoptionObserved": true,
+      "projectedControlRequests": 731,
+      "startupFullControlRequests": 16,
+      "requestShapeEvidence": "Fixed schema/trial and two-digit worker request byte totals; direct projected field equivalence independently reviewed.",
+      "operations": {
+        "read": {
+          "requests": 759,
+          "elapsedMs": 38502.37375400001,
+          "responseBytes": 10318241,
+          "requestBytes": 78395
+        },
+        "hello": {
+          "requests": 19,
+          "elapsedMs": 534.2068800000006,
+          "responseBytes": 3572,
+          "requestBytes": 817
+        },
+        "resources": {
+          "requests": 21,
+          "elapsedMs": 445.8592279999998,
+          "responseBytes": 5313,
+          "requestBytes": 987
+        },
+        "control_read": {
+          "requests": 747,
+          "elapsedMs": 6592.395151999987,
+          "responseBytes": 1366986,
+          "requestBytes": 72235
+        },
+        "cas_delta": {
+          "requests": 47,
+          "elapsedMs": 1160.9626859999983,
+          "responseBytes": 2445,
+          "requestBytes": 16536
+        },
+        "create": {
+          "requests": 645,
+          "elapsedMs": 4712.5677330000035,
+          "responseBytes": 23865,
+          "requestBytes": 2102273
+        },
+        "cas": {
+          "requests": 2291,
+          "elapsedMs": 18154.87393499996,
+          "responseBytes": 118332,
+          "requestBytes": 6330849
+        },
+        "read_many": {
+          "requests": 96,
+          "elapsedMs": 1803.4022260000029,
+          "responseBytes": 15876202,
+          "requestBytes": 196672
+        },
+        "rounds_read": {
+          "requests": 234,
+          "elapsedMs": 1800.0036280000086,
+          "responseBytes": 1841313,
+          "requestBytes": 164909
+        },
+        "rounds_insert": {
+          "requests": 66,
+          "elapsedMs": 883.2629179999958,
+          "responseBytes": 2364,
+          "requestBytes": 1842333
+        }
+      },
+      "sourceConclusion": "failure",
+      "fullRoundGainVerified": false,
+      "sourceRequestsForAnalysis": 0,
+      "mongoWritesForAnalysis": 0,
+      "limitation": "Unmatched protocol shapes and different completed counts cannot establish overall throughput gain."
     }
   },
   "pending": [

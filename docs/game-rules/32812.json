@@ -31,7 +31,7 @@
   "analysisDocumentHashes": {
     "docs/ag-audit-phase-efficiency-20261002.md": "576baa598e76f991877fdf435641e758f6a3ace9e1c8c7a58be9f12b0159d542",
     "docs/ag-preparation-method-reuse-20261002.md": "97fe7dfa05a75ad29de8f65a5f1d647022b179fc4d3d407f7c9f07a94e8924c9",
-    "docs/efficiency-acceptance-20261002-result.json": "d82543dbf802a11c6fd63257e64cdeb6ce56509ffdaa61f57542fbc72a8297da"
+    "docs/efficiency-acceptance-20261002-result.json": "6431145d3f5e628fc6be7551b117cdd4cfd09151441930ff3c32a62149db4dd2"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -40,5 +40,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f2bc758fbe97a2ad3deca371933e0506593e44d2115c3dce7779dda8085b945f"
+  "ruleHash": "f8409fbb81e1e8af2637ff89dbb75b6a3154ae1c89bfee38e212cc90bcc52982"
 }

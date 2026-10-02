@@ -1,6 +1,16 @@
 name: SG offline preflight
 on:
   workflow_dispatch:
+    inputs:
+      compare_preflight:
+        description: Compare the same offline checks in reversed serial/parallel order
+        type: boolean
+        default: false
+      check_workers:
+        description: Fixed independent offline check groups; no capture lanes
+        type: choice
+        options: ['1', '2', '3']
+        default: '1'
 permissions:
   contents: read
 concurrency:
@@ -9,7 +19,7 @@ concurrency:
 jobs:
   preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: ${{ inputs.compare_preflight && 20 || 10 }}
     env:
       PUPPETEER_SKIP_DOWNLOAD: 'true'
     steps:
@@ -24,30 +34,18 @@ jobs:
       - name: Install locked dependencies without lifecycle scripts
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: TypeScript checks
-        working-directory: collector
-        run: npm run typecheck
-      - name: Offline fixture tests only
-        working-directory: collector
-        run: npm test
-      - name: Durable storage and dynamic pool recovery tests
-        run: python3 -m unittest discover -s service/tests -q
       - name: Per-game rule archive matches committed implementation
         run: python3 scripts/build-game-rule-archive.py --check
-      - name: Offline timing and evidence-based reuse checks
+      - name: Fixed offline checks with joined results and bounded concurrency
+        env:
+          SG_PREFLIGHT_COMPARE: ${{ inputs.compare_preflight && 'true' || 'false' }}
+          SG_PREFLIGHT_WORKERS: ${{ inputs.check_workers || '1' }}
         run: |
-          python3 -m unittest discover -s scripts -p 'test_analyze_capture_timing.py' -q
-          python3 -m unittest discover -s scripts -p 'test_feature_reuse_index.py' -q
-          python3 -m unittest discover -s scripts -p 'test_validate_preflight_runtime.py' -q
-          python3 -m unittest discover -s scripts -p 'test_analyze_performance_logs.py' -q
-          python3 -m unittest discover -s scripts -p 'test_client_method_reuse.py' -q
-          python3 -m unittest discover -s scripts -p 'test_review_gateway_document_cost.py' -q
-      - name: Session and startup checks
-        run: node --test scripts/trial/*.test.mjs
-      - name: GitHub processing and Mongo write backpressure checks
-        run: node --test scripts/runner-v2/*.test.mjs
-      - name: Twenty-session offline capture and persistence integration
-        run: node scripts/trial/pool-e2e-fixture.mjs
+          if [ "$SG_PREFLIGHT_COMPARE" = true ]; then
+            python3 scripts/run_offline_preflight.py --compare
+          else
+            python3 scripts/run_offline_preflight.py --workers "$SG_PREFLIGHT_WORKERS"
+          fi
       - name: Report preparation boundary
         run: |
           echo 'Offline preparation checks passed. No SG source request or database connection was made.' >> "$GITHUB_STEP_SUMMARY"
