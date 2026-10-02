@@ -72,7 +72,7 @@ export async function activateFormalRepair({store,transport,parser,plans,profile
    records.push(...rs);baseline.push({id:b.id,worker:b.worker,start:b.start,end:b.end,sessionHash:b.sessionHash,closed:true,complete:count,evidenceHash:hash(b)});
   }
  }
- const recordsHash=retrigger||major||fifteen||superHold||superFree?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
+ const recordsHash=cashCoins||retrigger||major||fifteen||superHold||superFree?createHash('sha256').update(records.map(r=>hash(r)+'\n').join('')).digest('hex'):hash(records);
  assert(records.length===preserved&&recordsHash===profile.recordsHash,'FORMAL_REPAIR_RECORDS');
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,gameId,
   target:plan.target,maxSequence:600000,baselineBatchCount:baseline.length,baselineHash:hash(baseline),firstSequence:pool.nextSequence,

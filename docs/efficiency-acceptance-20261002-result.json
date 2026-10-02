@@ -766,7 +766,7 @@
       "naturalPrefixesReviewed": 15,
       "naturalTerminalObserved": false,
       "oldNormalizedRecordsPreserved": 1716,
-      "profileCreated": false,
+      "profileCreated": true,
       "sourceRequests": 0,
       "mongoWrites": 0,
       "linuxPreflight": {
@@ -777,7 +777,9 @@
         "python": 4,
         "node": 19,
         "profileCreated": false
-      }
+      },
+      "actualReentry": false,
+      "actualRecordsMemoryReentryVerified": 7503
     }
   },
   "pending": [
