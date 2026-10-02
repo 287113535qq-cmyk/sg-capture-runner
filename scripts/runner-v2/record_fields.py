@@ -37,6 +37,12 @@ def execute(request):
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') == 'review_flow':
+        # Diagnostic channel only. Existing next/intent/record permissions and
+        # applied profiles remain independent; this cannot approve a record.
+        assert plan['sourceKey'] == PYRAMIDS_SOURCE
+        from pyramids_flow_review import review_pyramids_flow
+        return review_pyramids_flow(plan, request['raw'])
     if request.get('op') == 'verify_batch':
         records = request.get('records')
         assert isinstance(records, list) and 1 <= len(records) <= 100

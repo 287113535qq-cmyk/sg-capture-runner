@@ -91,7 +91,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "25ffcda8ce14b328ce31ca87eb6a2656d2347071b6d09363a13afa71e84d2989",
+    "scripts/runner-v2/record_fields.py": "d6e9193999fd945db8df5e8dc3b8f19dfde2af1ce4b0db6c460d8b82cf122ddd",
     "service/game_rule_catalog.py": "67e48644e61d626d78357b0b09ce61215d04dad3b18204b9ad845e89e1b94f4a"
   },
   "reviewDocuments": [],
@@ -112,5 +112,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4e34955a9de6b46a1303bbf297d27644fd07a8384afef0faa8e9b2c1359f04fa"
+  "ruleHash": "745964d2d0d8b2caccec3a8e83ad0810a4d7f4786ea419a76156910647919023"
 }
