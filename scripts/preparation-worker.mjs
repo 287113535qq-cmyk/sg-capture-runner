@@ -83,7 +83,7 @@ try{
     fs.writeFileSync(path.join(dir,claim.gameId+'-reuse.json'),JSON.stringify(reference,null,2)+'\n');
     let reason='ADAPTER_DIFFERENCE_EVIDENCE_REQUIRED';
     if(claim.gameId===32812){
-      const node=run(process.execPath,['--test','scripts/trial/veryfruity-worker.test.mjs','scripts/runner-v2/veryfruity-next-profile.test.mjs'],'32812-local-node');
+      const node=run(process.execPath,['--test','scripts/trial/veryfruity-session.test.mjs','scripts/trial/veryfruity-worker.test.mjs','scripts/runner-v2/veryfruity-next-profile.test.mjs'],'32812-local-node');
       const py=run(python,['-m','unittest','discover','-s','service/tests','-p','test_veryfruity_action_fields.py'],'32812-local-python');
       reason=node&&py?'LOCAL_VERIFIED_LINUX_NATIVE_ACTIVATION_PENDING':'LOCAL_CHECK_FAILED';
     }else if(claim.gameId===32719){
