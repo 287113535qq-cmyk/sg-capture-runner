@@ -26,6 +26,43 @@ def mixed_prefix():
 
 
 class PyramidsFlowTests(unittest.TestCase):
+    def test_direct_layered_bet_is_independently_opted_in_and_counters_still_proven(self):
+        step = frame('BET', 6, 6, 0, '0|1|')
+        step['methodName'] = 'processGameMessage'
+        rewrite(step, GSD='FGRS~10#FGTS~10#CFGC~0')
+        value = raw([step])
+        with self.assertRaisesRegex(FieldError, 'FLOW_TRIGGER'):
+            review_pyramids_flow(PLAN, value)
+        result = review_pyramids_flow(PLAN, value, direct_layered_entry=True)
+        self.assertEqual(result['next'], {'MSGID': 'FREE_GAME'})
+        self.assertFalse(result['terminalCandidate'])
+        for gsd in ['FGRS~9#FGTS~10#CFGC~1', 'FGRS~0#FGTS~0#CFGC~0']:
+            bad = copy.deepcopy(value)
+            rewrite(bad['steps'][0], GSD=gsd)
+            with self.assertRaisesRegex(FieldError, 'FLOW_LAYERED_TRIGGER'):
+                review_pyramids_flow(PLAN, bad, direct_layered_entry=True)
+
+    def test_direct_layered_entry_finishes_inner_then_outer_without_skipping(self):
+        steps = [frame('BET', 6, 6, 0, '0|1|')]
+        steps += [frame('FREE_GAME', n, 6, 6-n, '0|1|') for n in range(5, -1, -1)]
+        for step in steps:
+            step['methodName'] = 'processGameMessage'
+            rewrite(step, GSD='FGRS~10#FGTS~10#CFGC~0')
+        value = raw(steps)
+        self.assertEqual(review_pyramids_flow(PLAN, value, direct_layered_entry=True)['next'], {'MSGID':'FREE_GAME'})
+        outer = [frame('FREE_GAME', n, 10, 10-n, '1|') for n in range(9, -1, -1)]
+        for step in outer:
+            step['methodName'] = 'processGameMessage'
+        value['steps'] += outer
+        result = review_pyramids_flow(PLAN, value, direct_layered_entry=True)
+        self.assertIsNone(result['next'])
+        self.assertTrue(result['terminalCandidate'])
+        self.assertFalse(result['complete'])
+        bad = copy.deepcopy(value)
+        del bad['steps'][6]
+        with self.assertRaisesRegex(FieldError, 'FLOW_RESUME_FREE'):
+            review_pyramids_flow(PLAN, bad, direct_layered_entry=True)
+
     def test_large_awards_keep_known_route_but_do_not_relax_progress(self):
         value = flow_sample()
         value['steps'] = value['steps'][:2]

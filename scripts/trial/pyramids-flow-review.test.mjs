@@ -64,3 +64,24 @@ print(json.dumps(dict(plan=PLAN,cases=cases)))
  assert(cases.some(c=>c.name==='inner-terminal-keeps-outer-free'&&c.result.next));
  assert(cases.some(c=>c.result?.terminalCandidate));
 });
+
+
+test('direct layered BET requires new opt-in and rejects already progressed outer state',()=>{
+ const script=`import sys,json
+sys.path[:0]=['service','service/tests']
+from test_pyramids_flow_review import PLAN,frame,rewrite
+from test_pyramids_free_review import raw
+s=frame('BET',6,6,0,'0|1|');s['methodName']='processGameMessage'
+rewrite(s,GSD='FGRS~10#FGTS~10#CFGC~0')
+print(json.dumps({'plan':PLAN,'raw':raw([s])}))`;
+ const p=spawnSync(process.env.PYTHON,['-c',script],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);
+ const {plan,raw}=JSON.parse(p.stdout);
+ assert.throws(()=>reviewPyramidsFlow(plan,raw),/FLOW_TRIGGER/);
+ assert.deepEqual(reviewPyramidsFlow(plan,raw,{directLayeredEntry:true}).next,{MSGID:'FREE_GAME'});
+ for(const state of ['FGRS~9#FGTS~10#CFGC~1','FGRS~0#FGTS~0#CFGC~0']){
+  const bad=structuredClone(raw);const step=bad.steps[0],before=step.responsePayload;
+  step.responsePayload=before.replace('FGRS~10#FGTS~10#CFGC~0',state);
+  step.responseXml=step.responseXml.replace(before.replaceAll('&','&amp;'),step.responsePayload.replaceAll('&','&amp;'));
+  assert.throws(()=>reviewPyramidsFlow(plan,bad,{directLayeredEntry:true}),/FLOW_LAYERED_TRIGGER/);
+ }
+});

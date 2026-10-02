@@ -11,7 +11,7 @@ from pyramids_hold_review import SOURCE
 from round_fields import amount, check, params, VERSION
 
 
-def review_pyramids_flow(plan, raw):
+def review_pyramids_flow(plan, raw, *, direct_layered_entry=False):
     check(plan.get('gameId') == 32721 and plan.get('sourceKey') == SOURCE
           and plan.get('betRaw') == 20, 'FLOW_PROFILE')
     check(raw.get('sourceKey') == SOURCE and raw.get('protocol') == 'nextgen'
@@ -79,7 +79,11 @@ def review_pyramids_flow(plan, raw):
             outer = tuple(amount(g[k]) for k in ('FGRS', 'FGTS', 'CFGC'))
             check(outer[0] + outer[2] == outer[1], 'FLOW_OUTER_COUNTERS')
         if previous is None:
-            check(fid != '0|1' and c == 0, 'FLOW_TRIGGER')
+            if fid == '0|1' and direct_layered_entry:
+                check(c == 0 and n == t and n > 0 and outer[2] == 0
+                      and outer[0] == outer[1] and outer[0] > 0, 'FLOW_LAYERED_TRIGGER')
+            else:
+                check(fid != '0|1' and c == 0, 'FLOW_TRIGGER')
         else:
             pf, pn, pt, pc, po = previous
             check(pn > 0 or po is not None and po[0] > 0, 'FLOW_AFTER_TERMINAL')

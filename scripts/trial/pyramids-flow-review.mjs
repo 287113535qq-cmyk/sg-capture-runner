@@ -14,7 +14,7 @@ function amount(v){
   &&Number.isSafeInteger(Number(v))&&Number(v)>=0,'FLOW_NUMBER');return Number(v);
 }
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-export function reviewPyramidsFlow(plan,raw){
+export function reviewPyramidsFlow(plan,raw,{directLayeredEntry=false}={}){
  check(plan.gameId===32721&&plan.sourceKey===PYRAMIDS_SOURCE&&plan.betRaw===20,'FLOW_PROFILE');
  check(raw.sourceKey===PYRAMIDS_SOURCE&&raw.protocol==='nextgen'&&raw.fixtureOnly===false
   &&raw.roundFieldsVersion==='sg-round-fields-v1','FLOW_RAW_SCOPE');
@@ -65,7 +65,10 @@ export function reviewPyramidsFlow(plan,raw){
    outer=['FGRS','FGTS','CFGC'].map(k=>amount(g[k]));
    check(outer[0]+outer[2]===outer[1],'FLOW_OUTER_COUNTERS');
   }
-  if(previous===undefined)check(fid!=='0|1'&&c===0,'FLOW_TRIGGER');
+  if(previous===undefined){
+   if(fid==='0|1'&&directLayeredEntry)check(c===0&&n===t&&n>0&&outer[2]===0&&outer[0]===outer[1]&&outer[0]>0,'FLOW_LAYERED_TRIGGER');
+   else check(fid!=='0|1'&&c===0,'FLOW_TRIGGER');
+  }
   else{
    const [pf,pn,pt,pc,po]=previous;
    check(pn>0||po!==null&&po[0]>0,'FLOW_AFTER_TERMINAL');
