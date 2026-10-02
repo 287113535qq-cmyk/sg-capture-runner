@@ -1,5 +1,5 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
-import {DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
+import {DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,RESUME_ACTION_CONTINUOUS_RUNTIME,checkDirectRelayRevision,refreshDirectRelayRuntime,admitDirectRelay,relayDirectActionRun,directRelayWindow,directRelayCompleteDelta} from './action-direct-relay-runtime.mjs';
 import {loadDirectCaptureLogs,reviewDirectSourceResource} from './action-direct-resource.mjs';
 import {DIRECT_ACTION_PROFILE,RESUME_ACTION_PROFILE,pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
 import {connectGateway} from './transport.mjs';import {ResourceGate} from './resource-gate.mjs';
@@ -10,7 +10,8 @@ import {analyzer} from './analyzer.mjs';import {formalRelayInputs,waitFormalRela
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','DIRECT_RELAY_GITHUB');
 const mode=process.argv[2];assert(['refresh','admit','relay'].includes(mode),'DIRECT_RELAY_OPERATION');
 const resumed=process.env.SG_FORMAL_COUNT_PROFILE===RESUME_ACTION_PROFILE;
-const profileName=resumed?RESUME_ACTION_PROFILE:DIRECT_ACTION_PROFILE,runtimeName=resumed?RESUME_ACTION_RELAY_RUNTIME:DIRECT_ACTION_RELAY_RUNTIME;
+const profileName=resumed?RESUME_ACTION_PROFILE:DIRECT_ACTION_PROFILE;
+const runtimeName=resumed&&process.env.SG_COUNT_RUNTIME_PROFILE===RESUME_ACTION_CONTINUOUS_RUNTIME?RESUME_ACTION_CONTINUOUS_RUNTIME:resumed?RESUME_ACTION_RELAY_RUNTIME:DIRECT_ACTION_RELAY_RUNTIME;
 assert(process.env.SG_COUNT_RUNTIME_PROFILE===runtimeName&&process.env.SG_FORMAL_COUNT_PROFILE===profileName,'DIRECT_RELAY_PATH');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),plans=load('config/round-one-plans.json'),base=plans[32721];
 const profile=load('config/'+profileName),revision=load('config/'+runtimeName);
@@ -47,7 +48,9 @@ try{
  if(mode==='refresh'){
   const root='repos/287113535qq-cmyk/sg-capture-runner/actions/runs/'+revision.sourceRun.split(':')[0];
   const ended=await read(root),jobs=await read(root+'/jobs?filter=all&per_page=100');
-  const receipt=await refreshDirectRelayRuntime({store,base,plan,profile,revision,ended,jobs,commit,run,boundary});
+  const previousRevision=runtimeName===RESUME_ACTION_CONTINUOUS_RUNTIME?load('config/'+RESUME_ACTION_RELAY_RUNTIME):null;
+  const parentEnded=previousRevision?await read('repos/287113535qq-cmyk/sg-capture-runner/actions/runs/'+revision.resourceRootRun.split(':')[0]):null;
+  const receipt=await refreshDirectRelayRuntime({store,base,plan,profile,revision,previousRevision,parentEnded,ended,jobs,commit,run,boundary});
   console.log(JSON.stringify({refreshed:true,completePreserved:receipt.completePreserved,remainingComplete:receipt.remainingComplete,sourceRequests:0}));
  }else{
   if(mode==='admit'&&inputs.relay_parent)await waitFormalRelayParent({store,read,plan,profile,

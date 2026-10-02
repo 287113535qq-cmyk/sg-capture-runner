@@ -95,8 +95,8 @@ function resource(f,parent){return {schema:'sg-resource-workers-review-v1',run:p
  startMs:parent.createdAt,endMs:parent.createdAt+600000,sourceErrors:0,unknown:0,resourceHolds:0,logSha256:'f'.repeat(64)};}
 async function childReady(f,parent){
  f.advance(900001);f.addBatch(1000);
- const inputs={role:'formal-count',allocation:'round-one',round_one_limit:'0',formal_profile:'formal-repair-pyramids-direct-action-20261002.json',
-  runtime_profile:'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json',formal_relay:'same-allocation-v1'};
+ const inputs={role:'formal-count',allocation:'round-one',round_one_limit:'0',formal_profile:f.profile.featureProfile==='pyramids-action-v3'?'formal-repair-pyramids-resume-action-20261002.json':'formal-repair-pyramids-direct-action-20261002.json',
+  runtime_profile:f.profile.featureProfile==='pyramids-action-v3'?'count-runtime-pyramids-resume-action-relay-20261002.json':'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json',formal_relay:'same-allocation-v1'};
  const source={...f.ended,id:Number(parent.run.split(':')[0]),head_sha:f.commit,status:'in_progress',head_branch:'runtime-direct-relay'};
  const createIntent=async(k,v)=>{if(f.docs.has(k))return false;f.docs.set(k,structuredClone(v));return true;};
  let dispatched=0;
@@ -205,3 +205,66 @@ test('actual projection and delta entry select the new receipt; workflow separat
  actionContractHash:'088e6c2f90a9110b4335b2741723e39ef8b1bbbb11815644093e35f4dbd4f866'}))
  assert.throws(()=>pyramidsDirectActionPlan(f.base,{...f.profile,[k]:v}));
  });
+
+async function verifiedContinuationFixture(){
+ const f=await relayFixture(true),root=await admitDirectRelay(f);await childReady(f,root);
+ const child=await admitDirectRelay({...f,run:'202:1',parentRun:root.run});
+ f.addBatch(500);f.advance(300001);
+ const previousRevision=structuredClone(f.revision),prior=f.binding.receipt,priorCommit=f.commit;
+ const review=f.docs.get(`direct-action-resource:${f.plan.trialId}:${root.run}`);
+ f.revision={...f.revision,schema:'sg-count-runtime-refresh-profile-v2',purpose:'direct-action-verified-continuation-v1',
+ previousRevisionName:'count-runtime-pyramids-resume-action-relay-20261002.json',previousRevisionHash:hash(previousRevision),
+ previousReceiptHash:hash(prior),resourceRootRun:root.run,resourceReviewHash:hash(review),activationCommit:f.spec.commit,
+ sourceRun:child.run,fromCommit:priorCommit,sourcePermitHash:hash(child),poolHash:hash(f.pool),campaignHash:hash(f.campaign),
+ completePreserved:f.pool.confirmed,remainingComplete:f.plan.target-f.pool.confirmed,createdAt:f.now(),expiresAt:f.now()+7200000};
+ f.parentEnded={...f.ended,id:Number(root.run.split(':')[0]),head_sha:priorCommit};
+ f.ended={...f.ended,id:202,head_sha:priorCommit};f.previousRevision=previousRevision;f.commit='f'.repeat(40);f.run='301:1';
+ return f;
+}
+test('independent continuation requires settled previous tail and genuine prior resource proof, without new canary or quota',async()=>{
+ const f=await verifiedContinuationFixture(),old=hash(f.pool),spec=hash(f.spec),profile=hash(f.profile);
+ const receipt=await refreshDirectRelayRuntime(f);f.binding={spec:f.spec,complete:f.complete,receipt};f.run='302:1';
+ const root=await admitDirectRelay(f);
+ assert.equal(root.completeBefore,147294);assert.equal(root.historyBoundary.complete,147294);
+ assert.equal(root.remainingComplete,f.plan.target-147294);assert.equal(root.expiresAt-root.createdAt,900000);
+ assert.equal(hash(f.pool),old);assert.equal(hash(f.spec),spec);assert.equal(hash(f.profile),profile);
+ assert.equal(receipt.previousRevisionHash,hash(f.previousRevision));
+ await assert.rejects(refreshDirectRelayRuntime({...f,run:'303:1'}),/ALREADY_REFRESHED/);
+ await assert.rejects(admitDirectRelay({...f,run:'304:1'}),/ALREADY_CLAIMED/);
+});
+test('continuation refuses absent or altered parent receipt, resource evidence, unended tail and changed settlement before writes',async()=>{
+ const mutations=[
+ f=>{f.previousRevision.purpose='UNREVIEWED';},
+ f=>{f.revision.previousReceiptHash='0'.repeat(64);},
+ f=>{f.revision.resourceReviewHash='0'.repeat(64);},
+ f=>{f.parentEnded.conclusion='failure';},
+ f=>{f.ended.status='in_progress';},
+ f=>{f.docs.get(`count-run:${f.plan.trialId}:202:1`).windowIndex=1;},
+ f=>{f.docs.get(`count-run:${f.plan.trialId}:202:1`).expiresAt=f.now()+1000;},
+ f=>{f.docs.get(`batch:${f.plan.trialId}:4`).checkpoint--;}
+ ];
+ for(const mutate of mutations){const f=await verifiedContinuationFixture();mutate(f);const before=hash([...f.docs]);
+ await assert.rejects(refreshDirectRelayRuntime(f));assert.equal(hash([...f.docs]),before);}
+ const f=await verifiedContinuationFixture();
+ for(const [k,v]of Object.entries({previousRevisionName:'unknown.json',completePreserved:f.profile.completePreserved+2000,
+ remainingComplete:300000,newBetAllowance:1,captureMinutes:240,maxRunWindows:3,lanesPerHost:4}))
+ assert.throws(()=>checkDirectRelayRevision({...f,revision:{...f.revision,[k]:v}}));
+});
+
+test('verified continuation binds actual compact/delta and explicit workflow profile pair',async()=>{
+ const f=await verifiedContinuationFixture();const receipt=await refreshDirectRelayRuntime(f);
+ const runtimeName='count-runtime-pyramids-resume-verified-continuation-20261002.json',control={};
+ const args={...f,runtimeName,control,resourceReady:Promise.resolve(),readProfile:()=>f.profile,
+ readRevision:()=>f.revision,readReceipt:async k=>(await f.store.get('journal',k))?.value};
+ await compactControlInitializer(args)();assert.equal(control.compact,true);
+ assert.equal(await stateWriteInitializer({...args,group:'secondary'})(f.plan),true);
+ const yaml=createRequire(process.cwd()+'/collector/package.json')('js-yaml');
+ for(const name of ['trial-300k','demo-maintenance']){
+ const workflow=yaml.load(fs.readFileSync('.github/workflows/'+name+'.yml','utf8'));
+ assert(workflow.on.workflow_dispatch.inputs.runtime_profile.options.includes(runtimeName));
+ const steps=Object.values(workflow.jobs).flatMap(j=>j.steps??[]);
+ const direct=steps.filter(s=>s.run?.startsWith('node scripts/runner-v2/action-direct-relay-control.mjs'));
+ assert(direct.length>0&&direct.every(s=>s.if.includes(runtimeName)));
+ }
+ assert.equal(receipt.resourceReviewHash,f.revision.resourceReviewHash);
+});

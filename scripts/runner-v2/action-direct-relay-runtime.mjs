@@ -8,7 +8,9 @@ import {countHistoryBoundary} from './count-window-history.mjs';
 
 export const DIRECT_ACTION_RELAY_RUNTIME='count-runtime-pyramids-direct-action-relay-historyfix-20261002.json';
 export const RESUME_ACTION_RELAY_RUNTIME='count-runtime-pyramids-resume-action-relay-20261002.json';
-export const DIRECT_ACTION_RELAY_RUNTIMES=[DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME];
+export const RESUME_ACTION_CONTINUOUS_RUNTIME='count-runtime-pyramids-resume-verified-continuation-20261002.json';
+export const DIRECT_ACTION_RELAY_RUNTIMES=[DIRECT_ACTION_RELAY_RUNTIME,RESUME_ACTION_RELAY_RUNTIME,RESUME_ACTION_CONTINUOUS_RUNTIME];
+const continued=revision=>revision?.schema==='sg-count-runtime-refresh-profile-v2';
 export async function directRelayCompleteDelta({store,trialId,permit}){
  const pool=(await store.get('state','pool:'+trialId))?.value;
  assert(Number.isSafeInteger(pool?.confirmed)&&Number.isSafeInteger(permit?.completeBefore)
@@ -22,13 +24,22 @@ const runId=/^\d+:1$/;
 // completion can authorize one tail window, using the same allocation.
 export function checkDirectRelayRevision({base,plan,profile,revision}){
  assert(hash(pyramidsDirectActionPlan(base,profile))===hash(plan),'DIRECT_RELAY_PLAN');
- assert(revision?.schema==='sg-count-runtime-refresh-profile-v1'
-  &&revision.purpose==='direct-action-relay-v1'&&revision.gameId===32721
+ const continuation=continued(revision);
+ if(continuation)assert(profile.featureProfile==='pyramids-action-v3'
+  &&revision.purpose==='direct-action-verified-continuation-v1'
+  &&revision.previousRevisionName===RESUME_ACTION_RELAY_RUNTIME
+  &&hex(64).test(revision.previousRevisionHash??'')&&hex(64).test(revision.previousReceiptHash??'')
+  &&hex(64).test(revision.resourceReviewHash??'')&&runId.test(revision.resourceRootRun??'')
+  &&hex(40).test(revision.activationCommit??'')&&revision.activationCommit!==revision.fromCommit
+  &&revision.completePreserved>profile.completePreserved+2000
+  &&revision.completePreserved<plan.target,'DIRECT_RELAY_CONTINUATION_SCOPE');
+ assert((continuation||revision?.schema==='sg-count-runtime-refresh-profile-v1')
+  &&(continuation||revision.purpose==='direct-action-relay-v1')&&revision.gameId===32721
   &&revision.profileHash===hash(profile)&&revision.activation===profile.activation
   &&revision.planHash===hash(plan)&&runId.test(revision.sourceRun??'')
   &&hex(40).test(revision.fromCommit??'')&&hex(64).test(revision.sourcePermitHash??'')
   &&hex(64).test(revision.poolHash??'')&&hex(64).test(revision.campaignHash??'')
-  &&revision.completePreserved===profile.completePreserved+2000
+  &&(continuation||revision.completePreserved===profile.completePreserved+2000)
   &&revision.remainingComplete===plan.target-revision.completePreserved
   &&revision.captureMinutes===15&&revision.tailCaptureMinutes===5&&revision.maxRunWindows===2
   &&revision.maxWorkers===20&&revision.lanesPerHost===1&&revision.automaticRelay===true
@@ -44,7 +55,7 @@ export function checkDirectRelayBinding(proof){
  const {profile,plan,revision,spec,complete,receipt,commit}=proof;
  const limits=checkDirectRelayRevision(proof);
  assert(hex(40).test(commit??'')&&commit!==revision.fromCommit
-  &&spec?.schema==='sg-complete-count-v1'&&spec.commit===revision.fromCommit
+  &&spec?.schema==='sg-complete-count-v1'&&spec.commit===(continued(revision)?revision.activationCommit:revision.fromCommit)
   &&spec.profileHash===hash(profile)&&spec.activation===profile.activation
   &&spec.planHash===hash(plan)&&spec.trialId===plan.trialId&&spec.gameId===plan.gameId
   &&spec.target===plan.target&&spec.maxSequence===600000&&spec.sessionRotation==='closed-batches-v1'
@@ -60,6 +71,9 @@ export function checkDirectRelayBinding(proof){
   &&receipt.poolHash===revision.poolHash&&receipt.campaignHash===revision.campaignHash
   &&receipt.completePreserved===revision.completePreserved&&receipt.remainingComplete===revision.remainingComplete
   &&receipt.sourceRequests===0&&receipt.newBetAllowance===0,'DIRECT_RELAY_RECEIPT');
+ if(continued(revision))assert(receipt.previousRevisionHash===revision.previousRevisionHash
+  &&receipt.previousReceiptHash===revision.previousReceiptHash&&receipt.resourceReviewHash===revision.resourceReviewHash,
+  'DIRECT_RELAY_CONTINUATION_RECEIPT');
  return limits;
 }
 
@@ -147,14 +161,35 @@ export async function refreshDirectRelayRuntime(args){
  await boundary();
  const pool=(await store.get('state','pool:'+plan.trialId))?.value,campaign=(await store.get('state','campaign'))?.value;
  assert(hash(pool)===revision.poolHash&&hash(campaign)===revision.campaignHash,'DIRECT_RELAY_SCENE_CHANGED');
- const spec=await loadCountPermission({store,plan,pool,commit:revision.fromCommit});
+ const spec=await loadCountPermission({store,plan,pool,commit:continued(revision)?revision.activationCommit:revision.fromCommit});
  const complete=(await store.get('journal',`complete-count:${plan.trialId}:${profile.activation}:complete`))?.value;
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${revision.sourceRun}`))?.value;
- budgetCanaryWindow({plan,profile,spec,complete,commit:revision.fromCommit,run:revision.sourceRun,permit,now:now()});
- const claim=(await store.get('journal',`action-budget-canary-run:${plan.trialId}:${profile.activation}`))?.value;
- assert(hash(permit)===revision.sourcePermitHash&&claim?.schema==='sg-action-budget-canary-run-v1'
-  &&claim.run===revision.sourceRun&&claim.commit===revision.fromCommit&&claim.profileHash===hash(profile)
-  &&claim.sourceRequests===0&&pool.confirmed===revision.completePreserved,'DIRECT_RELAY_CANARY_PROOF');
+ if(continued(revision)){
+  const previous=args.previousRevision;
+  assert(previous?.schema==='sg-count-runtime-refresh-profile-v1'&&hash(previous)===revision.previousRevisionHash,
+   'DIRECT_RELAY_PREVIOUS_REVISION');
+  const prior=(await store.get('journal',`count-runtime:${plan.trialId}:${profile.activation}:${revision.fromCommit}`))?.value;
+  assert(hash(prior)===revision.previousReceiptHash,'DIRECT_RELAY_PREVIOUS_RECEIPT');
+  const proof={base,plan,profile,revision:previous,spec,complete,receipt:prior,commit:revision.fromCommit};
+  directRelayWindow({...proof,run:revision.sourceRun,permit,now:now()});
+  assert(permit.windowIndex===2&&permit.rootRun===revision.resourceRootRun
+   &&permit.expiresAt<=now()&&hash(permit)===revision.sourcePermitHash,'DIRECT_RELAY_PREVIOUS_TAIL');
+  const resource=(await store.get('journal',`direct-action-resource:${plan.trialId}:${permit.rootRun}`))?.value;
+  assert(checkDirectRelayResource({resourceReview:resource,parentRun:permit.rootRun,commit:revision.fromCommit})===revision.resourceReviewHash
+   &&permit.resourceReviewHash===revision.resourceReviewHash,'DIRECT_RELAY_PREVIOUS_RESOURCE');
+  const parent=args.parentEnded;
+  assert(`${parent?.id}:${parent?.run_attempt}`===permit.rootRun&&parent.status==='completed'&&parent.conclusion==='success'
+   &&parent.head_sha===revision.fromCommit&&parent.event==='workflow_dispatch'
+   &&parent.repository?.full_name==='287113535qq-cmyk/sg-capture-runner'
+   &&parent.path==='.github/workflows/trial-300k.yml','DIRECT_RELAY_PREVIOUS_PARENT');
+  assert(pool.confirmed>permit.completeBefore&&pool.confirmed===revision.completePreserved,'DIRECT_RELAY_PREVIOUS_PROGRESS');
+ }else{
+  budgetCanaryWindow({plan,profile,spec,complete,commit:revision.fromCommit,run:revision.sourceRun,permit,now:now()});
+  const claim=(await store.get('journal',`action-budget-canary-run:${plan.trialId}:${profile.activation}`))?.value;
+  assert(hash(permit)===revision.sourcePermitHash&&claim?.schema==='sg-action-budget-canary-run-v1'
+   &&claim.run===revision.sourceRun&&claim.commit===revision.fromCommit&&claim.profileHash===hash(profile)
+   &&claim.sourceRequests===0&&pool.confirmed===revision.completePreserved,'DIRECT_RELAY_CANARY_PROOF');
+ }
  idle(pool,campaign,plan,profile,spec,now);await settledCount({store,plan,pool,spec,now});
  await boundary();
  assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool)
@@ -162,7 +197,9 @@ export async function refreshDirectRelayRuntime(args){
  const receipt={schema:'sg-count-runtime-v2',commit,fromCommit:spec.commit,previousCommit:revision.fromCommit,
   specHash:hash(spec),profileHash:hash(profile),planHash:hash(plan),activation:profile.activation,
   revisionHash:hash(revision),sourceRun:revision.sourceRun,run,poolHash:hash(pool),campaignHash:hash(campaign),
-  completePreserved:pool.confirmed,remainingComplete:plan.target-pool.confirmed,sourceRequests:0,newBetAllowance:0};
+  completePreserved:pool.confirmed,remainingComplete:plan.target-pool.confirmed,sourceRequests:0,newBetAllowance:0,
+  ...(continued(revision)?{previousRevisionHash:revision.previousRevisionHash,previousReceiptHash:revision.previousReceiptHash,
+   resourceReviewHash:revision.resourceReviewHash}:{})};
  checkDirectRelayBinding({base,plan,profile,revision,spec,complete,receipt,commit});
  const key=`count-runtime:${plan.trialId}:${profile.activation}:${commit}`;
  assert(!(await store.get('journal',key)),'DIRECT_RELAY_ALREADY_REFRESHED');

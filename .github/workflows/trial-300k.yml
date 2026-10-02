@@ -15,7 +15,7 @@ on:
         description: 'Reviewed runtime update; requires immutable no-source refresh receipt'
         type: choice
         default: none
-        options: [none, count-runtime-pyramids-resume-action-relay-20261002.json, count-runtime-pyramids-direct-action-relay-historyfix-20261002.json, count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json, count-runtime-pyramids-action-budget-continuous-20261002.json, count-runtime-pyramids-action-continuous-20261002.json, count-runtime-pyramids-action-canary-20261002.json, count-runtime-rhino-four-read-recovery-entryfix-20261002.json, count-runtime-rhino-four-read-recovery-20261002.json, count-runtime-rhino-canary-finalmetrics-20261002.json, count-runtime-rhino-canary-entryfix-20261002.json, count-runtime-rhino-four-continuous-20261001.json, count-runtime-rhino-canary-20261001.json, count-runtime-rhino-ag-dispatchfix-20261001.json, count-runtime-rhino-ag-continuation-entryfix-20261001.json, count-runtime-rhino-ag-continuation-20261001.json, count-runtime-rhino-continuous-20261001.json, count-runtime-rhino-two-observation-20261001.json, count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
+        options: [none, count-runtime-pyramids-resume-verified-continuation-20261002.json, count-runtime-pyramids-resume-action-relay-20261002.json, count-runtime-pyramids-direct-action-relay-historyfix-20261002.json, count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json, count-runtime-pyramids-action-budget-continuous-20261002.json, count-runtime-pyramids-action-continuous-20261002.json, count-runtime-pyramids-action-canary-20261002.json, count-runtime-rhino-four-read-recovery-entryfix-20261002.json, count-runtime-rhino-four-read-recovery-20261002.json, count-runtime-rhino-canary-finalmetrics-20261002.json, count-runtime-rhino-canary-entryfix-20261002.json, count-runtime-rhino-four-continuous-20261001.json, count-runtime-rhino-canary-20261001.json, count-runtime-rhino-ag-dispatchfix-20261001.json, count-runtime-rhino-ag-continuation-entryfix-20261001.json, count-runtime-rhino-ag-continuation-20261001.json, count-runtime-rhino-continuous-20261001.json, count-runtime-rhino-two-observation-20261001.json, count-runtime-rhino-measurement-20261001.json, count-runtime-pearl-observation-20261001.json, count-runtime-pyramids-session-20261001.json]
       formal_profile:
         description: 'Immutable complete-count authorization; repaired runtime requires independent activation'
         type: choice
@@ -915,7 +915,7 @@ jobs:
           SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
         run: node scripts/runner-v2/action-continuous-control.mjs admit
       - name: Admit direct action main or tail window with immutable same allocation
-        if: (inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' && inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json' && inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json'))
+        if: (inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' && inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json' && (inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-resume-verified-continuation-20261002.json')))
         env:
           SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile }}
         run: node scripts/runner-v2/action-direct-relay-control.mjs admit
@@ -942,7 +942,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_SHARD: ${{ matrix.shard }}
-      SG_TRIAL_MINUTES: ${{ inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json' && inputs.runtime_profile == 'none' && '5' || (inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json') && (inputs.relay_parent != '' && '5' || '15') || (inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json') && '15' || inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' && '5' || inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-continuous-20261002.json' && '15' || '240' }}
+      SG_TRIAL_MINUTES: ${{ inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json' && inputs.runtime_profile == 'none' && '5' || (inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || (inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-resume-verified-continuation-20261002.json')) && (inputs.relay_parent != '' && '5' || '15') || (inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json') && '15' || inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' && '5' || inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-continuous-20261002.json' && '15' || '240' }}
       SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
       SG_POOL_RUN_LIMIT: '0'
       SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
@@ -1137,12 +1137,12 @@ jobs:
         if: (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') != 'round-one' && steps.state.outputs.trial_status != 'halted' && steps.state.outputs.trial_status != 'claimed' && inputs.role != 'status'
         run: node scripts/trial/worker.mjs audit
       - name: Continue direct action once after complete resource evidence
-        if: success() && inputs.role == 'formal-count' && inputs.formal_relay == 'same-allocation-v1' && (inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json')
+        if: success() && inputs.role == 'formal-count' && inputs.formal_relay == 'same-allocation-v1' && (inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || (inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-resume-verified-continuation-20261002.json'))
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/action-direct-relay-control.mjs relay
       - name: Continue the same applied formal allocation after settled successful capture
-        if: success() && inputs.role == 'formal-count' && inputs.formal_relay == 'same-allocation-v1' && (inputs.runtime_profile != 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' && inputs.runtime_profile != 'count-runtime-pyramids-resume-action-relay-20261002.json')
+        if: success() && inputs.role == 'formal-count' && inputs.formal_relay == 'same-allocation-v1' && (inputs.runtime_profile != 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' && inputs.runtime_profile != 'count-runtime-pyramids-resume-action-relay-20261002.json' && inputs.runtime_profile != 'count-runtime-pyramids-resume-verified-continuation-20261002.json')
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/formal-relay-control.mjs

@@ -192,5 +192,29 @@
     "originalRecordsChanged": 0,
     "sourceRequests": 0,
     "onlineMongoWrites": 0
+  },
+  "independentResumeAnalysisActual": {
+    "run": 37016446487,
+    "annotationsReadback": 100,
+    "classified": 100,
+    "originalRecordsUnchanged": true,
+    "sourceAllowance": 0
+  },
+  "resumeRelayActual": {
+    "sourceRun": 37016740078,
+    "commit": "0b768ee1b2c927b3164929576810e0a6f5f8bc23",
+    "freshAt": 1790950462,
+    "complete": 240194,
+    "newComplete": 94400,
+    "resourceTenMinutesVerified": false,
+    "automaticTailVerified": false
+  },
+  "verifiedContinuationCandidate": {
+    "sourceRequests": 0,
+    "applied": false,
+    "requiresSuccessfulPriorTail": true,
+    "requiresPriorTenMinuteResourceEvidence": true,
+    "newQuota": 0,
+    "focusedChecks": 43
   }
 }
