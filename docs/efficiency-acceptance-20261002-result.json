@@ -787,8 +787,16 @@
       "maintenanceRun": 36960884593,
       "appliedProfileHash": "8f387e5caf6a563cb10cab7fc62f657ed4af3eaae280844f3cf1a8297ff90f0d",
       "sourceRun": 36961087858,
-      "sourceStatus": "started-admission-not-yet-observed",
-      "appliedFreezeChecks": 1
+      "sourceStatus": "ended-protocol-gap-super-free-mini-combination",
+      "appliedFreezeChecks": 1,
+      "newComplete": 888,
+      "totalActualComplete": 8391,
+      "newRecordsIndependentPythonAndMongoReadback": true,
+      "naturalCoinTerminalObserved": false,
+      "sourceFailure": "PYRAMIDS_FREE_UNREVIEWED_GSD",
+      "faultFrames": 8,
+      "pending": 0,
+      "closureApplied": false
     }
   },
   "pending": [

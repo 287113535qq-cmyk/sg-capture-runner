@@ -20,7 +20,7 @@ on:
         description: 'Exact already parked count evidence; no source allowance'
         type: choice
         default: count-close-pyramids-sfgt-20261002.json
-        options: [count-close-pyramids-sfgt-20261002.json, count-close-pyramids-retrigger-coin-20261002.json]
+        options: [count-close-pyramids-sfgt-20261002.json, count-close-pyramids-retrigger-coin-20261002.json, count-close-pyramids-super-coin-20261002.json]
       runtime_profile:
         description: 'Reviewed healthy-run runtime update without additional quota'
         type: choice

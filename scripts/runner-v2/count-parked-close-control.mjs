@@ -7,10 +7,11 @@ import {closeParkedCount} from './count-parked-close.mjs';import {protocolHash a
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner','SECONDARY_GITHUB_REQUIRED');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8')),name=process.env.SG_PARKED_CLOSE_PROFILE??'count-close-pyramids-sfgt-20261002.json';
 const choices={'count-close-pyramids-sfgt-20261002.json':'formal-repair-pyramids-super-hold-20261002.json',
- 'count-close-pyramids-retrigger-coin-20261002.json':'formal-repair-pyramids-retrigger-20261002.json'};
+ 'count-close-pyramids-retrigger-coin-20261002.json':'formal-repair-pyramids-retrigger-20261002.json',
+ 'count-close-pyramids-super-coin-20261002.json':'formal-repair-pyramids-cash-coins-20261002.json'};
 assert(Object.hasOwn(choices,name),'PARKED_CLOSE_PROFILE_SCOPE');
 const sourceName=choices[name],profile=load('config/'+name),source=load('config/'+sourceName),base=load('config/round-one-plans.json');
-assert(profile.sourceProfileHash===hash(source)&&profile.sourceRun===(name==='count-close-pyramids-sfgt-20261002.json'?'36946815410:1':'36955443358:1')
+assert(profile.sourceProfileHash===hash(source)&&profile.sourceRun===(name==='count-close-pyramids-sfgt-20261002.json'?'36946815410:1':name==='count-close-pyramids-super-coin-20261002.json'?'36961087858:1':'36955443358:1')
  &&profile.sourceAllowance===0&&Object.keys(profile.files).length>700,'PARKED_CLOSE_RUNTIME_SCOPE');
 for(const [p,h] of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(p)&&!p.includes('..'),'PARKED_CLOSE_FILE_SCOPE');

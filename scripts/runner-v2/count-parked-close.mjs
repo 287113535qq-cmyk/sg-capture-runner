@@ -8,12 +8,15 @@ import {retireDemoPool} from './retire-demo-pool.mjs';
 // AG already parked this generation and saved its interrupted attempt. Reuse
 // that evidence, settle its existing allocations, and leave repair independent.
 export async function closeParkedCount({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
+ const superCoin=profile?.schema==='sg-count-parked-super-coin-close-profile-v1';
  const coin=profile?.schema==='sg-count-parked-coin-close-profile-v1';
- const binding=coin?{sourceRun:'36955443358:1',sourceCommit:'3a4efb77f104cb23306b635ccfdddbd1daa5340d',
+ const binding=superCoin?{sourceRun:'36961087858:1',sourceCommit:'dd058f848725f776ae7d8eb1e37b31a2000d9b20',
+  profileHash:'8f387e5caf6a563cb10cab7fc62f657ed4af3eaae280844f3cf1a8297ff90f0d',complete:8391,frames:8}:
+  coin?{sourceRun:'36955443358:1',sourceCommit:'3a4efb77f104cb23306b635ccfdddbd1daa5340d',
   profileHash:'9b5be7e5e018d9be4c7c09adda0dcac84bbae82c75e3d3c4d5c1fcc1b4982a34',complete:7503,frames:15}:
   {sourceRun:'36946815410:1',sourceCommit:'72b02e1a85d9bcfa92e246dd3dbedffefa38568e',
    profileHash:'140025dee8b6f121c08e3f8b71d50c326db627c556529049ba850e64d249294f',complete:5713,frames:1};
- assert((coin||profile?.schema==='sg-count-parked-close-profile-v1')&&profile.group==='secondary'
+ assert((superCoin||coin||profile?.schema==='sg-count-parked-close-profile-v1')&&profile.group==='secondary'
   &&plan.gameId===32721&&plan.trialId==='sg_r1_20260928_32721'&&plan.target===299850
   &&profile.planHash===hash(plan)&&profile.sourceRun===binding.sourceRun
   &&profile.sourceCommit===binding.sourceCommit&&profile.sourceProfileHash===binding.profileHash
@@ -47,6 +50,16 @@ export async function closeParkedCount({store,transport,gate,parser,plan,profile
  if(coin)assert(abandoned.pending.raw.steps.slice(1).every(s=>s.msgId==='FREE_GAME'&&s.responseXml?.length>0)
   &&batches.some(b=>b.abandonedDemo===profile.abandonedKey&&b.adapterFailureCode==='PYRAMIDS_FREE_UNREVIEWED_COIN'),
   'PARKED_COUNT_CLOSE_COIN_ARCHIVE');
+ if(superCoin){
+  const frames=abandoned.pending.raw.steps;
+  assert(frames.every((s,i)=>{
+   const p=new URLSearchParams(s.responsePayload),g=new Map((p.get('GSD')??'').split('#').filter(x=>x.includes('~')).map(x=>x.split(/~(.*)/s).slice(0,2)));
+   return s.responseXml?.length>0&&s.msgId===(i?'FREE_GAME':'BET')&&p.get('FID')==='1|'
+    &&p.get('NFG')===String(10-i)&&p.get('TFG')==='10'&&p.get('CFGG')===String(i)&&g.get('SFGT')==='1';
+  })&&new URLSearchParams(frames.at(-1).responsePayload).get('GSD').split('#').some(x=>x.startsWith('CL~')&&x.slice(3).split('|').some(r=>r.split(';')[2]==='-4'))
+   &&batches.some(b=>b.abandonedDemo===profile.abandonedKey&&b.adapterFailureCode==='PYRAMIDS_FREE_UNREVIEWED_GSD'),
+   'PARKED_COUNT_CLOSE_SUPER_COIN_ARCHIVE');
+ }
  const key=`count-parked-close:${plan.trialId}:${profile.sourceRun}`;
  assert(!await store.get('journal',key+':before'),'PARKED_COUNT_CLOSE_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'PARKED_COUNT_CLOSE_READBACK');};
