@@ -4,6 +4,16 @@ import {createRequire} from 'node:module';
 import * as runner from './feature-state.mjs';
 const collector=createRequire(import.meta.url)('../../collector/feature-state.cjs');
 for(const [name,{parseFeatureHistory:history,checkFeatureWallet:wallet,parseFeatureValues:values}] of [['runner',runner],['collector',collector]]){
+ test(name+': explicit display codes remain separate from continuation codes',()=>{
+  const review=(name==='runner'?runner:collector).reviewFeatureValues;
+  const scope={size:3,displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]};
+  assert.deepEqual(review('-4.00|1.5|0',scope),{values:['-4.00','1.5','0'],requiresFeatureContinuation:false});
+  assert.equal(review('-4|-100.00|0',scope).requiresFeatureContinuation,true);
+  for(const text of ['-6|0|0','-4.1|0|0','-0|0|0'])assert.throws(()=>review(text,scope));
+  for(const options of [{displaySentinels:[-1],continuationSentinels:[-1]},
+   {displaySentinels:[-1,-1]},{displaySentinels:[true]},{continuationSentinels:[1]},
+   {negativeSentinels:[-1]}])assert.throws(()=>review('0',{size:1,...options}));
+ });
  test(name+': fractional display values retain exact lexemes and sentinels require explicit scope',()=>{
   assert.deepEqual(values('0|1.5|3.00',{size:3}),['0','1.5','3.00']);
   assert.deepEqual(values('0|-100.0',{size:2,negativeSentinels:[-100]}),['0','-100.0']);

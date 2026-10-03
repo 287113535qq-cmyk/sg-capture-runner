@@ -16,6 +16,14 @@ test('fractional frame multipliers settle identically while Mansion sentinels do
  const r=change('1.5'),py=spawnSync(process.env.PYTHON||'python3',['-c',"import json,sys;sys.path.insert(0,'service');from huff_fields import HuffFields;from huff_retrigger_review import PLAN;print(json.dumps(HuffFields(PLAN).settled(json.load(sys.stdin))))"],{input:JSON.stringify(r),encoding:'utf8'});
  assert.equal(py.status,0,py.stderr);const expected=JSON.parse(py.stdout);assert.equal(huffNextRequest(r),null);
  assert.deepEqual(prepareNextgenRound(r,huffMapping(r,'a'.repeat(64),{retrigger:expected.typeMappingHash})),expected);
+ for(const code of ['-1','-2','-3','-4.00','-5']){
+  const display=change(code);assert.equal(huffNextRequest(display),null);
+  assert.deepEqual(prepareNextgenRound(display,huffMapping(display,'a'.repeat(64),{retrigger:expected.typeMappingHash})),expected);
+ }
+ for(const code of ['-6','-4.1']){
+  const unknown=change(code);assert.throws(()=>huffNextRequest(unknown));
+  assert.throws(()=>prepareNextgenRound(unknown,{buy:0,bonus:2,typeMappingHash:expected.typeMappingHash}));
+ }
  const sentinel=change('-100');assert.throws(()=>huffNextRequest(sentinel),/HUFF_FRAME_EXIT_NOT_ADAPTED/);
  assert.throws(()=>prepareNextgenRound(sentinel,{buy:0,bonus:2,typeMappingHash:expected.typeMappingHash}),/HUFF_FRAME_EXIT_NOT_ADAPTED/);
 });

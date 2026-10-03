@@ -2,7 +2,7 @@
 import re, xml.etree.ElementTree as ET
 from round_fields import check, params, amount, VERSION, FieldError
 from free_game_counters import advance_free_game_counters
-from feature_state import parse_feature_history, check_feature_wallet, parse_feature_values
+from feature_state import parse_feature_history, check_feature_wallet, parse_feature_values, review_feature_values
 from native_nextgen_fields import NativeNextgenFields
 from huff_feature_review import SOURCE, game_state
 
@@ -40,9 +40,11 @@ def review(raw):
         board=numbers(g.get('VA'));check(len(board)==15 and max(board)<=15,'HARDHAT_BOARD')
         check(not(board.count(13)>=3 and board.count(14)>=6),'HARDHAT_COMBINED_EXIT')
         if 'FRAMEWINS' in g:
-            frame_wins = parse_feature_values(g['FRAMEWINS'], size=15, negative_sentinels=(-100,))
+            frame_wins = review_feature_values(g['FRAMEWINS'], size=15,
+                                              display_sentinels=(-1,-2,-3,-4,-5),
+                                              continuation_sentinels=(-100,))
             parse_feature_values(g.get('FRAMES'), size=15, decimal_places=0)
-            check(not any(value.startswith('-') for value in frame_wins), 'HUFF_FRAME_EXIT_NOT_ADAPTED')
+            check(not frame_wins['requiresFeatureContinuation'], 'HUFF_FRAME_EXIT_NOT_ADAPTED')
         total,remaining,progress=[amount(p.get(k)) for k in ('TFG','NFG','CFGG')]
         check(0<total<100 and total==remaining+progress and progress==i,'HARDHAT_COUNTER')
         if not i:

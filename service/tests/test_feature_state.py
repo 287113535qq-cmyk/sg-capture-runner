@@ -1,8 +1,20 @@
 import unittest
-from feature_state import parse_feature_history as history, check_feature_wallet as wallet, parse_feature_values as values
+from feature_state import parse_feature_history as history, check_feature_wallet as wallet, parse_feature_values as values, review_feature_values as roles
 from round_fields import FieldError
 
 class FeatureStateTests(unittest.TestCase):
+    def test_display_codes_do_not_imply_another_feature_or_cash_amount(self):
+        scope={'size':3,'display_sentinels':(-1,-2,-3,-4,-5),'continuation_sentinels':(-100,)}
+        self.assertEqual(roles('-4.00|1.5|0', **scope),
+                         {'values':['-4.00','1.5','0'],'requiresFeatureContinuation':False})
+        self.assertTrue(roles('-4|-100.00|0', **scope)['requiresFeatureContinuation'])
+        for text in ('-6|0|0','-4.1|0|0','-0|0|0'):
+            with self.assertRaises(FieldError):roles(text, **scope)
+        for options in ({'display_sentinels':[-1],'continuation_sentinels':[-1]},
+                        {'display_sentinels':[-1,-1]}, {'display_sentinels':[True]},
+                        {'continuation_sentinels':[1]}, {'negative_sentinels':[-1]}):
+            with self.assertRaises(FieldError):roles('0', size=1, **options)
+
     def test_fractional_display_values_keep_exact_lexemes_and_explicit_sentinels(self):
         self.assertEqual(values('0|1.5|3.00', size=3), ['0','1.5','3.00'])
         self.assertEqual(values('0|-100.0', size=2, negative_sentinels=(-100,)), ['0','-100.0'])

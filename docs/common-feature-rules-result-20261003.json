@@ -219,5 +219,36 @@
       "originalRecordsChanged": 0
     },
     "nativeInstallationProofReused": true
+  },
+  "displaySentinelRoles": {
+    "status": "local-accepted-awaiting-linux-and-no-source-close",
+    "sharedMethods": [
+      "review_feature_values",
+      "reviewFeatureValues"
+    ],
+    "displayCodes": [
+      -1,
+      -2,
+      -3,
+      -4,
+      -5
+    ],
+    "continuationCodes": [
+      -100
+    ],
+    "clientHash": "67bcebfd2f16477c8c3b2686b6e10b70f41bde3579d929e89e04e321ffa4e93d",
+    "naturalRealFrames": 10,
+    "naturalAdditionalAwards": 3,
+    "threeWaySettlementMatched": true,
+    "rawChanged": false,
+    "pythonChecks": 11,
+    "nodeAndCollectorChecks": 14,
+    "sourceRun": 37116564699,
+    "sourceRequests": 538,
+    "paidRoundRequests": 490,
+    "completedJournaled": 489,
+    "mongoConfirmedAtReview": 299,
+    "remainingReceivedTerminal": 1,
+    "sourceHeld": true
   }
 }

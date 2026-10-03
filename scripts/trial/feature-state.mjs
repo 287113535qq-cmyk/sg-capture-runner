@@ -14,6 +14,16 @@ export function parseFeatureValues(text,{size,separator='|',decimalPlaces=6,maxi
  }
  return entries;
 }
+export function reviewFeatureValues(text,{displaySentinels=[],continuationSentinels=[],...options}={}){
+ const roles=[displaySentinels,continuationSentinels];
+ need(roles.every(role=>Array.isArray(role)&&role.every(n=>Number.isSafeInteger(n)&&n<0&&n>=-1000000)
+  &&new Set(role).size===role.length)&&!displaySentinels.some(n=>continuationSentinels.includes(n))
+  &&!Object.hasOwn(options,'negativeSentinels'),'VALUES_ROLES');
+ const values=parseFeatureValues(text,{...options,negativeSentinels:[...displaySentinels,...continuationSentinels]});
+ // Parsing proves any negative value exactly equals an explicitly scoped integer code.
+ const requiresFeatureContinuation=values.some(value=>value.startsWith('-')&&continuationSentinels.includes(Number(value.split('.')[0])));
+ return{values,requiresFeatureContinuation};
+}
 export function parseFeatureHistory(text,allowed,{maximum=100,allowEmpty=false}={}){
  need(Number.isSafeInteger(maximum)&&maximum>0&&maximum<=1000000&&typeof text==='string'&&text.length<=maximum*17,'HISTORY_LIMIT');
  if(text===''&&allowEmpty)return[];

@@ -12,6 +12,14 @@ function parseFeatureValues(text,{size,separator='|',decimalPlaces=6,maximumValu
  }
  return entries;
 }
+function reviewFeatureValues(text,{displaySentinels=[],continuationSentinels=[],...options}={}){
+ assert([displaySentinels,continuationSentinels].every(role=>Array.isArray(role)
+  &&role.every(n=>Number.isSafeInteger(n)&&n<0&&n>=-1000000)&&new Set(role).size===role.length));
+ assert(!displaySentinels.some(n=>continuationSentinels.includes(n))&&!Object.hasOwn(options,'negativeSentinels'));
+ const values=parseFeatureValues(text,{...options,negativeSentinels:displaySentinels.concat(continuationSentinels)});
+ const requiresFeatureContinuation=values.some(value=>value.startsWith('-')&&continuationSentinels.some(n=>BigInt(value.split('.')[0])===BigInt(n)));
+ return{values,requiresFeatureContinuation};
+}
 function parseFeatureHistory(text,allowed,{maximum=100,allowEmpty=false}={}){
  assert(Number.isSafeInteger(maximum)&&maximum>0&&maximum<=1000000&&typeof text==='string'&&text.length<=maximum*17);
  if(text===''&&allowEmpty)return[];
@@ -28,4 +36,4 @@ function checkFeatureWallet(start,bet,balance,available,win,{settled,responseBal
  if(responseBalance!==undefined)assert(integer(responseBalance)&&responseBalance===available);
  return{uncreditedWin:balance-available};
 }
-module.exports={parseFeatureValues,parseFeatureHistory,checkFeatureWallet};
+module.exports={parseFeatureValues,reviewFeatureValues,parseFeatureHistory,checkFeatureWallet};

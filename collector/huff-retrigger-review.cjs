@@ -1,7 +1,7 @@
 // Independent collector settlement evidence for isolated FID1 retriggers.
 const assert=require('node:assert/strict');
 const {advanceFreeGameCounters}=require('./free-game-counters.cjs');
-const {parseFeatureHistory,checkFeatureWallet,parseFeatureValues}=require('./feature-state.cjs');
+const {parseFeatureHistory,checkFeatureWallet,parseFeatureValues,reviewFeatureValues}=require('./feature-state.cjs');
 const {XMLParser,XMLValidator}=require('fast-xml-parser');
 const parser=new XMLParser({ignoreAttributes:false,parseTagValue:false,trimValues:false});
 const fields=(text,sep='&',del='=')=>{assert.equal(typeof text,'string');const out=Object.create(null);for(const part of text.split(sep).filter(Boolean)){const at=part.indexOf(del),key=part.slice(0,at);assert(at>0&&!Object.hasOwn(out,key));out[key]=part.slice(at+1);}return out;};
@@ -24,9 +24,9 @@ function review(raw){
   assert(Object.keys(g).every(k=>known.has(k)));const board=vector(g.VA,',');assert(board.length===15&&board.every(n=>n<=15));
   assert(!(board.filter(n=>n===13).length>=3&&board.filter(n=>n===14).length>=6));
   if('FRAMEWINS'in g){
-   const wins=parseFeatureValues(g.FRAMEWINS,{size:15,negativeSentinels:[-100]});
+   const wins=reviewFeatureValues(g.FRAMEWINS,{size:15,displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]});
    parseFeatureValues(g.FRAMES,{size:15,decimalPlaces:0});
-   assert(!wins.some(value=>value.startsWith('-')),'HUFF_FRAME_EXIT_NOT_ADAPTED');
+   assert(!wins.requiresFeatureContinuation,'HUFF_FRAME_EXIT_NOT_ADAPTED');
   }
   total=uint(p.TFG);remaining=uint(p.NFG);const progress=uint(p.CFGG);assert(total>0&&total<100&&total===remaining+progress&&progress===i);
   if(i===0)assert(total===6&&remaining===6&&!g.PCFID&&!g.FEAT);

@@ -28,6 +28,25 @@ def parse_feature_values(text, *, size, separator='|', decimal_places=6,
     return entries
 
 
+def review_feature_values(text, *, display_sentinels=(), continuation_sentinels=(), **options):
+    """Separate reviewed display codes from codes requiring another feature.
+
+    Neither role is a cash amount or proof that the round has ended.
+    """
+    roles = (display_sentinels, continuation_sentinels)
+    check(all(isinstance(role, (list, tuple))
+              and all(type(n) is int and -1000000 <= n < 0 for n in role)
+              and len(set(role)) == len(role) for role in roles)
+          and not set(display_sentinels).intersection(continuation_sentinels)
+          and 'negative_sentinels' not in options, 'FEATURE_VALUES_ROLES')
+    entries = parse_feature_values(text, negative_sentinels=tuple(display_sentinels)
+                                  + tuple(continuation_sentinels), **options)
+    requires_continuation = any(entry.startswith('-')
+                                and int(entry.partition('.')[0]) in continuation_sentinels
+                                for entry in entries)
+    return {'values': entries, 'requiresFeatureContinuation': requires_continuation}
+
+
 def parse_feature_history(text, allowed, *, maximum=100, allow_empty=False):
     """Preserve ordered repeats. History entries do not prove awarded spins."""
     check(type(maximum) is int and 0 < maximum <= 1000000
