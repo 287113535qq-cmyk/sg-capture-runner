@@ -31,7 +31,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。",
     "complete": "无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。",
-    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，重复PCFID限1|1并匹配CFFGT与总数/进度/剩余；原129全文不变，真实3帧未结束、终局仅合成，新重入尚未准入。TouchUp自然终局尚未观察。FID清零不等于新触发。",
+    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，PCFID保留最多100个纯HardHat有序历史槽位，可重复，不推断授奖；追加由公共计数方法核CFFGT和总数/进度/剩余。功能未结束时累计余额与可用余额分别核验，终局全额到账。原规范化保留，最新真实3帧未结束、终局仅合成，公共修正待独立重新准入。TouchUp自然终局尚未观察。FID清零不等于新触发。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -45,7 +45,13 @@
       "service/huff_retrigger_review.py",
       "scripts/trial/huff-retrigger-review.mjs",
       "collector/huff-retrigger-review.cjs",
-      "collector/sg.huff-retrigger.ts"
+      "collector/sg.huff-retrigger.ts",
+      "service/free_game_counters.py",
+      "scripts/trial/free-game-counters.mjs",
+      "collector/free-game-counters.cjs",
+      "service/feature_state.py",
+      "scripts/trial/feature-state.mjs",
+      "collector/feature-state.cjs"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -194,11 +200,17 @@
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/huff_retrigger_review.py": "e9d8aba8bf916389fa9b2899d823cd3f52b2d66b512a021d337601829048e9ff",
-    "scripts/trial/huff-retrigger-review.mjs": "7422189eeafe2595490faca97ee55edd62494dab9fa2767f7befc30b2db235f3",
-    "collector/huff-retrigger-review.cjs": "6a8eeca30ca3598fd1f0b66e3c731e11692857f4dbc39b65c09dd3832515be65",
-    "collector/sg.huff-retrigger.ts": "24fee383a0f30b621ebe620d8b8f1f3429dcf3b21c49506711f06986b3603913",
-    "service/game_rule_catalog.py": "8e62aa59cd81eb443baea77b17c68493f2e5a48eb175baec802b7a6dca118baa"
+    "service/huff_retrigger_review.py": "5ff54050b77a3362c19dddefb42c9c2d085ad6e859d1b30fe06837b428934d5b",
+    "scripts/trial/huff-retrigger-review.mjs": "6762646156caf204c7038a947886656d7d6a88df68a4c9446e46185b6a01e1bb",
+    "collector/huff-retrigger-review.cjs": "4c9f18d2c53693abc16e461d63fcdb210eaec767d3b0d03c8909e895e0addced",
+    "collector/sg.huff-retrigger.ts": "e0c40dc09a4175820f17ca18e248efa0e782044176430696612d0198fe26c39b",
+    "service/free_game_counters.py": "3095a7d40179b4250ddeba7c8bef3695c5eb7efd6fb5dc815865a624da6708ce",
+    "scripts/trial/free-game-counters.mjs": "11fe2277b7f5200b2f1895b5477391050b3a2377bdec77d7128454348229f5af",
+    "collector/free-game-counters.cjs": "af96c0e48145633b4e602038dab6290745a7aabf04ef0b8864e51e21f4aff6c4",
+    "service/feature_state.py": "9bded6c53d9f8d02479a11c1baaf134f4654a334f5a962295c2c8284f1ee2bba",
+    "scripts/trial/feature-state.mjs": "fe1cc28cb174c48f5ad2ee54b450bdd5e54f0651d160d6df6afb5e24b1d70f02",
+    "collector/feature-state.cjs": "3288ab08e2d2bf006b5944f2a858ccd163dcea430e260d3952eb40ca58924e27",
+    "service/game_rule_catalog.py": "cbf292e4ad0bc38227c546c27e265cdf90cc9de14c74847acb254a4ce2638622"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -281,7 +293,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "63aabbc04e7f9b0b328bc80fa7a7b8f01bc54f0c4baa9bbff3f3379cd68c97ea",
+    "docs/rules.md": "9a7293dfc47a1585d93b2217d89976f17d4894a9afea3bc18a4a6575943d5e1f",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -293,5 +305,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "08b3c22da2d2a1cb8a0d6d52762f30581085a3905985dabeaa12b4ce83204afb"
+  "ruleHash": "5efecadba709cb0fb6b17e80c8b1b591286b9faf06df4ace282b36fe4502f064"
 }

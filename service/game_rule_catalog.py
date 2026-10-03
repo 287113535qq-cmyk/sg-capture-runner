@@ -87,8 +87,8 @@ def contract(game_id):
         native.update({'family': 'huff-hard-hat-and-touchup-cash-v1',
             'continue': 'NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。',
             'complete': '无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。',
-            'bounds': '仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，重复PCFID限1|1并匹配CFFGT与总数/进度/剩余；原129全文不变，真实3帧未结束、终局仅合成，新重入尚未准入。TouchUp自然终局尚未观察。FID清零不等于新触发。'})
-        native['files'] += ['service/huff_fields.py', 'service/huff_feature_review.py', 'scripts/trial/huff-protocol.mjs', 'service/huff_touchup_review.py', 'scripts/trial/huff-touchup-review.mjs', 'collector/sg.huff-touchup.ts', 'service/huff_retrigger_review.py', 'scripts/trial/huff-retrigger-review.mjs', 'collector/huff-retrigger-review.cjs', 'collector/sg.huff-retrigger.ts']
+            'bounds': '仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，PCFID保留最多100个纯HardHat有序历史槽位，可重复，不推断授奖；追加由公共计数方法核CFFGT和总数/进度/剩余。功能未结束时累计余额与可用余额分别核验，终局全额到账。原规范化保留，最新真实3帧未结束、终局仅合成，公共修正待独立重新准入。TouchUp自然终局尚未观察。FID清零不等于新触发。'})
+        native['files'] += ['service/huff_fields.py', 'service/huff_feature_review.py', 'scripts/trial/huff-protocol.mjs', 'service/huff_touchup_review.py', 'scripts/trial/huff-touchup-review.mjs', 'collector/sg.huff-touchup.ts', 'service/huff_retrigger_review.py', 'scripts/trial/huff-retrigger-review.mjs', 'collector/huff-retrigger-review.cjs', 'collector/sg.huff-retrigger.ts', 'service/free_game_counters.py', 'scripts/trial/free-game-counters.mjs', 'collector/free-game-counters.cjs', 'service/feature_state.py', 'scripts/trial/feature-state.mjs', 'collector/feature-state.cjs']
         native['fields'].update({
             'FID / GSD.PCFID / GSD.FEAT': '当前两槽、前一槽及实际重播玩法分别保留；FID1=HardHat，仅适用于本游戏。',
             'TFG / CFGG': '免费总次数/当前进度保留；不假设每帧 NFG 必须减1。',
@@ -164,7 +164,7 @@ def contract(game_id):
             'continue': '首BET独立FID1且NFG>0时按同会话FREE_GAME；TFG=NFG+CFGG且CFGG逐帧加1，允许TFG增加的重触发。旧普通及独立FID0规则保留。',
             'complete': '上一帧NFG1到明确NFG0且TFG不变；GSD.FGRS/CFGC若存在必须与外层NFG/CFGG一致，GCT强制结束拒绝。再核XML、会话、B/AB、TW与实际下注20。',
             'bounds': '旧320完整已由GitHub导入并补写6，2旧半局留样作废；新增95普通全Mongo，当前415 Python/Runner/TS及代际审核通过。19分片各5，第18分片源0；已关闭试点，95实际已用加5明确注销，不能重跑。无新FID1终局，终局/重触发仍仅合成；混合/嵌套拒绝，不标ready。'})
-        native['files'] += ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts']
+        native['files'] += ['service/jinzita_fields.py', 'scripts/trial/jinzita-protocol.mjs', 'collector/sg.jinzita.ts', 'service/free_game_counters.py', 'scripts/trial/free-game-counters.mjs', 'collector/free-game-counters.cjs']
         native['fields'].update({'FID': '1=FreeSpins，0=HoldNSpin；新适配仅首BET独立1。',
             'GSD.FGRS / CFGC': '客户端免费剩余和进度可由这两个内层字段驱动；独立路径要求与外层计数一致，不能只看NFG0。',
             'GCT': '客户端强制结束会影响请求出口，未确认时拒绝而不猜测完整。'})
@@ -173,7 +173,7 @@ def contract(game_id):
             'continue': '首BET独立FID2且NFG>0时FREE_GAME；完整链保持单FID2，显式TFG=NFG+CFGG且逐帧CFGG加1，允许TFG增加的重触发。旧普通及独立FID0原规则保留。',
             'complete': 'FID2完整链至少一帧FREE_GAME，上一帧NFG1到明确NFG0且总次数不变，再核XML、会话、B/AB、TW及实际下注100；NFG0但FID转0/1/10/11不能直接视为结束。',
             'bounds': '真实旧82保留并已补写Mongo，旧FID2半局私有留样作废。独立新代际实采100完整（98普通+2旧FID0），当前182 Python/Runner/TS及代际审计一致，额度0且pending0。FID2终局和重触发仍仅合成，无真实FID2终局，不标ready。'})
-        native['files'] += ['service/luxor_fields.py', 'scripts/trial/luxor-protocol.mjs', 'collector/sg.luxor.ts']
+        native['files'] += ['service/luxor_fields.py', 'scripts/trial/luxor-protocol.mjs', 'collector/sg.luxor.ts', 'service/free_game_counters.py', 'scripts/trial/free-game-counters.mjs', 'collector/free-game-counters.cjs']
         native['fields'].update({'FID': '2免费、0wild respin、1pyramid respin、10/11cascade；新增只首BET独立2，混合或切换仍停该游戏。',
             'NFG / TFG / CFGG': '独立2必须显式提供剩余/总数/当前进度，缺失不沿用客户端补0默认。',
             'GSD.FID / CFG': '独立2仅接受内层FID缺失或[]；未知CFG拒绝。动画字段保留，不当作源请求指令。'})

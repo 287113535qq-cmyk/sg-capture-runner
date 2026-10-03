@@ -7,7 +7,7 @@ export const preparationSourceHash=text=>createHash('sha256').update(text.replac
 // Fixed executable checks, never commands supplied by a mailbox or raw reply.
 export const preparationHandlers=Object.freeze({
  32636:{node:['scripts/trial/piggies-protocol.test.mjs','scripts/trial/piggies-size2.test.mjs'],python:['test_piggies_fields.py','test_piggies_size2.py']},
- 32714:{node:['scripts/trial/huff-protocol.test.mjs','scripts/trial/huff-touchup.test.mjs'],python:['test_huff_fields.py','test_huff_touchup_review.py']},
+ 32714:{node:['scripts/trial/huff-protocol.test.mjs','scripts/trial/huff-touchup.test.mjs','scripts/trial/huff-retrigger-review.test.mjs','scripts/trial/free-game-counters.test.mjs','scripts/trial/feature-state.test.mjs'],python:['test_huff_fields.py','test_huff_touchup_review.py','test_huff_retrigger.py','test_free_game_counters.py','test_feature_state.py']},
  32718:{node:['scripts/trial/morepuff-protocol.test.mjs','scripts/trial/morepuff-megahat-review.test.mjs'],python:['test_morepuff_fields.py','test_morepuff_megahat_review.py']},
  32719:{node:['scripts/trial/inca-protocol.test.mjs','scripts/trial/inca-free-review.test.mjs','scripts/trial/inca-coin-review.test.mjs'],python:['test_inca_hold_action_review.py','test_inca_free_review.py','test_inca_coin_review.py']},
  32720:{node:['scripts/trial/jinzita-protocol.test.mjs'],python:['test_jinzita_fields.py']},

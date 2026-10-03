@@ -1,3 +1,4 @@
+const {advanceFreeGameCounters}=require('./free-game-counters.cjs');
 /** Independent validation of standalone Jinzita FID1 and legacy complete rounds. */
 const requireJinzita=(ok:unknown,code:string):void=>{if(!ok)throw Error(code);};
 function fields(text:string,separator='&',delimiter='='):Record<string,string>{
@@ -36,8 +37,7 @@ export function jinzitaFields(raw:any,mappingHash:string){
       requireJinzita((gsd.FGRS===undefined||counter(gsd.FGRS)===n)&&(gsd.CFGC===undefined||counter(gsd.CFGC)===c),'UNSUPPORTED_JINZITA_NESTED_COUNTER');
       if(i===0)requireJinzita(n>0&&c===0&&p.IFG==='0','EMPTY_TRIGGER');
       else{
-        requireJinzita(c===current+1&&t>=total,'JINZITA_PROGRESS');
-        if(n===0)requireJinzita(remaining===1&&t===total,'JINZITA_TERMINAL');
+        advanceFreeGameCounters({total,remaining,played:current},{total:t,remaining:n,played:c},{maximum:100});
       }total=t;current=c;
     }remaining=n;last=p;
   });

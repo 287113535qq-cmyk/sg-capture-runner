@@ -5,6 +5,7 @@ Mixed HoldNSpin/free transitions and forced game termination are not supported.
 import xml.etree.ElementTree as ET
 
 from native_nextgen_fields import NativeNextgenFields
+from free_game_counters import advance_free_game_counters
 from round_fields import check, params, VERSION, derive, amount
 
 SOURCE = 'hyperchargedjinzita96-round-one-base-v1'
@@ -69,9 +70,8 @@ class JinzitaSequence(NativeNextgenFields):
                 check(n > 0 and c == 0 and p.get('IFG') == '0', 'JINZITA_EMPTY_TRIGGER')
             else:
                 pn, pt, pc = previous
-                check(pn > 0 and c == pc + 1 and t >= pt, 'JINZITA_PROGRESS')
-                if n == 0:
-                    check(pn == 1 and t == pt, 'JINZITA_TERMINAL')
+                advance_free_game_counters({'total':pt,'remaining':pn,'played':pc},
+                                           {'total':t,'remaining':n,'played':c},maximum=100)
             previous = n, t, c
         return {'MSGID': 'FREE_GAME'} if previous[0] else None
 

@@ -1,6 +1,8 @@
 """Independent FID1 Hard Hat additive review; source admission remains separate."""
 import re, xml.etree.ElementTree as ET
-from round_fields import check, params, amount, VERSION
+from round_fields import check, params, amount, VERSION, FieldError
+from free_game_counters import advance_free_game_counters
+from feature_state import parse_feature_history, check_feature_wallet
 from native_nextgen_fields import NativeNextgenFields
 from huff_feature_review import SOURCE, game_state
 
@@ -46,15 +48,21 @@ def review(raw):
         else:
             check(prior_remaining>0,'HARDHAT_AFTER_END')
             added=amount(g.get('CFFGT'))
-            check(total==prior_total+added and remaining==prior_remaining-1+added,'HARDHAT_COUNTER')
-            # Ordered previous slots persist after the award frame. The full
-            # counter history proves an earlier award; CFFGT is only this frame.
-            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|','1','1|1|','1|1') if total > 6 else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
+            advance_free_game_counters({'total':prior_total,'remaining':prior_remaining,'played':i-1},
+                                       {'total':total,'remaining':remaining,'played':progress},added=added,maximum=99)
+            # PCFID preserves ordered prior slots; it is not an award counter.
+            # Pure Hard Hat slots do not change the independently checked route.
+            check(g.get('FEAT')=='HARDHAT','HARDHAT_PREVIOUS_SLOTS')
+            try:
+                parse_feature_history(g.get('PCFID',''), {1}, maximum=100)
+            except FieldError:
+                raise FieldError('HARDHAT_PREVIOUS_SLOTS') from None
             check([amount(g.get(k)) for k in ('CFTFG','CFNFG','CFCFGG')]==[total,remaining,progress],'HARDHAT_COUNTER')
             retriggers+=int(added>0)
         prior_total,prior_remaining=total,remaining
-        check('responseBalance' not in s or amount(s['responseBalance'])==amount(p['B']),'HARDHAT_BALANCE')
-        check(amount(p['B'])==amount(p['AB']) and amount(raw['startBalanceRaw'])-amount(p['B'])+amount(p['TW'])==500,'HARDHAT_MONEY')
+        check_feature_wallet(amount(raw['startBalanceRaw']), 500, amount(p['B']),
+                             amount(p['AB']), amount(p['TW']), settled=remaining==0,
+                             response_balance=amount(s['responseBalance']) if 'responseBalance' in s else None)
     return {'next':'FREE_GAME' if remaining else None,'candidateComplete':remaining==0,
             'retriggers':retriggers,'total':total,'sourceRequests':0,'captureAuthorized':False,
             'naturalTerminalObserved':False}
@@ -66,7 +74,7 @@ def has_retrigger(raw):
     prior_total = None
     for s in raw.get('steps', []):
         p = params(s['responsePayload']);g = game_state(p.get('GSD', ''))
-        if g.get('PCFID', '').rstrip('|') == '1|1' or g.get('FEAT') == 'HARDHAT' and g.get('CFFGT', '0') not in ('0', ''):
+        if bool(re.fullmatch(r'1(?:\|1)+\|?',g.get('PCFID',''))) or g.get('FEAT') == 'HARDHAT' and g.get('CFFGT', '0') not in ('0', ''):
             return True
         total = int(p['TFG']) if re.fullmatch(r'[0-9]+',p.get('TFG','')) else None
         if g.get('FEAT') == 'HARDHAT' and prior_total is not None and total is not None and total > prior_total:

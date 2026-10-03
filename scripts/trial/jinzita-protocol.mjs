@@ -1,3 +1,4 @@
+import {advanceFreeGameCounters} from './free-game-counters.mjs';
 // Official Jinzita route also checks nested free counters and forced termination.
 // Standalone FID1 is supported; switching feature at NFG0 is not an exit.
 export const JINZITA_SOURCE='hyperchargedjinzita96-round-one-base-v1';
@@ -37,8 +38,7 @@ export function jinzitaSequence(raw){
       check((gsd.FGRS===undefined||integer(gsd.FGRS)===n)&&(gsd.CFGC===undefined||integer(gsd.CFGC)===c),'UNSUPPORTED_JINZITA_NESTED_COUNTER');
       if(index===0)check(n>0&&c===0&&p.IFG==='0','JINZITA_EMPTY_TRIGGER');
       else{
-        check(c===previous.c+1&&t>=previous.t,'JINZITA_PROGRESS');
-        if(n===0)check(previous.n===1&&t===previous.t,'JINZITA_TERMINAL');
+        advanceFreeGameCounters({total:previous.t,remaining:previous.n,played:previous.c},{total:t,remaining:n,played:c},{maximum:100});
       }
     }
     previous={n,t,c};last=p;

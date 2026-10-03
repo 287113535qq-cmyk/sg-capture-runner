@@ -1,3 +1,4 @@
+import {advanceFreeGameCounters} from './free-game-counters.mjs';
 // Official client routes wild/pyramid respins before the free-spin exit.
 // Standalone FID2 is supported; switching feature at NFG0 is not an exit.
 export const LUXOR_SOURCE='pyramidsofluxor96-round-one-base-v1';
@@ -35,8 +36,7 @@ export function luxorSequence(raw){
       t=integer(p.TFG);c=integer(p.CFGG);check(t<=100&&c<=100&&t===n+c,'LUXOR_COUNTERS');
       if(index===0)check(n>0&&c===0&&p.IFG==='0','LUXOR_EMPTY_TRIGGER');
       else{
-        check(c===previous.c+1&&t>=previous.t,'LUXOR_PROGRESS');
-        if(n===0)check(previous.n===1&&t===previous.t,'LUXOR_TERMINAL');
+        advanceFreeGameCounters({total:previous.t,remaining:previous.n,played:previous.c},{total:t,remaining:n,played:c},{maximum:100});
       }
     }
     previous={n,t,c};last=p;

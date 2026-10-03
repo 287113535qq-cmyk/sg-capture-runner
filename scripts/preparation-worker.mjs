@@ -8,6 +8,7 @@ import {preparationHandlers,preparationInputHash,reviewedPreparation,preparation
 import {stagePreparedCycle} from './runner-v2/preparation-publication-cycle.mjs';
 import {preparationRevision} from './runner-v2/preparation-revision.mjs';
 import {reviewFlowRepairInbox} from './runner-v2/flow-repair-inbox.mjs';
+import {replaceLocalJson} from './runner-v2/atomic-local-state.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -18,11 +19,7 @@ const dir=path.join(root,'.local','preparation-worker',lane);fs.mkdirSync(dir,{r
 fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});
 const stateFile=path.join(dir,'inventory.json'),lockFile=path.join(dir,'producer.lock');
 const load=p=>JSON.parse(fs.readFileSync(p,'utf8'));
-const save=value=>{
-  const temp=stateFile+'.'+process.pid+'.tmp',fd=fs.openSync(temp,'wx');
-  try{fs.writeFileSync(fd,JSON.stringify(value,null,2)+'\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
-  fs.renameSync(temp,stateFile);
-};
+const save=value=>replaceLocalJson(stateFile,value);
 const log=value=>console.log(JSON.stringify({at:Date.now(),...value,sourceAllowance:0}));
 if(process.argv.includes('--status')){
   const q=load(stateFile),counts={};for(const t of q.tasks)counts[t.status]=(counts[t.status]??0)+1;

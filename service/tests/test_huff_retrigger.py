@@ -23,7 +23,26 @@ class RetriggerTests(unittest.TestCase):
   self.assertEqual(HuffFields(PLAN).settled(r),old)
   unearned=sample()
   for k in ('responsePayload','responseXml'):unearned['steps'][1][k]=unearned['steps'][1][k].replace('PCFID~1|','PCFID~1|1|')
-  with self.assertRaises(FieldError):HuffFields(PLAN).next_request(unearned)
+  self.assertEqual(HuffFields(PLAN).settled(unearned),old)
+ def test_ordered_prior_slots_do_not_imply_additional_free_games(self):
+  r=sample();r['steps']=r['steps'][:7]
+  from xml.sax.saxutils import escape
+  for i,step in enumerate(r['steps']):
+   values=dict(x.split('=',1) for x in step['responsePayload'].split('&'))
+   values.update(TFG='6',NFG=str(6-i),CFGG=str(i))
+   g=dict(x.split('~',1) for x in values['GSD'].split('#'))
+   if i:g.update(CFFGT='0',CFTFG='6',CFNFG=str(6-i),CFCFGG=str(i),PCFID='1|'*i)
+   values['GSD']='#'.join(k+'~'+v for k,v in g.items())
+   step['responsePayload']='&'.join(k+'='+v for k,v in values.items())
+   step['responseXml']='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+escape(step['responsePayload'])+'</PAYLOAD></GDMRESPONSE>'
+  for i in range(1,7):self.assertEqual(HuffFields(PLAN).next_request({**r,'steps':r['steps'][:i]}),{'MSGID':'FREE_GAME'})
+  self.assertIsNone(HuffFields(PLAN).next_request(r));self.assertEqual(review(r)['retriggers'],0)
+  self.assertEqual(HuffFields(PLAN).settled(r)['bonus'],2)
+  for bad in ('1||','1|0|','1|2|','1|'*101):
+   changed=copy.deepcopy(r)
+   for k in ('responsePayload','responseXml'):changed['steps'][2][k]=changed['steps'][2][k].replace('PCFID~1|1|','PCFID~'+bad)
+   with self.assertRaises(FieldError):HuffFields(PLAN).next_request(changed)
+
  def test_single_previous_slot_additive_retrigger_preserves_old_normalization(self):
   r=sample();old=HuffFields(PLAN).settled(r)
   for s in r['steps']:
@@ -43,7 +62,7 @@ class RetriggerTests(unittest.TestCase):
    p={**r,'steps':r['steps'][:i]};self.assertEqual(a.next_request(p),{'MSGID':'FREE_GAME'})
    with self.assertRaises(FieldError):a.settled(p)
   f=a.settled(r);self.assertEqual(f['typeMappingHash'],type_profile(EXTENSION)[1]);self.assertEqual(f['bonus'],2);self.assertEqual(f['bet'],5)
- def test_duplicate_slots_need_corresponding_award_and_single_feature(self):
+ def test_wrong_awards_or_mixed_slots_still_rejected(self):
   for before,after in [('PCFID~1|1|','PCFID~1|0|'),('CFFGT~1','CFFGT~0'),('FID=1|','FID=1|2|'),('RID=1','RID=0'),('NFG=5','NFG=0')]:
    r=copy.deepcopy(sample());s=r['steps'][2];s['responsePayload']=s['responsePayload'].replace(before,after);s['responseXml']=s['responseXml'].replace(before,after)
    with self.assertRaises(FieldError):HuffFields(PLAN).settled(r)

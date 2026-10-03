@@ -1,3 +1,4 @@
+const {advanceFreeGameCounters}=require('./free-game-counters.cjs');
 /** Independent validation of standalone Luxor FID2 and legacy complete rounds. */
 const requireLuxor=(ok:unknown,code:string):void=>{if(!ok)throw Error(code);};
 function fields(text:string,separator='&',delimiter='='):Record<string,string>{
@@ -34,8 +35,7 @@ export function luxorFields(raw:any,mappingHash:string){
       const t=counter(p.TFG),c=counter(p.CFGG);requireLuxor(t<=100&&c<=100&&t===n+c,'LUXOR_COUNTERS');
       if(i===0)requireLuxor(n>0&&c===0&&p.IFG==='0','EMPTY_TRIGGER');
       else{
-        requireLuxor(c===current+1&&t>=total,'LUXOR_PROGRESS');
-        if(n===0)requireLuxor(remaining===1&&t===total,'LUXOR_TERMINAL');
+        advanceFreeGameCounters({total,remaining,played:current},{total:t,remaining:n,played:c},{maximum:100});
       }total=t;current=c;
     }remaining=n;last=p;
   });

@@ -1,4 +1,6 @@
 // Independent retrigger sequence review. No source permission.
+import {advanceFreeGameCounters} from './free-game-counters.mjs';
+import {parseFeatureHistory,checkFeatureWallet} from './feature-state.mjs';
 import {parseXml,children,one} from './pearl-protocol.mjs';
 const need=(ok,code)=>{if(!ok)throw Error('HARDHAT_'+code);};
 const uint=v=>{need(/^(0|[1-9]\d*)$/.test(String(v))&&Number.isSafeInteger(Number(v)),'INTEGER');return Number(v);};
@@ -28,14 +30,14 @@ export function review(raw){
   if(!i)need(total===6&&remaining===6&&!g.PCFID&&!g.FEAT,'TRIGGER');
   else{
    need(priorRemaining>0,'AFTER_END');const added=uint(g.CFFGT);
-   need(total===priorTotal+added&&remaining===priorRemaining-1+added,'COUNTER');
-   // CFFGT describes this frame; ordered prior slots outlive the award frame.
-   need(g.FEAT==='HARDHAT'&&(total>6?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID),'PREVIOUS_SLOTS');
+   advanceFreeGameCounters({total:priorTotal,remaining:priorRemaining,played:i-1},{total,remaining,played:progress},{added,maximum:99});
+   // PCFID is an ordered slot list, not an award counter. CFFGT proves awards separately.
+   need(g.FEAT==='HARDHAT','PREVIOUS_SLOTS');
+   try{parseFeatureHistory(g.PCFID??'',[1],{maximum:100});}catch{need(false,'PREVIOUS_SLOTS');}
    need(uint(g.CFTFG)===total&&uint(g.CFNFG)===remaining&&uint(g.CFCFGG)===progress,'COUNTER');retriggers+=Number(added>0);
   }
   priorTotal=total;priorRemaining=remaining;
-  need(s.responseBalance===undefined||uint(s.responseBalance)===uint(p.B),'BALANCE');
-  need(uint(p.B)===uint(p.AB)&&uint(raw.startBalanceRaw)-uint(p.B)+uint(p.TW)===500,'MONEY');
+  checkFeatureWallet(uint(raw.startBalanceRaw),500,uint(p.B),uint(p.AB),uint(p.TW),{settled:remaining===0,responseBalance:s.responseBalance===undefined?undefined:uint(s.responseBalance)});
  }
  return {next:remaining?'FREE_GAME':null,candidateComplete:remaining===0,retriggers,total,sourceRequests:0,captureAuthorized:false,naturalTerminalObserved:false};
 }
@@ -45,6 +47,6 @@ export function hasRetrigger(raw){
  if(raw.sourceKey!=='huffnpuffmoneymansionhighlimit96-round-one-base-v1')return false;
  let priorTotal;
  return raw.steps.some(s=>{const p=parse(s.responsePayload,'&','='),g=parse(p.GSD??'','#','~'),total=/^\d+$/.test(p.TFG??'')?Number(p.TFG):undefined;
-  const result=(g.PCFID??'').replace(/\|$/,'')==='1|1'||g.FEAT==='HARDHAT'&&(!['0','',undefined].includes(g.CFFGT)||priorTotal!==undefined&&total!==undefined&&total>priorTotal);
+  const result=/^1(?:\|1)+\|?$/.test(g.PCFID??'')||g.FEAT==='HARDHAT'&&(!['0','',undefined].includes(g.CFFGT)||priorTotal!==undefined&&total!==undefined&&total>priorTotal);
   priorTotal=total;return result;});
 }

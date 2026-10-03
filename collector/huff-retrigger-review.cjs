@@ -1,5 +1,7 @@
 // Independent collector settlement evidence for isolated FID1 retriggers.
 const assert=require('node:assert/strict');
+const {advanceFreeGameCounters}=require('./free-game-counters.cjs');
+const {parseFeatureHistory,checkFeatureWallet}=require('./feature-state.cjs');
 const {XMLParser,XMLValidator}=require('fast-xml-parser');
 const parser=new XMLParser({ignoreAttributes:false,parseTagValue:false,trimValues:false});
 const fields=(text,sep='&',del='=')=>{assert.equal(typeof text,'string');const out=Object.create(null);for(const part of text.split(sep).filter(Boolean)){const at=part.indexOf(del),key=part.slice(0,at);assert(at>0&&!Object.hasOwn(out,key));out[key]=part.slice(at+1);}return out;};
@@ -25,12 +27,11 @@ function review(raw){
   total=uint(p.TFG);remaining=uint(p.NFG);const progress=uint(p.CFGG);assert(total>0&&total<100&&total===remaining+progress&&progress===i);
   if(i===0)assert(total===6&&remaining===6&&!g.PCFID&&!g.FEAT);
   else{
-   const added=uint(g.CFFGT);assert(previousRemaining>0&&total===previousTotal+added&&remaining===previousRemaining-1+added);
-   assert(g.FEAT==='HARDHAT'&&(total>6?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID));
+   const added=uint(g.CFFGT);advanceFreeGameCounters({total:previousTotal,remaining:previousRemaining,played:i-1},{total,remaining,played:progress},{added,maximum:99});
+   assert.equal(g.FEAT,'HARDHAT');parseFeatureHistory(g.PCFID??'',[1],{maximum:100});
    assert(uint(g.CFTFG)===total&&uint(g.CFNFG)===remaining&&uint(g.CFCFGG)===progress);retriggers+=Number(added>0);
   }
-  assert(uint(p.B)===uint(p.AB)&&uint(raw.startBalanceRaw)-uint(p.B)+uint(p.TW)===500);
-  if(step.responseBalance!==undefined)assert.equal(uint(step.responseBalance),uint(p.B));
+  checkFeatureWallet(uint(raw.startBalanceRaw),500,uint(p.B),uint(p.AB),uint(p.TW),{settled:remaining===0,responseBalance:step.responseBalance===undefined?undefined:uint(step.responseBalance)});
   last=p;previousTotal=total;previousRemaining=remaining;
  }
  return {complete:remaining===0,next:remaining?'FREE_GAME':null,retriggers,total,start:uint(raw.startBalanceRaw),end:uint(last.B),win:uint(last.TW)};

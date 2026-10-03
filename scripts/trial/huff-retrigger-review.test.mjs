@@ -12,9 +12,31 @@ test('earned previous slots persist on later frames without a new award',()=>{
  assert.deepEqual(prepareNextgenRound(r,huffMapping(r,'a'.repeat(64),{retrigger:fields.typeMappingHash})),fields);
  const unearned=structuredClone(raw);
  for(const k of ['responsePayload','responseXml'])unearned.steps[1][k]=unearned.steps[1][k].replace('PCFID~1|','PCFID~1|1|');
- assert.throws(()=>huffNextRequest(unearned));
- assert.throws(()=>prepareNextgenRound(unearned,{buy:0,bonus:2,typeMappingHash:fields.typeMappingHash}));
+ assert.equal(huffNextRequest(unearned),null);
+ assert.deepEqual(prepareNextgenRound(unearned,huffMapping(unearned,'a'.repeat(64),{retrigger:fields.typeMappingHash})),fields);
 });
+test('ordered previous slots preserve six-spin flow without any additional award',()=>{
+ const r=structuredClone(raw);r.steps=r.steps.slice(0,7);
+ for(const [i,s]of r.steps.entries()){
+  const p=Object.fromEntries(s.responsePayload.split('&').map(x=>x.split('=')));
+  Object.assign(p,{TFG:'6',NFG:String(6-i),CFGG:String(i)});
+  const g=Object.fromEntries(p.GSD.split('#').map(x=>x.split('~')));
+  if(i)Object.assign(g,{CFFGT:'0',CFTFG:'6',CFNFG:String(6-i),CFCFGG:String(i),PCFID:'1|'.repeat(i)});
+  p.GSD=Object.entries(g).map(([k,v])=>k+'~'+v).join('#');
+  s.responsePayload=Object.entries(p).map(([k,v])=>k+'='+v).join('&');
+  s.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+s.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';
+ }
+ for(let i=1;i<7;i++)assert.deepEqual(huffNextRequest({...r,steps:r.steps.slice(0,i)}),{MSGID:'FREE_GAME'});
+ assert.equal(huffNextRequest(r),null);
+ const py=spawnSync(process.env.PYTHON||'python3',['-c',"import json,sys;sys.path.insert(0,'service');from huff_fields import HuffFields;from huff_retrigger_review import PLAN;print(json.dumps(HuffFields(PLAN).settled(json.load(sys.stdin))))"],{input:JSON.stringify(r),encoding:'utf8'});
+ assert.equal(py.status,0,py.stderr);const expected=JSON.parse(py.stdout);
+ assert.deepEqual(prepareNextgenRound(r,huffMapping(r,'a'.repeat(64),{retrigger:expected.typeMappingHash})),expected);
+ for(const bad of ['1||','1|0|','1|2|','1|'.repeat(101)]){
+  const changed=structuredClone(r);for(const k of ['responsePayload','responseXml'])changed.steps[2][k]=changed.steps[2][k].replace('PCFID~1|1|','PCFID~'+bad);
+  assert.throws(()=>huffNextRequest(changed));assert.throws(()=>prepareNextgenRound(changed,{buy:0,bonus:2,typeMappingHash:expected.typeMappingHash}));
+ }
+});
+
 test('Hard Hat retrigger keeps prefix incomplete and gives three-way identical settlement',()=>{
  for(let i=1;i<raw.steps.length;i++)assert.deepEqual(huffNextRequest({...raw,steps:raw.steps.slice(0,i)}),{MSGID:'FREE_GAME'});
  assert.equal(huffNextRequest(raw),null);const m=huffMapping(raw,'a'.repeat(64),{retrigger:fields.typeMappingHash});assert.deepEqual(prepareNextgenRound(raw,m),fields);
