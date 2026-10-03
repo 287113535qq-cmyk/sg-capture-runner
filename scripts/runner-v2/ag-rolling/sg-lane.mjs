@@ -6,10 +6,10 @@ import {runCaptureTask} from './sg-capture-adapter.mjs';
 // Runs the original AG lane loop with SG protocol and staging adapters. This
 // library has no workflow dispatch, legacy campaign selection or live entry
 // point: its caller must supply a registered, exact-commit queue and guard.
-export async function runSgLane({payload,lane,runId,manifest,store,guard,createProtocol,createStorage,
- now=Date.now,pause=()=>new Promise(r=>setTimeout(r,3000)),log=()=>{},deadline,signal}){
+export async function runSgLane({payload,lane,runId,manifest,store,guard,createProtocol,createStorage,createTask,
+ now=Date.now,pause=()=>new Promise(r=>setTimeout(r,3000)),log=()=>{},onGameClosed=async()=>{},deadline,signal}){
  validateSgPayload(payload,manifest);taskId('worker',lane);
- assert(typeof guard==='function'&&typeof createProtocol==='function'&&typeof createStorage==='function'
+ assert(typeof guard==='function'&&(typeof createTask==='function'||typeof createProtocol==='function'&&typeof createStorage==='function')
   &&Number.isFinite(deadline),'SG_AG_LANE_ADAPTERS');
  const results=new Map(),open=new Map();
  const key=(game,kind,index)=>game.campaignId+':'+taskId(kind,index);
@@ -24,18 +24,26 @@ export async function runSgLane({payload,lane,runId,manifest,store,guard,createP
     },
     close:async()=>{
      for(const [k,value] of open){if(value.game.campaignId!==game.campaignId)continue;
-      await value.storage.close();open.delete(k);}
+      if(value.close)await value.close();else await value.storage.close();open.delete(k);}
+     await onGameClosed(game);
     },
    });
   },
   async run(game,kind,index,quota,owner){
    await guard({game,queueId:payload.queueId,lane,kind,index,owner,stage:'capture'});
-   const protocol=await createProtocol({game,queueId:payload.queueId,kind,index,owner});
-   const storage=await createStorage({game,queueId:payload.queueId,kind,index,quota,owner,protocol});
-   const k=key(game,kind,index);assert(!open.has(k),'SG_DUPLICATE_TASK_EXECUTION');open.set(k,{game,storage});
+   const context={game,queueId:payload.queueId,kind,index,quota,owner};
+   const task=createTask?await createTask(context):null;
+   const protocol=task?.protocol??await createProtocol(context);
+   const storage=task?.storage??await createStorage({...context,protocol});
+   const k=key(game,kind,index);assert(!open.has(k),'SG_DUPLICATE_TASK_EXECUTION');open.set(k,{game,storage,close:task?.close});
    const result=await runCaptureTask({game,kind,index,quota,owner,protocol,storage,
     guard:()=>guard({game,queueId:payload.queueId,lane,kind,index,owner,stage:'source'}),deadline,log,signal});
-   results.set(k,result);return result.exitCode;
+   results.set(k,result);
+   log(JSON.stringify({gameId:game.gameId,taskId:taskId(kind,index),exitCode:result.exitCode,
+    unknownOutcome:result.unknownOutcome,faults:result.faults??[],count:result.proof?.count??0}));
+   if(protocol.metrics)log(JSON.stringify({kind:'sg-ag-source-performance',gameId:game.gameId,
+    taskId:taskId(kind,index),...protocol.metrics()}));
+   return result.exitCode;
   },
  });
 }

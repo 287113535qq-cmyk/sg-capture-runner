@@ -2,6 +2,10 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      ag_queue_profile:
+        description: 'Exact registered AG rolling queue profile'
+        type: string
+        default: ''
       prepared_runtime:
         description: 'Exact registered prepared runtime; immutable receipt required'
         type: string
@@ -54,7 +58,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [ag-rolling, formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -66,6 +70,114 @@ concurrency:
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  ag-rolling-admit:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Admit registered AG queue without source requests
+        run: node scripts/runner-v2/ag-rolling/sg-live.mjs admit
+  ag-rolling-capture:
+    needs: ag-rolling-admit
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && github.repository == 'zyzuoyang/sg-capture-runner'
+    name: AG rolling lane ${{ matrix.lane }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lane: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
+      SG_AG_LANE: ${{ matrix.lane }}
+      SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Install locked SG protocol adapters
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Run original AG rolling lane with independent SG sessions
+        run: node scripts/runner-v2/ag-rolling/sg-live.mjs lane
+  ag-rolling-controller:
+    needs: ag-rolling-admit
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Merge ended games while original AG lanes keep collecting
+        run: node scripts/runner-v2/ag-rolling/sg-live.mjs controller
+  ag-rolling-finalize:
+    needs: [ag-rolling-admit, ag-rolling-capture, ag-rolling-controller]
+    if: always() && github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && needs.ag-rolling-admit.result == 'success' && github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Install locked independent SG validators
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Reconcile ended AG lanes without source requests
+        run: node scripts/runner-v2/ag-rolling/sg-live.mjs reconcile
   demo-rollover:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'demo-rollover'
     runs-on: ubuntu-latest
@@ -1143,7 +1255,7 @@ jobs:
         run: node scripts/trial/worker.mjs audit
   verify:
     needs: [trial, pending-resume, pending-capture, fresh-capture, formal-capture, pyramids-formal-capture]
-    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'demo-retire' && inputs.role != 'demo-rollover' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') && !startsWith(inputs.role, 'demon-zero-') && !startsWith(inputs.role, 'demon-nested-') && !startsWith(inputs.role, 'demon-pair-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
+    if: always() && (github.event_name == 'workflow_dispatch' && inputs.role != 'ag-rolling' && inputs.role != 'demo-retire' && inputs.role != 'demo-rollover' && inputs.role != 'runner-check' && inputs.role != 'mongo-only-check' && !startsWith(inputs.role, 'github-') && !startsWith(inputs.role, 'optimization-') && !startsWith(inputs.role, 'incident-') && !startsWith(inputs.role, 'protocol-') && !startsWith(inputs.role, 'session-') && !startsWith(inputs.role, 'terminal-') && !startsWith(inputs.role, 'foam-session-') && !startsWith(inputs.role, 'pick-bonus-') && !startsWith(inputs.role, 'pick-claim-') && !startsWith(inputs.role, 'pick-session-') && !startsWith(inputs.role, 'demon-rebind-') && !startsWith(inputs.role, 'demon-session-') && !startsWith(inputs.role, 'demon-feature-session-') && !startsWith(inputs.role, 'demon-pending-session-') && !startsWith(inputs.role, 'demon-three-') && !startsWith(inputs.role, 'demon-two-') && !startsWith(inputs.role, 'demon-queue-') && !startsWith(inputs.role, 'demon-one-') && !startsWith(inputs.role, 'demon-zero-') && !startsWith(inputs.role, 'demon-nested-') && !startsWith(inputs.role, 'demon-pair-') || github.event_name == 'schedule' && vars.SG_TRIAL_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

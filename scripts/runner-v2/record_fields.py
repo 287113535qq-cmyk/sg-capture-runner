@@ -52,6 +52,21 @@ def execute(request):
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') == 'nextgen_bootstrap':
+        assert plan['adapter'] == 'native-nextgen-v1'
+        import xml.etree.ElementTree as ET
+        from round_fields import params, amount
+        step = request['step']
+        q, p = params(step['requestPayload']), params(step['responsePayload'])
+        assert step['msgId'] in ('INIT', 'REELSTRIP') and step['methodName'] == 'processGameMessage'
+        assert q == {'GN': plan['runtimeSlug'], 'PID': request['pid'], 'MSGID': step['msgId']}
+        assert request['pid'].startswith('gdmgcm') and p['MSGID'] == step['msgId']
+        text = step['responseXml']
+        assert isinstance(text, str) and len(text) < 262144 and '<!DOCTYPE' not in text.upper() and '<!ENTITY' not in text.upper()
+        root = ET.fromstring(text)
+        assert root.tag.upper() == 'GDMRESPONSE' and root.findtext('SUCCESS').lower() == 'true' and root.findtext('PAYLOAD') == step['responsePayload']
+        assert amount(step['elapsedMs']) <= 300000 and not step.get('sourceRejected')
+        return {'validated': True, 'balanceRaw': amount(p.get('AB', p.get('B'))) if step['msgId'] == 'INIT' else None}
     if request.get('op') == 'review_flow':
         # Diagnostic channel only. Existing next/intent/record permissions and
         # applied profiles remain independent; this cannot approve a record.
@@ -118,6 +133,8 @@ def execute(request):
             assert parsed['PID']==params(raw['steps'][0]['requestPayload'])['PID']
         return {'validated':True}
     fields = adapter.settled(raw)
+    if op == 'fields':
+        return fields
     if op == 'verify':
         old = request['record']
         assert all(old[k]==plan[k] for k in ('trialId','gameId','runtimeGameId'))
