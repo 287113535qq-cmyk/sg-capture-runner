@@ -137,7 +137,7 @@
     "docs/rhino-ag-close-20261001.md": "188f8b2c22360f74a320f74460500ad8fcd3f9128b76e3b3c0df998535ad3270",
     "docs/rhino-formal-preparation-20261001.md": "56531514617342eef9a729ca096b2173c4a9ab5609edca4a80bdc8ab36e8822d",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "0f588ae0a7b2b1643e7f17702d23512ebd1fe8f8f75a7c4791ecc8d9ea69e20a",
+    "docs/rules.md": "2f6a0da75067ec4a16a94f624436cc27b94c200c4b41f863fd8eb730e0de2120",
     "docs/secondary-idle-preparation-20261001.md": "aa935a133e88f2b09121b787fab1cc793b30417ea8e71a7b28558f089c997bca"
   },
   "observations": {
@@ -147,5 +147,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b511697bf4c04aa3aa0668e1ba8de1b52128c2299274babcf8ba78e2b1151518"
+  "ruleHash": "2ce48e6ea1dc93d58dbecabd4c77690c77d9f69cf5028d6592619eb902f50f81"
 }

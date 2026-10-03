@@ -108,6 +108,14 @@
       "bytes": 1395604,
       "sha256": "0bcfd1562a0c41bdaaa0334e7b665bfb4f5e5a97cffe748ff16de0b339b9f76a",
       "streamChunkMaxBytes": 262144
+    },
+    "displayReentryFinal": {
+      "verifiedFiles": 22,
+      "bytes": 955630,
+      "sha256": "52796e66aa8c2abf7eeec761ae70997823c780280cd188d0a81c07d0a1e766d4",
+      "bothCopiesVerified": true,
+      "newCompleteRecords": 627,
+      "original789Referenced": true
     }
   },
   "fractionalValues": {
@@ -270,7 +278,7 @@
     "bothHoldsInactive": true,
     "closeProfileHash": "96256b7292dc40f6b0bdccdd648aabb57c0f39fee18993dbb482714a9f314f03",
     "closureHash": "f8889c808e8d071ec5fde01762d83b40e3515e43ccad38aa7d4bdaabd6c794f4",
-    "sourceRestarted": false,
+    "sourceRestarted": true,
     "touchupSharedMethodLocalPassed": true,
     "touchupNodeChecks": 3,
     "touchupPythonChecks": 5,
@@ -365,5 +373,41 @@
     "sourceRequests": 0,
     "newBetAllowance": 0
   },
-  "successorLocalChecks": 18
+  "successorLocalChecks": 18,
+  "latestRestoredSourceResult": {
+    "schema": "sg-common-display-source-after-review-v1",
+    "sourceRun": "37119129319:1",
+    "commit": "bcd9496f3981dd2743385a153a39c5c5f378e686",
+    "sourceRequests": 701,
+    "paidRoundRequests": 628,
+    "newComplete": 627,
+    "newInterruptedAbandoned": 1,
+    "completeConfirmed": 1416,
+    "original789Unchanged": true,
+    "receiptMongoFullReadback": 1416,
+    "newPythonVerified": 627,
+    "closureHash": "c4089a7da65e4b968b50d99b589ea80f74ea03adc0f9878082e80d4220ae7183",
+    "recordsHash": "b53e951e095b7f851bc1cc27a5ca6c163870eeb0e104c76c4fc3701226aee7b4",
+    "nativeRepairKey": "game-repair:sg_r1_20260928_32714:8e0608df1fc685d8129218a4bd24629364bd0e1883b547af45d765aa7697cc3b",
+    "pending": 0,
+    "unconfirmedWrites": 0,
+    "countReserved": 0,
+    "activeGame": null,
+    "closed": true,
+    "stoppedReason": "HUFF_FEATURE_NOT_ADAPTED",
+    "newFaultShape": "BET FID0 then FREE_GAME FID3",
+    "cleanupSourceRequests": 0,
+    "newBetAllowance": 0,
+    "gameComplete": false,
+    "sourceConclusion": "failure",
+    "finalizerConclusion": "success",
+    "fullSourceLogsSHA": "b04fe8c4ae20bfd8359df95cbae1950c638f5e0f38e0df13563c17581a941b96",
+    "handoffRun": 37119895135,
+    "handoffConclusion": "success",
+    "preparationRevokedBothLanes": true,
+    "lastLinuxToDispatchSeconds": 473,
+    "status": "parked-protocol-repair",
+    "fourProcessesRunning": true,
+    "preparedInventoryAvailable": 0
+  }
 }
