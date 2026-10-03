@@ -88,7 +88,8 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[],confirmedTerminals=[];
   let captureLink,repairTransition;
   const previousGame=archive.campaign?.games?.find(g=>g.game_id===plan.gameId);
-  if(archive.schema==='sg-count-shared-before-v1'&&archive.terminalRecords?.length&&previousGame?.repairKey){
+  const preparedClosure=archive.schema==='sg-count-prepared-before-v1';
+  if((preparedClosure||archive.schema==='sg-count-shared-before-v1'&&archive.terminalRecords?.length)&&previousGame?.repairKey){
     const previousKey=previousGame.repairKey,previous=(await store.get('state',previousKey))?.value;
     const previousArchive=(await store.get('journal',previous?.archiveKey))?.value;
     const closed=(await store.get('journal',repair.archiveKey.slice(0,-':before'.length)+':complete'))?.value;
@@ -99,8 +100,9 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
     assert(previousKey!==repairKey&&previousKey.startsWith('game-repair:'+plan.trialId+':')
       &&previous?.schema==='sg-game-repair-v1'&&previous.gameId===plan.gameId&&previous.trialId===plan.trialId
       &&previous.sourceAllowance===0&&previous.requiresNewSession===true&&previousArchive
-      &&closed?.schema==='sg-count-shared-close-v1'&&closed.repairKey===repairKey
-      &&closed.sourceRequests===0&&closed.newBetAllowance===0&&closed.receivedTerminalsReconciled===archive.terminalRecords.length
+      &&closed?.schema===(preparedClosure?'sg-count-prepared-close-v1':'sg-count-shared-close-v1')&&closed.repairKey===repairKey
+      &&closed.sourceRequests===0&&closed.newBetAllowance===0
+      &&(preparedClosure?closed.requiresNewSession===true:closed.receivedTerminalsReconciled===archive.terminalRecords.length)
       &&/^[a-f0-9]{64}$/.test(previousGame.preparationProofHash??'')
       &&activationBefore?.schema==='sg-prepared-count-before-v1'&&original?.status==='pending-adapter'
       &&activationBefore.scene.closed.repairKey===previousKey
@@ -192,8 +194,9 @@ export function validateNativeRepairReplay(task) {
     assert(t.previousRepairKey!==task.manifest.repairKey&&t.previousRepairKey.startsWith('game-repair:'+task.plan.trialId+':')
       &&/^[a-f0-9]{64}$/.test(t.previousRepairKey.split(':').at(-1))
       &&/^[a-f0-9]{64}$/.test(t.previousFailureEvidenceHash??'')&&/^[a-f0-9]{64}$/.test(t.rejectedProofHash??'')
-      &&t.archiveHash===task.manifest.archiveHash&&c?.schema==='sg-count-shared-close-v1'
-      &&c.trialId===task.plan.trialId&&c.repairKey===task.manifest.repairKey&&c.receivedTerminalsReconciled>0
+      &&t.archiveHash===task.manifest.archiveHash&&['sg-count-shared-close-v1','sg-count-prepared-close-v1'].includes(c?.schema)
+      &&c.trialId===task.plan.trialId&&c.repairKey===task.manifest.repairKey
+      &&(c.schema==='sg-count-prepared-close-v1'||c.receivedTerminalsReconciled>0)
       &&c.sourceRequests===0&&c.newBetAllowance===0&&c.requiresNewSession===true,'NATIVE_REPAIR_TRANSITION');}
   return {...task,schema:'sg-preparation-replay-task-v1'};
 }

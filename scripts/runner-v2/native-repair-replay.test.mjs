@@ -150,9 +150,15 @@ test('reconciled terminal returns to flow repair from its original proof and con
  }
 });
 
-test('received terminal closure advances only its archived previous native repair identity',async()=>{
+for(const kind of ['shared','prepared'])test(kind+' closure advances only its archived previous native repair identity',async()=>{
  const make=()=>{
-  const a=receivedTerminalFixture(),previousKey='game-repair:fixture:'+'d'.repeat(64);
+  const a=kind==='shared'?receivedTerminalFixture():retiredFixture(2),previousKey='game-repair:fixture:'+'d'.repeat(64);
+  if(kind==='prepared'){
+   a.closure='count-prepared-close:fixture:9:1';
+   a.docs.get('state/'+a.repairKey).archiveKey=a.closure+':before';
+   a.docs.set('journal/'+a.closure+':before',{schema:'sg-count-prepared-before-v1'});
+   a.docs.set('journal/'+a.closure+':complete',{schema:'sg-count-prepared-close-v1',repairKey:a.repairKey});
+  }
   const original={schema:'sg-game-repair-v1',gameId:1,trialId:'fixture',status:'pending-adapter',sourceAllowance:0,requiresNewSession:true,archiveKey:'previous-archive'};
   const previous={...original,status:'validated-awaiting-admission',preparationProofHash:'e'.repeat(64),countActivation:'f'.repeat(64)};
   const previousArchive={schema:'original-fault'};
