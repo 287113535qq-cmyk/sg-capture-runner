@@ -4,11 +4,13 @@ import {sealWorkLineEvidence} from './work-line-sealed-evidence.mjs';
 import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 import {capturePreparationBinding} from './capture-preparation-binding.mjs';
 import {preparedCountAuthorization} from './prepared-count-authorization.mjs';
+import {validateConfirmedFlowEvidence} from './confirmed-flow-evidence.mjs';
 
 // Ciphertext sidecar only. Original receipts and Mongo records remain the
 // recovery source of truth if this independent delivery channel is unavailable.
 export function evidenceSpool({dir,recipient,origin,publication,countBinding}){
  fs.mkdirSync(dir,{recursive:true});
+ const flowSamples=new Set();
  const publish=task=>{
   const value={schema:'sg-work-line-delivery-v1',origin,tasks:[task],sourceAllowance:0},id=hash(value),dest=path.join(dir,id+'.json');
   if(fs.existsSync(dest))return id;
@@ -19,6 +21,13 @@ export function evidenceSpool({dir,recipient,origin,publication,countBinding}){
  return {
   confirmed(plan,records){
    for(const record of records){
+    assert(record.gameId===plan.gameId&&record.trialId===plan.trialId&&record.fixtureOnly===false,'EVIDENCE_CONFIRMED_SCOPE');
+    const planHash=hash(plan);
+    if(!flowSamples.has(planHash)){
+     const task={schema:'sg-confirmed-flow-evidence-v1',gameId:plan.gameId,plan,planHash,record,
+      recordHash:hash(record),readback:record,sourceAllowance:0};
+     validateConfirmedFlowEvidence(task);publish(task);flowSamples.add(planHash);
+    }
     if(record.normalized?.classificationStatus!=='pending')continue;
     assert(record.gameId===plan.gameId&&record.trialId===plan.trialId&&record.fixtureOnly===false,'EVIDENCE_CONFIRMED_SCOPE');
     publish({schema:'sg-confirmed-round-analysis-task-v1',gameId:plan.gameId,plan,planHash:hash(plan),record,

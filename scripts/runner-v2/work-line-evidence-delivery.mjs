@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import {validatePreparedStockReview} from './prepared-stock-review.mjs';
 import {validatePreparedCountReview} from './prepared-count-review.mjs';
 import {validateCaptureFault} from './capture-fault-delivery.mjs';
+import {validateConfirmedFlowEvidence} from './confirmed-flow-evidence.mjs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -49,6 +50,8 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
     'NATIVE_REPAIR_DELIVERY_REVISION_CHANGED');
   }else if(task.schema==='sg-preparation-linux-task-v1'){
    validateLinuxPreparationTask(root,task,origin);
+  }else if(task.schema==='sg-confirmed-flow-evidence-v1'){
+   validateConfirmedFlowEvidence(task);
   }else if(task.schema==='sg-confirmed-round-analysis-task-v1'){
    assert(task.gameId===task.plan?.gameId&&task.planHash===hash(task.plan)
     &&task.recordHash===hash(task.record)&&hash(task.readback)===hash(task.record),'EVIDENCE_TASK_SCOPE');

@@ -251,7 +251,7 @@
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/four-work-lines-integration-20261003-result.json": "86178adf41c7f42324c685c6abc223f9e594f237b1b9a9c9e0ee28af71656018",
-    "docs/four-work-lines-integration-20261003.md": "ba019c065fa62215c0c541a4decf247fbe5f58d84630845c24f9ae0b6f4d021f",
+    "docs/four-work-lines-integration-20261003.md": "45ba85d7e4010063150cea66e1fe5bb4a848467289adcf08f24a20648beb2289",
     "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
     "docs/huff-goals-natural-feature-stop-20260928.md": "e272d8f3461652495c4cab697968d4f81f2f620d795dc3420959e9246300feac",
@@ -281,7 +281,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "5650469f59a665f00e4f5067d49f7c7f644ebc9a4c78cfb5e5af6b12c2e6dab9",
+    "docs/rules.md": "510c938182124495d9e63ecd679f0ccecd1a9ca31c295e09c0095bcba5e1343e",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -293,5 +293,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c566f845216567f1289b0c95452f6fc67fda25e36a7b61d9fb3c43107760882b"
+  "ruleHash": "960f95d45490a0d0532a1d0204c4ffdb2f4c3cedd89bf5f6746485c32230d509"
 }

@@ -10,6 +10,7 @@ import {publishImmutableInbox} from './work-line-mailbox.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
 import {preparationReplayEvidence} from './preparation-replay-evidence.mjs';
 import {createRequire} from 'node:module';
+import {automaticFlowReplay} from './confirmed-flow-evidence.mjs';
 let prepareFields, veryFields;
 function independentFields(root, raw, plan, fields) {
   if (!prepareFields) {
@@ -36,9 +37,21 @@ export async function reviewFlowRepairInbox(root, index, python) {
       const revision = preparationRevision(root, task.gameId, index.games.find(g => g.gameId === task.gameId));
       if (!revision.handler) continue;
       preparationHash=revision.revisionHash;
+      const inventory=JSON.parse(fs.readFileSync(path.join(base,'inventory.json'),'utf8'));
+      const replay=automaticFlowReplay(root,task,inventory.tasks.find(t=>t.gameId===task.gameId),preparationHash);
+      if(replay)task=replay;
+      // Immutable historical input is re-evaluated under changed code, rather
+      // than requiring another server export of the same original bytes.
+      // Gates bind the evaluated revision; retain the original task identity.
+      if(task.schema==='sg-preparation-replay-task-v1'&&task.revisionHash!==preparationHash){
+        if(!/^[a-f0-9]{64}$/.test(task.revisionHash))throw Error('PREPARATION_REPLAY_REVISION');
+        task={...task,retainedTaskHash:hash(task),retainedEvidenceRevision:task.revisionHash,revisionHash:preparationHash};
+      }
       revisionHash = hash([revision.revisionHash, fs.readFileSync(new URL('./flow-repair-task.mjs', import.meta.url), 'utf8'),
         fs.readFileSync(new URL('./flow-repair-inbox.mjs', import.meta.url), 'utf8'),
-        fs.readFileSync(new URL('./preparation-replay-evidence.mjs', import.meta.url), 'utf8')]);
+        fs.readFileSync(new URL('./preparation-replay-evidence.mjs', import.meta.url), 'utf8'),
+        fs.readFileSync(new URL('./offline-analysis-environment.mjs', import.meta.url), 'utf8'),
+        fs.readFileSync(new URL('./confirmed-flow-evidence.mjs', import.meta.url), 'utf8'),hash(task)]);
     } catch {continue;}
     const id = hash([name, revisionHash]), file = path.join(results, id + '.json');
     if (fs.existsSync(file) || fs.existsSync(file + '.claim')) continue;

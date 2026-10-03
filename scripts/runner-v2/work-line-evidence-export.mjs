@@ -15,6 +15,9 @@ import {preparationRevision} from './preparation-revision.mjs';
 import {spawnSync} from 'node:child_process';
 import {reviewPreparedStock} from './prepared-stock-review.mjs';
 import {exportPreparedCountReview} from './prepared-count-review.mjs';
+import {exportConfirmedFlowEvidence} from './confirmed-flow-evidence.mjs';
+import {preparedCountAuthorization} from './prepared-count-authorization.mjs';
+import {preparedCountPlan} from './prepared-count-plan.mjs';
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_WORKFLOW==='SG read-only work-line evidence','EVIDENCE_WORKFLOW');
 const scope=process.env.SG_WORK_LINE_EVIDENCE_SCOPE??'pyramids-history';
@@ -24,11 +27,13 @@ const fixed={
  'inca-repair':{gameId:32719,repository:'287113535qq-cmyk/sg-capture-runner',
   key:'game-repair:sg_r1_20260928_32719:418d7246f676b395180f0caeafe70e697c416f7e03f5700f79e6a20107a7682b'}
 };
-assert(scope==='pyramids-history'||scope==='prepared-stock-primary'||scope==='mansion-count-scene'||fixed[scope], 'EVIDENCE_FIXED_SCOPE');
-if(['prepared-stock-primary','mansion-count-scene'].includes(scope))assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','EVIDENCE_FIXED_OWNER');
+assert(scope==='pyramids-history'||scope==='prepared-stock-primary'||scope==='mansion-count-scene'||scope==='mansion-confirmed-flow'||fixed[scope], 'EVIDENCE_FIXED_SCOPE');
+if(['prepared-stock-primary','mansion-count-scene','mansion-confirmed-flow'].includes(scope))assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','EVIDENCE_FIXED_OWNER');
 if(fixed[scope])assert(process.env.GITHUB_REPOSITORY===fixed[scope].repository,'EVIDENCE_FIXED_OWNER');
 const name='formal-repair-pyramids-action-20261002.json',plans=read('config/round-one-plans.json');
-const plan=scope==='mansion-count-scene'?plans[32714]:fixed[scope]?plans[fixed[scope].gameId]:actionAnalysisPlan({base:plans[32721],profile:read('config/'+name),name,
+const countName='formal-prepared-count-32714-2c22b7f4126e4bd0aa20e047d967dd72de7550769cfdb95ef40ace74d011ccf1.json';
+const plan=scope==='mansion-confirmed-flow'?preparedCountPlan(plans[32714],read('config/'+countName),preparedCountAuthorization(countName,read)):
+ scope==='mansion-count-scene'?plans[32714]:fixed[scope]?plans[fixed[scope].gameId]:actionAnalysisPlan({base:plans[32721],profile:read('config/'+name),name,
  runtimeName:'count-runtime-pyramids-action-canary-20261002.json'});
 const transport=connectGateway(),store=new RunnerState({transport,gate:new ResourceGate(),deadline:Date.now()+180000});
 // The producer cannot write even if a future helper mistakenly tries to do so.
@@ -39,7 +44,9 @@ try{
   assert(op==='rounds_read','EVIDENCE_READ_ONLY');return transport.request(op,fields);
  }};
  let tasks;
- if(scope==='mansion-count-scene'){
+ if(scope==='mansion-confirmed-flow'){
+  tasks=[await exportConfirmedFlowEvidence({store:readonly,transport:readTransport,parser,plan,sequence:1})];
+ }else if(scope==='mansion-count-scene'){
   tasks=[await exportPreparedCountReview({store:readonly,transport:readTransport,parser,base:plan,plans,
    publication:read('config/prepared-inventory.json'),group:'primary',readEvidence:async ref=>read(ref)})];
  }else if(scope==='prepared-stock-primary'){
