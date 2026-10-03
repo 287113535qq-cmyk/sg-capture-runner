@@ -7,6 +7,7 @@ import {validateLinuxPreparationTask,deliverLinuxPreparationTask} from './prepar
 import {validateNativeRepairReplay} from './native-repair-replay.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
 import fs from 'node:fs';
+import {validatePreparedStockReview} from './prepared-stock-review.mjs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -25,7 +26,12 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
  // encryption nor a trusted workflow grants a preparation proof or quota.
  for(const task of value.tasks){
   assert(task.sourceAllowance===0,'EVIDENCE_TASK_ALLOWANCE');
-  if(task.schema==='sg-native-repair-replay-task-v1'){
+  if(task.schema==='sg-prepared-stock-review-task-v1'){
+   validatePreparedStockReview(task);
+   assert(origin.workflow==='.github/workflows/work-line-evidence.yml','PREPARED_STOCK_ORIGIN');
+   assert(task.report.publicationHash===hash(JSON.parse(fs.readFileSync(path.join(root,'config/prepared-inventory.json'),'utf8'))),
+    'PREPARED_STOCK_PUBLICATION_CHANGED');
+  }else if(task.schema==='sg-native-repair-replay-task-v1'){
    validateNativeRepairReplay(task);
    assert(origin.workflow==='.github/workflows/work-line-evidence.yml','NATIVE_REPAIR_DELIVERY_ORIGIN');
    const index=JSON.parse(fs.readFileSync(path.join(root,'.local/preparation-worker/repair/feature-index.json'),'utf8'));
@@ -39,6 +45,8 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
   }else assert(task.schema==='sg-capture-fault-export-v1'&&task.plan&&task.receipt&&task.archive&&task.publication,'EVIDENCE_TASK_SCOPE');
  }
  const mailboxes=value.tasks.map(task=>{
+  if(task.schema==='sg-prepared-stock-review-task-v1')return publishImmutableInbox(
+   path.join(root,'.local/capture-handoff-worker/online-reviews'),{...task,origin});
   if(task.schema==='sg-preparation-linux-task-v1')return deliverLinuxPreparationTask(root,task,origin).mailbox;
   if(task.schema==='sg-native-repair-replay-task-v1'){
    const event={schema:'sg-work-line-event-v1',kind:'native-repair-observed',gameId:task.gameId,

@@ -139,7 +139,9 @@ try{
         sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,
         ...(task.rejectedProofHash?{rejectedProofHash:task.rejectedProofHash}:{}),
         evidenceHash:hash(task.proof),proof:task.proof};
-      publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);
+      try{publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);}
+      catch(error){log({action:'repair-return-requires-review',gameId:task.gameId,
+        reason:/^[A-Z_]+$/.test(error.message)?error.message:'WORK_LINE_RETURN_IO_FAILED'});}
     }
     // Compare content, including implementation changes, rather than timestamps.
     // Retry the affected game once per input revision, not every idle tick.

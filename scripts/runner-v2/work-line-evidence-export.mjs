@@ -13,6 +13,7 @@ import {sealWorkLineEvidence} from './work-line-sealed-evidence.mjs';
 import {exportNativeRepairReplay} from './native-repair-replay.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
 import {spawnSync} from 'node:child_process';
+import {reviewPreparedStock} from './prepared-stock-review.mjs';
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_WORKFLOW==='SG read-only work-line evidence','EVIDENCE_WORKFLOW');
 const scope=process.env.SG_WORK_LINE_EVIDENCE_SCOPE??'pyramids-history';
@@ -22,7 +23,8 @@ const fixed={
  'inca-repair':{gameId:32719,repository:'287113535qq-cmyk/sg-capture-runner',
   key:'game-repair:sg_r1_20260928_32719:418d7246f676b395180f0caeafe70e697c416f7e03f5700f79e6a20107a7682b'}
 };
-assert(scope==='pyramids-history'||fixed[scope], 'EVIDENCE_FIXED_SCOPE');
+assert(scope==='pyramids-history'||scope==='prepared-stock-primary'||fixed[scope], 'EVIDENCE_FIXED_SCOPE');
+if(scope==='prepared-stock-primary')assert(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','EVIDENCE_FIXED_OWNER');
 if(fixed[scope])assert(process.env.GITHUB_REPOSITORY===fixed[scope].repository,'EVIDENCE_FIXED_OWNER');
 const name='formal-repair-pyramids-action-20261002.json',plans=read('config/round-one-plans.json');
 const plan=fixed[scope]?plans[fixed[scope].gameId]:actionAnalysisPlan({base:plans[32721],profile:read('config/'+name),name,
@@ -36,7 +38,10 @@ try{
   assert(op==='rounds_read','EVIDENCE_READ_ONLY');return transport.request(op,fields);
  }};
  let tasks;
- if(fixed[scope]){
+ if(scope==='prepared-stock-primary'){
+  tasks=[await reviewPreparedStock({publication:read('config/prepared-inventory.json'),plans,
+   campaign:(await readonly.get('state','campaign')).value,group:'primary',readEvidence:async ref=>read(ref)})];
+ }else if(fixed[scope]){
   const generated=spawnSync('python3',['scripts/feature_reuse_index.py','--output','.local/work-line-feature-index.json'],
    {encoding:'utf8',timeout:60000,maxBuffer:1024*1024});
   assert(generated.status===0,'EVIDENCE_FEATURE_INDEX');
