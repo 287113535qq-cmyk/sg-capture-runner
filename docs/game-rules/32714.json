@@ -262,8 +262,8 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/common-feature-rules-20261003.md": "c366be2911e1b4b7daba61b09f93107adfab328e99609c32cbd6ede3a8b9f2df",
-    "docs/common-feature-rules-result-20261003.json": "ac88bf81ad1380e5c9964b2dfa3cfabd3a31d5b806fe61084b59886a64e18d89",
+    "docs/common-feature-rules-20261003.md": "247cabf9ef433bd7fb2b33a1d941490c49b13dba1299813c22d944706176d4f2",
+    "docs/common-feature-rules-result-20261003.json": "89515ded206ea53194f8b525dca57531903d1c5649450ec979924c06d592d81f",
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/four-work-lines-integration-20261003-result.json": "86178adf41c7f42324c685c6abc223f9e594f237b1b9a9c9e0ee28af71656018",
@@ -309,5 +309,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fa92d99cdc254a4d527d8d7c3962c90637ce3c6c470532db7225342a2f1f1259"
+  "ruleHash": "60f9995a710b55bed4ab01b9895d3a3ae735368e4966aa18e1dbdf31ba64afe2"
 }
