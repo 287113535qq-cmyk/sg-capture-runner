@@ -1,5 +1,9 @@
 {
   "schema": "sg-ag-rolling-authorizations-v1",
   "sourceAllowance": 0,
-  "profiles": {}
+  "profiles": {
+    "ag-rolling-queue-8130f0c2f81d1760c9569a953b5a9da2e99820a62c300bb7f2fe4db9f0a90332.json": {
+      "profileHash": "ac2c39b6c0eefd0c7271acac791956ececca556ed05802cfca487606852d76b4"
+    }
+  }
 }
