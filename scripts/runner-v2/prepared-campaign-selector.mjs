@@ -5,10 +5,10 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 // A reviewed publication narrows the existing online ready set. It cannot
 // activate needs-adapter games, replace an applied plan, or create permission.
 // Use content hashes instead of directory mtimes to fence reusable evidence.
-export function publishedPreparedSelector({publication,plans,readEvidence}){
+export function publishedPreparedSelector({publication,plans,readEvidence,onRejected}){
  assert(publication?.schema==='sg-prepared-publication-v1'&&publication.sourceAllowance===0
   &&publication.inventory?.sourceAllowance===0&&typeof readEvidence==='function','PREPARED_PUBLICATION_SCOPE');
- return preparedCampaignSelector(publication.inventory,{verifyProof:async(proof,{group,gameId})=>{
+ return preparedCampaignSelector(publication.inventory,{onRejected,verifyProof:async(proof,{group,gameId})=>{
   const binding=publication.bindings?.[String(gameId)],plan=plans[gameId];
   if(!binding||!plan||binding.group!==group||binding.planHash!==hash(plan)
    ||binding.proofHash!==hash(proof))return false;

@@ -52,11 +52,16 @@ export async function stagePreparedCycle(root, inventory) {
     prepared: result.publication.inventory.tasks.map(t => t.gameId), rejected: result.rejected,
     sourceAllowance: 0, sourceRequests: 0};
   const dest = path.join(dir, 'current.json');
-  if (fs.existsSync(dest) && hash(JSON.parse(fs.readFileSync(dest, 'utf8'))) === hash(pointer))
+  if (fs.existsSync(dest) && hash(JSON.parse(fs.readFileSync(dest, 'utf8'))) === hash(pointer)) {
+    if (pointer.prepared.length) publishImmutableInbox(path.join(root, '.local/capture-handoff-worker/inbox'),
+      {schema: 'sg-capture-prepared-publication-v1', cycleHash: id, cycle: result, sourceAllowance: 0});
     return {...pointer, changed: false};
+  }
   const temp = dest + '.' + process.pid + '.tmp', fd = fs.openSync(temp, 'wx');
   try { fs.writeFileSync(fd, JSON.stringify(pointer) + '\n'); fs.fsyncSync(fd); }
   finally { fs.closeSync(fd); }
   fs.renameSync(temp, dest);
+  if (pointer.prepared.length) publishImmutableInbox(path.join(root, '.local/capture-handoff-worker/inbox'),
+    {schema: 'sg-capture-prepared-publication-v1', cycleHash: id, cycle: result, sourceAllowance: 0});
   return {...pointer, changed: true};
 }

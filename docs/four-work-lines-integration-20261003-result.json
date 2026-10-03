@@ -1,5 +1,5 @@
 {
-  "at": 1790974440,
+  "at": 1791001326,
   "runtime": "e9f113d06880918fc81a2b7520502f6a186b33ef",
   "completeGames": 17,
   "sourceRequestsThisStage": 0,
@@ -37,16 +37,16 @@
     "sourceRequests": 0,
     "mongoWrites": 0,
     "originalRecordsChanged": 0,
-    "freshRemoteDeliveryAccepted": false
+    "freshRemoteDeliveryAccepted": true
   },
   "remaining": [
-    "continuous-remote-evidence-delivery",
-    "independent-gate-producers-and-publication",
-    "actual-repair-reentry-and-next-ready-handoff"
+    "route-settlement-persistence-gate-producers",
+    "actual-repair-reentry-and-next-ready-handoff",
+    "live-source-incremental-evidence-production"
   ],
   "lanes": {
     "admission": {
-      "revision": 1368,
+      "revision": 2274,
       "counts": {
         "blocked": 152,
         "complete": 17,
@@ -56,7 +56,7 @@
       "prepared": []
     },
     "repair": {
-      "revision": 117,
+      "revision": 231,
       "counts": {
         "queued": 151,
         "complete": 17,
@@ -84,5 +84,37 @@
     "bothSourcesDisabled": true,
     "otherActive": 0,
     "exactExcludedQueued": 3
+  },
+  "remoteEvidence": {
+    "readonlyRuns": [
+      37094198543,
+      37094747619
+    ],
+    "conclusion": "success",
+    "artifactIds": [
+      11263554080,
+      11264145185
+    ],
+    "automaticallyReceived": true,
+    "liveSourceProductionAccepted": false,
+    "sourceRequests": 0,
+    "mongoWrites": 0
+  },
+  "linuxGateDelivery": {
+    "run": 37095776920,
+    "runtime": "12b3f7046ce9469695155bd4183bfdcdc6c9b699",
+    "conclusion": "success",
+    "artifactId": 11264057045,
+    "gates": 9,
+    "automaticWorkerReceipt": true
+  },
+  "nativeGateReview": {
+    "gates": 9,
+    "manifestSha256": "04b57652cc57b46064c509ebc7082b7a0f99dab085eab2711a07be06091cd852",
+    "gatewaySha256": "a40d94a60d8133f3d4cd4fb384610712c60676f94b82c7615289cd4cae4f690e",
+    "approvedTrials": 20,
+    "sourceAllowanceGranted": 0,
+    "sourceRequests": 0,
+    "mongoWrites": 0
   }
 }

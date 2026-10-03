@@ -1,5 +1,42 @@
 {
   "schema": "sg-preparation-plan-bindings-v1",
   "sourceAllowance": 0,
-  "bindings": {}
+  "bindings": {
+    "32636": {
+      "planHash": "de80e9caf79343886a58e4f023fea1c68b286caf74f596324dfdae6463a9e40d",
+      "group": "primary"
+    },
+    "32714": {
+      "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+      "group": "primary"
+    },
+    "32718": {
+      "planHash": "e8b44695cb8585c5596a4bd6ba01cb36d5f8bf4626f6ca09015d9f6fe6f4398b",
+      "group": "primary"
+    },
+    "32719": {
+      "planHash": "efcbb0e41a890f45aaf9492f6107b9d6327a20bcef838126d6e93bc007cd6570",
+      "group": "secondary"
+    },
+    "32720": {
+      "planHash": "aa345f6e7f8e5e45d5b825ecc21ae0066a67d28fd09ddee162c83a20443b720e",
+      "group": "primary"
+    },
+    "32739": {
+      "planHash": "dc3cfcf700417d4b67cadd70569330f6a917419210f3a1f529ef93155d0934c2",
+      "group": "primary"
+    },
+    "32812": {
+      "planHash": "bd6510dbe71c27c9565758f2d990c73d2bbc373ee343042442f90404f355449a",
+      "group": "secondary"
+    },
+    "32820": {
+      "planHash": "5705e61deca7ef3d234184b2c7748797a243ea7f36df02377906bab0c7923aed",
+      "group": "primary"
+    },
+    "32835": {
+      "planHash": "7c939195decfe24dbc113964ba36187099f5ba9bd6ed9e127f2011d6cd06354d",
+      "group": "primary"
+    }
+  }
 }

@@ -3,6 +3,7 @@ import {reviewCaptureHandoff} from './runner-v2/capture-handoff.mjs';
 import {deliverCaptureFault} from './runner-v2/capture-fault-delivery.mjs';
 import {deliverConfirmedAnalysis} from './runner-v2/confirmed-analysis-task.mjs';
 import {readWorkLineArtifacts} from './runner-v2/work-line-artifact-reader.mjs';
+import {reviewPreparedPublicationHandoff} from './runner-v2/prepared-publication-handoff.mjs';
 // Local handoff plus GET-only encrypted evidence delivery. No source client or
 // dispatch authority. Online consumer revalidates every preparation gate.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dir=path.join(root,'.local','capture-handoff-worker');
@@ -23,7 +24,13 @@ try{
    try{
     const r=JSON.parse(fs.readFileSync(path.join(dir,'inbox',name),'utf8'));
     if(hash(r)+'.json'!==name)throw Error('CAPTURE_READY_SCOPE');
-    if(r.schema==='sg-confirmed-round-analysis-task-v1'){
+    if(r.schema==='sg-capture-prepared-publication-v1'){
+      const read=file=>JSON.parse(fs.readFileSync(path.join(root,file),'utf8'));
+      result=await reviewPreparedPublicationHandoff({task:r,
+        currentCycleHash:read('.local/preparation-worker/publication/current.json').cycleHash,
+        inventory:read('.local/preparation-worker/admission/inventory.json'),
+        plans:read('config/round-one-plans.json'),registry:read('config/preparation-plan-bindings.json')});
+    }else if(r.schema==='sg-confirmed-round-analysis-task-v1'){
       result=deliverConfirmedAnalysis(root,r);
     }else if(r.schema==='sg-capture-fault-export-v1'){
       result=deliverCaptureFault(root,r);

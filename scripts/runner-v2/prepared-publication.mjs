@@ -21,6 +21,10 @@ export async function buildPreparedPublication({inventory,resolvePlan,readEviden
     &&receipt.gate===gate&&receipt.verified===true&&receipt.sourceAllowance===0
     &&Array.isArray(receipt.supportingHashes)&&receipt.supportingHashes.length>0
     &&receipt.supportingHashes.every(h=>/^[a-f0-9]{64}$/.test(h)),'PREPARED_BUILD_EVIDENCE');
+   // Public repositories receive only proof metadata, never original evidence.
+   assert(Object.keys(receipt).every(key=>['schema','gate','gameId','revisionHash','verified',
+    'sourceAllowance','supportingHashes','origin','nativeScope','reviewedAt'].includes(key)),
+    'PREPARED_EVIDENCE_PRIVATE_FIELDS');
    const ref=`config/preparation-evidence/${digest}.json`;refs[gate]=ref;evidence[ref]=receipt;
   }
   tasks.push(structuredClone(task));bindings[String(task.gameId)]={group:resolved.group,

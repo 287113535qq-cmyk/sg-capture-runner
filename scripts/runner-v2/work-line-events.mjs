@@ -45,12 +45,18 @@ export function applyWorkLineEvent(inventory,event,lane,now){
 
 // Select only already admitted campaign games. Semantic results are not an
 // input: an unclassified, correctly settled round does not block selection.
-export function preparedCampaignSelector(inventory,{verifyProof}){
+export function preparedCampaignSelector(inventory,{verifyProof,onRejected=()=>{}}){
  assert(inventory?.schema==='sg-preparation-inventory-v1'&&typeof verifyProof==='function','WORK_LINE_INVENTORY');
  return async({readyGameIds,group})=>{
   for(const task of inventory.tasks.filter(t=>t.status==='prepared'&&readyGameIds.includes(t.gameId))){
-   assert(validatePreparationProof(task.proof,task.gameId)===task.proofHash,'WORK_LINE_PROOF_CHANGED');
-   if(await verifyProof(task.proof,{group,gameId:task.gameId}))return task.gameId;
+   try{
+    assert(validatePreparationProof(task.proof,task.gameId)===task.proofHash,'WORK_LINE_PROOF_CHANGED');
+    if(await verifyProof(task.proof,{group,gameId:task.gameId}))return task.gameId;
+   }catch(error){
+    // Only static preparation is read here, never live source or health
+    // permission. One invalid proof cannot withhold other verified games.
+    onRejected({gameId:task.gameId,reason:/^[A-Z_]+$/.test(error.message)?error.message:'PREPARATION_EVIDENCE_UNAVAILABLE'});
+   }
   }
   return null;
  };

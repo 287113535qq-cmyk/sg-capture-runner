@@ -19,4 +19,10 @@ test('complete reusable evidence publishes to the actual selector without requir
  await assert.rejects(buildPreparedPublication({...options,readEvidence:async()=>null}),/PREPARED_BUILD_EVIDENCE/);
  const changed=structuredClone(inventory);changed.tasks[0].proof.gates.route.evidenceHash='c'.repeat(64);
  await assert.rejects(buildPreparedPublication({...options,inventory:changed}),/PREPARED_BUILD_PROOF/);
+ const leaked=structuredClone(inventory),leakedReceipts=structuredClone(receipts);
+ const bad={...receipts[leaked.tasks[0].proof.gates.route.evidenceHash],raw:'private original'};
+ leakedReceipts[hash(bad)]=bad;leaked.tasks[0].proof.gates.route.evidenceHash=hash(bad);
+ leaked.tasks[0].proofHash=hash(leaked.tasks[0].proof);
+ await assert.rejects(buildPreparedPublication({...options,inventory:leaked,
+  readEvidence:async(_g,h)=>leakedReceipts[h]}),/PREPARED_EVIDENCE_PRIVATE_FIELDS/);
 });

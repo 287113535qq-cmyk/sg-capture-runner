@@ -33,3 +33,14 @@ test('prepared inventory never widens online admission and a shared hold remains
  const select=preparedCampaignSelector(q,{verifyProof:async()=>false});assert.equal(await select({readyGameIds:[1],group:'primary'}),null);
  assert.equal(await preparedCampaignSelector(q,{verifyProof:async()=>true})({readyGameIds:[2],group:'primary'}),null);
 });
+
+test('one corrupt static preparation proof is recorded and skipped before selecting the next valid game',async()=>{
+ const q=newInventory(games);prepare(q,1);prepare(q,2);q.tasks[0].proofHash='d'.repeat(64);
+ const rejected=[];
+ const select=preparedCampaignSelector(q,{verifyProof:async()=>true,onRejected:r=>rejected.push(r)});
+ assert.equal(await select({readyGameIds:[1,2],group:'primary'}),2);
+ assert.deepEqual(rejected,[{gameId:1,reason:'WORK_LINE_PROOF_CHANGED'}]);
+ assert.equal(q.sourceAllowance,0);
+ const filesUnavailable=preparedCampaignSelector(q,{verifyProof:async()=>{throw Error('MISSING_STATIC_EVIDENCE');}});
+ assert.equal(await filesUnavailable({readyGameIds:[1,2],group:'primary'}),null);
+});
