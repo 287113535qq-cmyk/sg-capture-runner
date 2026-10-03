@@ -23,4 +23,5 @@ class FreeCounterTests(unittest.TestCase):
   old={'total':6,'remaining':6,'played':0};new={'total':9,'remaining':9,'played':0}
   self.assertEqual(advance(old,new,consumed=0)['added'],3)
   with self.assertRaises(FieldError):advance(old,new)
+  with self.assertRaises(FieldError):advance(None,old,added=False)
 if __name__=='__main__':unittest.main()

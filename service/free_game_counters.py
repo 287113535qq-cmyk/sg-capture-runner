@@ -14,7 +14,7 @@ def advance_free_game_counters(prior, current, *, added=None, consumed=1, maximu
         check(isinstance(row, dict) and all(integer(row.get(k)) for k in ('total', 'remaining', 'played'))
               and row['total'] == row['remaining'] + row['played'], 'FREE_COUNTER_STATE')
     if prior is None:
-        check(added in (None, 0), 'FREE_COUNTER_INITIAL_AWARD')
+        check(added is None or type(added) is int and added == 0, 'FREE_COUNTER_INITIAL_AWARD')
         return {'added': 0, 'remaining': current['remaining']}
     delta = current['total'] - prior['total']
     check(integer(delta) and prior['remaining'] >= consumed, 'FREE_COUNTER_AWARD')
