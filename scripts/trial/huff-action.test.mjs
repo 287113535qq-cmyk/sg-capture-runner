@@ -12,6 +12,7 @@ const {prepareNextgenRound}=require('../../collector/sg.ingest.ts');
 const vector=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-action.json',import.meta.url)));
 const plan=vector.plan;
 const paint=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-paint-display-prefix.json',import.meta.url)));
+const mansion=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-hardhat-mansion-prefix.json',import.meta.url)));
 const normalize=raw=>prepareNextgenActionRound(raw,plan);
 const xml=p=>'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+p.replaceAll('&','&amp;')+'</PAYLOAD><OGS_RC>0</OGS_RC></GDMRESPONSE>';
 function response(raw,index,values){
@@ -100,4 +101,35 @@ test('synthetic Paint terminal checks the bridge, wallet, and deferred classific
   const fields=prepareNextgenRound(raw,mapping);
   assert.equal(fields.bonus,null);assert.equal(fields.classificationStatus,'pending');
   assert.deepEqual(fields.money,{startBalanceRaw:72800,endBalanceRaw:72300,totalWinRaw:0,betRaw:500});
+});
+
+test('actual completed Hard Hat awards a new Mansion intro without being falsely settled',()=>{
+ const raw=structuredClone(mansion.raw),before=JSON.stringify(raw);
+ assert.equal(mansion.naturalTerminalObserved,false);
+ for(let count=1;count<=raw.steps.length;count++){
+  const prefix={...raw,steps:raw.steps.slice(0,count)};
+  assert.deepEqual(huffActionNext(plan,prefix),{MSGID:'FREE_GAME'});
+  assert.deepEqual(collectorNext(prefix,plan),{MSGID:'FREE_GAME'});
+ }
+ assert.throws(()=>normalize(raw),/INCOMPLETE/);assert.equal(JSON.stringify(raw),before);
+ for(const [key,value]of [['MMFG','0'],['CFNFG','1'],['CFTFG','8'],['CFCFGG','6'],
+   ['PCFID','1|'],['FEAT','PAINT'],['FRAMEWINS',Array(15).fill('0').join('|')]]){
+  const changed=structuredClone(raw),g=changed.steps[7].responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1];
+  response(changed,7,{GSD:g.replace(new RegExp(key+'~[^#]*'),key+'~'+value)});
+  assert.throws(()=>huffActionNext(plan,changed));assert.throws(()=>collectorNext(changed,plan));
+ }
+});
+
+test('synthetic continuation from the real intro requires the Mansion selection and reconciled terminal wallet',()=>{
+ const raw=structuredClone(mansion.raw),request=raw.steps.at(-1).requestPayload;
+ for(const step of vector.raw.steps.slice(1)){
+  raw.steps.push(structuredClone(step));raw.steps.at(-1).requestPayload=request;
+  response(raw,raw.steps.length-1,{B:'196825',AB:raw.steps.length===mansion.raw.steps.length+vector.raw.steps.length-1?'196825':'184200',TW:'12625'});
+  if(raw.steps.at(-1).responseBalance!==undefined)raw.steps.at(-1).responseBalance=
+    raw.steps.length===mansion.raw.steps.length+vector.raw.steps.length-1?196825:184200;
+ }
+ assert.equal(huffActionNext(plan,raw),null);assert.equal(collectorNext(raw,plan),null);
+ assert.deepEqual(normalize(raw).money,{startBalanceRaw:184700,endBalanceRaw:196825,totalWinRaw:12625,betRaw:500});
+ const invalid=structuredClone(raw);response(invalid,8,{CFGG:'1'});
+ assert.throws(()=>huffActionNext(plan,invalid));assert.throws(()=>collectorNext(invalid,plan));
 });

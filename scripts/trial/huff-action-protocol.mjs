@@ -53,7 +53,7 @@ export function reviewHuffAction(plan,raw){
       &&!['CFG','ABPM','SB','FRTR','FRTW','BUY_IN'].some(k=>Object.hasOwn(p,k)),'UNREVIEWED_ROUTE');
     const f=slots(p.FID,2);need(new Set(f).size===f.length,'FEATURE_ID');slots(g.PCFID);
     need([undefined,'MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'].includes(g.FEAT),'UNREVIEWED_ROUTE');
-    need([undefined,'0','1'].includes(g.MMBG),'MANSION_FLAG');
+    need([undefined,'0','1'].includes(g.MMBG)&&[undefined,'0','1'].includes(g.MMFG),'MANSION_FLAG');
     const ordinary=i===0&&!f.length&&!['NFG','TFG','CFGG'].some(k=>Object.hasOwn(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
@@ -65,10 +65,24 @@ export function reviewHuffAction(plan,raw){
     if(previous){
       const same=JSON.stringify(f)===JSON.stringify(previous.f);
       if(same)need(previous.n>0&&c===previous.c+1&&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
-      else need(previous.f.length===1&&previous.f[0]===0&&previous.intro&&f.length===1&&f[0]>0
-        &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0,'UNREVIEWED_TRANSITION');
+      else {
+        const selected=previous.f.length===1&&previous.f[0]===0&&previous.intro&&f.length===1&&f[0]>0
+          &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
+        // The completed frame feature can award a Money Mansion intro. Its
+        // display counters finish the old feature; NFG/TFG describe the new
+        // one-request intro, so they must not be compared as one progression.
+        const from=previous.f[0],history=slots(g.PCFID);
+        const awarded=previous.f.length===1&&from>0&&f.length===1&&f[0]===0&&previous.n===1
+          &&n===1&&t===1&&c===0&&g.MMFG==='1'&&!g.MMW
+          &&g.FEAT===['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'][from]
+          &&uint(g.CFNFG)===0&&uint(g.CFTFG)===previous.t&&uint(g.CFCFGG)===previous.c+1
+          &&history.length===previous.t&&history.at(-1)===from&&g.FRAMEWINS!==undefined
+          &&reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
+            displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
+        need(selected||awarded,'UNREVIEWED_TRANSITION');
+      }
     }else need(c===0,'TRIGGER');
-    const intro=f[0]===0&&g.MMBG==='1'&&!g.MMW;
+    const intro=f[0]===0&&(g.MMBG==='1'||g.MMFG==='1'&&n===1&&t===1&&c===0)&&!g.MMW;
     next=n>0||intro?'FREE_GAME':null;
     const b=uint(p.B),ab=uint(p.AB),win=uint(p.TW);need(win>=priorWin,'WIN_REGRESSION');priorWin=win;
     checkFeatureWallet(start,500,b,ab,win,{settled:next===null,

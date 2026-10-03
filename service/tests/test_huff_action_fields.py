@@ -8,6 +8,27 @@ from round_fields import FieldError
 
 
 class HuffActionTests(unittest.TestCase):
+    def test_actual_frame_exit_awards_mansion_and_rejects_inconsistent_completed_display(self):
+        evidence = json.loads((Path(__file__).resolve().parents[2] / 'scripts/trial/fixtures/huff-hardhat-mansion-prefix.json').read_text(encoding='utf-8'))
+        raw = evidence['raw']
+        before = copy.deepcopy(raw)
+        adapter = HuffActionFields(self.vector['plan'])
+        self.assertFalse(evidence['naturalTerminalObserved'])
+        for count in range(1, len(raw['steps']) + 1):
+            self.assertEqual(adapter.next_request({**raw, 'steps': raw['steps'][:count]}), {'MSGID': 'FREE_GAME'})
+        with self.assertRaises(FieldError):
+            adapter.settled(raw)
+        self.assertEqual(raw, before)
+        import re
+        for key, value in [('MMFG', '0'), ('CFNFG', '1'), ('CFTFG', '8'), ('CFCFGG', '6'),
+                           ('PCFID', '1|'), ('FEAT', 'PAINT'), ('FRAMEWINS', '|'.join(['0'] * 15))]:
+            changed = copy.deepcopy(raw)
+            step = changed['steps'][-1]
+            step['responsePayload'] = re.sub(key + r'~[^#&]*', key + '~' + value, step['responsePayload'])
+            step['responseXml'] = '<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>' + step['responsePayload'].replace('&', '&amp;') + '</PAYLOAD></GDMRESPONSE>'
+            with self.subTest(key=key), self.assertRaises(FieldError):
+                adapter.next_request(changed)
+
     @classmethod
     def setUpClass(cls):
         cls.vector = json.loads((Path(__file__).resolve().parents[2] / 'scripts/trial/fixtures/huff-action.json').read_text(encoding='utf-8'))

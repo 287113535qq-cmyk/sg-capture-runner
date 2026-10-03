@@ -47,7 +47,7 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
       &&!['CFG','ABPM','SB','FRTR','FRTW','BUY_IN'].some(k=>own(p,k)),'UNREVIEWED_ROUTE');
     const ids=slots(p.FID,2);need(new Set(ids).size===ids.length,'FEATURE_ID');slots(g.PCFID);
     need([undefined,'MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'].includes(g.FEAT),'UNREVIEWED_ROUTE');
-    need([undefined,'0','1'].includes(g.MMBG),'MANSION_FLAG');
+    need([undefined,'0','1'].includes(g.MMBG)&&[undefined,'0','1'].includes(g.MMFG),'MANSION_FLAG');
     const ordinary=i===0&&!ids.length&&!['NFG','TFG','CFGG'].some(k=>own(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
@@ -59,10 +59,21 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
     if(previous){
       if(JSON.stringify(ids)===JSON.stringify(previous.ids))need(previous.n>0&&c===previous.c+1
         &&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
-      else need(previous.ids.length===1&&previous.ids[0]===0&&previous.intro&&ids.length===1&&ids[0]>0
-        &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0,'UNREVIEWED_TRANSITION');
+      else {
+        const selected=previous.ids.length===1&&previous.ids[0]===0&&previous.intro&&ids.length===1&&ids[0]>0
+          &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
+        const from=previous.ids[0],history=slots(g.PCFID);
+        const awarded=previous.ids.length===1&&from>0&&ids.length===1&&ids[0]===0&&previous.n===1
+          &&n===1&&t===1&&c===0&&g.MMFG==='1'&&!g.MMW
+          &&g.FEAT===['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'][from]
+          &&uint(g.CFNFG)===0&&uint(g.CFTFG)===previous.t&&uint(g.CFCFGG)===previous.c+1
+          &&history.length===previous.t&&history[history.length-1]===from&&g.FRAMEWINS!==undefined
+          &&featureState.reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
+            displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
+        need(selected||awarded,'UNREVIEWED_TRANSITION');
+      }
     }else need(c===0,'TRIGGER');
-    const intro=ids[0]===0&&g.MMBG==='1'&&!g.MMW;next=n>0||intro?'FREE_GAME':null;
+    const intro=ids[0]===0&&(g.MMBG==='1'||g.MMFG==='1'&&n===1&&t===1&&c===0)&&!g.MMW;next=n>0||intro?'FREE_GAME':null;
     const b=uint(p.B),ab=uint(p.AB),win=uint(p.TW);need(win>=priorWin,'WIN_REGRESSION');priorWin=win;
     featureState.checkFeatureWallet(start,500,b,ab,win,{settled:next===null,
       responseBalance:s.responseBalance===undefined?undefined:uint(s.responseBalance)});

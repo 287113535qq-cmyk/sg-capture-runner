@@ -214,10 +214,10 @@
     "service/feature_state.py": "1ffcebda7fda83906c8ca296bb7e9eacae1787b29a90ef4105a7a903419e06d8",
     "scripts/trial/feature-state.mjs": "1bb71f47d3b125bed33c5b687bdd2a3917a479541372ef198204e1ae5a2281e6",
     "collector/feature-state.cjs": "c5f7c29285e32628df4bc00c0d5aa2d22bb326496473959741a8204dc289c443",
-    "service/huff_action_fields.py": "ca1ccade1f47c9c87630b4f8e33bbd68bc5492af78972d9ad9bef4205975e95a",
+    "service/huff_action_fields.py": "91866f4ad2e615b23d38749bcc2100ce44d13024376a1ac72701ac782f2bb2aa",
     "scripts/trial/huff-action-contract.mjs": "b7824f762a9644d1bca3f5b9b340fddfcffcee01adc7f345fb0d68514179f3ca",
-    "scripts/trial/huff-action-protocol.mjs": "ff540b70bb091eaf45775ce1a40e0c31ad084ee323bf04db47a6b399368a7b18",
-    "collector/sg.huff-action.ts": "4ba0f075ee59b42dc05414f17102bfe2c4b510f7348000544ddb911958b294b8",
+    "scripts/trial/huff-action-protocol.mjs": "f6d8ef92c358104b9c739590d48387d060e0b608628b036128b5b92511400ac3",
+    "collector/sg.huff-action.ts": "6debb6fc50087bf54c65715a6a8c58d6c94bc7d38498f18c3462c9b291948abd",
     "service/game_rule_catalog.py": "6804fe35565f50424ee4c12cd2a9a7926937954c65d3d14661e756edc3caafdc"
   },
   "reviewDocuments": [
@@ -317,5 +317,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "91ea3d4f48f739c1b0692a660081aa523f3e9d2d16ac423abd7a4b2b1645881b"
+  "ruleHash": "afb69c4548a05b339cef43359c4bbd6a8dae644b0ae663055673459507e0a59e"
 }

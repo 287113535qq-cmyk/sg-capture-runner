@@ -117,7 +117,7 @@ class HuffActionFields(NativeNextgenFields):
             need(len(set(feature)) == len(feature), 'FEATURE_ID')
             slots(g.get('PCFID'))
             need(g.get('FEAT') in (None, 'MMANSION', 'HARDHAT', 'PAINT', 'HOMEIMP', 'MANSION'), 'UNREVIEWED_ROUTE')
-            need(g.get('MMBG') in (None, '0', '1'), 'MANSION_FLAG')
+            need(g.get('MMBG') in (None, '0', '1') and g.get('MMFG') in (None, '0', '1'), 'MANSION_FLAG')
             ordinary = index == 0 and not feature and not {'NFG', 'TFG', 'CFGG'}.intersection(p)
             n, t, c = (0, 0, 0) if ordinary else tuple(amount(p.get(k)) for k in ('NFG', 'TFG', 'CFGG'))
             need(n + c == t <= 100, 'COUNTERS')
@@ -133,12 +133,22 @@ class HuffActionFields(NativeNextgenFields):
                 if feature == pf:
                     need(pn > 0 and c == pc + 1 and t >= pt and n == pn - 1 + t - pt, 'PROGRESS')
                 else:
-                    need(pf == [0] and intro and len(feature) == 1 and feature[0] > 0
-                         and g.get('FEAT') == 'MMANSION' and g.get('MMW') and (n, t, c) == (6, 6, 0),
-                         'UNREVIEWED_TRANSITION')
+                    selected = pf == [0] and intro and len(feature) == 1 and feature[0] > 0 \
+                        and g.get('FEAT') == 'MMANSION' and g.get('MMW') and (n, t, c) == (6, 6, 0)
+                    old = pf[0] if len(pf) == 1 else None
+                    history = slots(g.get('PCFID'))
+                    awarded = old is not None and old > 0 and feature == [0] and pn == 1 \
+                        and (n, t, c) == (1, 1, 0) and g.get('MMFG') == '1' and not g.get('MMW') \
+                        and g.get('FEAT') == ('MMANSION', 'HARDHAT', 'PAINT', 'HOMEIMP', 'MANSION')[old] \
+                        and amount(g.get('CFNFG')) == 0 and amount(g.get('CFTFG')) == pt \
+                        and amount(g.get('CFCFGG')) == pc + 1 and len(history) == pt and history[-1] == old \
+                        and 'FRAMEWINS' in g and review_feature_values(g['FRAMEWINS'], size=20 if old == 3 else 15,
+                            display_sentinels=(-1, -2, -3, -4, -5), continuation_sentinels=(-100,))['requiresFeatureContinuation']
+                    need(selected or awarded, 'UNREVIEWED_TRANSITION')
             else:
                 need(c == 0, 'TRIGGER')
-            intro = feature[:1] == [0] and g.get('MMBG') == '1' and not g.get('MMW')
+            intro = feature[:1] == [0] and (g.get('MMBG') == '1' or g.get('MMFG') == '1'
+                and (n, t, c) == (1, 1, 0)) and not g.get('MMW')
             following = 'FREE_GAME' if n > 0 or intro else None
             b, ab, win = (amount(p.get(k)) for k in ('B', 'AB', 'TW'))
             need(win >= prior_win, 'WIN_REGRESSION')

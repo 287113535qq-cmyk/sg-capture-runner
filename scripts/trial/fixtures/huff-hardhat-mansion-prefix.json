@@ -1,0 +1,258 @@
+{
+  "schema": "sg-huff-transition-evidence-v1",
+  "evidenceKind": "sanitized-real-prefix",
+  "sourceRun": "37128608965:1",
+  "originalRawHash": "eccc94a481755df59674429e3839f751942f4e4ea37916318da5f76b756ccdb6",
+  "naturalTerminalObserved": false,
+  "raw": {
+    "fixtureOnly": false,
+    "protocol": "nextgen",
+    "sourceKey": "huffnpuffmoneymansionhighlimit96-round-one-base-v1",
+    "roundFieldsVersion": "sg-round-fields-v1",
+    "startBalanceRaw": 184700,
+    "steps": [
+      {
+        "ts": "2026-10-03T14:11:57.825Z",
+        "methodName": "processGameMessage",
+        "msgId": "BET",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=BET",
+        "responsePayload": "&MSGID=BET&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=0&NRID=1&BPR=25&RB=5&RS=111|10|92|16|83|&TW=0&WC=0|0|0|&CW=0&NFG=6&FGT=6&TFG=6&CFGG=0&FGTW=0&IFG=0&FID=1|&MUL=1&SUB=0&GSD=BRS~111|10|92|16|83|#BMS~2#VA~4,4,14,2,5,14,4,14,2,1,14,4,14,2,1#HHPOS~2;5;7;10;12#BGHHPOS~2;5;7;10;12;3#HHADD~1#HHNPOS~3&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=0&NRID=1&BPR=25&RB=5&RS=111|10|92|16|83|&TW=0&WC=0|0|0|&CW=0&NFG=6&FGT=6&TFG=6&CFGG=0&FGTW=0&IFG=0&FID=1|&MUL=1&SUB=0&GSD=BRS~111|10|92|16|83|#BMS~2#VA~4,4,14,2,5,14,4,14,2,1,14,4,14,2,1#HHPOS~2;5;7;10;12#BGHHPOS~2;5;7;10;12;3#HHADD~1#HHNPOS~3&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 21,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 20.225,
+          "bodyMs": 0.34,
+          "totalMs": 20.586,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.171,
+            "beforeHeadersWriteMs": 0.051,
+            "afterHeadersWriteMs": 19.776,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:57.859Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=97|45|17|35|8|&TW=0&WC=0|0|0|&CW=0&NFG=5&TFG=6&CFGG=1&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~6#PREVFRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#CFCFGG~1#PCFID~1|#BMS~2#VA~11,2,6,5,4,11,10,6,4,7,4,10,5,4,3#FMS~2#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~5&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=97|45|17|35|8|&TW=0&WC=0|0|0|&CW=0&NFG=5&TFG=6&CFGG=1&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~6#PREVFRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#CFCFGG~1#PCFID~1|#BMS~2#VA~11,2,6,5,4,11,10,6,4,7,4,10,5,4,3#FMS~2#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~5&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 19,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 18.469,
+          "bodyMs": 0.274,
+          "totalMs": 18.763,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.238,
+            "beforeHeadersWriteMs": 0.066,
+            "afterHeadersWriteMs": 17.92,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:57.894Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=119|16|126|39|46|&TW=0&WC=0|0|0|&CW=0&NFG=5&FGT=1&TFG=7&CFGG=2&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~1#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#PCFID~1|1|#CFCFGG~2#BMS~2#VA~6,5,1,10,4,6,5,14,14,9,3,3,14,3,5#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~5&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=119|16|126|39|46|&TW=0&WC=0|0|0|&CW=0&NFG=5&FGT=1&TFG=7&CFGG=2&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~1#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|1|0|0|1|0|1|0|0#PCFID~1|1|#CFCFGG~2#BMS~2#VA~6,5,1,10,4,6,5,14,14,9,3,3,14,3,5#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~5&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 19,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 17.922,
+          "bodyMs": 0.654,
+          "totalMs": 18.598,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.242,
+            "beforeHeadersWriteMs": 0.072,
+            "afterHeadersWriteMs": 17.383,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:57.931Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=80|73|86|15|46|&TW=0&WC=0|0|0|&CW=0&NFG=4&TFG=7&CFGG=3&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|#CFCFGG~3#BMS~2#VA~4,2,6,1,4,8,3,5,9,9,5,3,1,9,5#FMS~4#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~4&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=80|73|86|15|46|&TW=0&WC=0|0|0|&CW=0&NFG=4&TFG=7&CFGG=3&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|#CFCFGG~3#BMS~2#VA~4,2,6,1,4,8,3,5,9,9,5,3,1,9,5#FMS~4#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~4&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 20,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 19.719,
+          "bodyMs": 0.283,
+          "totalMs": 20.023,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.178,
+            "beforeHeadersWriteMs": 0.06,
+            "afterHeadersWriteMs": 19.183,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:57.966Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=88|8|102|49|12|&TW=0&WC=0|0|0|&CW=0&NFG=3&TFG=7&CFGG=4&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|#CFCFGG~4#BMS~2#VA~7,3,6,7,5,4,2,2,4,5,4,1,5,4,4#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~3&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=88|8|102|49|12|&TW=0&WC=0|0|0|&CW=0&NFG=3&TFG=7&CFGG=4&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|#CFCFGG~4#BMS~2#VA~7,3,6,7,5,4,2,2,4,5,4,1,5,4,4#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~3&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 19,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 18.371,
+          "bodyMs": 0.3,
+          "totalMs": 18.692,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.177,
+            "beforeHeadersWriteMs": 0.059,
+            "afterHeadersWriteMs": 17.899,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:58.001Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=14|53|98|65|2|&TW=0&WC=0|0|0|&CW=0&NFG=2&TFG=7&CFGG=5&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|1|#CFCFGG~5#BMS~2#VA~4,3,6,11,11,8,3,3,5,4,5,3,4,5,1#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~2&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=14|53|98|65|2|&TW=0&WC=0|0|0|&CW=0&NFG=2&TFG=7&CFGG=5&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|1|#CFCFGG~5#BMS~2#VA~4,3,6,11,11,8,3,3,5,4,5,3,4,5,1#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~2&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 18,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 18.014,
+          "bodyMs": 0.318,
+          "totalMs": 18.355,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.232,
+            "beforeHeadersWriteMs": 0.071,
+            "afterHeadersWriteMs": 17.434,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:58.037Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=43|41|66|66|25|&TW=0&WC=0|0|0|&CW=0&NFG=1&TFG=7&CFGG=6&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|1|1|#CFCFGG~6#BMS~2#VA~8,2,5,5,2,4,7,14,5,5,4,7,14,1,1#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|3|1|0|1|0|3|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~1&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=184200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=1&BPR=25&RB=5&RS=43|41|66|66|25|&TW=0&WC=0|0|0|&CW=0&NFG=1&TFG=7&CFGG=6&FGTW=0&IFG=1&FID=1|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|2|1|0|1|0|2|0|0#PCFID~1|1|1|1|1|1|#CFCFGG~6#BMS~2#VA~8,2,5,5,2,4,7,14,5,5,4,7,14,1,1#FMS~3#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|3|1|0|1|0|3|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~1&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 19,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 19.024,
+          "bodyMs": 0.347,
+          "totalMs": 19.396,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.203,
+            "beforeHeadersWriteMs": 0.108,
+            "afterHeadersWriteMs": 18.447,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      },
+      {
+        "ts": "2026-10-03T14:11:58.076Z",
+        "methodName": "processGameMessage",
+        "msgId": "FREE_GAME",
+        "requestPayload": "AP=false&BPR=25&GN=huffnpuffmoneymansionhighlimit96&RB=5&PID=gdmgcmoffline-hardhat-mansion-vector&MSGID=FREE_GAME",
+        "responsePayload": "&MSGID=FREE_GAME&B=196825&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=0&BPR=25&RB=5&RS=99|58|48|2|22|&TW=12625&WC=0|0|0|&CW=12625&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=12625&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#FRAMEWINS~0|0|1|0.75|0|1|0|-4|1.5|0|1|0|-100|0|0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|3|1|0|1|0|3|0|0#MMFG~1#PCFID~1|1|1|1|1|1|1|#CFCFGG~7#BMS~2#VA~4,9,11,1,3,9,9,5,14,5,3,1,5,6,4#FMS~5#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|3|2|0|1|0|3|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~0&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&",
+        "responseXml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=196825&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.1-1.0.1-3&RID=1&NRID=0&BPR=25&RB=5&RS=99|58|48|2|22|&TW=12625&WC=0|0|0|&CW=12625&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=12625&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#FRAMEWINS~0|0|1|0.75|0|1|0|-4|1.5|0|1|0|-100|0|0#BRS~111|10|92|16|83|#CFTFG~7#PREVFRAMES~0|0|1|1|0|1|0|3|1|0|1|0|3|0|0#MMFG~1#PCFID~1|1|1|1|1|1|1|#CFCFGG~7#BMS~2#VA~4,9,11,1,3,9,9,5,14,5,3,1,5,6,4#FMS~5#FEAT~HARDHAT#FRAMES~0|0|1|1|0|1|0|3|2|0|1|0|3|0|0#BGHHPOS~2;5;7;10;12;3#HHADD~1#CFNFG~0&GA=0&AB=184200&FRBAL=0&SID=Free:4aa3bef244381baa1975cd9b9b415629&]]></PAYLOAD></GDMRESPONSE>",
+        "elapsedMs": 19,
+        "sourceTiming": {
+          "schema": "sg-source-timing-v1",
+          "headersMs": 18.444,
+          "bodyMs": 0.362,
+          "totalMs": 18.834,
+          "connection": {
+            "schema": "sg-connection-observation-v1",
+            "requestsObserved": 1,
+            "correlated": true,
+            "socketObserved": true,
+            "reusedSocket": true,
+            "beforeRequestMs": 0.332,
+            "beforeHeadersWriteMs": 0.092,
+            "afterHeadersWriteMs": 17.648,
+            "lookupWaitMs": null,
+            "tcpConnectMs": null,
+            "tlsHandshakeMs": null,
+            "tlsSessionReused": null
+          }
+        },
+        "responseBalance": 184200
+      }
+    ],
+    "requestFlowVersion": "huff-action-v1",
+    "actionContractHash": "9a9a312a3b8bb858ac878bb03f429a2e8f86dda0c0be48fc17b72af30fca8670"
+  }
+}
