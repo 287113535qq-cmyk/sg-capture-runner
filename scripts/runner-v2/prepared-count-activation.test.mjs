@@ -137,7 +137,7 @@ test('prepared stock selects the preserved ledger and admits exactly one new run
  assert.equal(f.docs.get('journal/count-run:'+plan.trialId+':2:1').preparationProofHash,f.args.profile.preparationProofHash);
  await assert.rejects(admitPreparedCountRun(args),/ALREADY_ADMITTED/);
 });
-for(const bad of ['proof-revoked','other-game','live-worker','changed-code','unknown-write'])
+for(const bad of ['proof-revoked','other-game','live-worker','changed-code','changed-profile','unknown-write'])
  test('new run admission refuses '+bad,async()=>{
   const f=await fixture();await activatePreparedCount(f.args);
   const plan={...f.base,target:300000,countAllocation:f.args.profile.activation},args={...f.args,plan,run:'2:1'};
@@ -145,6 +145,7 @@ for(const bad of ['proof-revoked','other-game','live-worker','changed-code','unk
   if(bad==='other-game')f.docs.get('state/campaign').activeGame=32718;
   if(bad==='live-worker')f.docs.get('state/pool:'+plan.trialId).workers[0]={leaseUntil:999999};
   if(bad==='changed-code')args.commit='0'.repeat(40);
+  if(bad==='changed-profile')args.profile={...args.profile,unapproved:'changed'};
   if(bad==='unknown-write')f.args.store.create=async()=>{throw Error('UNKNOWN_ACK');};
   await assert.rejects(admitPreparedCountRun(args));
   assert(!f.docs.has('journal/count-run:'+plan.trialId+':2:1'));

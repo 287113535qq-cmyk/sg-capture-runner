@@ -4,6 +4,16 @@ import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 import {preparedCountPlan} from './prepared-count-plan.mjs';
 import {preparedRuntimeAuthorization,preparedRuntimePath} from './prepared-count-runtime.mjs';
 
+export function preparedHandoffReviewKey(task,context,consumerRevision){
+ assert(task?.schema==='sg-capture-prepared-publication-v1'&&/^[a-f0-9]{64}$/.test(consumerRevision),
+  'PREPARED_HANDOFF_REVIEW_SCOPE');
+ return hash({taskHash:hash(task),consumerRevision,currentCycleHash:context.currentCycleHash,
+  preparedState:task.cycle.publication.inventory.tasks.map(row=>{
+    const current=context.inventory.tasks.find(t=>t.gameId===row.gameId);
+    return {gameId:row.gameId,status:current?.status??null,proofHash:current?.proofHash??null,claimed:!!current?.claim};
+  }),countRegistry:context.countRegistry??null,runtimeRegistry:context.runtimeRegistry??null});
+}
+
 // Reusable stock handoff is independent of expiring demo profiles. The online
 // campaign still intersects its own ready set and acquires fresh permission.
 export async function reviewPreparedPublicationHandoff({task, currentCycleHash, inventory, plans, registry,

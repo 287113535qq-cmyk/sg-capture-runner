@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildPreparedPublication} from './prepared-publication.mjs';
-import {reviewPreparedPublicationHandoff} from './prepared-publication-handoff.mjs';
+import {reviewPreparedPublicationHandoff,preparedHandoffReviewKey} from './prepared-publication-handoff.mjs';
 import {preparationGates} from './preparation-inventory.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
@@ -23,6 +23,10 @@ test('continuous prepared stock reaches the capture consumer without an expiring
   const options = {task, currentCycleHash: task.cycleHash, inventory, plans: {1: plan},
     registry: {sourceAllowance: 0, bindings: {1: {group: 'secondary', planHash: hash(plan)}}}};
   const result = await reviewPreparedPublicationHandoff(options);
+  const key=preparedHandoffReviewKey(task,options,'a'.repeat(64));
+  assert.equal(key,preparedHandoffReviewKey(task,options,'a'.repeat(64)));
+  assert.notEqual(key,preparedHandoffReviewKey(task,{...options,countRegistry:{schema:'new'}},'a'.repeat(64)));
+  assert.notEqual(key,preparedHandoffReviewKey(task,options,'b'.repeat(64)));
   assert.equal(result.inputs.role, 'capture'); assert.equal(result.dispatched, false); assert.equal(result.sourceAllowance, 0);
   assert.equal(result.status, 'online-publication-and-fresh-admission-required');
   await assert.rejects(reviewPreparedPublicationHandoff({...options, currentCycleHash: 'd'.repeat(64)}), /PREPARED_HANDOFF_CYCLE_CHANGED/);

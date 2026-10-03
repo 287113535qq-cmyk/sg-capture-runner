@@ -9,6 +9,7 @@ export async function admitPreparedCountRun({store,base,plan,profile,publication
  const pool=(await store.get('state','pool:'+plan.trialId))?.value;
  const campaign=(await store.get('state','campaign'))?.value;
  const spec=await loadCountPermission({store,plan,pool,commit}),ledger=checkLedger(pool,plan,spec);
+ assert(spec.profileHash===hash(profile),'PREPARED_COUNT_PROFILE_CHANGED');
  const row=publication.inventory.tasks.find(t=>t.gameId===plan.gameId);
  const selector=publishedPreparedSelector({publication,plans,readEvidence});
  assert(row?.proofHash===profile.preparationProofHash&&row.failureEvidenceHash===profile.failureEvidenceHash
