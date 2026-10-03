@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {stable} from './mongo-writer.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 
 // Formal retirement references a paged ledger instead of individual legacy
 // batches. Follow its immutable pages and original batch snapshots, never an
@@ -62,6 +63,7 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   const rows=await store.getMany('journal',repair.evidence.map(e=>e.key));
   assert(rows.length===repair.evidence.length,'NATIVE_REPAIR_PAGE');
   const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[];
+  let captureLink;
   for(const {row,ref} of await retiredBatchRows(store,plan,archive,repair,rows)) {
     const value=row?.value;
     assert(value && hash(value.batch??value)===ref.hash,'NATIVE_REPAIR_ARCHIVE_CHANGED');
@@ -85,6 +87,20 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
     const evidence={plan,raw:pending.raw,archiveKey:ref.key,archiveHash:ref.hash,
       ...(abandoned?{abandonedKey:batch.abandonedDemo,abandonedHash:hash(abandoned)}:{})};
     faults.push({raw:pending.raw,evidence,evidenceHash:hash(evidence),failureEvidenceHash});
+    const oldGame=archive.campaign?.games?.find(g=>g.game_id===plan.gameId);
+    if(archive.schema==='sg-count-prepared-before-v1'&&oldGame?.pendingReview?.rawHash===hash(pending.raw)){
+      const closed=(await store.get('journal',repair.archiveKey.slice(0,-':before'.length)+':complete'))?.value;
+      const retiredBefore=(await store.get('journal',repair.evidence[0].key.slice(0,-':complete'.length)+':before'))?.value;
+      const sourcePlan=retiredBefore?.plan,receipt=(await store.get('journal',batch.workLineFault))?.value;
+      assert(closed?.repairKey===repairKey&&closed.sourceRun===archive.run&&closed.sourceCommit===archive.commit
+        &&sourcePlan?.gameId===plan.gameId&&sourcePlan.trialId===plan.trialId&&sourcePlan.countAllocation===closed.activation
+        &&receipt&&hash(captureFaultReceipt({plan:sourcePlan,batch:{...batch,pending},archiveKey:batch.abandonedDemo,
+          archive:abandoned,group:receipt.group}))===hash(receipt)
+        &&batch.workLineFault===`capture-fault:${plan.trialId}:${batch.id}:${hash(receipt)}`
+        &&/^[a-f0-9]{64}$/.test(oldGame.preparationProofHash??''),'NATIVE_REPAIR_CAPTURE_LINK');
+      const captureEvidence={receipt,plan:sourcePlan,raw:pending.raw};
+      captureLink={failureEvidenceHash:hash(captureEvidence),rejectedProofHash:oldGame.preparationProofHash,captureEvidence};
+    }
   }
   assert(faults.length>0,'NATIVE_REPAIR_NO_FAULT_PREFIX');
   const receipts=await store.getMany('journal',Array.from({length:100},(_,i)=>receiptKey(plan.trialId,i+1)));
@@ -93,7 +109,7 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   const readbacks=await transport.request('rounds_read',{trialId:plan.trialId,ids:[record._id]});
   assert(readbacks.length===1&&stable(readbacks[0])===stable(record),'NATIVE_REPAIR_FULL_READBACK');
   return {schema:'sg-native-repair-replay-task-v1',gameId:plan.gameId,plan,planHash:hash(plan),revisionHash,
-    manifest,failureEvidenceHash,records:[record],readbacks,faults,sourceAllowance:0};
+    manifest,failureEvidenceHash,records:[record],readbacks,faults,...(captureLink?{captureLink}:{}),sourceAllowance:0};
 }
 
 export function validateNativeRepairReplay(task) {
@@ -104,5 +120,10 @@ export function validateNativeRepairReplay(task) {
     &&task.faults.every(f=>f.failureEvidenceHash===task.failureEvidenceHash&&f.evidenceHash===hash(f.evidence)
       &&hash(f.raw)===hash(f.evidence.raw))&&task.records?.length===1&&task.readbacks?.length===1
     &&stable(task.records[0])===stable(task.readbacks[0]),'NATIVE_REPAIR_DELIVERY_CHANGED');
+  if(task.captureLink){const link=task.captureLink,e=link.captureEvidence;
+    assert(link.failureEvidenceHash===hash(e)&&/^[a-f0-9]{64}$/.test(link.rejectedProofHash??'')
+      &&e?.receipt?.gameId===task.gameId&&e.receipt.trialId===task.plan.trialId
+      &&e.receipt.rawHash===hash(e.raw)&&e.receipt.planHash===hash(e.plan)
+      &&task.faults.some(f=>hash(f.raw)===hash(e.raw)),'NATIVE_REPAIR_CAPTURE_LINK');}
   return {...task,schema:'sg-preparation-replay-task-v1'};
 }

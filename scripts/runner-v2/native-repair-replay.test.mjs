@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {exportNativeRepairReplay,validateNativeRepairReplay} from './native-repair-replay.mjs';
 import {receiptKey} from './durable-queue.mjs';
+import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 function fixture(){
  const plan={gameId:1,trialId:'fixture',runtimeGameId:10},repairKey='game-repair:fixture:'+'a'.repeat(64);
  const raw={fixtureOnly:false,steps:[{msgId:'BET'}]},batch={pending:{awaiting:null,raw}};
@@ -92,4 +93,29 @@ test('formal retirement export follows all pages and immutable original batches 
   x=>x.docs.delete('journal/'+x.batch.abandonedDemo)]){
   const b=retiredFixture();change(b);await assert.rejects(exportNativeRepairReplay(b));
  }
+});
+
+test('formal repair binds the retired ledger to the original captured fault and rejected preparation proof',async()=>{
+ const a=retiredFixture(),archive=a.docs.get('journal/'+a.docs.get('state/'+a.repairKey).archiveKey);
+ const abandoned=a.docs.get('journal/'+a.batch.abandonedDemo),pending=abandoned.pending;
+ const plan={...a.plan,countAllocation:'f'.repeat(64)};
+ const receipt=captureFaultReceipt({plan,batch:{...a.batch,pending},archiveKey:a.batch.abandonedDemo,archive:abandoned,group:'primary'});
+ a.batch.workLineFault=`capture-fault:${a.plan.trialId}:1:${hash(receipt)}`;
+ a.docs.set('journal/'+a.batch.workLineFault,receipt);
+ a.docs.set('state/batch:'+a.plan.trialId+':1',structuredClone(a.batch));
+ a.docs.get('journal/'+a.prefix+':page:1').entries[0].beforeHash=hash(a.batch);
+ const before=a.docs.get('journal/'+a.prefix+':before');before.plan=plan;
+ const result=a.docs.get('journal/'+a.prefix+':complete');result.beforeHash=hash({plan:before.plan,pool:before.pool});
+ a.docs.get('state/'+a.repairKey).evidence[0].hash=hash(result);
+ Object.assign(archive,{run:'3:1',commit:'c'.repeat(40),campaign:{games:[{game_id:a.plan.gameId,
+  pendingReview:{rawHash:hash(pending.raw)},preparationProofHash:'d'.repeat(64)}]}});
+ a.docs.set('journal/'+a.docs.get('state/'+a.repairKey).archiveKey.replace(/:archive$/,':archive:complete'),{});
+ const archiveKey=`count-prepared-close:${a.plan.trialId}:3:1:before`;
+ a.docs.get('state/'+a.repairKey).archiveKey=archiveKey;a.docs.set('journal/'+archiveKey,archive);
+ a.docs.set('journal/'+archiveKey.slice(0,-7)+':complete',{repairKey:a.repairKey,sourceRun:'3:1',sourceCommit:archive.commit,activation:plan.countAllocation});
+ const task=await exportNativeRepairReplay(a);validateNativeRepairReplay(task);
+ assert.equal(task.captureLink.failureEvidenceHash,hash({receipt,plan,raw:pending.raw}));
+ assert.equal(task.captureLink.rejectedProofHash,'d'.repeat(64));
+ const changed=structuredClone(task);changed.captureLink.captureEvidence.receipt.rawHash='0'.repeat(64);
+ assert.throws(()=>validateNativeRepairReplay(changed));
 });

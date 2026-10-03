@@ -21,6 +21,24 @@ test('fresh native repair binding reaches both queued admission mirrors and bloc
   assert.throws(()=>applyWorkLineEvent(q,event,'admission',50));
  }
 });
+
+test('formal retirement replaces only the matching current capture fault and revokes its interim proof',()=>{
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-settled',gameId:1,sourceAllowance:0,
+  evidenceHash:'d'.repeat(64),captureFailureEvidenceHash:'c'.repeat(64),rejectedProofHash:'b'.repeat(64),
+  repairKey:'game-repair:fixture:'+'e'.repeat(64)};
+ for(const lane of ['admission','repair']){
+  const q=newInventory(games);Object.assign(q.tasks[0],{status:'prepared',lane:lane==='repair'?'repair':'admission',
+   proof:proof(1),proofHash:'a'.repeat(64),failureEvidenceHash:event.captureFailureEvidenceHash,rejectedProofHash:event.rejectedProofHash});
+  assert(applyWorkLineEvent(q,event,lane,50));assert.equal(q.tasks[0].proof,null);
+  assert.equal(q.tasks[0].failureEvidenceHash,event.evidenceHash);
+  assert.equal(q.tasks[0].status,lane==='repair'?'queued':'blocked');
+  assert.equal(applyWorkLineEvent(q,event,lane,51),false);
+ }
+ for(const field of ['captureFailureEvidenceHash','rejectedProofHash']){
+  const q=newInventory(games);Object.assign(q.tasks[0],{failureEvidenceHash:'c'.repeat(64),rejectedProofHash:'b'.repeat(64)});
+  assert.throws(()=>applyWorkLineEvent(q,{...event,[field]:'f'.repeat(64)},'repair',50));
+ }
+});
 test('capture failure independently creates repair work, next game remains selectable, repair returns without semantic completion',async()=>{
  const admission=newInventory(games),repair=newInventory(games);prepare(admission,1);prepare(admission,2);
  const failure={schema:'sg-work-line-event-v1',kind:'capture-failed',gameId:1,sourceAllowance:0,

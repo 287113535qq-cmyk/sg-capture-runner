@@ -21,7 +21,15 @@ export function applyWorkLineEvent(inventory,event,lane,now){
  const task=inventory.tasks.find(t=>t.gameId===event.gameId);
  assert(task&&!task.claim,'WORK_LINE_TASK_BUSY');
  assert(task.status!=='complete','WORK_LINE_COMPLETED_IMMUTABLE');
- if(event.kind==='native-repair-observed'){
+ if(event.kind==='native-repair-settled'){
+  assert(event.captureFailureEvidenceHash===task.failureEvidenceHash&&event.rejectedProofHash===task.rejectedProofHash
+   &&/^[a-f0-9]{64}$/.test(event.rejectedProofHash??'')
+   &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_SETTLEMENT_BINDING');
+  task.proof=null;delete task.proofHash;task.lane='repair';task.status=lane==='repair'?'queued':'blocked';
+  task.captureFailureEvidenceHash=event.captureFailureEvidenceHash;
+  task.failureEvidenceHash=event.evidenceHash;task.nativeRepairKey=event.repairKey;
+  task.reason='NATIVE_REPAIR_REPLAY_REQUIRED';
+ }else if(event.kind==='native-repair-observed'){
   assert(task.lane==='repair'&&['queued','blocked'].includes(task.status)&&!task.proof
    &&(!task.failureEvidenceHash||task.failureEvidenceHash===event.evidenceHash)
    &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_REPAIR_BINDING');

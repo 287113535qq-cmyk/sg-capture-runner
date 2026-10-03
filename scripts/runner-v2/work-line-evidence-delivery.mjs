@@ -67,7 +67,8 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
    path.join(root,'.local/capture-handoff-worker/online-reviews'),{...task,origin});
   if(task.schema==='sg-preparation-linux-task-v1')return deliverLinuxPreparationTask(root,task,origin).mailbox;
   if(task.schema==='sg-native-repair-replay-task-v1'){
-   const event={schema:'sg-work-line-event-v1',kind:'native-repair-observed',gameId:task.gameId,
+   const event={schema:'sg-work-line-event-v1',kind:task.captureLink?'native-repair-settled':'native-repair-observed',gameId:task.gameId,
+    ...(task.captureLink?{captureFailureEvidenceHash:task.captureLink.failureEvidenceHash,rejectedProofHash:task.captureLink.rejectedProofHash}:{}),
     evidenceHash:task.failureEvidenceHash,repairKey:task.manifest.repairKey,sourceAllowance:0};
    for(const lane of ['admission','repair'])publishImmutableInbox(path.join(root,'.local/preparation-worker',lane,'inbox'),event);
    return publishImmutableInbox(path.join(root,'.local/preparation-worker/repair/evidence-inbox'),validateNativeRepairReplay(task));
