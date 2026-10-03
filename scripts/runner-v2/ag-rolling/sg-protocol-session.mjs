@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
+import {protocolFaultCode} from './sg-fault-code.mjs';
 // SG protocol boundary behind the original AG session class. Source transports
 // and game codecs are supplied by the registered queue's SG adapter. They may
 // not bypass exchange(): every request intent precedes HTTP, each response is
@@ -79,8 +80,7 @@ export function createProtocolSessions({game,queueId,kind,index,owner,plan,creat
        optionIndex:prepared.optionIndex??0,data:{complete:true,independentlyVerified:true,unknownRequests:0,
         roundEvents:prepared.roundEvents??[],sgRecord:prepared.record}};
      }catch(error){state.protocolFaults++;
-      const code=error.code??error.message;
-      state.lastFault=/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_PROTOCOL_STOPPED';throw error;}
+      state.lastFault=protocolFaultCode(error);throw error;}
     },
     async close(){if(state.closed)return;await session.close();spool.close();
      await codec.close?.();

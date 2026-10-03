@@ -4079,6 +4079,258 @@
         "runtimeGameId": 33144,
         "sourceId": "27af1c93-5b0d-4cc8-97a7-ad8b0127735a"
       }
+    },
+    "bigspinner-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": "SPGS~0",
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32464,
+        "runtimeGameId": 33025,
+        "sourceId": "c7b6a0d8-2bd7-80c3-2a45-89904751eda8"
+      }
+    },
+    "cherryeight96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": "UGB:0",
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32477,
+        "runtimeGameId": 33029,
+        "sourceId": "0678cd98-7e49-4a21-b2b5-8977103c7b1a"
+      }
+    },
+    "blazinhot7sbigbonus96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32703,
+        "runtimeGameId": 33103,
+        "sourceId": "040fb071-c625-4e4b-be47-812483fcba33"
+      }
+    },
+    "qhultrapayseaglespeak-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32732,
+        "runtimeGameId": 33132,
+        "sourceId": "02ab1c1d-09d8-464e-b8ab-d5ebc596f5fe"
+      }
+    },
+    "uflcashfallsbythebay96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32740,
+        "runtimeGameId": 33140,
+        "sourceId": "5f06e0d0-8d29-43c1-a649-4ec935a41501"
+      }
+    },
+    "uflcashfallschinastreet96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32741,
+        "runtimeGameId": 33141,
+        "sourceId": "cd51a63e-f0d2-4b28-8314-9650ddd40980"
+      }
+    },
+    "uflcashfallsglaciergold96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32742,
+        "runtimeGameId": 33142,
+        "sourceId": "e9d5b408-2a4d-4aa8-b5a4-a9413c806882"
+      }
+    },
+    "bookoffusion96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32821,
+        "runtimeGameId": 33181,
+        "sourceId": "808fae0a-9e77-4716-aa08-74caa4b62ec8"
+      }
+    },
+    "keytosuccess96-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32832,
+        "runtimeGameId": 33192,
+        "sourceId": "ea4646af-007c-470a-9231-5bc1245f96cf"
+      }
     }
   }
 }
