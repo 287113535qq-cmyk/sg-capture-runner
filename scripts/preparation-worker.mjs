@@ -8,6 +8,7 @@ import {stagePreparedCycle} from './runner-v2/preparation-publication-cycle.mjs'
 import {reviewFlowRepairInbox} from './runner-v2/flow-repair-inbox.mjs';
 import {replaceLocalJson} from './runner-v2/atomic-local-state.mjs';
 import {preparationInputs} from './runner-v2/preparation-inputs.mjs';
+import {publishCanonicalLocalCheck} from './runner-v2/local-check-publication.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -200,10 +201,10 @@ try{
         const receipt={schema:'sg-preparation-gate-v1',gate:'local',gameId:claim.gameId,
           revisionHash:input.revisionHash,verified:true,sourceAllowance:0,
           supportingHashes:logs.map(n=>bytesHash(path.join(dir,n+'.log')))};
-        publishImmutableInbox(input.evidenceDir,receipt);
+        const published=publishCanonicalLocalCheck({dir:input.evidenceDir,receipt,expectedChecks:logs.length});
         inputs.reset();
         const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,failureEvidenceHash:task.failureEvidenceHash,
-          receipts:[...input.receipts.filter(r=>r.gate!=='local'||r.revisionHash!==input.revisionHash),receipt]});
+          receipts:[...input.receipts.filter(r=>r.gate!=='local'||r.revisionHash!==input.revisionHash),published]});
         task.missingGates=reviewed.missingGates??[];
         task.inputHash=inputsFor(claim.gameId,index).inputHash;
         finishPreparation(q,claim,reviewed,Date.now());save(q);
