@@ -3,7 +3,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 import {loadCountPermission} from './complete-count.mjs';
 import {preparedSettledHistory} from './prepared-settled-history.mjs';
-import {bindPreparedCountPlan} from './prepared-count-plan-binding.mjs';
+import {bindPreparedCountPlanAsync} from './prepared-count-plan-binding.mjs';
 
 // The retired count ledger and its immutable full readbacks are inherited.
 // Gameplay classification and the old interrupted session are never replayed.
@@ -22,7 +22,7 @@ export async function reviewPreparedCountRepairScene({store,base,publication,pla
  assert(campaign?.enabled&&campaign.activeGame==null&&game?.status==='parked-protocol'
   &&pool?.enabled===false&&pool.failure==='PROTOCOL_VALIDATION_FAILED','PREPARED_REPAIR_SCENE');
  const originalSpec=await get('journal',`complete-count:${base.trialId}:${parent.activation}`);
- const oldPlan=bindPreparedCountPlan({base,activation:parent.activation,spec:originalSpec,read:readEvidence});
+ const oldPlan=await bindPreparedCountPlanAsync({base,activation:parent.activation,spec:originalSpec,read:readEvidence});
  const spec=await loadCountPermission({store,plan:oldPlan,pool,commit:parent.sourceCommit});
  assert(hash(spec)===parent.specHash&&spec.maxSequence===600000,'PREPARED_REPAIR_SPEC');
  const permit=await get('journal',`count-run:${base.trialId}:${parent.sourceRun}`);

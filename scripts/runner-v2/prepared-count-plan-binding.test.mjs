@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {bindPreparedCountPlan} from './prepared-count-plan-binding.mjs';
+import {bindPreparedCountPlan,bindPreparedCountPlanAsync} from './prepared-count-plan-binding.mjs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
 
 function fixture(){
@@ -34,6 +34,18 @@ test('an unregistered, altered, duplicate, foreign or mismatched action binding 
   if(mode==='registry')f.registry.sourceAllowance=1;
   assert.throws(()=>bindPreparedCountPlan({...f,activation:f.profile.activation}),undefined,mode);
  }
+});
+
+test('asynchronous evidence resolves the registered plan before repair review and keeps rejection checks',async()=>{
+ const f=fixture(),calls=[];
+ const args={...f,activation:f.profile.activation,read:async file=>{calls.push(file);return f.read(file);}};
+ assert.deepEqual(await bindPreparedCountPlanAsync(args),bindPreparedCountPlan({...f,activation:f.profile.activation}));
+ assert.deepEqual(calls,['config/prepared-count-authorizations.json','config/'+f.name]);
+ f.registry.sourceAllowance=1;
+ await assert.rejects(bindPreparedCountPlanAsync(args),/LEASE_COUNT_SCOPE/);
+ const legacy={...f.base,target:300000,countAllocation:f.profile.activation};
+ assert.deepEqual(await bindPreparedCountPlanAsync({...args,spec:{planHash:hash(legacy)},
+  read:async()=>{throw Error('UNEXPECTED_READ');}}),legacy);
 });
 test('lease boundary inspects action-bound native batches and still rejects a live lease',async()=>{
  const f=fixture(),plan=bindPreparedCountPlan({...f,activation:f.profile.activation});
