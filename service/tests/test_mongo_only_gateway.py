@@ -3,6 +3,7 @@ import pathlib
 import sys
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from mongo_only_gateway import Gateway, Refused
 
@@ -38,6 +39,16 @@ class Collection:
         old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
         if matched:self.rows[row['_id']]=copy.deepcopy(row)
         return SimpleNamespace(matched_count=int(matched))
+    def bulk_write(self, operations, ordered):
+        assert ordered is True
+        inserted = 0
+        for operation in operations:
+            assert operation._upsert is True and set(operation._filter) == {'_id'}
+            document = operation._doc['$setOnInsert']
+            assert document['_id'] == operation._filter['_id']
+            if document['_id'] not in self.rows:
+                self.rows[document['_id']] = copy.deepcopy(document);inserted += 1
+        return SimpleNamespace(upserted_count=inserted)
     def update_one(self, query, update, upsert=False):
         assert upsert is False
         old=self.rows.get(query['_id']);matched=old is not None and old['version']==query['version']
@@ -62,6 +73,31 @@ class GatewayTests(unittest.TestCase):
                        'trials':{'sg_r1_20260928_32723':{'group':'primary','gameId':32723,'runtimeGameId':33123,'target':299900}}}
         self.g=Gateway(self.db,'primary',self.manifest,sample=lambda:{'rawCounters':True})
     def call(self,op,**kw):return self.g.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+    def test_rolling_batch_is_capability_gated_insert_only_and_group_scoped(self):
+        rows=[{'key':'rolling-stage:'+'a'*64+':'+str(i).zfill(10),'value':{'private':i}} for i in (1,2)]
+        with self.assertRaisesRegex(Refused,'ROLLING_BATCH_DISABLED'):self.call('rolling_journal_insert',records=rows)
+        self.manifest['rollingJournalBatchEnabled']=True
+        native=SimpleNamespace(UpdateOne=lambda q,u,upsert:SimpleNamespace(_filter=q,_doc=u,_upsert=upsert))
+        with patch.dict(sys.modules,{'pymongo':native}):
+            self.assertEqual(self.call('rolling_journal_insert',records=rows),{'inserted':2})
+            changed=copy.deepcopy(rows);changed[0]['value']={'private':'different'}
+            self.assertEqual(self.call('rolling_journal_insert',records=changed),{'inserted':0})
+        self.assertEqual(self.call('read_many',collection='journal',keys=[r['key'] for r in rows]),
+                         [{'_id':'primary/'+r['key'],'version':0,'value':r['value']} for r in rows])
+        other=Gateway(self.db,'secondary',self.manifest)
+        self.assertEqual(other.dispatch({'schema':'sg-mongo-only-v2','op':'read_many',
+                         'collection':'journal','keys':[r['key'] for r in rows]}),[])
+        self.assertTrue(self.call('hello')['rollingJournalBatchEnabled'])
+    def test_rolling_batch_rejects_bad_keys_injection_duplicates_and_bounds_before_writing(self):
+        self.manifest['rollingJournalBatchEnabled']=True
+        row={'key':'rolling-stage:'+'a'*64+':0000000001','value':{'a':1}}
+        requests=[{}, {'records':[]},{'records':[row]*2},{'records':[row]*101},
+                  {'records':[{'key':'pool:x','value':{}}]}, {'records':[{'key':row['key'],'value':[]}]},
+                  {'records':[row],'collection':'official_rounds'}, {'records':[row],'query':{}},
+                  {'records':[{**row,'version':0}]}]
+        for request in requests:
+            with self.assertRaises(Refused):self.call('rolling_journal_insert',**request)
+            self.assertEqual(self.db['capture_journal_v2'].rows,{})
     def test_delta_cas_requires_separate_capability_and_preserves_full_document(self):
         key='pool:sg_r1_20260928_32723'
         old={'history':[{'old':1}],'workers':{'0':{'lease':1,'active':{'id':2}},'1':{'lease':9}},'removed':True}

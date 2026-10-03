@@ -20,8 +20,9 @@ class OfflinePreflightTests(unittest.TestCase):
     def test_inventory_retains_all_existing_checks_without_source_tools(self):
         inventory=tasks();self.assertEqual(len(inventory),3)
         commands=[argv for _,entries in inventory for _,argv in entries]
-        self.assertEqual(len(commands),13)
+        self.assertEqual(len(commands),14)
         self.assertTrue(any('pool-e2e-fixture.mjs' in ' '.join(c) for c in commands))
+        self.assertIn(['node','scripts/build-ag-rolling-core.mjs','--check'],commands)
         self.assertFalse(any('gh' in c or 'ssh' in c for c in commands))
     def test_comparison_requires_both_pairs_and_identical_complete_checks(self):
         runs=[{'workers':w,'elapsedSeconds':seconds,'passed':True,'groups':[

@@ -53,6 +53,7 @@ def tasks(root=ROOT):
       ('collector-protocol',[(root/'collector',['npm','run','typecheck']),(root/'collector',['npm','test']),
                              (root,node('scripts/trial/*.test.mjs'))]),
       ('runner-persistence',[(root,node('scripts/runner-v2/*.test.mjs')),
+                             (root,['node','scripts/build-ag-rolling-core.mjs','--check']),
                              (root,['node','scripts/trial/pool-e2e-fixture.mjs'])])]
 
 def run_group(task,deadline=300):

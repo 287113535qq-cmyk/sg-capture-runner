@@ -1,0 +1,54 @@
+{
+  "schema": "ag-source-snapshot-v1",
+  "source": "E:/platform-sync/api_new/api.numeric/capture/capture-ag",
+  "files": [
+    {
+      "sha256": "9c1ac5e9baf11240220d71c9bc3f60f0758e67dff9d5ec0c458f9456701c4527",
+      "path": "scripts/rolling-worker.ts"
+    },
+    {
+      "sha256": "4fee7d84bb9f9c6507857f31a80b4be8022b474e25355647a66eba1a3bcd7f9a",
+      "path": "scripts/rolling-contract.ts"
+    },
+    {
+      "sha256": "6e6f9c472b3d69aff4a2f0e7fb507f5957037e3dbf82c66fc56021c08df19897",
+      "path": "scripts/rolling-controller-lib.ts"
+    },
+    {
+      "sha256": "3e7b0fb7f1c110f5bb60539ee22d89c6058a964aad65c7fe7d4126f6459de033",
+      "path": "scripts/rolling-controller.ts"
+    },
+    {
+      "sha256": "e35a4fb33b40d9bb863cd89736e5b6a1b7ab78335d0196f03c3ca129bd47b82c",
+      "path": "scripts/campaign.ts"
+    },
+    {
+      "sha256": "835c0b1ef6910b0d68a2939cee2ad6af6676cdcc4facf0da7d33609592e2f33c",
+      "path": "scripts/game-target.ts"
+    },
+    {
+      "sha256": "938f13548708e6fec52d97e0573bec47e54f80da307cb6f3cf9db33ff1987371",
+      "path": "src/ag.version.ts"
+    },
+    {
+      "sha256": "7b12afe9bc0466d40977a6260090c03fef45397a9ef0db77b96ecb37bf0dea30",
+      "path": "test/rolling-worker.test.ts"
+    },
+    {
+      "sha256": "4aee6ca895cbf6d84551dfca007ce695f2b2cfc6cd17a3694dda9bec4966a61a",
+      "path": "test/rolling-controller.test.ts"
+    },
+    {
+      "sha256": "0ec145476d3ed354a524b3323302d23783f14779252f6a45305a163d4dafa643",
+      "path": ".github/workflows/capture-ag-rolling.yml"
+    },
+    {
+      "sha256": "c0db014d6da6a06f8b813f5ef0d2c66be8d4a8728514921fa3debfa2dc1d848c",
+      "path": "src/ag.scheduler.ts"
+    },
+    {
+      "sha256": "97bdd5211a084bb4c4aad69f94159f643acc53b7ac73d6563e3a78483aeb6ea6",
+      "path": "src/ag.plan.ts"
+    }
+  ]
+}

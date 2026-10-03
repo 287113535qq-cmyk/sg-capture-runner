@@ -68,7 +68,8 @@ class Gateway:
         if op == 'hello':
             return {'group': self.group, 'database': DATABASE, 'schema': 'sg-mongo-only-v2',
                     'captureLogicOnServer': False, 'legacyRuntimeEnabled': False,
-                    'stateDeltaEnabled': self.manifest.get('stateDeltaEnabled') is True}
+                    'stateDeltaEnabled': self.manifest.get('stateDeltaEnabled') is True,
+                    'rollingJournalBatchEnabled': self.manifest.get('rollingJournalBatchEnabled') is True}
         if op == 'global_holds':
             # Fixed, read-only cross-group safety records. Their contents and
             # all decisions are calculated by GitHub, not by this transport.
@@ -241,6 +242,30 @@ class Gateway:
             result = self.db['capture_state_v2'].update_one(
                 {'_id':self.group+'/'+key,'version':expected},update,upsert=False)
             return {'replaced':result.matched_count == 1,'version':expected+1}
+        if op == 'rolling_journal_insert':
+            # Native insert-only I/O for SG's storage adapter. AG task/lease,
+            # quota, source eligibility and readback decisions stay on GitHub.
+            need(set(r) == {'schema', 'op', 'records'}, 'ROLLING_BATCH_REQUEST_SCOPE')
+            need(self.manifest.get('metadataWritesEnabled') is True
+                 and self.manifest.get('rollingJournalBatchEnabled') is True,
+                 'ROLLING_BATCH_DISABLED')
+            rows = r.get('records')
+            need(isinstance(rows, list) and 1 <= len(rows) <= 100, 'BAD_BATCH')
+            keys = []
+            for row in rows:
+                need(isinstance(row, dict) and set(row) == {'key', 'value'}
+                     and isinstance(row['key'], str)
+                     and re.fullmatch(r'rolling-stage:[a-f0-9]{64}:[0-9]{10}', row['key'])
+                     and isinstance(row['value'], dict), 'ROLLING_BATCH_ROW_SCOPE')
+                keys.append(row['key'])
+            need(len(set(keys)) == len(keys), 'ROLLING_BATCH_DUPLICATE')
+            from pymongo import UpdateOne
+            documents = [{'_id': self.group + '/' + row['key'], 'version': 0, 'value': row['value']}
+                         for row in rows]
+            result = self.db[COLLECTIONS['journal']].bulk_write(
+                [UpdateOne({'_id': d['_id']}, {'$setOnInsert': d}, upsert=True) for d in documents],
+                ordered=True)
+            return {'inserted': result.upserted_count}
         if op in ('read', 'create', 'cas', 'scan'):
             alias = r.get('collection')
             need(alias in COLLECTIONS, 'COLLECTION_NOT_ALLOWED')
