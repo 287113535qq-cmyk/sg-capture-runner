@@ -4,6 +4,7 @@ import path from 'node:path';
 import {buildPreparedPublication} from './prepared-publication.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {publishImmutableInbox} from './work-line-mailbox.mjs';
+import {replaceLocalJson} from './atomic-local-state.mjs';
 
 // Isolate one bad game instead of withholding every independently valid game.
 // No profiles, groups or missing gates are inferred from an incoming event.
@@ -57,10 +58,7 @@ export async function stagePreparedCycle(root, inventory) {
       {schema: 'sg-capture-prepared-publication-v1', cycleHash: id, cycle: result, sourceAllowance: 0});
     return {...pointer, changed: false};
   }
-  const temp = dest + '.' + process.pid + '.tmp', fd = fs.openSync(temp, 'wx');
-  try { fs.writeFileSync(fd, JSON.stringify(pointer) + '\n'); fs.fsyncSync(fd); }
-  finally { fs.closeSync(fd); }
-  fs.renameSync(temp, dest);
+  replaceLocalJson(dest, pointer);
   if (pointer.prepared.length) publishImmutableInbox(path.join(root, '.local/capture-handoff-worker/inbox'),
     {schema: 'sg-capture-prepared-publication-v1', cycleHash: id, cycle: result, sourceAllowance: 0});
   return {...pointer, changed: true};

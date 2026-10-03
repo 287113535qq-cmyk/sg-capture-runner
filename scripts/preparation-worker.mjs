@@ -74,6 +74,7 @@ try{
   else throw new Error('PREPARATION_FEATURE_INDEX_FAILED');
   const once=process.argv.includes('--once');let waiting=false;
   do{
+   try{
     const q=load(stateFile);
     for(const name of fs.readdirSync(path.join(dir,'inbox')).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
       const rejected=path.join(dir,name+'.rejected');if(fs.existsSync(rejected))continue;
@@ -215,6 +216,13 @@ try{
     }
     finishPreparation(q,claim,{status:'blocked',reason},Date.now());save(q);
     log({action:'blocked',gameId:claim.gameId,lane:claim.lane,reason});
+   }catch(error){
+    // Reload durable state next tick. Claims remain fenced; an unconfirmed
+    // publication never becomes a completed task or a new source permission.
+    log({action:'local-state-requires-review',code:/^[A-Z_]{1,80}$/.test(error.code??'')?error.code:'PREPARATION_LOCAL_STATE_FAILED'});
+    if(once)throw error;
+    await new Promise(resolve=>setTimeout(resolve,1000));
+   }
   }while(!stopping);
 }finally{
   fs.closeSync(lock);fs.unlinkSync(lockFile);
