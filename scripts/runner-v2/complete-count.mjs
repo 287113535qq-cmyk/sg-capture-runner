@@ -42,7 +42,13 @@ export function allocateCountBatch({pool,plan,spec,worker,now}){
  const capacity=spec.maxSequence-pool.nextSequence+1;
  if(!available||capacity<=0)return {batch:null,changed:false};
  const layout=sessionLayout(plan,spec);
- const size=Math.min(100,Math.ceil(available/(20*(layout?.lanesPerHost??1))),available,capacity);
+ // Prepared Huff ACTION captures use AG's bounded batches. Dividing the
+ // shrinking unreserved tail by twenty creates one-round allocation/settlement
+ // storms against the shared ledger. The exact count reservation still fences
+ // every worker; historical layouts retain their existing distribution.
+ const huff=plan.gameId===32714&&plan.featureProfile==='huff-action-v1'
+  &&spec.sessionRotation==='closed-batches-v1';
+ const size=Math.min(100,huff?available:Math.ceil(available/(20*(layout?.lanesPerHost??1))),available,capacity);
  const batch={id:pool.nextBatchId,worker,start:pool.nextSequence,end:pool.nextSequence+size-1};
  pool.countAllocation.batches[batch.id]={...batch,sessionHash:w.sessionHash,closed:false,complete:0,evidenceHash:null};
  pool.countAllocation.reserved+=size;pool.nextBatchId++;pool.nextSequence=batch.end+1;

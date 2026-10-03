@@ -19,10 +19,14 @@ assert(/^count-close-prepared-evidence-[0-9]{8}-[a-z0-9-]+\.json$/.test(name??''
 const profile=readFile('config/'+name),source=readFile('config/'+profile.sourceProfile);
 const authorization=preparedCountAuthorization(profile.sourceProfile),plans=readFile('config/round-one-plans.json');
 const plan=preparedCountPlan(plans[profile.gameId],source,authorization);
-const reconcile=reconcilesPreparedEvidence(profile);
-assert(profile.schema==='sg-count-evidence-close-profile-v1'&&profile.group==='primary'
+const contention=profile.schema==='sg-count-contention-close-profile-v1';
+const reconcile=contention?false:reconcilesPreparedEvidence(profile);
+assert((contention||profile.schema==='sg-count-evidence-close-profile-v1')&&profile.group==='primary'
  &&authorization.profileHash===profile.sourceProfileHash&&hash(source)===profile.sourceProfileHash
  &&Object.keys(profile.files??{}).length>=300,'PREPARED_EVIDENCE_SCOPE');
+if(contention)assert(plan.gameId===32714&&profile.faultCode==='STATE_CONTENTION'
+ &&profile.disposition==='known-cas-contention-settled-without-source'
+ &&profile.terminalRecords?.length===0&&profile.terminalMappings?.length===0,'CONTENTION_CONTROL_SCOPE');
 for(const [file,digest]of Object.entries(profile.files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(file)&&!file.includes('..'),'PREPARED_EVIDENCE_PATH');
  assert(createHash('sha256').update(fs.readFileSync(file,'utf8').replace(/\r\n/g,'\n')).digest('hex')===digest,'PREPARED_EVIDENCE_RUNTIME_CHANGED');

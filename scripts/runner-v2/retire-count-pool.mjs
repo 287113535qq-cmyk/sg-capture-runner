@@ -9,10 +9,11 @@ import {reviewHistoryPrefix} from './count-window-history.mjs';
 import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 import {faultCapsule} from './fault-capsule.mjs';
 import {ACTION_VERSION as HUFF_ACTION_VERSION} from '../trial/huff-action-contract.mjs';
+import {reviewClosedReadbacks,reviewFrozenSettlement} from './closed-readback-history.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
 // private snapshots in bounded pages; retain immutable closed batches verbatim.
-export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,capturedFault,now=Date.now}){
+export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,capturedFault,closedReadbackReuse,now=Date.now}){
  const started=performance.now(),cost={schema:'sg-retirement-cost-v1',verifiedRecords:0,verificationPages:0,
   verificationMs:0,fullReadbackMs:0,boundedBatchVerification:typeof parser.verifyPage==='function'};
  assert(Array.isArray(closedBatchDecorations)&&closedBatchDecorations.length<=1
@@ -20,6 +21,11 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
  assert(spec.sessionRotation==='closed-batches-v1'&&!pool.enabled&&hash(pool)===expectedPoolHash
   &&pool.planHash===hash(plan)&&Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'COUNT_RETIRE_POOL_UNSAFE');
  checkLedger(pool,plan,spec);
+ if(closedReadbackReuse){
+  assert(group==='primary'&&plan.gameId===32714&&plan.featureProfile===HUFF_ACTION_VERSION
+   &&!historyPermit&&!capturedFault&&!beforeOnlyRecovery&&!closedBatchDecorations.length,'CLOSED_READBACK_REUSE_SCOPE');
+  assert(hash(await reviewClosedReadbacks({store,plan,pool,spec,now}))===hash(closedReadbackReuse),'CLOSED_READBACK_REUSE_CHANGED');
+ }
  if(capturedFault){
   const b=(await store.get('state',`batch:${plan.trialId}:${capturedFault.batchId}`))?.value;
   assert(group==='primary'&&plan.gameId===32714&&b?.pending?.raw?.requestFlowVersion===HUFF_ACTION_VERSION
@@ -40,8 +46,9 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
    await reviewPreparedBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
   }else await reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
  }else{assert(!beforeOnlyRecovery,'BEFORE_ONLY_MARKER_MISSING');await save(prefix+':before',{schema:'sg-retired-count-before-v1',plan,pool,owner,at:now()});}
- let complete=history?.complete??0,abandoned=0;const digest=createHash('sha256'),settlements=[];
+ let complete=closedReadbackReuse?.complete??history?.complete??0,abandoned=0;const digest=createHash('sha256'),settlements=[];
  if(history){digest.update('preserved-history:'+hash(history)+'\n');await save(prefix+':history',history);}
+ if(closedReadbackReuse){digest.update('preserved-closed-readbacks:'+hash(closedReadbackReuse)+'\n');await save(prefix+':closed-readbacks',closedReadbackReuse);}
  for(let start=history?history.batchCount+1:1;start<pool.nextBatchId;start+=100){
   await boundary();
   assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===expectedPoolHash,'COUNT_RETIRE_POOL_CHANGED');
@@ -55,6 +62,11 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
     &&Number.isSafeInteger(b.checkpoint)&&Number.isSafeInteger(b.journaled)
     &&b.start-1<=b.checkpoint&&b.checkpoint<=b.journaled&&b.journaled<=b.end,'COUNT_RETIRE_BATCH_UNSAFE');
    const count=b.journaled-b.start+1;
+   if(closedReadbackReuse&&item.closed){
+    assert(count===item.complete,'CLOSED_READBACK_COUNT');
+    await auditCountBatch({store,pool,plan,spec,record:{batchId:b.id},cache:new Map([[keys[i],b]])});
+    page.push({batchId:b.id,beforeHash:hash(b),complete:item.complete,evidenceHash:item.evidenceHash,readbackReused:true});continue;
+   }
    const receiptKeys=Array.from({length:count},(_,n)=>receiptKey(plan.trialId,b.start+n));
    const records=receiptKeys.length?(await store.getMany('journal',receiptKeys)).map(r=>r?.value):[];
    assert(records.every(Boolean),'COUNT_RETIRE_RECEIPT_MISSING');
@@ -87,6 +99,14 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
     const beforeKey=prefix+`:batch:${b.id}`;
     await save(beforeKey,{schema:'sg-retired-count-batch-v1',batch:b,recordsHash:hash(records),sourceRequests:0,
      disposition:b.pending?.awaiting||b.bootstrapAwaiting?'unknown-abandoned-without-replay':'interrupted-abandoned-without-replay'});
+    const priorKey=`count-settlement:${plan.trialId}:${spec.activation}:${b.id}`;
+    const prior=(await store.get('journal',priorKey))?.value;
+    if(prior){
+     const evidence=reviewFrozenSettlement({receipt:prior,batch:b,item,plan,spec});
+     // An acknowledged immutable freeze precedes the failed ledger CAS. Keep
+     // its owner/epoch verbatim; rewriting it would conflict with that receipt.
+     settlements.push({batch:{id:b.id,worker:b.worker,start:b.start,end:b.end},evidence,key:priorKey});
+    }else{
     await boundary();await store.update('state',key,v=>{
      assert(hash(v)===hash(b),'COUNT_RETIRE_BATCH_CHANGED');return {...v,owner,epoch:b.epoch+1,leaseUntil:0};
     });
@@ -121,6 +141,7 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
      sourceRequests:0,newBetAllowance:0});
     settlements.push({batch:{id:b.id,worker:b.worker,start:b.start,end:b.end},evidence,key:settlementKey});
     abandoned+=Number(!!(b.pending||b.pendingOriginal||b.bootstrapAwaiting));
+    }
    }
    if(records.length){const readStarted=performance.now(),actual=await transport.request('rounds_read',{trialId:plan.trialId,ids:records.map(r=>r._id)});
     assert(hash(actual.map(hash).sort())===hash(records.map(hash).sort()),'MONGO_CONTENT_CONFLICT');cost.fullReadbackMs+=performance.now()-readStarted;}
@@ -139,6 +160,7 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
  const result={schema:'sg-retired-count-result-v1',trialId:plan.trialId,completePreserved:complete,abandonedAttempts:abandoned,
   recordsHash:digest.digest('hex'),sourceRequests:0,newBetAllowance:0,beforeHash:hash({plan,pool}),at:now(),
   ...(history?{historyReuse:history,currentRecordsRead:complete-history.complete}: {})};
+ if(closedReadbackReuse)Object.assign(result,{closedReadbackReuse,currentRecordsRead:complete-closedReadbackReuse.complete});
  await save(prefix+':complete',result);
  console.log(JSON.stringify({...cost,elapsedMs:performance.now()-started,sourceRequests:0,observationOnly:true}));
  return result;

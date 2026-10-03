@@ -10,11 +10,18 @@ import {reviewFifteenSequence} from '../trial/pyramids-fifteen-review.mjs';
 import {pyramidsHoldReview} from '../trial/pyramids-hold-review.mjs';
 import {DurableQueue,receiptKey} from './durable-queue.mjs';
 import {ACTION_VERSION as HUFF_ACTION_VERSION} from '../trial/huff-action-contract.mjs';
+import {reviewClosedReadbacks,reviewFrozenSettlement} from './closed-readback-history.mjs';
 
 // Reviewed, ended shared stop only. No SG transport or new count permission.
 // Close the faulty game first; the peer hold continues to protect both groups.
 export async function closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,terminalRecords=[],now=Date.now}){
  const group=profile?.group,root=group==='secondary';
+ const contention=profile?.schema==='sg-count-contention-close-profile-v1';
+ if(contention)assert(group==='primary'&&plan.gameId===32714&&plan.trialId==='sg_r1_20260928_32714'
+  &&plan.featureProfile===HUFF_ACTION_VERSION&&profile.faultCode==='STATE_CONTENTION'
+  &&profile.disposition==='known-cas-contention-settled-without-source'
+  &&profile.abandonedAttempts===0&&profile.closedReadbackReuse?.schema==='sg-closed-readback-history-v1'
+  &&/^[a-f0-9]{64}$/.test(profile.sourceProfileHash??''),'CONTENTION_CLOSE_SCOPE');
  const evidence=profile?.schema==='sg-count-evidence-close-profile-v1',faulty=root||evidence;
  const reconcile=evidence&&profile.disposition==='received-terminal-reconciled-without-source';
  assert(Array.isArray(terminalRecords)&&terminalRecords.length<=100
@@ -39,7 +46,7 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&profile.sourceCommit==='a66e2c7ac642c87ecedbbe9ddde5194bcae4de36'
   &&profile.sourceProfileHash==='f32e340466c2c02d725b93e87a92a493f013157275f6ea7ff699d47712ee8892'
   &&profile.completePreserved===5024&&profile.abandonedAttempts===1,'COUNTER_CLOSE_FIXED_SCOPE');
- assert(['primary','secondary'].includes(group)&&(evidence||counter||adapter||retrigger||profile.schema==='sg-count-shared-close-profile-v1')
+ assert(['primary','secondary'].includes(group)&&(contention||evidence||counter||adapter||retrigger||profile.schema==='sg-count-shared-close-profile-v1')
   &&profile.gameId===plan.gameId&&profile.trialId===plan.trialId&&profile.planHash===hash(plan)
   &&profile.sourceAllowance===0&&profile.createdAt<=now()&&now()<profile.expiresAt
   &&profile.expiresAt-profile.createdAt<=7200000&&/^[a-f0-9]{40}$/.test(commit)&&/^\d+:1$/.test(run),'SHARED_CLOSE_PROFILE');
@@ -58,15 +65,25 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&(counter?pool&&!pool.enabled&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true:pool?.enabled&&!pool.failure)
   &&hash(pool)===profile.poolHash,'SHARED_CLOSE_SCENE');
  assert(hash(hold)===profile.holdHash&&hold.active&&hold.reason==='SOURCE_OR_STORAGE_REQUIRES_REVIEW'
-  &&hold.details?.code===(evidence?profile.faultCode:adapter?'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY':counter||retrigger?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
+  &&hold.details?.code===(contention?'STATE_CONTENTION':evidence?profile.faultCode:adapter?'PYRAMIDS_SUPER_HOLD_PREFIX_ONLY':counter||retrigger?'PYRAMIDS_FREE_COUNTERS':root?'PYRAMIDS_FREE_COIN':'GLOBAL_SOURCE_STOPPED')
+  &&(!contention||hold.details.category==='storage'&&hold.details.cooldownUntil===0)
   &&(!(evidence||counter||adapter||retrigger)||hold.details.category==='source_protocol'&&hold.details.cooldownUntil===0),'SHARED_CLOSE_HOLD');
  const spec=await loadCountPermission({store,plan,pool,commit:profile.sourceCommit}),batches=await readPoolBatches(store,plan,pool);
  const permit=(await store.get('journal',`count-run:${plan.trialId}:${profile.sourceRun}`))?.value;
- assert(!(evidence||counter||adapter||retrigger)||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
+ assert(!(contention||evidence||counter||adapter||retrigger)||spec.profileHash===profile.sourceProfileHash,'COUNTER_CLOSE_SOURCE_PROFILE');
  assert(permit?.schema==='sg-count-run-v1'&&permit.commit===profile.sourceCommit&&permit.run===profile.sourceRun
   &&permit.activation===spec.activation&&permit.profileHash===spec.profileHash&&hash(permit)===profile.permitHash,'SHARED_CLOSE_PERMISSION');
  assert(hash(batches)===profile.batchesHash&&Object.values(pool.workers).every(w=>w.leaseUntil<=now())
   &&batches.every(b=>b.leaseUntil<=now()&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.pending?.awaiting),'SHARED_CLOSE_BATCHES');
+ if(contention){
+  assert(hold.details.trialId===plan.trialId&&batches.every(b=>!b.pending&&!b.pendingOriginal&&!b.bootstrapAwaiting),'CONTENTION_CLOSE_NO_PENDING');
+  const fault=batches.find(b=>b.id===hold.details.batchId),item=pool.countAllocation.batches[fault?.id];
+  assert(fault&&item&&!item.closed,'CONTENTION_CLOSE_BATCH');
+  const key=`count-settlement:${plan.trialId}:${spec.activation}:${fault.id}`;
+  reviewFrozenSettlement({receipt:(await store.get('journal',key))?.value,batch:fault,item,plan,spec});
+  assert(hash(await reviewClosedReadbacks({store,plan,pool,spec,now}))===hash(profile.closedReadbackReuse),
+   'CONTENTION_CLOSE_READBACK_CHANGED');
+ }
  const complete=batches.reduce((n,b)=>n+b.journaled-b.start+1,0)+terminalRecords.length,
   abandoned=reconcile?0:batches.filter(b=>b.pending).length;
  assert(complete===profile.completePreserved&&abandoned===profile.abandonedAttempts
@@ -137,7 +154,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   });
  }
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
-  expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],
+ expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],
+  closedReadbackReuse:contention?profile.closedReadbackReuse:undefined,
   capturedFault:evidence&&!reconcile&&group==='primary'&&plan.gameId===32714
    &&batches.find(b=>b.id===hold.details.batchId)?.pending?.raw?.requestFlowVersion===HUFF_ACTION_VERSION
    ?{batchId:hold.details.batchId,pendingHash:profile.faultPendingHash,code:profile.faultCode}:undefined,
@@ -153,6 +171,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   retirement:after.retiredCount,retirementHash:hash(retired),recordsHash:retired.recordsHash,repairKey,
   sourceRequests:0,newBetAllowance:0,requiresNewSession:true,group,commit,run,at:now()};
  if(reconcile)result.receivedTerminalsReconciled=terminalRecords.length;
+ if(contention)Object.assign(result,{disposition:profile.disposition,faultCode:'STATE_CONTENTION',
+  closedReadbackReuse:retired.closedReadbackReuse,currentRecordsRead:retired.currentRecordsRead});
  if(evidence&&!reconcile)Object.assign(result,{disposition:profile.disposition,faultCode:profile.faultCode,
   faultPendingHash:profile.faultPendingHash});
  await save(key+':settled',result);await guarded();
