@@ -90,7 +90,7 @@ test('automatic prepared closure can return through the same independent repair 
  assert.equal(f.docs.get('state/campaign').games[0].status,'ready');
 });
 
-for(const bad of [null,'permit','lease','pending','ack'])test('prepared count finalizer '+(bad??'closes settled ranges')+' without source or quota',async()=>{
+for(const bad of [null,'permit','lease','pending','ack','before-only','changed-before'])test('prepared count finalizer '+(bad??'closes settled ranges')+' without source or quota',async()=>{
  const f=await fixture();await activatePreparedCount(f.args);
  f.args.store.writable=async()=>{};
  const pool=f.docs.get('state/pool:'+f.base.trialId),campaign=f.docs.get('state/campaign');
@@ -110,8 +110,12 @@ for(const bad of [null,'permit','lease','pending','ack'])test('prepared count fi
  if(bad==='lease')pool.workers={0:{leaseUntil:f.args.now()+1}};
  if(bad==='pending')f.docs.get('state/batch:'+plan.trialId+':1').pending={awaiting:'FREE_GAME'};
  if(bad==='ack')args.retire=async()=>{retired++;throw Error('WRITE_ACK_UNKNOWN');};
+ if(bad==='before-only'||bad==='changed-before')f.docs.set('journal/count-prepared-close:'+plan.trialId+':9:1:before',{
+  schema:'sg-count-prepared-before-v1',pool:structuredClone(pool),campaign:structuredClone(campaign),
+  permitHash:hash(f.docs.get('journal/count-run:'+plan.trialId+':9:1')),commit:f.args.commit,run:'9:1',sourceRequests:0});
+ if(bad==='changed-before')f.docs.get('journal/count-prepared-close:'+plan.trialId+':9:1:before').permitHash='0'.repeat(64);
  const before=f.writes.length;
- if(bad){await assert.rejects(closePreparedCountParking(args),bad==='ack'?/WRITE_ACK_UNKNOWN/:bad==='permit'?/SOURCE_PERMISSION/:bad==='lease'?/NOT_IDLE/:/UNCONFIRMED/);
+ if(bad&&bad!=='before-only'){await assert.rejects(closePreparedCountParking(args),bad==='ack'?/WRITE_ACK_UNKNOWN/:bad==='permit'?/SOURCE_PERMISSION/:bad==='lease'?/NOT_IDLE/:bad==='changed-before'?/BEFORE_CHANGED/:/UNCONFIRMED/);
   if(bad!=='ack'){assert.equal(retired,0);assert.equal(f.writes.length,before);}
   assert.equal(campaign.activeGame,f.base.gameId);
  }else{

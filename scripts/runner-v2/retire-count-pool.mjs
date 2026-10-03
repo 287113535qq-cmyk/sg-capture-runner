@@ -4,7 +4,7 @@ import {DurableQueue,WritePermits,receiptKey} from './durable-queue.mjs';
 import {MongoWriter} from './mongo-writer.mjs';
 import {checkLedger,settleCountBatch,auditCountBatch} from './complete-count.mjs';
 import {reviewClosedBatchDecoration} from './closed-batch-decoration.mjs';
-import {reviewBeforeOnlyRetirement} from './before-only-retirement.mjs';
+import {reviewBeforeOnlyRetirement,reviewPreparedBeforeOnlyRetirement} from './before-only-retirement.mjs';
 import {reviewHistoryPrefix} from './count-window-history.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
@@ -24,8 +24,11 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
   await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'COUNT_RETIRE_READBACK');
  };
  const before=(await store.get('journal',prefix+':before'))?.value;
- if(before){assert(group==='secondary'&&beforeOnlyRecovery,'COUNT_RETIRE_ALREADY_STARTED');
-  await reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
+ if(before){assert(beforeOnlyRecovery,'COUNT_RETIRE_ALREADY_STARTED');
+  if(group==='primary'){
+   assert(beforeOnlyRecovery.run===owner,'PREPARED_BEFORE_ONLY_OWNER');
+   await reviewPreparedBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
+  }else await reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,proof:beforeOnlyRecovery});
  }else{assert(!beforeOnlyRecovery,'BEFORE_ONLY_MARKER_MISSING');await save(prefix+':before',{schema:'sg-retired-count-before-v1',plan,pool,owner,at:now()});}
  let complete=history?.complete??0,abandoned=0;const digest=createHash('sha256'),settlements=[];
  if(history){digest.update('preserved-history:'+hash(history)+'\n');await save(prefix+':history',history);}

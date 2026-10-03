@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {protocolHash as hash} from './protocol-resume.mjs';
-import {reviewBeforeOnlyRetirement} from './before-only-retirement.mjs';
+import {reviewBeforeOnlyRetirement,reviewPreparedBeforeOnlyRetirement} from './before-only-retirement.mjs';
 function fixture(){
  const plan={gameId:32721,trialId:'sg_r1_20260928_32721',countAllocation:'a'.repeat(64)};
  const pool={nextBatchId:3,countAllocation:{batches:{1:{closed:true},2:{closed:false}}}},prefix='retired-count:'+plan.trialId+':fixed';
@@ -11,6 +11,37 @@ function fixture(){
 }
 test('only an unchanged before marker may be reused, without overwriting it',async()=>{
  const f=fixture(),old=hash(f.args.before);assert.equal(await reviewBeforeOnlyRetirement(f.args),true);assert.equal(hash(f.args.before),old);
+});
+
+function preparedFixture(){
+ const f=fixture();f.args.plan={...f.args.plan,gameId:32714,trialId:'sg_r1_20260928_32714'};
+ f.args.prefix=`retired-count:${f.args.plan.trialId}:${hash(f.args.pool).slice(0,16)}`;
+ f.args.before={...f.args.before,plan:f.args.plan};
+ f.args.proof={schema:'sg-prepared-before-only-v1',run:f.args.before.owner,commit:'a'.repeat(40),
+  key:f.args.prefix+':before',hash:hash(f.args.before)};
+ return f;
+}
+test('prepared before-only recovery repeats the full audit with no partial mutation',async()=>{
+ const f=preparedFixture();assert.equal(await reviewPreparedBeforeOnlyRetirement(f.args),true);
+});
+test('prepared before-only recovery refuses every partial retirement stage',async()=>{
+ for(const suffix of [':batch:1',':page:1',':closed-decoration:1',':complete',':history']){
+  const f=preparedFixture();f.journals.set(f.args.prefix+suffix,{value:{}});
+  await assert.rejects(reviewPreparedBeforeOnlyRetirement(f.args),/PARTIAL_STAGE/);
+ }
+ const f=preparedFixture();f.journals.set(`count-settlement:${f.args.plan.trialId}:${f.args.plan.countAllocation}:2`,{value:{}});
+ await assert.rejects(reviewPreparedBeforeOnlyRetirement(f.args),/PARTIAL_STAGE/);
+});
+test('prepared before-only recovery refuses changed marker pool plan owner and permission type',async()=>{
+ for(const reason of ['hash','pool','plan','owner','schema']){
+  const f=preparedFixture();
+  if(reason==='hash')f.args.proof.hash='b'.repeat(64);
+  if(reason==='pool')f.args.pool={...f.args.pool,nextBatchId:4};
+  if(reason==='plan')f.args.plan={...f.args.plan,gameId:32795};
+  if(reason==='owner')f.args.before={...f.args.before,owner:'999:1'};
+  if(reason==='schema')f.args.proof.schema='sg-retirement-before-only-v1';
+  await assert.rejects(reviewPreparedBeforeOnlyRetirement(f.args),/SCOPE/);
+ }
 });
 test('any partial batch page settlement or completed stage refuses',async()=>{
  for(const suffix of [':batch:2',':page:1',':closed-decoration:1',':complete']){const f=fixture();f.journals.set(f.args.prefix+suffix,{value:{}});await assert.rejects(reviewBeforeOnlyRetirement(f.args),/HAS_PARTIAL_STAGE/);}

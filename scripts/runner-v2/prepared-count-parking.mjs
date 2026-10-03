@@ -31,7 +31,10 @@ export async function closePreparedCountParking({store,transport,gate,parser,con
   &&pool.enabled===false&&pool.failure==='PROTOCOL_VALIDATION_FAILED'&&pool.drainingProtocol===true
   &&Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'PREPARED_PARK_NOT_IDLE');
  const prefix=`count-prepared-close:${plan.trialId}:${run}`;
- assert(!await store.get('journal',prefix+':before'),'PREPARED_PARK_ALREADY_STARTED');
+ const savedBefore=(await store.get('journal',prefix+':before'))?.value;
+ const expectedBefore={schema:'sg-count-prepared-before-v1',pool,campaign,permitHash:hash(permit),commit,run,sourceRequests:0};
+ assert(!await store.get('journal',prefix+':complete'),'PREPARED_PARK_ALREADY_STARTED');
+ if(savedBefore)assert(hash(savedBefore)===hash(expectedBefore),'PREPARED_PARK_BEFORE_CHANGED');
  // Check all ranges before the first mutation; never truncate to 100 batches.
  for(let first=1;first<pool.nextBatchId;first+=100){
   const keys=Array.from({length:Math.min(100,pool.nextBatchId-first)},(_,i)=>`batch:${plan.trialId}:${first+i}`);
@@ -50,8 +53,11 @@ export async function closePreparedCountParking({store,transport,gate,parser,con
  };
  await boundary();
  assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool),'PREPARED_PARK_POOL_CHANGED');
- await save(prefix+':before',{schema:'sg-count-prepared-before-v1',pool,campaign,permitHash:hash(permit),commit,run,sourceRequests:0});
- const retired=await retire({store,transport,gate,parser,plan,boundary,owner:run,expectedPoolHash:hash(pool),commit,group,now});
+ if(!savedBefore)await save(prefix+':before',expectedBefore);
+ const retirementKey=`retired-count:${plan.trialId}:${hash(pool).slice(0,16)}:before`;
+ const nativeBefore=(await store.get('journal',retirementKey))?.value;
+ const beforeOnlyRecovery=nativeBefore?{schema:'sg-prepared-before-only-v1',run,commit,key:retirementKey,hash:hash(nativeBefore)}:undefined;
+ const retired=await retire({store,transport,gate,parser,plan,boundary,owner:run,expectedPoolHash:hash(pool),commit,group,now,beforeOnlyRecovery});
  const after=(await store.get('state','pool:'+plan.trialId))?.value;
  assert(retired.schema==='sg-retired-count-result-v1'&&retired.completePreserved===after.confirmed
   &&retired.sourceRequests===0&&retired.newBetAllowance===0&&checkLedger(after,plan,spec).reserved===0

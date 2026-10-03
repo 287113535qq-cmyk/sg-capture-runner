@@ -20,3 +20,29 @@ export async function reviewBeforeOnlyRetirement({store,plan,pool,prefix,before,
   const rows=await store.getMany('state',keys);assert(rows.length===keys.length&&rows.every((r,i)=>r&&hash(r.value)===proof.batchHashes[start+i]),'BEFORE_ONLY_BATCH_CHANGED');}
  return true;
 }
+
+// A registered prepared finalizer may repeat the full audit only when its
+// original immutable marker precedes every mutation. No partial retirement,
+// settlement, request, or unknown write acknowledgement is resumed here.
+export async function reviewPreparedBeforeOnlyRetirement({store,plan,pool,prefix,before,proof}){
+ assert(proof?.schema==='sg-prepared-before-only-v1'&&/^\d+:1$/.test(proof.run??'')
+  &&/^[a-f0-9]{40}$/.test(proof.commit??'')&&plan.countAllocation
+  &&prefix===`retired-count:${plan.trialId}:${hash(pool).slice(0,16)}`
+  &&proof.key===prefix+':before'&&proof.hash===hash(before)
+  &&before.schema==='sg-retired-count-before-v1'&&before.owner===proof.run
+  &&hash(before.plan)===hash(plan)&&hash(before.pool)===hash(pool),'PREPARED_BEFORE_ONLY_SCOPE');
+ assert(Number.isSafeInteger(pool.nextBatchId)&&pool.nextBatchId>1&&pool.nextBatchId<=600001,
+  'PREPARED_BEFORE_ONLY_BOUND');
+ const absent=[prefix+':complete',prefix+':history'];
+ for(let i=1;i<pool.nextBatchId;i++){
+  absent.push(prefix+`:batch:${i}`,prefix+`:closed-decoration:${i}`);
+  if(i%100===1)absent.push(prefix+`:page:${i}`);
+  if(!pool.countAllocation.batches[i].closed)
+   absent.push(`count-settlement:${plan.trialId}:${plan.countAllocation}:${i}`);
+ }
+ for(let start=0;start<absent.length;start+=100){
+  const keys=absent.slice(start,start+100),rows=await store.getMany('journal',keys);
+  assert(rows.length===keys.length&&rows.every(r=>!r),'PREPARED_BEFORE_ONLY_PARTIAL_STAGE');
+ }
+ return true;
+}
