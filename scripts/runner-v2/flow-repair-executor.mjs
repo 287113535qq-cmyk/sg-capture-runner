@@ -8,6 +8,7 @@ import {analyzer} from './analyzer.mjs';
 import {offlineAnalysisEnvironment} from './offline-analysis-environment.mjs';
 import {preparationReplayEvidence} from './preparation-replay-evidence.mjs';
 import {reviewFlowRepairTask} from './flow-repair-task.mjs';
+import {protocolHash as hash} from './protocol-resume.mjs';
 
 // Each fixed offline task loads current adapters in its own bounded process.
 // A long-lived producer must not pair new file hashes with cached old modules.
@@ -26,7 +27,13 @@ const independentFields=(raw,plan,normalized)=>{
  return raw.sourceKey===VERYFRUITY_SOURCE?very(raw,plan):fields(raw,
   {buy:normalized.buy,bonus:normalized.bonus,typeMappingHash:normalized.typeMappingHash});
 };
-const parser=analyzer({python,env:offlineAnalysisEnvironment(root,replay?task.plan:task.evidence.plan)});
+// Each immutable historical plan gets its own independently authorized Python
+// environment. A later action fault must not inherit the base plan's profile.
+const parsers=new Map(),parser={call:request=>{
+ const key=hash(request.plan);
+ if(!parsers.has(key))parsers.set(key,analyzer({python,env:offlineAnalysisEnvironment(root,request.plan)}));
+ return parsers.get(key).call(request);
+},close(){for(const value of parsers.values())value.close();}};
 const runnerNext=(raw,plan)=>plan.featureProfile===HUFF_ACTION_VERSION?huffActionNext(plan,raw):raw.sourceKey===VERYFRUITY_SOURCE?veryFruityActionNext(plan,raw):nextRequest(raw);
 try{
  const result=replay?await preparationReplayEvidence({task,revisionHash,parser,runnerNext,independentFields})

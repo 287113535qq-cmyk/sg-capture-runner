@@ -1,6 +1,21 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {stable} from './mongo-writer.mjs';
+import {ACTION_VERSION as HUFF_ACTION_VERSION,ACTION_CONTRACT_HASH as HUFF_ACTION_HASH} from '../trial/huff-action-contract.mjs';
+
+export function replayFaultPlan(task,fault){
+  if(fault.raw.requestFlowVersion!==HUFF_ACTION_VERSION||task.plan.featureProfile===HUFF_ACTION_VERSION)return task.plan;
+  // A repair may contain both original base records and a later action-run
+  // fault. Keep every raw byte and verify that fault with its captured plan.
+  const link=task.captureLink,e=link?.captureEvidence,plan=e?.plan;
+  assert(task.gameId===32714&&link?.failureEvidenceHash===hash(e)&&plan?.gameId===32714
+    &&e.receipt?.planHash===hash(plan)&&e.receipt.rawHash===hash(fault.raw)
+    &&hash(e.raw)===hash(fault.raw)&&/^[a-f0-9]{64}$/.test(plan.countAllocation??'')
+    &&hash(plan)===hash({...task.plan,target:300000,countAllocation:plan.countAllocation,
+      featureProfile:HUFF_ACTION_VERSION,actionContractHash:HUFF_ACTION_HASH}),
+    'PREPARATION_REPLAY_ACTION_BINDING');
+  return plan;
+}
 
 // A bounded replay of preserved real data supplies flow, settlement and storage
 // gates. Gameplay classification is deliberately not part of this interface.
@@ -26,8 +41,10 @@ export async function preparationReplayEvidence({task, revisionHash, parser, run
     assert(fault?.raw?.fixtureOnly === false && fault.evidenceHash === hash(fault.evidence)
       && hash(fault.evidence.raw) === hash(fault.raw)
       && (!task.failureEvidenceHash || (fault.failureEvidenceHash??fault.evidenceHash) === task.failureEvidenceHash), 'PREPARATION_REPLAY_FAULT_BINDING');
-    const next = await call({op: 'next', plan: task.plan, raw: fault.raw});
-    assert.deepEqual(runnerNext(fault.raw, task.plan), next, 'PREPARATION_REPLAY_ROUTE_MISMATCH');
+    const faultPlan=replayFaultPlan(task,fault);
+    assert.deepEqual(await call({op:'plan',plan:faultPlan}),{validated:true});
+    const next = await call({op: 'next', plan: faultPlan, raw: fault.raw});
+    assert.deepEqual(runnerNext(fault.raw, faultPlan), next, 'PREPARATION_REPLAY_ROUTE_MISMATCH');
     if(next===null){
       const confirmed=task.records.filter(r=>hash(r)===fault.terminalRecordHash);
       assert(confirmed.length===1&&hash(confirmed[0].raw)===hash(fault.raw),
