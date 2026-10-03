@@ -29,3 +29,28 @@ test('fixed native repair export binds every archived batch and full readback wi
  }
  const changed=structuredClone(task);changed.faults[0].raw.steps=[];assert.throws(()=>validateNativeRepairReplay(changed));
 });
+
+function stoppedFixture(){
+ const a=fixture(),pending={...a.batch.pending,sequence:2};
+ Object.assign(a.batch,{id:1,journaled:1,end:5,pending:null,
+  abandonedDemo:`abandoned-demo:${a.plan.trialId}:1:${hash(pending)}`});
+ a.docs.set('journal/'+a.batch.abandonedDemo,{schema:'sg-abandoned-demo-v1',trialId:a.plan.trialId,
+  batchId:1,disposition:'interrupted-abandoned-without-replay',sourceRequests:0,pending,pendingOriginal:null});
+ a.docs.get('state/'+a.repairKey).evidence[0].hash=hash(a.batch);
+ return a;
+}
+test('stopped batch follows its immutable abandoned archive without restoring pending or replaying requests',async()=>{
+ const a=stoppedFixture(),before=hash(a.batch),task=await exportNativeRepairReplay(a);
+ assert.equal(task.faults.length,1);assert.equal(hash(a.batch),before);assert.equal(a.batch.pending,null);
+ assert.equal(task.faults[0].evidence.abandonedKey,a.batch.abandonedDemo);
+ assert.equal(task.faults[0].evidence.abandonedHash,hash(a.docs.get('journal/'+a.batch.abandonedDemo)));
+ validateNativeRepairReplay(task);
+ for(const change of [x=>x.docs.delete('journal/'+x.batch.abandonedDemo),
+  x=>x.docs.get('journal/'+x.batch.abandonedDemo).trialId='foreign',
+  x=>x.docs.get('journal/'+x.batch.abandonedDemo).pending.awaiting='FREE_GAME',
+  x=>x.docs.get('journal/'+x.batch.abandonedDemo).pending.raw.steps=[],
+  x=>x.docs.get('journal/'+x.batch.abandonedDemo).sourceRequests=1,
+  x=>x.docs.get('journal/'+x.batch.abandonedDemo).pending.sequence=3]){
+  const b=stoppedFixture();change(b);await assert.rejects(exportNativeRepairReplay(b));
+ }
+});

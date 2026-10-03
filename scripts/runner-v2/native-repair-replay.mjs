@@ -25,10 +25,25 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   for(const [i,row] of rows.entries()) {
     const value=row?.value,ref=repair.evidence[i];
     assert(value && hash(value.batch??value)===ref.hash,'NATIVE_REPAIR_ARCHIVE_CHANGED');
-    const pending=value.pending??value.batch?.pending;
+    const batch=value.batch??value;
+    let pending=value.pending??value.batch?.pending, abandoned;
+    if(batch.abandonedDemo) {
+      assert(!pending && Number.isSafeInteger(batch.id)
+        && batch.abandonedDemo.startsWith(`abandoned-demo:${plan.trialId}:${batch.id}:`),
+      'NATIVE_REPAIR_ABANDONED_BINDING');
+      abandoned=(await store.get('journal',batch.abandonedDemo))?.value;
+      pending=abandoned?.pending;
+      assert(abandoned?.schema==='sg-abandoned-demo-v1' && abandoned.trialId===plan.trialId
+        && abandoned.batchId===batch.id && abandoned.disposition==='interrupted-abandoned-without-replay'
+        && abandoned.sourceRequests===0 && !abandoned.pendingOriginal && pending
+        && pending.sequence===batch.journaled+1 && pending.sequence<=batch.end
+        && batch.abandonedDemo===`abandoned-demo:${plan.trialId}:${batch.id}:${hash(pending)}`,
+      'NATIVE_REPAIR_ABANDONED_BINDING');
+    }
     if(!pending)continue;
     assert(pending.awaiting===null && pending.raw?.fixtureOnly===false, 'NATIVE_REPAIR_UNKNOWN_RESPONSE');
-    const evidence={plan,raw:pending.raw,archiveKey:ref.key,archiveHash:ref.hash};
+    const evidence={plan,raw:pending.raw,archiveKey:ref.key,archiveHash:ref.hash,
+      ...(abandoned?{abandonedKey:batch.abandonedDemo,abandonedHash:hash(abandoned)}:{})};
     faults.push({raw:pending.raw,evidence,evidenceHash:hash(evidence),failureEvidenceHash});
   }
   assert(faults.length>0,'NATIVE_REPAIR_NO_FAULT_PREFIX');
