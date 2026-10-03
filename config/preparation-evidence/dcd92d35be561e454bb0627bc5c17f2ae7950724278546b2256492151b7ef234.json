@@ -1,0 +1,17 @@
+{
+  "schema": "sg-preparation-gate-v1",
+  "gate": "route",
+  "gameId": 32714,
+  "revisionHash": "dbd1542a3d4c8d099e614f71b2f39a7d0b72a817156e84fb0d025d8679911fb7",
+  "verified": true,
+  "sourceAllowance": 0,
+  "supportingHashes": [
+    "2720f450d2ed869c8b9c45ed65716490a899b82476429285d0d264875d680266",
+    "946993d51f781a29d6fd2bd4314636e6710821ce5b9dde28a14a809f023bb3af",
+    "671f665b9b39ab90c319393afc5872fadd0d1d865ad1bb17d6a5d9ac9a691418",
+    "8a197df9226e4547312208d0ba6344c149f93a9737f9ea081ea80ee48575a99f",
+    "73eb7752039667b8e311ecbaf99a7eda2efca046bf980e4cad2a298f42610a64",
+    "bb49da67f00df0727143aea8c96ab3da0cdc731f6dc7180ec997606c57a99fd9"
+  ],
+  "failureEvidenceHash": "6c7edb1b562ff93722d18ca94538ef96a4383b2339217aeb08c7206218055c10"
+}

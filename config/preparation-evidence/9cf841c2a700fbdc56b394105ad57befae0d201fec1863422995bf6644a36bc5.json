@@ -1,0 +1,12 @@
+{
+  "schema": "sg-preparation-gate-v1",
+  "gate": "settlement",
+  "gameId": 32714,
+  "revisionHash": "dbd1542a3d4c8d099e614f71b2f39a7d0b72a817156e84fb0d025d8679911fb7",
+  "verified": true,
+  "sourceAllowance": 0,
+  "supportingHashes": [
+    "503e4c02567c033ae3c432bfe7b64f562d9d95160c28eb83fef27a38a9b9ce94"
+  ],
+  "failureEvidenceHash": "6c7edb1b562ff93722d18ca94538ef96a4383b2339217aeb08c7206218055c10"
+}
