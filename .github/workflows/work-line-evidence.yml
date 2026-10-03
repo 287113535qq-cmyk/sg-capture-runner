@@ -20,6 +20,9 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '22'
+      - name: Install locked independent XML verifier dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Configure existing restricted read transport
         run: node scripts/link/setup-ssh.mjs
         env:
