@@ -9,6 +9,7 @@ import {preparationRevision} from './preparation-revision.mjs';
 import fs from 'node:fs';
 import {validatePreparedStockReview} from './prepared-stock-review.mjs';
 import {validatePreparedCountReview} from './prepared-count-review.mjs';
+import {validateCaptureFault} from './capture-fault-delivery.mjs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -51,7 +52,10 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
   }else if(task.schema==='sg-confirmed-round-analysis-task-v1'){
    assert(task.gameId===task.plan?.gameId&&task.planHash===hash(task.plan)
     &&task.recordHash===hash(task.record)&&hash(task.readback)===hash(task.record),'EVIDENCE_TASK_SCOPE');
-  }else assert(task.schema==='sg-capture-fault-export-v1'&&task.plan&&task.receipt&&task.archive&&task.publication,'EVIDENCE_TASK_SCOPE');
+  }else {
+   assert(task.schema==='sg-capture-fault-export-v1'&&task.plan&&task.receipt&&task.archive&&task.publication,'EVIDENCE_TASK_SCOPE');
+   validateCaptureFault(root,task);
+  }
  }
  const mailboxes=value.tasks.map(task=>{
   if(task.schema==='sg-prepared-count-review-task-v1')return publishImmutableInbox(

@@ -198,7 +198,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
-    "docs/rules.md": "7da0816bc6278e945df20b70ac540d7fa778ee9ae7cc5b93031c93ad313acdbc"
+    "docs/rules.md": "5650469f59a665f00e4f5067d49f7c7f644ebc9a4c78cfb5e5af6b12c2e6dab9"
   },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
@@ -207,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "43676cdf271a50802acfea986a9481f3980adf7515e97eb61c3418368eb95cb0"
+  "ruleHash": "ec1e6b866fd01ea2f7e1b45f630d2e1df6c731fd2cf10cb2b1fc215810640957"
 }

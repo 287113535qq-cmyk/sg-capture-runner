@@ -205,5 +205,32 @@
     "linuxPassed": false,
     "actualSourceDispatch": false,
     "verificationWindowAutoRelay": false
+  },
+  "preparedCountFaultDelivery": {
+    "registeredFormalPlanBinding": true,
+    "localEncryptedFanoutTests": 5,
+    "linuxAccepted": false,
+    "sourceRequests": 0,
+    "naturalFormalFaultAccepted": false
+  },
+  "actualLatestRuntime": {
+    "run": 37104108163,
+    "commit": "792d1a04256d194dfa368e3f14ce149a2a00cb3c",
+    "completePreserved": 152,
+    "remainingComplete": 299848,
+    "sourceRequests": 0
+  },
+  "actualLatestStockConsumer": {
+    "run": 37104294621,
+    "conclusion": "success",
+    "eligibleGame": 32714,
+    "sourceRequests": 0
+  },
+  "preparedCountParking": {
+    "linuxRun": 37103981028,
+    "linuxConclusion": "success",
+    "actual152InMemoryReview": true,
+    "syntheticFaultState": true,
+    "naturalFormalFaultAccepted": false
   }
 }

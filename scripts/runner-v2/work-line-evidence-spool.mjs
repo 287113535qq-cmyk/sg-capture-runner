@@ -2,11 +2,12 @@ import fs from 'node:fs';import path from 'node:path';import assert from 'node:a
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {sealWorkLineEvidence} from './work-line-sealed-evidence.mjs';
 import {captureFaultReceipt} from './capture-fault-receipt.mjs';
-import {validatePreparationProof} from './work-line-events.mjs';
+import {capturePreparationBinding} from './capture-preparation-binding.mjs';
+import {preparedCountAuthorization} from './prepared-count-authorization.mjs';
 
 // Ciphertext sidecar only. Original receipts and Mongo records remain the
 // recovery source of truth if this independent delivery channel is unavailable.
-export function evidenceSpool({dir,recipient,origin,publication}){
+export function evidenceSpool({dir,recipient,origin,publication,countBinding}){
  fs.mkdirSync(dir,{recursive:true});
  const publish=task=>{
   const value={schema:'sg-work-line-delivery-v1',origin,tasks:[task],sourceAllowance:0},id=hash(value),dest=path.join(dir,id+'.json');
@@ -27,11 +28,9 @@ export function evidenceSpool({dir,recipient,origin,publication}){
   fault(envelope){
    const {plan,batch,receipt,archive}=envelope;
    assert(hash(captureFaultReceipt({plan,batch,archiveKey:receipt.archiveKey,archive,group:receipt.group}))===hash(receipt),'EVIDENCE_FAULT_CHANGED');
-   const binding=publication?.bindings?.[String(plan.gameId)],task=publication?.inventory?.tasks?.find(t=>t.gameId===plan.gameId);
-   assert(publication?.schema==='sg-prepared-publication-v1'&&publication.sourceAllowance===0
-    &&binding?.planHash===hash(plan)&&binding.group===receipt.group&&task?.status==='prepared'
-    &&task.proofHash===binding.proofHash&&validatePreparationProof(task.proof,plan.gameId)===binding.proofHash,'EVIDENCE_ORIGINAL_PREPARATION');
-   return publish({...envelope,schema:'sg-capture-fault-export-v1',publication,sourceAllowance:0});
+   capturePreparationBinding({plan,group:receipt.group,publication,countBinding});
+   return publish({...envelope,schema:'sg-capture-fault-export-v1',publication,
+    ...(countBinding?{countBinding}:{}),sourceAllowance:0});
   }
  };
 }
@@ -43,7 +42,13 @@ export function githubEvidenceSpool(root,env=process.env){
   &&/^[0-9]+$/.test(env.GITHUB_RUN_ID)&&/^[0-9]+$/.test(env.GITHUB_RUN_ATTEMPT)
   &&/^[a-f0-9]{40}$/.test(env.GITHUB_SHA),'EVIDENCE_GITHUB_SCOPE');
  const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
+ let countBinding;
+ if(env.SG_FORMAL_COUNT_PROFILE?.startsWith('formal-prepared-count-')){
+  const name=env.SG_FORMAL_COUNT_PROFILE,authorization=preparedCountAuthorization(name,read);
+  countBinding={basePlan:read('config/round-one-plans.json')[authorization.gameId],
+   profile:read('config/'+name),authorization};
+ }
  return evidenceSpool({dir:path.join(root,'work-line-sealed'),recipient:read('config/work-line-evidence-recipient.json'),
-  publication:read('config/prepared-inventory.json'),origin:{repository:env.GITHUB_REPOSITORY,runId:env.GITHUB_RUN_ID,
+  publication:read('config/prepared-inventory.json'),countBinding,origin:{repository:env.GITHUB_REPOSITORY,runId:env.GITHUB_RUN_ID,
    attempt:env.GITHUB_RUN_ATTEMPT,commit:env.GITHUB_SHA,workflow:'.github/workflows/trial-300k.yml'}});
 }
