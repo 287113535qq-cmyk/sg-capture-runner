@@ -6,6 +6,14 @@ import {publishImmutableInbox} from './work-line-mailbox.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
 import {automaticFlowReplay} from './confirmed-flow-evidence.mjs';
 
+export function flowRepairBindingRevision(current){
+  // A task can arrive before its authenticated fault transition. Retry once
+  // after that exact binding changes, rather than caching a transient mismatch
+  // forever or retrying on every tick/proof rebuild.
+  return hash({gameId:current?.gameId??null,lane:current?.lane??null,
+    nativeRepairKey:current?.nativeRepairKey??null,failureEvidenceHash:current?.failureEvidenceHash??null});
+}
+
 // Fixed local adapters; mailbox values never choose code, commands or profiles.
 // One bounded review per tick leaves normal preparation and admission running.
 export async function reviewFlowRepairInbox(root, index, python) {
@@ -21,7 +29,8 @@ export async function reviewFlowRepairInbox(root, index, python) {
       if (!revision.handler) continue;
       preparationHash=revision.revisionHash;
       const inventory=JSON.parse(fs.readFileSync(path.join(base,'inventory.json'),'utf8'));
-      const replay=automaticFlowReplay(root,task,inventory.tasks.find(t=>t.gameId===task.gameId),preparationHash);
+      const current=inventory.tasks.find(t=>t.gameId===task.gameId);
+      const replay=automaticFlowReplay(root,task,current,preparationHash);
       if(replay)task=replay;
       // Immutable historical input is re-evaluated under changed code, rather
       // than requiring another server export of the same original bytes.
@@ -35,7 +44,8 @@ export async function reviewFlowRepairInbox(root, index, python) {
         fs.readFileSync(new URL('./preparation-replay-evidence.mjs', import.meta.url), 'utf8'),
         fs.readFileSync(new URL('./offline-analysis-environment.mjs', import.meta.url), 'utf8'),
         fs.readFileSync(new URL('./confirmed-flow-evidence.mjs', import.meta.url), 'utf8'),hash(task)]);
-      revisionHash=hash([revisionHash,fs.readFileSync(new URL('./flow-repair-executor.mjs',import.meta.url),'utf8')]);
+      revisionHash=hash([revisionHash,fs.readFileSync(new URL('./flow-repair-executor.mjs',import.meta.url),'utf8'),
+        flowRepairBindingRevision(current)]);
     } catch {continue;}
     const id = hash([name, revisionHash]), file = path.join(results, id + '.json');
     if (fs.existsSync(file) || fs.existsSync(file + '.claim')) continue;

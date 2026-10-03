@@ -1,10 +1,19 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {newInventory,claimPreparation,finishPreparation,preparationGates} from './preparation-inventory.mjs';
 import {applyWorkLineEvent,bindNativeRepairAdvance,preparedCampaignSelector,validatePreparationProof} from './work-line-events.mjs';
+import {flowRepairBindingRevision} from './flow-repair-inbox.mjs';
 const games=[{gameId:1,name:'broken'},{gameId:2,name:'next'}];
 const proof=(id,rev='a')=>({schema:'sg-reusable-preparation-v1',gameId:id,sourceAllowance:0,revisionHash:rev.repeat(64),
  gates:Object.fromEntries(preparationGates.map(g=>[g,{verified:true,evidenceHash:'b'.repeat(64)}]))});
 const prepare=(q,id,rev='a')=>{const c=claimPreparation(q,{owner:'test',now:id*10,lane:q.tasks.find(t=>t.gameId===id).lane});assert.equal(c.gameId,id);finishPreparation(q,c,{status:'prepared',proof:proof(id,rev)},id*10+1);};
+
+test('flow rejection cache follows fault binding without retrying for idle ticks or proof rebuilds',()=>{
+ const current={gameId:1,lane:'repair',nativeRepairKey:'old',failureEvidenceHash:'a'.repeat(64)};
+ const old=flowRepairBindingRevision(current);
+ assert.notEqual(flowRepairBindingRevision({...current,nativeRepairKey:'new',failureEvidenceHash:'b'.repeat(64)}),old);
+ assert.notEqual(flowRepairBindingRevision({...current,lane:'admission'}),old);
+ assert.equal(flowRepairBindingRevision({...current,status:'prepared',updatedAt:100,proof:proof(1),proofHash:'b'.repeat(64)}),old);
+});
 
 test('authenticated successor fences only the captured rebuilt previous-fault proof in both lanes',()=>{
  const event={schema:'sg-work-line-event-v1',kind:'native-repair-advanced',gameId:1,sourceAllowance:0,
