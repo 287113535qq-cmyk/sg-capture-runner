@@ -30,7 +30,7 @@ export function validatePreparedCountReview(task){
   &&task.scene?.sourceRequests===0&&task.scene.newBetAllowance===0
   &&task.scene.completePreserved===task.scene.closed?.completePreserved
   &&task.scene.recordsHash===task.scene.closed?.recordsHash
-  &&Array.isArray(task.scene.batches)&&task.scene.batches.length<=1000,
+  &&Array.isArray(task.scene.batches)&&task.scene.batches.length<=6000,
   'PREPARED_COUNT_REVIEW_CHANGED');
  for(const f of ['basePlanHash','publicationHash','sceneHash'])assert(/^[a-f0-9]{64}$/.test(task[f]??''),'PREPARED_COUNT_REVIEW_BINDING');
  if(task.repairParent){

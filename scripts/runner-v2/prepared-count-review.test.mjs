@@ -11,6 +11,18 @@ test('source-free scene delivery binds intact review and never grants a profile 
   {scene:{...scene,newBetAllowance:100}},{group:'other'}])assert.throws(()=>validatePreparedCountReview({...task,...change}));
 });
 
+test('count delivery covers the 600000-sequence allocation after more than1000 settled batches',()=>{
+ const scene={sourceRequests:0,newBetAllowance:0,completePreserved:87489,recordsHash:'a'.repeat(64),
+  closed:{completePreserved:87489,recordsHash:'a'.repeat(64)},
+  batches:Array.from({length:1006},(_,i)=>({id:i+1}))};
+ const task={schema:'sg-prepared-count-review-task-v1',gameId:32714,group:'primary',scene,sceneHash:hash(scene),
+  publicationHash:'b'.repeat(64),basePlanHash:'c'.repeat(64),reviewedAt:2000,sourceAllowance:0};
+ assert.equal(validatePreparedCountReview(task),task);
+ const tooLarge=structuredClone(task);tooLarge.scene.batches=Array.from({length:6001},(_,i)=>({id:i+1}));
+ tooLarge.sceneHash=hash(tooLarge.scene);assert.throws(()=>validatePreparedCountReview(tooLarge));
+ assert.throws(()=>validatePreparedCountReview({...task,sourceAllowance:100}));
+});
+
 test('repair delivery binds the retired source activation and closure instead of granting another quota',()=>{
  const trialId='fixture',repairParent={activation:'a'.repeat(64),specHash:'b'.repeat(64),sourceCommit:'c'.repeat(40),
   sourceRun:'3:1',closureKey:'count-prepared-close:fixture:3:1:complete'};
