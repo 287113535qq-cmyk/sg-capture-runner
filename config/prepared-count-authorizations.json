@@ -46,6 +46,15 @@
       "basePlanHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
       "activation": "44d5d6176fd103b4649e7f143b114d8eac78876eae3ce4b42230631fdac2b015",
       "profileHash": "ab3a1725aaed0213fb3e82a323a9f6d5ef2247b48a7d342632a189c810f1bfdb"
+    },
+    "formal-prepared-count-32714-ea97060b02c104c1664f25cbad33fb3698b05cde41dd8daa0ea0e7caf9345178.json": {
+      "schema": "sg-prepared-count-authorization-v1",
+      "gameId": 32714,
+      "trialId": "sg_r1_20260928_32714",
+      "group": "primary",
+      "basePlanHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+      "activation": "ea97060b02c104c1664f25cbad33fb3698b05cde41dd8daa0ea0e7caf9345178",
+      "profileHash": "5e93ea28dd9f020538842a2132e7594e8c4db98f4f32984657c66eeee5711b4f"
     }
   }
 }
