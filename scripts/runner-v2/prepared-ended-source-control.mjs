@@ -18,7 +18,7 @@ const read=authenticatedRead(process.env.GH_TOKEN),endpoint=`repos/zyzuoyang/sg-
 const ended=await read(endpoint),jobs=await read(endpoint+'/jobs?filter=all&per_page=100');
 assert(`${ended.id}:${ended.run_attempt}`===source,'PREPARED_ENDED_IDENTITY');
 const transport=connectGateway(),gate=new ResourceGate(),store=new RunnerState({transport,gate,deadline:Date.now()+15*60000});
-const parser=analyzer({env:offlineAnalysisEnvironment(process.cwd(),base)}),control=new SourceControl({store,transport,gate});
+const parser=analyzer({env:offlineAnalysisEnvironment(process.cwd(),plan)}),control=new SourceControl({store,transport,gate});
 const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const idle=maintenanceBoundary({read,store,oldProfile:load('config/demo-pilot-beaver-20260930.json'),run,
  commit:process.env.GITHUB_SHA,workflowPath:'.github/workflows/demo-maintenance.yml'});
