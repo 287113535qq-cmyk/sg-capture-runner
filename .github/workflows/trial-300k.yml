@@ -1188,12 +1188,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/formal-relay-control.mjs
       - name: Continue next game with a fresh complete matrix
-        if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure' || needs.formal-capture.result == 'success' || needs.formal-capture.result == 'failure') && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && ((inputs.role || 'capture') == 'capture' || inputs.role == 'formal-count') && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
+        # Explicit prepared formal runs consume reviewed stock independently of
+        # scheduled capture. The controller still checks the exact run permit,
+        # verification window, settled game, full proof and all shared holds.
+        if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure' || needs.formal-capture.result == 'success' || needs.formal-capture.result == 'failure') && (vars.SG_TRIAL_ENABLED == 'true' || (inputs.role == 'formal-count' && startsWith(inputs.formal_profile, 'formal-prepared-count-'))) && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && ((inputs.role || 'capture') == 'capture' || inputs.role == 'formal-count') && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/continue-campaign.mjs
       - name: Stop scheduled continuation when complete or requiring review
-        if: always() && (steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted' || steps.state.outputs.campaign_status == 'complete' || steps.state.outputs.campaign_status == 'paused')
+        if: always() && (steps.state.outputs.campaign_status == 'complete' || steps.state.outputs.campaign_status == 'paused' || ((steps.state.outputs.trial_status == 'complete' || steps.state.outputs.trial_status == 'halted') && !(inputs.role == 'formal-count' && startsWith(inputs.formal_profile, 'formal-prepared-count-'))))
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
