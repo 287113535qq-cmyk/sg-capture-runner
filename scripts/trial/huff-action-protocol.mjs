@@ -57,17 +57,23 @@ export function reviewHuffAction(plan,raw){
     const ordinary=i===0&&!f.length&&!['NFG','TFG','CFGG'].some(k=>Object.hasOwn(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
+    const selected=!!previous&&previous.f.length===1&&previous.f[0]===0&&previous.intro&&f.length===1&&f[0]>0
+      &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
     if(f.length===1&&f[0]===2){
+      // Selection can retain the completed display from the validated award
+      // intro. It is not the new Paint counter; preserve its exact provenance.
+      const carried=selected&&previous.awardedIntro&&['CFNFG','CFTFG','CFCFGG'].every(k=>
+        g[k]!==undefined&&previous.display[k]!==undefined&&uint(g[k])===uint(previous.display[k]));
+      if(carried)need(JSON.stringify(slots(g.PCFID))===JSON.stringify(priorFeatures),'DISPLAY_COUNTERS');
       for(const [display,value] of [['CFNFG',n],['CFTFG',t],['CFCFGG',c]])
-        if(g[display]!==undefined)need(uint(g[display])===value,'DISPLAY_COUNTERS');
+        if(g[display]!==undefined)need(carried||uint(g[display])===value,'DISPLAY_COUNTERS');
       for(const display of ['CFFGT','FMS'])if(g[display]!==undefined)uint(g[display]);
     }
+    let awardedIntro=false;
     if(previous){
       const same=JSON.stringify(f)===JSON.stringify(previous.f);
       if(same)need(previous.n>0&&c===previous.c+1&&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
       else {
-        const selected=previous.f.length===1&&previous.f[0]===0&&previous.intro&&f.length===1&&f[0]>0
-          &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
         // The completed frame feature can award a Money Mansion intro. Its
         // display counters finish the old feature; NFG/TFG describe the new
         // one-request intro, so they must not be compared as one progression.
@@ -82,6 +88,7 @@ export function reviewHuffAction(plan,raw){
           &&reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
             displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
         need(selected||awarded,'UNREVIEWED_TRANSITION');
+        awardedIntro=!!awarded;
       }
     }else need(c===0,'TRIGGER');
     const intro=f[0]===0&&(g.MMBG==='1'||g.MMFG==='1'&&n===1&&t===1&&c===0)&&!g.MMW;
@@ -101,7 +108,8 @@ export function reviewHuffAction(plan,raw){
       if(g.VA){const board=g.VA.split(',').map(uint);
         need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'UNREVIEWED_EXIT');}
     }
-    previous={f,n,t,c,intro};priorFeatures.unshift(...f);
+    previous={f,n,t,c,intro,awardedIntro,display:Object.fromEntries(['CFNFG','CFTFG','CFCFGG'].map(k=>[k,g[k]]))};
+    priorFeatures.unshift(...f);
   }
   return {next:next?{MSGID:next}:null,terminal:next===null};
 }

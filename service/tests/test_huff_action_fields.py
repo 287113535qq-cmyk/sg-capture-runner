@@ -8,6 +8,45 @@ from round_fields import FieldError
 
 
 class HuffActionTests(unittest.TestCase):
+    def test_real_mansion_paint_selection_has_exact_prior_display_and_history(self):
+        import re
+        evidence = json.loads((Path(__file__).resolve().parents[2] / 'scripts/trial/fixtures/huff-mansion-paint-carry-prefix.json').read_text(encoding='utf-8'))
+        raw = evidence['raw']
+        adapter = HuffActionFields(self.vector['plan'])
+        before = copy.deepcopy(raw)
+        self.assertEqual(len(raw['steps']), 10)
+        self.assertFalse(evidence['naturalTerminalObserved'])
+        for count in range(1, 11):
+            self.assertEqual(adapter.next_request({**raw, 'steps': raw['steps'][:count]}), {'MSGID': 'FREE_GAME'})
+        with self.assertRaises(FieldError):
+            adapter.settled(raw)
+        self.assertEqual(raw, before)
+        for key, value in [('CFNFG', '1'), ('CFTFG', '7'), ('CFCFGG', '7'), ('FEAT', 'PAINT'),
+                           ('PCFID', '1|' * 8), ('PCFID', '1|' * 8 + '0|'), ('MMW', '')]:
+            changed = copy.deepcopy(raw)
+            step = changed['steps'][-1]
+            step['responsePayload'] = re.sub(key + r'~[^#&]*', key + '~' + value, step['responsePayload'])
+            step['responseXml'] = '<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>' + step['responsePayload'].replace('&', '&amp;') + '</PAYLOAD></GDMRESPONSE>'
+            with self.subTest(key=key), self.assertRaises(FieldError):
+                adapter.next_request(changed)
+        changed = copy.deepcopy(raw)
+        del changed['steps'][8]
+        with self.assertRaises(FieldError):
+            adapter.next_request(changed)
+        progress = copy.deepcopy(raw)
+        progress['steps'].append(copy.deepcopy(raw['steps'][-1]))
+        step = progress['steps'][-1]
+        fields = dict(v.split('=', 1) for v in step['responsePayload'].split('&') if '=' in v)
+        fields.update(NFG='5', TFG='6', CFGG='1', GSD='FEAT~PAINT#CFNFG~5#CFTFG~6#CFCFGG~1')
+        step['responsePayload'] = '&'.join(k + '=' + v for k, v in fields.items())
+        step['responseXml'] = '<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>' + step['responsePayload'].replace('&', '&amp;') + '</PAYLOAD></GDMRESPONSE>'
+        self.assertEqual(adapter.next_request(progress), {'MSGID': 'FREE_GAME'})
+        fields['GSD'] = dict(v.split('=', 1) for v in raw['steps'][-1]['responsePayload'].split('&') if '=' in v)['GSD']
+        step['responsePayload'] = '&'.join(k + '=' + v for k, v in fields.items())
+        step['responseXml'] = '<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>' + step['responsePayload'].replace('&', '&amp;') + '</PAYLOAD></GDMRESPONSE>'
+        with self.assertRaises(FieldError):
+            adapter.next_request(progress)
+
     def test_actual_home_improvement_award_preserves_intro_in_exact_ordered_history(self):
         evidence = json.loads((Path(__file__).resolve().parents[2] / 'scripts/trial/fixtures/huff-homeimp-mansion-prefix.json').read_text(encoding='utf-8'))
         raw = evidence['raw']

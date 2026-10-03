@@ -122,20 +122,26 @@ class HuffActionFields(NativeNextgenFields):
             ordinary = index == 0 and not feature and not {'NFG', 'TFG', 'CFGG'}.intersection(p)
             n, t, c = (0, 0, 0) if ordinary else tuple(amount(p.get(k)) for k in ('NFG', 'TFG', 'CFGG'))
             need(n + c == t <= 100, 'COUNTERS')
+            selected = bool(previous and previous[0] == [0] and previous[4]
+                and len(feature) == 1 and feature[0] > 0 and g.get('FEAT') == 'MMANSION'
+                and g.get('MMW') and (n, t, c) == (6, 6, 0))
             if feature == [2]:
+                carried = bool(selected and previous[5] and all(k in g and previous[6].get(k) is not None
+                    and amount(g[k]) == amount(previous[6][k]) for k in ('CFNFG', 'CFTFG', 'CFCFGG')))
+                if carried:
+                    need(slots(g.get('PCFID')) == prior_features, 'DISPLAY_COUNTERS')
                 for display, value in (('CFNFG', n), ('CFTFG', t), ('CFCFGG', c)):
                     if display in g:
-                        need(amount(g[display]) == value, 'DISPLAY_COUNTERS')
+                        need(carried or amount(g[display]) == value, 'DISPLAY_COUNTERS')
                 for display in ('CFFGT', 'FMS'):
                     if display in g:
                         amount(g[display])
+            awarded_intro = False
             if previous:
-                pf, pn, pt, pc, intro = previous
+                pf, pn, pt, pc, intro, _, _ = previous
                 if feature == pf:
                     need(pn > 0 and c == pc + 1 and t >= pt and n == pn - 1 + t - pt, 'PROGRESS')
                 else:
-                    selected = pf == [0] and intro and len(feature) == 1 and feature[0] > 0 \
-                        and g.get('FEAT') == 'MMANSION' and g.get('MMW') and (n, t, c) == (6, 6, 0)
                     old = pf[0] if len(pf) == 1 else None
                     history = slots(g.get('PCFID'))
                     awarded = old is not None and old > 0 and feature == [0] and pn == 1 \
@@ -146,6 +152,7 @@ class HuffActionFields(NativeNextgenFields):
                         and 'FRAMEWINS' in g and review_feature_values(g['FRAMEWINS'], size=20 if old == 3 else 15,
                             display_sentinels=(-1, -2, -3, -4, -5), continuation_sentinels=(-100,))['requiresFeatureContinuation']
                     need(selected or awarded, 'UNREVIEWED_TRANSITION')
+                    awarded_intro = bool(awarded)
             else:
                 need(c == 0, 'TRIGGER')
             intro = feature[:1] == [0] and (g.get('MMBG') == '1' or g.get('MMFG') == '1'
@@ -165,7 +172,7 @@ class HuffActionFields(NativeNextgenFields):
                 if g.get('VA'):
                     board = [amount(v) for v in g['VA'].split(',')]
                     need(not (board.count(13) >= 3 and board.count(14) >= 6), 'UNREVIEWED_EXIT')
-            previous = feature, n, t, c, intro
+            previous = feature, n, t, c, intro, awarded_intro, {k: g.get(k) for k in ('CFNFG', 'CFTFG', 'CFCFGG')}
             prior_features = feature + prior_features
         return {'MSGID': following} if following else None
 

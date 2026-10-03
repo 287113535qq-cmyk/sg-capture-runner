@@ -14,6 +14,7 @@ const plan=vector.plan;
 const paint=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-paint-display-prefix.json',import.meta.url)));
 const mansion=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-hardhat-mansion-prefix.json',import.meta.url)));
 const homeimp=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-homeimp-mansion-prefix.json',import.meta.url)));
+const paintCarry=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-mansion-paint-carry-prefix.json',import.meta.url)));
 const normalize=raw=>prepareNextgenActionRound(raw,plan);
 const xml=p=>'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+p.replaceAll('&','&amp;')+'</PAYLOAD><OGS_RC>0</OGS_RC></GDMRESPONSE>';
 function response(raw,index,values){
@@ -21,6 +22,32 @@ function response(raw,index,values){
   Object.assign(p,values);for(const k of Object.keys(p))if(p[k]===undefined)delete p[k];
   s.responsePayload=Object.entries(p).map(([k,v])=>k+'='+v).join('&');s.responseXml=xml(s.responsePayload);
 }
+
+test('real awarded Mansion selects Paint with only its exact inherited display and consumed history',()=>{
+ const raw=structuredClone(paintCarry.raw),before=JSON.stringify(raw);
+ assert.equal(raw.steps.length,10);assert.equal(paintCarry.naturalTerminalObserved,false);
+ for(let count=1;count<=raw.steps.length;count++){
+  const prefix={...raw,steps:raw.steps.slice(0,count)};
+  assert.deepEqual(huffActionNext(plan,prefix),{MSGID:'FREE_GAME'});
+  assert.deepEqual(collectorNext(prefix,plan),{MSGID:'FREE_GAME'});
+ }
+ assert.throws(()=>normalize(raw),/INCOMPLETE/);assert.equal(JSON.stringify(raw),before);
+ for(const [key,value]of [['CFNFG','1'],['CFTFG','7'],['CFCFGG','7'],['FEAT','PAINT'],
+  ['PCFID','1|1|1|1|1|1|1|1|'],['PCFID','1|1|1|1|1|1|1|1|0|'],['MMW','']]){
+  const changed=structuredClone(raw),g=changed.steps[9].responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1];
+  response(changed,9,{GSD:g.replace(new RegExp(key+'~[^#]*'),key+'~'+value)});
+  assert.throws(()=>huffActionNext(plan,changed));assert.throws(()=>collectorNext(changed,plan));
+ }
+ const progress=structuredClone(raw);progress.steps.push(structuredClone(progress.steps[9]));
+ response(progress,10,{NFG:'5',TFG:'6',CFGG:'1',GSD:'FEAT~PAINT#CFNFG~5#CFTFG~6#CFCFGG~1'});
+ assert.deepEqual(huffActionNext(plan,progress),{MSGID:'FREE_GAME'});
+ assert.deepEqual(collectorNext(progress,plan),{MSGID:'FREE_GAME'});
+ // The prior feature's display cannot leak beyond the selection boundary.
+ response(progress,10,{GSD:raw.steps[9].responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1]});
+ assert.throws(()=>huffActionNext(plan,progress));assert.throws(()=>collectorNext(progress,plan));
+ const missingIntro=structuredClone(raw);missingIntro.steps.splice(8,1);
+ assert.throws(()=>huffActionNext(plan,missingIntro));assert.throws(()=>collectorNext(missingIntro,plan));
+});
 test('known FID3 follows its validated action, independent of cosmetic fields and gameplay classification',()=>{
   assert.equal(actionContract(plan).collectorKind,'huffAction');
   const raw=structuredClone(vector.raw);

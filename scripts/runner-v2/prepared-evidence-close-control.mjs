@@ -10,6 +10,7 @@ import {checkPrimaryLeases} from './lease-boundary.mjs';import {protocolHash as 
 import {readPoolBatches} from './formal-source-review.mjs';import {nextRequest} from '../trial/squid-protocol.mjs';
 import {reviewReceivedTerminalRecords} from './received-terminal-records.mjs';
 import {closeCountShared} from './count-shared-close.mjs';
+import {reconcilesPreparedEvidence} from './prepared-evidence-disposition.mjs';
 
 // Only registered formal prepared plans, ended sources and exact reviewed holds.
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PREPARED_EVIDENCE_OWNER');
@@ -18,8 +19,8 @@ assert(/^count-close-prepared-evidence-[0-9]{8}-[a-z0-9-]+\.json$/.test(name??''
 const profile=readFile('config/'+name),source=readFile('config/'+profile.sourceProfile);
 const authorization=preparedCountAuthorization(profile.sourceProfile),plans=readFile('config/round-one-plans.json');
 const plan=preparedCountPlan(plans[profile.gameId],source,authorization);
+const reconcile=reconcilesPreparedEvidence(profile);
 assert(profile.schema==='sg-count-evidence-close-profile-v1'&&profile.group==='primary'
- &&profile.disposition==='received-terminal-reconciled-without-source'
  &&authorization.profileHash===profile.sourceProfileHash&&hash(source)===profile.sourceProfileHash
  &&Object.keys(profile.files??{}).length>=300,'PREPARED_EVIDENCE_SCOPE');
 for(const [file,digest]of Object.entries(profile.files)){
@@ -56,7 +57,7 @@ try{
   const matches=mappings.filter(m=>m.rawHash===hash(raw));assert(matches.length===1,'PREPARED_TERMINAL_MAPPING');
   return prepareNextgenRound(raw,matches[0].mapping);
  };
- const terminalRecords=await reviewReceivedTerminalRecords({batches,plan,parser,runnerNext:nextRequest,normalize});
+ const terminalRecords=reconcile?await reviewReceivedTerminalRecords({batches,plan,parser,runnerNext:nextRequest,normalize}):[];
  console.log(JSON.stringify(await closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,terminalRecords})));
 }catch(error){console.log(JSON.stringify({error:/^[A-Z_]{1,100}$/.test(error.message)?error.message:'PREPARED_EVIDENCE_REQUIRES_REVIEW',sourceRequests:0,newBetAllowance:0}));process.exitCode=2;}
 finally{parser.close();transport.close();}

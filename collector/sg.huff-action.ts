@@ -51,17 +51,21 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
     const ordinary=i===0&&!ids.length&&!['NFG','TFG','CFGG'].some(k=>own(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
+    const selected=!!previous&&previous.ids.length===1&&previous.ids[0]===0&&previous.intro&&ids.length===1&&ids[0]>0
+      &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
     if(ids.length===1&&ids[0]===2){
+      const carried=selected&&previous.awardedIntro&&['CFNFG','CFTFG','CFCFGG'].every(k=>
+        g[k]!==undefined&&previous.display[k]!==undefined&&uint(g[k])===uint(previous.display[k]));
+      if(carried)need(JSON.stringify(slots(g.PCFID))===JSON.stringify(priorFeatures),'DISPLAY_COUNTERS');
       for(const [display,value] of [['CFNFG',n],['CFTFG',t],['CFCFGG',c]] as [string,number][])
-        if(g[display]!==undefined)need(uint(g[display])===value,'DISPLAY_COUNTERS');
+        if(g[display]!==undefined)need(carried||uint(g[display])===value,'DISPLAY_COUNTERS');
       for(const display of ['CFFGT','FMS'])if(g[display]!==undefined)uint(g[display]);
     }
+    let awardedIntro=false;
     if(previous){
       if(JSON.stringify(ids)===JSON.stringify(previous.ids))need(previous.n>0&&c===previous.c+1
         &&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
       else {
-        const selected=previous.ids.length===1&&previous.ids[0]===0&&previous.intro&&ids.length===1&&ids[0]>0
-          &&g.FEAT==='MMANSION'&&!!g.MMW&&n===6&&t===6&&c===0;
         const from=previous.ids[0],history=slots(g.PCFID);
         const awarded=previous.ids.length===1&&from>0&&ids.length===1&&ids[0]===0&&previous.n===1
           &&n===1&&t===1&&c===0&&g.MMFG==='1'&&!g.MMW
@@ -71,6 +75,7 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
           &&featureState.reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
             displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
         need(selected||awarded,'UNREVIEWED_TRANSITION');
+        awardedIntro=!!awarded;
       }
     }else need(c===0,'TRIGGER');
     const intro=ids[0]===0&&(g.MMBG==='1'||g.MMFG==='1'&&n===1&&t===1&&c===0)&&!g.MMW;next=n>0||intro?'FREE_GAME':null;
@@ -84,7 +89,8 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
       if(g.VA){const board=g.VA.split(',').map(uint);
         need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'UNREVIEWED_EXIT');}
     }
-    previous={ids,n,t,c,intro};priorFeatures.unshift(...ids);
+    previous={ids,n,t,c,intro,awardedIntro,display:Object.fromEntries(['CFNFG','CFTFG','CFCFGG'].map(k=>[k,g[k]]))};
+    priorFeatures.unshift(...ids);
   }
   return next?{MSGID:next}:null;
 }

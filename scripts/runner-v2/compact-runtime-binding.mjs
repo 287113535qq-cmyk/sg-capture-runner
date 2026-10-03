@@ -5,6 +5,7 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {ACTION_CANARY_RUNTIME,checkActionCanaryBinding} from './action-canary-contract.mjs';
 import {ACTION_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_RUNTIME,ACTION_BUDGET_CONTINUOUS_ENTRYFIX_RUNTIME,checkActionContinuousBinding} from './action-continuous-runtime.mjs';
+import {compactPreparedBinding,compactPreparedRuntimeBinding} from './compact-prepared-binding.mjs';
 
 // Immutable runtime receipt selects the optimization; environment flags cannot.
 export function compactRuntimeBinding({plan,profile,revision,receipt,commit}) {
@@ -80,9 +81,18 @@ export function compactControlInitializer({plan,runtimeName,commit,resourceReady
       await resourceReady;
       const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
       const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
-      control.compact=(['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
+      control.compact=(profile.schema==='sg-prepared-count-profile-v1'?compactPreparedBinding:
+       ['sg-formal-repair-pyramids-v5','sg-formal-repair-pyramids-v6','sg-formal-repair-pyramids-v7','sg-formal-repair-pyramids-v8','sg-formal-repair-pyramids-v9','sg-formal-repair-pyramids-v10','sg-formal-action-profile-v1','sg-formal-action-budget-profile-v1','sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile.schema)?compactRepairBinding:compactLayoutBinding)({plan,profile,spec,complete,commit});return;
     }
     const revision=readRevision(runtimeName);
+    if(/^count-prepared-runtime-/.test(runtimeName)){
+      const profile=readProfile();if(profile.controlReadMode===undefined)return;
+      await resourceReady;
+      const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+      const spec=await readReceipt(key),complete=await readReceipt(key+':complete');
+      const receipt=await readReceipt(`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`);
+      control.compact=compactPreparedRuntimeBinding({plan,profile,revision,receipt,spec,complete,commit,runtimeName});return;
+    }
     if(revision.controlReadMode===undefined)return;
     await resourceReady;
     const profile=readProfile();

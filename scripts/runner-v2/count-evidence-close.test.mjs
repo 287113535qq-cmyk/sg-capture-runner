@@ -4,6 +4,16 @@ import {network} from './count-network-close.test.mjs';
 import {closeCountShared} from './count-shared-close.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkCountPeerHolds} from './count-peer-boundary.mjs';
+import {reconcilesPreparedEvidence} from './prepared-evidence-disposition.mjs';
+
+test('prepared cleanup distinguishes unfinished originals from independently received terminals',()=>{
+ assert.equal(reconcilesPreparedEvidence({disposition:'interrupted-abandoned-without-replay'}),false);
+ assert.equal(reconcilesPreparedEvidence({disposition:'received-terminal-reconciled-without-source'}),true);
+ for(const field of ['terminalRecords','terminalMappings'])assert.throws(()=>reconcilesPreparedEvidence({
+  disposition:'interrupted-abandoned-without-replay',[field]:[{record:'unverified'}]}),/ABANDONMENT_TERMINALS/);
+ for(const disposition of [undefined,'resume','complete','unknown-abandoned-without-replay'])
+  assert.throws(()=>reconcilesPreparedEvidence({disposition}),/DISPOSITION/);
+});
 
 test('generic maintenance fault is hash bound and never releases the source gate',()=>{
  const own={active:true,reason:'SOURCE_OR_STORAGE_REQUIRES_REVIEW',details:{code:'MIXED_HOLD_FEATURE',
