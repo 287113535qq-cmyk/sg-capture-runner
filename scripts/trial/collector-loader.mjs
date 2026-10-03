@@ -1,6 +1,6 @@
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const files=Object.freeze({nextgen:'sg.ingest.ts',rhino:'sg.rhino.ts',pearl:'sg.pearl.ts',
+const files=Object.freeze({nextgen:'sg.ingest.ts',rhino:'sg.rhino.ts',pearl:'sg.pearl.ts',huffAction:'sg.huff-action.ts',
  pearlRetrigger:'sg.pearl-retrigger.ts',pearlAward:'sg.pearl-award.ts',pyramidsAction:'sg.pyramids-action.ts',pyramidsDirectAction:'sg.pyramids-direct-action.ts',pyramidsResumeAction:'sg.pyramids-resume-action.ts',veryFruityAction:'sg.veryfruity-action.ts'});
 const cached=new Map();
 // AG workers load their selected game handler. Keep each independent process

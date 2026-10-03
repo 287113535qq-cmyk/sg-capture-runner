@@ -3,11 +3,11 @@ import {spawnSync} from 'node:child_process';import {randomUUID,createHash} from
 import {newInventory,claimPreparation,finishPreparation,rejectPreparedRevision} from './runner-v2/preparation-inventory.mjs';
 import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
-import {preparationHandlers,preparationInputHash,reviewedPreparation,preparationSourceHash} from './runner-v2/preparation-handlers.mjs';
+import {reviewedPreparation,preparationSourceHash,reusablePreparationResult} from './runner-v2/preparation-handlers.mjs';
 import {stagePreparedCycle} from './runner-v2/preparation-publication-cycle.mjs';
-import {preparationRevision} from './runner-v2/preparation-revision.mjs';
 import {reviewFlowRepairInbox} from './runner-v2/flow-repair-inbox.mjs';
 import {replaceLocalJson} from './runner-v2/atomic-local-state.mjs';
+import {preparationInputs} from './runner-v2/preparation-inputs.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -44,18 +44,8 @@ function run(exe,args,label){
 }
 const bytesHash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const sourceHash=p=>preparationSourceHash(fs.readFileSync(p,'utf8'));
-function inputsFor(gameId,index){
- const reference=index.games.find(g=>g.gameId===gameId);
- const {handler,fileHashes,revisionHash}=preparationRevision(root,gameId,reference);
- const evidenceDir=path.join(root,'.local','preparation-worker','evidence',String(gameId));
- const receipts=[];
- if(fs.existsSync(evidenceDir))for(const name of fs.readdirSync(evidenceDir).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
-  try{const receipt=load(path.join(evidenceDir,name));if(hash(receipt)+'.json'===name)receipts.push(receipt);}catch{/* Invalid evidence never becomes ready. */}
- }
- const resultFile=path.join(dir,gameId+'-result.json');
- return {reference,handler,fileHashes,revisionHash,receipts,evidenceDir,
-  inputHash:preparationInputHash({gameId,reference,fileHashes,evidenceHashes:[hash({python,worker:sourceHash(path.join(root,'scripts','preparation-worker.mjs'))}),...receipts.map(hash),...(fs.existsSync(resultFile)?[bytesHash(resultFile)]:[])]})};
-}
+const inputs=preparationInputs(root,{python});
+const inputsFor=(gameId,index)=>inputs.forGame(gameId,index,lane);
 try{
   if(!fs.existsSync(stateFile)){
     const statuses={},snapshot=path.join(root,'.local','efficiency5','action-budget-independent-queues-private.json');
@@ -74,6 +64,7 @@ try{
   const once=process.argv.includes('--once');let waiting=false;
   do{
    try{
+    inputs.reset();
     const q=load(stateFile);
     const eventRevision=sourceHash(path.join(root,'scripts/runner-v2/work-line-events.mjs'));
     const eventApi=await import('./runner-v2/work-line-events.mjs?revision='+eventRevision);
@@ -164,15 +155,12 @@ try{
     try{if(fs.existsSync(resultFile))savedResult=load(resultFile);}catch{
       finishPreparation(q,claim,{status:'blocked',reason:'PREPARATION_RECEIPT_INVALID'},Date.now());save(q);continue;
     }
-    if(savedResult&&(savedResult.proof?.revisionHash===input.revisionHash||savedResult.revisionHash===input.revisionHash)){
+    // A blocked result describes old missing evidence, not a reusable success.
+    // New receipts must be reviewed even when the implementation is unchanged.
+    if(savedResult?.status==='prepared'&&savedResult.proof?.revisionHash===input.revisionHash){
       try{
-        const result=savedResult;
-        if(result.status==='prepared'){
-          const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts,failureEvidenceHash:task.failureEvidenceHash});
-          if(reviewed.status!=='prepared'||hash(reviewed.proof)!==hash(result.proof))throw Error('PREPARATION_RECEIPT_EVIDENCE_MISSING');
-        }
-        // A failed revision may not be re-approved by its old receipt.
-        if(task.rejectedProofHash&&result.status==='prepared'&&hash(result.proof)===task.rejectedProofHash)throw Error('PREPARATION_FAILED_REVISION');
+        const result=reusablePreparationResult({result:savedResult,gameId:claim.gameId,revisionHash:input.revisionHash,
+          receipts:input.receipts,failureEvidenceHash:task.failureEvidenceHash,rejectedProofHash:task.rejectedProofHash});
         finishPreparation(q,claim,result,Date.now());save(q);
         log({action:task.status,gameId:claim.gameId});continue;
       }
@@ -201,11 +189,19 @@ try{
         const ok=run(python,['-m','unittest','discover','-s','service/tests','-p',name],label+'-'+name);py=ok&&py;
       }
       if(node&&py){
+        // A background producer may run while source files change. Bind the
+        // completed checks only if the evaluated implementation is still exact.
+        inputs.reset();
+        if(inputsFor(claim.gameId,index).revisionHash!==input.revisionHash){
+          finishPreparation(q,claim,{status:'blocked',reason:'PREPARATION_IMPLEMENTATION_CHANGED_DURING_CHECK'},Date.now());
+          save(q);continue;
+        }
         const logs=[label+'-node',...input.handler.python.map(n=>label+'-'+n)];
         const receipt={schema:'sg-preparation-gate-v1',gate:'local',gameId:claim.gameId,
           revisionHash:input.revisionHash,verified:true,sourceAllowance:0,
           supportingHashes:logs.map(n=>bytesHash(path.join(dir,n+'.log')))};
         publishImmutableInbox(input.evidenceDir,receipt);
+        inputs.reset();
         const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,failureEvidenceHash:task.failureEvidenceHash,
           receipts:[...input.receipts.filter(r=>r.gate!=='local'||r.revisionHash!==input.revisionHash),receipt]});
         task.missingGates=reviewed.missingGates??[];

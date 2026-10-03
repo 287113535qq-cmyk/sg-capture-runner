@@ -64,8 +64,8 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
       }
       intentReady = true;
     }
+    let next=route(raw);
     while (true) {
-      const next = route(raw);
       if(!next)throw fail('ROUND_ALREADY_SETTLED');
       const msg=next.MSGID, requestPayload=payload(msg,next);
       if (raw.steps.length >= plan.maxSteps) throw fail('ROUND_STEP_LIMIT');
@@ -97,6 +97,9 @@ export async function captureBatch({plan, lease, owned, rpc, post, payload, boot
         if (intentReady) prepared = following;
         break;
       }
+      // Reuse the decision for this exact prefix. Appending a response is the
+      // only operation that changes it; do not rescan the same history twice.
+      next=remaining===null?route(raw):continuation;
     }
     evidence.completedThisRun++; sequence++;
     if (evidence.completedThisRun % 100 === 0) onProgress();

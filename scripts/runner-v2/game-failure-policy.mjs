@@ -2,6 +2,7 @@ import {reviewPyramidsRetrigger} from '../trial/pyramids-retrigger-review.mjs';
 // Only explicit adapter gaps are game-local. Source rejections, ambiguous
 // replies, money errors and storage failures retain the shared stop policy.
 const adapterGaps = new Set([
+  'HUFF_ACTION_UNREVIEWED_ROUTE','HUFF_ACTION_UNREVIEWED_TRANSITION','HUFF_ACTION_UNREVIEWED_EXIT',
   'VERYFRUITY_ACTION_UNREVIEWED_EXIT', 'VERYFRUITY_ACTION_UNREVIEWED_ROUTE',
   'MEGAHAT_UNREVIEWED',
   'INCA_UNREVIEWED_GSD', 'INCA_UNREVIEWED_FREE_ROUNDS',

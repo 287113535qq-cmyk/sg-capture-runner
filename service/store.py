@@ -1,5 +1,6 @@
 """Durable, fixture-only SG transport validation. Never accepts official rounds."""
 import contextlib
+import errno
 import hashlib
 import json
 import os
@@ -47,7 +48,19 @@ def file_lock(path):
                 handle.write(b"0")
                 handle.flush()
             handle.seek(0)
-            msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+            # LK_LOCK gives up after ten one-second retries. A valid queue
+            # under contention must wait just like POSIX flock, not fail with
+            # EDEADLK. Nonblocking retries also avoid a one-second handoff gap.
+            delay = 0.01
+            while True:
+                try:
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError as exc:
+                    if exc.errno not in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+                        raise
+                    time.sleep(delay)
+                    delay = min(0.1, delay * 1.5)
         else:
             import fcntl
             fcntl.flock(handle, fcntl.LOCK_EX)

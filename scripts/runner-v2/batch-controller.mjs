@@ -207,9 +207,33 @@ export class BatchController {
       if(this.pendingFirst.admission?.stage==='resume' || r.sequence-stored.value.checkpoint>=100 || r.sequence===this.batch.end)await this.flush();
       if(this.pendingFirst.admission?.stage==='resume')this.pendingFirst.admission.limit=0;
     }
-    // Following intents are intentionally created by the next loop iteration.
-    // This avoids pre-reserving another BET when resources or source stop.
-    return {complete:!!record,followingIntentDurable:false,
+    // AG advances directly from the acknowledged response. The worker already
+    // supplies its next request; accept it only through the same fresh control,
+    // ownership, independent intent validation and durable CAS as a separate
+    // RPC. Neither a suggested request nor a failed/unknown ACK permits a send.
+    let followingIntentDurable=false,stopRequested=false;
+    if(r.following){
+      const following=r.following,begin=!!record;
+      assert(following&&Object.keys(following).sort().join(',')===(begin?
+        'attempt,requestPayload,sequence,startBalanceRaw':'requestPayload,sequence'),'FOLLOWING_REQUEST_SCOPE');
+      assert(following.sequence===r.sequence+Number(begin),'FOLLOWING_SEQUENCE_MISMATCH');
+      assert(typeof following.requestPayload==='string','FOLLOWING_REQUEST_REQUIRED');
+      if(begin)assert(following.startBalanceRaw===record.normalized.money.endBalanceRaw,'FOLLOWING_BALANCE_MISMATCH');
+      if(begin)assert(following.attempt!==pending.attempt,'FOLLOWING_ATTEMPT_REUSED');
+      try{
+        await this.intent({...r,...following},begin);
+        followingIntentDurable=true;
+      }catch(error){
+        // A terminal record has already been preserved and, when required,
+        // read back. A later stop must not turn it into an abandoned round.
+        // Only explicit source controls are a graceful boundary; validation,
+        // fences and unknown storage results still fail without retry.
+        if(begin&&['GLOBAL_SOURCE_STOPPED','CAMPAIGN_PAUSED','GAME_NO_LONGER_ACTIVE','POOL_PAUSED',
+          'DISK_RESERVE_REQUIRES_REVIEW'].includes(error.code))stopRequested=true;
+        else throw error;
+      }
+    }
+    return {complete:!!record,followingIntentDurable,stopRequested,
       checkpoint:this.batchSnapshot.value.checkpoint,
       ...(record?{endBalanceRaw:record.normalized.money.endBalanceRaw}:{})};
   }

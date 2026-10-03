@@ -13,6 +13,7 @@ from pearl_award_fields import PearlAwardFields
 from rhino_fields import RhinoFields, SOURCE as RHINO_SOURCE
 from squid_fields import SquidFields, SOURCE as SQUID_SOURCE
 from huff_fields import HuffFields, SOURCE as HUFF_SOURCE
+from huff_action_fields import HuffActionFields, ACTION_VERSION as HUFF_ACTION_VERSION, has_home_improvement
 from demon_nested_fields import DemonNestedFields as DemonFields, SOURCE as DEMON_SOURCE
 from quarterback_fields import QuarterbackFields, SOURCE as QUARTERBACK_SOURCE
 
@@ -46,6 +47,8 @@ def execute(request):
             adapters[key]=PyramidsResumeActionFields(plan)
         if plan['sourceKey']==VERYFRUITY_SOURCE:
             adapters[key]=VeryFruityActionFields(plan)
+        if plan['sourceKey']==HUFF_SOURCE and plan.get('featureProfile')==HUFF_ACTION_VERSION:
+            adapters[key]=HuffActionFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
@@ -81,15 +84,19 @@ def execute(request):
         result = {'schema': 'sg-round-analysis-v1', 'recordId': record['_id'],
                   'contentHash': record['contentHash'], 'rawHash': record['rawHash'],
                   'sourceAllowance': 0}
-        if plan.get('featureProfile') not in (ACTION_VERSION, DIRECT_ACTION_VERSION, RESUME_ACTION_VERSION):
+        if has_home_improvement(raw):
+            return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
+        if plan.get('featureProfile') not in (ACTION_VERSION, DIRECT_ACTION_VERSION, RESUME_ACTION_VERSION, HUFF_ACTION_VERSION):
             return {**result, 'status': 'review-required',
                     'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         try:
-            classified = PyramidsFields(plan).settled(raw)
+            classified = (HuffFields(plan) if plan.get('featureProfile')==HUFF_ACTION_VERSION else PyramidsFields(plan)).settled(raw)
         except FieldError as exc:
             code = str(exc)
             assert code and len(code) <= 80 and all(c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_' for c in code)
             return {**result, 'status': 'review-required', 'reason': code}
+        if classified.get('classificationStatus') == 'pending':
+            return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
     if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE):

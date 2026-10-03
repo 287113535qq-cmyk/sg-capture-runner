@@ -19,7 +19,8 @@ from store import canonical, digest, require, file_lock, sync_dir
 POLICY={'schema':'sg-protocol-parking-v1','campaignId':'sg_round_one_20260928',
         'preserveOwner':True,'resumeParkedAutomatically':False,'unknownOutcome':'stop-all'}
 UNSUPPORTED={'UNKNOWN_TRIAL_FEATURE','HUFF_FEATURE_NOT_ADAPTED',
-             'HUFF_UNKNOWN_FEATURE_ID','HUFF_UNREVIEWED_FEATURE_PROTOCOL'}
+             'HUFF_UNKNOWN_FEATURE_ID','HUFF_UNREVIEWED_FEATURE_PROTOCOL',
+             'HUFF_ACTION_UNREVIEWED_ROUTE','HUFF_ACTION_UNREVIEWED_TRANSITION','HUFF_ACTION_UNREVIEWED_EXIT'}
 
 
 def enabled(c):

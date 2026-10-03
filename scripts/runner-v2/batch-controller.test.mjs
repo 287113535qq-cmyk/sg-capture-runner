@@ -163,6 +163,80 @@ test('existing capture loop writes responses durably and confirms a partial batc
   assert.equal(next.batchId,f.lease.batchId);assert.equal(next.durable,10);
 });
 
+test('AG response-to-next-request path halves ordinary RPCs with identical records and fresh source guards',async()=>{
+  const results=[];
+  for(const fuse of [false,true]){
+    const f=await fixture(),calls={},originalControl=f.controller.control.allowed;let guards=0,posted=0;
+    f.controller.control.allowed=async options=>{guards++;return originalControl(options);};
+    const rpc=async(op,data)=>{
+      calls[op]=(calls[op]??0)+1;
+      if(!fuse&&op==='exchange_journal'){data={...data};delete data.following;}
+      return f.rpc(op,data);
+    };
+    await captureBatch({...f,rpc,evidence:{completedThisRun:0},state:{balance:100000},
+      prepareRound:raw=>({money:{endBalanceRaw:raw.startBalanceRaw-25}}),
+      post:async(requestPayload,msgId)=>{posted++;return {requestPayload,msgId,responsePayload:'NFG=0',elapsedMs:1};},
+      payload:()=> 'MSGID=BET',shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:100});
+    results.push({calls,guards,posted,rows:[...f.rounds.values()].map(r=>({sequence:r.sequence,raw:r.raw,normalized:r.normalized}))});
+  }
+  assert.deepEqual(results[0].rows,results[1].rows);assert.equal(results[1].posted,20);
+  assert.equal(results[0].guards,20);assert.equal(results[1].guards,20);
+  assert.equal(results[0].calls.begin,20);assert.equal(results[1].calls.begin,1);
+  assert.equal(results[0].calls.exchange_journal,20);assert.equal(results[1].calls.exchange_journal,20);
+});
+
+test('following continuation is fenced, independently validated and durable before its source send',async()=>{
+  const f=await fixture(),original=f.controller.analyzer.call;
+  f.controller.analyzer.call=async r=>{
+    if(r.op==='next')return r.raw.steps.at(-1).responsePayload==='NFG=1'?{MSGID:'FREE_GAME'}:null;
+    if(r.op==='intent'&&r.raw.steps.length){
+      assert.equal(r.payload,'MSGID=FREE_GAME');
+      assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending.awaiting,null);
+    }
+    return original(r);
+  };
+  let posted=0;
+  await captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},
+    prepareRound:()=>({money:{endBalanceRaw:99975}}),
+    post:async(requestPayload,msgId)=>{
+      assert.equal((await f.store.get('state',f.controller.batchKey)).value.pending.awaiting,requestPayload);
+      posted++;return {requestPayload,msgId,responsePayload:posted===1?'NFG=1':'NFG=0',elapsedMs:1};
+    },payload:msg=>'MSGID='+msg,shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:1});
+  assert.equal(posted,2);assert.equal(f.rounds.size,1);
+});
+
+test('fresh stop after a terminal response preserves the completed record without another BET',async()=>{
+  const f=await fixture(),original=f.controller.control.allowed;let posted=0,stopping=false;
+  f.controller.control.allowed=async options=>{
+    if(posted)throw Object.assign(Error('GLOBAL_SOURCE_STOPPED'),{code:'GLOBAL_SOURCE_STOPPED'});
+    return original(options);
+  };
+  await captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},
+    prepareRound:()=>({money:{endBalanceRaw:99975}}),
+    post:async(requestPayload,msgId)=>{posted++;return {requestPayload,msgId,responsePayload:'NFG=0',elapsedMs:1};},
+    payload:()=> 'MSGID=BET',shouldStop:()=>stopping,requestStop(){stopping=true;},deadline:performance.now()+60000,limit:10});
+  assert.equal(posted,1);assert.equal(f.rounds.size,1);
+  const b=(await f.store.get('state',f.controller.batchKey)).value;assert.equal(b.pending,null);assert.equal(b.checkpoint,1);
+});
+
+test('lost following-intent ACK does not repeat the intent or send the next request',async()=>{
+  const f=await fixture(),request=f.controller.transport.request;let posted=0,uncertain=0;
+  f.controller.transport.request=async(op,r)=>{
+    const result=await request(op,r);
+    if(op==='cas'&&r.key===f.controller.batchKey&&r.value.pending?.sequence===2){
+      uncertain++;throw Object.assign(Error('ACK_UNKNOWN'),{code:'ACK_UNKNOWN'});
+    }
+    return result;
+  };
+  await assert.rejects(captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},
+    prepareRound:()=>({money:{endBalanceRaw:99975}}),
+    post:async(requestPayload,msgId)=>{posted++;return {requestPayload,msgId,responsePayload:'NFG=0',elapsedMs:1};},
+    payload:()=> 'MSGID=BET',shouldStop:()=>false,requestStop(){},deadline:performance.now()+60000,limit:10}),{code:'ACK_UNKNOWN'});
+  assert.equal(posted,1);assert.equal(uncertain,1);assert.equal(f.controller.batchSnapshot,null);
+  const b=(await f.store.get('state',f.controller.batchKey)).value;
+  assert.equal(b.journaled,1);assert.equal(b.pending.sequence,2);assert.equal(b.pending.awaiting,'MSGID=BET');
+});
+
 test('failed response durability leaves original unknown intent and never authorizes another source call',async()=>{
   const f=await fixture();f.failResponse();let posted=0;
   await assert.rejects(captureBatch({...f,evidence:{completedThisRun:0},state:{balance:100000},

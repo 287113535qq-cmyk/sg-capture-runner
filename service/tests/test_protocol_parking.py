@@ -23,11 +23,11 @@ class ParkingTests(unittest.TestCase):
         fixture.HuffRecoveryTests.setUp(self)
         self.queue=self.root/'campaigns/sg_round_one_20260928/queue.sqlite3'
         self.change(self.queue,'UPDATE dispatch_control SET enabled=1,reason=NULL')
-        # FID1 and the restricted FID2 cash chain are supported. FID3 is not.
+        # Keep the parking fixture genuinely unknown as adapters gain routes.
         path=self.batch_paths['primary']
         with closing(sqlite3.connect(path)) as db:
             raw=json.loads(db.execute('SELECT raw FROM pending').fetchone()[0]);s=raw['steps'][0]
-            s['responsePayload']=s['responsePayload'].replace('FID=1|','FID=3|')
+            s['responsePayload']=s['responsePayload'].replace('FID=1|','FID=5|')
             xml=ET.fromstring(s['responseXml']);xml.find('PAYLOAD').text=s['responsePayload']
             s['responseXml']=ET.tostring(xml,encoding='unicode')
             db.execute('UPDATE pending SET raw=?',(canonical(raw).decode(),));db.commit()
@@ -104,6 +104,16 @@ class ParkingTests(unittest.TestCase):
             raw['steps'][0]['responseXml']=raw['steps'][0]['responseXml'].replace('true','false')
             db.execute('UPDATE pending SET raw=?',(canonical(raw).decode(),));db.commit()
         with self.assertRaisesRegex(Rejected,'SOURCE_NOT_SUCCESSFUL'):
+            activate(self.root,self.backup,clock=self.clock)
+
+    def test_invalid_known_fid3_counters_are_not_an_unsupported_feature(self):
+        with closing(sqlite3.connect(self.batch_paths['primary'])) as db:
+            raw=json.loads(db.execute('SELECT raw FROM pending').fetchone()[0]);step=raw['steps'][0]
+            step['responsePayload']=step['responsePayload'].replace('FID=5|','FID=3|')
+            xml=ET.fromstring(step['responseXml']);xml.find('PAYLOAD').text=step['responsePayload']
+            step['responseXml']=ET.tostring(xml,encoding='unicode')
+            db.execute('UPDATE pending SET raw=?',(canonical(raw).decode(),));db.commit()
+        with self.assertRaisesRegex(Rejected,'NOT_UNSUPPORTED_FEATURE'):
             activate(self.root,self.backup,clock=self.clock)
 
     def test_stale_changed_proof_or_active_batch_rejects_migration(self):

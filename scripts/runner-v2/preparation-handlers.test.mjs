@@ -1,7 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {reviewedPreparation,preparationInputHash,preparationHandlers,preparationSourceHash} from './preparation-handlers.mjs';
+import {reviewedPreparation,preparationInputHash,preparationHandlers,preparationSourceHash,reusablePreparationResult} from './preparation-handlers.mjs';
 import {preparationGates} from './preparation-inventory.mjs';
 import fs from 'node:fs';
+import {protocolHash as hash} from './protocol-resume.mjs';
 const revisionHash='a'.repeat(64);
 const receipts=()=>preparationGates.map(gate=>({schema:'sg-preparation-gate-v1',gameId:32719,gate,revisionHash,verified:true,sourceAllowance:0,supportingHashes:['b'.repeat(64)]}));
 test('reusable code identities agree across Windows and Linux without normalizing raw game replies',()=>{
@@ -21,6 +22,16 @@ test('all independent gates admit without a gameplay classification; missing or 
  for(const gate of preparationGates){const rows=receipts().filter(r=>r.gate!==gate);assert.deepEqual(reviewedPreparation({gameId:32719,revisionHash,receipts:rows}).missingGates,[gate]);}
  assert.equal(reviewedPreparation({gameId:32719,revisionHash,receipts:[...receipts(),receipts()[0]]}).status,'blocked');
  assert.equal(reviewedPreparation({gameId:32719,revisionHash:'c'.repeat(64),receipts:receipts()}).status,'blocked');
+});
+
+test('old blocked receipts cannot mask new gates; reusable success still requires exact fresh evidence',()=>{
+ const input={gameId:32719,revisionHash,receipts:receipts()};
+ const blocked={status:'blocked',revisionHash,reason:'PREPARATION_GATES_PENDING'};
+ assert.equal(reusablePreparationResult({...input,result:blocked}),null);
+ const result=reviewedPreparation(input);assert.equal(reusablePreparationResult({...input,result}),result);
+ assert.throws(()=>reusablePreparationResult({...input,result,receipts:receipts().slice(1)}),/EVIDENCE_MISSING/);
+ assert.throws(()=>reusablePreparationResult({...input,result,rejectedProofHash:hash(result.proof)}),/FAILED_REVISION/);
+ assert.equal(reusablePreparationResult({...input,revisionHash:'c'.repeat(64),result}),null);
 });
 test('continuous checks rerun for content changes, never for unchanged mtimes or classification',()=>{
  const args={gameId:32719,reference:{route:'reviewed'},fileHashes:{'a.py':'1'},evidenceHashes:['2']};

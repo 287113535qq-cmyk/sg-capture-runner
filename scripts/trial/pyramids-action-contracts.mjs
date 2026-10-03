@@ -3,8 +3,14 @@ import * as original from './pyramids-action-protocol.mjs';
 import * as resumed from './pyramids-resume-action-protocol.mjs';
 import * as direct from './pyramids-direct-action-protocol.mjs';
 import * as veryfruity from './veryfruity-action-protocol.mjs';
+import * as huff from './huff-action-protocol.mjs';
 // Selection never authorizes a plan. Independent on-disk admission remains mandatory.
 export function actionContract(plan){
+ if(plan?.featureProfile===huff.ACTION_VERSION){
+  assert(plan.gameId===32714&&plan.sourceKey===huff.HUFF_SOURCE
+   &&plan.actionContractHash===huff.ACTION_CONTRACT_HASH,'ACTION_PROFILE_REQUIRED');
+  return {version:huff.ACTION_VERSION,hash:huff.ACTION_CONTRACT_HASH,next:huff.huffActionNext,collectorKind:'huffAction'};
+ }
  if(plan?.featureProfile===veryfruity.ACTION_VERSION){
   assert(plan.gameId===32812&&plan.sourceKey===veryfruity.VERYFRUITY_SOURCE
    &&plan.actionContractHash===veryfruity.ACTION_CONTRACT_HASH,'ACTION_PROFILE_REQUIRED');

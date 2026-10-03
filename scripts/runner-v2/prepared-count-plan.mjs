@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {HUFF_SOURCE,ACTION_VERSION as HUFF_ACTION_VERSION,ACTION_CONTRACT_HASH as HUFF_ACTION_HASH} from '../trial/huff-action-contract.mjs';
 
 // Source permission is reviewed separately from reusable preparation. The
 // committed authorization binds one exact profile; a mailbox cannot mint it.
@@ -27,5 +28,11 @@ export function preparedCountPlan(base,profile,authorization){
     p.closureKey===`count-${kind}-close:${base.trialId}:${p.sourceRun}:complete`),'PREPARED_REPAIR_PARENT');
  }
  const plan={...base,target:300000,countAllocation:profile.activation};
+ if(profile.actionContract!==undefined){
+  assert(base.gameId===32714&&base.sourceKey===HUFF_SOURCE&&base.betRaw===500&&base.maxSteps===100
+   &&hash(profile.actionContract)===hash({version:HUFF_ACTION_VERSION,hash:HUFF_ACTION_HASH}),
+   'PREPARED_ACTION_CONTRACT');
+  plan.featureProfile=HUFF_ACTION_VERSION;plan.actionContractHash=HUFF_ACTION_HASH;
+ }
  assert(profile.planHash===hash(plan),'PREPARED_COUNT_PLAN_CHANGED');return plan;
 }

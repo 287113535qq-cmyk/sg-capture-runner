@@ -37,5 +37,12 @@ def prepared_count_plan(base,profile,authorization):
             and any(parent.get('closureKey')==f"count-{kind}-close:{base['trialId']}:{parent['sourceRun']}:complete"
                     for kind in ('shared','parked','prepared')),'PREPARED_REPAIR_PARENT')
     plan={**base,'target':300000,'countAllocation':profile['activation']}
+    if 'actionContract' in profile:
+        from huff_action_fields import SOURCE, ACTION_VERSION, CONTRACT_HASH
+        require(base.get('gameId')==32714 and base.get('sourceKey')==SOURCE
+            and base.get('betRaw')==500 and base.get('maxSteps')==100
+            and profile['actionContract']==dict(version=ACTION_VERSION,hash=CONTRACT_HASH),
+            'PREPARED_ACTION_CONTRACT')
+        plan.update(featureProfile=ACTION_VERSION,actionContractHash=CONTRACT_HASH)
     require(profile.get('planHash')==digest(plan),'PREPARED_COUNT_PLAN_CHANGED')
     return plan

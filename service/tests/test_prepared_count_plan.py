@@ -25,6 +25,19 @@ class PreparedCountPlanTests(unittest.TestCase):
             bad={**p,field:value};auth={**a,'profileHash':digest(bad)}
             with self.subTest(field=field),self.assertRaises(Exception):prepared_count_plan(base,bad,auth)
 
+    def test_new_action_contract_needs_an_exact_independent_profile(self):
+        from huff_action_fields import ACTION_VERSION, CONTRACT_HASH
+        base,p,a,old=self.fixture()
+        p['actionContract']=dict(version=ACTION_VERSION,hash=CONTRACT_HASH)
+        expected={**old,'featureProfile':ACTION_VERSION,'actionContractHash':CONTRACT_HASH}
+        p['planHash']=digest(expected);a['profileHash']=digest(p)
+        self.assertEqual(prepared_count_plan(base,p,a),expected)
+        for descriptor in [dict(version=ACTION_VERSION,hash='b'*64),
+                           dict(version=ACTION_VERSION,hash=CONTRACT_HASH,extra=True),
+                           dict(version='unknown',hash=CONTRACT_HASH)]:
+            bad={**p,'actionContract':descriptor};auth={**a,'profileHash':digest(bad)}
+            with self.subTest(descriptor=descriptor),self.assertRaises(Exception):prepared_count_plan(base,bad,auth)
+
     def test_real_pool_plan_entry_requires_exact_committed_registry_and_profile(self):
         base,p,a,plan=self.fixture();name=f"formal-prepared-count-32714-{p['activation']}.json"
         registry=dict(schema='sg-prepared-count-authorizations-v1',sourceAllowance=0,profiles={name:a})

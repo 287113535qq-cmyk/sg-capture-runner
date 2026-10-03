@@ -7,7 +7,7 @@ export const preparationSourceHash=text=>createHash('sha256').update(text.replac
 // Fixed executable checks, never commands supplied by a mailbox or raw reply.
 export const preparationHandlers=Object.freeze({
  32636:{node:['scripts/trial/piggies-protocol.test.mjs','scripts/trial/piggies-size2.test.mjs'],python:['test_piggies_fields.py','test_piggies_size2.py']},
- 32714:{node:['scripts/trial/huff-protocol.test.mjs','scripts/trial/huff-touchup.test.mjs','scripts/trial/huff-retrigger-review.test.mjs','scripts/trial/free-game-counters.test.mjs','scripts/trial/feature-state.test.mjs'],python:['test_huff_fields.py','test_huff_touchup_review.py','test_huff_retrigger.py','test_free_game_counters.py','test_feature_state.py']},
+ 32714:{node:['scripts/trial/huff-protocol.test.mjs','scripts/trial/huff-touchup.test.mjs','scripts/trial/huff-retrigger-review.test.mjs','scripts/trial/huff-action.test.mjs','scripts/runner-v2/huff-action-capture.test.mjs','scripts/trial/free-game-counters.test.mjs','scripts/trial/feature-state.test.mjs'],python:['test_huff_fields.py','test_huff_touchup_review.py','test_huff_retrigger.py','test_huff_action_fields.py','test_free_game_counters.py','test_feature_state.py']},
  32718:{node:['scripts/trial/morepuff-protocol.test.mjs','scripts/trial/morepuff-megahat-review.test.mjs'],python:['test_morepuff_fields.py','test_morepuff_megahat_review.py']},
  32719:{node:['scripts/trial/inca-protocol.test.mjs','scripts/trial/inca-free-review.test.mjs','scripts/trial/inca-coin-review.test.mjs'],python:['test_inca_hold_action_review.py','test_inca_free_review.py','test_inca_coin_review.py']},
  32720:{node:['scripts/trial/jinzita-protocol.test.mjs'],python:['test_jinzita_fields.py']},
@@ -35,4 +35,12 @@ export function reviewedPreparation({gameId,revisionHash,receipts,failureEvidenc
  }
  if(missing.length)return {status:'blocked',reason:'PREPARATION_GATES_PENDING',missingGates:missing};
  return {status:'prepared',proof:{schema:'sg-reusable-preparation-v1',gameId,revisionHash,sourceAllowance:0,gates}};
+}
+
+export function reusablePreparationResult({result,gameId,revisionHash,receipts,failureEvidenceHash,rejectedProofHash}){
+ if(result?.status!=='prepared'||result.proof?.revisionHash!==revisionHash)return null;
+ const current=reviewedPreparation({gameId,revisionHash,receipts,failureEvidenceHash});
+ assert(current.status==='prepared'&&hash(current.proof)===hash(result.proof),'PREPARATION_RECEIPT_EVIDENCE_MISSING');
+ assert(!rejectedProofHash||hash(result.proof)!==rejectedProofHash,'PREPARATION_FAILED_REVISION');
+ return result;
 }

@@ -31,7 +31,7 @@
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
     "continue": "NFG>0，或 FID 首槽0且 GSD.MMBG=1、MMW无结果时继续 FREE_GAME；重触发不固定循环次数。",
     "complete": "无下一步，HardHat 必须有 HARDHAT 免费响应；组合还需 MMANSION 响应；再核对金额。MMBG=1 且已有 MMW、NFG=0 不额外续局。",
-    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，PCFID保留最多100个纯HardHat有序历史槽位，可重复，不推断授奖；追加由公共计数方法核CFFGT和总数/进度/剩余。功能未结束时累计余额与可用余额分别核验，终局全额到账。原规范化保留，最新真实3帧未结束、终局仅合成，公共修正待独立重新准入。TouchUp自然终局尚未观察。FID清零不等于新触发。",
+    "bounds": "仅支持 FID0/1 及两槽组合、FEAT MMANSION/HARDHAT；另支持MMANSION单次授予6次TouchUp的严格现金链（FID2/PAINT）；TouchUp混合/重触发、负FRAMEWINS及组合后续仍拒绝。另新增独立FID1 HardHat重触发v2，PCFID保留最多100个纯HardHat有序历史槽位，可重复，不推断授奖；追加由公共计数方法核CFFGT和总数/进度/剩余。功能未结束时累计余额与可用余额分别核验，终局全额到账。原规范化保留，最新真实3帧未结束、终局仅合成，公共修正待独立重新准入。TouchUp自然终局尚未观察。FID清零不等于新触发。 独立huff-action-v1按官方已知FID0–4动作推进，玩法分类pending/null；未知请求、组合退出及-100继续哨兵仍拒绝。原base入口的FID3调用相同动作/资金验证，raw不改写；其他历史分支及旧normalized哈希不变。FID3真实前缀可离线核验，完整HOMEIMP终局为合成向量；新实现仍需重新准备和准入，不改旧已应用profile。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
@@ -51,7 +51,11 @@
       "collector/free-game-counters.cjs",
       "service/feature_state.py",
       "scripts/trial/feature-state.mjs",
-      "collector/feature-state.cjs"
+      "collector/feature-state.cjs",
+      "service/huff_action_fields.py",
+      "scripts/trial/huff-action-contract.mjs",
+      "scripts/trial/huff-action-protocol.mjs",
+      "collector/sg.huff-action.ts"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -193,10 +197,10 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "0bb45c26a04eaed8b2aed2b265850f308f1d8959c421e1498ccd092c3940b39b",
-    "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
+    "scripts/runner-v2/record_fields.py": "3767d4cf32bedf49d9b328fac3334ba52ee920b72958405d8aadda26cd696d61",
+    "service/huff_fields.py": "f374fb82b728bc0804891326a7e32be27d97bf233008bfcb3a22e428f7dee27f",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
-    "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
+    "scripts/trial/huff-protocol.mjs": "3cbe8c5794ae1e7deed688e8ec5bc1087061a495f2483f541b89e9031ed5bde0",
     "service/huff_touchup_review.py": "8014e01aa60401250419859d1e9f14bff5f5c86eb2374e0f781c9c0f3535f6b1",
     "scripts/trial/huff-touchup-review.mjs": "29635d4044c5e0489e9877ef2c51741d67fb57b25add1adb477cba0e352ffb09",
     "collector/sg.huff-touchup.ts": "a1166f3c4671d256e5e4f16b825794a36734b15c51d2750f8ea6f8c025320c5b",
@@ -210,7 +214,11 @@
     "service/feature_state.py": "1ffcebda7fda83906c8ca296bb7e9eacae1787b29a90ef4105a7a903419e06d8",
     "scripts/trial/feature-state.mjs": "1bb71f47d3b125bed33c5b687bdd2a3917a479541372ef198204e1ae5a2281e6",
     "collector/feature-state.cjs": "c5f7c29285e32628df4bc00c0d5aa2d22bb326496473959741a8204dc289c443",
-    "service/game_rule_catalog.py": "cbf292e4ad0bc38227c546c27e265cdf90cc9de14c74847acb254a4ce2638622"
+    "service/huff_action_fields.py": "d1e4760f461de37dcd7fd28183b11cec9fd0ded23ba9d094cf0ffabccf92e443",
+    "scripts/trial/huff-action-contract.mjs": "b7824f762a9644d1bca3f5b9b340fddfcffcee01adc7f345fb0d68514179f3ca",
+    "scripts/trial/huff-action-protocol.mjs": "856f4386e4efa3402b55ca797c6b99c3bb686a656b39cdfa976cc3bba46d489d",
+    "collector/sg.huff-action.ts": "5a40ca2eb14e7e483070c3aebdb0f771c47533bc81459075880e1c87a08a8558",
+    "service/game_rule_catalog.py": "6804fe35565f50424ee4c12cd2a9a7926937954c65d3d14661e756edc3caafdc"
   },
   "reviewDocuments": [
     "docs/huff-hard-hat-protocol.md",
@@ -309,5 +317,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "92b9d5c1c469c4f209d4454b3cd8226553aed88e6d94557f60b3a316fc1a4626"
+  "ruleHash": "22a5432fba08ae62ca112e6f611d41576a02c070b0f5c1bab332685288a70e4d"
 }
