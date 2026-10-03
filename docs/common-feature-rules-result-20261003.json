@@ -32,7 +32,9 @@
     "registered-formal-plan-finalization",
     "before-only-stage-audit",
     "received-terminal-independent-reconciliation",
-    "native-repair-terminal-readback-handoff"
+    "native-repair-terminal-readback-handoff",
+    "exact-rebuilt-previous-proof-fencing",
+    "fault-binding-aware-flow-rejection-cache"
   ],
   "localChecks": {
     "python": 21,
@@ -100,6 +102,12 @@
       "bytes": 971792,
       "sha256": "03563dad699af32452016b332d948c5bd63400579117e52b30ab625ad0ba0a2b",
       "streamChunkMaxBytes": 262144
+    },
+    "displayRolesFinalDelta": {
+      "verifiedFiles": 63,
+      "bytes": 1395604,
+      "sha256": "0bcfd1562a0c41bdaaa0334e7b665bfb4f5e5a97cffe748ff16de0b339b9f76a",
+      "streamChunkMaxBytes": 262144
     }
   },
   "fractionalValues": {
@@ -151,11 +159,11 @@
     "newBetAllowance": 0
   },
   "latestLinux": {
-    "run": 37115707300,
+    "run": 37118563262,
     "repository": "287113535qq-cmyk/sg-capture-runner",
-    "commit": "66a8a923c93349fe5695eb0bcd841bc64a1b8f59",
+    "commit": "8f18f2614ca73bc798a5f3c8c26f5e45140b3d9c",
     "conclusion": "success",
-    "logsSHA": "b0bfe98430d4ad2517451128a7d43c8077a2a1d2c379714782c9b8fb32a99e42",
+    "logsSHA": "20acb739337b74681f48e015a87d0a9d6e223d9f46b03e6d93c2aa46cfb48b33",
     "sourceRequests": 0
   },
   "verificationSourceAudit": {
@@ -221,7 +229,7 @@
     "nativeInstallationProofReused": true
   },
   "displaySentinelRoles": {
-    "status": "hardhat-online-close-applied-touchup-local-accepted",
+    "status": "accepted-real-successor-handoff-and-prepared",
     "sharedMethods": [
       "review_feature_values",
       "reviewFeatureValues"
@@ -249,7 +257,7 @@
     "completedJournaled": 489,
     "mongoConfirmedAtReview": 299,
     "remainingReceivedTerminal": 1,
-    "sourceHeld": true,
+    "sourceHeld": false,
     "linuxRun": 37117091494,
     "maintenanceRun": 37117398806,
     "completeConfirmed": 789,
@@ -269,6 +277,93 @@
     "touchupNaturalTerminalObserved": false,
     "typescriptPassed": true,
     "privatePrepareFiles": 33,
-    "privatePrepareSHA": "44af8907e736a0508318679465305e8f70a5bba52d2de52340c6a4ea4f87cf29"
-  }
+    "privatePrepareSHA": "44af8907e736a0508318679465305e8f70a5bba52d2de52340c6a4ea4f87cf29",
+    "finalLinuxRun": 37118563262,
+    "finalLinuxStatus": "success",
+    "sourceHeldAtFailure": true,
+    "repairEvidenceRun": 37118335216,
+    "bothLanesPrepared": true,
+    "currentRepairMatched": true,
+    "preparedProofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
+    "publication": {
+      "cycleHash": "246af891454ce44967a888623997e74b3c62be5a4a84e3f7e040888a8f566513",
+      "games": [
+        {
+          "gameId": 32714,
+          "group": "primary",
+          "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+          "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
+          "inputs": {
+            "role": "capture",
+            "allocation": "round-one",
+            "round_one_limit": "0",
+            "active_shards": "20"
+          }
+        }
+      ],
+      "evidenceFiles": [
+        "config/preparation-evidence/5f18cff3f72ccbca1ba463f79f513dcdad89a72eab2888411ac0877bbb1ea5df.json",
+        "config/preparation-evidence/a37346977401eb11a9b0af5561aa32353637b82682bc0ac76221648b3f15975e.json",
+        "config/preparation-evidence/94aa418437e716bdd15455d649b89b4a13528e4c7e2dc93950fb3900f09a2db4.json",
+        "config/preparation-evidence/d3fd4ec5fb94d908e2042b5cd09a260c7af42f39dfa9177178e171bf2cfb26b8.json",
+        "config/preparation-evidence/b3936d743b9b0f47c24f034a0d20f44ce2ce30cfb1eb2be5f92f643ad865a805.json",
+        "config/preparation-evidence/963446cc052221413c9ce62294decef07d418ec86da566a6983de885f41f844a.json"
+      ],
+      "sourceRequests": 0,
+      "newBetAllowance": 0,
+      "originalRecordsChanged": 0
+    }
+  },
+  "successorHandoff": {
+    "schema": "sg-common-successor-online-review-v1",
+    "gameId": 32714,
+    "evidenceRun": 37118335216,
+    "linuxRun": 37118563262,
+    "currentRepairMatched": true,
+    "bothLanesPrepared": true,
+    "lanes": [
+      {
+        "lane": "admission",
+        "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
+        "previousProofFenced": true
+      },
+      {
+        "lane": "repair",
+        "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
+        "previousProofFenced": true
+      }
+    ],
+    "publication": {
+      "cycleHash": "246af891454ce44967a888623997e74b3c62be5a4a84e3f7e040888a8f566513",
+      "games": [
+        {
+          "gameId": 32714,
+          "group": "primary",
+          "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+          "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
+          "inputs": {
+            "role": "capture",
+            "allocation": "round-one",
+            "round_one_limit": "0",
+            "active_shards": "20"
+          }
+        }
+      ],
+      "evidenceFiles": [
+        "config/preparation-evidence/5f18cff3f72ccbca1ba463f79f513dcdad89a72eab2888411ac0877bbb1ea5df.json",
+        "config/preparation-evidence/a37346977401eb11a9b0af5561aa32353637b82682bc0ac76221648b3f15975e.json",
+        "config/preparation-evidence/94aa418437e716bdd15455d649b89b4a13528e4c7e2dc93950fb3900f09a2db4.json",
+        "config/preparation-evidence/d3fd4ec5fb94d908e2042b5cd09a260c7af42f39dfa9177178e171bf2cfb26b8.json",
+        "config/preparation-evidence/b3936d743b9b0f47c24f034a0d20f44ce2ce30cfb1eb2be5f92f643ad865a805.json",
+        "config/preparation-evidence/963446cc052221413c9ce62294decef07d418ec86da566a6983de885f41f844a.json"
+      ],
+      "sourceRequests": 0,
+      "newBetAllowance": 0,
+      "originalRecordsChanged": 0
+    },
+    "completePreserved": 789,
+    "sourceRequests": 0,
+    "newBetAllowance": 0
+  },
+  "successorLocalChecks": 18
 }

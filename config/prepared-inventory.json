@@ -4,59 +4,57 @@
   "inventory": {
     "schema": "sg-preparation-inventory-v1",
     "sourceAllowance": 0,
-    "revision": 6118,
+    "revision": 6172,
     "tasks": [
       {
         "gameId": 32714,
         "name": "Huff N Puff Money Mansion High Limit",
         "status": "prepared",
         "lane": "admission",
-        "attempt": 14,
+        "attempt": 31,
         "claim": null,
         "proof": {
           "schema": "sg-reusable-preparation-v1",
           "gameId": 32714,
-          "revisionHash": "5f31d5392b8cdd07f5da0b5ac933a49a23f2cbe4c82f3bcda62877aaf96993b7",
+          "revisionHash": "cc3aa4833a8a3a2ab4cdc122932b17e2b67f4e4ba2fbf15be1b27265fc906bae",
           "sourceAllowance": 0,
           "gates": {
             "route": {
               "verified": true,
-              "evidenceHash": "043eb0ec1e8ae0b91e9dd502741553a0713729043a750e2fc9d309234e297157"
+              "evidenceHash": "5f18cff3f72ccbca1ba463f79f513dcdad89a72eab2888411ac0877bbb1ea5df"
             },
             "settlement": {
               "verified": true,
-              "evidenceHash": "0ddbd8f5945ec225654269648de61b0d026a1bf420c90efd54c0184d29154752"
+              "evidenceHash": "a37346977401eb11a9b0af5561aa32353637b82682bc0ac76221648b3f15975e"
             },
             "persistence": {
               "verified": true,
-              "evidenceHash": "8b4d8e3a2e412e66f2a9de62c43c16e0ad3f9b617b29a3131ed3208326fbb0f8"
+              "evidenceHash": "94aa418437e716bdd15455d649b89b4a13528e4c7e2dc93950fb3900f09a2db4"
             },
             "local": {
               "verified": true,
-              "evidenceHash": "228e677f35bbb72b06a8f5130a1cedc125103ec6deeb82b6bbc9ba9d7195e80e"
+              "evidenceHash": "d3fd4ec5fb94d908e2042b5cd09a260c7af42f39dfa9177178e171bf2cfb26b8"
             },
             "linux": {
               "verified": true,
-              "evidenceHash": "85c7ef36e805f7f7f773bf172e3e8a4172584997c4af5fd54f23dc5e924271f3"
+              "evidenceHash": "b3936d743b9b0f47c24f034a0d20f44ce2ce30cfb1eb2be5f92f643ad865a805"
             },
             "native": {
               "verified": true,
-              "evidenceHash": "bed62fe7a1a0ce6fb8ab32485ea5ddd104ed39b1d93cd7326ed244c545cda52e"
+              "evidenceHash": "963446cc052221413c9ce62294decef07d418ec86da566a6983de885f41f844a"
             }
           }
         },
-        "failureEvidenceHash": "6bb6933189ca9fe1ba8d1d224226814167d4073e4a1b1df8208923f70375c436",
-        "nativeRepairKey": "game-repair:sg_r1_20260928_32714:4b37d9486ed5bb95913141bc9dbfdb9152bd59cac2ef4c15422bce4925eb4ae7",
+        "failureEvidenceHash": "aa7c070e93a930d6c793028fe4dd0ec1dc8e638962a51691c3c1288ce10658d9",
+        "nativeRepairKey": "game-repair:sg_r1_20260928_32714:bc76d875eb29262c3a713c0ab7cd0d08a909970afb52037a0202916f56573128",
         "reason": null,
-        "updatedAt": 1791022727800,
-        "rejectedProofHash": "0196d8da48b855b48e5e480858a6878e5b1a5c4b224c2cf75d6fec92812e7003",
+        "updatedAt": 1791025560244,
+        "rejectedProofHash": "f2a5f3d2b54bb115fce06df62a50c7be2b3e315bf4832610f8d8e3615e5a0d9f",
         "captureFailureEvidenceHash": "349b35ba3a5cde98239cdf891915d28c4d870d920d32ccf997e78496471cf500",
-        "inputHash": "f6863e2c4d938de5941610eecf1ee2624b3b290c048377e178283dec21622b78",
-        "revisionHash": "5f31d5392b8cdd07f5da0b5ac933a49a23f2cbe4c82f3bcda62877aaf96993b7",
-        "missingGates": [
-          "native"
-        ],
-        "proofHash": "f2a5f3d2b54bb115fce06df62a50c7be2b3e315bf4832610f8d8e3615e5a0d9f"
+        "inputHash": "15dfe8c93b4546bf66447f2b2d4b5200d5b0e3d5a1014569be1fcbd1864b0e71",
+        "revisionHash": "cc3aa4833a8a3a2ab4cdc122932b17e2b67f4e4ba2fbf15be1b27265fc906bae",
+        "missingGates": [],
+        "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33"
       }
     ]
   },
@@ -64,14 +62,14 @@
     "32714": {
       "group": "primary",
       "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
-      "proofHash": "f2a5f3d2b54bb115fce06df62a50c7be2b3e315bf4832610f8d8e3615e5a0d9f",
+      "proofHash": "1bdd3f3ebb7c2349bcc949981c8521a7ab6e2a0a21f8ee388ca6dc43f87dfb33",
       "evidence": {
-        "route": "config/preparation-evidence/043eb0ec1e8ae0b91e9dd502741553a0713729043a750e2fc9d309234e297157.json",
-        "settlement": "config/preparation-evidence/0ddbd8f5945ec225654269648de61b0d026a1bf420c90efd54c0184d29154752.json",
-        "persistence": "config/preparation-evidence/8b4d8e3a2e412e66f2a9de62c43c16e0ad3f9b617b29a3131ed3208326fbb0f8.json",
-        "local": "config/preparation-evidence/228e677f35bbb72b06a8f5130a1cedc125103ec6deeb82b6bbc9ba9d7195e80e.json",
-        "linux": "config/preparation-evidence/85c7ef36e805f7f7f773bf172e3e8a4172584997c4af5fd54f23dc5e924271f3.json",
-        "native": "config/preparation-evidence/bed62fe7a1a0ce6fb8ab32485ea5ddd104ed39b1d93cd7326ed244c545cda52e.json"
+        "route": "config/preparation-evidence/5f18cff3f72ccbca1ba463f79f513dcdad89a72eab2888411ac0877bbb1ea5df.json",
+        "settlement": "config/preparation-evidence/a37346977401eb11a9b0af5561aa32353637b82682bc0ac76221648b3f15975e.json",
+        "persistence": "config/preparation-evidence/94aa418437e716bdd15455d649b89b4a13528e4c7e2dc93950fb3900f09a2db4.json",
+        "local": "config/preparation-evidence/d3fd4ec5fb94d908e2042b5cd09a260c7af42f39dfa9177178e171bf2cfb26b8.json",
+        "linux": "config/preparation-evidence/b3936d743b9b0f47c24f034a0d20f44ce2ce30cfb1eb2be5f92f643ad865a805.json",
+        "native": "config/preparation-evidence/963446cc052221413c9ce62294decef07d418ec86da566a6983de885f41f844a.json"
       }
     }
   }
