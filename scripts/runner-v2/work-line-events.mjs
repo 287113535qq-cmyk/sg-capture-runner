@@ -12,6 +12,16 @@ export function validatePreparationProof(proof,gameId){
   &&/^[a-f0-9]{64}$/.test(proof.gates[gate].evidenceHash),'WORK_LINE_PROOF_GATE');
  return hash(proof);
 }
+// Called only after the native successor's immutable closure was validated.
+// Capture the current previous-fault proof so a later proof cannot be fenced.
+export function bindNativeRepairAdvance(event,current){
+ if(event.kind!=='native-repair-advanced'||current?.status!=='prepared'||current.claim
+  ||current.gameId!==event.gameId||current.nativeRepairKey!==event.previousRepairKey
+  ||current.failureEvidenceHash!==event.previousFailureEvidenceHash
+  ||!current.proofHash||!current.proof)return event;
+ assert(validatePreparationProof(current.proof,event.gameId)===current.proofHash,'WORK_LINE_PROOF_CHANGED');
+ return {...event,supersededProofHash:current.proofHash};
+}
 export function applyWorkLineEvent(inventory,event,lane,now){
  assert(['admission','repair'].includes(lane)&&Number.isSafeInteger(now),'WORK_LINE_LANE');
  assert(event?.schema==='sg-work-line-event-v1'&&event.sourceAllowance===0
@@ -22,12 +32,18 @@ export function applyWorkLineEvent(inventory,event,lane,now){
  assert(task&&!task.claim,'WORK_LINE_TASK_BUSY');
  assert(task.status!=='complete','WORK_LINE_COMPLETED_IMMUTABLE');
  if(event.kind==='native-repair-advanced'){
-  // A reconciled terminal closes the latest source without creating a fake
-  // abandoned fault. Advance only the exact previous, already fenced repair.
-  assert((task.lane==='repair'||lane==='admission'&&task.lane==='admission')&&['queued','blocked'].includes(task.status)&&!task.proof&&!task.proofHash
+  // A background revision review can rebuild the previous fault's proof
+  // before its authenticated successor arrives. Fence only that exact proof;
+  // another fault, claim or subsequently rebuilt proof must remain untouched.
+  const rebuiltPrevious=task.status==='prepared'&&task.proof&&task.proofHash
+   &&event.supersededProofHash===task.proofHash
+   &&validatePreparationProof(task.proof,event.gameId)===task.proofHash;
+  const fencedPrevious=['queued','blocked'].includes(task.status)&&!task.proof&&!task.proofHash;
+  assert((task.lane==='repair'||lane==='admission'&&task.lane==='admission')&&(fencedPrevious||rebuiltPrevious)
    &&task.nativeRepairKey===event.previousRepairKey&&task.failureEvidenceHash===event.previousFailureEvidenceHash
    &&event.repairKey!==event.previousRepairKey&&/^[a-f0-9]{64}$/.test(event.rejectedProofHash??'')
    &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_TRANSITION_BINDING');
+  task.proof=null;delete task.proofHash;
   task.rejectedProofHash=event.rejectedProofHash;task.failureEvidenceHash=event.evidenceHash;
   task.nativeRepairKey=event.repairKey;task.lane='repair';task.status=lane==='repair'?'queued':'blocked';task.reason='NATIVE_REPAIR_REPLAY_REQUIRED';
  }else if(event.kind==='native-repair-settled'){

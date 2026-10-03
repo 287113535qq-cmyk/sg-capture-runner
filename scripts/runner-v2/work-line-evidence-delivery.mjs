@@ -11,6 +11,7 @@ import {validatePreparedStockReview} from './prepared-stock-review.mjs';
 import {validatePreparedCountReview} from './prepared-count-review.mjs';
 import {validateCaptureFault} from './capture-fault-delivery.mjs';
 import {validateConfirmedFlowEvidence} from './confirmed-flow-evidence.mjs';
+import {bindNativeRepairAdvance} from './work-line-events.mjs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -73,7 +74,15 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
       rejectedProofHash:transition.rejectedProofHash}:{}),
     ...(task.captureLink?{captureFailureEvidenceHash:task.captureLink.failureEvidenceHash,rejectedProofHash:task.captureLink.rejectedProofHash}:{}),
     evidenceHash:task.failureEvidenceHash,repairKey:task.manifest.repairKey,sourceAllowance:0};
-   for(const lane of ['admission','repair'])publishImmutableInbox(path.join(root,'.local/preparation-worker',lane,'inbox'),event);
+   for(const lane of ['admission','repair']){
+    let laneEvent=event;
+    if(transition){
+     const file=path.join(root,'.local/preparation-worker',lane,'inventory.json');
+     const current=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')).tasks.find(t=>t.gameId===task.gameId):null;
+     laneEvent=bindNativeRepairAdvance(event,current);
+    }
+    publishImmutableInbox(path.join(root,'.local/preparation-worker',lane,'inbox'),laneEvent);
+   }
    return publishImmutableInbox(path.join(root,'.local/preparation-worker/repair/evidence-inbox'),validateNativeRepairReplay(task));
   }
   return publishImmutableInbox(path.join(root,'.local','capture-handoff-worker','inbox'),task);

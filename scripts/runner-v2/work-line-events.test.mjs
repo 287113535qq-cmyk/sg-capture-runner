@@ -1,10 +1,36 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {newInventory,claimPreparation,finishPreparation,preparationGates} from './preparation-inventory.mjs';
-import {applyWorkLineEvent,preparedCampaignSelector} from './work-line-events.mjs';
+import {applyWorkLineEvent,bindNativeRepairAdvance,preparedCampaignSelector,validatePreparationProof} from './work-line-events.mjs';
 const games=[{gameId:1,name:'broken'},{gameId:2,name:'next'}];
 const proof=(id,rev='a')=>({schema:'sg-reusable-preparation-v1',gameId:id,sourceAllowance:0,revisionHash:rev.repeat(64),
  gates:Object.fromEntries(preparationGates.map(g=>[g,{verified:true,evidenceHash:'b'.repeat(64)}]))});
 const prepare=(q,id,rev='a')=>{const c=claimPreparation(q,{owner:'test',now:id*10,lane:q.tasks.find(t=>t.gameId===id).lane});assert.equal(c.gameId,id);finishPreparation(q,c,{status:'prepared',proof:proof(id,rev)},id*10+1);};
+
+test('authenticated successor fences only the captured rebuilt previous-fault proof in both lanes',()=>{
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-advanced',gameId:1,sourceAllowance:0,
+  evidenceHash:'c'.repeat(64),previousFailureEvidenceHash:'d'.repeat(64),previousRepairKey:'game-repair:fixture:'+'e'.repeat(64),
+  rejectedProofHash:'f'.repeat(64),repairKey:'game-repair:fixture:'+'a'.repeat(64)};
+ const make=lane=>{const q=newInventory(games);q.consumedEvents=[];prepare(q,1);Object.assign(q.tasks[0],{lane,
+  failureEvidenceHash:event.previousFailureEvidenceHash,nativeRepairKey:event.previousRepairKey});return q;};
+ for(const lane of ['admission','repair']){
+  const q=make(lane),bound=bindNativeRepairAdvance(event,q.tasks[0]);
+  assert.equal(bound.supersededProofHash,q.tasks[0].proofHash);
+  assert(applyWorkLineEvent(q,bound,lane,50));assert.equal(q.tasks[0].proof,null);
+  assert.equal(q.tasks[0].failureEvidenceHash,event.evidenceHash);
+  assert.equal(q.tasks[0].status,lane==='repair'?'queued':'blocked');assert.equal(q.sourceAllowance,0);
+  const changed=make(lane),captured=bindNativeRepairAdvance(event,changed.tasks[0]);
+  changed.tasks[0].proof=proof(1,'9');changed.tasks[0].proofHash=validatePreparationProof(changed.tasks[0].proof,1);
+  const before=structuredClone(changed);
+  assert.throws(()=>applyWorkLineEvent(changed,captured,lane,60),/TRANSITION_BINDING/);assert.deepEqual(changed,before);
+ }
+ for(const change of [{claim:{owner:'busy'}},{failureEvidenceHash:'b'.repeat(64)},
+  {nativeRepairKey:event.repairKey},{gameId:2}]){
+  const q=make('repair');Object.assign(q.tasks[0],change);
+  assert.deepEqual(bindNativeRepairAdvance(event,q.tasks[0]),event);
+ }
+ const corrupt=make('repair');corrupt.tasks[0].proofHash='0'.repeat(64);
+ assert.throws(()=>bindNativeRepairAdvance(event,corrupt.tasks[0]),/PROOF_CHANGED/);
+});
 
 test('confirmed terminal advances the exact previous fault without revoking any newer proof or granting readiness',()=>{
  const event={schema:'sg-work-line-event-v1',kind:'native-repair-advanced',gameId:1,sourceAllowance:0,
