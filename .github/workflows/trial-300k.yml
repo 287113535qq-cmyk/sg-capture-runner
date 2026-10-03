@@ -90,6 +90,11 @@ jobs:
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked admission module dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Admit registered AG queue without source requests
         run: node scripts/runner-v2/ag-rolling/sg-live.mjs admit
   ag-rolling-capture:
