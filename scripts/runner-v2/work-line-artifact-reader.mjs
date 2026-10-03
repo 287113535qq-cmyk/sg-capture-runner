@@ -10,9 +10,20 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 const exec=promisify(execFile),repos=['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'];
 // GET-only artifact consumer. There is deliberately no workflow dispatch,
 // source switch, capture client, quota mutation or database write here.
-export async function readWorkLineArtifacts(root){
+export async function readWorkLineArtifacts(root,{execute=exec}={}){
+ const child=await execute(process.execPath,['scripts/runner-v2/work-line-artifact-executor.mjs'],{
+  cwd:root,encoding:'utf8',timeout:180000,maxBuffer:4*1024*1024,windowsHide:true});
+ const result=JSON.parse(child.stdout);
+ assert(result.sourceRequests===0&&result.mongoWrites===0&&/^evidence-[a-z-]+$/.test(result.status),
+  'EVIDENCE_EXECUTOR_BOUNDARY');
+ return result;
+}
+
+// Each bounded tick imports the current reviewed validators in a fresh child.
+// A long-lived handoff process cannot retain an obsolete preparation contract.
+export async function readWorkLineArtifactsCurrent(root){
  const dir=path.join(root,'.local','work-line-evidence'),keyPath=path.join(dir,'private-key.pem');
- if(!fs.existsSync(keyPath))return {status:'evidence-recipient-unavailable',sourceRequests:0};
+ if(!fs.existsSync(keyPath))return {status:'evidence-recipient-unavailable',sourceRequests:0,mongoWrites:0};
  const gh=process.env.SG_GH_EXECUTABLE||'C:/Users/xxx/.codex/tools/github-cli/2.101.0/bin/gh.exe';
  const python=process.env.SG_EVIDENCE_PYTHON||'C:/Users/xxx/AppData/Local/Programs/Python/Python314/python.exe';
  const env={...process.env,HTTPS_PROXY:'http://127.0.0.1:10090',HTTP_PROXY:'http://127.0.0.1:10090',NO_PROXY:'',GODEBUG:'http2client=0',PYTHONUTF8:'1'};
