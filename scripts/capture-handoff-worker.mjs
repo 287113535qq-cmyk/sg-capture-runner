@@ -9,7 +9,9 @@ import {workLineEvidencePump} from './runner-v2/work-line-evidence-pump.mjs';
 // dispatch authority. Online consumer revalidates every preparation gate.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dir=path.join(root,'.local','capture-handoff-worker');
 const consumerRevision=hash(['scripts/capture-handoff-worker.mjs','scripts/runner-v2/prepared-publication-handoff.mjs',
- 'scripts/runner-v2/prepared-count-runtime.mjs'].map(f=>fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')));
+ 'scripts/runner-v2/prepared-count-runtime.mjs','scripts/runner-v2/capture-fault-delivery.mjs',
+ 'scripts/runner-v2/capture-preparation-binding.mjs','scripts/runner-v2/prepared-count-plan.mjs']
+ .map(f=>fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')));
 fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});fs.mkdirSync(path.join(dir,'results'),{recursive:true});
 const lockPath=path.join(dir,'producer.lock'),lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid}));
 let stop=false,waiting=false;process.on('SIGINT',()=>{stop=true;});process.on('SIGTERM',()=>{stop=true;});
@@ -39,6 +41,10 @@ try{
       if(fs.existsSync(dest))continue;
       result=deliverConfirmedAnalysis(root,r);
     }else if(r.schema==='sg-capture-fault-export-v1'){
+      // A previous consumer rejection is not a permanent repair veto.
+      // Immutable source input is revalidated once per consumer revision;
+      // downstream inbox publication remains idempotent and grants no source.
+      dest=path.join(dir,'results',hash({taskHash:hash(r),consumerRevision})+'.json');
       if(fs.existsSync(dest))continue;
       result=deliverCaptureFault(root,r);
     }else{
