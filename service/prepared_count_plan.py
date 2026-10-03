@@ -26,6 +26,16 @@ def prepared_count_plan(base,profile,authorization):
         and profile['expiresAt']-profile['createdAt']==7200000,'PREPARED_COUNT_PROFILE')
     for field in ('activation','preparationProofHash','failureEvidenceHash','sceneHash','recordsHash','closureHash'):
         require(isinstance(profile.get(field),str) and re.fullmatch('[a-f0-9]{64}',profile[field]),'PREPARED_COUNT_BINDING')
+    if 'repairParent' in profile:
+        parent=profile['repairParent']
+        require(isinstance(parent,dict)
+            and re.fullmatch('[a-f0-9]{64}',parent.get('activation',''))
+            and parent['activation']!=profile['activation']
+            and re.fullmatch('[a-f0-9]{64}',parent.get('specHash',''))
+            and re.fullmatch('[a-f0-9]{40}',parent.get('sourceCommit',''))
+            and re.fullmatch('[0-9]+:1',parent.get('sourceRun',''))
+            and any(parent.get('closureKey')==f"count-{kind}-close:{base['trialId']}:{parent['sourceRun']}:complete"
+                    for kind in ('shared','parked')),'PREPARED_REPAIR_PARENT')
     plan={**base,'target':300000,'countAllocation':profile['activation']}
     require(profile.get('planHash')==digest(plan),'PREPARED_COUNT_PLAN_CHANGED')
     return plan

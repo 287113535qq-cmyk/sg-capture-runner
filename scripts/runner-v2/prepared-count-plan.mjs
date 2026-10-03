@@ -19,6 +19,13 @@ export function preparedCountPlan(base,profile,authorization){
   &&profile.expiresAt-profile.createdAt===7200000,'PREPARED_COUNT_PROFILE');
  for(const field of ['activation','preparationProofHash','failureEvidenceHash','sceneHash','recordsHash','closureHash'])
   assert(/^[a-f0-9]{64}$/.test(profile[field]??''),'PREPARED_COUNT_BINDING');
+ if(profile.repairParent){
+  const p=profile.repairParent;
+  assert(/^[a-f0-9]{64}$/.test(p.activation??'')&&p.activation!==profile.activation
+   &&/^[a-f0-9]{64}$/.test(p.specHash??'')&&/^[a-f0-9]{40}$/.test(p.sourceCommit??'')
+   &&/^\d+:1$/.test(p.sourceRun??'')&&['shared','parked'].some(kind=>
+    p.closureKey===`count-${kind}-close:${base.trialId}:${p.sourceRun}:complete`),'PREPARED_REPAIR_PARENT');
+ }
  const plan={...base,target:300000,countAllocation:profile.activation};
  assert(profile.planHash===hash(plan),'PREPARED_COUNT_PLAN_CHANGED');return plan;
 }

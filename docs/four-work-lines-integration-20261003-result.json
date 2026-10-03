@@ -188,6 +188,10 @@
     "finalPreflightRun": 37101767954,
     "settledRuntimeLocalPassed": true,
     "settledRuntimeLinuxPassed": false,
-    "settledRuntimeActualApplied": false
+    "settledRuntimeActualApplied": false,
+    "genericFormalRepairLocalPassed": true,
+    "genericFormalRepairLinuxPassed": false,
+    "genericFormalRepairActualApplied": false,
+    "formalRepairSourceReplay": false
   }
 }

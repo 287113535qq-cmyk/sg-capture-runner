@@ -10,6 +10,7 @@ import {admitPreparedCountRun} from './prepared-count-admission.mjs';
 import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
 import {amendPreparedZeroRuntime,amendPreparedSettledRuntime,preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
 import {preparedSettledHistory} from './prepared-settled-history.mjs';
+import {reviewPreparedCountRepairScene} from './prepared-count-repair-scene.mjs';
 
 // Synthetic state exercises admission/CAS failures. Real retained records are
 // independently reviewed privately; these fixtures do not prove live routing.
@@ -53,6 +54,69 @@ async function fixture(){
  return {args:{...args,profile,authorization,boundary:async()=>{},commit:'f'.repeat(40),run:'1:1'},docs,mongo,writes,base,repairKey};
 }
 
+async function repairFixture(){
+ const f=await fixture();await activatePreparedCount(f.args);
+ const parentProfile=f.args.profile,pool=f.docs.get('state/pool:'+f.base.trialId),campaign=f.docs.get('state/campaign');
+ const oldSpec=f.docs.get('journal/complete-count:'+f.base.trialId+':'+parentProfile.activation);
+ pool.enabled=false;pool.failure='PROTOCOL_VALIDATION_FAILED';pool.retiredCount='retired-count:fixture';
+ const game=campaign.games.find(g=>g.game_id===f.base.gameId);game.status='parked-protocol';
+ const parent={activation:parentProfile.activation,specHash:hash(oldSpec),sourceCommit:f.args.commit,
+  sourceRun:'9:1',closureKey:`count-shared-close:${f.base.trialId}:9:1:complete`};
+ const native={schema:'sg-retired-count-result-v1',trialId:f.base.trialId,completePreserved:2,
+  abandonedAttempts:1,recordsHash:parentProfile.recordsHash,sourceRequests:0,newBetAllowance:0};
+ const closed={schema:'sg-count-shared-close-v1',activation:parent.activation,sourceCommit:parent.sourceCommit,
+  sourceRun:parent.sourceRun,trialId:f.base.trialId,completePreserved:2,abandonedAttempts:1,unknownAttempts:0,
+  recordsHash:native.recordsHash,sourceRequests:0,newBetAllowance:0,requiresNewSession:true,
+  repairKey:f.repairKey,retirement:pool.retiredCount,retirementHash:hash(native)};
+ f.docs.set('journal/'+parent.closureKey,closed);f.docs.set('journal/'+pool.retiredCount+':complete',native);
+ f.docs.set('journal/'+`count-run:${f.base.trialId}:9:1`,{schema:'sg-count-run-v1',activation:parent.activation,
+  profileHash:oldSpec.profileHash,commit:parent.sourceCommit,run:parent.sourceRun});
+ const repair=f.docs.get('state/'+f.repairKey),archive=f.docs.get('journal/'+repair.archiveKey);
+ f.args.publication.inventory.tasks[0].failureEvidenceHash=hash({repairKey:f.repairKey,repair,archiveHash:hash(archive)});
+ const args={...f.args,parent},scene=await reviewPreparedCountRepairScene(args);
+ const activation='6'.repeat(64),profile={...parentProfile,activation,repairParent:parent,sceneHash:hash(scene),
+  recordsHash:scene.recordsHash,closureHash:hash(closed),preparationProofHash:scene.preparationProofHash,
+  failureEvidenceHash:scene.failureEvidenceHash,planHash:hash({...f.base,target:300000,countAllocation:activation})};
+ const authorization={...f.args.authorization,activation,profileHash:hash(profile)};
+ return {...f,parent,scene,oldSpec,args:{...f.args,profile,authorization,commit:'7'.repeat(40),run:'10:1'}};
+}
+
+test('formal repair returns a prepared game with inherited count and immutable parent proof, without replay or a new pilot',async()=>{
+ const f=await repairFixture(),before=structuredClone(f.docs.get('journal/complete-count:'+f.base.trialId+':'+f.parent.activation));
+ const result=await activatePreparedCount(f.args);
+ assert.equal(result.completePreserved,2);assert.equal(result.remainingComplete,299998);assert.equal(result.newBetAllowance,0);
+ assert.deepEqual(f.docs.get('journal/complete-count:'+f.base.trialId+':'+f.parent.activation),before);
+ const pool=f.docs.get('state/pool:'+f.base.trialId);assert.equal(pool.nextSequence,101);assert.equal(pool.enabled,true);
+ assert.equal(f.docs.get('state/campaign').games[0].status,'ready');
+ const spec=f.docs.get('journal/complete-count:'+f.base.trialId+':'+f.args.profile.activation);
+ assert.equal(spec.parentActivation,f.parent.activation);assert.equal(spec.parentSpecHash,hash(f.oldSpec));
+ assert.equal(spec.historyReuse.rawRecordsRead,0);
+ // Optional analysis remains pending while the repaired flow can be admitted.
+ f.docs.get('state/'+f.repairKey).protocolAnalysisStatus='pending';
+ const plan={...f.base,target:300000,countAllocation:f.args.profile.activation};
+ const admitted=await admitPreparedCountRun({...f.args,plan,run:'11:1'});
+ assert.equal(admitted.completeBefore,2);assert.equal(admitted.remainingComplete,299998);
+ const name=`formal-prepared-count-${f.base.gameId}-${f.args.profile.activation}.json`;
+ const inputs=await preparedContinuationInputs({store:f.args.store,campaign:f.docs.get('state/campaign'),
+  gameId:f.base.gameId,group:'primary',plans:f.args.plans,registry:{schema:'sg-prepared-count-authorizations-v1',
+   sourceAllowance:0,profiles:{[name]:f.args.authorization}},readProfile:async()=>f.args.profile,commit:f.args.commit});
+ assert.equal(inputs.formal_profile,name);assert.equal(inputs.role,'formal-count');
+ assert.equal(f.docs.get('state/'+f.repairKey).protocolAnalysisStatus,'pending');
+ await assert.rejects(activatePreparedCount(f.args),/ALREADY_STARTED/);
+});
+for(const bad of ['permit','retirement','old-spec','unknown','proof','pending','lease'])
+ test('formal prepared repair refuses '+bad+' before state changes',async()=>{
+  const f=await repairFixture(),pool=f.docs.get('state/pool:'+f.base.trialId);
+  if(bad==='permit')f.docs.delete('journal/'+`count-run:${f.base.trialId}:9:1`);
+  if(bad==='retirement')f.docs.get('journal/'+pool.retiredCount+':complete').completePreserved++;
+  if(bad==='old-spec')f.args.profile.repairParent.specHash='0'.repeat(64);
+  if(bad==='unknown')f.docs.get('journal/'+f.parent.closureKey).unknownAttempts=1;
+  if(bad==='proof')f.args.publication.inventory.tasks[0].failureEvidenceHash='0'.repeat(64);
+  if(bad==='pending')f.docs.get('state/batch:'+f.base.trialId+':1').pendingOriginal={raw:'unknown'};
+  if(bad==='lease')pool.workers[0]={leaseUntil:999999};
+  const count=f.writes.length;await assert.rejects(activatePreparedCount(f.args));assert.equal(f.writes.length,count);
+ });
+
 test('settled runtime inherits more than 100 batches without rereading old raw records or restoring discarded suffixes',async()=>{
  const f=await fixture();await activatePreparedCount(f.args);
  const profile=f.args.profile,plan={...f.base,target:300000,countAllocation:profile.activation};
@@ -83,6 +147,8 @@ test('settled runtime inherits more than 100 batches without rereading old raw r
  for(const [k,v] of original)assert.deepEqual(f.docs.get(k),v);
  await loadCountPermission({store:f.args.store,plan,pool,commit:args.commit});
  await assert.rejects(amendPreparedSettledRuntime(args),/ALREADY_APPLIED/);
+ f.docs.get('journal/'+pool.countAllocation.batches[102].settlementKey).fullReadback=false;
+ await assert.rejects(preparedSettledHistory({...f.args,plan,pool,spec}),/SETTLEMENT_CHANGED/);
 });
 
 for(const bad of ['active','failed','missing-batch','pending','wrong-count','changed-history','cas'])

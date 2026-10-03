@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {preparedCountPlan} from './prepared-count-plan.mjs';
 import {reviewPreparedCountScene} from './prepared-count-scene.mjs';
+import {reviewPreparedCountRepairScene} from './prepared-count-repair-scene.mjs';
 import {checkLedger} from './complete-count.mjs';
 
 // A separately authorized maintenance operation converts the preserved,
@@ -16,7 +17,8 @@ export async function activatePreparedCount({store,transport,parser,base,plans,p
  await boundary();
  assert(!(await store.get('journal',key))&&!(await store.get('journal',key+':before'))
   &&!(await store.get('journal',key+':complete')),'PREPARED_COUNT_ALREADY_STARTED');
- const scene=await reviewPreparedCountScene({store,transport,parser,base,plans,publication,group,readEvidence,now});
+ const reviewScene=profile.repairParent?reviewPreparedCountRepairScene:reviewPreparedCountScene;
+ const scene=await reviewScene({store,transport,parser,base,plans,publication,group,readEvidence,parent:profile.repairParent,now});
  assert(hash(scene)===profile.sceneHash&&scene.recordsHash===profile.recordsHash
   &&scene.completePreserved===profile.completePreserved&&hash(scene.closed)===profile.closureHash
   &&scene.preparationProofHash===profile.preparationProofHash
@@ -26,17 +28,23 @@ export async function activatePreparedCount({store,transport,parser,base,plans,p
  const spec={schema:'sg-complete-count-v1',activation:profile.activation,commit,planHash:hash(plan),trialId:plan.trialId,
   gameId:plan.gameId,target:plan.target,maxSequence:profile.maxSequence,baselineBatchCount:baseline.length,
   baselineHash:hash(baseline),firstSequence:scene.pool.nextSequence,sessionRotation:profile.sessionRotation,
-  runAdmission:'unique-github-run-v1',profileHash:hash(profile),sourceGeneration:scene.closed.generation,
+  runAdmission:'unique-github-run-v1',profileHash:hash(profile),
+  ...(scene.parentActivation?{parentActivation:scene.parentActivation,parentSpecHash:scene.parentSpecHash,historyReuse:scene.history}
+   :{sourceGeneration:scene.closed.generation}),
   sourceRecordsHash:scene.recordsHash,preparationProofHash:scene.preparationProofHash};
  const pool={...scene.pool,enabled:true,failure:null,planHash:hash(plan),confirmed:scene.completePreserved,workers:{},
   countAllocation:{specHash:hash(spec),reserved:0,batches:Object.fromEntries(baseline.map(b=>[b.id,b]))}};
- for(const field of ['demoGeneration','demoPilotClosed','drainingProtocol','retiredDemo'])delete pool[field];
+ for(const field of ['demoGeneration','demoPilotClosed','drainingProtocol','retiredDemo','retiredCount','countSharedClosure'])delete pool[field];
  checkLedger(pool,plan,spec);
  await boundary();
  assert(hash((await store.get('state','campaign'))?.value)===hash(scene.campaign)
   &&hash((await store.get('state','pool:'+base.trialId))?.value)===hash(scene.pool)
   &&hash((await store.get('state',scene.closed.repairKey))?.value)===hash(scene.repair),
  'PREPARED_COUNT_SCENE_CHANGED');
+ if(profile.repairParent){
+  const again=await reviewScene({store,base,plans,publication,group,readEvidence,parent:profile.repairParent,now});
+  assert(hash(again)===hash(scene),'PREPARED_COUNT_SCENE_CHANGED');
+ }
  const save=async(k,value)=>{
   await store.create('journal',k,value,{immutable:true});
   assert(hash((await store.get('journal',k))?.value)===hash(value),'PREPARED_COUNT_READBACK');

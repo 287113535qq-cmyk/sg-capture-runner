@@ -42,3 +42,11 @@ class PreparedCountPlanTests(unittest.TestCase):
         with patch.dict(os.environ,SG_FORMAL_COUNT_PROFILE='formal-prepared-count-../../other.json'):
             with self.assertRaises(Exception):validate_pool_plan(plan)
 
+    def test_repair_parent_is_independently_bound_without_changing_complete_target(self):
+        base,p,a,plan=self.fixture()
+        p['repairParent']=dict(activation='b'*64,specHash='c'*64,sourceCommit='d'*40,sourceRun='9:1',
+            closureKey=f"count-shared-close:{base['trialId']}:9:1:complete")
+        a['profileHash']=digest(p);self.assertEqual(prepared_count_plan(base,p,a),plan)
+        for field,value in [('activation',p['activation']),('specHash','wrong'),('sourceRun','9:2'),('closureKey','foreign')]:
+            bad=copy.deepcopy(p);bad['repairParent'][field]=value;auth={**a,'profileHash':digest(bad)}
+            with self.subTest(field=field),self.assertRaises(Exception):prepared_count_plan(base,bad,auth)
