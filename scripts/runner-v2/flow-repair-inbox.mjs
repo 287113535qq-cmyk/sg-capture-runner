@@ -1,27 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {nextRequest} from '../trial/squid-protocol.mjs';
-import {veryFruityActionNext, VERYFRUITY_SOURCE} from '../trial/veryfruity-action-protocol.mjs';
-import {analyzer} from './analyzer.mjs';
-import {offlineAnalysisEnvironment} from './offline-analysis-environment.mjs';
-import {reviewFlowRepairTask} from './flow-repair-task.mjs';
+import {spawnSync} from 'node:child_process';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {publishImmutableInbox} from './work-line-mailbox.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
-import {preparationReplayEvidence} from './preparation-replay-evidence.mjs';
-import {createRequire} from 'node:module';
 import {automaticFlowReplay} from './confirmed-flow-evidence.mjs';
-let prepareFields, veryFields;
-function independentFields(root, raw, plan, fields) {
-  if (!prepareFields) {
-    const require=createRequire(import.meta.url);
-    require(path.join(root,'collector/node_modules/ts-node')).register({project:path.join(root,'collector/tsconfig.json'),transpileOnly:true});
-    prepareFields=require(path.join(root,'collector/sg.ingest.ts')).prepareNextgenRound;
-    veryFields=require(path.join(root,'collector/sg.veryfruity-action.ts')).veryFruityActionFields;
-  }
-  return raw.sourceKey===VERYFRUITY_SOURCE ? veryFields(raw,plan) : prepareFields(raw,
-    {buy:fields.buy,bonus:fields.bonus,typeMappingHash:fields.typeMappingHash});
-}
 
 // Fixed local adapters; mailbox values never choose code, commands or profiles.
 // One bounded review per tick leaves normal preparation and admission running.
@@ -52,13 +35,14 @@ export async function reviewFlowRepairInbox(root, index, python) {
         fs.readFileSync(new URL('./preparation-replay-evidence.mjs', import.meta.url), 'utf8'),
         fs.readFileSync(new URL('./offline-analysis-environment.mjs', import.meta.url), 'utf8'),
         fs.readFileSync(new URL('./confirmed-flow-evidence.mjs', import.meta.url), 'utf8'),hash(task)]);
+      revisionHash=hash([revisionHash,fs.readFileSync(new URL('./flow-repair-executor.mjs',import.meta.url),'utf8')]);
     } catch {continue;}
     const id = hash([name, revisionHash]), file = path.join(results, id + '.json');
     if (fs.existsSync(file) || fs.existsSync(file + '.claim')) continue;
     const claim = fs.openSync(file + '.claim', 'wx');
     try {fs.writeFileSync(claim, JSON.stringify({pid: process.pid, evidence: name, revisionHash})); fs.fsyncSync(claim);}
     finally {fs.closeSync(claim);}
-    let parser, result;
+    let result;
     try {
       const replay=task.schema==='sg-preparation-replay-task-v1';
       if(replay){
@@ -67,11 +51,13 @@ export async function reviewFlowRepairInbox(root, index, python) {
         if(current?.lane==='repair'&&!(task.faults?.length>0))throw Error('PREPARATION_REPLAY_FAILURE_REQUIRED');
         if(current?.failureEvidenceHash!==task.failureEvidenceHash)throw Error('PREPARATION_REPLAY_FAILURE_CHANGED');
       }
-      parser = analyzer({python, env: offlineAnalysisEnvironment(root, replay?task.plan:task.evidence.plan)});
-      const runnerNext=(raw,plan)=>raw.sourceKey===VERYFRUITY_SOURCE ? veryFruityActionNext(plan,raw) : nextRequest(raw);
-      result = replay ? await preparationReplayEvidence({task,revisionHash:preparationHash,parser,runnerNext,
-        independentFields:(raw,plan,fields)=>independentFields(root,raw,plan,fields)})
-        : await reviewFlowRepairTask({task, parser, runnerNext});
+      const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>!/^SG_|TOKEN|SECRET|PASSWORD/i.test(k)));
+      const executed=spawnSync(process.execPath,['scripts/runner-v2/flow-repair-executor.mjs'],{cwd:root,env,
+        input:JSON.stringify({task,revisionHash:preparationHash,python}),encoding:'utf8',timeout:180000,
+        maxBuffer:6*1024*1024,windowsHide:true});
+      if(executed.status!==0||executed.error)throw Error('FLOW_REVIEW_EXECUTOR_FAILED');
+      const checked=JSON.parse(executed.stdout);if(!checked.ok)throw Error(checked.reason);
+      result=checked.result;
       if(replay) {
         const inventory=JSON.parse(fs.readFileSync(path.join(base,'inventory.json'),'utf8'));
         const current=inventory.tasks.find(t=>t.gameId===task.gameId);
@@ -86,7 +72,7 @@ export async function reviewFlowRepairInbox(root, index, python) {
       result = {schema: 'sg-flow-repair-review-v1', gameId: task.gameId, evidenceHash: task.evidenceHash??hash(task),
         status: 'flow-repair-requires-adapter', reason: /^[A-Z_]{1,80}$/.test(error.message) ? error.message : 'FLOW_REPAIR_VALIDATION_FAILED',
         prepared: false, sourceAllowance: 0, sourceRequests: 0, replayAllowed: false};
-    } finally {parser?.close();}
+    }
     const out = {...result, revisionHash};
     const saved = publishImmutableInbox(results, out);
     const fd = fs.openSync(file, 'wx');
