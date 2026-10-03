@@ -455,3 +455,36 @@ test('actual continuation stage flushes its one original round and forbids new B
   else{assert.equal(b.checkpoint,1);assert.equal(b.pending,null);}
  }
 });
+
+test('busy bulk writes back off briefly with jitter, reset after progress, and recheck guards on every retry',async()=>{
+ const f=await fixture(),waits=[],checks=[];let index=0;
+ const outcomes=[0,0,1,'resource',0,0,0,0,'done'];
+ f.controller.random=()=>0.5;f.controller.sleep=async ms=>waits.push(ms);
+ f.controller.queue={outstanding:async()=>index<outcomes.length?[{sequence:1}]:[]};
+ f.controller.store.writable=async()=>checks.push('resource');
+ f.controller.pool.heartbeat=async()=>checks.push('lease');
+ f.controller.writer={deliver:async()=>{
+  const result=outcomes[index++];checks.push('write');
+  return result==='done'?{confirmed:1,paused:false}:{confirmed:typeof result==='number'?result:0,
+   paused:true,reason:result==='resource'?'RESOURCE_PAUSED':'WRITE_CAPACITY_BUSY'};
+ }};
+ await f.controller.flush();
+ assert.deepEqual(waits,[100,200,100,10000,100,200,400,500]);
+ assert.deepEqual(checks,Array.from({length:9},()=>['resource','lease','write']).flat());
+ assert.equal(f.controller.storageStages.byStage['wait.capacity'].calls,7);
+ assert.equal(f.controller.storageStages.byStage['wait.resource'].calls,1);
+ for(const jitter of [0,0.99]){
+  index=0;outcomes.splice(0,outcomes.length,0,'done');waits.length=0;f.controller.random=()=>jitter;
+  await f.controller.flush();assert(waits[0]>=75&&waits[0]<=125);
+ }
+});
+
+test('an unknown write acknowledgement exits flush without a capacity retry or another delivery',async()=>{
+ const f=await fixture();let calls=0,waits=0;
+ f.controller.queue={outstanding:async()=>[{sequence:1}]};
+ f.controller.writer={deliver:async()=>{calls++;throw Object.assign(Error('MONGO_ACK_UNKNOWN'),{code:'MONGO_ACK_UNKNOWN'});}};
+ f.controller.sleep=async()=>waits++;
+ await assert.rejects(f.controller.flush(),{code:'MONGO_ACK_UNKNOWN'});
+ assert.equal(calls,1);assert.equal(waits,0);
+ assert.equal((await f.store.get('state',f.controller.batchKey)).value.checkpoint,0);
+});

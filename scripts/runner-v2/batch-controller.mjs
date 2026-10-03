@@ -21,9 +21,9 @@ const fail=(code,category='storage')=>Object.assign(new Error(code),{code,catego
 // Local implementation of the capture worker's RPC interface. Every business
 // decision below runs in its GitHub process; transport only performs Mongo I/O.
 export class BatchController {
-  constructor({store,transport,gate,analyzer,spool,evidence,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
+  constructor({store,transport,gate,analyzer,spool,evidence,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,random=Math.random,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
     assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
-    Object.assign(this,{store,transport,gate,analyzer,spool,evidence,control,plan,group,now,sleep,runKey});
+    Object.assign(this,{store,transport,gate,analyzer,spool,evidence,control,plan,group,now,sleep,runKey,random});
     this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
     this.storageStages={nestedWithinRpc:true,byStage:{}};
@@ -127,6 +127,7 @@ export class BatchController {
     }
   }
   async flush(){
+    let capacityAttempt=0;
     while(true){
       const rows=await this.storageTime('queue.read',()=>this.queue.outstanding());if(!rows.length)return;
       await this.storageTime('resource.guard',()=>this.store.writable());
@@ -134,7 +135,16 @@ export class BatchController {
       const result=await this.storageTime('writer.deliver',()=>this.writer.deliver(rows));
       if(result.paused){
         const busy=result.reason==='WRITE_CAPACITY_BUSY';
-        await this.storageTime(busy?'wait.capacity':'wait.resource',()=>this.sleep(busy?1000:10000));
+        if(!busy||result.confirmed>0)capacityAttempt=0;
+        let delay=10000;
+        if(busy){
+          const jitter=this.random();assert(Number.isFinite(jitter)&&jitter>=0&&jitter<1,'WRITE_CAPACITY_JITTER');
+          delay=Math.min(500,Math.round(Math.min(500,100*2**capacityAttempt)*(0.75+0.5*jitter)));
+          capacityAttempt=Math.min(capacityAttempt+1,3);
+        }
+        // Every retry returns through fresh resource and lease checks. Only a
+        // known busy permit is retried; unknown acknowledgements still throw.
+        await this.storageTime(busy?'wait.capacity':'wait.resource',()=>this.sleep(delay));
       }
     }
   }

@@ -13,6 +13,7 @@ const vector=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-action.json',im
 const plan=vector.plan;
 const paint=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-paint-display-prefix.json',import.meta.url)));
 const mansion=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-hardhat-mansion-prefix.json',import.meta.url)));
+const homeimp=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-homeimp-mansion-prefix.json',import.meta.url)));
 const normalize=raw=>prepareNextgenActionRound(raw,plan);
 const xml=p=>'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+p.replaceAll('&','&amp;')+'</PAYLOAD><OGS_RC>0</OGS_RC></GDMRESPONSE>';
 function response(raw,index,values){
@@ -132,4 +133,22 @@ test('synthetic continuation from the real intro requires the Mansion selection 
  assert.deepEqual(normalize(raw).money,{startBalanceRaw:184700,endBalanceRaw:196825,totalWinRaw:12625,betRaw:500});
  const invalid=structuredClone(raw);response(invalid,8,{CFGG:'1'});
  assert.throws(()=>huffActionNext(plan,invalid));assert.throws(()=>collectorNext(invalid,plan));
+});
+
+test('real Home Improvement award includes the earlier intro in ordered action history, independently of TFG',()=>{
+ const raw=structuredClone(homeimp.raw),before=JSON.stringify(raw),last=raw.steps.length-1;
+ assert.equal(homeimp.naturalTerminalObserved,false);assert.equal(raw.steps.length,17);
+ for(let count=1;count<=raw.steps.length;count++){
+  const prefix={...raw,steps:raw.steps.slice(0,count)};
+  assert.deepEqual(huffActionNext(plan,prefix),{MSGID:'FREE_GAME'});
+  assert.deepEqual(collectorNext(prefix,plan),{MSGID:'FREE_GAME'});
+ }
+ assert.throws(()=>normalize(raw),/INCOMPLETE/);assert.equal(JSON.stringify(raw),before);
+ const history=Array(15).fill('3');history.push('0');
+ for(const value of [history.slice(0,-1),history.toReversed(),['1',...history.slice(1)],['3',...history]]){
+  const changed=structuredClone(raw),g=changed.steps[last].responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1];
+  response(changed,last,{GSD:g.replace(/PCFID~[^#]*/,'PCFID~'+value.join('|')+'|')});
+  assert.throws(()=>huffActionNext(plan,changed),/UNREVIEWED_TRANSITION/);
+  assert.throws(()=>collectorNext(changed,plan),/UNREVIEWED_TRANSITION/);
+ }
 });

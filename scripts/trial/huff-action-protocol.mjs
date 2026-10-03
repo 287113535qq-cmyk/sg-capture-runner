@@ -33,7 +33,7 @@ function scope(plan,raw){
 export function reviewHuffAction(plan,raw){
   scope(plan,raw);need(Array.isArray(raw.steps)&&raw.steps.length<=100,'STEPS');
   const start=uint(raw.startBalanceRaw);need(start>=500,'START');
-  let next='BET',player,previous,priorWin=0;
+  let next='BET',player,previous,priorWin=0,priorFeatures=[];
   for(const [i,s] of raw.steps.entries()){
     need(next!==null&&s.msgId===next,'SEQUENCE');
     const q=pairs(s.requestPayload),p=pairs(s.responsePayload),g=pairs(p.GSD??'','#','~');
@@ -76,7 +76,9 @@ export function reviewHuffAction(plan,raw){
           &&n===1&&t===1&&c===0&&g.MMFG==='1'&&!g.MMW
           &&g.FEAT===['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'][from]
           &&uint(g.CFNFG)===0&&uint(g.CFTFG)===previous.t&&uint(g.CFCFGG)===previous.c+1
-          &&history.length===previous.t&&history.at(-1)===from&&g.FRAMEWINS!==undefined
+          // PCFID is the consumed action history, newest first, including
+          // Mansion intros. Retriggers change TFG independently of this list.
+          &&JSON.stringify(history)===JSON.stringify(priorFeatures)&&g.FRAMEWINS!==undefined
           &&reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
             displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
         need(selected||awarded,'UNREVIEWED_TRANSITION');
@@ -99,7 +101,7 @@ export function reviewHuffAction(plan,raw){
       if(g.VA){const board=g.VA.split(',').map(uint);
         need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'UNREVIEWED_EXIT');}
     }
-    previous={f,n,t,c,intro};
+    previous={f,n,t,c,intro};priorFeatures.unshift(...f);
   }
   return {next:next?{MSGID:next}:null,terminal:next===null};
 }

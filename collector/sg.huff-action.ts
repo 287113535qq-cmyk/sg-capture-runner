@@ -29,7 +29,7 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
   need(raw.fixtureOnly===false&&raw.protocol==='nextgen'&&raw.sourceKey===source&&raw.roundFieldsVersion==='sg-round-fields-v1'
     &&raw.requestFlowVersion===version&&raw.actionContractHash===contractHash,'RAW_CONTRACT');
   need(Array.isArray(raw.steps)&&raw.steps.length<=100,'STEPS');const start=uint(raw.startBalanceRaw);need(start>=500,'START');
-  let next:string|null='BET',pid:string|undefined,previous:any,priorWin=0;
+  let next:string|null='BET',pid:string|undefined,previous:any,priorWin=0,priorFeatures:number[]=[];
   for(const [i,s]of raw.steps.entries()){
     need(next!==null&&s.msgId===next,'SEQUENCE');const q=fields(s.requestPayload),p=fields(s.responsePayload),g=fields(p.GSD??'','#','~');
     need(Object.keys(q).sort().join(',')==='AP,BPR,GN,MSGID,PID,RB'&&q.MSGID===next
@@ -67,7 +67,7 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
           &&n===1&&t===1&&c===0&&g.MMFG==='1'&&!g.MMW
           &&g.FEAT===['MMANSION','HARDHAT','PAINT','HOMEIMP','MANSION'][from]
           &&uint(g.CFNFG)===0&&uint(g.CFTFG)===previous.t&&uint(g.CFCFGG)===previous.c+1
-          &&history.length===previous.t&&history[history.length-1]===from&&g.FRAMEWINS!==undefined
+          &&JSON.stringify(history)===JSON.stringify(priorFeatures)&&g.FRAMEWINS!==undefined
           &&featureState.reviewFeatureValues(g.FRAMEWINS,{size:from===3?20:15,
             displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]}).requiresFeatureContinuation;
         need(selected||awarded,'UNREVIEWED_TRANSITION');
@@ -84,7 +84,7 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
       if(g.VA){const board=g.VA.split(',').map(uint);
         need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'UNREVIEWED_EXIT');}
     }
-    previous={ids,n,t,c,intro};
+    previous={ids,n,t,c,intro};priorFeatures.unshift(...ids);
   }
   return next?{MSGID:next}:null;
 }

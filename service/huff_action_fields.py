@@ -87,6 +87,7 @@ class HuffActionFields(NativeNextgenFields):
         start = amount(raw.get('startBalanceRaw'))
         need(start >= 500, 'START')
         following, player, previous, prior_win = 'BET', None, None, 0
+        prior_features = []
         for index, step in enumerate(steps):
             need(following is not None and step.get('msgId') == following, 'SEQUENCE')
             q, p = params(step.get('requestPayload')), params(step.get('responsePayload'))
@@ -141,7 +142,7 @@ class HuffActionFields(NativeNextgenFields):
                         and (n, t, c) == (1, 1, 0) and g.get('MMFG') == '1' and not g.get('MMW') \
                         and g.get('FEAT') == ('MMANSION', 'HARDHAT', 'PAINT', 'HOMEIMP', 'MANSION')[old] \
                         and amount(g.get('CFNFG')) == 0 and amount(g.get('CFTFG')) == pt \
-                        and amount(g.get('CFCFGG')) == pc + 1 and len(history) == pt and history[-1] == old \
+                        and amount(g.get('CFCFGG')) == pc + 1 and history == prior_features \
                         and 'FRAMEWINS' in g and review_feature_values(g['FRAMEWINS'], size=20 if old == 3 else 15,
                             display_sentinels=(-1, -2, -3, -4, -5), continuation_sentinels=(-100,))['requiresFeatureContinuation']
                     need(selected or awarded, 'UNREVIEWED_TRANSITION')
@@ -165,6 +166,7 @@ class HuffActionFields(NativeNextgenFields):
                     board = [amount(v) for v in g['VA'].split(',')]
                     need(not (board.count(13) >= 3 and board.count(14) >= 6), 'UNREVIEWED_EXIT')
             previous = feature, n, t, c, intro
+            prior_features = feature + prior_features
         return {'MSGID': following} if following else None
 
     def next_request(self, raw):
