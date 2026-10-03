@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {taskId,quotas} from './ag-core.mjs';
+import {stable} from '../mongo-writer.mjs';
 const statuses=['pending','running','success','failed','blocked'];
 const copy=v=>structuredClone(v);
 export function taskKey(queueId,game,id){
@@ -12,13 +13,23 @@ function identity(row,queueId,game,id){
  assert(row?._id===id&&row.queueId===queueId&&row.campaignId===game.campaignId
   &&statuses.includes(row.status),'AG_TASK_IDENTITY');return row;
 }
-export async function prepareTasks({store,game,queueId,guard}){
+export async function prepareTasks({store,transport,game,queueId,guard}){
  // Same 22 AG task records, in SG's group-scoped native metadata namespace.
  // Never reuse or reset a running task at provisioning time.
  await guard();
- for(const id of [...[1,2].map(i=>taskId('canary',i)),...Array.from({length:20},(_,i)=>taskId('worker',i+1))]){
-  const row={_id:id,queueId,campaignId:game.campaignId,status:'pending'};
-  const existing=await store.create('state',taskKey(queueId,game,id),row);
+ const ids=[...[1,2].map(i=>taskId('canary',i)),...Array.from({length:20},(_,i)=>taskId('worker',i+1))];
+ const row=id=>({_id:id,queueId,campaignId:game.campaignId,status:'pending'});
+ if(transport){
+  const hello=await transport.request('hello');assert(hello?.database==='sg_capture_staging_v1'
+   &&hello.rollingJournalBatchEnabled===true,'SG_TASK_NATIVE_CAPABILITY');
+  const records=ids.map(id=>({key:taskKey(queueId,game,id),value:row(id)}));
+  await transport.request('rolling_task_insert',{records});
+  const saved=await store.getMany('state',records.map(r=>r.key));
+  assert(saved.length===records.length&&saved.every((r,i)=>r&&stable(r.value)===stable(records[i].value)),
+   'SG_INITIAL_TASK_READBACK');return;
+ }
+ for(const id of ids){
+  const existing=await store.create('state',taskKey(queueId,game,id),row(id));
   assert(identity(existing?.value,queueId,game,id).status==='pending','AG_INITIAL_TASK_STATE');
  }
 }
@@ -57,7 +68,9 @@ export function connectTaskStore({store,game,queueId,guard,verifyTask,now=Date.n
    const row=identity(before?.value,queueId,game,id);
    assert(row.status==='running'&&row.owner===owner,'AG_TASK_OWNERSHIP_LOST');
    if(status==='success')assert(exitCode===0&&verified.get(id)?.owner===owner,'SG_SUCCESS_REQUIRES_VERIFICATION');
-   const value={...row,status,exitCode,finishedAt:new Date(now()).toISOString(),updatedAt:new Date(now()).toISOString()};
+   const proof=status==='success'?verified.get(id).proof:null;
+   const value={...row,status,exitCode,...(proof?{count:proof.count,proof:copy(proof)}:{}),
+    finishedAt:new Date(now()).toISOString(),updatedAt:new Date(now()).toISOString()};
    assert(await store.cas('state',key,before,value),'AG_TASK_OWNERSHIP_LOST');
    verified.delete(id);
   },close,

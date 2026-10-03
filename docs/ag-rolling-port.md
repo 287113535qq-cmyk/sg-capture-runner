@@ -50,10 +50,36 @@ eight sessions, unknown ACKs, staging content conflicts, independent full
 readback and task-scoped leases. The simulation uses fixtures and does not
 prove online admission of 178 games or a live throughput increase.
 
-This change is the reusable execution and storage foundation. It does not
-activate a new SG queue, expand an old profile, enable the native capability,
-provide missing game protocols, or claim that all games are ready. The live
-queue entry, registered source binding, SG session/protocol integration,
-per-game canary evidence and controlled merge/reconcile must be connected
-and checked before starting the rolling queue. Huff's completed 300000 records
-and every existing completion/permission record are preserved.
+The live adapter now uses the existing `trial-300k.yml` workflow's explicit
+`ag-rolling` role. Admission seeds the same 22 AG tasks, then twenty lanes use
+the original AG loop. A separate zero-source controller merges settled games
+while the lanes continue; an ended-run finalizer seals the window. Registered
+queue profiles bind the complete checked code manifest, exact successful Linux
+run, historical adapter proofs and installed native gateway/manifest hashes.
+Nothing starts merely because a candidate has an offline historical proof:
+its two original AG live canaries must succeed before formal tasks run.
+
+`sg-protocol-session.mjs` journals each SG request before sending it and each
+response before natural continuation. `sg-nextgen-codec.mjs` compares the
+existing JavaScript normalizer and independent Python verifier. Metadata
+inserts coalesce across the original eight sessions. Full staged record bytes
+and source intent/response pairs are checked before counting an ended prefix
+for resume. The old prefix stays in place and new anonymous sessions continue
+only its missing quota; unfinished or unknown requests remain uncounted and
+are never replayed. Unknown Mongo copy ACKs require an ended merge actor and
+fresh readback; settlement issues only definitely missing rows.
+
+The native candidate supplies fixed insert-only staging/task batches, native
+copy of selected staged bytes, exact trial counts and narrowly scoped cleanup.
+It performs no source request, gameplay normalization, scheduling or quota
+decision. All operations require the installed root-owned capabilities and
+fixed trial scopes. Canonical records receive full independent validation and
+native readback before completed staged/source bytes can be cleaned up.
+
+The candidate plan registry currently contains 81 historical NextGen adapter
+proofs and excludes 18 completed games. These are offline candidates, not 81
+online admission results. Historical partial data needs independent baseline
+verification before that game is placed in the initial queue; unsupported
+protocol families still need SG adapters. Neither these checks nor the fixture
+simulation prove that all 178 games are ready or a live throughput increase.
+Huff's completed 300000 records and all existing permissions are preserved.

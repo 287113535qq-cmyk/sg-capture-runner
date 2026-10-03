@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import {createAGCaptureRuntime} from './ag-capture-runtime.mjs';
 import {taskId,quotas} from './ag-core.mjs';
 const unknownCodes=new Set(['SOURCE_NETWORK_OUTCOME_UNKNOWN','SOURCE_ACK_UNKNOWN','MONGO_ACK_UNKNOWN',
- 'GATEWAY_ACK_UNKNOWN','JOURNAL_ACK_UNKNOWN','SOURCE_INTENT_UNRESOLVED']);
+ 'GATEWAY_ACK_UNKNOWN','GATEWAY_DISCONNECTED','GATEWAY_RESPONSE_INVALID','GATEWAY_RESPONSE_TOO_LARGE',
+ 'MONGO_OPERATION_OUTCOME_UNKNOWN','JOURNAL_ACK_UNKNOWN','SOURCE_INTENT_UNRESOLVED']);
 const safeError=(code,prefix='AG integrity:')=>Object.assign(new Error(`${prefix} ${/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_PROTOCOL_STOPPED'}`),{code});
 // Adapter only: all session loops, round-limit arithmetic, choice balancing,
 // task success counting, leasing and shutdown are the original AG class.
@@ -12,7 +13,8 @@ export async function runCaptureTask({game,kind,index,quota,owner,protocol,stora
  assert(quota===(kind==='canary'?10:quotas(game.baseline)[index-1]),'AG_CAPTURE_TASK_QUOTA');
  assert(typeof guard==='function'&&Number.isFinite(deadline)&&typeof protocol.open==='function'
   &&typeof storage.insertRound==='function'&&typeof storage.verify==='function','SG_CAPTURE_ADAPTER');
- const stop=new AbortController(),identities=new Set(),closings=[];let unknown=false,sourceFault=false;
+ const stop=new AbortController(),identities=new Set(),closings=[];let unknown=false,sourceFault=false;const faults=new Set();
+ const recordFault=error=>{const code=error.code??error.message;faults.add(/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_PROTOCOL_STOPPED');};
  const closeSession=current=>{
   try{const pending=current?.close();if(pending?.then)closings.push(Promise.resolve(pending).catch(()=>{unknown=true;}));}
   catch{unknown=true;}
@@ -28,7 +30,7 @@ export async function runCaptureTask({game,kind,index,quota,owner,protocol,stora
     await guard();this.current=await protocol.open({game,kind,index,owner,signal:stop.signal});
     assert(typeof this.current?.identity==='string'&&!identities.has(this.current.identity),'SG_SHARED_SESSION');
     identities.add(this.current.identity);
-   }catch(error){sourceFault=true;closeSession(this.current);this.current=null;
+   }catch(error){recordFault(error);sourceFault=true;closeSession(this.current);this.current=null;
     if(unknownCodes.has(error.code)||error.outcomeUnknown===true){unknown=true;abort();}
     throw safeError(error.code);
    }
@@ -46,6 +48,7 @@ export async function runCaptureTask({game,kind,index,quota,owner,protocol,stora
      &&round.data.unknownRequests===0,'SG_FULL_ROUND_REQUIRED');
     return round;
    }catch(error){
+    recordFault(error);
     sourceFault=true;
     if(unknownCodes.has(error.code)||error.outcomeUnknown===true){
      // Protocol semantics, not a change to AG retry scheduling: abort before
@@ -60,7 +63,7 @@ export async function runCaptureTask({game,kind,index,quota,owner,protocol,stora
   async insertRound(db,round,buckets){
    try{await guard();const result=await storage.insertRound(db,round,buckets);
     assert(result?.fullReadback===true&&result.independentlyVerified===true,'SG_MONGO_FULL_READBACK_REQUIRED');
-   }catch(error){if(unknownCodes.has(error.code)||error.outcomeUnknown===true){unknown=true;abort();}throw safeError(error.code);}
+   }catch(error){recordFault(error);if(unknownCodes.has(error.code)||error.outcomeUnknown===true){unknown=true;abort();}throw safeError(error.code);}
   },
   clearGame:async()=>{throw safeError('SG_HISTORICAL_CLEAR_FORBIDDEN');},
  };
@@ -88,7 +91,7 @@ export async function runCaptureTask({game,kind,index,quota,owner,protocol,stora
    assert(proof?.fullReadback===true&&proof.independentlyVerified===true&&proof.unknownRequests===0
     &&proof.pending===0&&proof.activeLeases===0&&Number.isSafeInteger(proof.count)&&proof.count>=quota
     &&proof.count<=quota+(kind==='canary'?0:7),'SG_TASK_FULL_READBACK');exitCode=0;}
- }catch{exitCode=1;}
+ }catch(error){recordFault(error);exitCode=1;}
  finally{clearTimeout(timer);signal?.removeEventListener('abort',abort);}
- return {exitCode,proof,unknownOutcome:unknown,sourceRetriedAfterUnknown:false};
+ return {exitCode,proof,unknownOutcome:unknown,sourceRetriedAfterUnknown:false,faults:[...faults]};
 }

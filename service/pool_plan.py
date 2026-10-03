@@ -11,6 +11,9 @@ POOL_SCHEMA = 'sg-work-pool-v1'
 def validate_pool_plan(plan):
     require(isinstance(plan, dict) and plan.get('configured') is True, 'POOL_NOT_CONFIGURED')
     require(plan.get('schema') == POOL_SCHEMA, 'BAD_POOL_SCHEMA')
+    if 'rollingPlan' in plan:
+        from ag_rolling_plan import validate_rolling_plan
+        return validate_rolling_plan(plan)
     if plan.get('campaignId'):
         plans=json.loads((Path(__file__).resolve().parents[1]/'config/round-one-plans.json').read_text(encoding='utf-8'))
         expected=plans.get(str(plan.get('gameId')))

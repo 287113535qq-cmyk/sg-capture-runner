@@ -74,7 +74,8 @@ class GatewayTests(unittest.TestCase):
         self.g=Gateway(self.db,'primary',self.manifest,sample=lambda:{'rawCounters':True})
     def call(self,op,**kw):return self.g.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
     def test_rolling_batch_is_capability_gated_insert_only_and_group_scoped(self):
-        rows=[{'key':'rolling-stage:'+'a'*64+':'+str(i).zfill(10),'value':{'private':i}} for i in (1,2)]
+        rows=[{'key':'rolling-stage:'+'a'*64+':0000000001','value':{'private':1}},
+              {'key':'rolling-source:'+'a'*64+':0000000001:intent','value':{'private':2}}]
         with self.assertRaisesRegex(Refused,'ROLLING_BATCH_DISABLED'):self.call('rolling_journal_insert',records=rows)
         self.manifest['rollingJournalBatchEnabled']=True
         native=SimpleNamespace(UpdateOne=lambda q,u,upsert:SimpleNamespace(_filter=q,_doc=u,_upsert=upsert))
@@ -98,6 +99,57 @@ class GatewayTests(unittest.TestCase):
         for request in requests:
             with self.assertRaises(Refused):self.call('rolling_journal_insert',**request)
             self.assertEqual(self.db['capture_journal_v2'].rows,{})
+    def test_rolling_task_seed_is_insert_only_with_exact_22_task_names(self):
+        self.manifest['rollingJournalBatchEnabled']=True
+        rows=[{'key':'rolling-task:'+'a'*64+':'+name,'value':{'status':'pending'}}
+              for name in ['canary:1','canary:2']+['worker:'+str(i) for i in range(1,21)]]
+        native=SimpleNamespace(UpdateOne=lambda q,u,upsert:SimpleNamespace(_filter=q,_doc=u,_upsert=upsert))
+        with patch.dict(sys.modules,{'pymongo':native}):
+            self.assertEqual(self.call('rolling_task_insert',records=rows),{'inserted':22})
+            self.db['capture_state_v2'].rows['primary/'+rows[0]['key']]['value']['status']='running'
+            self.assertEqual(self.call('rolling_task_insert',records=rows),{'inserted':0})
+        self.assertEqual(self.db['capture_state_v2'].rows['primary/'+rows[0]['key']]['value']['status'],'running')
+        for name in ['worker:0','worker:21','canary:3','worker:01']:
+            with self.assertRaises(Refused):self.call('rolling_task_insert',records=[{**rows[0],'key':'rolling-task:'+'a'*64+':'+name}])
+    def test_rolling_copy_uses_fixed_native_pipeline_and_exact_root_trial_identity(self):
+        trial='sg_ag_r1_20261004_32723'
+        self.manifest['trials'][trial]={'group':'primary','rolling':True,'gameId':32723,'runtimeGameId':33123,'target':300000,'maxSequence':300140}
+        row={'key':'rolling-stage:'+'a'*64+':0000000001','id':'b'*64,'contentHash':'c'*64}
+        with self.assertRaises(Refused):self.call('rolling_stage_copy',trialId=trial,records=[row])
+        self.manifest.update(roundWritesEnabled=True,rollingJournalBatchEnabled=True)
+        captured=[]
+        self.db['capture_journal_v2'].aggregate=lambda pipeline,**kwargs:captured.append((pipeline,kwargs)) or []
+        self.assertEqual(self.call('rolling_stage_copy',trialId=trial,records=[row]),{'acknowledged':True})
+        pipeline,options=captured[0]
+        self.assertEqual(pipeline[0]['$match']['$and'][0],{'$or':[{'_id':'primary/'+row['key'],'value.record._id':row['id'],'value.record.contentHash':row['contentHash']}]})
+        self.assertEqual(pipeline[0]['$match']['$and'][1],{'value.record.trialId':trial,'value.record.gameId':32723,
+            'value.record.runtimeGameId':33123,'value.record.fixtureOnly':False,'value.record.buy':0,
+            'value.record.sequence':{'$gte':1,'$lte':300140}})
+        self.assertEqual(pipeline[1],{'$replaceRoot':{'newRoot':'$value.record'}})
+        self.assertEqual(pipeline[2],{'$merge':{'into':'official_rounds','on':'_id','whenMatched':'keepExisting','whenNotMatched':'insert'}})
+        self.assertEqual(options,{'maxTimeMS':30000})
+        for change in ({'query':{}},{'records':[row]*2},{'records':[{**row,'key':'secondary/private'}]},
+                       {'records':[{**row,'id':{'$where':'bad'}}]},{'records':[{**row,'extra':1}]}):
+            with self.assertRaises(Refused):self.call('rolling_stage_copy',**{'trialId':trial,'records':[row],**change})
+        self.assertEqual(len(captured),1)
+        self.manifest['trials'][trial]['maxSequence']=999999
+        with self.assertRaises(Refused):self.call('rolling_stage_copy',trialId=trial,records=[row])
+    def test_rolling_cleanup_is_separately_enabled_and_cannot_delete_receipts_or_other_groups(self):
+        keys=['rolling-stage:'+'a'*64+':0000000001','rolling-source:'+'b'*64+':0000000001:response']
+        with self.assertRaises(Refused):self.call('rolling_journal_delete',keys=keys)
+        self.manifest['rollingCleanupEnabled']=True;captured=[]
+        self.db['capture_journal_v2'].delete_many=lambda query:captured.append(query) or SimpleNamespace(deleted_count=2)
+        self.assertEqual(self.call('rolling_journal_delete',keys=keys),{'deleted':2})
+        self.assertEqual(captured,[{'_id':{'$in':['primary/'+k for k in keys]}}])
+        for invalid in ([],keys*2,['campaign'],['secondary/'+keys[0]],
+                        ['rolling-source:'+'b'*64+':0000000000:closed'],[{}],keys*501):
+            with self.assertRaises(Refused):self.call('rolling_journal_delete',keys=invalid)
+        self.assertEqual(len(captured),1)
+    def test_native_round_count_is_fixed_trial_only(self):
+        self.db['official_rounds'].count_documents=lambda query,**kw: 73 if query=={'trialId':'sg_r1_20260928_32723'} and kw=={'maxTimeMS':10000} else self.fail('unexpected query')
+        self.assertEqual(self.call('rounds_count',trialId='sg_r1_20260928_32723'),{'count':73})
+        for extra in ({'query':{}},{'group':'secondary'},{'limit':999}):
+            with self.assertRaises(Refused):self.call('rounds_count',trialId='sg_r1_20260928_32723',**extra)
     def test_delta_cas_requires_separate_capability_and_preserves_full_document(self):
         key='pool:sg_r1_20260928_32723'
         old={'history':[{'old':1}],'workers':{'0':{'lease':1,'active':{'id':2}},'1':{'lease':9}},'removed':True}

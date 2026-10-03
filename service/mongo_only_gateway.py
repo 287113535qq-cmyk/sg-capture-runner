@@ -49,6 +49,13 @@ class Gateway:
         scope = self.manifest['trials'][trial]
         need(scope['group'] == self.group, 'GROUP_SCOPE_DENIED')
         if 'maxSequence' in scope:
+            if re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}', trial):
+                need(scope.get('rolling') is True and scope.get('group') == 'primary'
+                     and scope.get('gameId') == int(trial.rsplit('_', 1)[1])
+                     and type(scope.get('runtimeGameId')) is int and scope['runtimeGameId'] > 0
+                     and scope.get('target') == 300000 and type(scope['maxSequence']) is int
+                     and scope['maxSequence'] == 300140, 'SEQUENCE_SCOPE_DENIED')
+                return trial, scope
             approved = {'sg_r1_20260930_32795': (32795,33155,'primary',300000),
                         'sg_r1_20261001_32799': (32799,33159,'primary',300000),
                         'sg_r1_20260928_32714': (32714,33114,'primary',300000),
@@ -69,7 +76,11 @@ class Gateway:
             return {'group': self.group, 'database': DATABASE, 'schema': 'sg-mongo-only-v2',
                     'captureLogicOnServer': False, 'legacyRuntimeEnabled': False,
                     'stateDeltaEnabled': self.manifest.get('stateDeltaEnabled') is True,
-                    'rollingJournalBatchEnabled': self.manifest.get('rollingJournalBatchEnabled') is True}
+                    'rollingJournalBatchEnabled': self.manifest.get('rollingJournalBatchEnabled') is True,
+                    'rollingCleanupEnabled': self.manifest.get('rollingCleanupEnabled') is True,
+                    'gatewaySha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                    'accessManifestHash': hashlib.sha256(json.dumps(self.manifest, sort_keys=True,
+                        separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()}
         if op == 'global_holds':
             # Fixed, read-only cross-group safety records. Their contents and
             # all decisions are calculated by GitHub, not by this transport.
@@ -242,7 +253,47 @@ class Gateway:
             result = self.db['capture_state_v2'].update_one(
                 {'_id':self.group+'/'+key,'version':expected},update,upsert=False)
             return {'replaced':result.matched_count == 1,'version':expected+1}
-        if op == 'rolling_journal_insert':
+        if op == 'rolling_stage_copy':
+            need(set(r) == {'schema', 'op', 'trialId', 'records'}, 'ROLLING_COPY_REQUEST_SCOPE')
+            trial, scope = self.scope(r)
+            need(scope.get('rolling') is True and self.manifest.get('roundWritesEnabled') is True
+                 and self.manifest.get('rollingJournalBatchEnabled') is True, 'ROLLING_COPY_DISABLED')
+            rows = r.get('records')
+            need(isinstance(rows, list) and 1 <= len(rows) <= 100, 'BAD_BATCH')
+            filters = []
+            for row in rows:
+                need(isinstance(row, dict) and set(row) == {'key', 'id', 'contentHash'}
+                     and all(isinstance(row[k], str) for k in row)
+                     and re.fullmatch(r'rolling-stage:[a-f0-9]{64}:[0-9]{10}', row['key'])
+                     and re.fullmatch(r'[a-f0-9]{64}', row['id'])
+                     and re.fullmatch(r'[a-f0-9]{64}', row['contentHash']), 'ROLLING_COPY_ROW_SCOPE')
+                filters.append({'_id': self.group+'/'+row['key'], 'value.record._id': row['id'],
+                                'value.record.contentHash': row['contentHash']})
+            need(len({row['key'] for row in rows}) == len(rows)
+                 and len({row['id'] for row in rows}) == len(rows), 'ROLLING_COPY_DUPLICATE')
+            match = {'$and': [{'$or': filters}, {'value.record.trialId': trial,
+                     'value.record.gameId': scope['gameId'], 'value.record.runtimeGameId': scope['runtimeGameId'],
+                     'value.record.fixtureOnly': False, 'value.record.buy': 0,
+                     'value.record.sequence': {'$gte': 1, '$lte': scope['maxSequence']}}]}
+            # Fixed Mongo copy only. Selection, quotas, normalization, source
+            # ownership and full readback are all decided on GitHub.
+            list(self.db[COLLECTIONS['journal']].aggregate([
+                {'$match': match}, {'$replaceRoot': {'newRoot': '$value.record'}},
+                {'$merge': {'into': 'official_rounds', 'on': '_id', 'whenMatched': 'keepExisting', 'whenNotMatched': 'insert'}}
+            ], maxTimeMS=30000))
+            return {'acknowledged': True}
+        if op == 'rolling_journal_delete':
+            need(set(r) == {'schema', 'op', 'keys'}, 'ROLLING_DELETE_REQUEST_SCOPE')
+            need(self.manifest.get('metadataWritesEnabled') is True
+                 and self.manifest.get('rollingCleanupEnabled') is True, 'ROLLING_DELETE_DISABLED')
+            keys = r.get('keys')
+            need(isinstance(keys, list) and 1 <= len(keys) <= 1000
+                 and all(isinstance(key, str) and re.fullmatch(r'(rolling-stage:[a-f0-9]{64}:[0-9]{10}|rolling-source:[a-f0-9]{64}:[0-9]{10}:(intent|response))', key) for key in keys)
+                 and len(set(keys)) == len(keys),
+                 'ROLLING_DELETE_KEYS_SCOPE')
+            result = self.db[COLLECTIONS['journal']].delete_many({'_id': {'$in': [self.group+'/'+key for key in keys]}})
+            return {'deleted': result.deleted_count}
+        if op in ('rolling_journal_insert', 'rolling_task_insert'):
             # Native insert-only I/O for SG's storage adapter. AG task/lease,
             # quota, source eligibility and readback decisions stay on GitHub.
             need(set(r) == {'schema', 'op', 'records'}, 'ROLLING_BATCH_REQUEST_SCOPE')
@@ -255,14 +306,14 @@ class Gateway:
             for row in rows:
                 need(isinstance(row, dict) and set(row) == {'key', 'value'}
                      and isinstance(row['key'], str)
-                     and re.fullmatch(r'rolling-stage:[a-f0-9]{64}:[0-9]{10}', row['key'])
+                     and re.fullmatch(r'(rolling-stage:[a-f0-9]{64}:[0-9]{10}|rolling-source:[a-f0-9]{64}:[0-9]{10}:(open|intent|response|closed)|rolling-session:[a-f0-9]{64}:[0-9]{10})' if op == 'rolling_journal_insert' else r'rolling-task:[a-f0-9]{64}:(worker:([1-9]|1[0-9]|20)|canary:[12])', row['key'])
                      and isinstance(row['value'], dict), 'ROLLING_BATCH_ROW_SCOPE')
                 keys.append(row['key'])
             need(len(set(keys)) == len(keys), 'ROLLING_BATCH_DUPLICATE')
             from pymongo import UpdateOne
             documents = [{'_id': self.group + '/' + row['key'], 'version': 0, 'value': row['value']}
                          for row in rows]
-            result = self.db[COLLECTIONS['journal']].bulk_write(
+            result = self.db[COLLECTIONS['journal' if op == 'rolling_journal_insert' else 'state']].bulk_write(
                 [UpdateOne({'_id': d['_id']}, {'$setOnInsert': d}, upsert=True) for d in documents],
                 ordered=True)
             return {'inserted': result.upserted_count}
@@ -300,9 +351,12 @@ class Gateway:
             result = collection.replace_one({'_id': identity, 'version': expected},
                                             {'_id': identity, 'version': expected + 1, 'value': value})
             return {'replaced': result.matched_count == 1, 'version': expected + 1}
-        if op in ('rounds_read', 'rounds_scan', 'rounds_insert'):
+        if op in ('rounds_read', 'rounds_scan', 'rounds_insert', 'rounds_count'):
             trial, scope = self.scope(r)
             collection = self.db['official_rounds']
+            if op == 'rounds_count':
+                need(set(r) == {'schema', 'op', 'trialId'}, 'ROUND_COUNT_REQUEST_SCOPE')
+                return {'count': collection.count_documents({'trialId': trial}, maxTimeMS=10000)}
             if op == 'rounds_scan':
                 after=r.get('after',0)
                 need(type(after) is int and 0<=after<=scope.get('maxSequence',scope['target']),'BAD_CURSOR')

@@ -5,7 +5,8 @@ import assert from 'node:assert/strict';
 export function serializeTransport(transport,{maxQueued=256}={}){
  assert(Number.isSafeInteger(maxQueued)&&maxQueued>0,'SG_TRANSPORT_QUEUE_BOUND');
  let tail=Promise.resolve(),queued=0,poison=null,closed=false;
- const unknown=error=>['GATEWAY_ACK_UNKNOWN','GATEWAY_DISCONNECTED','GATEWAY_RESPONSE_INVALID','GATEWAY_RESPONSE_TOO_LARGE'].includes(error.code);
+ const unknown=error=>error.outcomeUnknown===true||['GATEWAY_ACK_UNKNOWN','GATEWAY_DISCONNECTED',
+  'GATEWAY_RESPONSE_INVALID','GATEWAY_RESPONSE_TOO_LARGE','MONGO_OPERATION_OUTCOME_UNKNOWN'].includes(error.code);
  return {
   request(op,fields={}){
    if(closed||poison)return Promise.reject(Object.assign(new Error(poison??'GATEWAY_CLOSED'),{code:poison??'GATEWAY_CLOSED'}));
