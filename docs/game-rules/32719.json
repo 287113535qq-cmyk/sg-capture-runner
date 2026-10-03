@@ -153,7 +153,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "3767d4cf32bedf49d9b328fac3334ba52ee920b72958405d8aadda26cd696d61",
+    "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
     "service/inca_coin_review.py": "3665f381e7a6563413f2b94f1a3896ca0c90a9084ff562c7808d45a0823157dd",
     "scripts/trial/inca-coin-review.mjs": "61708ccf81324659219b1fbe8161c30bdaeb3663fee9d8705cb897fca34e1b5e",
     "service/inca_free_review.py": "b93b2518081adab43798ae24bc47235ae159330dcceaf2cc1a4ba838d505d543",
@@ -187,5 +187,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a679caa5915e3a3576326fa312910ccad3aba956d58d8baf728d09e8d9419cd9"
+  "ruleHash": "42fb2fce10997830ea0aec1e3aca04074b6708eb3f462b81010e42306120b428"
 }
