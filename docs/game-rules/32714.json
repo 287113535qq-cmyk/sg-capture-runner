@@ -197,9 +197,9 @@
     "service/huff_fields.py": "459d24306dac37044f93ba08458ada32c4c45dc1cfc4069f92d00d509b9fb2d6",
     "service/huff_feature_review.py": "498ed3ef17cc2067672f371617c8be46fcf0861a8cdc13444e7196e4305369da",
     "scripts/trial/huff-protocol.mjs": "73574671bfd871d3bfddb4dc92e298bc6ab39dc4acb7df821e39b3b440c02f42",
-    "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
-    "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
-    "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
+    "service/huff_touchup_review.py": "8014e01aa60401250419859d1e9f14bff5f5c86eb2374e0f781c9c0f3535f6b1",
+    "scripts/trial/huff-touchup-review.mjs": "29635d4044c5e0489e9877ef2c51741d67fb57b25add1adb477cba0e352ffb09",
+    "collector/sg.huff-touchup.ts": "a1166f3c4671d256e5e4f16b825794a36734b15c51d2750f8ea6f8c025320c5b",
     "service/huff_retrigger_review.py": "7558376f06a734b946526c0df7eab220a610ff42ca2ed2708bd3d8c7877dc35c",
     "scripts/trial/huff-retrigger-review.mjs": "6eb03ddfaf03e50c8eded9e0bcfad8bc2f9de0fb76afe58037b7c461dd9548da",
     "collector/huff-retrigger-review.cjs": "0bd7784aeaa76dd1710a0f7bec9a2d58a72d52f993f15af06215ed4ac7f9a2b9",
@@ -262,8 +262,8 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/common-feature-rules-20261003.md": "728db678723d83994d419aecb188d13d32560958aab5196344a14f4983f742f5",
-    "docs/common-feature-rules-result-20261003.json": "e1d07338f17003c9ae1adca3ff0480920b28a7d5bf72d8853080e27b95c8484c",
+    "docs/common-feature-rules-20261003.md": "bc8f1e0caf5da881dd4330135ad4352f196fcd75020c4452fddc11df818cebf8",
+    "docs/common-feature-rules-result-20261003.json": "adb9a98593578e94f971f9a5dc07016303061e813267db837a8baf62845bf73d",
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/four-work-lines-integration-20261003-result.json": "86178adf41c7f42324c685c6abc223f9e594f237b1b9a9c9e0ee28af71656018",
@@ -309,5 +309,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "edfaae7ceadf2ac6c93cfc8578c61fbeb1edef8815b25ddb64b2fc3c3380e287"
+  "ruleHash": "a02f520170afab13eceee689e2634866b7f218cc42504bb0bd329fdec6ac22ec"
 }

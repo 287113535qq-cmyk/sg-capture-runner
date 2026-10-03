@@ -6,3 +6,9 @@ test('applied received terminal closure preserves299 complete with zero discarde
  assert.equal(p.sourceRun,'37113408307:1');assert.equal(p.completePreserved,299);
  assert.equal(p.abandonedAttempts,0);assert.equal(p.sourceAllowance,0);assert.equal(p.terminalRecords.length,1);
 });
+test('applied display terminal closure preserves789 complete and cannot discard the real retrigger terminal',()=>{
+ const p=JSON.parse(fs.readFileSync('config/count-close-prepared-evidence-20261003-display-roles.json','utf8'));
+ assert.equal(hash(p),'96256b7292dc40f6b0bdccdd648aabb57c0f39fee18993dbb482714a9f314f03');
+ assert.equal(p.sourceRun,'37116564699:1');assert.equal(p.completePreserved,789);
+ assert.equal(p.abandonedAttempts,0);assert.equal(p.sourceAllowance,0);assert.equal(p.terminalRecords.length,1);
+});

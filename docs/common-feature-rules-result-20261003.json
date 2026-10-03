@@ -221,7 +221,7 @@
     "nativeInstallationProofReused": true
   },
   "displaySentinelRoles": {
-    "status": "local-accepted-awaiting-linux-and-no-source-close",
+    "status": "hardhat-online-close-applied-touchup-local-accepted",
     "sharedMethods": [
       "review_feature_values",
       "reviewFeatureValues"
@@ -249,6 +249,26 @@
     "completedJournaled": 489,
     "mongoConfirmedAtReview": 299,
     "remainingReceivedTerminal": 1,
-    "sourceHeld": true
+    "sourceHeld": true,
+    "linuxRun": 37117091494,
+    "maintenanceRun": 37117398806,
+    "completeConfirmed": 789,
+    "oldCompletePreserved": 299,
+    "pythonFullReadback": 789,
+    "receiptMongoFullReadback": 789,
+    "pending": 0,
+    "unconfirmedWrites": 0,
+    "newAbandoned": 0,
+    "bothHoldsInactive": true,
+    "closeProfileHash": "96256b7292dc40f6b0bdccdd648aabb57c0f39fee18993dbb482714a9f314f03",
+    "closureHash": "f8889c808e8d071ec5fde01762d83b40e3515e43ccad38aa7d4bdaabd6c794f4",
+    "sourceRestarted": false,
+    "touchupSharedMethodLocalPassed": true,
+    "touchupNodeChecks": 3,
+    "touchupPythonChecks": 5,
+    "touchupNaturalTerminalObserved": false,
+    "typescriptPassed": true,
+    "privatePrepareFiles": 33,
+    "privatePrepareSHA": "44af8907e736a0508318679465305e8f70a5bba52d2de52340c6a4ea4f87cf29"
   }
 }

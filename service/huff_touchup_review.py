@@ -9,6 +9,7 @@ still controls whether a live source request is allowed.
 """
 from huff_feature_review import SOURCE, inspect_frame, game_state
 from round_fields import check, params, amount
+from feature_state import review_feature_values, parse_feature_values
 
 KNOWN_GSD = {'MMBG', 'BRS', 'BGHHPOS', 'BMS', 'VA', 'HHPOS', 'BWC', 'BWS',
              'FEAT', 'NEXTFRAMES', 'MMW', 'PCFID', 'FRAMES', 'PREVFRAMES', 'FRAMEWINS'}
@@ -57,10 +58,11 @@ def review_touchup(plan, raw):
         check(not (board.count(13) >= 3 and board.count(14) >= 6),
               'HUFF_COMBINED_EXIT_NOT_ADAPTED')
         if 'FRAMEWINS' in g:
-            wins = _numbers(g['FRAMEWINS'], '|', signed=True)
-            frames = _numbers(g.get('FRAMES'), '|')
-            check(len(wins) == len(frames) == 15, 'HUFF_INVALID_FRAME_AWARDS')
-            check(all(w >= 0 for w in wins), 'HUFF_FRAME_EXIT_NOT_ADAPTED')
+            wins = review_feature_values(g['FRAMEWINS'], size=15,
+                                         display_sentinels=(-1,-2,-3,-4,-5),
+                                         continuation_sentinels=(-100,))
+            parse_feature_values(g.get('FRAMES'), size=15, decimal_places=0)
+            check(not wins['requiresFeatureContinuation'], 'HUFF_FRAME_EXIT_NOT_ADAPTED')
         if index == 0:
             check(s['featureIds'] == [0] and not s['previousFeatureIds']
                   and s['replayFeatureId'] is None and g.get('MMBG') == '1'

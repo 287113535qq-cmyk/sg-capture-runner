@@ -1,4 +1,5 @@
 import {settledFields} from './sg.fields';
+const {reviewFeatureValues,parseFeatureValues}=require('./feature-state.cjs');
 const source='huffnpuffmoneymansionhighlimit96-round-one-base-v1';
 const need=(ok:unknown,code:string):void=>{if(!ok)throw Error(code);};
 function pairs(text:string,separator='&',delimiter='='):Record<string,string>{
@@ -33,7 +34,8 @@ export function huffTouchupFields(raw:any,mappingHash:string){
     for(const k of ['B','AB','TW','NFG','TFG','CFGG'])need(/^\d+$/.test(p[k]??'')&&Number.isSafeInteger(Number(p[k])),'HUFF_NUMBER');
     const board=vector(g.VA,',');need(board.length===15&&board.every(v=>v<=15),'HUFF_BOARD');
     need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'HUFF_COMBINED');
-    if('FRAMEWINS'in g){const wins=vector(g.FRAMEWINS,'|',true),frames=vector(g.FRAMES,'|');need(wins.length===15&&frames.length===15&&wins.every(w=>w>=0),'HUFF_FRAME_EXIT');}
+    if('FRAMEWINS'in g){const wins=reviewFeatureValues(g.FRAMEWINS,{size:15,displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]});
+      parseFeatureValues(g.FRAMES,{size:15,decimalPlaces:0});need(!wins.requiresFeatureContinuation,'HUFF_FRAME_EXIT');}
     if(i===0)need(ids(p.FID)==='0'&&!ids(g.PCFID)&&g.FEAT===undefined&&g.MMBG==='1'&&!g.MMW&&p.NFG==='1'&&p.TFG==='1'&&p.CFGG==='0','HUFF_TRIGGER');
     else if(i===1)need(ids(p.FID)==='2'&&ids(g.PCFID)==='0'&&g.FEAT==='MMANSION'&&g.MMBG==='1'&&g.MMW&&p.NFG==='6'&&p.TFG==='6'&&p.CFGG==='0','HUFF_AWARD');
     else need(ids(p.FID)==='2'&&['','2'].includes(ids(g.PCFID))&&g.FEAT==='PAINT'&&[undefined,'0'].includes(g.MMBG)&&!g.MMW

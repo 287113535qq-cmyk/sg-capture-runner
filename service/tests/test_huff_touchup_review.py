@@ -62,6 +62,16 @@ try{return reviewTouchup(x)}catch{return {rejected:true}}})));"""
 
 
 class TouchupReviewTests(unittest.TestCase):
+    def test_reviewed_display_values_share_scope_without_new_feature_permission(self):
+        values=[]
+        for value in ('1.5','-1','-2','-3','-4.00','-5'):
+            raw=sample();step=raw['steps'][-1]
+            update(step, GSD=params(step['responsePayload'])['GSD'].replace('FRAMEWINS~0|','FRAMEWINS~'+value+'|'))
+            values.append(raw)
+        for raw, node in zip(values,node_reviews(values)):
+            result=review_touchup(PLAN,raw);self.assertEqual(result,node)
+            self.assertTrue(result['candidateComplete']);self.assertFalse(result['captureAuthorized'])
+
     def test_partial_and_complete_are_only_offline_candidates(self):
         values = [{**sample(), 'steps': sample()['steps'][:n]} for n in range(2, 9)]
         for raw, node in zip(values, node_reviews(values)):
@@ -81,7 +91,7 @@ class TouchupReviewTests(unittest.TestCase):
         for g in (base+'#UNKNOWN~1', base.replace('PAINT','HOMEIMP'),
                   base.replace('PCFID~2|','PCFID~0|2|'), base+'#MMBG~1',
                   base.replace('FRAMEWINS~0|','FRAMEWINS~-100|'),
-                  base.replace('FRAMEWINS~0|','FRAMEWINS~-1|'),
+                  base.replace('FRAMEWINS~0|','FRAMEWINS~-6|'),
                   base.replace(','.join(['15']*15), ','.join(['13']*3+['14']*6+['15']*6)),
                   base.split('#FRAMEWINS')[0], base+'#MMW~new-feature'):
             raw=sample(); update(raw['steps'][-1], GSD=g); values.append(raw)

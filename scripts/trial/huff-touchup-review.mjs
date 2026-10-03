@@ -1,5 +1,6 @@
 // Pure independent sequence validation; source admission is separately scoped.
 import assert from 'node:assert/strict';
+import {reviewFeatureValues,parseFeatureValues} from './feature-state.mjs';
 const need=(ok,code)=>assert(ok,code);
 const source='huffnpuffmoneymansionhighlimit96-round-one-base-v1';
 export const HUFF_TOUCHUP_EXTENSION=source+'-touchup-cash-v1';
@@ -39,8 +40,8 @@ export function reviewTouchup(raw){
     const n=['NFG','TFG','CFGG'].map(k=>{need(/^\d+$/.test(p[k]??''),'HUFF_COUNTER');return Number(p[k]);});
     const board=numbers(g.VA,',');need(board.length===15&&board.every(v=>v<=15),'HUFF_INVALID_BOARD');
     need(!(board.filter(v=>v===13).length>=3&&board.filter(v=>v===14).length>=6),'HUFF_COMBINED_EXIT_NOT_ADAPTED');
-    if('FRAMEWINS'in g){const wins=numbers(g.FRAMEWINS,'|',true),frames=numbers(g.FRAMES,'|');
-      need(wins.length===15&&frames.length===15,'HUFF_INVALID_FRAME_AWARDS');need(wins.every(v=>v>=0),'HUFF_FRAME_EXIT_NOT_ADAPTED');}
+    if('FRAMEWINS'in g){const wins=reviewFeatureValues(g.FRAMEWINS,{size:15,displaySentinels:[-1,-2,-3,-4,-5],continuationSentinels:[-100]});
+      parseFeatureValues(g.FRAMES,{size:15,decimalPlaces:0});need(!wins.requiresFeatureContinuation,'HUFF_FRAME_EXIT_NOT_ADAPTED');}
     const f=ids(p.FID),prev=ids(g.PCFID);
     if(i===0)need(eq(f,[0])&&!prev.length&&g.FEAT===undefined&&g.MMBG==='1'&&!g.MMW&&eq(n,[1,1,0]),'HUFF_TOUCHUP_TRIGGER_REQUIRED');
     else if(i===1)need(eq(f,[2])&&eq(prev,[0])&&g.FEAT==='MMANSION'&&g.MMBG==='1'&&g.MMW&&eq(n,[6,6,0]),'HUFF_TOUCHUP_AWARD_REQUIRED');

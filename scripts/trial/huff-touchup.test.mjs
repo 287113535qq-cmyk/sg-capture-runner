@@ -13,6 +13,28 @@ assert.equal(p.status,0,p.stderr);const {raw,plan,fields}=JSON.parse(p.stdout);
 const require=createRequire(import.meta.url);require('../../collector/node_modules/ts-node').register({project:path.resolve('collector/tsconfig.json')});
 const {prepareNextgenRound}=require('../../collector/sg.ingest.ts');
 const hashes={hardHat:'a'.repeat(64),touchup:fields.typeMappingHash};
+
+test('Touch Up shares display decimals and jackpot codes without admitting another Mansion feature',async()=>{
+  const a=analyzer({python:py});try{
+    for(const value of ['1.5','-1','-2','-3','-4.00','-5','-100','-6','-4.1']){
+      const changed=structuredClone(raw),s=changed.steps.at(-1);
+      s.responsePayload=s.responsePayload.replace('FRAMEWINS~0|','FRAMEWINS~'+value+'|');
+      s.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+s.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';
+      if(['-100','-6','-4.1'].includes(value)){
+        assert.throws(()=>nextRequest(changed));
+        assert.throws(()=>prepareNextgenRound(changed,roundMapping(raw,'b'.repeat(64),hashes)));
+        await assert.rejects(a.call({op:'next',plan,raw:changed}));
+      }else{
+        assert.equal(nextRequest(changed),null);assert.equal(await a.call({op:'next',plan,raw:changed}),null);
+        const normalized=prepareNextgenRound(changed,roundMapping(changed,'b'.repeat(64),hashes));
+        assert.deepEqual(normalized,fields);
+        const checked=await a.call({op:'record',plan,raw:changed,normalized,
+          sequence:1,attempt:1,sessionHash:'a'.repeat(64),worker:0,batchId:1});
+        assert.deepEqual(checked.normalized,fields);
+      }
+    }
+  }finally{a.close();}
+});
 test('real analyzer IPC and Runner follow all Touch Up prefixes; collector matches full normalized record',async()=>{
   const a=analyzer({python:py});try{
     for(let n=0;n<=8;n++){
