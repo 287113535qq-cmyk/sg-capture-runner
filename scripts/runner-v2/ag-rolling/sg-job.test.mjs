@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {EventEmitter} from 'node:events';
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
 import {runRollingJob} from './sg-job.mjs';
 function fixture(){
  const children=[];
@@ -13,6 +15,18 @@ function fixture(){
  return {children,spawnProcess};
 }
 const environment={SG_TRIAL_DEMO_CONFIG:'offline-placeholder',SG_AG_LANE:'20',GH_TOKEN:'offline-gh-placeholder'};
+test('every AG workflow entry point installs locked module dependencies and has no extra concurrent controller job',()=>{
+ const require=createRequire(import.meta.url),yaml=require('../../../collector/node_modules/js-yaml');
+ const workflow=yaml.load(fs.readFileSync('.github/workflows/trial-300k.yml','utf8'));
+ for(const id of ['ag-rolling-admit','ag-rolling-capture','ag-rolling-finalize']){
+  const steps=workflow.jobs[id].steps,install=steps.findIndex(s=>s['working-directory']==='collector'&&s.run==='npm ci --ignore-scripts --no-audit --no-fund');
+  const entry=steps.findIndex(s=>s.run?.startsWith('node scripts/runner-v2/ag-rolling/'));
+  assert.ok(install>=0&&install<entry,id+' must install before module evaluation');
+ }
+ assert.equal(workflow.jobs['ag-rolling-controller'],undefined);
+ assert.equal(workflow.jobs['ag-rolling-capture'].strategy['max-parallel'],20);
+ assert.equal(workflow.jobs['ag-rolling-capture'].strategy.matrix.lane.length,20);
+});
 test('ordinary lanes use one child and forward the source result',async()=>{
  const f=fixture(),done=runRollingJob({lane:3,environment,spawnProcess:f.spawnProcess});
  assert.equal(f.children.length,1);assert.equal(f.children[0].options.env.SG_AG_LANE,'3');
