@@ -7,6 +7,7 @@ import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
 import {preparationHandlers,preparationInputHash,reviewedPreparation,preparationSourceHash} from './runner-v2/preparation-handlers.mjs';
 import {stagePreparedCycle} from './runner-v2/preparation-publication-cycle.mjs';
 import {preparationRevision} from './runner-v2/preparation-revision.mjs';
+import {reviewFlowRepairInbox} from './runner-v2/flow-repair-inbox.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -89,6 +90,12 @@ try{
         log({action:'event-requires-review',event:name});
       }
     }
+    if(lane==='repair'){
+      try{
+        const flow=await reviewFlowRepairInbox(root,index,python);
+        if(flow)log({action:'flow-evidence-reviewed',...flow});
+      }catch(error){log({action:'flow-review-requires-review',reason:/^[A-Z_]{1,80}$/.test(error.message)?error.message:'FLOW_REVIEW_IO_FAILED'});}
+    }
     // Revoke changed implementations and durable failures before publishing
     // repair events or handoffs. Otherwise a stale proof can escape this tick.
     for(const task of q.tasks.filter(t=>t.status==='prepared')){
@@ -159,7 +166,7 @@ try{
       try{
         const result=savedResult;
         if(result.status==='prepared'){
-          const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts});
+          const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts,failureEvidenceHash:task.failureEvidenceHash});
           if(reviewed.status!=='prepared'||hash(reviewed.proof)!==hash(result.proof))throw Error('PREPARATION_RECEIPT_EVIDENCE_MISSING');
         }
         // A failed revision may not be re-approved by its old receipt.
@@ -181,7 +188,7 @@ try{
       const existingLocal=input.receipts.filter(r=>r.schema==='sg-preparation-gate-v1'&&r.gameId===claim.gameId
         &&r.revisionHash===input.revisionHash&&r.gate==='local'&&r.verified===true&&r.sourceAllowance===0);
       if(existingLocal.length){
-        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts});
+        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,receipts:input.receipts,failureEvidenceHash:task.failureEvidenceHash});
         task.missingGates=reviewed.missingGates??[];
         finishPreparation(q,claim,reviewed,Date.now());save(q);
         log({action:reviewed.status,gameId:claim.gameId,lane:claim.lane,missingGates:task.missingGates,localChecksReused:true});continue;
@@ -197,7 +204,7 @@ try{
           revisionHash:input.revisionHash,verified:true,sourceAllowance:0,
           supportingHashes:logs.map(n=>bytesHash(path.join(dir,n+'.log')))};
         publishImmutableInbox(input.evidenceDir,receipt);
-        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,
+        const reviewed=reviewedPreparation({gameId:claim.gameId,revisionHash:input.revisionHash,failureEvidenceHash:task.failureEvidenceHash,
           receipts:[...input.receipts.filter(r=>r.gate!=='local'||r.revisionHash!==input.revisionHash),receipt]});
         task.missingGates=reviewed.missingGates??[];
         task.inputHash=inputsFor(claim.gameId,index).inputHash;

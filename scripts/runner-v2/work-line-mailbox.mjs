@@ -15,6 +15,10 @@ export function publishCaptureFailure(root,{gameId,proofHash,reason,evidence}){
  const rawHash=hash(evidence),event={schema:'sg-work-line-event-v1',kind:'capture-failed',gameId,
   proofHash,reason,evidenceHash:rawHash,sourceAllowance:0};
  const receipts={};
+ // Keep original flow evidence in the repair lane as well. A digest-only event
+ // lets it revoke a proof, but cannot let it independently diagnose the route.
+ receipts.flow=publishImmutableInbox(path.join(root,'.local','preparation-worker','repair','evidence-inbox'),
+  {schema:'sg-flow-repair-task-v1',gameId,evidenceHash:rawHash,evidence,sourceAllowance:0});
  for(const lane of ['admission','repair'])receipts[lane]=publishImmutableInbox(path.join(root,'.local','preparation-worker',lane,'inbox'),event);
  receipts.protocol=publishImmutableInbox(path.join(root,'.local','protocol-analysis-worker','inbox'),
   {schema:'sg-offline-protocol-task-v1',gameId,rawHash,evidence});

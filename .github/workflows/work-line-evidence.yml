@@ -1,6 +1,12 @@
 name: SG read-only work-line evidence
 on:
   workflow_dispatch:
+    inputs:
+      evidence_scope:
+        description: Fixed read-only historical evidence; never source or maintenance
+        type: choice
+        options: ['pyramids-history', 'mansion-repair', 'inca-repair']
+        default: 'pyramids-history'
 permissions:
   contents: read
 concurrency:
@@ -8,11 +14,12 @@ concurrency:
   cancel-in-progress: false
 jobs:
   export:
-    if: github.repository == '287113535qq-cmyk/sg-capture-runner'
+    if: ${{ (github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.evidence_scope != 'mansion-repair') || (github.repository == 'zyzuoyang/sg-capture-runner' && inputs.evidence_scope == 'mansion-repair') }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_WORK_LINE_EVIDENCE_SCOPE: ${{ inputs.evidence_scope || 'pyramids-history' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

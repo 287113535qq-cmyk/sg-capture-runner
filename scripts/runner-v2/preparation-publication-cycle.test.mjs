@@ -9,11 +9,12 @@ import {applyWorkLineEvent} from './work-line-events.mjs';
 import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 
-function reviewed(gameId, revisionHash) {
+function reviewed(gameId, revisionHash, failureEvidenceHash) {
   const receipts = {}, gates = {};
   for (const gate of preparationGates) {
     const receipt = {schema: 'sg-preparation-gate-v1', gameId, revisionHash, gate,
-      verified: true, sourceAllowance: 0, supportingHashes: ['b'.repeat(64)]};
+      verified: true, sourceAllowance: 0, supportingHashes: ['b'.repeat(64)],
+      ...(failureEvidenceHash && ['route','settlement','persistence'].includes(gate) ? {failureEvidenceHash} : {})};
     receipts[hash(receipt)] = receipt; gates[gate] = {verified: true, evidenceHash: hash(receipt)};
   }
   return {receipts, proof: {schema: 'sg-reusable-preparation-v1', gameId, revisionHash, sourceAllowance: 0, gates}};
@@ -25,7 +26,7 @@ function prepared(gameId, proof) {
 }
 
 test('flow repair returns to admission and publication; a second bad item cannot withhold the repaired game', async () => {
-  const first = reviewed(1, 'a'.repeat(64)), repaired = reviewed(1, 'c'.repeat(64));
+  const first = reviewed(1, 'a'.repeat(64)), repaired = reviewed(1, 'c'.repeat(64), 'd'.repeat(64));
   const inventory = prepared(1, first.proof), failedProofHash = hash(first.proof), failure = 'd'.repeat(64);
   applyWorkLineEvent(inventory, {schema: 'sg-work-line-event-v1', kind: 'capture-failed', gameId: 1,
     sourceAllowance: 0, evidenceHash: failure, proofHash: failedProofHash, reason: 'FLOW_GAP'}, 'admission', 2);

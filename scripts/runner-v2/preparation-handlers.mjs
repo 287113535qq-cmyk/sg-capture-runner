@@ -21,13 +21,14 @@ export function preparationInputHash({gameId,reference,fileHashes,evidenceHashes
  assert(Number.isSafeInteger(gameId),'PREPARATION_INPUT_GAME');
  return hash({gameId,handler:preparationHandlers[gameId]??null,reference,fileHashes,evidenceHashes});
 }
-export function reviewedPreparation({gameId,revisionHash,receipts}){
+export function reviewedPreparation({gameId,revisionHash,receipts,failureEvidenceHash}){
  const gates={},missing=[];
  for(const gate of preparationGates){
   const matching=receipts.filter(r=>r?.schema==='sg-preparation-gate-v1'&&r.gameId===gameId
    &&r.revisionHash===revisionHash&&r.gate===gate&&r.verified===true&&r.sourceAllowance===0
    &&Array.isArray(r.supportingHashes)&&r.supportingHashes.length>0
-   &&r.supportingHashes.every(h=>/^[a-f0-9]{64}$/.test(h)));
+   &&r.supportingHashes.every(h=>/^[a-f0-9]{64}$/.test(h))
+   &&(!failureEvidenceHash||!['route','settlement','persistence'].includes(gate)||r.failureEvidenceHash===failureEvidenceHash));
   // Ambiguous evidence is a review item, never newest-file-wins permission.
   if(matching.length!==1)missing.push(gate);
   else gates[gate]={verified:true,evidenceHash:hash(matching[0])};

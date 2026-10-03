@@ -4,6 +4,9 @@ import {openWorkLineEvidence} from './work-line-sealed-evidence.mjs';
 import {publishImmutableInbox} from './work-line-mailbox.mjs';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {validateLinuxPreparationTask,deliverLinuxPreparationTask} from './preparation-linux-evidence.mjs';
+import {validateNativeRepairReplay} from './native-repair-replay.mjs';
+import {preparationRevision} from './preparation-revision.mjs';
+import fs from 'node:fs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -22,15 +25,28 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
  // encryption nor a trusted workflow grants a preparation proof or quota.
  for(const task of value.tasks){
   assert(task.sourceAllowance===0,'EVIDENCE_TASK_ALLOWANCE');
-  if(task.schema==='sg-preparation-linux-task-v1'){
+  if(task.schema==='sg-native-repair-replay-task-v1'){
+   validateNativeRepairReplay(task);
+   assert(origin.workflow==='.github/workflows/work-line-evidence.yml','NATIVE_REPAIR_DELIVERY_ORIGIN');
+   const index=JSON.parse(fs.readFileSync(path.join(root,'.local/preparation-worker/repair/feature-index.json'),'utf8'));
+   assert(preparationRevision(root,task.gameId,index.games.find(g=>g.gameId===task.gameId)).revisionHash===task.revisionHash,
+    'NATIVE_REPAIR_DELIVERY_REVISION_CHANGED');
+  }else if(task.schema==='sg-preparation-linux-task-v1'){
    validateLinuxPreparationTask(root,task,origin);
   }else if(task.schema==='sg-confirmed-round-analysis-task-v1'){
    assert(task.gameId===task.plan?.gameId&&task.planHash===hash(task.plan)
     &&task.recordHash===hash(task.record)&&hash(task.readback)===hash(task.record),'EVIDENCE_TASK_SCOPE');
   }else assert(task.schema==='sg-capture-fault-export-v1'&&task.plan&&task.receipt&&task.archive&&task.publication,'EVIDENCE_TASK_SCOPE');
  }
- const mailboxes=value.tasks.map(task=>task.schema==='sg-preparation-linux-task-v1'
-  ?deliverLinuxPreparationTask(root,task,origin).mailbox
-  :publishImmutableInbox(path.join(root,'.local','capture-handoff-worker','inbox'),task));
+ const mailboxes=value.tasks.map(task=>{
+  if(task.schema==='sg-preparation-linux-task-v1')return deliverLinuxPreparationTask(root,task,origin).mailbox;
+  if(task.schema==='sg-native-repair-replay-task-v1'){
+   const event={schema:'sg-work-line-event-v1',kind:'native-repair-observed',gameId:task.gameId,
+    evidenceHash:task.failureEvidenceHash,repairKey:task.manifest.repairKey,sourceAllowance:0};
+   for(const lane of ['admission','repair'])publishImmutableInbox(path.join(root,'.local/preparation-worker',lane,'inbox'),event);
+   return publishImmutableInbox(path.join(root,'.local/preparation-worker/repair/evidence-inbox'),validateNativeRepairReplay(task));
+  }
+  return publishImmutableInbox(path.join(root,'.local','capture-handoff-worker','inbox'),task);
+ });
  return {status:'sealed-evidence-delivered',origin,mailboxes,tasks:mailboxes.length,sourceRequests:0,mongoWrites:0};
 }

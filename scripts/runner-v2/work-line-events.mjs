@@ -21,7 +21,13 @@ export function applyWorkLineEvent(inventory,event,lane,now){
  const task=inventory.tasks.find(t=>t.gameId===event.gameId);
  assert(task&&!task.claim,'WORK_LINE_TASK_BUSY');
  assert(task.status!=='complete','WORK_LINE_COMPLETED_IMMUTABLE');
- if(event.kind==='capture-failed'){
+ if(event.kind==='native-repair-observed'){
+  assert(task.lane==='repair'&&task.status==='blocked'&&!task.proof
+   &&(!task.failureEvidenceHash||task.failureEvidenceHash===event.evidenceHash)
+   &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_REPAIR_BINDING');
+  task.failureEvidenceHash=event.evidenceHash;task.nativeRepairKey=event.repairKey;
+  task.reason='NATIVE_REPAIR_REPLAY_REQUIRED';
+ }else if(event.kind==='capture-failed'){
   assert(/^[a-f0-9]{64}$/.test(event.proofHash)&&typeof event.reason==='string','WORK_LINE_FAILURE');
   // A delayed failure may not fence a newer admitted revision.
   if(lane==='admission'&&task.proofHash!==event.proofHash)return false;
