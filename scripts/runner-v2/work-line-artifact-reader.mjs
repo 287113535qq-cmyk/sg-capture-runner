@@ -18,23 +18,27 @@ export async function readWorkLineArtifacts(root){
  const env={...process.env,HTTPS_PROXY:'http://127.0.0.1:10090',HTTP_PROXY:'http://127.0.0.1:10090',NO_PROXY:'',GODEBUG:'http2client=0',PYTHONUTF8:'1'};
  const api=async endpoint=>(await exec(gh,['api',endpoint],{cwd:root,env,encoding:'buffer',timeout:30000,maxBuffer:32*1024*1024})).stdout;
  const json=async endpoint=>JSON.parse((await api(endpoint)).toString('utf8'));
- const receipts=path.join(dir,'receipts');fs.mkdirSync(receipts,{recursive:true});let delivered=0;const errors=[];
+ const receipts=path.join(dir,'receipts');fs.mkdirSync(receipts,{recursive:true});let delivered=0;const errors=[],runMetadata=new Map();
  for(const repository of repos){
-  let page=1;
+  let page=1,pageBound=1;
   for(;;page++){
-   assert(page<=10,'EVIDENCE_PAGINATION_BOUND');
+   assert(page<=pageBound,'EVIDENCE_PAGINATION_BOUND');
    const listing=await json(`repos/${repository}/actions/artifacts?per_page=100&page=${page}`);
+   assert(Number.isSafeInteger(listing.total_count)&&listing.total_count>=0&&listing.total_count<=100000,'EVIDENCE_ARTIFACT_COUNT_BOUND');
+   pageBound=Math.max(pageBound,Math.ceil(listing.total_count/100)+1);
    for(const artifact of listing.artifacts){
     if(!/^sg-work-line-[0-9]+-[0-9]+-[a-z0-9-]+$/.test(artifact.name)||artifact.expired)continue;
     const identity=repository.split('/')[0]+'-'+artifact.id,done=path.join(receipts,identity+'.json');
+    try{
     if(fs.existsSync(done)){
      const old=JSON.parse(fs.readFileSync(done,'utf8'));
      assert(old.artifactId===artifact.id&&old.repository===repository
        &&fs.existsSync(path.join(receipts,hash(old)+'.json')),'EVIDENCE_RECEIPT_CHANGED');continue;
     }
-    try{
     assert(Number.isSafeInteger(artifact.id)&&artifact.size_in_bytes<=32*1024*1024,'EVIDENCE_ARTIFACT_SIZE');
-    const run=await json(`repos/${repository}/actions/runs/${artifact.workflow_run.id}`),origin=evidenceOrigin(run,repository);
+    const runKey=repository+':'+artifact.workflow_run.id;
+    if(!runMetadata.has(runKey))runMetadata.set(runKey,await json(`repos/${repository}/actions/runs/${artifact.workflow_run.id}`));
+    const origin=evidenceOrigin(runMetadata.get(runKey),repository);
     assert(artifact.name.startsWith(`sg-work-line-${origin.runId}-${origin.attempt}-`)
       &&artifact.workflow_run.head_sha===origin.commit,'EVIDENCE_ARTIFACT_RUN');
     // A commit absent from this checkout cannot silently introduce a new

@@ -7,7 +7,9 @@ if(mode==='round-one')env.SG_ENCRYPTED_EVIDENCE='1';
 if(mode==='legacy-fixed')delete env.SG_POOL_RUN_LIMIT;
 const command=mode==='readonly-export'?['scripts/runner-v2/work-line-evidence-export.mjs']:
  [mode==='round-one'?'scripts/runner-v2/campaign-worker.mjs':'scripts/trial/worker.mjs','capture'];
-const child=spawn(process.execPath,command,{cwd:root,env,stdio:'inherit'});let ended=false,exitCode=1;
+// Preserve the capture job's configured Node executable. The action runtime
+// is only the independent publisher and must not silently migrate capture.
+const child=spawn('node',command,{cwd:root,env,stdio:'inherit'});let ended=false,exitCode=1;
 child.on('error',()=>{ended=true;});child.on('close',code=>{exitCode=code??1;ended=true;});
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>child.kill(signal));
 const origin={runId:env.GITHUB_RUN_ID,attempt:env.GITHUB_RUN_ATTEMPT},attempted=new Set(),execute=promisify(execFile);let deliveryErrors=0;
