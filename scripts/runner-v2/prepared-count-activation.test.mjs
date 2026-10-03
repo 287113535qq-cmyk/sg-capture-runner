@@ -7,6 +7,7 @@ import {reviewPreparedCountScene} from './prepared-count-scene.mjs';
 import {activatePreparedCount} from './prepared-count-activation.mjs';
 import {loadCountPermission} from './complete-count.mjs';
 import {admitPreparedCountRun} from './prepared-count-admission.mjs';
+import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
 
 // Synthetic state exercises admission/CAS failures. Real retained records are
 // independently reviewed privately; these fixtures do not prove live routing.
@@ -49,6 +50,22 @@ async function fixture(){
   group:'primary',basePlanHash:hash(base),activation,profileHash:hash(profile)};
  return {args:{...args,profile,authorization,boundary:async()=>{},commit:'f'.repeat(40),run:'1:1'},docs,mongo,writes,base,repairKey};
 }
+
+test('continuation selects the prepared game own registered count ledger and refuses missing or changed permission',async()=>{
+ const f=await fixture();await activatePreparedCount(f.args);
+ const name=`formal-prepared-count-${f.base.gameId}-${f.args.profile.activation}.json`;
+ const registry={schema:'sg-prepared-count-authorizations-v1',sourceAllowance:0,profiles:{[name]:f.args.authorization}};
+ const args={store:f.args.store,campaign:f.docs.get('state/campaign'),gameId:f.base.gameId,group:'primary',
+  plans:f.args.plans,registry,readProfile:async()=>f.args.profile,commit:f.args.commit};
+ const inputs=await preparedContinuationInputs(args);
+ assert.equal(inputs.role,'formal-count');assert.equal(inputs.formal_profile,name);assert.equal(inputs.relay_parent,'');
+ assert.equal(inputs.round_one_limit,'0');
+ await assert.rejects(preparedContinuationInputs({...args,registry:{...registry,profiles:{}}}),/PROFILE_REQUIRED/);
+ await assert.rejects(preparedContinuationInputs({...args,group:'secondary'}),/PROFILE_SCOPE/);
+ await assert.rejects(preparedContinuationInputs({...args,commit:'1'.repeat(40)}),/COUNT_AUTHORIZATION/);
+ f.docs.get('state/pool:'+f.base.trialId).enabled=false;
+ await assert.rejects(preparedContinuationInputs(args),/COUNT_NOT_READY/);
+});
 test('prepared admission preserves settled historical pointers and complete receipts without gameplay classification',async()=>{
  const f=await fixture(),original=[...f.docs].filter(([k])=>k.startsWith('journal/receipt:')||k.startsWith('state/batch:'));
  const result=await activatePreparedCount(f.args);assert.equal(result.remainingComplete,299998);assert.equal(result.sourceRequests,0);

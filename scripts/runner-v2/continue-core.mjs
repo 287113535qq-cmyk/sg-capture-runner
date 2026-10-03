@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-export async function continueAfterGame({store,transport,runId,attempt,github,preparedSelector=null,group,now=Date.now}){
+export async function continueAfterGame({store,transport,runId,attempt,github,preparedSelector=null,prepareDispatch=null,group,now=Date.now}){
   assert(/^[0-9]+$/.test(runId) && /^[0-9]+$/.test(attempt));
   const c=(await store.get('state','campaign'))?.value;
   const bound=(await store.get('state',`capture-run:${runId}:${attempt}`))?.value;
@@ -16,12 +16,14 @@ export async function continueAfterGame({store,transport,runId,attempt,github,pr
     assert(c.games.some(g=>g.game_id===preparedGame&&['ready','active'].includes(g.status)),'CONTINUATION_GAME_NOT_ADMITTED');
   }
   if(await github.hasOtherRun())return {continued:false,reason:'CONTINUATION_ALREADY_QUEUED'};
+  const dispatchInputs=prepareDispatch?await prepareDispatch({campaign:c,gameId:preparedGame,group}):undefined;
   await store.writable();
   const intent=await transport.request('create',{collection:'journal',key:`continuation:${runId}:${attempt}`,
-    value:{finishedGame:bound.gameId,requestedAt:now(),runId,attempt,...(preparedSelector?{preparedGame}:{})}});
+    value:{finishedGame:bound.gameId,requestedAt:now(),runId,attempt,...(preparedSelector?{preparedGame}:{}),
+      ...(dispatchInputs?{dispatchInputs}:{})}});
   if(!intent.created)return {continued:false,reason:'DISPATCH_ALREADY_ATTEMPTED'};
   // An unknown dispatch acknowledgement is never blindly retried. The existing
   // schedule can continue after its normal check and per-repository concurrency.
-  await github.dispatch();
+  await github.dispatch(dispatchInputs);
   return {continued:true,finishedGame:bound.gameId};
 }

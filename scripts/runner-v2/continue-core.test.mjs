@@ -39,3 +39,13 @@ test('real continuation consumes the independent prepared selector before creati
  f.args.preparedSelector=async()=>2;assert.equal((await continueAfterGame(f.args)).continued,true);assert.equal(f.dispatches(),1);assert.equal(checks,1);
  const foreign=fixture();foreign.args.preparedSelector=async()=>3;await assert.rejects(continueAfterGame(foreign.args),/NOT_ADMITTED/);assert.equal(foreign.dispatches(),0);
 });
+
+test('continuation validates the next ledger before intent and binds dispatch inputs without retrying unknown acknowledgements',async()=>{
+ const f=fixture();f.args.preparedSelector=async()=>2;
+ f.args.prepareDispatch=async()=>{throw Error('COUNT_AUTHORIZATION');};
+ await assert.rejects(continueAfterGame(f.args),/COUNT_AUTHORIZATION/);assert.equal(f.dispatches(),0);
+ const inputs={role:'formal-count',formal_profile:'registered.json'};let received;
+ f.args.prepareDispatch=async()=>inputs;f.args.github.dispatch=async value=>{received=value;throw Error('ACK_UNKNOWN');};
+ await assert.rejects(continueAfterGame(f.args),/ACK_UNKNOWN/);assert.deepEqual(received,inputs);
+ assert.equal((await continueAfterGame(f.args)).reason,'DISPATCH_ALREADY_ATTEMPTED');
+});
