@@ -10,7 +10,7 @@ export function linuxPreparationTasks({root, index, result, origin}) {
   assert(result?.schema === 'sg-offline-preflight-v1' && result.passed === true && result.complete === true
     && result.sourceRequests === 0 && result.mongoWrites === 0 && result.runs?.length > 0,
     'PREPARATION_LINUX_INCOMPLETE');
-  const expected = {'python': 8, 'collector-protocol': 3, 'runner-persistence': 2};
+  const expected = {'python': 8, 'collector-protocol': 3, 'runner-persistence': 3};
   for (const run of result.runs) {
     assert(run.passed === true && run.groups?.length === 3, 'PREPARATION_LINUX_INCOMPLETE');
     assert(new Set(run.groups.map(g => g.group)).size === 3

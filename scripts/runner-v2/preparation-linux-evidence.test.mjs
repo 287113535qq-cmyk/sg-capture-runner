@@ -12,7 +12,7 @@ import {preparationHandlers} from './preparation-handlers.mjs';
 test('only the complete fixed Linux check set emits Linux gates; a live or failed run never admits evidence', () => {
   const origin = {workflow: '.github/workflows/preflight.yml'};
   const result = {schema: 'sg-offline-preflight-v1', passed: true, complete: true, sourceRequests: 0, mongoWrites: 0,
-    runs: [{passed: true, groups: Object.entries({'python': 8, 'collector-protocol': 3, 'runner-persistence': 2})
+    runs: [{passed: true, groups: Object.entries({'python': 8, 'collector-protocol': 3, 'runner-persistence': 3})
       .map(([group, expectedCommands]) => ({group, expectedCommands, passed: true,
         commands: Array.from({length: expectedCommands}, () => ({exitCode: 0, argvHash: 'a'.repeat(64)}))}))}]};
   const index = {games: []};
@@ -44,7 +44,7 @@ test('encrypted Linux evidence reaches the preparation gate store; repeated runs
     const index = {games: []}; fs.writeFileSync(path.join(root, '.local/preparation-worker/admission/feature-index.json'), JSON.stringify(index));
     const origin = {workflow: '.github/workflows/preflight.yml', repository: 'zyzuoyang/sg-capture-runner', runId: '1', attempt: '1', commit: 'a'.repeat(40)};
     const result = {schema: 'sg-offline-preflight-v1', passed: true, complete: true, sourceRequests: 0, mongoWrites: 0,
-      runs: [{passed: true, groups: Object.entries({'python': 8, 'collector-protocol': 3, 'runner-persistence': 2})
+      runs: [{passed: true, groups: Object.entries({'python': 8, 'collector-protocol': 3, 'runner-persistence': 3})
         .map(([group, expectedCommands]) => ({group, expectedCommands, passed: true,
           commands: Array.from({length: expectedCommands}, () => ({exitCode: 0, argvHash: 'a'.repeat(64)}))}))}]};
     const tasks = linuxPreparationTasks({root, index, result, origin});
