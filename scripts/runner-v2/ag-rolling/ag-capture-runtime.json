@@ -1,0 +1,127 @@
+{
+  "schema": "ag-capture-runtime-v1",
+  "typescript": "5.9.3",
+  "declarations": [
+    {
+      "file": "src/ag.plan.ts",
+      "name": "completionRate",
+      "sha256": "f69e096d20d1d6eaff2423e7104959d230113502dd60ac11d829ee5647d43305"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "refreshTask",
+      "sha256": "389c9d710a04fcdb1d1e893ef955f4334d6f1bc3ebe7493af86266aa71fc66e8"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "refreshTotals",
+      "sha256": "d3bf7479e8ad62f817f625d3ee1726980fe6e4488e4511fee6ae1cdca8570bc4"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "compareTasks",
+      "sha256": "e18a31ac63313f9e021ce8c8950bd487b8dd14d6d0027b2a9cc2b5c9898d894f"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "applyGameShard",
+      "sha256": "16781608d09b10c4d9cbdfdbc372498ad60626f298715764c3956a96d3988edf"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "buildCaptureState",
+      "sha256": "2bb9a47d3e264cce7b83004021fd98fc34f4ed6cf636a6f30847540b6993d0f7"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "ensureChoiceTasks",
+      "sha256": "3ce9297fc3fa7d351a59795714ebf4826130590d8af5bd22e12d84e6605d0d22"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "selectNextTask",
+      "sha256": "71943bc65c2b827faf489362537a7299ba5906f465a4ffdb79aafbb43f85cba1"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "selectNextChoiceTask",
+      "sha256": "028a62cfd334f2ee75ee35f4c6b1d11244aedf2451da0bc13865dcecbdd64cfa"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "markTaskSuccess",
+      "sha256": "46bddbe24f78192330057540fdef7163709d04238e375406b517e5c13c47178c"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "markTaskFailure",
+      "sha256": "0b94c50c789b3aa90c1d0a02b09e3480a0d44f181ca1796bbbf451d95f653a64"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "getTaskByKey",
+      "sha256": "29fbe3b7f3ff3a69b38c4e808164df7b017bf54f67bc7977e552e02512fd8162"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "recordTaskSuccessByKey",
+      "sha256": "b0315ad1e70d14382c5b1adfe8b236c67c69f632fc8f909f76ff43efc5f2be65"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "isCaptureComplete",
+      "sha256": "b9cfb62a1e210714460319e4274169a3f7a50234d3cab9c0ccf8496d86498932"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "getOptionHits",
+      "sha256": "b34c078a94bc881badc2b24c834773da71cb5d92cd5da77f17d2cc8db4dda523"
+    },
+    {
+      "file": "src/ag.plan.ts",
+      "name": "AGChoiceBalancer",
+      "sha256": "bb7038da8ca9478e53889536503340da709f18d83dfafd1eec11bb5715890cc6"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "saveHandshakeConfig",
+      "sha256": "15bafed5f87c51e2059bc43b7e10199d9669cb13140418b67256c0ac6dd2b987"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "sleep",
+      "sha256": "57ec5a02d9b34f5b371d2163f50dd731a0fe8f8c0aec7bb836150336f3d37624"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "isDeterministicCaptureError",
+      "sha256": "a340cd1e6c2523f1579aa166f166be88af214e20bf8616301f549e4680dab6b4"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "getDbName",
+      "sha256": "866b399de896a204b15c117f8d27b36bc9e3368228576099d165255d582d9d10"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "formatState",
+      "sha256": "c9b4ce262d74c86f861810f3c3fb138370f07d9d4a538ce47cede3900567350a"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "getCaptureSampleGroups",
+      "sha256": "b088791bb3cbd2e790df14d15ffdc9aae467b38938b516827a93bc2e799ce446"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "AGGameRunner",
+      "sha256": "66c26081635e951d08566c25882a5c1c55f883232ce31cb18f84199aa6fa20a4"
+    },
+    {
+      "file": "src/ag.scheduler.ts",
+      "name": "runAGScheduler",
+      "sha256": "4c16d17c03cb1c43be9a144ea0b62d114f7b52436e0ea446464ea57bed1ab349"
+    }
+  ],
+  "sha256": "d6129050327309b7b1ca8ff38e072b784c3fc0462390324c4e0b003d4b885cbb"
+}
