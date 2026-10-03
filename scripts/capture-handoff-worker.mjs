@@ -2,15 +2,21 @@ import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} fro
 import {reviewCaptureHandoff} from './runner-v2/capture-handoff.mjs';
 import {deliverCaptureFault} from './runner-v2/capture-fault-delivery.mjs';
 import {deliverConfirmedAnalysis} from './runner-v2/confirmed-analysis-task.mjs';
-// Deliberately local file I/O only. No GitHub client, subprocess, source client,
-// credentials or dispatch authority. Online consumer revalidates every gate.
+import {readWorkLineArtifacts} from './runner-v2/work-line-artifact-reader.mjs';
+// Local handoff plus GET-only encrypted evidence delivery. No source client or
+// dispatch authority. Online consumer revalidates every preparation gate.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dir=path.join(root,'.local','capture-handoff-worker');
 fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});fs.mkdirSync(path.join(dir,'results'),{recursive:true});
 const lockPath=path.join(dir,'producer.lock'),lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid}));
-let stop=false,waiting=false;process.on('SIGINT',()=>{stop=true;});process.on('SIGTERM',()=>{stop=true;});
+let stop=false,waiting=false,nextEvidenceRead=0;process.on('SIGINT',()=>{stop=true;});process.on('SIGTERM',()=>{stop=true;});
 try{
  do{
   let worked=false;
+  if(Date.now()>=nextEvidenceRead){
+   nextEvidenceRead=Date.now()+60000;
+   try{const r=await readWorkLineArtifacts(root);if(r.delivered||r.errors?.length)console.log(JSON.stringify({at:Date.now(),...r}));}
+   catch(error){console.log(JSON.stringify({at:Date.now(),status:'evidence-read-requires-review',reason:error.code||error.message?.split('\n')[0],sourceRequests:0}));}
+  }
   for(const name of fs.readdirSync(path.join(dir,'inbox')).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
    const dest=path.join(dir,'results',name);if(fs.existsSync(dest))continue;
    let result;

@@ -44,4 +44,5 @@ foreach ($lane in $lanes) {
   [pscustomobject]@{ Lane=$lane.Name; Running=[bool]$processInfo; Pid=if ($processInfo) { $processInfo.ProcessId } else { $null }; SourceAuthority=$false }
 }
 # This starts offline work and capture handoff only. It neither enables source
-# nor calls GitHub; actual capture requires the independent online controller.
+# nor dispatches GitHub jobs; handoff may GET encrypted evidence artifacts.
+# Actual capture requires the independent online controller.
