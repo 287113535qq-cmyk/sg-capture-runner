@@ -112,7 +112,7 @@
     "docs/protocol-parking-20260928.md": "03db2311e6f89909b06c64f2b4f5747115c3d96fd08519a2b9281a9ed0b99de8",
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/protocol-parking-storage-stop-20260928.md": "a76723240be347a1ded01bbe979d798edca88eb330b9161fd3ba852fa3cafc3a",
-    "docs/rules.md": "4b62f0e90af3f0fa6a016a1f134f8f91a2121f2b61e8d838c10a327847fe9d4c",
+    "docs/rules.md": "91e75f53b32181bdfb154db925daa32d9b3d8c2d2d4129dd326519ca701f1af6",
     "docs/runner-io-optimization-20260928-result.json": "65737b1c9b3448ff642b1db40a82013309989c2ea775e16a99eb35f35e67ccea",
     "docs/runner-io-optimization-20260928.md": "ebd1a592c2b9379f6f237223f1de9398dacda14d0b279ad6c6a46914911856ba"
   },
@@ -123,5 +123,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "603bf2c4a9029ff423a0bac559eb60f449721af102debf62b9ca8821d1603d90"
+  "ruleHash": "6680a97c0117a6e411beb908decf02fa9e63b8fe9dda206f8d8ad46c3bb22d84"
 }
