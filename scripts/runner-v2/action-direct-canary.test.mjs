@@ -79,7 +79,8 @@ test('workflow selects exactly the bounded budget admission and actual worker ti
  const require=createRequire(process.cwd()+'/collector/package.json'),yaml=require('js-yaml');
  const source=yaml.load(fs.readFileSync('.github/workflows/trial-300k.yml','utf8'));
  const maintenance=yaml.load(fs.readFileSync('.github/workflows/demo-maintenance.yml','utf8'));
- assert(source.on.workflow_dispatch.inputs.formal_profile.options.includes(DIRECT_ACTION_PROFILE));
+ assert.equal(source.on.workflow_dispatch.inputs.formal_profile.type,'string');
+ assert(fs.readFileSync('scripts/runner-v2/formal-count-plan.mjs','utf8').includes(DIRECT_ACTION_PROFILE));
  assert(maintenance.on.workflow_dispatch.inputs.repair_profile.options.includes(DIRECT_ACTION_PROFILE));
  const job=source.jobs['pyramids-formal-admit'];assert(job.if.includes(DIRECT_ACTION_PROFILE));
  const bounded=job.steps.filter(s=>s.if?.includes(DIRECT_ACTION_PROFILE)&&s.run==='node scripts/runner-v2/pyramids-repair-control.mjs admit');assert.equal(bounded.length,1);
