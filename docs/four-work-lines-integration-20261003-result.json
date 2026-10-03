@@ -190,8 +190,13 @@
     "settledRuntimeLinuxPassed": false,
     "settledRuntimeActualApplied": false,
     "genericFormalRepairLocalPassed": true,
-    "genericFormalRepairLinuxPassed": false,
+    "genericFormalRepairLinuxPassed": true,
     "genericFormalRepairActualApplied": false,
-    "formalRepairSourceReplay": false
+    "formalRepairSourceReplay": false,
+    "genericFormalRepairPreflightRun": 37102653149,
+    "firstSourceWindowMinutes": 5,
+    "firstSourceRevisionClaimOnce": true,
+    "boundedWindowLocalPassed": true,
+    "boundedWindowLinuxPassed": false
   }
 }

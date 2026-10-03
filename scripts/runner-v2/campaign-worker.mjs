@@ -24,6 +24,8 @@ import {ACTION_CANARY_RUNTIME} from './action-canary-contract.mjs';
 import {RESUME_ACTION_PROFILE,DIRECT_ACTION_PROFILE} from './pyramids-direct-action-profile.mjs';
 import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
 import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
+import {preparedCaptureWindow} from './prepared-capture-window.mjs';
+import {preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
 
 const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer({auditWorkers:2});
 let canary;
@@ -35,6 +37,18 @@ if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.r
 if(process.env.SG_FORMAL_COUNT_PROFILE){
  if(process.env.SG_DEMO_PILOT==='true')throw Error('FORMAL_COUNT_DEMO_CONFLICT');
  plans=applyFormalCount(plans,JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')));
+ const profile=JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8'));
+ if(profile.schema==='sg-prepared-count-profile-v1'){
+  const name=process.env.SG_COUNT_RUNTIME_PROFILE,registry=JSON.parse(fs.readFileSync('config/prepared-runtime-authorizations.json','utf8'));
+  const revision=name?preparedRuntimeAuthorization({name,revision:JSON.parse(fs.readFileSync(preparedRuntimePath(name,registry),'utf8')),registry,profile}):null;
+  const plan=plans[profile.gameId],commit=process.env.GITHUB_SHA;
+  const receipt=revision?(await store.get('journal',`count-runtime:${plan.trialId}:${plan.countAllocation}:${commit}`))?.value:null;
+  const window=preparedCaptureWindow({profile,revision,receipt,commit});
+  const permit=(await store.get('journal',`count-run:${plan.trialId}:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`))?.value;
+  if(permit?.commit!==commit||permit.profileHash!==hash(profile)||permit.captureMinutes!==window.minutes
+   ||permit.revisionHash!==window.revisionHash)throw Error('PREPARED_WINDOW_RUN_PERMISSION');
+  end=Date.now()+window.minutes*60000;store.deadline=end+25*60000;
+ }
 }
 if(process.env.SG_COUNT_RUNTIME_PROFILE==='count-runtime-rhino-measurement-20261001.json'){
  const revision=JSON.parse(fs.readFileSync('config/'+process.env.SG_COUNT_RUNTIME_PROFILE,'utf8')),plan=plans[32799];

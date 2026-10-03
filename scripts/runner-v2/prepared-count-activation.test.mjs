@@ -260,6 +260,17 @@ test('prepared stock selects the preserved ledger and admits exactly one new run
  assert.equal(f.docs.get('journal/count-run:'+plan.trialId+':2:1').preparationProofHash,f.args.profile.preparationProofHash);
  await assert.rejects(admitPreparedCountRun(args),/ALREADY_ADMITTED/);
 });
+test('bounded prepared verification claims one revision without minting quota or reusing an unknown attempt',async()=>{
+ const f=await fixture();await activatePreparedCount(f.args);
+ const plan={...f.base,target:300000,countAllocation:f.args.profile.activation};
+ const window={minutes:5,verification:true,revisionHash:'8'.repeat(64)};
+ const result=await admitPreparedCountRun({...f.args,plan,run:'2:1',window});
+ assert.equal(result.completeBefore,2);assert.equal(result.remainingComplete,299998);
+ const permit=f.docs.get('journal/count-run:'+plan.trialId+':2:1');assert.equal(permit.captureMinutes,5);
+ assert.equal(permit.expiresAt-permit.createdAt,35*60000);
+ await assert.rejects(admitPreparedCountRun({...f.args,plan,run:'3:1',window}),/ALREADY_CLAIMED/);
+ assert(!f.docs.has('journal/count-run:'+plan.trialId+':3:1'));
+});
 for(const bad of ['proof-revoked','other-game','live-worker','changed-code','changed-profile','unknown-write'])
  test('new run admission refuses '+bad,async()=>{
   const f=await fixture();await activatePreparedCount(f.args);

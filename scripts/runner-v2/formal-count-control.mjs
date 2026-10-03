@@ -25,6 +25,7 @@ import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {countHistoryBoundary} from './count-window-history.mjs';
 import {admitPreparedCountRun} from './prepared-count-admission.mjs';
 import {preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
+import {preparedCaptureWindow} from './prepared-capture-window.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
@@ -66,8 +67,10 @@ try{
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
  if(isPrepared){
+  const runtimeReceipt=revision?(await store.get('journal',`count-runtime:${plan.trialId}:${profile.activation}:${commit}`))?.value:null;
+  const window=preparedCaptureWindow({profile,revision,receipt:runtimeReceipt,commit});
   console.log(JSON.stringify(await admitPreparedCountRun({store,base:basePlans[profile.gameId],plan,profile,
-   publication:readFile('config/prepared-inventory.json'),plans:basePlans,readEvidence:async ref=>readFile(ref),boundary,commit,run})));
+   publication:readFile('config/prepared-inventory.json'),plans:basePlans,readEvidence:async ref=>readFile(ref),boundary,commit,run,window})));
  }else if(mode==='sessions'){
   const parentName=profile.gameId===32799?(profile.previousLanesPerHost===1?'formal-count-rhino-guarantee-20261001.json':'formal-sessions-rhino-two-20261001.json'):(profile.previousLanesPerHost===1?'formal-repair-pearl-awards-20261001.json':'formal-sessions-pearl-two-20261001.json');
   const parent=readFile('config/'+parentName);

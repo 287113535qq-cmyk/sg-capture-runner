@@ -4,7 +4,7 @@ import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 import {loadCountPermission,checkLedger} from './complete-count.mjs';
 
 export async function admitPreparedCountRun({store,base,plan,profile,publication,plans,readEvidence,
- boundary,commit,run,now=Date.now}){
+ boundary,commit,run,window,now=Date.now}){
  await boundary();
  const pool=(await store.get('state','pool:'+plan.trialId))?.value;
  const campaign=(await store.get('state','campaign'))?.value;
@@ -22,9 +22,23 @@ export async function admitPreparedCountRun({store,base,plan,profile,publication
   &&campaign.games.find(g=>g.game_id===base.gameId)?.status==='ready','PREPARED_COUNT_NOT_READY');
  const key=`count-run:${plan.trialId}:${run}`;
  assert(!(await store.get('journal',key)),'PREPARED_COUNT_RUN_ALREADY_ADMITTED');
+ if(window){
+  assert([5,15,240].includes(window.minutes)&&window.verification===(window.minutes===5)
+   &&/^[a-f0-9]{64}$/.test(window.revisionHash??''),'PREPARED_WINDOW_SCOPE');
+  if(window.verification){
+   const claimKey=`prepared-window:${plan.trialId}:${profile.activation}:${window.revisionHash}`;
+   assert(!(await store.get('journal',claimKey)),'PREPARED_WINDOW_ALREADY_CLAIMED');
+   const claim={schema:'sg-prepared-window-claim-v1',run,commit,activation:profile.activation,
+    profileHash:hash(profile),revisionHash:window.revisionHash,poolHash:hash(pool),completeBefore:pool.confirmed,
+    captureMinutes:window.minutes,newBetAllowance:0,sourceRequests:0};
+   await store.create('journal',claimKey,claim,{immutable:true});
+   assert(hash((await store.get('journal',claimKey))?.value)===hash(claim),'PREPARED_WINDOW_READBACK');
+  }
+ }
  const permit={schema:'sg-count-run-v1',activation:profile.activation,profileHash:hash(profile),commit,run,
   poolHash:hash(pool),completeBefore:pool.confirmed,remainingComplete:plan.target-pool.confirmed,
-  preparationProofHash:profile.preparationProofHash,createdAt:now(),expiresAt:now()+270*60000};
+  preparationProofHash:profile.preparationProofHash,createdAt:now(),expiresAt:now()+(window?window.minutes+30:270)*60000,
+  ...(window?{captureMinutes:window.minutes,verificationWindow:window.verification,revisionHash:window.revisionHash}:{})};
  // Selection alone grants no source permission; the exact run permit is last.
  await store.update('state','campaign',value=>{
   assert(hash(value)===hash(campaign),'PREPARED_COUNT_CAMPAIGN_CHANGED');return {...value,activeGame:base.gameId};
