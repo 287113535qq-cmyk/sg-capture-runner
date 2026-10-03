@@ -1,0 +1,16 @@
+{
+  "schema": "sg-preparation-gate-v1",
+  "gate": "local",
+  "gameId": 32714,
+  "revisionHash": "cc057f765ef1fa83059fe9263cca5257c10450c2496c5c234c6ceb91b9aeb7a9",
+  "verified": true,
+  "sourceAllowance": 0,
+  "supportingHashes": [
+    "dabda153649e4e10dc9f6372ca42d57b464327ad177b488027ea6b4abda33e6d",
+    "d55d96412d8cc8e37e6a4aa18ccb809807cf39d44cc9e434809f6bd1b2b0d7f1",
+    "43593fecc260509912793a315c1bfcbbb1194618b2b49b55d6e87de86bfd70c0",
+    "ffe40085de9aea3f29e0e1da0e6afc771375a4491df98d1d202b438a808705bc",
+    "1b6f69157102cc03f5264c937d138171570f1a3f06ab9ba2d8345507e1df7261",
+    "1b6f69157102cc03f5264c937d138171570f1a3f06ab9ba2d8345507e1df7261"
+  ]
+}
