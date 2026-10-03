@@ -4,6 +4,7 @@ import {deliverCaptureFault} from './runner-v2/capture-fault-delivery.mjs';
 import {deliverConfirmedAnalysis} from './runner-v2/confirmed-analysis-task.mjs';
 import {readWorkLineArtifacts} from './runner-v2/work-line-artifact-reader.mjs';
 import {reviewPreparedPublicationHandoff,preparedHandoffReviewKey} from './runner-v2/prepared-publication-handoff.mjs';
+import {workLineEvidencePump} from './runner-v2/work-line-evidence-pump.mjs';
 // Local handoff plus GET-only encrypted evidence delivery. No source client or
 // dispatch authority. Online consumer revalidates every preparation gate.
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),dir=path.join(root,'.local','capture-handoff-worker');
@@ -11,15 +12,12 @@ const consumerRevision=hash(['scripts/capture-handoff-worker.mjs','scripts/runne
  'scripts/runner-v2/prepared-count-runtime.mjs'].map(f=>fs.readFileSync(path.join(root,f),'utf8').replace(/\r\n/g,'\n')));
 fs.mkdirSync(path.join(dir,'inbox'),{recursive:true});fs.mkdirSync(path.join(dir,'results'),{recursive:true});
 const lockPath=path.join(dir,'producer.lock'),lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid}));
-let stop=false,waiting=false,nextEvidenceRead=0;process.on('SIGINT',()=>{stop=true;});process.on('SIGTERM',()=>{stop=true;});
+let stop=false,waiting=false;process.on('SIGINT',()=>{stop=true;});process.on('SIGTERM',()=>{stop=true;});
+const evidencePump=workLineEvidencePump({read:()=>readWorkLineArtifacts(root),log:r=>console.log(JSON.stringify(r))});
 try{
  do{
   let worked=false;
-  if(Date.now()>=nextEvidenceRead){
-   nextEvidenceRead=Date.now()+60000;
-   try{const r=await readWorkLineArtifacts(root);if(r.delivered||r.errors?.length)console.log(JSON.stringify({at:Date.now(),...r}));}
-   catch(error){console.log(JSON.stringify({at:Date.now(),status:'evidence-read-requires-review',reason:error.code||error.message?.split('\n')[0],sourceRequests:0}));}
-  }
+  const read=evidencePump.tick();if(process.argv.includes('--once'))await read;
   for(const name of fs.readdirSync(path.join(dir,'inbox')).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
    let dest=path.join(dir,'results',name);
    let result;
