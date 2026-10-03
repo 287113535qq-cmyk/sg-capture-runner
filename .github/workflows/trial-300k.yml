@@ -108,6 +108,7 @@ jobs:
       SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
       SG_AG_LANE: ${{ matrix.lane }}
       SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -126,32 +127,9 @@ jobs:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
       - name: Run original AG rolling lane with independent SG sessions
-        run: node scripts/runner-v2/ag-rolling/sg-live.mjs lane
-  ag-rolling-controller:
-    needs: ag-rolling-admit
-    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && github.repository == 'zyzuoyang/sg-capture-runner'
-    runs-on: ubuntu-latest
-    timeout-minutes: 350
-    env:
-      GH_TOKEN: ${{ github.token }}
-      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
-      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
-        with:
-          node-version: '24'
-      - name: Configure restricted database transport
-        run: node scripts/link/setup-ssh.mjs
-        env:
-          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
-          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
-      - name: Merge ended games while original AG lanes keep collecting
-        run: node scripts/runner-v2/ag-rolling/sg-live.mjs controller
+        run: node scripts/runner-v2/ag-rolling/sg-job.mjs
   ag-rolling-finalize:
-    needs: [ag-rolling-admit, ag-rolling-capture, ag-rolling-controller]
+    needs: [ag-rolling-admit, ag-rolling-capture]
     if: always() && github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && needs.ag-rolling-admit.result == 'success' && github.repository == 'zyzuoyang/sg-capture-runner'
     runs-on: ubuntu-latest
     timeout-minutes: 35
