@@ -154,7 +154,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "9fe0635ef5297db50b0d3394be87e0d2c6eb3a470333b82aeb5c392d884a7bbd",
     "service/round_fields.py": "aca9d70bdb86918c859f754bbafa4b1301f465063ce97956ab66a462c6eb1fbf",
-    "scripts/runner-v2/record_fields.py": "3767d4cf32bedf49d9b328fac3334ba52ee920b72958405d8aadda26cd696d61",
+    "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
     "service/morepuff_fields.py": "5daa6e78402db09326710e1abfa2560e8fc8e5ba5dec2ffaed6a6c8b638292d1",
     "scripts/trial/morepuff-protocol.mjs": "cd9baab5dc7ce8a7484a91f253d8a3eadfc655e6899d1a2bb61e79745b484b5f",
     "collector/sg.morepuff.ts": "d30882d2952b36ec5b9a4bedf6055934679d90f2d1c4a5a75217bcba20811648",
@@ -207,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c7d540304c29a7e949407b77426b2f2fe2a6b01701d2dba9b998159caab6c1cd"
+  "ruleHash": "70f44ad5e2e529ec32baa2c85943262fa8afc719be2ccb003008730dfa3c99b3"
 }
