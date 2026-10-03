@@ -30,7 +30,9 @@
     "versioned-event-rejections",
     "settled-fault-admission-mirror",
     "registered-formal-plan-finalization",
-    "before-only-stage-audit"
+    "before-only-stage-audit",
+    "received-terminal-independent-reconciliation",
+    "native-repair-terminal-readback-handoff"
   ],
   "localChecks": {
     "python": 21,
@@ -64,7 +66,7 @@
     "sourceRequests": 0,
     "originalRecordsChanged": 0
   },
-  "repairReturnedToPrepared": true,
+  "repairReturnedToPrepared": false,
   "reentry": {
     "schema": "sg-complete-count-activation-v1",
     "specHash": "058d1bebab3273ce7ddff083b716a6f07353aad870f6f37a158777facc588412",
@@ -79,7 +81,7 @@
     "newBetAllowance": 0
   },
   "verificationSourceRun": "37113408307:1",
-  "verificationSourceStatus": "failed-shared-hold-requires-source-free-settlement",
+  "verificationSourceStatus": "failed-source-closed-terminal-preserved-no-source",
   "completedGames": 17,
   "totalGames": 178,
   "wholeGameCoverageClaimed": false,
@@ -87,7 +89,12 @@
     "verifiedFiles": 117,
     "bytes": 2517118,
     "SHA": "5f88fb10e7d3aa8aafd103fcb118d22890f2fba2b7cf69f94790466d832524ee",
-    "fractionalDelta": "pending"
+    "fractionalDelta": {
+      "verifiedFiles": 30,
+      "bytes": 847135,
+      "sha256": "51f1badff20116a933603a45e3a41a0de6cf43562f468a8abc71a756dcfa42ed",
+      "streamChunkMaxBytes": 262144
+    }
   },
   "fractionalValues": {
     "lexemesPreserved": true,
@@ -100,7 +107,7 @@
     "realFrames": 7,
     "naturalTerminalObserved": true,
     "threeWaySettlementMatched": true,
-    "mongoWritten": false,
+    "mongoWritten": true,
     "originalRecordsChanged": 0,
     "sourceRequests": 0,
     "localPython": 10,
@@ -117,7 +124,62 @@
     "expectedTotal": 299,
     "abandoned": 0,
     "sourceRequests": 0,
+    "onlineStatus": "applied",
+    "schema": "sg-common-terminal-after-review-v1",
+    "at": 1791021841,
+    "run": "37114974732:1",
+    "profileHash": "c9f1c13284b3d504b29a174cd75af4b25f7ffa72a021b2cfd3bf4b89e635978b",
+    "closureHash": "1a5e8d066a8ba4a35f35fdb96183d22148a7d4f2152b671b7afde062b1fa64c4",
+    "completeConfirmed": 299,
+    "waitingFlushed": 54,
+    "terminalReconciled": 1,
+    "pythonVerified": 299,
+    "receiptMongoFullReadback": 299,
+    "terminalOriginalPreserved": true,
+    "pending": 0,
+    "unconfirmedWrites": 0,
+    "countReserved": 0,
+    "bothHoldsInactive": true,
+    "repairStatus": "pending-adapter",
+    "repairSourceAllowance": 0,
+    "newBetAllowance": 0
+  },
+  "latestLinux": {
+    "run": 37114773247,
+    "repository": "287113535qq-cmyk/sg-capture-runner",
+    "commit": "ccf541db1a02c1245e286a18e683a060233e92b4",
+    "conclusion": "success",
+    "logsSHA": "2f815d63dbc292bc3639fff74f8c6f2b47181b79ac19c96b5e2629d69119dc67",
+    "sourceRequests": 0
+  },
+  "verificationSourceAudit": {
+    "run": 37113408307,
+    "workers": 20,
+    "sourceRequests": 75,
+    "paidRoundRequests": 55,
+    "completedThisRun": 54,
+    "errors": {
+      "HARDHAT_BOARD": 1,
+      "GLOBAL_SOURCE_STOPPED": 12
+    },
+    "finalizer": "success"
+  },
+  "receivedTerminalHandoff": {
+    "schema": "sg-common-terminal-handoff-memory-v1",
+    "gameId": 32714,
+    "faults": 5,
+    "terminalFrames": 7,
+    "oldNativeBindingMatched": true,
+    "bothLanesAdvanced": true,
+    "flowReplayPassed": true,
+    "gates": [
+      "route",
+      "settlement",
+      "persistence"
+    ],
+    "sourceRequests": 0,
     "nativeWrites": 0,
-    "onlineStatus": "not-applied"
+    "memoryOnly": true,
+    "onlineStatus": "requires-updated-linux-and-delivery"
   }
 }

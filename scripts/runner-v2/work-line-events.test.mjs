@@ -6,6 +6,25 @@ const proof=(id,rev='a')=>({schema:'sg-reusable-preparation-v1',gameId:id,source
  gates:Object.fromEntries(preparationGates.map(g=>[g,{verified:true,evidenceHash:'b'.repeat(64)}]))});
 const prepare=(q,id,rev='a')=>{const c=claimPreparation(q,{owner:'test',now:id*10,lane:q.tasks.find(t=>t.gameId===id).lane});assert.equal(c.gameId,id);finishPreparation(q,c,{status:'prepared',proof:proof(id,rev)},id*10+1);};
 
+test('confirmed terminal advances the exact previous fault without revoking any newer proof or granting readiness',()=>{
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-advanced',gameId:1,sourceAllowance:0,
+  evidenceHash:'c'.repeat(64),previousFailureEvidenceHash:'d'.repeat(64),previousRepairKey:'game-repair:fixture:'+'e'.repeat(64),
+  rejectedProofHash:'f'.repeat(64),repairKey:'game-repair:fixture:'+'a'.repeat(64)};
+ const make=lane=>{const q=newInventory(games);Object.assign(q.tasks[0],{lane,status:'blocked',
+  failureEvidenceHash:event.previousFailureEvidenceHash,nativeRepairKey:event.previousRepairKey});return q;};
+ for(const lane of ['admission','repair']){
+  const q=make(lane);assert(applyWorkLineEvent(q,event,lane,50));
+  assert.equal(q.tasks[0].failureEvidenceHash,event.evidenceHash);assert.equal(q.tasks[0].proof,null);
+  assert.equal(q.tasks[0].status,lane==='repair'?'queued':'blocked');assert.equal(q.tasks[0].lane,'repair');
+  assert.equal(applyWorkLineEvent(q,event,lane,51),false);
+ }
+ for(const mutate of [t=>t.failureEvidenceHash='b'.repeat(64),t=>t.nativeRepairKey='foreign',
+  t=>t.proof=proof(1),t=>t.proofHash='a'.repeat(64),t=>t.claim={token:'busy'},t=>t.status='prepared']){
+  const q=make('repair');mutate(q.tasks[0]);const before=structuredClone(q);
+  assert.throws(()=>applyWorkLineEvent(q,event,'repair',50));assert.deepEqual(q.tasks,before.tasks);
+ }
+});
+
 test('fresh native repair binding reaches both queued admission mirrors and blocked repair tasks without granting readiness',()=>{
  const event={schema:'sg-work-line-event-v1',kind:'native-repair-observed',gameId:1,sourceAllowance:0,
   evidenceHash:'c'.repeat(64),repairKey:'game-repair:fixture:'+'a'.repeat(64)};

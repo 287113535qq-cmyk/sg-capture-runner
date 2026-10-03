@@ -21,7 +21,16 @@ export function applyWorkLineEvent(inventory,event,lane,now){
  const task=inventory.tasks.find(t=>t.gameId===event.gameId);
  assert(task&&!task.claim,'WORK_LINE_TASK_BUSY');
  assert(task.status!=='complete','WORK_LINE_COMPLETED_IMMUTABLE');
- if(event.kind==='native-repair-settled'){
+ if(event.kind==='native-repair-advanced'){
+  // A reconciled terminal closes the latest source without creating a fake
+  // abandoned fault. Advance only the exact previous, already fenced repair.
+  assert((task.lane==='repair'||lane==='admission'&&task.lane==='admission')&&['queued','blocked'].includes(task.status)&&!task.proof&&!task.proofHash
+   &&task.nativeRepairKey===event.previousRepairKey&&task.failureEvidenceHash===event.previousFailureEvidenceHash
+   &&event.repairKey!==event.previousRepairKey&&/^[a-f0-9]{64}$/.test(event.rejectedProofHash??'')
+   &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_TRANSITION_BINDING');
+  task.rejectedProofHash=event.rejectedProofHash;task.failureEvidenceHash=event.evidenceHash;
+  task.nativeRepairKey=event.repairKey;task.lane='repair';task.status=lane==='repair'?'queued':'blocked';task.reason='NATIVE_REPAIR_REPLAY_REQUIRED';
+ }else if(event.kind==='native-repair-settled'){
   const matching=event.captureFailureEvidenceHash===task.failureEvidenceHash&&event.rejectedProofHash===task.rejectedProofHash;
   // An implementation change can fence admission before the ended source's
   // fault arrives. Authenticated native closure may align that already fenced

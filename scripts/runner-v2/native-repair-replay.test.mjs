@@ -149,3 +149,30 @@ test('reconciled terminal returns to flow repair from its original proof and con
   const b=receivedTerminalFixture();change(b);await assert.rejects(exportNativeRepairReplay(b));
  }
 });
+
+test('received terminal closure advances only its archived previous native repair identity',async()=>{
+ const make=()=>{
+  const a=receivedTerminalFixture(),previousKey='game-repair:fixture:'+'d'.repeat(64);
+  const original={schema:'sg-game-repair-v1',gameId:1,trialId:'fixture',status:'pending-adapter',sourceAllowance:0,requiresNewSession:true,archiveKey:'previous-archive'};
+  const previous={...original,status:'validated-awaiting-admission',preparationProofHash:'e'.repeat(64),countActivation:'f'.repeat(64)};
+  const previousArchive={schema:'original-fault'};
+  a.docs.set('state/'+previousKey,previous);a.docs.set('journal/'+previous.archiveKey,previousArchive);
+  a.docs.get('journal/'+a.closure+':before').campaign={games:[{game_id:1,repairKey:previousKey,preparationProofHash:'e'.repeat(64)}]};
+  Object.assign(a.docs.get('journal/'+a.closure+':complete'),{trialId:'fixture',activation:'f'.repeat(64),sourceRequests:0,newBetAllowance:0,requiresNewSession:true});
+  const key='complete-count:fixture:'+'f'.repeat(64),spec={schema:'sg-complete-count-v1',activation:'f'.repeat(64),trialId:'fixture',profileHash:'a'.repeat(64)};
+  a.docs.set('journal/'+key,spec);a.docs.set('journal/'+key+':complete',{schema:'sg-complete-count-activation-v1',specHash:hash(spec),profileHash:spec.profileHash});
+  a.docs.set('journal/'+key+':before',{schema:'sg-prepared-count-before-v1',profileHash:spec.profileHash,
+   scene:{repair:original,closed:{repairKey:previousKey},preparationProofHash:'e'.repeat(64),
+    failureEvidenceHash:hash({repairKey:previousKey,repair:original,archiveHash:hash(previousArchive)})}});
+  return {...a,previousKey,previous,original,previousArchive};
+ };
+ const a=make(),snapshot=hash([...a.docs]),task=await exportNativeRepairReplay(a);
+ validateNativeRepairReplay(task);assert.equal(hash([...a.docs]),snapshot);
+ assert.equal(task.repairTransition.previousFailureEvidenceHash,hash({repairKey:a.previousKey,repair:a.original,archiveHash:hash(a.previousArchive)}));
+ for(const mutate of [b=>b.docs.delete('state/'+b.previousKey),b=>b.previous.sourceAllowance=1,
+  b=>b.previous.trialId='foreign',b=>b.docs.get('journal/'+b.closure+':complete').sourceRequests=1]){
+  const b=make();mutate(b);await assert.rejects(exportNativeRepairReplay(b),/TRANSITION/);
+ }
+ const changed=structuredClone(task);changed.repairTransition.archiveHash='0'.repeat(64);
+ assert.throws(()=>validateNativeRepairReplay(changed),/TRANSITION/);
+});

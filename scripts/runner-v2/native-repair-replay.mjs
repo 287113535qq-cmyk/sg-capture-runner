@@ -60,7 +60,8 @@ async function retiredBatchRows(store,plan,archive,repair,rows,repairKey,transpo
       assert(stable(receipt)===stable(terminal.record),'NATIVE_REPAIR_TERMINAL_RECEIPT');
       const readback=await transport.request('rounds_read',{trialId:plan.trialId,ids:[receipt._id]});
       assert(readback.length===1&&stable(readback[0])===stable(receipt),'NATIVE_REPAIR_TERMINAL_READBACK');
-      out.push({row:{value:terminal},ref:{key,hash:hash(terminal.batch)}});
+      out.push({row:{value:terminal},ref:{key,hash:hash(terminal.batch)},
+        confirmedTerminal:{record:receipt,readback:readback[0]}});
     }
   }
   return out;
@@ -84,9 +85,39 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   assert(archive,'NATIVE_REPAIR_ARCHIVE');
   const rows=await store.getMany('journal',repair.evidence.map(e=>e.key));
   assert(rows.length===repair.evidence.length,'NATIVE_REPAIR_PAGE');
-  const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[];
-  let captureLink;
-  for(const {row,ref} of await retiredBatchRows(store,plan,archive,repair,rows,repairKey,transport)) {
+  const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[],confirmedTerminals=[];
+  let captureLink,repairTransition;
+  const previousGame=archive.campaign?.games?.find(g=>g.game_id===plan.gameId);
+  if(archive.schema==='sg-count-shared-before-v1'&&archive.terminalRecords?.length&&previousGame?.repairKey){
+    const previousKey=previousGame.repairKey,previous=(await store.get('state',previousKey))?.value;
+    const previousArchive=(await store.get('journal',previous?.archiveKey))?.value;
+    const closed=(await store.get('journal',repair.archiveKey.slice(0,-':before'.length)+':complete'))?.value;
+    const activationKey=`complete-count:${plan.trialId}:${closed?.activation}`;
+    const activationBefore=(await store.get('journal',activationKey+':before'))?.value;
+    const spec=(await store.get('journal',activationKey))?.value,activation=(await store.get('journal',activationKey+':complete'))?.value;
+    const original=activationBefore?.scene?.repair;
+    assert(previousKey!==repairKey&&previousKey.startsWith('game-repair:'+plan.trialId+':')
+      &&previous?.schema==='sg-game-repair-v1'&&previous.gameId===plan.gameId&&previous.trialId===plan.trialId
+      &&previous.sourceAllowance===0&&previous.requiresNewSession===true&&previousArchive
+      &&closed?.schema==='sg-count-shared-close-v1'&&closed.repairKey===repairKey
+      &&closed.sourceRequests===0&&closed.newBetAllowance===0&&closed.receivedTerminalsReconciled===archive.terminalRecords.length
+      &&/^[a-f0-9]{64}$/.test(previousGame.preparationProofHash??'')
+      &&activationBefore?.schema==='sg-prepared-count-before-v1'&&original?.status==='pending-adapter'
+      &&activationBefore.scene.closed.repairKey===previousKey
+      &&activationBefore.scene.preparationProofHash===previousGame.preparationProofHash
+      &&spec?.schema==='sg-complete-count-v1'&&spec.activation===closed.activation&&spec.trialId===plan.trialId
+      &&activation?.schema==='sg-complete-count-activation-v1'&&activation.specHash===hash(spec)
+      &&activationBefore.profileHash===spec.profileHash&&activation.profileHash===spec.profileHash
+      &&hash(previous)===hash({...original,status:'validated-awaiting-admission',
+        preparationProofHash:previousGame.preparationProofHash,countActivation:closed.activation,sourceAllowance:0}),
+      'NATIVE_REPAIR_TRANSITION');
+    const previousFailureEvidenceHash=hash({repairKey:previousKey,repair:original,archiveHash:hash(previousArchive)});
+    assert(previousFailureEvidenceHash===activationBefore.scene.failureEvidenceHash,'NATIVE_REPAIR_TRANSITION');
+    repairTransition={previousRepairKey:previousKey,
+      previousFailureEvidenceHash,
+      rejectedProofHash:previousGame.preparationProofHash,archiveHash:hash(archive),closed};
+  }
+  for(const {row,ref,confirmedTerminal} of await retiredBatchRows(store,plan,archive,repair,rows,repairKey,transport)) {
     const value=row?.value;
     assert(value && hash(value.batch??value)===ref.hash,'NATIVE_REPAIR_ARCHIVE_CHANGED');
     const batch=value.batch??value;
@@ -108,7 +139,9 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
     assert(pending.awaiting===null && pending.raw?.fixtureOnly===false, 'NATIVE_REPAIR_UNKNOWN_RESPONSE');
     const evidence={plan,raw:pending.raw,archiveKey:ref.key,archiveHash:ref.hash,
       ...(abandoned?{abandonedKey:batch.abandonedDemo,abandonedHash:hash(abandoned)}:{})};
-    faults.push({raw:pending.raw,evidence,evidenceHash:hash(evidence),failureEvidenceHash});
+    faults.push({raw:pending.raw,evidence,evidenceHash:hash(evidence),failureEvidenceHash,
+      ...(confirmedTerminal?{terminalRecordHash:hash(confirmedTerminal.record)}:{})});
+    if(confirmedTerminal)confirmedTerminals.push(confirmedTerminal);
     const oldGame=archive.campaign?.games?.find(g=>g.game_id===plan.gameId);
     if(archive.schema==='sg-count-prepared-before-v1'&&oldGame?.pendingReview?.rawHash===hash(pending.raw)){
       const closed=(await store.get('journal',repair.archiveKey.slice(0,-':before'.length)+':complete'))?.value;
@@ -130,8 +163,11 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   assert(record,'NATIVE_REPAIR_COMPLETE_RECEIPT');
   const readbacks=await transport.request('rounds_read',{trialId:plan.trialId,ids:[record._id]});
   assert(readbacks.length===1&&stable(readbacks[0])===stable(record),'NATIVE_REPAIR_FULL_READBACK');
+  const extra=confirmedTerminals.filter(t=>t.record._id!==record._id);
+  assert(extra.length<100&&new Set(extra.map(t=>t.record._id)).size===extra.length,'NATIVE_REPAIR_TERMINALS');
   return {schema:'sg-native-repair-replay-task-v1',gameId:plan.gameId,plan,planHash:hash(plan),revisionHash,
-    manifest,failureEvidenceHash,records:[record],readbacks,faults,...(captureLink?{captureLink}:{}),sourceAllowance:0};
+    manifest,failureEvidenceHash,records:[record,...extra.map(t=>t.record)],readbacks:[...readbacks,...extra.map(t=>t.readback)],faults,...(captureLink?{captureLink}:{}),
+    ...(repairTransition?{repairTransition}:{}),sourceAllowance:0};
 }
 
 export function validateNativeRepairReplay(task) {
@@ -140,12 +176,24 @@ export function validateNativeRepairReplay(task) {
     &&task.manifest.repair.sourceAllowance===0&&task.manifest.repair.status==='pending-adapter'
     &&task.failureEvidenceHash===hash(task.manifest)&&task.faults?.length>0
     &&task.faults.every(f=>f.failureEvidenceHash===task.failureEvidenceHash&&f.evidenceHash===hash(f.evidence)
-      &&hash(f.raw)===hash(f.evidence.raw))&&task.records?.length===1&&task.readbacks?.length===1
-    &&stable(task.records[0])===stable(task.readbacks[0]),'NATIVE_REPAIR_DELIVERY_CHANGED');
+      &&hash(f.raw)===hash(f.evidence.raw))&&task.records?.length>0&&task.records.length<=100
+    &&task.readbacks?.length===task.records.length&&new Set(task.records.map(r=>r._id)).size===task.records.length
+    &&task.records.every((r,i)=>stable(r)===stable(task.readbacks[i])),'NATIVE_REPAIR_DELIVERY_CHANGED');
+  for(const fault of task.faults)if(fault.terminalRecordHash){
+    const matches=task.records.filter(r=>hash(r)===fault.terminalRecordHash);
+    assert(matches.length===1&&hash(matches[0].raw)===hash(fault.raw),'NATIVE_REPAIR_TERMINAL_RECORD');
+  }
   if(task.captureLink){const link=task.captureLink,e=link.captureEvidence;
     assert(link.failureEvidenceHash===hash(e)&&/^[a-f0-9]{64}$/.test(link.rejectedProofHash??'')
       &&e?.receipt?.gameId===task.gameId&&e.receipt.trialId===task.plan.trialId
       &&e.receipt.rawHash===hash(e.raw)&&e.receipt.planHash===hash(e.plan)
       &&task.faults.some(f=>hash(f.raw)===hash(e.raw)),'NATIVE_REPAIR_CAPTURE_LINK');}
+  if(task.repairTransition){const t=task.repairTransition,c=t.closed;
+    assert(t.previousRepairKey!==task.manifest.repairKey&&t.previousRepairKey.startsWith('game-repair:'+task.plan.trialId+':')
+      &&/^[a-f0-9]{64}$/.test(t.previousRepairKey.split(':').at(-1))
+      &&/^[a-f0-9]{64}$/.test(t.previousFailureEvidenceHash??'')&&/^[a-f0-9]{64}$/.test(t.rejectedProofHash??'')
+      &&t.archiveHash===task.manifest.archiveHash&&c?.schema==='sg-count-shared-close-v1'
+      &&c.trialId===task.plan.trialId&&c.repairKey===task.manifest.repairKey&&c.receivedTerminalsReconciled>0
+      &&c.sourceRequests===0&&c.newBetAllowance===0&&c.requiresNewSession===true,'NATIVE_REPAIR_TRANSITION');}
   return {...task,schema:'sg-preparation-replay-task-v1'};
 }

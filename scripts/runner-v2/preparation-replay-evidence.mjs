@@ -28,7 +28,13 @@ export async function preparationReplayEvidence({task, revisionHash, parser, run
       && (!task.failureEvidenceHash || (fault.failureEvidenceHash??fault.evidenceHash) === task.failureEvidenceHash), 'PREPARATION_REPLAY_FAULT_BINDING');
     const next = await call({op: 'next', plan: task.plan, raw: fault.raw});
     assert.deepEqual(runnerNext(fault.raw, task.plan), next, 'PREPARATION_REPLAY_ROUTE_MISMATCH');
-    assert(next?.MSGID && typeof next.MSGID === 'string', 'PREPARATION_REPLAY_FAULT_TERMINAL_UNCONFIRMED');
+    if(next===null){
+      const confirmed=task.records.filter(r=>hash(r)===fault.terminalRecordHash);
+      assert(confirmed.length===1&&hash(confirmed[0].raw)===hash(fault.raw),
+        'PREPARATION_REPLAY_FAULT_TERMINAL_UNCONFIRMED');
+      // The normal record loop below independently verifies every prefix,
+      // settlement, full record and readback before emitting any ready gate.
+    }else assert(next?.MSGID && typeof next.MSGID === 'string', 'PREPARATION_REPLAY_FAULT_TERMINAL_UNCONFIRMED');
     route.push(hash({evidenceHash: fault.evidenceHash, next}));
   }
   // All evidence must pass before emitting any gate. A corrupt/missing record

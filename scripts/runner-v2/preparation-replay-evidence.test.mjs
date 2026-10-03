@@ -38,3 +38,20 @@ test('a fault cannot be cleared by unrelated earlier gates or an unconfirmed ter
  const a=args();a.task.failureEvidenceHash=failure;
  await assert.rejects(preparationReplayEvidence(a),/FAILURE_REQUIRED/);
 });
+
+test('received terminal fault needs its exact confirmed record, independent money and complete request chain',async()=>{
+ const make=()=>{
+  const a=args(),evidence={raw:structuredClone(raw)},failure='d'.repeat(64);
+  a.parser.call=async q=>q.op==='next'?a.runnerNext(q.raw):q.op==='verify'?{verified:true}:{validated:true};
+  a.task.failureEvidenceHash=failure;a.task.faults=[{raw:evidence.raw,evidence,evidenceHash:hash(evidence),
+   failureEvidenceHash:failure,terminalRecordHash:hash(record)}];return a;
+ };
+ const result=await preparationReplayEvidence(make());assert.equal(result.receipts.length,3);assert.equal(result.sourceRequests,0);
+ for(const change of [a=>delete a.task.faults[0].terminalRecordHash,
+  a=>a.task.faults[0].terminalRecordHash='e'.repeat(64),
+  a=>a.task.readbacks[0].normalized.money.betRaw=99,
+  a=>a.independentFields=()=>({money:{betRaw:99}}),
+  a=>a.parser.call=async q=>q.op==='next'?a.runnerNext(q.raw):q.op==='intent'?{validated:false}:q.op==='verify'?{verified:true}:{validated:true}]){
+  const a=make();change(a);await assert.rejects(preparationReplayEvidence(a));
+ }
+});
