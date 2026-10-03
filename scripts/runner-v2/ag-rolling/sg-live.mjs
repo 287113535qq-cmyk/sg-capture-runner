@@ -23,6 +23,8 @@ assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  'SG_AG_GITHUB_OWNER');
 const mode=process.argv[2],name=process.env.SG_AG_QUEUE_PROFILE;
 assert(['admit','lane','controller','reconcile'].includes(mode)&&/^ag-rolling-queue-[a-f0-9]{64}\.json$/.test(name??''),'SG_AG_LIVE_MODE');
+if(mode==='controller')assert(process.env.GITHUB_JOB==='ag-rolling-capture'&&process.env.SG_AG_CONTROLLER_LANE==='20'
+ &&process.env.SG_TRIAL_DEMO_CONFIG===undefined&&process.env.SG_AG_LANE===undefined,'SG_AG_CONTROLLER_SCOPE');
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const registry=read('config/ag-rolling-plans.json'),profile=queueProfile({name,profile:read('config/'+name),
  authorization:read('config/ag-rolling-authorizations.json'),plans:registry,readBytes:file=>fs.readFileSync(file)});
@@ -30,10 +32,15 @@ const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit=pr
 assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_AG_RUN_IDENTITY');
 const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)?LANE_BUDGET_MS:40*60000);
 const store=new RunnerState({transport,gate,deadline}),stop=new AbortController();
+let localLaneEnded=false;
+if(mode==='controller')process.on('message',message=>{
+ if(message?.type==='lane-source-ended'&&message.lane===20)localLaneEnded=true;
+});
 let mergeParser,mergeTail=Promise.resolve(),recoverMerging;
 process.on('SIGTERM',()=>stop.abort());process.on('SIGINT',()=>stop.abort());
 const log=row=>console.log(row),sourceCheck={at:-Infinity,pending:null};let tasksChecking=new Map(),sourceJobsEnded=false;
 async function globalGuard(context={}){
+ assert(mode!=='controller'||!stop.signal.aborted,'SG_AG_CONTROLLER_STOPPED');
  await store.writable();assert(gate.status().metrics.diskFreeBytes>=(context.msgId==='BET'?30:25)*1024**3,'SG_AG_DISK_RESERVE');
  if(sourceCheck.pending)await sourceCheck.pending;
  else if(Date.now()-sourceCheck.at>=1000){
@@ -125,14 +132,15 @@ try{
   while(!stop.signal.aborted&&Date.now()<deadline){
    for(const game of profile.payload.games){if(completed.has(game.gameId))continue;
     try{const result=await merge(game);if(result.count===300000)completed.add(game.gameId);}
-    catch(error){if(error.outcomeUnknown===true||transport.status().poison)throw error;
+    catch(error){if(error.outcomeUnknown===true||transport.status().poison||stop.signal.aborted)throw error;
      const code=error.code??error.message;log(JSON.stringify({gameId:game.gameId,status:'retained',
       reason:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_MERGE_REVIEW_REQUIRED'}));}
    }
    const jobs=await gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${process.env.GITHUB_RUN_ID}/jobs?filter=all&per_page=100`);
    assert(jobs.total_count===jobs.jobs.length&&jobs.total_count<100,'SG_AG_JOBS_TRUNCATED');
    const lanes=jobs.jobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));
-   if(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20&&lanes.every(j=>j.status==='completed'))break;
+   if(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20
+    &&lanes.every(j=>j.status==='completed'||j.name==='AG rolling lane 20'&&localLaneEnded))break;
    await new Promise(r=>setTimeout(r,30000));
   }
   log(JSON.stringify({phase:'controller-ended',complete:completed.size,sourceRequests:0}));
@@ -143,9 +151,8 @@ try{
   assert(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20&&lanes.every(j=>j.status==='completed'),'SG_AG_SOURCE_JOBS_ACTIVE');
   sourceJobsEnded=true;
   recoverMerging=async previous=>{
-   const prefix=run+':ag-rolling-controller:';
-   assert(previous.owner?.startsWith(prefix),'SG_MERGE_RECOVERY_OWNER');
-   const actor=jobs.jobs.filter(j=>j.name==='ag-rolling-controller');
+   assert(previous.owner===run+':ag-rolling-capture:controller','SG_MERGE_RECOVERY_OWNER');
+   const actor=jobs.jobs.filter(j=>j.name==='AG rolling lane 20');
    assert(actor.length===1&&actor[0].status==='completed','SG_MERGE_CONTROLLER_ACTIVE');
    return {actorEnded:true,owner:previous.owner,run,commit,jobId:actor[0].id,sourceRequests:0};
   };
