@@ -4,7 +4,7 @@
   "inventory": {
     "schema": "sg-preparation-inventory-v1",
     "sourceAllowance": 0,
-    "revision": 4541,
+    "revision": 4998,
     "tasks": [
       {
         "gameId": 32714,
@@ -16,40 +16,42 @@
         "proof": {
           "schema": "sg-reusable-preparation-v1",
           "gameId": 32714,
-          "revisionHash": "8b4ae7071296e4d8b5600c8c63f79414b66a6de40f9ad613bac602114f465bd7",
+          "revisionHash": "02eeadd54c7e50380e352e77f0bf4b4144d2c87ca2c2a4b89991f0563372f42b",
           "sourceAllowance": 0,
           "gates": {
             "route": {
               "verified": true,
-              "evidenceHash": "eafe6fe218e50385aa5e29742c7e6a8465c096fe0b213064c0df315d43db4065"
+              "evidenceHash": "9bf07664ef841bcd8648b120728c4425b9b8b34390d1ef6dd86dd322b90533c4"
             },
             "settlement": {
               "verified": true,
-              "evidenceHash": "3718272dffdb52fb86d5c2277b3789b9075bf3be6b9a46d75cb7f0fdb3868cad"
+              "evidenceHash": "e3911c2e2d649eeb1696cf9c5c36275f513dfab847a2c384ee71e1db9e443755"
             },
             "persistence": {
               "verified": true,
-              "evidenceHash": "1a90edf8aa7f0ccb58801cad6bf04aeac867de6731e95464ec0eaba9d4336916"
+              "evidenceHash": "cb1a11d3f89bb75dfd65162798c28bbe8b6ec197b8747191b03d3aa168735c32"
             },
             "local": {
               "verified": true,
-              "evidenceHash": "c6e0e24f651e7020c5138b67c94da1e8d0a8cb07d46103b514c791e5464d2ed8"
+              "evidenceHash": "ab23d571aa87c0bc72fca2956b2723446b219d8c3743614f77772abd9d3525e5"
             },
             "linux": {
               "verified": true,
-              "evidenceHash": "cab63d0364ef0745fbccc272875e55e4174888970a9e88f062f7190131616296"
+              "evidenceHash": "89360685c0e4ff9c03394ff80b2892b8401ee7a9ca8194bd50c04ddc3159e47b"
             },
             "native": {
               "verified": true,
-              "evidenceHash": "1a7b7ba4b71685aa8aa916617fc3fa39c835e2ca17f0086bbf7e0ca533e2e02e"
+              "evidenceHash": "8b2e54bbe3c278a860bfd63cb952f249c8a4fb796b145cf7fe14e12cacba960c"
             }
           }
         },
-        "failureEvidenceHash": "209e22b9ed24eed7fb7f98fe013b7d304f50f4d3c41b5111f8d97c9b73509ed7",
-        "nativeRepairKey": "game-repair:sg_r1_20260928_32714:70c2881b950debda575965667632da40f1166a9c976c7f9323887ab85d459f97",
+        "failureEvidenceHash": "1457b49f7b9e0b40eaace05cff07df4e42411d9a67acf39111cd7ff92e01719b",
+        "nativeRepairKey": "game-repair:sg_r1_20260928_32714:2ca57c30bf6ea3a3171f4d15a5a18a7f0567ee7d00f1b53fc2c00b0cf9cbab17",
         "reason": null,
-        "updatedAt": 1791003663044,
-        "proofHash": "2508ce6bf959e28af28fa89a555b389980ae118fb963d3f1887fdce8b18bac2f"
+        "updatedAt": 1791015463163,
+        "rejectedProofHash": "2508ce6bf959e28af28fa89a555b389980ae118fb963d3f1887fdce8b18bac2f",
+        "captureFailureEvidenceHash": "988ea4868c17d686f9a6ef70a8fb42db5d7a51043517b87da897c5906d14265e",
+        "proofHash": "e47469bc69f69277a5789ad49d79e70480ba78867848a8a78c8bd240736525ba"
       }
     ]
   },
@@ -57,14 +59,14 @@
     "32714": {
       "group": "primary",
       "planHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
-      "proofHash": "2508ce6bf959e28af28fa89a555b389980ae118fb963d3f1887fdce8b18bac2f",
+      "proofHash": "e47469bc69f69277a5789ad49d79e70480ba78867848a8a78c8bd240736525ba",
       "evidence": {
-        "route": "config/preparation-evidence/eafe6fe218e50385aa5e29742c7e6a8465c096fe0b213064c0df315d43db4065.json",
-        "settlement": "config/preparation-evidence/3718272dffdb52fb86d5c2277b3789b9075bf3be6b9a46d75cb7f0fdb3868cad.json",
-        "persistence": "config/preparation-evidence/1a90edf8aa7f0ccb58801cad6bf04aeac867de6731e95464ec0eaba9d4336916.json",
-        "local": "config/preparation-evidence/c6e0e24f651e7020c5138b67c94da1e8d0a8cb07d46103b514c791e5464d2ed8.json",
-        "linux": "config/preparation-evidence/cab63d0364ef0745fbccc272875e55e4174888970a9e88f062f7190131616296.json",
-        "native": "config/preparation-evidence/1a7b7ba4b71685aa8aa916617fc3fa39c835e2ca17f0086bbf7e0ca533e2e02e.json"
+        "route": "config/preparation-evidence/9bf07664ef841bcd8648b120728c4425b9b8b34390d1ef6dd86dd322b90533c4.json",
+        "settlement": "config/preparation-evidence/e3911c2e2d649eeb1696cf9c5c36275f513dfab847a2c384ee71e1db9e443755.json",
+        "persistence": "config/preparation-evidence/cb1a11d3f89bb75dfd65162798c28bbe8b6ec197b8747191b03d3aa168735c32.json",
+        "local": "config/preparation-evidence/ab23d571aa87c0bc72fca2956b2723446b219d8c3743614f77772abd9d3525e5.json",
+        "linux": "config/preparation-evidence/89360685c0e4ff9c03394ff80b2892b8401ee7a9ca8194bd50c04ddc3159e47b.json",
+        "native": "config/preparation-evidence/8b2e54bbe3c278a860bfd63cb952f249c8a4fb796b145cf7fe14e12cacba960c.json"
       }
     }
   }
