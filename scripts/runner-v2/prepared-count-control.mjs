@@ -12,14 +12,21 @@ import {offlineAnalysisEnvironment} from './offline-analysis-environment.mjs';
 import {authenticatedRead} from './github-boundary.mjs';
 import {maintenanceBoundary} from './demo-run-fence.mjs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
+import {preparedCountPlan} from './prepared-count-plan.mjs';
+import {preparedRuntimePath,preparedRuntimeAuthorization,amendPreparedZeroRuntime} from './prepared-count-runtime.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
  'PREPARED_COUNT_OWNER');
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8')),name=process.env.SG_FORMAL_COUNT_PROFILE;
 const authorization=preparedCountAuthorization(name),profile=read('config/'+name),plans=read('config/round-one-plans.json');
 assert(profile.group==='primary'&&authorization.group==='primary','PREPARED_COUNT_OWNER');
-assert(profile.files&&Object.keys(profile.files).length>=300,'PREPARED_COUNT_RUNTIME_MANIFEST');
-for(const [file,digest] of Object.entries(profile.files)){
+const runtimeName=process.env.SG_COUNT_RUNTIME_PROFILE;
+const runtimeRegistry=read('config/prepared-runtime-authorizations.json');
+const revision=runtimeName?preparedRuntimeAuthorization({name:runtimeName,revision:read(preparedRuntimePath(runtimeName,runtimeRegistry)),
+ registry:runtimeRegistry,profile}):null;
+const files=revision?.files??profile.files;
+assert(files&&Object.keys(files).length>=300,'PREPARED_COUNT_RUNTIME_MANIFEST');
+for(const [file,digest] of Object.entries(files)){
  assert(/^(scripts|service|collector|\.github)\/[a-zA-Z0-9_./-]+$/.test(file)&&!file.includes('..'),
   'PREPARED_COUNT_FILE_SCOPE');
  assert(createHash('sha256').update(fs.readFileSync(file,'utf8').replace(/\r\n/g,'\n')).digest('hex')===digest,
@@ -40,6 +47,7 @@ try{
   assert((await transport.request('rounds_scan',{trialId:base.trialId,after:profile.maxSequence})).length===0,
    'PREPARED_COUNT_NATIVE_CEILING');
  };
- console.log(JSON.stringify(await activatePreparedCount({store,transport,parser,base,plans,profile,authorization,
+ console.log(JSON.stringify(revision?await amendPreparedZeroRuntime({store,plan:preparedCountPlan(base,profile,authorization),
+  profile,revision,boundary,commit,run}):await activatePreparedCount({store,transport,parser,base,plans,profile,authorization,
   publication:read('config/prepared-inventory.json'),group:'primary',readEvidence:async ref=>read(ref),boundary,commit,run})));
 }finally{parser.close();transport.close();}

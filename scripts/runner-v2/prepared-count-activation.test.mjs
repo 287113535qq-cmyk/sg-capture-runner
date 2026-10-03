@@ -8,6 +8,7 @@ import {activatePreparedCount} from './prepared-count-activation.mjs';
 import {loadCountPermission} from './complete-count.mjs';
 import {admitPreparedCountRun} from './prepared-count-admission.mjs';
 import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
+import {amendPreparedZeroRuntime,preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
 
 // Synthetic state exercises admission/CAS failures. Real retained records are
 // independently reviewed privately; these fixtures do not prove live routing.
@@ -65,6 +66,33 @@ test('continuation selects the prepared game own registered count ledger and ref
  await assert.rejects(preparedContinuationInputs({...args,commit:'1'.repeat(40)}),/COUNT_AUTHORIZATION/);
  f.docs.get('state/pool:'+f.base.trialId).enabled=false;
  await assert.rejects(preparedContinuationInputs(args),/COUNT_NOT_READY/);
+});
+
+test('zero-source prepared runtime preserves applied allocation and refuses a changed source scene or unregistered revision',async()=>{
+ for(const bad of [null,'workers','count','campaign','fromCommit','profile']){
+  const f=await fixture();await activatePreparedCount(f.args);const old=structuredClone([...f.docs]),revisionId='2'.repeat(64);
+  const profile=f.args.profile,revision={schema:'sg-prepared-zero-source-runtime-v1',revisionId,profileHash:hash(profile),
+   gameId:profile.gameId,activation:profile.activation,fromCommit:f.args.commit,activationRun:f.args.run,
+   newBetAllowance:0,sourceRequests:0,createdAt:1000,expiresAt:7201000,files:{}};
+  const plan={...f.base,target:300000,countAllocation:profile.activation},pool=f.docs.get('state/pool:'+plan.trialId);
+  const name=`count-prepared-runtime-${profile.gameId}-${revisionId}.json`;
+  const registry={schema:'sg-prepared-runtime-authorizations-v1',sourceAllowance:0,profiles:{[name]:hash(revision)}};
+  assert.equal(preparedRuntimePath(name,registry),'config/'+name);
+  assert.throws(()=>preparedRuntimePath('../private',registry),/UNAUTHORIZED/);
+  assert.throws(()=>preparedRuntimeAuthorization({name,revision,registry:{...registry,profiles:{}},profile}),/UNAUTHORIZED/);
+  if(bad==='workers')pool.workers={0:{leaseUntil:0}};
+  if(bad==='count')pool.confirmed++;
+  if(bad==='campaign')f.docs.get('state/campaign').activeGame=profile.gameId;
+  if(bad==='fromCommit')revision.fromCommit='a'.repeat(40);
+  if(bad==='profile')revision.profileHash='a'.repeat(64);
+  const args={...f.args,plan,revision,commit:'3'.repeat(40),run:'2:1'};
+  if(bad){await assert.rejects(amendPreparedZeroRuntime(args));continue;}
+  const result=await amendPreparedZeroRuntime(args);assert.equal(result.newBetAllowance,0);
+  assert.equal(result.remainingComplete,299998);
+  for(const [k,v] of old)assert.deepEqual(f.docs.get(k),v);
+  await loadCountPermission({store:f.args.store,plan,pool,commit:args.commit});
+  await assert.rejects(amendPreparedZeroRuntime(args),/ALREADY_APPLIED/);
+ }
 });
 test('prepared admission preserves settled historical pointers and complete receipts without gameplay classification',async()=>{
  const f=await fixture(),original=[...f.docs].filter(([k])=>k.startsWith('journal/receipt:')||k.startsWith('state/batch:'));

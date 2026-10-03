@@ -30,6 +30,7 @@ try{
   const result=await continueAfterGame({store,transport,runId,attempt,preparedSelector,group:repositories[repo].name,
     prepareDispatch:args=>preparedContinuationInputs({...args,store,plans,commit:process.env.GITHUB_SHA,
       registry:JSON.parse(fs.readFileSync('config/prepared-count-authorizations.json','utf8')),
+      runtimeRegistry:JSON.parse(fs.readFileSync('config/prepared-runtime-authorizations.json','utf8')),
       readProfile:name=>JSON.parse(fs.readFileSync('config/'+name,'utf8'))}),github:{
     hasOtherRun:()=>continuationHasOtherRun({read:authenticatedRead(process.env.GH_TOKEN),store,repository:repo,runId}),
     dispatch:inputs=>api('dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs})})

@@ -24,16 +24,19 @@ import {loadInitialReadFailure} from './initial-read-failure.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {countHistoryBoundary} from './count-window-history.mjs';
 import {admitPreparedCountRun} from './prepared-count-admission.mjs';
+import {preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
 const isPrepared=profile.schema==='sg-prepared-count-profile-v1';
-if(isPrepared)assert(mode==='admit'&&profile.group==='primary'&&!process.env.SG_COUNT_RUNTIME_PROFILE
+if(isPrepared)assert(mode==='admit'&&profile.group==='primary'
  &&!process.env.SG_COUNT_RELAY_PARENT,'PREPARED_COUNT_CONTROL_SCOPE');
 const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
-const {isRhino,isSessions,isRepair,initialWindow,observationWindow,continuousCount,canaryWindow,fourReadRecovery}=countControlPolicy(mode,profile,runtimeProfile);
-const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions||isPrepared?null:readFile('config/formal-runtime-pearl-20260930.json');
+const {isRhino,isSessions,isRepair,initialWindow,observationWindow,continuousCount,canaryWindow,fourReadRecovery}=isPrepared?{}:countControlPolicy(mode,profile,runtimeProfile);
+const preparedRuntimeRegistry=isPrepared?readFile('config/prepared-runtime-authorizations.json'):null;
+const revision=isPrepared&&runtimeProfile?preparedRuntimeAuthorization({name:runtimeProfile,revision:readFile(preparedRuntimePath(runtimeProfile,preparedRuntimeRegistry)),
+ registry:preparedRuntimeRegistry,profile}):runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions||isPrepared?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 if(observationWindow)checkRhinoObservationRevision(profile,revision);
 if(continuousCount)checkRhinoContinuousRevision(profile,revision);

@@ -2,6 +2,10 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      prepared_runtime:
+        description: 'Exact registered prepared runtime; immutable receipt required'
+        type: string
+        default: ''
       formal_relay:
         description: 'Continue the same applied allocation after a successful settled run'
         type: choice
@@ -815,7 +819,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.prepared_runtime || (inputs.runtime_profile != 'none' && inputs.runtime_profile || '') }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       GH_TOKEN: ${{ github.token }}
       SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
@@ -847,7 +851,7 @@ jobs:
       matrix:
         shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
     env:
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.prepared_runtime || (inputs.runtime_profile != 'none' && inputs.runtime_profile || '') }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: '240'
@@ -918,7 +922,7 @@ jobs:
       - name: Admit corrected new-session runtime without resetting allocation
         if: inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' && inputs.runtime_profile == 'count-runtime-pyramids-session-20261001.json'
         env:
-          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.prepared_runtime || (inputs.runtime_profile != 'none' && inputs.runtime_profile || '') }}
         run: node scripts/runner-v2/pyramids-zero-runtime-control.mjs admit
       - name: Admit independent resource-budget canary
         if: (inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' || inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json')) && inputs.runtime_profile == 'none'
@@ -957,7 +961,7 @@ jobs:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_TRIAL_SHARD: ${{ matrix.shard }}
       SG_TRIAL_MINUTES: ${{ inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json' && inputs.runtime_profile == 'none' && '5' || (inputs.runtime_profile == 'count-runtime-pyramids-direct-action-relay-historyfix-20261002.json' || (inputs.runtime_profile == 'count-runtime-pyramids-resume-action-relay-20261002.json' || (inputs.runtime_profile == 'count-runtime-pyramids-resume-verified-continuation-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-network-continuation-20261002.json'))) && (inputs.relay_parent != '' && '5' || '15') || (inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-20261002.json' || inputs.runtime_profile == 'count-runtime-pyramids-action-budget-continuous-entryfix-20261002.json') && '15' || inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' && '5' || inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-canary-20261002.json' && '5' || inputs.runtime_profile == 'count-runtime-pyramids-action-continuous-20261002.json' && '15' || '240' }}
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.prepared_runtime || (inputs.runtime_profile != 'none' && inputs.runtime_profile || '') }}
       SG_POOL_RUN_LIMIT: '0'
       SG_COUNT_RELAY_PARENT: ${{ inputs.relay_parent }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
@@ -1145,7 +1149,7 @@ jobs:
     env:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_FORMAL_COUNT_PROFILE: ${{ inputs.role == 'formal-count' && (inputs.formal_profile || 'formal-count-pearl-20260930.json') || '' }}
-      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.role == 'formal-count' && inputs.runtime_profile != 'none' && inputs.runtime_profile || '' }}
+      SG_COUNT_RUNTIME_PROFILE: ${{ inputs.role == 'formal-count' && (inputs.prepared_runtime || (inputs.runtime_profile != 'none' && inputs.runtime_profile || '')) || '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

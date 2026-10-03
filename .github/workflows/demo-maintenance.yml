@@ -2,6 +2,10 @@ name: Isolated demo maintenance without source requests
 on:
   workflow_dispatch:
     inputs:
+      prepared_runtime:
+        description: 'Exact registered zero-source prepared runtime revision'
+        type: string
+        default: ''
       direct_audit_profile:
         description: 'Independent source-free final audit; binds an ended successful source'
         type: choice
@@ -133,6 +137,7 @@ jobs:
         if: inputs.operation == 'activate-prepared-count'
         env:
           SG_FORMAL_COUNT_PROFILE: ${{ inputs.formal_profile }}
+          SG_COUNT_RUNTIME_PROFILE: ${{ inputs.prepared_runtime }}
         run: node scripts/runner-v2/prepared-count-control.mjs
       - name: Bind corrected runtime after failed admission without changing allocation
         if: inputs.operation == 'amend-formal-runtime'

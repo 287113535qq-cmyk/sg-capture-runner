@@ -167,5 +167,21 @@
     "bytes": 573206,
     "sha256": "2f95e15c0659f8d78445b47662d68b0a705e840ef025e3a5c882b56cd390406b",
     "bothReadbackVerified": true
+  },
+  "preparedCount": {
+    "gameId": 32714,
+    "activationRun": "37101012414:1",
+    "activationCommit": "67a19f387874644d4a9efd9f339a2dbfb03e078d",
+    "profile": "formal-prepared-count-32714-2c22b7f4126e4bd0aa20e047d967dd72de7550769cfdb95ef40ace74d011ccf1.json",
+    "completePreserved": 152,
+    "remainingComplete": 299848,
+    "sourceRequests": 0,
+    "newBetAllowance": 0,
+    "linuxRun": 37100683351,
+    "consumerRun": 37101137495,
+    "eligibleGame": 32714,
+    "nativeReadbackFiles": 2,
+    "runtimeUpdateCandidate": true,
+    "runtimeUpdateApplied": false
   }
 }

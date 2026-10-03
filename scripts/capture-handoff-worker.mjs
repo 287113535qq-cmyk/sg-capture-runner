@@ -29,7 +29,9 @@ try{
       result=await reviewPreparedPublicationHandoff({task:r,
         currentCycleHash:read('.local/preparation-worker/publication/current.json').cycleHash,
         inventory:read('.local/preparation-worker/admission/inventory.json'),
-        plans:read('config/round-one-plans.json'),registry:read('config/preparation-plan-bindings.json')});
+        plans:read('config/round-one-plans.json'),registry:read('config/preparation-plan-bindings.json'),
+        countRegistry:read('config/prepared-count-authorizations.json'),
+        runtimeRegistry:read('config/prepared-runtime-authorizations.json'),readProfile:read});
     }else if(r.schema==='sg-confirmed-round-analysis-task-v1'){
       result=deliverConfirmedAnalysis(root,r);
     }else if(r.schema==='sg-capture-fault-export-v1'){
