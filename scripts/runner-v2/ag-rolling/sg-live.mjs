@@ -16,6 +16,7 @@ import {createTaskRuntime} from './sg-task-runtime.mjs';
 import {runSgLane} from './sg-lane.mjs';
 import {mergeGame} from './sg-merge.mjs';
 import {resetEndedTask} from './sg-resume.mjs';
+import {inspectFormalBaseline} from './sg-formal-baseline.mjs';
 import {LANE_BUDGET_MS} from './ag-core.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
@@ -106,14 +107,15 @@ try{
     for(const [kind,index] of [...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])])
      await resetEndedTask({store,transport,game,queueId,kind,index,guard,ended,verifyRecords:rows=>verifyRecords(plan,rows)});
    },
-   checkBaselines:async()=>{
+   checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
     const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');
     const campaign=(await store.get('state','campaign'))?.value;
     for(const game of profile.payload.games){
      assert(campaign?.games.find(g=>g.game_id===Number(game.gameId))?.status!=='complete','SG_AG_ALREADY_COMPLETE');
-     const plan=registry.plans[game.gameId];assert((await transport.request('rounds_scan',{trialId:plan.trialId,after:0})).length===0,
-      'SG_AG_FORMAL_BASELINE_CHANGED');
+     await inspectFormalBaseline({profile,game,plan:registry.plans[game.gameId],store,transport,ended,
+      guard:async()=>{await store.writable();const fresh=await transport.request('global_holds');
+       assert(fresh.length===2&&fresh.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');}});
     }
    }});log(JSON.stringify(result));
  }else if(mode==='lane'){
