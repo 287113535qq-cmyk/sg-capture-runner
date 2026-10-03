@@ -13,7 +13,7 @@ import {authenticatedRead} from './github-boundary.mjs';
 import {maintenanceBoundary} from './demo-run-fence.mjs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
 import {preparedCountPlan} from './prepared-count-plan.mjs';
-import {preparedRuntimePath,preparedRuntimeAuthorization,amendPreparedZeroRuntime} from './prepared-count-runtime.mjs';
+import {preparedRuntimePath,preparedRuntimeAuthorization,amendPreparedZeroRuntime,amendPreparedSettledRuntime} from './prepared-count-runtime.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
  'PREPARED_COUNT_OWNER');
@@ -47,7 +47,8 @@ try{
   assert((await transport.request('rounds_scan',{trialId:base.trialId,after:profile.maxSequence})).length===0,
    'PREPARED_COUNT_NATIVE_CEILING');
  };
- console.log(JSON.stringify(revision?await amendPreparedZeroRuntime({store,plan:preparedCountPlan(base,profile,authorization),
+ const updateRuntime=revision?.schema==='sg-prepared-settled-runtime-v1'?amendPreparedSettledRuntime:amendPreparedZeroRuntime;
+ console.log(JSON.stringify(revision?await updateRuntime({store,plan:preparedCountPlan(base,profile,authorization),
   profile,revision,boundary,commit,run}):await activatePreparedCount({store,transport,parser,base,plans,profile,authorization,
   publication:read('config/prepared-inventory.json'),group:'primary',readEvidence:async ref=>read(ref),boundary,commit,run})));
 }finally{parser.close();transport.close();}

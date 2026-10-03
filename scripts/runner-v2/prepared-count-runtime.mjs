@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {checkLedger} from './complete-count.mjs';
+import {checkLedger,loadCountPermission} from './complete-count.mjs';
+import {preparedSettledHistory} from './prepared-settled-history.mjs';
 
 export function preparedRuntimePath(name,registry){
  assert(/^count-prepared-runtime-[0-9]{5}-[a-f0-9]{64}\.json$/.test(name??'')
@@ -16,12 +17,49 @@ export function preparedRuntimeAuthorization({name,revision,registry,profile}){
   &&/^[a-f0-9]{64}$/.test(revision.revisionId??'')
   &&registry?.schema==='sg-prepared-runtime-authorizations-v1'&&registry.sourceAllowance===0
   &&registry.profiles?.[name]===hash(revision),'PREPARED_RUNTIME_UNAUTHORIZED');
- assert(revision.schema==='sg-prepared-zero-source-runtime-v1'&&revision.profileHash===hash(profile)
+ assert(['sg-prepared-zero-source-runtime-v1','sg-prepared-settled-runtime-v1'].includes(revision.schema)&&revision.profileHash===hash(profile)
   &&revision.activation===profile.activation&&revision.gameId===profile.gameId
   &&revision.newBetAllowance===0&&revision.sourceRequests===0
   &&revision.files&&Object.keys(profile.files).every(f=>Object.hasOwn(revision.files,f)),
  'PREPARED_RUNTIME_SCOPE');
  return revision;
+}
+
+// Healthy rotations inherit the original allocation; updating code never
+// restores discarded ranges, repairs a failed pool, or grants a run permit.
+export async function amendPreparedSettledRuntime({store,plan,profile,revision,boundary,commit,run,now=Date.now}){
+ assert(revision.schema==='sg-prepared-settled-runtime-v1'&&revision.activation===profile.activation
+  &&revision.profileHash===hash(profile)&&revision.gameId===profile.gameId&&revision.newBetAllowance===0
+  &&revision.sourceRequests===0,'PREPARED_RUNTIME_SCOPE');
+ assert(/^[a-f0-9]{40}$/.test(commit??'')&&/^[a-f0-9]{40}$/.test(revision.fromCommit??'')
+  &&commit!==revision.fromCommit&&/^\d+:1$/.test(run??'')
+  &&revision.createdAt<=now()&&now()<revision.expiresAt
+  &&revision.expiresAt-revision.createdAt===7200000,'PREPARED_RUNTIME_STALE');
+ await boundary();
+ const pool=(await store.get('state','pool:'+plan.trialId))?.value,campaign=(await store.get('state','campaign'))?.value;
+ assert(pool&&campaign&&hash(pool)===revision.poolHash&&hash(campaign)===revision.campaignHash,
+  'PREPARED_RUNTIME_SCENE_CHANGED');
+ const spec=await loadCountPermission({store,plan,pool,commit:revision.fromCommit});
+ assert(spec.profileHash===hash(profile)&&hash(spec)===revision.specHash&&pool.enabled&&!pool.failure
+  &&pool.confirmed<plan.target&&campaign.enabled&&!campaign.validationLimit&&!campaign.protocolValidation
+  &&(campaign.activeGame==null||campaign.activeGame===profile.gameId)
+  &&campaign.formalCount?.activation===profile.activation
+  &&campaign.games.find(g=>g.game_id===profile.gameId)?.status==='ready','PREPARED_RUNTIME_SOURCE_CHANGED');
+ const history=await preparedSettledHistory({store,plan,pool,spec,now});
+ assert(hash(history)===revision.historyHash,'PREPARED_RUNTIME_HISTORY_CHANGED');
+ const rkey=`count-runtime:${plan.trialId}:${profile.activation}:${commit}`;
+ assert(!(await store.get('journal',rkey)),'PREPARED_RUNTIME_ALREADY_APPLIED');
+ await boundary();
+ assert(hash((await store.get('state','pool:'+plan.trialId))?.value)===hash(pool)
+  &&hash((await store.get('state','campaign'))?.value)===hash(campaign),'PREPARED_RUNTIME_SCENE_CHANGED');
+ const second=await preparedSettledHistory({store,plan,pool,spec,now});
+ assert(hash(second)===hash(history),'PREPARED_RUNTIME_HISTORY_CHANGED');
+ const result={schema:'sg-count-runtime-v2',commit,fromCommit:spec.commit,specHash:hash(spec),profileHash:hash(profile),
+  revisionHash:hash(revision),activation:profile.activation,planHash:hash(plan),run,
+  completePreserved:pool.confirmed,remainingComplete:plan.target-pool.confirmed,history,
+  sourceRequests:0,newBetAllowance:0};
+ await store.create('journal',rkey,result,{immutable:true});
+ assert(hash((await store.get('journal',rkey))?.value)===hash(result),'PREPARED_RUNTIME_READBACK');return result;
 }
 
 export async function amendPreparedZeroRuntime({store,plan,profile,revision,boundary,commit,run,now=Date.now}){

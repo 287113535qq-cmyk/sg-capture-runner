@@ -1,5 +1,5 @@
 {
-  "at": 1791004333,
+  "at": 1791008083,
   "runtime": "92f97b8afe16d2769cd601bdce13362bff5f51e8",
   "completeGames": 17,
   "sourceRequestsThisStage": 0,
@@ -182,6 +182,12 @@
     "eligibleGame": 32714,
     "nativeReadbackFiles": 2,
     "runtimeUpdateCandidate": true,
-    "runtimeUpdateApplied": false
+    "runtimeUpdateApplied": true,
+    "runtimeUpdateRun": "37102119366:1",
+    "runtimeUpdateCommit": "93b6f8d4ee10a57505b2b5c6746e931897f5dfec",
+    "finalPreflightRun": 37101767954,
+    "settledRuntimeLocalPassed": true,
+    "settledRuntimeLinuxPassed": false,
+    "settledRuntimeActualApplied": false
   }
 }

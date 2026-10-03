@@ -8,7 +8,8 @@ import {activatePreparedCount} from './prepared-count-activation.mjs';
 import {loadCountPermission} from './complete-count.mjs';
 import {admitPreparedCountRun} from './prepared-count-admission.mjs';
 import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
-import {amendPreparedZeroRuntime,preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
+import {amendPreparedZeroRuntime,amendPreparedSettledRuntime,preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
+import {preparedSettledHistory} from './prepared-settled-history.mjs';
 
 // Synthetic state exercises admission/CAS failures. Real retained records are
 // independently reviewed privately; these fixtures do not prove live routing.
@@ -51,6 +52,62 @@ async function fixture(){
   group:'primary',basePlanHash:hash(base),activation,profileHash:hash(profile)};
  return {args:{...args,profile,authorization,boundary:async()=>{},commit:'f'.repeat(40),run:'1:1'},docs,mongo,writes,base,repairKey};
 }
+
+test('settled runtime inherits more than 100 batches without rereading old raw records or restoring discarded suffixes',async()=>{
+ const f=await fixture();await activatePreparedCount(f.args);
+ const profile=f.args.profile,plan={...f.base,target:300000,countAllocation:profile.activation};
+ const pool=f.docs.get('state/pool:'+plan.trialId),spec=f.docs.get('journal/complete-count:'+plan.trialId+':'+profile.activation);
+ for(let id=2;id<=102;id++){
+  const b={id,worker:0,start:(id-1)*100+1,end:id*100,sessionHash:'c'.repeat(64),
+   journaled:(id-1)*100+1,checkpoint:(id-1)*100+1,pending:null,leaseUntil:0};
+  const key=`count-settlement:${plan.trialId}:${spec.activation}:${id}`;
+  const receipt={schema:'sg-count-batch-settlement-v1',activation:spec.activation,trialId:plan.trialId,fullReadback:true,batch:b};
+  f.docs.set('state/batch:'+plan.trialId+':'+id,b);f.docs.set('journal/'+key,receipt);
+  pool.countAllocation.batches[id]={id,worker:0,start:b.start,end:b.end,sessionHash:b.sessionHash,
+   closed:true,complete:1,evidenceHash:hash(receipt),settlementKey:key};
+ }
+ pool.nextBatchId=103;pool.nextSequence=10201;pool.confirmed=103;
+ pool.workers={0:{activeBatch:null,leaseUntil:0,sessionHash:'c'.repeat(64)}};
+ const read=f.args.store.getMany;
+ f.args.store.getMany=async(c,keys)=>{assert(keys.length<=100);return read(c,keys);};
+ const history=await preparedSettledHistory({...f.args,plan,pool,spec});
+ assert.equal(history.pages,2);assert.equal(history.complete,103);assert.equal(history.rawRecordsRead,0);
+ const revision={schema:'sg-prepared-settled-runtime-v1',revisionId:'4'.repeat(64),profileHash:hash(profile),
+  activation:profile.activation,gameId:profile.gameId,fromCommit:f.args.commit,newBetAllowance:0,sourceRequests:0,
+  createdAt:1000,expiresAt:7201000,poolHash:hash(pool),campaignHash:hash(f.docs.get('state/campaign')),
+  specHash:hash(spec),historyHash:hash(history),files:{}};
+ const args={...f.args,plan,revision,commit:'3'.repeat(40),run:'2:1'};
+ const original=structuredClone([...f.docs]),result=await amendPreparedSettledRuntime(args);
+ assert.equal(result.completePreserved,103);assert.equal(result.remainingComplete,299897);
+ assert.equal(result.sourceRequests,0);assert.equal(result.newBetAllowance,0);
+ for(const [k,v] of original)assert.deepEqual(f.docs.get(k),v);
+ await loadCountPermission({store:f.args.store,plan,pool,commit:args.commit});
+ await assert.rejects(amendPreparedSettledRuntime(args),/ALREADY_APPLIED/);
+});
+
+for(const bad of ['active','failed','missing-batch','pending','wrong-count','changed-history','cas'])
+ test('settled runtime refuses '+bad+' without a new runtime or source permit',async()=>{
+  const f=await fixture();await activatePreparedCount(f.args);
+  const profile=f.args.profile,plan={...f.base,target:300000,countAllocation:profile.activation};
+  const pool=f.docs.get('state/pool:'+plan.trialId),campaign=f.docs.get('state/campaign');
+  const spec=f.docs.get('journal/complete-count:'+plan.trialId+':'+profile.activation);
+  const history=await preparedSettledHistory({...f.args,plan,pool,spec});
+  const revision={schema:'sg-prepared-settled-runtime-v1',revisionId:'4'.repeat(64),profileHash:hash(profile),
+   activation:profile.activation,gameId:profile.gameId,fromCommit:f.args.commit,newBetAllowance:0,sourceRequests:0,
+   createdAt:1000,expiresAt:7201000,specHash:hash(spec),historyHash:hash(history)};
+  if(bad==='active')pool.workers[0]={activeBatch:{id:1},leaseUntil:99999};
+  if(bad==='failed')pool.failure='PROTOCOL_VALIDATION_FAILED';
+  if(bad==='missing-batch')f.docs.delete('state/batch:'+plan.trialId+':1');
+  if(bad==='pending')f.docs.get('state/batch:'+plan.trialId+':1').pendingOriginal={unknown:true};
+  if(bad==='wrong-count')pool.confirmed++;
+  if(bad==='changed-history')revision.historyHash='0'.repeat(64);
+  revision.poolHash=hash(pool);revision.campaignHash=hash(campaign);
+  let calls=0;
+  const boundary=async()=>{if(bad==='cas'&&++calls===2)campaign.activeGame=99999;};
+  const before=f.writes.length;
+  await assert.rejects(amendPreparedSettledRuntime({...f.args,plan,revision,boundary,commit:'3'.repeat(40),run:'2:1'}));
+  assert.equal(f.writes.length,before);
+ });
 
 test('continuation selects the prepared game own registered count ledger and refuses missing or changed permission',async()=>{
  const f=await fixture();await activatePreparedCount(f.args);

@@ -250,8 +250,8 @@
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
-    "docs/four-work-lines-integration-20261003-result.json": "b284bd137b21b63557d72420995be1051ab5373649865d31fcd4590155aaa734",
-    "docs/four-work-lines-integration-20261003.md": "194c12ddba3bb6f8a863f292e799e1ab49e9195beea5ee0c715cd389a41866b2",
+    "docs/four-work-lines-integration-20261003-result.json": "1df3f21d5383b378097151c499a715b5f9400e609826407682d6d59655471677",
+    "docs/four-work-lines-integration-20261003.md": "b7f4cdea6c68cacb1c5c973e441c75417e33e9607c839248840e89647a75e6e1",
     "docs/huff-feature-inventory-20260928.json": "ba4fea5d7cd7a56edfa6c116431a4476ef562f20a809c4175064132b572f0957",
     "docs/huff-goals-client-review-20260928.md": "fb2cbe9627213b47bf76e526e55f7903178232e2a3eefef3b8b8c28409982493",
     "docs/huff-goals-natural-feature-stop-20260928.md": "e272d8f3461652495c4cab697968d4f81f2f620d795dc3420959e9246300feac",
@@ -293,5 +293,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "296dc4a1ac636f637966f45bd29c395790a15a1a9e32da471d801cf9f4170348"
+  "ruleHash": "f411a2d4cfc76056bbc3f1a1bb226a47a5431c54a126086d15b3af2f0bcd4b53"
 }
