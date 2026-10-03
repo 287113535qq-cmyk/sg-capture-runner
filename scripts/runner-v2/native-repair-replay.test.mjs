@@ -120,3 +120,32 @@ test('formal repair binds the retired ledger to the original captured fault and 
  const changed=structuredClone(task);changed.captureLink.captureEvidence.receipt.rawHash='0'.repeat(64);
  assert.throws(()=>validateNativeRepairReplay(changed));
 });
+
+function receivedTerminalFixture(){
+ const a=retiredFixture(1),closure=`count-shared-close:${a.plan.trialId}:9:1`,repair=a.docs.get('state/'+a.repairKey);
+ repair.archiveKey=closure+':before';
+ const current={id:1,journaled:2,end:5,pending:null},pending={sequence:2,awaiting:null,raw:structuredClone(a.record.raw)};
+ const terminal={batch:{id:1,journaled:1,end:5,pending},pending,sourceRequests:0,
+  record:{...structuredClone(a.record),_id:'terminal-record',sequence:2,trialId:a.plan.trialId}};
+ a.docs.set('state/batch:'+a.plan.trialId+':1',current);
+ a.docs.get('journal/'+a.prefix+':page:1').entries[0].beforeHash=hash(current);
+ a.docs.set('journal/'+closure+':before',{schema:'sg-count-shared-before-v1',terminalRecords:[{
+  batchId:1,pendingHash:hash(pending),recordHash:hash(terminal.record)}]});
+ a.docs.set('journal/'+closure+':complete',{schema:'sg-count-shared-close-v1',repairKey:a.repairKey,receivedTerminalsReconciled:1});
+ a.docs.set('journal/'+closure+':terminal:1',terminal);
+ a.docs.set('journal/'+receiptKey(a.plan.trialId,2),terminal.record);
+ a.transport.request=async(op,q)=>{assert.equal(op,'rounds_read');return q.ids.map(id=>id===a.record._id?a.record:terminal.record);};
+ return {...a,terminal,closure,current};
+}
+
+test('reconciled terminal returns to flow repair from its original proof and confirmed receipt without recreating pending',async()=>{
+ const a=receivedTerminalFixture(),before=hash([...a.docs]),task=await exportNativeRepairReplay(a);
+ assert.equal(task.faults.length,1);assert.deepEqual(task.faults[0].raw,a.terminal.record.raw);
+ assert.equal(a.current.pending,null);assert.equal(hash([...a.docs]),before);validateNativeRepairReplay(task);
+ for(const change of [x=>x.docs.delete('journal/'+receiptKey(x.plan.trialId,2)),
+  x=>x.terminal.pending.awaiting='FREE_GAME',x=>x.terminal.record.raw.steps.push({msgId:'FREE_GAME'}),
+  x=>x.docs.get('journal/'+x.closure+':complete').receivedTerminalsReconciled=2,
+  x=>x.transport.request=async()=>[]]){
+  const b=receivedTerminalFixture();change(b);await assert.rejects(exportNativeRepairReplay(b));
+ }
+});

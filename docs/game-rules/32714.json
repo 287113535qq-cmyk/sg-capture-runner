@@ -262,7 +262,7 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/common-feature-rules-20261003.md": "a1166b75520780c58b19776ec7a541c61937165c2cece103b2c1fd0e44e6a74a",
+    "docs/common-feature-rules-20261003.md": "1b15e1b4cd07641cace6aafaa5c32ccd5738e6ab814255d8104a3204ba97a699",
     "docs/common-feature-rules-result-20261003.json": "84d95dbb397f10078c372041234eaaf843fc543de7d1f71ccf6eab7a2ad13a0d",
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
@@ -309,5 +309,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "51f0dbccc7eeeabd0252ce74148ef5c7c25cd0bde5c8f0959f55d0ad6efb041b"
+  "ruleHash": "718b20d5b62e77ff3d54521fdc8e0328d99e3c7e2eb966a979e6e530d303ab46"
 }

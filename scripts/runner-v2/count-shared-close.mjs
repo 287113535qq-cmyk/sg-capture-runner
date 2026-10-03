@@ -113,7 +113,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  const key=`count-shared-close:${plan.trialId}:${profile.sourceRun}`;
  assert(!await store.get('journal',key+':before'),'SHARED_CLOSE_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'SHARED_CLOSE_READBACK');};
- await save(key+':before',{schema:'sg-count-shared-before-v1',profileHash:hash(profile),pool,campaign,hold,batchesHash:hash(batches),commit,run,at:now(),sourceRequests:0});
+ await save(key+':before',{schema:'sg-count-shared-before-v1',profileHash:hash(profile),pool,campaign,hold,batchesHash:hash(batches),
+  ...(reconcile?{terminalRecords:profile.terminalRecords}:{}),commit,run,at:now(),sourceRequests:0});
  const guarded=async()=>{await boundary();assert(hash((await store.get('state','campaign'))?.value)===profile.campaignHash
   &&hash((await store.get('state','global-hold'))?.value)===profile.holdHash,'SHARED_CLOSE_SCENE_CHANGED');};
  await guarded();await store.update('state',poolKey,v=>{assert(hash(v)===profile.poolHash,'SHARED_CLOSE_POOL_CHANGED');return {...v,enabled:false};});
@@ -122,7 +123,7 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  // Retirement confirms Mongo before settling counts or releasing the hold.
  if(reconcile)for(const record of terminalRecords){
   const b=batches.find(b=>b.id===record.batchId),batchKey=`batch:${plan.trialId}:${b.id}`;
-  await save(key+`:terminal:${b.id}`,{pending:b.pending,record,sourceRequests:0});
+  await save(key+`:terminal:${b.id}`,{batch:b,pending:b.pending,record,sourceRequests:0});
   await guarded();await store.update('state',batchKey,v=>{
    assert(hash(v)===hash(b),'RECEIVED_TERMINAL_BATCH_CHANGED');return {...v,owner:run,epoch:b.epoch+1,leaseUntil:0};
   });

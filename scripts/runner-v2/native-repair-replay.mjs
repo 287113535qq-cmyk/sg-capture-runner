@@ -7,8 +7,9 @@ import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 // Formal retirement references a paged ledger instead of individual legacy
 // batches. Follow its immutable pages and original batch snapshots, never an
 // arbitrary journal search or a truncated first page.
-async function retiredBatchRows(store,plan,archive,repair,rows){
-  if(archive.schema!=='sg-count-prepared-before-v1')return rows.map((row,i)=>({row,ref:repair.evidence[i]}));
+async function retiredBatchRows(store,plan,archive,repair,rows,repairKey,transport){
+  if(!['sg-count-prepared-before-v1','sg-count-shared-before-v1'].includes(archive.schema))
+    return rows.map((row,i)=>({row,ref:repair.evidence[i]}));
   assert(rows.length===1&&repair.evidence[0].key.endsWith(':complete'),'NATIVE_REPAIR_RETIREMENT');
   const result=rows[0]?.value,prefix=repair.evidence[0].key.slice(0,-':complete'.length);
   const before=(await store.get('journal',prefix+':before'))?.value;
@@ -41,6 +42,27 @@ async function retiredBatchRows(store,plan,archive,repair,rows){
       out.push({row:{value},ref:{key:hash(row.value)===hash(value)?`batch:${plan.trialId}:${ids[i]}`:key,hash:hash(value)}});
     }
   }
+  if(archive.terminalRecords){
+    const closureKey=repair.archiveKey.slice(0,-':before'.length),closed=(await store.get('journal',closureKey+':complete'))?.value;
+    assert(archive.schema==='sg-count-shared-before-v1'&&closed?.schema==='sg-count-shared-close-v1'
+      &&closed.repairKey===repairKey&&Array.isArray(archive.terminalRecords)
+      &&closed.receivedTerminalsReconciled===archive.terminalRecords.length
+      &&archive.terminalRecords.length>0&&archive.terminalRecords.length<=100
+      &&new Set(archive.terminalRecords.map(t=>t.batchId)).size===archive.terminalRecords.length,'NATIVE_REPAIR_TERMINALS');
+    for(const ref of archive.terminalRecords){
+      const key=closureKey+':terminal:'+ref.batchId,terminal=(await store.get('journal',key))?.value;
+      assert(terminal?.sourceRequests===0&&terminal.batch?.id===ref.batchId&&terminal.pending?.awaiting===null
+        &&hash(terminal.pending)===ref.pendingHash&&hash(terminal.batch.pending)===ref.pendingHash
+        &&hash(terminal.record)===ref.recordHash&&hash(terminal.record.raw)===hash(terminal.pending.raw)
+        &&terminal.record.sequence===terminal.pending.sequence
+        &&terminal.record.trialId===plan.trialId,'NATIVE_REPAIR_TERMINAL_BINDING');
+      const receipt=(await store.get('journal',receiptKey(plan.trialId,terminal.record.sequence)))?.value;
+      assert(stable(receipt)===stable(terminal.record),'NATIVE_REPAIR_TERMINAL_RECEIPT');
+      const readback=await transport.request('rounds_read',{trialId:plan.trialId,ids:[receipt._id]});
+      assert(readback.length===1&&stable(readback[0])===stable(receipt),'NATIVE_REPAIR_TERMINAL_READBACK');
+      out.push({row:{value:terminal},ref:{key,hash:hash(terminal.batch)}});
+    }
+  }
   return out;
 }
 
@@ -64,7 +86,7 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   assert(rows.length===repair.evidence.length,'NATIVE_REPAIR_PAGE');
   const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[];
   let captureLink;
-  for(const {row,ref} of await retiredBatchRows(store,plan,archive,repair,rows)) {
+  for(const {row,ref} of await retiredBatchRows(store,plan,archive,repair,rows,repairKey,transport)) {
     const value=row?.value;
     assert(value && hash(value.batch??value)===ref.hash,'NATIVE_REPAIR_ARCHIVE_CHANGED');
     const batch=value.batch??value;
