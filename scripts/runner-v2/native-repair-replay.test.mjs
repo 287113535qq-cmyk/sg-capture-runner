@@ -97,6 +97,7 @@ test('formal retirement export follows all pages and immutable original batches 
 
 test('formal repair binds the retired ledger to the original captured fault and rejected preparation proof',async()=>{
  const a=retiredFixture(),archive=a.docs.get('journal/'+a.docs.get('state/'+a.repairKey).archiveKey);
+ a.batch.checkpoint=a.batch.journaled;
  const abandoned=a.docs.get('journal/'+a.batch.abandonedDemo),pending=abandoned.pending;
  const plan={...a.plan,countAllocation:'f'.repeat(64)};
  const receipt=captureFaultReceipt({plan,batch:{...a.batch,pending},archiveKey:a.batch.abandonedDemo,archive:abandoned,group:'primary'});
