@@ -35,7 +35,7 @@ def prepared_count_plan(base,profile,authorization):
             and re.fullmatch('[a-f0-9]{40}',parent.get('sourceCommit',''))
             and re.fullmatch('[0-9]+:1',parent.get('sourceRun',''))
             and any(parent.get('closureKey')==f"count-{kind}-close:{base['trialId']}:{parent['sourceRun']}:complete"
-                    for kind in ('shared','parked')),'PREPARED_REPAIR_PARENT')
+                    for kind in ('shared','parked','prepared')),'PREPARED_REPAIR_PARENT')
     plan={**base,'target':300000,'countAllocation':profile['activation']}
     require(profile.get('planHash')==digest(plan),'PREPARED_COUNT_PLAN_CHANGED')
     return plan

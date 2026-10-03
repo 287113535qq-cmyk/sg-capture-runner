@@ -23,7 +23,7 @@ export function preparedCountPlan(base,profile,authorization){
   const p=profile.repairParent;
   assert(/^[a-f0-9]{64}$/.test(p.activation??'')&&p.activation!==profile.activation
    &&/^[a-f0-9]{64}$/.test(p.specHash??'')&&/^[a-f0-9]{40}$/.test(p.sourceCommit??'')
-   &&/^\d+:1$/.test(p.sourceRun??'')&&['shared','parked'].some(kind=>
+   &&/^\d+:1$/.test(p.sourceRun??'')&&['shared','parked','prepared'].some(kind=>
     p.closureKey===`count-${kind}-close:${base.trialId}:${p.sourceRun}:complete`),'PREPARED_REPAIR_PARENT');
  }
  const plan={...base,target:300000,countAllocation:profile.activation};

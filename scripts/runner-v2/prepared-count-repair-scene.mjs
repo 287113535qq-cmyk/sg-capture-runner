@@ -9,7 +9,7 @@ import {preparedSettledHistory} from './prepared-settled-history.mjs';
 export async function reviewPreparedCountRepairScene({store,base,publication,plans,group,readEvidence,parent,now=Date.now}){
  assert(parent&&/^[a-f0-9]{64}$/.test(parent.activation??'')&&/^[a-f0-9]{40}$/.test(parent.sourceCommit??'')
   &&/^\d+:1$/.test(parent.sourceRun??'')&&/^[a-f0-9]{64}$/.test(parent.specHash??'')
-  &&['shared','parked'].some(kind=>parent.closureKey===`count-${kind}-close:${base.trialId}:${parent.sourceRun}:complete`),
+  &&['shared','parked','prepared'].some(kind=>parent.closureKey===`count-${kind}-close:${base.trialId}:${parent.sourceRun}:complete`),
   'PREPARED_REPAIR_PARENT');
  const row=publication.inventory.tasks.find(t=>t.gameId===base.gameId&&t.status==='prepared');
  const selector=publishedPreparedSelector({publication,plans,readEvidence});
@@ -27,7 +27,7 @@ export async function reviewPreparedCountRepairScene({store,base,publication,pla
  assert(permit?.schema==='sg-count-run-v1'&&permit.activation===spec.activation&&permit.profileHash===spec.profileHash
   &&permit.commit===parent.sourceCommit&&permit.run===parent.sourceRun,'PREPARED_REPAIR_SOURCE_PERMIT');
  const closed=await get('journal',parent.closureKey),repair=await get('state',game.repairKey);
- assert(['sg-count-shared-close-v1','sg-count-parked-close-v1'].includes(closed?.schema)
+ assert(['sg-count-shared-close-v1','sg-count-parked-close-v1','sg-count-prepared-close-v1'].includes(closed?.schema)
   &&closed.activation===parent.activation&&closed.sourceCommit===parent.sourceCommit&&closed.sourceRun===parent.sourceRun
   &&closed.trialId===base.trialId&&closed.completePreserved===pool.confirmed&&closed.completePreserved<300000
   &&closed.sourceRequests===0&&closed.newBetAllowance===0&&closed.requiresNewSession===true

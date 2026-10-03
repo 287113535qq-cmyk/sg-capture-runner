@@ -7,6 +7,7 @@ import {countAuditMetadata} from './count-audit-metadata.mjs';
 import {requireShortRun} from './protocol-recovery-core.mjs';
 import {auditSessionOwner} from './demo-session-audit.mjs';
 import {loadCountPermission,idleAtCountTail} from './complete-count.mjs';
+import {closePreparedCountParking,isPreparedCountParking} from './prepared-count-parking.mjs';
 const hash=x=>createHash('sha256').update(stable(x)).digest('hex');
 
 // Release the hosted-runner slot while the last ranges belong to other workers.
@@ -89,7 +90,7 @@ export class GithubCampaign {
     // Finalizer never allocates another game or extends a short-run grant.
     if(c.validationLimit || c.protocolValidation || !bound || c.activeGame!==bound.gameId
       || c.games.find(g=>g.game_id===bound.gameId)?.status!=='parking-protocol')return result;
-    result=await this.select({expectedGame:bound.gameId});
+    result=await this.select({expectedGame:bound.gameId,retireRun:runKey});
     if(result?.action!=='wait'||this.now()>=deadline||attempt===30)return result;
     // Successful parking also returns wait; check it before sleeping.
     const after=(await this.store.get('state','campaign')).value;
@@ -97,7 +98,7 @@ export class GithubCampaign {
     await sleep(Math.max(0,Math.min(10000,deadline-this.now())));
     }
   }
-  async select({expectedGame}={}){
+  async select({expectedGame,retireRun}={}){
     await this.control.allowed({newRound:true});
     let c=(await this.store.get('state','campaign')).value;
     if(expectedGame!==undefined && c.activeGame!==expectedGame)return {action:'stop',reason:'RUN_GAME_FINISHED'};
@@ -106,6 +107,12 @@ export class GithubCampaign {
       const pool=(await this.store.get('state','pool:'+plan.trialId))?.value;
       if(game.status==='parking-protocol'){
         if(!pool||Object.values(pool.workers).some(x=>x.leaseUntil>this.now()))return {action:'wait'};
+        if(plan.countAllocation&&isPreparedCountParking(plan)){
+          if(!retireRun||this.group!=='primary')return {action:'wait',reason:'COUNT_FINALIZER_REQUIRED'};
+          return closePreparedCountParking({store:this.store,transport:this.transport,gate:this.store.gate,
+            parser:this.analyzer,control:this.control,plan,group:this.group,campaign:c,pool,
+            runKey:retireRun,commit:this.commit,now:this.now});
+        }
         const evidence=[],generation=hash(pool),modern=pool.drainingProtocol===true;
         const prefix=modern?`parked-v2:${plan.trialId}:${generation}`:'parked-pool:'+plan.trialId;
         for(const w of Object.values(pool.workers)){

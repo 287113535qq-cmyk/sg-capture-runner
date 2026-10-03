@@ -11,6 +11,7 @@ import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
 import {amendPreparedZeroRuntime,amendPreparedSettledRuntime,preparedRuntimePath,preparedRuntimeAuthorization} from './prepared-count-runtime.mjs';
 import {preparedSettledHistory} from './prepared-settled-history.mjs';
 import {reviewPreparedCountRepairScene} from './prepared-count-repair-scene.mjs';
+import {closePreparedCountParking} from './prepared-count-parking.mjs';
 
 // Synthetic state exercises admission/CAS failures. Real retained records are
 // independently reviewed privately; these fixtures do not prove live routing.
@@ -54,17 +55,18 @@ async function fixture(){
  return {args:{...args,profile,authorization,boundary:async()=>{},commit:'f'.repeat(40),run:'1:1'},docs,mongo,writes,base,repairKey};
 }
 
-async function repairFixture(){
+async function repairFixture(kind='shared'){
  const f=await fixture();await activatePreparedCount(f.args);
+ f.args.store.writable=async()=>{};
  const parentProfile=f.args.profile,pool=f.docs.get('state/pool:'+f.base.trialId),campaign=f.docs.get('state/campaign');
  const oldSpec=f.docs.get('journal/complete-count:'+f.base.trialId+':'+parentProfile.activation);
  pool.enabled=false;pool.failure='PROTOCOL_VALIDATION_FAILED';pool.retiredCount='retired-count:fixture';
  const game=campaign.games.find(g=>g.game_id===f.base.gameId);game.status='parked-protocol';
  const parent={activation:parentProfile.activation,specHash:hash(oldSpec),sourceCommit:f.args.commit,
-  sourceRun:'9:1',closureKey:`count-shared-close:${f.base.trialId}:9:1:complete`};
+  sourceRun:'9:1',closureKey:`count-${kind}-close:${f.base.trialId}:9:1:complete`};
  const native={schema:'sg-retired-count-result-v1',trialId:f.base.trialId,completePreserved:2,
   abandonedAttempts:1,recordsHash:parentProfile.recordsHash,sourceRequests:0,newBetAllowance:0};
- const closed={schema:'sg-count-shared-close-v1',activation:parent.activation,sourceCommit:parent.sourceCommit,
+ const closed={schema:`sg-count-${kind}-close-v1`,activation:parent.activation,sourceCommit:parent.sourceCommit,
   sourceRun:parent.sourceRun,trialId:f.base.trialId,completePreserved:2,abandonedAttempts:1,unknownAttempts:0,
   recordsHash:native.recordsHash,sourceRequests:0,newBetAllowance:0,requiresNewSession:true,
   repairKey:f.repairKey,retirement:pool.retiredCount,retirementHash:hash(native)};
@@ -80,6 +82,46 @@ async function repairFixture(){
  const authorization={...f.args.authorization,activation,profileHash:hash(profile)};
  return {...f,parent,scene,oldSpec,args:{...f.args,profile,authorization,commit:'7'.repeat(40),run:'10:1'}};
 }
+
+test('automatic prepared closure can return through the same independent repair activation',async()=>{
+ const f=await repairFixture('prepared');
+ const result=await activatePreparedCount(f.args);
+ assert.equal(result.completePreserved,2);assert.equal(result.remainingComplete,299998);
+ assert.equal(f.docs.get('state/campaign').games[0].status,'ready');
+});
+
+for(const bad of [null,'permit','lease','pending','ack'])test('prepared count finalizer '+(bad??'closes settled ranges')+' without source or quota',async()=>{
+ const f=await fixture();await activatePreparedCount(f.args);
+ f.args.store.writable=async()=>{};
+ const pool=f.docs.get('state/pool:'+f.base.trialId),campaign=f.docs.get('state/campaign');
+ pool.enabled=false;pool.failure='PROTOCOL_VALIDATION_FAILED';pool.drainingProtocol=true;
+ campaign.activeGame=f.base.gameId;campaign.games[0].status='parking-protocol';
+ const plan={...f.base,target:300000,countAllocation:f.args.profile.activation};
+ const spec=f.docs.get('journal/complete-count:'+plan.trialId+':'+plan.countAllocation);
+ f.docs.set('state/capture-run:9:1',{gameId:f.base.gameId});
+ f.docs.set('journal/count-run:'+plan.trialId+':9:1',{schema:'sg-count-run-v1',run:'9:1',commit:f.args.commit,
+  activation:plan.countAllocation,profileHash:spec.profileHash});
+ let retired=0;
+ const args={...f.args,plan,pool,campaign,runKey:'capture-run:9:1',control:{allowed:async()=>{}},
+  retire:async()=>{retired++;pool.retiredCount='retired-count:synthetic';
+   const result={schema:'sg-retired-count-result-v1',completePreserved:pool.confirmed,recordsHash:'e'.repeat(64),sourceRequests:0,newBetAllowance:0};
+   f.docs.set('journal/'+pool.retiredCount+':complete',result);return result;}};
+ if(bad==='permit')f.docs.delete('journal/count-run:'+plan.trialId+':9:1');
+ if(bad==='lease')pool.workers={0:{leaseUntil:f.args.now()+1}};
+ if(bad==='pending')f.docs.get('state/batch:'+plan.trialId+':1').pending={awaiting:'FREE_GAME'};
+ if(bad==='ack')args.retire=async()=>{retired++;throw Error('WRITE_ACK_UNKNOWN');};
+ const before=f.writes.length;
+ if(bad){await assert.rejects(closePreparedCountParking(args),bad==='ack'?/WRITE_ACK_UNKNOWN/:bad==='permit'?/SOURCE_PERMISSION/:bad==='lease'?/NOT_IDLE/:/UNCONFIRMED/);
+  if(bad!=='ack'){assert.equal(retired,0);assert.equal(f.writes.length,before);}
+  assert.equal(campaign.activeGame,f.base.gameId);
+ }else{
+  const result=await closePreparedCountParking(args);assert.equal(result.completePreserved,2);
+  assert.equal(retired,1);assert.equal(f.docs.get('state/campaign').activeGame,null);
+  assert.equal(f.docs.get('state/campaign').games[0].status,'parked-protocol');
+  assert.equal(f.docs.get('journal/count-prepared-close:'+plan.trialId+':9:1:complete').newBetAllowance,0);
+  await assert.rejects(closePreparedCountParking(args),/ALREADY_STARTED/);
+ }
+});
 
 test('formal repair returns a prepared game with inherited count and immutable parent proof, without replay or a new pilot',async()=>{
  const f=await repairFixture(),before=structuredClone(f.docs.get('journal/complete-count:'+f.base.trialId+':'+f.parent.activation));

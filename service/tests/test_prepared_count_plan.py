@@ -47,6 +47,10 @@ class PreparedCountPlanTests(unittest.TestCase):
         p['repairParent']=dict(activation='b'*64,specHash='c'*64,sourceCommit='d'*40,sourceRun='9:1',
             closureKey=f"count-shared-close:{base['trialId']}:9:1:complete")
         a['profileHash']=digest(p);self.assertEqual(prepared_count_plan(base,p,a),plan)
+        for kind in ('shared','parked','prepared'):
+            candidate=copy.deepcopy(p)
+            candidate['repairParent']['closureKey']=f"count-{kind}-close:{base['trialId']}:9:1:complete"
+            self.assertEqual(prepared_count_plan(base,candidate,{**a,'profileHash':digest(candidate)}),plan)
         for field,value in [('activation',p['activation']),('specHash','wrong'),('sourceRun','9:2'),('closureKey','foreign')]:
             bad=copy.deepcopy(p);bad['repairParent'][field]=value;auth={**a,'profileHash':digest(bad)}
             with self.subTest(field=field),self.assertRaises(Exception):prepared_count_plan(base,bad,auth)
