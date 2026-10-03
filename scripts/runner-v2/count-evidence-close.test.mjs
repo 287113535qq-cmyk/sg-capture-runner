@@ -34,6 +34,55 @@ function fixture(){
  return f;
 }
 
+function terminalFixture(){
+ const f=fixture(),p=f.args.profile,b=f.batch;
+ b.pending.raw.synthetic=true;
+ const record={_id:hash('received-terminal'),contentHash:hash('terminal-content'),raw:structuredClone(b.pending.raw),
+  trialId:f.args.plan.trialId,batchId:b.id,shardId:b.worker,sequence:b.pending.sequence,
+  attempt:b.pending.attempt,sourceSessionHash:b.sessionHash,fixtureOnly:false,buy:0};
+ p.disposition='received-terminal-reconciled-without-source';p.completePreserved=3;p.abandonedAttempts=0;
+ p.faultPendingHash=hash(b.pending);p.batchesHash=hash([b]);
+ p.terminalRecords=[{batchId:b.id,pendingHash:hash(b.pending),recordHash:hash(record)}];
+ f.args.terminalRecords=[record];
+ f.args.parser={call:async q=>q.op==='next'?null:{verified:q.record?.raw.synthetic===true}};
+ return f;
+}
+
+test('received complete terminal is preserved as a complete record before releasing the exact hold',async()=>{
+ const f=terminalFixture(),pending=structuredClone(f.batch.pending),original=hash(f.get('journal',f.key));
+ const out=await closeCountShared(f.args);
+ assert.equal(out.completePreserved,3);assert.equal(out.abandonedAttempts,0);
+ assert.equal(out.receivedTerminalsReconciled,1);assert.equal(out.sourceRequests,0);assert.equal(out.newBetAllowance,0);
+ assert.equal(f.mongo.size,3);assert.equal(f.get('state','global-hold').value.active,false);
+ assert.equal(f.get('state','pool:synthetic-demo').value.confirmed,3);
+ assert.equal(hash(f.get('journal',f.key)),original);
+ assert.deepEqual(f.get('journal','count-shared-close:synthetic-demo:77:1:terminal:1').value.pending,pending);
+ await assert.rejects(closeCountShared(f.args));
+});
+
+for(const cause of ['incomplete','unverified','record-binding','raw-changed','duplicate','unknown','wrong-attempt','new-mapping'])
+ test('received terminal closure refuses '+cause+' before writes',async()=>{
+  const f=terminalFixture(),record=f.args.terminalRecords[0];
+  if(cause==='incomplete')f.args.parser.call=async q=>q.op==='next'?{MSGID:'FREE_GAME'}:{verified:true};
+  if(cause==='unverified')f.args.parser.call=async q=>q.op==='next'?null:{verified:false};
+  if(cause==='record-binding')f.args.profile.terminalRecords[0].recordHash='0'.repeat(64);
+  if(cause==='raw-changed')record.raw.steps[0].responsePayload='changed';
+  if(cause==='duplicate')f.args.terminalRecords.push(record);
+  if(cause==='unknown')f.batch.pending.awaiting='unknown';
+  if(cause==='wrong-attempt')record.attempt='other';
+  if(cause==='new-mapping')record.buy=1;
+  if(['raw-changed','wrong-attempt','new-mapping'].includes(cause))
+   f.args.profile.terminalRecords[0].recordHash=hash(record);
+  if(cause==='new-mapping')f.args.parser.call=async q=>q.op==='next'?null:{verified:q.record.buy===0};
+  const before=hash([...f.docs]);await assert.rejects(closeCountShared(f.args));assert.equal(hash([...f.docs]),before);
+ });
+
+test('terminal Mongo conflict retains the hold and original terminal proof',async()=>{
+ const f=terminalFixture(),pending=structuredClone(f.batch.pending);f.corrupt();
+ await assert.rejects(closeCountShared(f.args));assert.equal(f.get('state','global-hold').value.active,true);
+ assert.deepEqual(f.get('journal','count-shared-close:synthetic-demo:77:1:terminal:1').value.pending,pending);
+});
+
 test('unknown gameplay shape retires by bound original evidence without interpreting or resuming it',async()=>{
  const f=fixture(),before=structuredClone(f.batch.pending),activation=hash(f.get('journal',f.key));
  const out=await closeCountShared(f.args);

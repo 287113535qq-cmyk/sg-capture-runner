@@ -8,13 +8,17 @@ import {pyramidsFreeSequence} from '../trial/pyramids-free-review.mjs';
 import {reviewPyramidsRetrigger} from '../trial/pyramids-retrigger-review.mjs';
 import {reviewFifteenSequence} from '../trial/pyramids-fifteen-review.mjs';
 import {pyramidsHoldReview} from '../trial/pyramids-hold-review.mjs';
+import {DurableQueue,receiptKey} from './durable-queue.mjs';
 
 // Reviewed, ended shared stop only. No SG transport or new count permission.
 // Close the faulty game first; the peer hold continues to protect both groups.
-export async function closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,now=Date.now}){
+export async function closeCountShared({store,transport,gate,parser,plan,profile,ended,jobs,boundary,commit,run,terminalRecords=[],now=Date.now}){
  const group=profile?.group,root=group==='secondary';
  const evidence=profile?.schema==='sg-count-evidence-close-profile-v1',faulty=root||evidence;
- if(evidence)assert(profile.disposition==='interrupted-abandoned-without-replay'
+ const reconcile=evidence&&profile.disposition==='received-terminal-reconciled-without-source';
+ assert(Array.isArray(terminalRecords)&&terminalRecords.length<=100
+  &&(reconcile?terminalRecords.length>0:terminalRecords.length===0),'RECEIVED_TERMINAL_SCOPE');
+ if(evidence)assert((profile.disposition==='interrupted-abandoned-without-replay'||reconcile)
   &&/^[A-Z][A-Z_]{0,79}$/.test(profile.faultCode)&&/^[a-f0-9]{64}$/.test(profile.sourceProfileHash),
   'EVIDENCE_CLOSE_SCOPE');
  const retrigger=profile?.schema==='sg-count-retrigger-close-profile-v1';
@@ -62,7 +66,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&permit.activation===spec.activation&&permit.profileHash===spec.profileHash&&hash(permit)===profile.permitHash,'SHARED_CLOSE_PERMISSION');
  assert(hash(batches)===profile.batchesHash&&Object.values(pool.workers).every(w=>w.leaseUntil<=now())
   &&batches.every(b=>b.leaseUntil<=now()&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.pending?.awaiting),'SHARED_CLOSE_BATCHES');
- const complete=batches.reduce((n,b)=>n+b.journaled-b.start+1,0),abandoned=batches.filter(b=>b.pending).length;
+ const complete=batches.reduce((n,b)=>n+b.journaled-b.start+1,0)+terminalRecords.length,
+  abandoned=reconcile?0:batches.filter(b=>b.pending).length;
  assert(complete===profile.completePreserved&&abandoned===profile.abandonedAttempts
   &&complete>=pool.confirmed&&complete<=plan.target,'SHARED_CLOSE_COUNTS');
  if(faulty){
@@ -90,6 +95,21 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
    assert(reviewed.complete===false&&reviewed.next==='FREE_GAME','COUNTER_CLOSE_DIAGNOSIS');
   }else assert.throws(()=>nextRequest(fault.pending.raw),/^Error: PYRAMIDS_FREE_UNREVIEWED_COIN$/,'SHARED_CLOSE_NOT_ADAPTER');
  }else assert(batches.every(b=>pool.countAllocation.batches[b.id]?.closed||!b.failure||b.failure==='GLOBAL_SOURCE_STOPPED'),'SHARED_CLOSE_PEER_FAILURE');
+ if(reconcile){
+  const pending=batches.filter(b=>b.pending);
+  assert(pending.length===terminalRecords.length&&hash(terminalRecords.map(r=>({batchId:r.batchId,
+   pendingHash:hash(pending.find(b=>b.id===r.batchId)?.pending),recordHash:hash(r)})))===hash(profile.terminalRecords),
+   'RECEIVED_TERMINAL_BINDING');
+  assert(new Set(terminalRecords.map(r=>r.batchId)).size===pending.length,'RECEIVED_TERMINAL_DUPLICATE');
+  for(const r of terminalRecords){const b=pending.find(b=>b.id===r.batchId),p=b.pending;
+   assert(p.awaiting===null&&p.sequence===b.journaled+1&&p.sequence<=b.end
+    &&r.sequence===p.sequence&&r.attempt===p.attempt&&r.sourceSessionHash===b.sessionHash
+    &&r.shardId===b.worker&&r.trialId===plan.trialId&&r.fixtureOnly===false&&hash(r.raw)===hash(p.raw)
+    &&await parser.call({op:'next',plan,raw:p.raw})===null
+    &&(await parser.call({op:'verify',plan,raw:p.raw,record:r})).verified===true
+    &&!await store.get('journal',receiptKey(plan.trialId,r.sequence)),'RECEIVED_TERMINAL_UNVERIFIED');
+  }
+ }
  const key=`count-shared-close:${plan.trialId}:${profile.sourceRun}`;
  assert(!await store.get('journal',key+':before'),'SHARED_CLOSE_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'SHARED_CLOSE_READBACK');};
@@ -98,6 +118,21 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   &&hash((await store.get('state','global-hold'))?.value)===profile.holdHash,'SHARED_CLOSE_SCENE_CHANGED');};
  await guarded();await store.update('state',poolKey,v=>{assert(hash(v)===profile.poolHash,'SHARED_CLOSE_POOL_CHANGED');return {...v,enabled:false};});
  const frozen=(await store.get('state',poolKey)).value;
+ // Keep the original in the before proof, then journal a verified terminal.
+ // Retirement confirms Mongo before settling counts or releasing the hold.
+ if(reconcile)for(const record of terminalRecords){
+  const b=batches.find(b=>b.id===record.batchId),batchKey=`batch:${plan.trialId}:${b.id}`;
+  await save(key+`:terminal:${b.id}`,{pending:b.pending,record,sourceRequests:0});
+  await guarded();await store.update('state',batchKey,v=>{
+   assert(hash(v)===hash(b),'RECEIVED_TERMINAL_BATCH_CHANGED');return {...v,owner:run,epoch:b.epoch+1,leaseUntil:0};
+  });
+  const queue=new DurableQueue({store,plan,batchKey,owner:run,epoch:b.epoch+1});await queue.append(record);
+  await queue.assertDurable([record]);await store.update('state',batchKey,v=>{
+   assert(v.owner===run&&v.epoch===b.epoch+1&&hash(v.pending)===hash(b.pending)
+    &&v.journaled===b.journaled,'RECEIVED_TERMINAL_PROGRESS_CHANGED');
+   return {...v,pending:null,journaled:record.sequence,failure:null};
+  });
+ }
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
   expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],
   historyPermit:evidence&&permit.historyBoundary?permit:undefined,now});
@@ -111,6 +146,7 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   trialId:plan.trialId,activation:spec.activation,completePreserved:complete,abandonedAttempts:abandoned,unknownAttempts:0,
   retirement:after.retiredCount,retirementHash:hash(retired),recordsHash:retired.recordsHash,repairKey,
   sourceRequests:0,newBetAllowance:0,requiresNewSession:true,group,commit,run,at:now()};
+ if(reconcile)result.receivedTerminalsReconciled=terminalRecords.length;
  await save(key+':settled',result);await guarded();
  if(faulty){
   await store.create('state',repairKey,{schema:'sg-game-repair-v1',gameId:plan.gameId,trialId:plan.trialId,status:'pending-adapter',

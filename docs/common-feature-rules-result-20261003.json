@@ -105,6 +105,19 @@
     "sourceRequests": 0,
     "localPython": 10,
     "localNodeAndCollector": 12,
-    "linuxStatus": "pending"
+    "linuxStatus": "success",
+    "linuxRun": 37114177427
+  },
+  "receivedTerminalReconciliation": {
+    "commonMethod": "received-terminal-records / count-shared-close",
+    "realSceneMemoryPassed": true,
+    "oldCompletePreserved": 244,
+    "waitingComplete": 54,
+    "terminalComplete": 1,
+    "expectedTotal": 299,
+    "abandoned": 0,
+    "sourceRequests": 0,
+    "nativeWrites": 0,
+    "onlineStatus": "not-applied"
   }
 }

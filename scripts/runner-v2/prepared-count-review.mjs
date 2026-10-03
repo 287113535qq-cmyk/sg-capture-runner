@@ -10,12 +10,12 @@ export async function exportPreparedCountReview(args){
   const c=(await args.store.get('state','campaign'))?.value;
   const game=c?.games.find(g=>g.game_id===args.base.gameId);
   const repair=(await args.store.get('state',game?.repairKey))?.value;
-  assert(repair?.archiveKey?.startsWith('count-prepared-close:'+args.base.trialId+':')
+  assert(['prepared','shared'].some(kind=>repair?.archiveKey?.startsWith(`count-${kind}-close:${args.base.trialId}:`))
     &&repair.archiveKey.endsWith(':before'),'PREPARED_REPAIR_PARENT');
   const closureKey=repair.archiveKey.slice(0,-':before'.length)+':complete';
   const closed=(await args.store.get('journal',closureKey))?.value;
   const spec=(await args.store.get('journal',`complete-count:${args.base.trialId}:${closed?.activation}`))?.value;
-  assert(closed?.schema==='sg-count-prepared-close-v1'&&spec,'PREPARED_REPAIR_PARENT');
+  assert(['sg-count-prepared-close-v1','sg-count-shared-close-v1'].includes(closed?.schema)&&spec,'PREPARED_REPAIR_PARENT');
   parent={activation:closed.activation,sourceCommit:closed.sourceCommit,sourceRun:closed.sourceRun,specHash:hash(spec),closureKey};
  }
  const scene=await (parent?reviewPreparedCountRepairScene:reviewPreparedCountScene)({...args,parent});
