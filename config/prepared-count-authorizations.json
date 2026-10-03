@@ -1,5 +1,15 @@
 {
   "schema": "sg-prepared-count-authorizations-v1",
   "sourceAllowance": 0,
-  "profiles": {}
+  "profiles": {
+    "formal-prepared-count-32714-2c22b7f4126e4bd0aa20e047d967dd72de7550769cfdb95ef40ace74d011ccf1.json": {
+      "schema": "sg-prepared-count-authorization-v1",
+      "gameId": 32714,
+      "trialId": "sg_r1_20260928_32714",
+      "group": "primary",
+      "basePlanHash": "d5ef2e3e3559787838055d4eda7bfb63bedeccb092312b8e5ec0ac07ab4dc56b",
+      "activation": "2c22b7f4126e4bd0aa20e047d967dd72de7550769cfdb95ef40ace74d011ccf1",
+      "profileHash": "953e091bc1b3205cda2d0358e5daad41c6c9bfe8a949e1a90d190cc2300416bf"
+    }
+  }
 }
