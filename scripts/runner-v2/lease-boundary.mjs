@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {checkLedger} from './complete-count.mjs';
-export async function checkPrimaryLeases({store,plans,now=Date.now}) {
+import {bindPreparedCountPlan} from './prepared-count-plan-binding.mjs';
+export async function checkPrimaryLeases({store,plans,now=Date.now,read}) {
   const keys=[...new Set(Object.values(plans).map(p=>'pool:'+p.trialId))];
   // Cover every configured plan; adding a candidate must not require a new fixed count.
   assert(keys.length>0&&keys.length<=178&&keys.length===Object.values(plans).length
@@ -29,7 +30,7 @@ export async function checkPrimaryLeases({store,plans,now=Date.now}) {
       assert(/^[a-f0-9]{64}$/.test(activation??''),'LEASE_COUNT_SCOPE');
       const key=`complete-count:${trialId}:${activation}`;
       const spec=(await store.get('journal',key))?.value,complete=(await store.get('journal',key+':complete'))?.value;
-      const countPlan={...plan,target:300000,countAllocation:activation};
+      const countPlan=bindPreparedCountPlan({base:plan,activation,spec,read});
       assert(spec?.gameId===plan.gameId&&spec.trialId===trialId&&spec.target===300000&&spec.maxSequence===600000
         &&spec.planHash===hash(countPlan)&&pool.countAllocation.specHash===hash(spec)
         &&complete?.schema==='sg-complete-count-activation-v1'&&complete.specHash===hash(spec),'LEASE_COUNT_SCOPE');
