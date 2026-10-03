@@ -1,0 +1,12 @@
+{
+  "schema": "sg-preparation-gate-v1",
+  "gate": "persistence",
+  "gameId": 32714,
+  "revisionHash": "8c6ce197bbb60427d1f281eb189ec3724b731f99e7312e1cc899c53b937afd79",
+  "verified": true,
+  "sourceAllowance": 0,
+  "supportingHashes": [
+    "4b9eba0edc142df9d898fc1367185c3cc94a124a1e7d77839c1be9997a6ee4f3"
+  ],
+  "failureEvidenceHash": "9c4d36b70078e3b7dca4e43803c33d952ae3abfe73c10a0035b39fb74aa929c7"
+}

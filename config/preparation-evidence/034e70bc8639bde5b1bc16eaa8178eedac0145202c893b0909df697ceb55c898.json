@@ -1,0 +1,18 @@
+{
+  "schema": "sg-preparation-gate-v1",
+  "gate": "linux",
+  "gameId": 32714,
+  "revisionHash": "8c6ce197bbb60427d1f281eb189ec3724b731f99e7312e1cc899c53b937afd79",
+  "verified": true,
+  "sourceAllowance": 0,
+  "supportingHashes": [
+    "13880e61e0d571aad9f9a22bee6a2fee1937029fb6c79b35f4209aa3b1d71ff1"
+  ],
+  "origin": {
+    "repository": "287113535qq-cmyk/sg-capture-runner",
+    "runId": "37138640890",
+    "attempt": "1",
+    "commit": "52f51be64a65f71f5f89b97d00c19dc701215c82",
+    "workflow": ".github/workflows/preflight.yml"
+  }
+}
