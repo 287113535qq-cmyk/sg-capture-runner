@@ -200,16 +200,16 @@
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/huff_retrigger_review.py": "5ff54050b77a3362c19dddefb42c9c2d085ad6e859d1b30fe06837b428934d5b",
-    "scripts/trial/huff-retrigger-review.mjs": "6762646156caf204c7038a947886656d7d6a88df68a4c9446e46185b6a01e1bb",
-    "collector/huff-retrigger-review.cjs": "4c9f18d2c53693abc16e461d63fcdb210eaec767d3b0d03c8909e895e0addced",
+    "service/huff_retrigger_review.py": "c6aaa60e92f2279a787dfd5935f6849213f7b0d8418716a8577fb85f86b17d00",
+    "scripts/trial/huff-retrigger-review.mjs": "06481f754d569edec401c58b21b4265091d9cdbf12be1d0a646c747a5dc9126e",
+    "collector/huff-retrigger-review.cjs": "1f2b3d96bbd9e73c9505287a5234022e9d62b6eb41ca5153f1c02641a619d671",
     "collector/sg.huff-retrigger.ts": "e0c40dc09a4175820f17ca18e248efa0e782044176430696612d0198fe26c39b",
     "service/free_game_counters.py": "e450aa898f6fefb138a3f2d6d286187eb0c7ee27eba9a885d040a1046f5ea53b",
     "scripts/trial/free-game-counters.mjs": "11fe2277b7f5200b2f1895b5477391050b3a2377bdec77d7128454348229f5af",
     "collector/free-game-counters.cjs": "af96c0e48145633b4e602038dab6290745a7aabf04ef0b8864e51e21f4aff6c4",
-    "service/feature_state.py": "9bded6c53d9f8d02479a11c1baaf134f4654a334f5a962295c2c8284f1ee2bba",
-    "scripts/trial/feature-state.mjs": "fe1cc28cb174c48f5ad2ee54b450bdd5e54f0651d160d6df6afb5e24b1d70f02",
-    "collector/feature-state.cjs": "3288ab08e2d2bf006b5944f2a858ccd163dcea430e260d3952eb40ca58924e27",
+    "service/feature_state.py": "ea46ee52eabbac3b553f67a37c75c744e0260f35e78318390f228650112eecf0",
+    "scripts/trial/feature-state.mjs": "5711d975429b128bd25642e542d9e969a51ba25154312fc9e93e1225e85c344b",
+    "collector/feature-state.cjs": "ef633179922cef88a9b53b395589d33a9daab846c0c6144000f47552869e654e",
     "service/game_rule_catalog.py": "cbf292e4ad0bc38227c546c27e265cdf90cc9de14c74847acb254a4ce2638622"
   },
   "reviewDocuments": [
@@ -220,6 +220,7 @@
     "docs/available-workers-20260928-result.json",
     "docs/available-workers-20260928.md",
     "docs/common-feature-rules-20261003.md",
+    "docs/common-feature-rules-result-20261003.json",
     "docs/continuous-processing.md",
     "docs/demon-code-recovery-operator.md",
     "docs/four-work-lines-integration-20261003-result.json",
@@ -261,7 +262,8 @@
   "analysisDocumentHashes": {
     "docs/available-workers-20260928-result.json": "0812f15c79ce24fbbf72d7649bd6550df1c8f6a106e25f8ff1f2cfc1e2ba158c",
     "docs/available-workers-20260928.md": "a3c315d6081ace994a6a3eb3de39ebb00931ee39074d13041655e1ef7aa0f2bd",
-    "docs/common-feature-rules-20261003.md": "bd897fc6474e7350cb6d8695f20087659aea8bc92bdae32e002fb310d3c3b5b1",
+    "docs/common-feature-rules-20261003.md": "fca61a307227d7ece054207fe79be499f52014a82c4cb9b1cd9c6c49860de4e5",
+    "docs/common-feature-rules-result-20261003.json": "86947c4760993e4d1eb4a203cec97541a253515dac8d2388c08fb1f6df601c8e",
     "docs/continuous-processing.md": "25e22ad74e804b44740f3c5ea09617c4a2589a20456a0e659311dc089740b5f5",
     "docs/demon-code-recovery-operator.md": "adbf2cdcf6b5a674b9f6eab229f7717a658df58d8db1d1904bfe454e388d34d5",
     "docs/four-work-lines-integration-20261003-result.json": "86178adf41c7f42324c685c6abc223f9e594f237b1b9a9c9e0ee28af71656018",
@@ -295,7 +297,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "26a5827b7a1e1e97032563b56307b906987988b556ef71f2cb835ea5be01a014",
+    "docs/rules.md": "884be2fa48b78901344d1df585f18a8eedb91e429b3499566fca1b27ead44906",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -307,5 +309,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1f5e82936af4400a3eb02ef6f6c1e505220964c3a3159247cf6a409fa11ad089"
+  "ruleHash": "0da70d8406f9a392d9e16f043beaa161fc1e03a65276ca0a1be7101fa78ef2a9"
 }

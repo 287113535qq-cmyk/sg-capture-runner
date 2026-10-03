@@ -4,6 +4,22 @@ const require=createRequire(import.meta.url);require('../../collector/node_modul
 const {prepareNextgenRound}=require('../../collector/sg.ingest.ts');
 const p=spawnSync(process.env.PYTHON||'python3',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_huff_retrigger import sample;from test_huff_fields import PLAN;from huff_fields import HuffFields;r=sample();print(json.dumps({'raw':r,'fields':HuffFields(PLAN).settled(r)}))"],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);const {raw,fields}=JSON.parse(p.stdout);
 
+test('fractional frame multipliers settle identically while Mansion sentinels do not become cash terminals',()=>{
+ const change=value=>{
+  const r=structuredClone(raw),step=r.steps.at(-1),params=Object.fromEntries(step.responsePayload.split('&').map(x=>x.split('=')));
+  const g=Object.fromEntries(params.GSD.split('#').map(x=>x.split('~')));
+  g.FRAMEWINS=[value,...Array(14).fill('0')].join('|');g.FRAMES=Array(15).fill('0').join('|');
+  params.GSD=Object.entries(g).map(([k,v])=>k+'~'+v).join('#');step.responsePayload=Object.entries(params).map(([k,v])=>k+'='+v).join('&');
+  step.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+step.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';
+  return r;
+ };
+ const r=change('1.5'),py=spawnSync(process.env.PYTHON||'python3',['-c',"import json,sys;sys.path.insert(0,'service');from huff_fields import HuffFields;from huff_retrigger_review import PLAN;print(json.dumps(HuffFields(PLAN).settled(json.load(sys.stdin))))"],{input:JSON.stringify(r),encoding:'utf8'});
+ assert.equal(py.status,0,py.stderr);const expected=JSON.parse(py.stdout);assert.equal(huffNextRequest(r),null);
+ assert.deepEqual(prepareNextgenRound(r,huffMapping(r,'a'.repeat(64),{retrigger:expected.typeMappingHash})),expected);
+ const sentinel=change('-100');assert.throws(()=>huffNextRequest(sentinel),/HUFF_FRAME_EXIT_NOT_ADAPTED/);
+ assert.throws(()=>prepareNextgenRound(sentinel,{buy:0,bonus:2,typeMappingHash:expected.typeMappingHash}),/HUFF_FRAME_EXIT_NOT_ADAPTED/);
+});
+
 test('earned previous slots persist on later frames without a new award',()=>{
  const r=structuredClone(raw);
  for(const s of r.steps.slice(3))for(const k of ['responsePayload','responseXml'])s[k]=s[k].replace('PCFID~1|','PCFID~1|1|');

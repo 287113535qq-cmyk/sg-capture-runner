@@ -3,7 +3,13 @@ import test from 'node:test';
 import {createRequire} from 'node:module';
 import * as runner from './feature-state.mjs';
 const collector=createRequire(import.meta.url)('../../collector/feature-state.cjs');
-for(const [name,{parseFeatureHistory:history,checkFeatureWallet:wallet}] of [['runner',runner],['collector',collector]]){
+for(const [name,{parseFeatureHistory:history,checkFeatureWallet:wallet,parseFeatureValues:values}] of [['runner',runner],['collector',collector]]){
+ test(name+': fractional display values retain exact lexemes and sentinels require explicit scope',()=>{
+  assert.deepEqual(values('0|1.5|3.00',{size:3}),['0','1.5','3.00']);
+  assert.deepEqual(values('0|-100.0',{size:2,negativeSentinels:[-100]}),['0','-100.0']);
+  for(const bad of ['NaN','1e3','01','1.0000001','1000000.000001','-1','-100','1\n','1|2','-0'])assert.throws(()=>values(bad,{size:1}));
+  assert.throws(()=>values('1.5',{size:1,decimalPlaces:0}));
+ });
  test(name+': ordered repeats preserve reviewed scope',()=>{
   assert.deepEqual(history('1|1|2|1|',[1,2]),[1,1,2,1]);
   assert.deepEqual(history('',[1],{allowEmpty:true}),[]);

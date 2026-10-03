@@ -1,6 +1,6 @@
 // Independent retrigger sequence review. No source permission.
 import {advanceFreeGameCounters} from './free-game-counters.mjs';
-import {parseFeatureHistory,checkFeatureWallet} from './feature-state.mjs';
+import {parseFeatureHistory,checkFeatureWallet,parseFeatureValues} from './feature-state.mjs';
 import {parseXml,children,one} from './pearl-protocol.mjs';
 const need=(ok,code)=>{if(!ok)throw Error('HARDHAT_'+code);};
 const uint=v=>{need(/^(0|[1-9]\d*)$/.test(String(v))&&Number.isSafeInteger(Number(v)),'INTEGER');return Number(v);};
@@ -24,7 +24,11 @@ export function review(raw){
   need(Object.keys(g).every(k=>known.has(k)),'UNKNOWN_FIELD');
   const board=nums(g.VA);need(board.length===15&&board.every(n=>n<=15),'BOARD');
   need(!(board.filter(n=>n===13).length>=3&&board.filter(n=>n===14).length>=6),'COMBINED_EXIT');
-  if(g.FRAMEWINS!==undefined)need(nums(g.FRAMEWINS,'|').length===15&&nums(g.FRAMES,'|').length===15,'FRAME_EXIT');
+  if(g.FRAMEWINS!==undefined){
+   const wins=parseFeatureValues(g.FRAMEWINS,{size:15,negativeSentinels:[-100]});
+   parseFeatureValues(g.FRAMES,{size:15,decimalPlaces:0});
+   if(wins.some(value=>value.startsWith('-')))throw Error('HUFF_FRAME_EXIT_NOT_ADAPTED');
+  }
   total=uint(p.TFG);remaining=uint(p.NFG);const progress=uint(p.CFGG);
   need(total>0&&total<100&&total===remaining+progress&&progress===i,'COUNTER');
   if(!i)need(total===6&&remaining===6&&!g.PCFID&&!g.FEAT,'TRIGGER');

@@ -1,8 +1,15 @@
 import unittest
-from feature_state import parse_feature_history as history, check_feature_wallet as wallet
+from feature_state import parse_feature_history as history, check_feature_wallet as wallet, parse_feature_values as values
 from round_fields import FieldError
 
 class FeatureStateTests(unittest.TestCase):
+    def test_fractional_display_values_keep_exact_lexemes_and_explicit_sentinels(self):
+        self.assertEqual(values('0|1.5|3.00', size=3), ['0','1.5','3.00'])
+        self.assertEqual(values('0|-100.0', size=2, negative_sentinels=(-100,)), ['0','-100.0'])
+        for bad in ('NaN','1e3','01','1.0000001','1000000.000001','-1','-100','1\n','1|2','-0'):
+            with self.assertRaises(FieldError): values(bad,size=1)
+        with self.assertRaises(FieldError): values('1.5',size=1,decimal_places=0)
+
     def test_ordered_repeats_and_explicit_scope(self):
         self.assertEqual(history('1|1|2|1|', {1,2}), [1,1,2,1])
         self.assertEqual(history('', {1}, allow_empty=True), [])

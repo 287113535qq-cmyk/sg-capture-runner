@@ -1,0 +1,110 @@
+{
+  "schema": "sg-common-feature-rules-result-v1",
+  "gameMethods": {
+    "freeCounters": {
+      "defaultNaturalAdditionalAwards": true,
+      "families": [
+        "Mansion HardHat",
+        "Jinzita",
+        "Luxor"
+      ],
+      "independentImplementations": [
+        "Python",
+        "Runner",
+        "collector"
+      ]
+    },
+    "featureHistory": {
+      "orderedDuplicatesPreserved": true,
+      "family": "Mansion HardHat"
+    },
+    "featureWallet": {
+      "deferredMidFeatureCredits": true,
+      "fullCreditRequiredAtTerminal": true,
+      "family": "Mansion HardHat"
+    }
+  },
+  "sharedControlFixes": [
+    "atomic-owned-local-state",
+    "current-code-evidence-validation",
+    "versioned-event-rejections",
+    "settled-fault-admission-mirror",
+    "registered-formal-plan-finalization",
+    "before-only-stage-audit"
+  ],
+  "localChecks": {
+    "python": 21,
+    "nodeAndCollector": 19,
+    "handoff": 12
+  },
+  "linux": {
+    "run": 37112910950,
+    "repository": "287113535qq-cmyk/sg-capture-runner",
+    "commit": "cbf6eb84c80cc82ca47a35096085c90c9c01b37d",
+    "conclusion": "success",
+    "logsSHA": "f62959ddd38332005f49cd0e03e2551b545bc09a0b073e28f2eddb522ab11bac",
+    "sourceRequests": 0
+  },
+  "realPrefixReview": {
+    "gameId": 32714,
+    "sourceRun": "37109579132:1",
+    "realFrames": 3,
+    "originalHash": "4ef1dec0fe991f412ccefc1009318afad3e6e2eda848b7d8d36cb8a09d8846ff",
+    "pythonNext": "FREE_GAME",
+    "runnerNext": "FREE_GAME",
+    "collectorNext": "FREE_GAME",
+    "candidateComplete": false,
+    "naturalTerminal": false,
+    "sourceRequests": 0,
+    "originalRecordsChanged": 0
+  },
+  "retirement": {
+    "run": "37112219235:1",
+    "completePreserved": 244,
+    "sourceRequests": 0,
+    "originalRecordsChanged": 0
+  },
+  "repairReturnedToPrepared": true,
+  "reentry": {
+    "schema": "sg-complete-count-activation-v1",
+    "specHash": "058d1bebab3273ce7ddff083b716a6f07353aad870f6f37a158777facc588412",
+    "trialId": "sg_r1_20260928_32714",
+    "planHash": "7392d332a30a80baa565eb9238ac6d7ccd019fcdbae68c826f0d38f361299721",
+    "commit": "76404b4e04a82ca4ecffd48e1f297606af6f998f",
+    "run": "37113236979:1",
+    "profileHash": "d856ad9938c2e2272e81a77b2db856face775d64ebd148018f3d132f7cd18363",
+    "completePreserved": 244,
+    "remainingComplete": 299756,
+    "sourceRequests": 0,
+    "newBetAllowance": 0
+  },
+  "verificationSourceRun": "37113408307:1",
+  "verificationSourceStatus": "failed-shared-hold-requires-source-free-settlement",
+  "completedGames": 17,
+  "totalGames": 178,
+  "wholeGameCoverageClaimed": false,
+  "privateBackupStatus": {
+    "verifiedFiles": 117,
+    "bytes": 2517118,
+    "SHA": "5f88fb10e7d3aa8aafd103fcb118d22890f2fba2b7cf69f94790466d832524ee",
+    "fractionalDelta": "pending"
+  },
+  "fractionalValues": {
+    "lexemesPreserved": true,
+    "maximumDecimalPlaces": 6,
+    "independentImplementations": [
+      "Python",
+      "Runner",
+      "collector"
+    ],
+    "realFrames": 7,
+    "naturalTerminalObserved": true,
+    "threeWaySettlementMatched": true,
+    "mongoWritten": false,
+    "originalRecordsChanged": 0,
+    "sourceRequests": 0,
+    "localPython": 10,
+    "localNodeAndCollector": 12,
+    "linuxStatus": "pending"
+  }
+}
