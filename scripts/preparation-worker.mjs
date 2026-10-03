@@ -1,7 +1,6 @@
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';import {randomUUID,createHash} from 'node:crypto';
 import {newInventory,claimPreparation,finishPreparation,rejectPreparedRevision} from './runner-v2/preparation-inventory.mjs';
-import {applyWorkLineEvent} from './runner-v2/work-line-events.mjs';
 import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
 import {preparationHandlers,preparationInputHash,reviewedPreparation,preparationSourceHash} from './runner-v2/preparation-handlers.mjs';
@@ -76,13 +75,15 @@ try{
   do{
    try{
     const q=load(stateFile);
+    const eventRevision=sourceHash(path.join(root,'scripts/runner-v2/work-line-events.mjs'));
+    const eventApi=await import('./runner-v2/work-line-events.mjs?revision='+eventRevision);
     for(const name of fs.readdirSync(path.join(dir,'inbox')).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
-      const rejected=path.join(dir,name+'.rejected');if(fs.existsSync(rejected))continue;
+      const rejected=path.join(dir,name+'.rejected.'+eventRevision);if(fs.existsSync(rejected))continue;
       try{
         const event=load(path.join(dir,'inbox',name));
         if(hash(event)+'.json'!==name)throw Error('WORK_LINE_EVENT_CHANGED');
         if(q.tasks.find(t=>t.gameId===event.gameId)?.claim)continue;
-        if(applyWorkLineEvent(q,event,lane,Date.now())){save(q);log({action:event.kind,gameId:event.gameId});}
+        if(eventApi.applyWorkLineEvent(q,event,lane,Date.now())){save(q);log({action:event.kind,gameId:event.gameId});}
       }catch(error){
         fs.writeFileSync(rejected,JSON.stringify({at:Date.now(),status:'event-requires-review',code:/^[A-Z_]+$/.test(error.message)?error.message:'INVALID_EVENT',sourceAllowance:0}),{flag:'wx'});
         log({action:'event-requires-review',event:name});

@@ -22,9 +22,15 @@ export function applyWorkLineEvent(inventory,event,lane,now){
  assert(task&&!task.claim,'WORK_LINE_TASK_BUSY');
  assert(task.status!=='complete','WORK_LINE_COMPLETED_IMMUTABLE');
  if(event.kind==='native-repair-settled'){
-  assert(event.captureFailureEvidenceHash===task.failureEvidenceHash&&event.rejectedProofHash===task.rejectedProofHash
+  const matching=event.captureFailureEvidenceHash===task.failureEvidenceHash&&event.rejectedProofHash===task.rejectedProofHash;
+  // An implementation change can fence admission before the ended source's
+  // fault arrives. Authenticated native closure may align that already fenced
+  // mirror; it cannot revoke a different live proof or make the game prepared.
+  const fencedMirror=lane==='admission'&&task.status==='blocked'&&!task.proof&&!task.proofHash;
+  assert((matching||fencedMirror)&&/^[a-f0-9]{64}$/.test(event.captureFailureEvidenceHash??'')
    &&/^[a-f0-9]{64}$/.test(event.rejectedProofHash??'')
    &&typeof event.repairKey==='string'&&event.repairKey.startsWith('game-repair:'),'WORK_LINE_NATIVE_SETTLEMENT_BINDING');
+  task.rejectedProofHash=event.rejectedProofHash;
   task.proof=null;delete task.proofHash;task.lane='repair';task.status=lane==='repair'?'queued':'blocked';
   task.captureFailureEvidenceHash=event.captureFailureEvidenceHash;
   task.failureEvidenceHash=event.evidenceHash;task.nativeRepairKey=event.repairKey;

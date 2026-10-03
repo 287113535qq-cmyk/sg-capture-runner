@@ -54,6 +54,25 @@ test('capture failure independently creates repair work, next game remains selec
  assert.equal(admission.sourceAllowance,0);
  assert.equal(applyWorkLineEvent(admission,failure,'admission',61),false);
 });
+
+test('native closure aligns an admission mirror fenced before the source failure arrived, without readiness',()=>{
+ const q=newInventory(games),task=q.tasks[0];Object.assign(task,{status:'blocked',lane:'repair',proof:null,
+  rejectedProofHash:'a'.repeat(64),failureEvidenceHash:'b'.repeat(64)});
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-settled',gameId:1,sourceAllowance:0,
+  evidenceHash:'d'.repeat(64),captureFailureEvidenceHash:'c'.repeat(64),rejectedProofHash:'e'.repeat(64),repairKey:'game-repair:fixture:'+'f'.repeat(64)};
+ assert(applyWorkLineEvent(q,event,'admission',50));assert.equal(task.status,'blocked');assert.equal(task.proof,null);
+ assert.equal(task.failureEvidenceHash,event.evidenceHash);assert.equal(task.rejectedProofHash,event.rejectedProofHash);
+ assert.equal(task.captureFailureEvidenceHash,event.captureFailureEvidenceHash);
+});
+test('late native closure cannot revoke a newer admission proof or replace an unrelated repair fault',()=>{
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-settled',gameId:1,sourceAllowance:0,
+  evidenceHash:'d'.repeat(64),captureFailureEvidenceHash:'c'.repeat(64),rejectedProofHash:'e'.repeat(64),repairKey:'game-repair:fixture:'+'f'.repeat(64)};
+ const q=newInventory(games);prepare(q,1);const before=structuredClone(q);
+ assert.throws(()=>applyWorkLineEvent(q,event,'admission',50),/SETTLEMENT_BINDING/);
+ assert.deepEqual(q.tasks,before.tasks);assert.equal(q.revision,before.revision);
+ const repair=newInventory(games);Object.assign(repair.tasks[0],{status:'blocked',lane:'repair',failureEvidenceHash:'a'.repeat(64),rejectedProofHash:'b'.repeat(64)});
+ assert.throws(()=>applyWorkLineEvent(repair,event,'repair',50),/SETTLEMENT_BINDING/);
+});
 test('missing money/persistence/Linux/native, foreign repair and proof edits cannot return a game',()=>{
  for(const gate of preparationGates){
   const q=newInventory(games);prepare(q,1);const f={schema:'sg-work-line-event-v1',kind:'capture-failed',gameId:1,sourceAllowance:0,proofHash:q.tasks[0].proofHash,evidenceHash:'c'.repeat(64),reason:'route'};
