@@ -8,6 +8,7 @@ import {validateNativeRepairReplay} from './native-repair-replay.mjs';
 import {preparationRevision} from './preparation-revision.mjs';
 import fs from 'node:fs';
 import {validatePreparedStockReview} from './prepared-stock-review.mjs';
+import {validatePreparedCountReview} from './prepared-count-review.mjs';
 
 export function evidenceOrigin(run,repository){
  assert(['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'].includes(repository)
@@ -26,7 +27,15 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
  // encryption nor a trusted workflow grants a preparation proof or quota.
  for(const task of value.tasks){
   assert(task.sourceAllowance===0,'EVIDENCE_TASK_ALLOWANCE');
-  if(task.schema==='sg-prepared-stock-review-task-v1'){
+  if(task.schema==='sg-prepared-count-review-task-v1'){
+   validatePreparedCountReview(task);
+   const plans=JSON.parse(fs.readFileSync(path.join(root,'config/round-one-plans.json'),'utf8'));
+   assert(origin.workflow==='.github/workflows/work-line-evidence.yml'
+    &&origin.repository==='zyzuoyang/sg-capture-runner'&&task.gameId===32714&&task.group==='primary'
+    &&task.trialId===plans[32714].trialId&&task.basePlanHash===hash(plans[32714])
+    &&task.publicationHash===hash(JSON.parse(fs.readFileSync(path.join(root,'config/prepared-inventory.json'),'utf8'))),
+    'PREPARED_COUNT_REVIEW_SCOPE');
+  }else if(task.schema==='sg-prepared-stock-review-task-v1'){
    validatePreparedStockReview(task);
    assert(origin.workflow==='.github/workflows/work-line-evidence.yml','PREPARED_STOCK_ORIGIN');
    assert(task.report.publicationHash===hash(JSON.parse(fs.readFileSync(path.join(root,'config/prepared-inventory.json'),'utf8'))),
@@ -45,6 +54,8 @@ export function receiveSealedEvidence({root,sealed,privateKey,origin}){
   }else assert(task.schema==='sg-capture-fault-export-v1'&&task.plan&&task.receipt&&task.archive&&task.publication,'EVIDENCE_TASK_SCOPE');
  }
  const mailboxes=value.tasks.map(task=>{
+  if(task.schema==='sg-prepared-count-review-task-v1')return publishImmutableInbox(
+   path.join(root,'.local/preparation-worker/admission/count-reviews'),{...task,origin});
   if(task.schema==='sg-prepared-stock-review-task-v1')return publishImmutableInbox(
    path.join(root,'.local/capture-handoff-worker/online-reviews'),{...task,origin});
   if(task.schema==='sg-preparation-linux-task-v1')return deliverLinuxPreparationTask(root,task,origin).mailbox;

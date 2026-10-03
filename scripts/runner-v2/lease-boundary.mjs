@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
+import {checkLedger} from './complete-count.mjs';
 export async function checkPrimaryLeases({store,plans,now=Date.now}) {
   const keys=[...new Set(Object.values(plans).map(p=>'pool:'+p.trialId))];
   // Cover every configured plan; adding a candidate must not require a new fixed count.
@@ -21,7 +22,19 @@ export async function checkPrimaryLeases({store,plans,now=Date.now}) {
     assert(plan && campaign,'LEASE_SCOPE_CHANGED');
     // Completed games are not reread. Active/parked pool batches are checked in full.
     if(campaign.games.find(g=>g.game_id===plan.gameId)?.status==='complete')continue;
-    const ceiling=[32795,32799,32721].includes(plan.gameId)&&pool.countAllocation?600001:4001;
+    let ceiling=[32795,32799,32721].includes(plan.gameId)&&pool.countAllocation?600001:4001;
+    if(pool.countAllocation&&![32795,32799,32721].includes(plan.gameId)){
+      const activation=campaign.formalCount?.trialId===trialId?campaign.formalCount.activation:
+        campaign.games.find(g=>g.game_id===plan.gameId)?.countActivation;
+      assert(/^[a-f0-9]{64}$/.test(activation??''),'LEASE_COUNT_SCOPE');
+      const key=`complete-count:${trialId}:${activation}`;
+      const spec=(await store.get('journal',key))?.value,complete=(await store.get('journal',key+':complete'))?.value;
+      const countPlan={...plan,target:300000,countAllocation:activation};
+      assert(spec?.gameId===plan.gameId&&spec.trialId===trialId&&spec.target===300000&&spec.maxSequence===600000
+        &&spec.planHash===hash(countPlan)&&pool.countAllocation.specHash===hash(spec)
+        &&complete?.schema==='sg-complete-count-activation-v1'&&complete.specHash===hash(spec),'LEASE_COUNT_SCOPE');
+      checkLedger(pool,countPlan,spec);ceiling=600001;
+    }
     assert(Number.isSafeInteger(pool.nextBatchId) && pool.nextBatchId>=1 && pool.nextBatchId<=ceiling,'LEASE_SCOPE_CHANGED');
     for(let start=1;start<pool.nextBatchId;start+=100){
       const wanted=Array.from({length:Math.min(100,pool.nextBatchId-start)},(_,i)=>`batch:${trialId}:${start+i}`);

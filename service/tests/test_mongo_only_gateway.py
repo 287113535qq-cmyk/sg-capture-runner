@@ -239,6 +239,17 @@ class GatewayTests(unittest.TestCase):
             with self.subTest(key=key),self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):self.g.scope({'trialId':trial})
             scope[key]=original
 
+    def test_mansion_count_storage_scope_is_exact_and_does_not_authorize_capture(self):
+        trial='sg_r1_20260928_32714'
+        scope={'group':'primary','gameId':32714,'runtimeGameId':33114,'target':300000,'maxSequence':600000}
+        self.manifest['trials'][trial]=scope
+        self.assertEqual(self.g.scope({'trialId':trial})[1],scope)
+        for key,value in [('gameId',32718),('runtimeGameId',33118),('target',299900),('maxSequence',600001)]:
+            original=scope[key];scope[key]=value
+            with self.subTest(key=key),self.assertRaisesRegex(Refused,'SEQUENCE_SCOPE_DENIED'):
+                self.g.scope({'trialId':trial})
+            scope[key]=original
+
     def test_pyramids_secondary_ceiling_preserves_separate_historical_baseline(self):
         trial='sg_r1_20260928_32721'
         scope={'group':'secondary','gameId':32721,'runtimeGameId':33121,'target':299850,'maxSequence':600000}

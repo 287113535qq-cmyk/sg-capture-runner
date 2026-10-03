@@ -51,6 +51,7 @@ class Gateway:
         if 'maxSequence' in scope:
             approved = {'sg_r1_20260930_32795': (32795,33155,'primary',300000),
                         'sg_r1_20261001_32799': (32799,33159,'primary',300000),
+                        'sg_r1_20260928_32714': (32714,33114,'primary',300000),
                         'sg_r1_20260928_32721': (32721,33121,'secondary',299850)}
             need(trial in approved
                  and (scope['gameId'],scope['runtimeGameId'],scope['group'],scope['target']) == approved[trial]

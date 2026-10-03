@@ -5,7 +5,7 @@ on:
       evidence_scope:
         description: Fixed read-only historical evidence; never source or maintenance
         type: choice
-        options: ['pyramids-history', 'mansion-repair', 'inca-repair', 'prepared-stock-primary']
+        options: ['pyramids-history', 'mansion-repair', 'inca-repair', 'prepared-stock-primary', 'mansion-count-scene']
         default: 'pyramids-history'
 permissions:
   contents: read
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   export:
-    if: ${{ (github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.evidence_scope != 'mansion-repair' && inputs.evidence_scope != 'prepared-stock-primary') || (github.repository == 'zyzuoyang/sg-capture-runner' && (inputs.evidence_scope == 'mansion-repair' || inputs.evidence_scope == 'prepared-stock-primary')) }}
+    if: ${{ (github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.evidence_scope != 'mansion-repair' && inputs.evidence_scope != 'prepared-stock-primary' && inputs.evidence_scope != 'mansion-count-scene') || (github.repository == 'zyzuoyang/sg-capture-runner' && (inputs.evidence_scope == 'mansion-repair' || inputs.evidence_scope == 'prepared-stock-primary' || inputs.evidence_scope == 'mansion-count-scene')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:

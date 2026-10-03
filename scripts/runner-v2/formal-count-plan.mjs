@@ -7,9 +7,15 @@ import {pyramidsActionRepairPlan} from './pyramids-action-repair-profile.mjs';
 import {pyramidsActionBudgetPlan} from './pyramids-action-budget-profile.mjs';
 
 import {pyramidsDirectActionPlan} from './pyramids-direct-action-profile.mjs';
+import {preparedCountPlan} from './prepared-count-plan.mjs';
+import {preparedCountAuthorization} from './prepared-count-authorization.mjs';
 
 export function applyFormalCount(plans,profile){
  const base=plans[profile?.gameId];
+ if(profile?.schema==='sg-prepared-count-profile-v1'){
+  const name=`formal-prepared-count-${profile.gameId}-${profile.activation}.json`;
+  return {...plans,[profile.gameId]:preparedCountPlan(base,profile,preparedCountAuthorization(name))};
+ }
  if(['sg-formal-direct-action-profile-v1','sg-formal-direct-action-profile-v2'].includes(profile?.schema))return {...plans,[32721]:pyramidsDirectActionPlan(base,profile)};
  if(profile?.schema==='sg-formal-action-budget-profile-v1')return {...plans,[32721]:pyramidsActionBudgetPlan(base,profile)};
  if(profile?.schema==='sg-formal-action-profile-v1')return {...plans,[32721]:pyramidsActionRepairPlan(base,profile)};
@@ -54,6 +60,9 @@ export function applyFormalCount(plans,profile){
 }
 
 export function formalCountProfilePath(env=process.env){
+ if(/^formal-prepared-count-/.test(env.SG_FORMAL_COUNT_PROFILE??'')){
+  preparedCountAuthorization(env.SG_FORMAL_COUNT_PROFILE);return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
+ }
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-resume-action-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-direct-action-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;
  if(env.SG_FORMAL_COUNT_PROFILE==='formal-repair-pyramids-action-budget-20261002.json')return 'config/'+env.SG_FORMAL_COUNT_PROFILE;

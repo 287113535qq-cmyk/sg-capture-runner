@@ -22,6 +22,20 @@ def validate_pool_plan(plan):
             require(plan==veryfruity_demo_plan(expected,profile),'VERYFRUITY_DEMO_PLAN_CHANGED')
             return dict(plan)
         if 'countAllocation' in plan:
+            filename=os.environ.get('SG_FORMAL_COUNT_PROFILE','')
+            if filename.startswith('formal-prepared-count-'):
+                match=re.fullmatch(r'formal-prepared-count-([0-9]{5})-([a-f0-9]{64})\.json',filename)
+                require(match is not None,'PREPARED_COUNT_PROFILE_PATH')
+                root=Path(__file__).resolve().parents[1]/'config'
+                registry=json.loads((root/'prepared-count-authorizations.json').read_text(encoding='utf-8'))
+                authorization=registry.get('profiles',{}).get(filename,{})
+                require(registry.get('schema')=='sg-prepared-count-authorizations-v1'
+                    and registry.get('sourceAllowance')==0 and authorization.get('gameId')==int(match[1])
+                    and authorization.get('activation')==match[2],'PREPARED_COUNT_PROFILE_UNAUTHORIZED')
+                profile=json.loads((root/filename).read_text(encoding='utf-8'))
+                from prepared_count_plan import prepared_count_plan
+                require(plan==prepared_count_plan(expected,profile,authorization),'PREPARED_COUNT_PLAN_CHANGED')
+                return dict(plan)
             require('demoGeneration' not in plan and plan.get('gameId') in (32721,32795,32799), 'FORMAL_COUNT_SCOPE')
             filename=os.environ.get('SG_FORMAL_COUNT_PROFILE')
             if filename=='formal-repair-pyramids-resume-action-20261002.json':

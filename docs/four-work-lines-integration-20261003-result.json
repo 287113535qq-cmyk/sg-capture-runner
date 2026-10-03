@@ -1,10 +1,10 @@
 {
-  "at": 1791001326,
-  "runtime": "e9f113d06880918fc81a2b7520502f6a186b33ef",
+  "at": 1791004333,
+  "runtime": "92f97b8afe16d2769cd601bdce13362bff5f51e8",
   "completeGames": 17,
   "sourceRequestsThisStage": 0,
   "newCompleteGames": 0,
-  "prepared": 0,
+  "prepared": 1,
   "allFourLinesAccepted": false,
   "actualClosure": {
     "run": "37061116774:1",
@@ -28,6 +28,22 @@
     {
       "run": 37063082387,
       "conclusion": "success"
+    },
+    {
+      "run": 37097937020,
+      "conclusion": "success"
+    },
+    {
+      "run": 37098117839,
+      "conclusion": "success"
+    },
+    {
+      "run": 37098454600,
+      "conclusion": "success"
+    },
+    {
+      "run": 37098640642,
+      "conclusion": "success"
     }
   ],
   "independentAnalysis": {
@@ -40,30 +56,35 @@
     "freshRemoteDeliveryAccepted": true
   },
   "remaining": [
-    "route-settlement-persistence-gate-producers",
-    "actual-repair-reentry-and-next-ready-handoff",
+    "prepared-stock-to-fresh-formal-admission-transition",
     "live-source-incremental-evidence-production"
   ],
   "lanes": {
     "admission": {
-      "revision": 2274,
+      "revision": 4994,
       "counts": {
         "blocked": 152,
         "complete": 17,
-        "queued": 9
+        "queued": 8,
+        "prepared": 1
       },
       "active": [],
-      "prepared": []
+      "prepared": [
+        32714
+      ]
     },
     "repair": {
-      "revision": 231,
+      "revision": 409,
       "counts": {
         "queued": 151,
         "complete": 17,
-        "blocked": 10
+        "blocked": 9,
+        "prepared": 1
       },
       "active": [],
-      "prepared": []
+      "prepared": [
+        32714
+      ]
     }
   },
   "privateBackup": {
@@ -116,5 +137,35 @@
     "sourceAllowanceGranted": 0,
     "sourceRequests": 0,
     "mongoWrites": 0
+  },
+  "actualRepairReturn": {
+    "gameId": 32714,
+    "nativeReadRun": 37098280112,
+    "nativeReadConclusion": "success",
+    "automaticallyDelivered": true,
+    "faults": 1,
+    "fullReadbackRecords": 1,
+    "routeSettlementPersistenceVerified": true,
+    "returnedToAdmission": true,
+    "publicationGames": [
+      32714
+    ],
+    "localCaptureConsumerAccepted": true,
+    "onlineConsumerRun": 37098823543,
+    "onlineConsumerConclusion": "success",
+    "onlineVerifiedGames": [
+      32714
+    ],
+    "onlineEligibleGame": null,
+    "newBetAllowance": 0,
+    "sourceRequests": 0,
+    "oldAttemptsReplayed": 0
+  },
+  "publicationChannelBackup": {
+    "name": "work-lines-publication-channel-20261003",
+    "files": 74,
+    "bytes": 573206,
+    "sha256": "2f95e15c0659f8d78445b47662d68b0a705e840ef025e3a5c882b56cd390406b",
+    "bothReadbackVerified": true
   }
 }

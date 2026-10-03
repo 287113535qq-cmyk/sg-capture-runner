@@ -23,13 +23,17 @@ import {claimSessionCanary,checkCanaryDispatchInputs} from './session-canary-adm
 import {loadInitialReadFailure} from './initial-read-failure.mjs';
 import {checkFourReadRecovery} from './four-read-recovery-runtime.mjs';
 import {countHistoryBoundary} from './count-window-history.mjs';
+import {admitPreparedCountRun} from './prepared-count-admission.mjs';
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','PRIMARY_GITHUB_REQUIRED');
 const mode=process.argv[2];assert(['activate','admit','amend','repair','refresh','sessions'].includes(mode),'FORMAL_COUNT_OPERATION');
 const readFile=p=>JSON.parse(fs.readFileSync(p,'utf8')),profile=readFile(formalCountProfilePath()),basePlans=readFile('config/round-one-plans.json');
 const plans=applyFormalCount(basePlans,profile),plan=plans[profile.gameId],commit=process.env.GITHUB_SHA,run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT;
+const isPrepared=profile.schema==='sg-prepared-count-profile-v1';
+if(isPrepared)assert(mode==='admit'&&profile.group==='primary'&&!process.env.SG_COUNT_RUNTIME_PROFILE
+ &&!process.env.SG_COUNT_RELAY_PARENT,'PREPARED_COUNT_CONTROL_SCOPE');
 const runtimeProfile=process.env.SG_COUNT_RUNTIME_PROFILE;
 const {isRhino,isSessions,isRepair,initialWindow,observationWindow,continuousCount,canaryWindow,fourReadRecovery}=countControlPolicy(mode,profile,runtimeProfile);
-const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions?null:readFile('config/formal-runtime-pearl-20260930.json');
+const revision=runtimeProfile?readFile('config/'+runtimeProfile):mode==='activate'||isRepair||isRhino||isSessions||isPrepared?null:readFile('config/formal-runtime-pearl-20260930.json');
 if(revision)assert(revision.profileHash===hash(profile)&&revision.activation===profile.activation,'COUNT_REVISION_SCOPE');
 if(observationWindow)checkRhinoObservationRevision(profile,revision);
 if(continuousCount)checkRhinoContinuousRevision(profile,revision);
@@ -58,7 +62,10 @@ try{
   const rows=await transport.request('rounds_scan',{trialId:plan.trialId,after:profile.maxSequence});
   assert(rows.length===0,'FORMAL_COUNT_NATIVE_CEILING');
  };
- if(mode==='sessions'){
+ if(isPrepared){
+  console.log(JSON.stringify(await admitPreparedCountRun({store,base:basePlans[profile.gameId],plan,profile,
+   publication:readFile('config/prepared-inventory.json'),plans:basePlans,readEvidence:async ref=>readFile(ref),boundary,commit,run})));
+ }else if(mode==='sessions'){
   const parentName=profile.gameId===32799?(profile.previousLanesPerHost===1?'formal-count-rhino-guarantee-20261001.json':'formal-sessions-rhino-two-20261001.json'):(profile.previousLanesPerHost===1?'formal-repair-pearl-awards-20261001.json':'formal-sessions-pearl-two-20261001.json');
   const parent=readFile('config/'+parentName);
   const path='repos/zyzuoyang/sg-capture-runner/actions/runs/'+profile.sourceRun.split(':')[0];

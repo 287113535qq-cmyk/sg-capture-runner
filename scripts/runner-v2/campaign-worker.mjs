@@ -30,6 +30,7 @@ let canary;
 let end=Date.now()+Number(process.env.SG_TRIAL_MINUTES||'240')*60000;
 const store=new RunnerState({transport,gate,deadline:end+(process.env.SG_FORMAL_COUNT_PROFILE?25*60000:0)}),control=new SourceControl({store,transport,gate});
 let plans=JSON.parse(fs.readFileSync('config/round-one-plans.json','utf8'));
+const preparationPlans=plans;
 if(process.env.SG_DEMO_PILOT==='true')plans=applyDemoPilot(plans,JSON.parse(fs.readFileSync(demoPilotProfilePath(),'utf8')));
 if(process.env.SG_FORMAL_COUNT_PROFILE){
  if(process.env.SG_DEMO_PILOT==='true')throw Error('FORMAL_COUNT_DEMO_CONFLICT');
@@ -72,7 +73,7 @@ if(isSessionCanaryRuntime(process.env.SG_COUNT_RUNTIME_PROFILE)){
 const group=repositories[process.env.GITHUB_REPOSITORY].name;
 const publicationPath='config/prepared-inventory.json';
 const preparedSelector=fs.existsSync(publicationPath)?publishedPreparedSelector({
- publication:JSON.parse(fs.readFileSync(publicationPath,'utf8')),plans,
+ publication:JSON.parse(fs.readFileSync(publicationPath,'utf8')),plans:preparationPlans,
  readEvidence:ref=>JSON.parse(fs.readFileSync(ref,'utf8'))}):null;
 const campaign=new GithubCampaign({store,transport,control,analyzer:parser,plans,group,
   preparedSelector,
