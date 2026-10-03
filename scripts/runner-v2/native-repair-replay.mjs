@@ -3,6 +3,46 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {stable} from './mongo-writer.mjs';
 import {receiptKey} from './durable-queue.mjs';
 
+// Formal retirement references a paged ledger instead of individual legacy
+// batches. Follow its immutable pages and original batch snapshots, never an
+// arbitrary journal search or a truncated first page.
+async function retiredBatchRows(store,plan,archive,repair,rows){
+  if(archive.schema!=='sg-count-prepared-before-v1')return rows.map((row,i)=>({row,ref:repair.evidence[i]}));
+  assert(rows.length===1&&repair.evidence[0].key.endsWith(':complete'),'NATIVE_REPAIR_RETIREMENT');
+  const result=rows[0]?.value,prefix=repair.evidence[0].key.slice(0,-':complete'.length);
+  const before=(await store.get('journal',prefix+':before'))?.value;
+  const pool=(await store.get('state','pool:'+plan.trialId))?.value;
+  assert(result?.schema==='sg-retired-count-result-v1'&&hash(result)===repair.evidence[0].hash
+    &&result.trialId===plan.trialId&&result.sourceRequests===0&&result.newBetAllowance===0
+    &&before?.schema==='sg-retired-count-before-v1'&&before.plan.trialId===plan.trialId
+    &&hash({plan:before.plan,pool:before.pool})===result.beforeHash
+    &&pool?.retiredCount===prefix&&pool.confirmed===result.completePreserved
+    &&pool.nextBatchId===before.pool.nextBatchId&&Number.isSafeInteger(pool.nextBatchId)
+    &&pool.nextBatchId>1&&pool.nextBatchId<=600001,'NATIVE_REPAIR_RETIREMENT');
+  const out=[];
+  for(let first=1;first<pool.nextBatchId;first+=100){
+    const page=(await store.get('journal',prefix+':page:'+first))?.value;
+    const ids=Array.from({length:Math.min(100,pool.nextBatchId-first)},(_,i)=>first+i);
+    assert(page?.schema==='sg-retired-count-page-v1'&&page.entries.length===ids.length
+      &&page.entries.every((e,i)=>e.batchId===ids[i]),'NATIVE_REPAIR_RETIREMENT_PAGE');
+    const batches=await store.getMany('state',ids.map(id=>`batch:${plan.trialId}:${id}`));
+    assert(batches.length===ids.length,'NATIVE_REPAIR_RETIREMENT_PAGE');
+    for(const [i,row] of batches.entries()){
+      let value=row?.value;
+      assert(value?.id===ids[i],'NATIVE_REPAIR_RETIREMENT_PAGE');
+      const key=prefix+':batch:'+ids[i];
+      if(hash(value)!==page.entries[i].beforeHash){
+        const original=(await store.get('journal',key))?.value;
+        assert(original?.schema==='sg-retired-count-batch-v1'&&value.retiredCount===key,
+          'NATIVE_REPAIR_RETIREMENT_BATCH');value=original.batch;
+      }
+      assert(hash(value)===page.entries[i].beforeHash,'NATIVE_REPAIR_RETIREMENT_BATCH');
+      out.push({row:{value},ref:{key:hash(row.value)===hash(value)?`batch:${plan.trialId}:${ids[i]}`:key,hash:hash(value)}});
+    }
+  }
+  return out;
+}
+
 // Exact existing repair item plus its bounded immutable archive references.
 // Legacy faults predate preparation publications; never invent an old proof.
 export async function exportNativeRepairReplay({store, transport, plan, revisionHash, repairKey}) {
@@ -22,8 +62,8 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
   const rows=await store.getMany('journal',repair.evidence.map(e=>e.key));
   assert(rows.length===repair.evidence.length,'NATIVE_REPAIR_PAGE');
   const manifest={repairKey,repair,archiveHash:hash(archive)},failureEvidenceHash=hash(manifest),faults=[];
-  for(const [i,row] of rows.entries()) {
-    const value=row?.value,ref=repair.evidence[i];
+  for(const {row,ref} of await retiredBatchRows(store,plan,archive,repair,rows)) {
+    const value=row?.value;
     assert(value && hash(value.batch??value)===ref.hash,'NATIVE_REPAIR_ARCHIVE_CHANGED');
     const batch=value.batch??value;
     let pending=value.pending??value.batch?.pending, abandoned;

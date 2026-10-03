@@ -57,9 +57,12 @@ try{
    {encoding:'utf8',timeout:60000,maxBuffer:1024*1024});
   assert(generated.status===0,'EVIDENCE_FEATURE_INDEX');
   const index=read('.local/work-line-feature-index.json');
+  const current=(await readonly.get('state','campaign'))?.value;
+  const repairKey=current?.games.find(g=>g.game_id===plan.gameId)?.repairKey;
+  assert(typeof repairKey==='string'&&repairKey.startsWith('game-repair:'+plan.trialId+':'),'EVIDENCE_CURRENT_REPAIR');
   tasks=[await exportNativeRepairReplay({store:readonly,transport:readTransport,plan,
    revisionHash:preparationRevision(process.cwd(),plan.gameId,index.games.find(g=>g.gameId===plan.gameId)).revisionHash,
-   repairKey:fixed[scope].key})];
+   repairKey})];
  }else{
   const result=await exportConfirmedAnalysisPage({store:readonly,transport:readTransport,parser,plan,after:31373,limit:1});
   assert(result.tasks.length===1&&result.unresolvedSequences.length===0,'EVIDENCE_EXPECTED_RECEIPT');tasks=result.tasks;

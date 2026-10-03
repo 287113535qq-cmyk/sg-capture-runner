@@ -29,7 +29,8 @@ export function review(raw){
   else{
    need(priorRemaining>0,'AFTER_END');const added=uint(g.CFFGT);
    need(total===priorTotal+added&&remaining===priorRemaining-1+added,'COUNTER');
-   need(g.FEAT==='HARDHAT'&&(added?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID),'PREVIOUS_SLOTS');
+   // CFFGT describes this frame; ordered prior slots outlive the award frame.
+   need(g.FEAT==='HARDHAT'&&(total>6?['1|','1','1|1|','1|1']:['1|','1']).includes(g.PCFID),'PREVIOUS_SLOTS');
    need(uint(g.CFTFG)===total&&uint(g.CFNFG)===remaining&&uint(g.CFCFGG)===progress,'COUNTER');retriggers+=Number(added>0);
   }
   priorTotal=total;priorRemaining=remaining;

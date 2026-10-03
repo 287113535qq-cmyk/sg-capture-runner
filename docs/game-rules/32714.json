@@ -194,9 +194,9 @@
     "service/huff_touchup_review.py": "1d858575f4c2bc7364fed46be16cb37bc82dd01508c21f5378e6f57480517d4a",
     "scripts/trial/huff-touchup-review.mjs": "d5d6115cbea21ac5e1070a1705c6dfe7e8e78bcd2aad75643aee862d3ddc1177",
     "collector/sg.huff-touchup.ts": "ad95740f2c0b34a339fcbf6750b52ffdeecfb401d5cfd9767eceecad1e4a094c",
-    "service/huff_retrigger_review.py": "bc7b64d10f17186abc4640abd1944be34926de961a9cd5cc73d822df22ce4f57",
-    "scripts/trial/huff-retrigger-review.mjs": "a58e14419fcc2515829b014d0439baeff184482d814561c74e58c4a3fd708eb5",
-    "collector/huff-retrigger-review.cjs": "8ee6f23d3bc002c694a67248e7a4d7ba958547e200e33e55ef9543adc46d1db5",
+    "service/huff_retrigger_review.py": "e9d8aba8bf916389fa9b2899d823cd3f52b2d66b512a021d337601829048e9ff",
+    "scripts/trial/huff-retrigger-review.mjs": "7422189eeafe2595490faca97ee55edd62494dab9fa2767f7befc30b2db235f3",
+    "collector/huff-retrigger-review.cjs": "6a8eeca30ca3598fd1f0b66e3c731e11692857f4dbc39b65c09dd3832515be65",
     "collector/sg.huff-retrigger.ts": "24fee383a0f30b621ebe620d8b8f1f3429dcf3b21c49506711f06986b3603913",
     "service/game_rule_catalog.py": "8e62aa59cd81eb443baea77b17c68493f2e5a48eb175baec802b7a6dca118baa"
   },
@@ -281,7 +281,7 @@
     "docs/protocol-parking-result.json": "d618be670aa082606222ab647b8f270a9441e62b70cc54df49a4f129c3bc8052",
     "docs/repair-reentry-20261001.md": "81e312e6a4194d29e5f7015d9f9542fed4555b8a942456d0723c72e84800e2bf",
     "docs/rhino-integration-20261001.md": "6d8ded1829ccf7b6d45af02d3f97c2e8953776702e23cf5290faf0fab8976e19",
-    "docs/rules.md": "56cb11fd286c0b89e2ad9df5bb041b1011c38e3f659daa9d743ee93ae53e89c6",
+    "docs/rules.md": "63aabbc04e7f9b0b328bc80fa7a7b8f01bc54f0c4baa9bbff3f3379cd68c97ea",
     "docs/secondary-account-diagnostics-20260928.md": "0733077bd58b76851c981f5f1e09c54e5f3f048f77787fc76d14f403851f1137",
     "docs/secondary-independent-games-review-20260928.md": "bb76dbe9cb2ae3008dd00252dd6c3afe2eb586568b73ac3df5e3dda6a62fe8f6",
     "docs/secondary-isolated-runner-check-20260928.md": "058939e9f6cef16e1a56976ce104d115f84665ccca5d2d1d450648946e661a71"
@@ -293,5 +293,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c63e9d1752f15002d6aa2e92d07401cdf2addf835dd8bbd61fb2df8ff5ae9f75"
+  "ruleHash": "08b3c22da2d2a1cb8a0d6d52762f30581085a3905985dabeaa12b4ce83204afb"
 }

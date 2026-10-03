@@ -47,7 +47,9 @@ def review(raw):
             check(prior_remaining>0,'HARDHAT_AFTER_END')
             added=amount(g.get('CFFGT'))
             check(total==prior_total+added and remaining==prior_remaining-1+added,'HARDHAT_COUNTER')
-            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|','1','1|1|','1|1') if added else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
+            # Ordered previous slots persist after the award frame. The full
+            # counter history proves an earlier award; CFFGT is only this frame.
+            check(g.get('FEAT')=='HARDHAT' and g.get('PCFID') in (('1|','1','1|1|','1|1') if total > 6 else ('1|','1')),'HARDHAT_PREVIOUS_SLOTS')
             check([amount(g.get(k)) for k in ('CFTFG','CFNFG','CFCFGG')]==[total,remaining,progress],'HARDHAT_COUNTER')
             retriggers+=int(added>0)
         prior_total,prior_remaining=total,remaining

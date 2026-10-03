@@ -14,6 +14,16 @@ def sample():
   steps.append(exchange('FREE_GAME' if i else 'BET',left,'1|','#'.join(k+'~'+v for k,v in g.items()),win=i*100,TFG=total,CFGG=i,RID=int(i>0)))
  return raw(steps)
 class RetriggerTests(unittest.TestCase):
+ def test_awarded_previous_slots_persist_without_another_award(self):
+  r=sample();old=HuffFields(PLAN).settled(r)
+  for s in r['steps'][3:]:
+   for k in ('responsePayload','responseXml'):s[k]=s[k].replace('PCFID~1|','PCFID~1|1|')
+  for i in range(3,len(r['steps'])):
+   self.assertEqual(HuffFields(PLAN).next_request({**r,'steps':r['steps'][:i]}),{'MSGID':'FREE_GAME'})
+  self.assertEqual(HuffFields(PLAN).settled(r),old)
+  unearned=sample()
+  for k in ('responsePayload','responseXml'):unearned['steps'][1][k]=unearned['steps'][1][k].replace('PCFID~1|','PCFID~1|1|')
+  with self.assertRaises(FieldError):HuffFields(PLAN).next_request(unearned)
  def test_single_previous_slot_additive_retrigger_preserves_old_normalization(self):
   r=sample();old=HuffFields(PLAN).settled(r)
   for s in r['steps']:
