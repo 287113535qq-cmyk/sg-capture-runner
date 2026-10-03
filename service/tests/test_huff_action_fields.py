@@ -59,6 +59,26 @@ class HuffActionTests(unittest.TestCase):
         with self.assertRaises(FieldError):
             HuffFields({**plan, 'betRaw': 1000}).next_request(raw)
 
+    def test_actual_paint_display_prefix_and_conflicting_display_counters(self):
+        evidence = json.loads((Path(__file__).resolve().parents[2] / 'scripts/trial/fixtures/huff-paint-display-prefix.json').read_text(encoding='utf-8'))
+        self.assertEqual(evidence['evidenceKind'], 'sanitized-real-prefix')
+        self.assertFalse(evidence['naturalTerminalObserved'])
+        raw = evidence['raw']
+        plan = {k: v for k, v in self.vector['plan'].items() if k not in ('featureProfile', 'actionContractHash')}
+        adapter = HuffFields(plan)
+        for count in range(1, len(raw['steps']) + 1):
+            self.assertEqual(adapter.next_request({**raw, 'steps': raw['steps'][:count]}), {'MSGID': 'FREE_GAME'})
+        with self.assertRaises(FieldError):
+            adapter.settled(raw)
+        for key, value in [('CFNFG', '4'), ('CFTFG', '7'), ('CFCFGG', '0'), ('CFFGT', 'bad'), ('FMS', 'bad')]:
+            changed = copy.deepcopy(raw)
+            step = changed['steps'][2]
+            import re
+            step['responsePayload'] = re.sub(key + r'~[^#&]*', key + '~' + value, step['responsePayload'])
+            step['responseXml'] = '<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>' + step['responsePayload'].replace('&', '&amp;') + '</PAYLOAD></GDMRESPONSE>'
+            with self.subTest(key=key), self.assertRaises(FieldError):
+                adapter.next_request(changed)
+
 
 if __name__ == '__main__':
     unittest.main()

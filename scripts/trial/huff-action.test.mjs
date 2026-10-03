@@ -11,6 +11,7 @@ const {huffActionNext:collectorNext,prepareNextgenActionRound}=require('../../co
 const {prepareNextgenRound}=require('../../collector/sg.ingest.ts');
 const vector=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-action.json',import.meta.url)));
 const plan=vector.plan;
+const paint=JSON.parse(fs.readFileSync(new URL('./fixtures/huff-paint-display-prefix.json',import.meta.url)));
 const normalize=raw=>prepareNextgenActionRound(raw,plan);
 const xml=p=>'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+p.replaceAll('&','&amp;')+'</PAYLOAD><OGS_RC>0</OGS_RC></GDMRESPONSE>';
 function response(raw,index,values){
@@ -65,4 +66,38 @@ test('original base entry handles reviewed FID3 without rewriting raw or assigni
   assert.throws(()=>huffMapping(partial,'a'.repeat(64)),/INCOMPLETE/);
   assert.throws(()=>prepareNextgenRound(partial,mapping),/INCOMPLETE/);
   assert.throws(()=>prepareNextgenRound(raw,{...mapping,bonus:3}),/MAPPING/);
+});
+
+test('actual Paint display-counter prefix follows FREE_GAME while remaining incomplete',()=>{
+  assert.equal(paint.evidenceKind,'sanitized-real-prefix');assert.equal(paint.naturalTerminalObserved,false);
+  const raw=structuredClone(paint.raw),before=JSON.stringify(raw);
+  const action={...raw,requestFlowVersion:plan.featureProfile,actionContractHash:ACTION_CONTRACT_HASH};
+  for(let count=1;count<=raw.steps.length;count++){
+    assert.deepEqual(huffNextRequest({...raw,steps:raw.steps.slice(0,count)}),{MSGID:'FREE_GAME'});
+    assert.deepEqual(collectorNext({...action,steps:action.steps.slice(0,count)},plan),{MSGID:'FREE_GAME'});
+  }
+  assert.throws(()=>huffMapping(raw,'a'.repeat(64)),/INCOMPLETE/);
+  assert.throws(()=>normalize(action),/INCOMPLETE/);
+  assert.equal(JSON.stringify(raw),before);
+  for(const [key,value]of [['CFNFG','4'],['CFTFG','7'],['CFCFGG','0'],['CFFGT','bad'],['FMS','bad']]){
+    const changed=structuredClone(raw),step=changed.steps[2];
+    response(changed,2,{GSD:step.responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1].replace(new RegExp(key+'~[^#]*'),key+'~'+value)});
+    assert.throws(()=>huffNextRequest(changed));
+    assert.throws(()=>collectorNext({...changed,requestFlowVersion:plan.featureProfile,actionContractHash:ACTION_CONTRACT_HASH},plan));
+  }
+});
+
+test('synthetic Paint terminal checks the bridge, wallet, and deferred classification',()=>{
+  const raw=structuredClone(paint.raw);
+  for(let progress=2;progress<=6;progress++){
+    raw.steps.push(structuredClone(raw.steps[2]));
+    const g=raw.steps.at(-1).responsePayload.match(/(?:^|&)GSD=([^&]*)/)[1]
+      .replace(/CFNFG~[^#]*/,'CFNFG~'+(6-progress)).replace(/CFCFGG~[^#]*/,'CFCFGG~'+progress);
+    response(raw,raw.steps.length-1,{NFG:String(6-progress),CFGG:String(progress),GSD:g});
+  }
+  assert.equal(huffNextRequest(raw),null);
+  const mapping=huffMapping(raw,'a'.repeat(64));
+  const fields=prepareNextgenRound(raw,mapping);
+  assert.equal(fields.bonus,null);assert.equal(fields.classificationStatus,'pending');
+  assert.deepEqual(fields.money,{startBalanceRaw:72800,endBalanceRaw:72300,totalWinRaw:0,betRaw:500});
 });

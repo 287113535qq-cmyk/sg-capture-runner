@@ -57,6 +57,11 @@ export function reviewHuffAction(plan,raw){
     const ordinary=i===0&&!f.length&&!['NFG','TFG','CFGG'].some(k=>Object.hasOwn(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
+    if(f.length===1&&f[0]===2){
+      for(const [display,value] of [['CFNFG',n],['CFTFG',t],['CFCFGG',c]])
+        if(g[display]!==undefined)need(uint(g[display])===value,'DISPLAY_COUNTERS');
+      for(const display of ['CFFGT','FMS'])if(g[display]!==undefined)uint(g[display]);
+    }
     if(previous){
       const same=JSON.stringify(f)===JSON.stringify(previous.f);
       if(same)need(previous.n>0&&c===previous.c+1&&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
@@ -90,6 +95,15 @@ export const huffActionNext=(plan,raw)=>reviewHuffAction(plan,raw).next;
 // is never rewritten; all action/money checks run on a temporary view.
 export const hasHuffHomeImprovement=raw=>raw?.sourceKey===HUFF_SOURCE&&Array.isArray(raw.steps)
   &&raw.steps.some(s=>(pairs(s.responsePayload).FID??'').replace(/\|$/,'').split('|').includes('3'));
+// The original Paint classifier predates the client's display-counter fields.
+// Preserve its established records; only this newly observed display branch
+// uses the independent action/money contract and deferred classification.
+export const hasHuffActionBridge=raw=>hasHuffHomeImprovement(raw)||raw?.sourceKey===HUFF_SOURCE
+  &&Array.isArray(raw.steps)&&raw.steps.some(s=>{
+    const p=pairs(s.responsePayload),g=pairs(p.GSD??'','#','~');
+    return (p.FID??'').replace(/\|$/,'').split('|').includes('2')
+      &&['CFNFG','CFTFG','CFCFGG','CFFGT','FMS'].some(k=>Object.hasOwn(g,k));
+  });
 export function legacyHuffActionRaw(raw){
   need(raw.requestFlowVersion===undefined&&raw.actionContractHash===undefined,'LEGACY_CONTRACT');
   return {...raw,requestFlowVersion:ACTION_VERSION,actionContractHash:ACTION_CONTRACT_HASH};

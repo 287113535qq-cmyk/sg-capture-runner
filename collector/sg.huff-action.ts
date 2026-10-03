@@ -51,6 +51,11 @@ export function huffActionNext(raw:any,plan:any):{MSGID:string}|null{
     const ordinary=i===0&&!ids.length&&!['NFG','TFG','CFGG'].some(k=>own(p,k));
     const n=ordinary?0:uint(p.NFG),t=ordinary?0:uint(p.TFG),c=ordinary?0:uint(p.CFGG);
     need(n+c===t&&t<=100,'COUNTERS');
+    if(ids.length===1&&ids[0]===2){
+      for(const [display,value] of [['CFNFG',n],['CFTFG',t],['CFCFGG',c]] as [string,number][])
+        if(g[display]!==undefined)need(uint(g[display])===value,'DISPLAY_COUNTERS');
+      for(const display of ['CFFGT','FMS'])if(g[display]!==undefined)uint(g[display]);
+    }
     if(previous){
       if(JSON.stringify(ids)===JSON.stringify(previous.ids))need(previous.n>0&&c===previous.c+1
         &&t>=previous.t&&n===previous.n-1+t-previous.t,'PROGRESS');
@@ -83,6 +88,12 @@ export function prepareNextgenActionRound(raw:any,plan:any){
 
 export const hasHuffHomeImprovement=(raw:any)=>raw?.sourceKey===source&&Array.isArray(raw.steps)
   &&raw.steps.some((s:any)=>(fields(s.responsePayload).FID??'').replace(/\|$/,'').split('|').includes('3'));
+export const hasHuffActionBridge=(raw:any)=>hasHuffHomeImprovement(raw)||raw?.sourceKey===source
+  &&Array.isArray(raw.steps)&&raw.steps.some((s:any)=>{
+    const p=fields(s.responsePayload),g=fields(p.GSD??'','#','~');
+    return (p.FID??'').replace(/\|$/,'').split('|').includes('2')
+      &&['CFNFG','CFTFG','CFCFGG','CFFGT','FMS'].some(k=>own(g,k));
+  });
 export function prepareLegacyHuffActionRound(raw:any,mapping:any){
   need(!own(raw,'requestFlowVersion')&&!own(raw,'actionContractHash'),'LEGACY_CONTRACT');
   need(mapping.buy===0&&mapping.bonus===null&&mapping.typeMappingHash===contractHash,'MAPPING');

@@ -10,7 +10,7 @@ from native_nextgen_fields import NativeNextgenFields
 from round_fields import VERSION, amount, check, derive, params
 from huff_touchup_review import has_touchup, review_touchup
 from huff_retrigger_review import has_retrigger, review as review_retrigger
-from huff_action_fields import has_home_improvement, legacy_action_raw, legacy_action_adapter
+from huff_action_fields import has_action_bridge, legacy_action_raw, legacy_action_adapter
 
 EXTENSION = SOURCE + '-hard-hat-v1'
 
@@ -55,7 +55,7 @@ class HuffFields(NativeNextgenFields):
         return state['counters']['NFG'] or 0
 
     def next_request(self, raw):
-        if has_home_improvement(raw):
+        if has_action_bridge(raw):
             return legacy_action_adapter(self.plan).next_request(legacy_action_raw(raw))
         if has_retrigger(raw):
             result = review_retrigger(raw)
@@ -85,7 +85,7 @@ class HuffFields(NativeNextgenFields):
         return {'MSGID': next_msg} if next_msg else None
 
     def settled(self, raw):
-        if has_home_improvement(raw):
+        if has_action_bridge(raw):
             return legacy_action_adapter(self.plan).settled(legacy_action_raw(raw))
         check(raw.get('fixtureOnly') is False and raw.get('roundFieldsVersion') == VERSION,
               'TRIAL_PROFILE_REQUIRED')

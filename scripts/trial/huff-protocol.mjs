@@ -1,7 +1,7 @@
 // 32714 only. Server independently verifies XML, exact request mode and money.
 import {hasRetrigger,review as reviewRetrigger} from './huff-retrigger-review.mjs';
 import {hasTouchup,reviewTouchup} from './huff-touchup-review.mjs';
-import {hasHuffHomeImprovement,legacyHuffActionNext,ACTION_CONTRACT_HASH} from './huff-action-protocol.mjs';
+import {hasHuffActionBridge,legacyHuffActionNext,ACTION_CONTRACT_HASH} from './huff-action-protocol.mjs';
 export const HUFF_SOURCE='huffnpuffmoneymansionhighlimit96-round-one-base-v1';
 export const HUFF_EXTENSION=HUFF_SOURCE+'-hard-hat-v1';
 const need=(condition,code)=>{if(!condition)throw new Error(code);};
@@ -42,7 +42,7 @@ function state(step) {
   return {p,g,featureIds,previous,counters};
 }
 export function huffNextRequest(raw) {
-  if(hasHuffHomeImprovement(raw))return legacyHuffActionNext(raw);
+  if(hasHuffActionBridge(raw))return legacyHuffActionNext(raw);
   if(hasRetrigger(raw)){const r=reviewRetrigger(raw);return r.next?{MSGID:r.next}:null;}
   if(hasTouchup(raw)){const r=reviewTouchup(raw);return r.clientNext?{MSGID:r.clientNext}:null;}
   need(raw.sourceKey===HUFF_SOURCE && raw.protocol==='nextgen' && raw.steps.length<=100,'HUFF_PROFILE_REQUIRED');
@@ -59,7 +59,7 @@ export function huffNextRequest(raw) {
   return next?{MSGID:next}:null;
 }
 export function huffMapping(raw,baseHash,extensionHash) {
-  if(hasHuffHomeImprovement(raw)){
+  if(hasHuffActionBridge(raw)){
     need(legacyHuffActionNext(raw)===null,'HUFF_INCOMPLETE_ROUND');
     return {buy:0,bonus:null,typeMappingHash:ACTION_CONTRACT_HASH,classificationStatus:'pending'};
   }

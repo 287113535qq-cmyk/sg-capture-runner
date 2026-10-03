@@ -23,6 +23,19 @@ def has_home_improvement(raw):
         and any('3' in params(s['responsePayload']).get('FID', '').rstrip('|').split('|') for s in raw['steps'])
 
 
+def has_action_bridge(raw):
+    if has_home_improvement(raw):
+        return True
+    if not isinstance(raw, dict) or raw.get('sourceKey') != SOURCE or not isinstance(raw.get('steps'), list):
+        return False
+    for step in raw['steps']:
+        p = params(step['responsePayload'])
+        if '2' in p.get('FID', '').rstrip('|').split('|') \
+                and {'CFNFG', 'CFTFG', 'CFCFGG', 'CFFGT', 'FMS'}.intersection(pairs(p.get('GSD', ''))):
+            return True
+    return False
+
+
 def legacy_action_raw(raw):
     need('requestFlowVersion' not in raw and 'actionContractHash' not in raw, 'LEGACY_CONTRACT')
     return {**raw, 'requestFlowVersion': ACTION_VERSION, 'actionContractHash': CONTRACT_HASH}
@@ -108,6 +121,13 @@ class HuffActionFields(NativeNextgenFields):
             ordinary = index == 0 and not feature and not {'NFG', 'TFG', 'CFGG'}.intersection(p)
             n, t, c = (0, 0, 0) if ordinary else tuple(amount(p.get(k)) for k in ('NFG', 'TFG', 'CFGG'))
             need(n + c == t <= 100, 'COUNTERS')
+            if feature == [2]:
+                for display, value in (('CFNFG', n), ('CFTFG', t), ('CFCFGG', c)):
+                    if display in g:
+                        need(amount(g[display]) == value, 'DISPLAY_COUNTERS')
+                for display in ('CFFGT', 'FMS'):
+                    if display in g:
+                        amount(g[display])
             if previous:
                 pf, pn, pt, pc, intro = previous
                 if feature == pf:
