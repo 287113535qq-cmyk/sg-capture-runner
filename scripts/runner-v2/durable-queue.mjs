@@ -49,7 +49,6 @@ export class DurableQueue {
 export class WritePermits {
   constructor({store,group,owner,now=Date.now}){Object.assign(this,{store,group,owner,now});this.key='write-permits';}
   async acquire() {
-    const state=await this.store.get('state',this.key);assert(state,'WRITE_LIMITS_NOT_INITIALIZED');
     let id=null;
     const nonce=globalThis.crypto.randomUUID();
     const updated=await this.store.update('state',this.key,value=>{
@@ -64,6 +63,9 @@ export class WritePermits {
         }
       }
       return null;
+    }).catch(error=>{
+      if(error.code==='STATE_MISSING')throw new Error('WRITE_LIMITS_NOT_INITIALIZED');
+      throw error;
     });
     if(id===null)return null;
     const current=updated.value.slots[id];assert(current.nonce===nonce);

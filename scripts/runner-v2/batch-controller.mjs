@@ -26,6 +26,7 @@ export class BatchController {
     Object.assign(this,{store,transport,gate,analyzer,spool,evidence,control,plan,group,now,sleep,runKey});
     this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
+    this.storageStages={nestedWithinRpc:true,byStage:{}};
   }
   async status({workerId}={}){
     let pool;
@@ -118,12 +119,23 @@ export class BatchController {
       ...(this.plan.countAllocation?{countAllocation:this.plan.countAllocation}:{}),
       ...(this.pendingFirst.admission?{shortRunLimit:this.pendingFirst.admission.limit}:{})};
   }
+  async storageTime(stage,action){
+    const started=performance.now();
+    try{return await action();}finally{
+      const item=this.storageStages.byStage[stage]??={calls:0,totalMs:0};
+      item.calls++;item.totalMs+=performance.now()-started;
+    }
+  }
   async flush(){
     while(true){
-      const rows=await this.queue.outstanding();if(!rows.length)return;
-      await this.store.writable();await this.pool.heartbeat(this.lease);
-      const result=await this.writer.deliver(rows);
-      if(result.paused)await this.sleep(result.reason==='WRITE_CAPACITY_BUSY'?1000:10000);
+      const rows=await this.storageTime('queue.read',()=>this.queue.outstanding());if(!rows.length)return;
+      await this.storageTime('resource.guard',()=>this.store.writable());
+      await this.storageTime('lease.heartbeat',()=>this.pool.heartbeat(this.lease));
+      const result=await this.storageTime('writer.deliver',()=>this.writer.deliver(rows));
+      if(result.paused){
+        const busy=result.reason==='WRITE_CAPACITY_BUSY';
+        await this.storageTime(busy?'wait.capacity':'wait.resource',()=>this.sleep(busy?1000:10000));
+      }
     }
   }
   async intent(r,begin=false){

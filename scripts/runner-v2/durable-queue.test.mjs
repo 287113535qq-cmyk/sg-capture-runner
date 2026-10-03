@@ -18,7 +18,7 @@ function fixture(){
     throw Error('BAD_OP');
   }};
   const store=new RunnerState({transport,gate:{observe(){},status:()=>({allowed:true})},now:()=>now,sleep:async()=>{}});
-  return {store,advance:ms=>{now+=ms;},now:()=>now};
+  return {store,transport,advance:ms=>{now+=ms;},now:()=>now};
 }
 
 test('durable queue rejects content changes and checkpoint gaps after interruption',async()=>{
@@ -45,4 +45,27 @@ test('writer slots bound concurrency and expired holder cannot release replaceme
   await assert.rejects(first.assertOwned(),/WRITE_PERMIT_LOST/);
   await first.release();await second.assertOwned();
   await second.release();assert(await a.acquire());
+});
+
+test('permit acquisition uses the CAS read once, including contention, and preserves missing-limit rejection',async()=>{
+ const f=fixture(),events=[],request=f.transport.request.bind(f.transport);
+ f.transport.request=async(op,r)=>{events.push(op);return request(op,r);};
+ const permits=new WritePermits({...f,group:'primary',owner:'a'});
+ await assert.rejects(permits.acquire(),/WRITE_LIMITS_NOT_INITIALIZED/);
+ await f.store.create('state','write-permits',{limit:1,slots:{}});events.length=0;
+ assert(await permits.acquire());assert.equal(events.filter(op=>op==='read').length,1);
+ events.length=0;assert.equal(await new WritePermits({...f,group:'primary',owner:'b'}).acquire(),null);
+ assert.deepEqual(events,['read']);
+});
+
+test('unknown permit write acknowledgement stops after one mutation without replay or release',async()=>{
+ const f=fixture();await f.store.create('state','write-permits',{limit:1,slots:{}});
+ const request=f.transport.request.bind(f.transport);let writes=0;
+ f.transport.request=async(op,r)=>{
+  const result=await request(op,r);
+  if(op==='cas'){writes++;throw Object.assign(Error('GATEWAY_ACK_UNKNOWN'),{code:'GATEWAY_ACK_UNKNOWN'});}
+  return result;
+ };
+ await assert.rejects(new WritePermits({...f,group:'primary',owner:'a'}).acquire(),{code:'GATEWAY_ACK_UNKNOWN'});
+ assert.equal(writes,1);assert.equal((await f.store.get('state','write-permits')).value.slots['0'].owner,'a');
 });

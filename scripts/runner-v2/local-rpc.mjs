@@ -117,6 +117,7 @@ export function connectLocal(plan){
     rpc:async(op,data)=>{await resourceReady;await ensureControlMode();await ensureStateWrite(plan);return controller.rpc(op,data);},metrics:({final=false}={})=>({processing:'github',resourceGate:gate.status(),gateway:transport.metrics(),
     resourceObservation:gate.diagnostics({includeWindows:final}),
     hostResourceObservation:hostResources.diagnostics({includeWindows:final}),
-    localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)}}),
+    localStages:{nestedWithinRpc:true,byStage:structuredClone(localStages)},
+    storageStages:structuredClone(controller.storageStages)}),
     close(){hostResources.stop();parser.close();transport.close();spool.close();}};
 }

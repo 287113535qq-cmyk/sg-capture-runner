@@ -7,6 +7,9 @@ from pathlib import Path
 
 
 NESTED_METRICS = {
+    'storageStages': ('storageStages', 'byStage', 'calls', 'totalMs',
+                      {'queue.read', 'resource.guard', 'lease.heartbeat', 'writer.deliver',
+                       'wait.capacity', 'wait.resource'}),
     'localStages': ('localStages', 'byStage', 'calls', 'totalMs',
                     {'analyzer.next', 'analyzer.record', 'analyzer.intent', 'analyzer.other',
                      'spool.append', 'spool.confirmed'}),

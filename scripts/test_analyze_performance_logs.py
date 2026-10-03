@@ -11,6 +11,16 @@ def report(worker=0):
 
 
 class PerformanceTests(unittest.TestCase):
+    def test_storage_waits_remain_nested_numeric_observations_without_exporting_raw_fields(self):
+        row = report()
+        row['rpcMetrics'] = {'storageStages': {'byStage': {
+            'wait.capacity': {'calls': 2, 'totalMs': 2000},
+            'writer.deliver': {'calls': 3, 'totalMs': 300},
+            'privateRaw': {'session': 'must-not-export'}}}}
+        result = aggregate([row])
+        self.assertEqual(result['nestedDiagnostics']['storageStages']['totals']['wait.capacity']['meanMs'], 1000)
+        self.assertNotIn('must-not-export', str(result))
+
     def test_nested_costs_are_separate_and_do_not_export_unknown_fields(self):
         row = report()
         row['rpcMetrics'] = {'localStages': {'byStage': {
