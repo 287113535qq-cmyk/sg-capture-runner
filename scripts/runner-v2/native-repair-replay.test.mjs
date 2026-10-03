@@ -4,6 +4,8 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {exportNativeRepairReplay,validateNativeRepairReplay} from './native-repair-replay.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import {captureFaultReceipt} from './capture-fault-receipt.mjs';
+import fs from 'node:fs';
+import {preparedCountPlan} from './prepared-count-plan.mjs';
 function fixture(){
  const plan={gameId:1,trialId:'fixture',runtimeGameId:10},repairKey='game-repair:fixture:'+'a'.repeat(64);
  const raw={fixtureOnly:false,steps:[{msgId:'BET'}]},batch={pending:{awaiting:null,raw}};
@@ -53,6 +55,41 @@ test('stopped batch follows its immutable abandoned archive without restoring pe
   x=>x.docs.get('journal/'+x.batch.abandonedDemo).sourceRequests=1,
   x=>x.docs.get('journal/'+x.batch.abandonedDemo).pending.sequence=3]){
   const b=stoppedFixture();change(b);await assert.rejects(exportNativeRepairReplay(b));
+ }
+});
+
+test('historical action fault exports its independently registered original plan and exact native receipt',async()=>{
+ const make=()=>{
+  const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),plan=read('config/round-one-plans.json')[32714];
+  const name='formal-prepared-count-32714-671f5512b92219003f11c4d49c55cf616b245386d2084618e4eb333ae57125c6.json';
+  const captured=preparedCountPlan(plan,read('config/'+name),read('config/prepared-count-authorizations.json').profiles[name]);
+  const raw=read('scripts/trial/fixtures/huff-hardhat-mansion-prefix.json').raw,pending={awaiting:null,sequence:2,raw};
+  const batch={id:1,start:1,end:100,journaled:1,checkpoint:1,pending:null,
+   abandonedDemo:`abandoned-demo:${plan.trialId}:1:${hash(pending)}`};
+  const abandoned={schema:'sg-abandoned-demo-v1',trialId:plan.trialId,batchId:1,pending,
+   disposition:'interrupted-abandoned-without-replay',sourceRequests:0};
+  const receipt=captureFaultReceipt({plan:captured,batch:{...batch,pending},archiveKey:batch.abandonedDemo,archive:abandoned,group:'primary'});
+  batch.workLineFault=`capture-fault:${plan.trialId}:1:${hash(receipt)}`;
+  const repairKey=`game-repair:${plan.trialId}:`+'a'.repeat(64),archiveKey='parked-original';
+  const repair={schema:'sg-game-repair-v1',gameId:32714,trialId:plan.trialId,status:'pending-adapter',
+   sourceAllowance:0,requiresNewSession:true,archiveKey,evidence:[{key:'original-batch:'+plan.trialId,hash:hash(batch)}]};
+  const record={_id:'historical-record',gameId:32714,fixtureOnly:false,raw:{fixtureOnly:false,steps:[{msgId:'BET'}]},normalized:{bet:5}};
+  const docs=new Map([['state/campaign',{games:[{game_id:32714,status:'parked-protocol',repairKey}]}],
+   ['state/'+repairKey,repair],['journal/'+archiveKey,{}],['journal/original-batch:'+plan.trialId,{batch}],
+   ['journal/'+batch.abandonedDemo,abandoned],['journal/'+batch.workLineFault,receipt],
+   ['journal/'+receiptKey(plan.trialId,1),record]]);
+  const store={get:async(c,k)=>docs.has(c+'/'+k)?{value:docs.get(c+'/'+k)}:null,
+   getMany:async(c,keys)=>Promise.all(keys.map(k=>store.get(c,k)))};
+  return {store,plan,repairKey,revisionHash:'b'.repeat(64),docs,batch,receipt,captured,
+   transport:{request:async()=>[record]}};
+ };
+ const a=make(),before=hash([...a.docs]),task=await exportNativeRepairReplay(a);
+ validateNativeRepairReplay(task);assert.equal(hash([...a.docs]),before);
+ assert.deepEqual(task.faults[0].evidence.captureEvidence.plan,a.captured);
+ assert.deepEqual(task.faults[0].evidence.captureEvidence.receipt,a.receipt);
+ for(const change of [x=>x.docs.delete('journal/'+x.batch.workLineFault),
+  x=>x.receipt.planHash='f'.repeat(64),x=>x.receipt.rawHash='f'.repeat(64),x=>x.receipt.sourceAllowance=1]){
+  const b=make();change(b);await assert.rejects(exportNativeRepairReplay(b));
  }
 });
 

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {protocolHash as hash} from './protocol-resume.mjs';
-import {bindPreparedCountPlan,bindPreparedCountPlanAsync} from './prepared-count-plan-binding.mjs';
+import {bindPreparedCountPlan,bindPreparedCountPlanAsync,bindPreparedPlanHash} from './prepared-count-plan-binding.mjs';
 import {checkPrimaryLeases} from './lease-boundary.mjs';
 
 function fixture(){
@@ -46,6 +46,13 @@ test('asynchronous evidence resolves the registered plan before repair review an
  const legacy={...f.base,target:300000,countAllocation:f.profile.activation};
  assert.deepEqual(await bindPreparedCountPlanAsync({...args,spec:{planHash:hash(legacy)},
   read:async()=>{throw Error('UNEXPECTED_READ');}}),legacy);
+});
+
+test('historical captured plan hash resolves only one intact registered authorization',()=>{
+ const f=fixture();f.registry.profiles={[f.name]:f.registry.profiles[f.name]};
+ assert.equal(hash(bindPreparedPlanHash({...f,planHash:f.spec.planHash})),f.spec.planHash);
+ assert.throws(()=>bindPreparedPlanHash({...f,planHash:'f'.repeat(64)}),/UNREGISTERED/);
+ f.registry.profiles={};assert.throws(()=>bindPreparedPlanHash({...f,planHash:f.spec.planHash}),/UNREGISTERED/);
 });
 test('lease boundary inspects action-bound native batches and still rejects a live lease',async()=>{
  const f=fixture(),plan=bindPreparedCountPlan({...f,activation:f.profile.activation});

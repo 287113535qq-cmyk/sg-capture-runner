@@ -36,3 +36,18 @@ export async function bindPreparedCountPlanAsync({base,activation,spec,read=read
  return bindPreparedCountPlan({base,activation,spec,
   read:file=>file==='config/prepared-count-authorizations.json'?registry:profile});
 }
+
+// Historical analysis resolves a captured receipt against registered immutable
+// profiles. Its plan hash never grants a new capture allowance or run permit.
+export function bindPreparedPlanHash({base,planHash,read=readLocal}){
+ const registry=read('config/prepared-count-authorizations.json'),matches=[];
+ assert(registry?.schema==='sg-prepared-count-authorizations-v1'&&registry.sourceAllowance===0,'CAPTURE_PLAN_SCOPE');
+ for(const [name,entry]of Object.entries(registry.profiles??{})){
+  if(entry.gameId!==base.gameId)continue;
+  const authorization=preparedCountAuthorization(name,read),profile=read('config/'+name);
+  if(profile.planHash!==planHash)continue;
+  const plan=preparedCountPlan(base,profile,authorization);
+  assert(hash(plan)===planHash,'CAPTURE_PLAN_CHANGED');matches.push(plan);
+ }
+ assert(matches.length===1,'CAPTURE_PLAN_UNREGISTERED');return matches[0];
+}

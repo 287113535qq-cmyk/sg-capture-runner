@@ -3,6 +3,8 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import {stable} from './mongo-writer.mjs';
 import {receiptKey} from './durable-queue.mjs';
 import {captureFaultReceipt} from './capture-fault-receipt.mjs';
+import {bindPreparedPlanHash} from './prepared-count-plan-binding.mjs';
+import {ACTION_VERSION as HUFF_ACTION_VERSION} from '../trial/huff-action-contract.mjs';
 
 // Formal retirement references a paged ledger instead of individual legacy
 // batches. Follow its immutable pages and original batch snapshots, never an
@@ -141,6 +143,15 @@ export async function exportNativeRepairReplay({store, transport, plan, revision
     assert(pending.awaiting===null && pending.raw?.fixtureOnly===false, 'NATIVE_REPAIR_UNKNOWN_RESPONSE');
     const evidence={plan,raw:pending.raw,archiveKey:ref.key,archiveHash:ref.hash,
       ...(abandoned?{abandonedKey:batch.abandonedDemo,abandonedHash:hash(abandoned)}:{})};
+    if(pending.raw.requestFlowVersion===HUFF_ACTION_VERSION){
+      const receipt=(await store.get('journal',batch.workLineFault))?.value;
+      assert(abandoned&&plan.gameId===32714&&receipt,'NATIVE_REPAIR_FAULT_PLAN');
+      const sourcePlan=bindPreparedPlanHash({base:plan,planHash:receipt.planHash});
+      assert(hash(captureFaultReceipt({plan:sourcePlan,batch:{...batch,pending},archiveKey:batch.abandonedDemo,
+        archive:abandoned,group:receipt.group}))===hash(receipt)
+        &&batch.workLineFault===`capture-fault:${plan.trialId}:${batch.id}:${hash(receipt)}`,'NATIVE_REPAIR_FAULT_PLAN');
+      evidence.captureEvidence={plan:sourcePlan,receipt,raw:pending.raw,receiptKey:batch.workLineFault};
+    }
     faults.push({raw:pending.raw,evidence,evidenceHash:hash(evidence),failureEvidenceHash,
       ...(confirmedTerminal?{terminalRecordHash:hash(confirmedTerminal.record)}:{})});
     if(confirmedTerminal)confirmedTerminals.push(confirmedTerminal);
@@ -184,6 +195,14 @@ export function validateNativeRepairReplay(task) {
   for(const fault of task.faults)if(fault.terminalRecordHash){
     const matches=task.records.filter(r=>hash(r)===fault.terminalRecordHash);
     assert(matches.length===1&&hash(matches[0].raw)===hash(fault.raw),'NATIVE_REPAIR_TERMINAL_RECORD');
+  }
+  for(const fault of task.faults)if(fault.evidence.captureEvidence){
+    const e=fault.evidence.captureEvidence,r=e.receipt;
+    assert(r?.schema==='sg-capture-fault-receipt-v1'&&r.gameId===task.gameId&&r.trialId===task.plan.trialId
+      &&r.sourceAllowance===0&&r.requiresNewSession===true&&r.planHash===hash(e.plan)
+      &&r.rawHash===hash(fault.raw)&&hash(e.raw)===hash(fault.raw)
+      &&r.archiveKey===fault.evidence.abandonedKey&&r.archiveHash===fault.evidence.abandonedHash
+      &&e.receiptKey===`capture-fault:${task.plan.trialId}:${r.batchId}:${hash(r)}`,'NATIVE_REPAIR_FAULT_PLAN');
   }
   if(task.captureLink){const link=task.captureLink,e=link.captureEvidence;
     assert(link.failureEvidenceHash===hash(e)&&/^[a-f0-9]{64}$/.test(link.rejectedProofHash??'')

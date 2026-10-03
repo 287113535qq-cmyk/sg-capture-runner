@@ -27,3 +27,22 @@ test('an action fault cannot borrow a changed or unrelated captured plan binding
   assert.throws(()=>replayFaultPlan(task,fault),undefined,mode);
  }
 });
+
+test('several historical action faults retain distinct source plans and cannot borrow the latest allocation',()=>{
+ for(const allocation of ['c','d']){
+  const {task,fault}=fixture(),plan={...task.captureLink.captureEvidence.plan,countAllocation:allocation.repeat(64)};
+  const receipt={schema:'sg-capture-fault-receipt-v1',gameId:32714,trialId:task.plan.trialId,
+   batchId:143,planHash:hash(plan),rawHash:hash(fault.raw),sourceAllowance:0,requiresNewSession:true,
+   archiveKey:'abandoned-original',archiveHash:'f'.repeat(64)};
+  fault.evidence={raw:fault.raw,abandonedKey:receipt.archiveKey,abandonedHash:receipt.archiveHash,
+   captureEvidence:{plan,raw:fault.raw,receipt,receiptKey:`capture-fault:${task.plan.trialId}:143:${hash(receipt)}`}};
+  fault.evidenceHash=hash(fault.evidence);
+  assert.deepEqual(replayFaultPlan(task,fault),plan);
+  assert.notEqual(hash(plan),hash(task.captureLink.captureEvidence.plan));
+  for(const field of ['archiveHash','rawHash','planHash','sourceAllowance']){
+   const changed=structuredClone(fault);changed.evidence.captureEvidence.receipt[field]=field==='sourceAllowance'?1:'0'.repeat(64);
+   changed.evidenceHash=hash(changed.evidence);
+   assert.throws(()=>replayFaultPlan(task,changed));
+  }
+ }
+});

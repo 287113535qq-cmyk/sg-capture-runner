@@ -7,8 +7,14 @@ export function replayFaultPlan(task,fault){
   if(fault.raw.requestFlowVersion!==HUFF_ACTION_VERSION||task.plan.featureProfile===HUFF_ACTION_VERSION)return task.plan;
   // A repair may contain both original base records and a later action-run
   // fault. Keep every raw byte and verify that fault with its captured plan.
-  const link=task.captureLink,e=link?.captureEvidence,plan=e?.plan;
-  assert(task.gameId===32714&&link?.failureEvidenceHash===hash(e)&&plan?.gameId===32714
+  const scoped=fault.evidence?.captureEvidence,link=task.captureLink,e=scoped??link?.captureEvidence,plan=e?.plan;
+  const bound=scoped!==undefined?fault.evidenceHash===hash(fault.evidence)
+    &&e?.receipt?.schema==='sg-capture-fault-receipt-v1'&&e.receipt.gameId===task.gameId&&e.receipt.trialId===task.plan.trialId
+    &&e.receipt.sourceAllowance===0&&e.receipt.requiresNewSession===true
+    &&e.receipt.archiveKey===fault.evidence.abandonedKey&&e.receipt.archiveHash===fault.evidence.abandonedHash
+    &&e.receiptKey===`capture-fault:${task.plan.trialId}:${e.receipt.batchId}:${hash(e.receipt)}`
+    :link?.failureEvidenceHash===hash(e);
+  assert(task.gameId===32714&&bound&&plan?.gameId===32714
     &&e.receipt?.planHash===hash(plan)&&e.receipt.rawHash===hash(fault.raw)
     &&hash(e.raw)===hash(fault.raw)&&/^[a-f0-9]{64}$/.test(plan.countAllocation??'')
     &&hash(plan)===hash({...task.plan,target:300000,countAllocation:plan.countAllocation,
