@@ -21,9 +21,9 @@ const fail=(code,category='storage')=>Object.assign(new Error(code),{code,catego
 // Local implementation of the capture worker's RPC interface. Every business
 // decision below runs in its GitHub process; transport only performs Mongo I/O.
 export class BatchController {
-  constructor({store,transport,gate,analyzer,spool,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
+  constructor({store,transport,gate,analyzer,spool,evidence,control,plan,group,pendingFirstStage,runKey,now=Date.now,commit=process.env.GITHUB_SHA,sleep=ms=>new Promise(r=>setTimeout(r,ms))}) {
     assert(spool && typeof spool.append==='function' && typeof spool.confirmed==='function');
-    Object.assign(this,{store,transport,gate,analyzer,spool,control,plan,group,now,sleep,runKey});
+    Object.assign(this,{store,transport,gate,analyzer,spool,evidence,control,plan,group,now,sleep,runKey});
     this.pool=new RunnerPool({store,plan,group,now,commit});this.lease=null;this.batch=null;this.identity=null;
     this.pendingFirst=new PendingFirst({store,transport,analyzer,plan,stage:pendingFirstStage,runKey,now});
   }
@@ -108,6 +108,7 @@ export class BatchController {
       readBatch:async()=>{assert(this.batchSnapshot,'BATCH_SNAPSHOT_REQUIRED');return this.batchSnapshot;},
       updateBatch:change=>this.update(change)});
     this.writer=new MongoWriter({gate:this.gate,queue:this.queue,
+      onConfirmed:this.evidence?(records=>this.evidence.confirmed(this.plan,records)):undefined,
       permits:new WritePermits({store:this.store,group:this.group,owner:this.lease.owner,now:this.now}),
       sink:{read:ids=>this.transport.request('rounds_read',{trialId:this.plan.trialId,ids}),
         insert:records=>this.transport.request('rounds_insert',{trialId:this.plan.trialId,records})}});
@@ -300,6 +301,8 @@ export class BatchController {
             const faultKey=`capture-fault:${this.plan.trialId}:${current.id}:${hash(receipt)}`;
             await this.store.create('journal',faultKey,receipt,{immutable:true});
             assert(hash((await this.store.get('journal',faultKey))?.value)===hash(receipt),'CAPTURE_FAULT_READBACK_FAILED');
+            if(this.evidence)try{this.evidence.fault({plan:this.plan,batch:current,receipt,archive:evidence});}
+            catch{console.log(JSON.stringify({status:'fault-evidence-delivery-pending',sourceRequests:0}));}
             workLineFault=faultKey;
             abandoned=key;
           }

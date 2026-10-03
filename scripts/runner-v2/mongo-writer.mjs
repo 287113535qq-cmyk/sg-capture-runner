@@ -8,12 +8,13 @@ export const stable=value=>value===null || typeof value!=='object'?JSON.stringif
 const fail=code=>Object.assign(new Error(code),{code});
 
 export class MongoWriter {
-  constructor({gate,sink,queue,permits}) {
+  constructor({gate,sink,queue,permits,onConfirmed}) {
     assert(gate && typeof gate.status==='function');
     assert(sink && typeof sink.read==='function' && typeof sink.insert==='function');
     assert(queue && typeof queue.assertDurable==='function' && typeof queue.confirm==='function');
     assert(permits && typeof permits.acquire==='function');
-    Object.assign(this,{gate,sink,queue,permits});
+    assert(onConfirmed===undefined||typeof onConfirmed==='function');
+    Object.assign(this,{gate,sink,queue,permits,onConfirmed});this.evidenceDeliveryErrors=0;
   }
   compare(expected,rows,{allowMissing=false}={}) {
     if (!Array.isArray(rows)) throw fail('MONGO_READBACK_INVALID');
@@ -71,6 +72,10 @@ export class MongoWriter {
       // A complete readback, not Mongo's inserted-count, commits the queue.
       await this.queue.confirm(part);
       confirmed+=part.length;
+      // Interpretation and sidecar delivery never decide whether a confirmed
+      // capture can proceed. Durable receipts remain available for recovery.
+      if(this.onConfirmed)try{await this.onConfirmed(structuredClone(part));}
+      catch{this.evidenceDeliveryErrors++;console.log(JSON.stringify({status:'confirmed-evidence-delivery-pending',sourceRequests:0}));}
     }
     return {confirmed,paused:false};
   }

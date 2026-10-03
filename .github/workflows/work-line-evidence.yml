@@ -28,13 +28,14 @@ jobs:
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
-      - name: Independently verify one existing confirmed record and encrypt
-        run: node scripts/runner-v2/work-line-evidence-export.mjs
-      - name: Upload ciphertext only
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          name: sg-work-line-${{ github.run_id }}-${{ github.run_attempt }}-recovery
-          path: work-line-sealed/*.json
-          if-no-files-found: error
-          retention-days: 7
-          compression-level: 0
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
+      - name: Verify existing evidence and exercise incremental encrypted publication without source
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: readonly-export

@@ -734,6 +734,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -744,13 +751,9 @@ jobs:
       - name: Capture complete rounds with independent sessions
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: |
-          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/runner-v2/campaign-worker.mjs capture
-          else
-            unset SG_POOL_RUN_LIMIT
-            node scripts/trial/worker.mjs capture
-          fi
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
@@ -785,6 +788,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -795,13 +805,9 @@ jobs:
       - name: Capture complete rounds with independent sessions
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: |
-          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/runner-v2/campaign-worker.mjs capture
-          else
-            unset SG_POOL_RUN_LIMIT
-            node scripts/trial/worker.mjs capture
-          fi
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
@@ -861,6 +867,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -871,7 +884,9 @@ jobs:
       - name: Capture against the independently activated complete-count ledger
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: node scripts/runner-v2/campaign-worker.mjs capture
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: round-one
   pyramids-formal-admit:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'formal-count' && inputs.allocation == 'round-one' && inputs.round_one_limit == '0' && github.repository == '287113535qq-cmyk/sg-capture-runner' && (inputs.formal_profile == 'formal-count-pyramids-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-coins-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-display-20261001.json' || inputs.formal_profile == 'formal-repair-pyramids-continuation-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-major-entryfix-20261001.json' || (inputs.formal_profile == 'formal-repair-pyramids-mixed-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-fifteen-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-hold-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-free-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-retrigger-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-cash-coins-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-super-coins-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-action-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-action-budget-20261002.json' || (inputs.formal_profile == 'formal-repair-pyramids-direct-action-20261002.json' || inputs.formal_profile == 'formal-repair-pyramids-resume-action-20261002.json')))))))))))))
     runs-on: ubuntu-latest
@@ -959,6 +974,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -969,7 +991,9 @@ jobs:
       - name: Capture against the independently activated complete-count ledger
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: node scripts/runner-v2/campaign-worker.mjs capture
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: round-one
   secondary-admit:
     if: github.event_name == 'workflow_dispatch' && github.repository == '287113535qq-cmyk/sg-capture-runner' && inputs.role == 'demo-fresh-short' && inputs.allocation == 'round-one' && inputs.round_one_limit == '5' && (inputs.pilot_profile == 'demo-pilot-veryfruity-action-revision3-20261003.json' || inputs.pilot_profile == 'demo-pilot-inca-20261001.json' || inputs.pilot_profile == 'demo-pilot-pyramids-20261001.json')
     runs-on: ubuntu-latest
@@ -1039,6 +1063,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -1049,13 +1080,9 @@ jobs:
       - name: Capture complete rounds with independent sessions
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: |
-          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/runner-v2/campaign-worker.mjs capture
-          else
-            unset SG_POOL_RUN_LIMIT
-            node scripts/trial/worker.mjs capture
-          fi
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit
@@ -1088,6 +1115,13 @@ jobs:
       - name: Install locked dependencies
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Checkout fixed encrypted evidence uploader
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: actions/upload-artifact
+          ref: ea165f8d65b6e75b540449e92b4886f43607fa02
+          path: .local/pinned-upload-artifact
+          persist-credentials: false
       - name: Wait for every capture runner
         env:
           GH_TOKEN: ${{ github.token }}
@@ -1098,13 +1132,9 @@ jobs:
       - name: Capture complete rounds with independent sessions
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: |
-          if [ "${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}" = round-one ]; then
-            node scripts/runner-v2/campaign-worker.mjs capture
-          else
-            unset SG_POOL_RUN_LIMIT
-            node scripts/trial/worker.mjs capture
-          fi
+        uses: ./.github/actions/capture-with-evidence
+        with:
+          mode: ${{ inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed' }}
       - name: Audit this shard
         if: success() && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'legacy-fixed'
         run: node scripts/trial/worker.mjs audit

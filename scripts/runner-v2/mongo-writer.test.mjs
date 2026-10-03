@@ -25,6 +25,19 @@ test('batch write readback and confirmation happen on Runner; duplicate adds not
   assert.equal((await f.writer().deliver(rows)).confirmed,25);assert.equal(f.inserts,3);
   assert.equal((await f.writer().deliver(rows)).confirmed,25);assert.equal(f.inserts,3);
 });
+
+test('independent evidence runs after full readback and checkpoint; its failure cannot stop healthy capture',async()=>{
+ const f=fixture(),row=record(1);let calls=0;
+ const writer=new MongoWriter({...f,onConfirmed:async records=>{
+  calls++;assert.deepEqual(f.confirmed,records);assert.deepEqual(f.stored.get(row._id),records[0]);
+  records[0].raw.changed=true;throw Error('SIDE_CHANNEL_UNAVAILABLE');
+ }});
+ assert.deepEqual(await writer.deliver([row]),{confirmed:1,paused:false});
+ assert.equal(calls,1);assert.equal(writer.evidenceDeliveryErrors,1);assert.deepEqual(f.stored.get(row._id),row);
+ const unknown=fixture();unknown.loseAck();let unconfirmedCalls=0;
+ await assert.rejects(new MongoWriter({...unknown,onConfirmed:()=>unconfirmedCalls++}).deliver([row]),{code:'MONGO_ACK_UNKNOWN'});
+ assert.equal(unconfirmedCalls,0);
+});
 test('unknown Mongo acknowledgement remains pending; later readback prevents another insert',async()=>{
   const f=fixture();f.loseAck();await assert.rejects(f.writer().deliver([record(1)]),{code:'MONGO_ACK_UNKNOWN'});
   assert.equal(f.confirmed.length,0);assert.equal(f.inserts,1);

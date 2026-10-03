@@ -21,6 +21,7 @@ import {DIRECT_ACTION_RELAY_RUNTIME,DIRECT_ACTION_RELAY_RUNTIMES,directRelayWind
 import {ACTION_BUDGET_PROFILE} from './pyramids-action-budget-profile.mjs';
 import {budgetCanaryWindow} from './action-budget-canary.mjs';
 import {observeBudgetWindow} from './action-budget-observation.mjs';
+import {githubEvidenceSpool} from './work-line-evidence-spool.mjs';
 
 export function connectLocal(plan){
   const transport=connectGateway(),gate=new ResourceGate(),parser=analyzer(),rawSpool=localSpool();
@@ -38,7 +39,10 @@ export function connectLocal(plan){
   const tailMs=plan.countAllocation?10*60000:0;
   const store=new RunnerState({transport,gate,deadline:Date.now()+Number(process.env.SG_TRIAL_MINUTES || '240')*60000+tailMs});
   const control=new SourceControl({store,transport,gate,plan});
-  const controller=new BatchController({store,transport,gate,analyzer:timedParser,spool,control,plan,
+  let evidence;
+  try{evidence=githubEvidenceSpool(process.cwd());}
+  catch{console.log(JSON.stringify({status:'evidence-spool-setup-requires-review',sourceRequests:0}));}
+  const controller=new BatchController({store,transport,gate,analyzer:timedParser,spool,evidence,control,plan,
     group:repositories[process.env.GITHUB_REPOSITORY].name,pendingFirstStage:process.env.SG_PENDING_FIRST_STAGE,
     runKey:`capture-run:${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT}`});
   const ensureControlMode=compactControlInitializer({plan,runtimeName:process.env.SG_COUNT_RUNTIME_PROFILE,
