@@ -5,6 +5,22 @@ const games=[{gameId:1,name:'broken'},{gameId:2,name:'next'}];
 const proof=(id,rev='a')=>({schema:'sg-reusable-preparation-v1',gameId:id,sourceAllowance:0,revisionHash:rev.repeat(64),
  gates:Object.fromEntries(preparationGates.map(g=>[g,{verified:true,evidenceHash:'b'.repeat(64)}]))});
 const prepare=(q,id,rev='a')=>{const c=claimPreparation(q,{owner:'test',now:id*10,lane:q.tasks.find(t=>t.gameId===id).lane});assert.equal(c.gameId,id);finishPreparation(q,c,{status:'prepared',proof:proof(id,rev)},id*10+1);};
+
+test('fresh native repair binding reaches both queued admission mirrors and blocked repair tasks without granting readiness',()=>{
+ const event={schema:'sg-work-line-event-v1',kind:'native-repair-observed',gameId:1,sourceAllowance:0,
+  evidenceHash:'c'.repeat(64),repairKey:'game-repair:fixture:'+'a'.repeat(64)};
+ for(const [lane,status] of [['admission','queued'],['repair','blocked']]){
+  const q=newInventory(games),task=q.tasks[0];Object.assign(task,{lane:'repair',status});
+  assert(applyWorkLineEvent(q,event,lane,50));assert.equal(task.status,status);
+  assert.equal(task.failureEvidenceHash,event.evidenceHash);assert.equal(task.proof,null);
+  assert.equal(applyWorkLineEvent(q,event,lane,51),false);
+ }
+ for(const change of [t=>t.lane='admission',t=>t.status='prepared',t=>t.claim={token:'busy'},
+  t=>t.failureEvidenceHash='d'.repeat(64)]){
+  const q=newInventory(games);Object.assign(q.tasks[0],{lane:'repair',status:'queued'});change(q.tasks[0]);
+  assert.throws(()=>applyWorkLineEvent(q,event,'admission',50));
+ }
+});
 test('capture failure independently creates repair work, next game remains selectable, repair returns without semantic completion',async()=>{
  const admission=newInventory(games),repair=newInventory(games);prepare(admission,1);prepare(admission,2);
  const failure={schema:'sg-work-line-event-v1',kind:'capture-failed',gameId:1,sourceAllowance:0,
@@ -44,3 +60,4 @@ test('one corrupt static preparation proof is recorded and skipped before select
  const filesUnavailable=preparedCampaignSelector(q,{verifyProof:async()=>{throw Error('MISSING_STATIC_EVIDENCE');}});
  assert.equal(await filesUnavailable({readyGameIds:[1,2],group:'primary'}),null);
 });
+
