@@ -136,7 +136,8 @@ try{
     if(lane==='repair')for(const task of q.tasks.filter(t=>t.status==='prepared'&&t.failureEvidenceHash)){
       if(task.proof?.revisionHash!==inputsFor(task.gameId,index).revisionHash)continue;
       const event={schema:'sg-work-line-event-v1',kind:'repair-verified',gameId:task.gameId,
-        sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,rejectedProofHash:task.rejectedProofHash,
+        sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,
+        ...(task.rejectedProofHash?{rejectedProofHash:task.rejectedProofHash}:{}),
         evidenceHash:hash(task.proof),proof:task.proof};
       publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);
     }

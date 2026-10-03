@@ -3,10 +3,12 @@ import {protocolHash as hash} from './protocol-resume.mjs';
 import assert from 'node:assert/strict';
 
 export function publishImmutableInbox(dir,value){
- fs.mkdirSync(dir,{recursive:true});const id=hash(value),dest=path.join(dir,id+'.json');
+ const encoded=JSON.stringify(value),id=hash(value);
+ assert(hash(JSON.parse(encoded))===id,'WORK_LINE_INBOX_SERIALIZATION_CHANGED');
+ fs.mkdirSync(dir,{recursive:true});const dest=path.join(dir,id+'.json');
  if(fs.existsSync(dest)){assert(hash(JSON.parse(fs.readFileSync(dest,'utf8')))===id,'WORK_LINE_INBOX_CHANGED');return id;}
  const temp=dest+'.'+process.pid+'.tmp',fd=fs.openSync(temp,'wx');
- try{fs.writeFileSync(fd,JSON.stringify(value)+'\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
+ try{fs.writeFileSync(fd,encoded+'\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
  fs.renameSync(temp,dest);return id;
 }
 export function publishCaptureFailure(root,{gameId,proofHash,reason,evidence}){

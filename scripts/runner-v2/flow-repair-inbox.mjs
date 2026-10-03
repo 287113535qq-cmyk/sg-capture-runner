@@ -70,7 +70,7 @@ export async function reviewFlowRepairInbox(root, index, python) {
         }
       }
     } catch (error) {
-      result = {schema: 'sg-flow-repair-review-v1', gameId: task.gameId, evidenceHash: task.evidenceHash,
+      result = {schema: 'sg-flow-repair-review-v1', gameId: task.gameId, evidenceHash: task.evidenceHash??hash(task),
         status: 'flow-repair-requires-adapter', reason: /^[A-Z_]{1,80}$/.test(error.message) ? error.message : 'FLOW_REPAIR_VALIDATION_FAILED',
         prepared: false, sourceAllowance: 0, sourceRequests: 0, replayAllowed: false};
     } finally {parser?.close();}

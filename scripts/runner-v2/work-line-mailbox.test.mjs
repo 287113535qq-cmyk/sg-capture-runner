@@ -1,9 +1,25 @@
 import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
 import test from 'node:test';import assert from 'node:assert/strict';
-import {publishCaptureFailure} from './work-line-mailbox.mjs';
+import {publishCaptureFailure,publishImmutableInbox} from './work-line-mailbox.mjs';
 import {applyWorkLineEvent} from './work-line-events.mjs';
 import {observeProtocolTask} from './protocol-analysis-task.mjs';
 import {newInventory,claimPreparation,finishPreparation,preparationGates} from './preparation-inventory.mjs';
+test('legacy repair return survives file serialization and ambiguous undefined fields are refused before writing',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'sg-repair-return-'));
+ try{
+  const q=newInventory([{gameId:1,name:'legacy'}]),task=q.tasks[0];
+  Object.assign(task,{lane:'repair',status:'queued',failureEvidenceHash:'c'.repeat(64)});
+  const proof={schema:'sg-reusable-preparation-v1',gameId:1,sourceAllowance:0,revisionHash:'a'.repeat(64),
+   gates:Object.fromEntries(preparationGates.map(g=>[g,{verified:true,evidenceHash:'b'.repeat(64)}]))};
+  const event={schema:'sg-work-line-event-v1',kind:'repair-verified',gameId:1,sourceAllowance:0,
+   failureEvidenceHash:task.failureEvidenceHash,evidenceHash:'d'.repeat(64),proof};
+  const dir=path.join(root,'inbox'),id=publishImmutableInbox(dir,event);
+  assert(applyWorkLineEvent(q,JSON.parse(fs.readFileSync(path.join(dir,id+'.json'))),'admission',20));
+  assert.equal(task.status,'prepared');assert.equal(task.lane,'admission');assert.equal(q.sourceAllowance,0);
+  const bad=path.join(root,'bad');assert.throws(()=>publishImmutableInbox(bad,{...event,rejectedProofHash:undefined}),/SERIALIZATION_CHANGED/);
+  assert(!fs.existsSync(bad));
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
 test('actual file mailboxes deliver one failure to both lanes and an independent protocol task without source authority',()=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'sg-work-lines-'));
  try{
