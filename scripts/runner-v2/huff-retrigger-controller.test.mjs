@@ -34,7 +34,7 @@ async function harness(parser){
 for(const mode of ['gap','money'])test('Hard Hat actual capture preserves response then applies '+mode+' policy',async()=>{
  const p=spawnSync(process.env.PYTHON||'python3',['-c',"import sys,json;sys.path[:0]=['service','service/tests'];from test_huff_retrigger import sample;print(json.dumps(sample()))"],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);const raw=JSON.parse(p.stdout);
  const parser=analyzer({python:process.env.PYTHON||'python3'});try{
-  const f=await harness(parser);let posts=0;const code=mode==='gap'?'HARDHAT_UNKNOWN_FIELD':'HARDHAT_MONEY';
+  const f=await harness(parser);let posts=0;const code=mode==='gap'?'HARDHAT_UNKNOWN_FIELD':'FEATURE_WALLET_AMOUNT';
   const capture=()=>captureBatch({...f,evidence:{completedThisRun:0},state:{balance:raw.startBalanceRaw},route:huffNextRequest,
    post:async(payload,msg)=>{const step=structuredClone(raw.steps[posts++]);assert.equal(step.requestPayload,payload);assert.equal(step.msgId,msg);
     if(posts===3)for(const k of ['responsePayload','responseXml'])step[k]=mode==='gap'?step[k].replace('HHADD~1','HHADD~1#FUTURE~1'):step[k].replace('TW=200','TW=201');return step;},

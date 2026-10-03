@@ -13,9 +13,11 @@ import {capturePreparationBinding} from './capture-preparation-binding.mjs';
 test('registered formal plan fault crosses encrypted delivery and queues both repairs using the original base proof',t=>{
  const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
  const registry=read('config/prepared-count-authorizations.json');
- const [name,authorization]=Object.entries(registry.profiles).find(([,a])=>a.gameId===32714);
+ const publication=read('config/prepared-inventory.json');
+ const [name,authorization]=Object.entries(registry.profiles).find(([n,a])=>a.gameId===32714
+  &&read('config/'+n).preparationProofHash===publication.bindings[32714].proofHash);
  const basePlan=read('config/round-one-plans.json')[32714],profile=read('config/'+name);
- const publication=read('config/prepared-inventory.json'),countBinding={basePlan,profile,authorization};
+ const countBinding={basePlan,profile,authorization};
  const plan=preparedCountPlan(basePlan,profile,authorization);
  assert.notEqual(hash(plan),hash(basePlan));
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'sg-count-fault-'));
