@@ -16,8 +16,10 @@ export function publishedPreparedSelector({publication,plans,readEvidence}){
    const ref=binding.evidence?.[gate];
    assert(typeof ref==='string'&&/^config\/preparation-evidence\/[a-f0-9]{64}\.json$/.test(ref),'PREPARED_EVIDENCE_PATH');
    const value=await readEvidence(ref);
-   if(hash(value)!==item.evidenceHash||value.gameId!==gameId||value.revisionHash!==proof.revisionHash
-    ||value.gate!==gate||value.verified!==true)return false;
+   if(value?.schema!=='sg-preparation-gate-v1'||hash(value)!==item.evidenceHash||value.gameId!==gameId||value.revisionHash!==proof.revisionHash
+    ||value.gate!==gate||value.verified!==true||value.sourceAllowance!==0
+    ||!Array.isArray(value.supportingHashes)||value.supportingHashes.length===0
+    ||!value.supportingHashes.every(h=>/^[a-f0-9]{64}$/.test(h)))return false;
   }
   return true;
  }});

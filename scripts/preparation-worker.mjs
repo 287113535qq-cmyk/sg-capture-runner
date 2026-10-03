@@ -5,6 +5,8 @@ import {applyWorkLineEvent} from './runner-v2/work-line-events.mjs';
 import {protocolHash as hash} from './runner-v2/protocol-resume.mjs';
 import {publishImmutableInbox} from './runner-v2/work-line-mailbox.mjs';
 import {preparationHandlers,preparationInputHash,reviewedPreparation,preparationSourceHash} from './runner-v2/preparation-handlers.mjs';
+import {stagePreparedCycle} from './runner-v2/preparation-publication-cycle.mjs';
+import {preparationRevision} from './runner-v2/preparation-revision.mjs';
 
 // Local offline producer. Fixed handlers only: no source client, shell commands,
 // GitHub dispatch, credentials, profiles or quota. Online admission is separate.
@@ -46,13 +48,8 @@ function run(exe,args,label){
 const bytesHash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 const sourceHash=p=>preparationSourceHash(fs.readFileSync(p,'utf8'));
 function inputsFor(gameId,index){
- const reference=index.games.find(g=>g.gameId===gameId),handler=preparationHandlers[gameId];
- const cardFile=path.join(root,'docs','game-rules',gameId+'.json');
- const ruleFiles=fs.existsSync(cardFile)?load(cardFile).roundRule?.files??[]:[];
- const files=[...Object.keys(reference?.references??{}),...(handler?.node??[]),
-  ...ruleFiles,...(handler?.python??[]).map(n=>'service/tests/'+n)];
- const fileHashes=Object.fromEntries([...new Set(files)].sort().map(p=>[p,fs.existsSync(path.join(root,p))?sourceHash(path.join(root,p)):'missing']));
- const revisionHash=hash({gameId,fileHashes,handler:handler??null});
+ const reference=index.games.find(g=>g.gameId===gameId);
+ const {handler,fileHashes,revisionHash}=preparationRevision(root,gameId,reference);
  const evidenceDir=path.join(root,'.local','preparation-worker','evidence',String(gameId));
  const receipts=[];
  if(fs.existsSync(evidenceDir))for(const name of fs.readdirSync(evidenceDir).filter(n=>/^[a-f0-9]{64}\.json$/.test(n))){
@@ -92,6 +89,30 @@ try{
         log({action:'event-requires-review',event:name});
       }
     }
+    // Revoke changed implementations and durable failures before publishing
+    // repair events or handoffs. Otherwise a stale proof can escape this tick.
+    for(const task of q.tasks.filter(t=>t.status==='prepared')){
+      const current=inputsFor(task.gameId,index);
+      if(task.proof?.revisionHash!==current.revisionHash){
+        task.status='queued';task.proof=null;delete task.proofHash;
+        task.reason='PREPARATION_IMPLEMENTATION_CHANGED';q.revision++;save(q);continue;
+      }
+      const failureFile=path.join(dir,task.gameId+'-failure.json');
+      if(fs.existsSync(failureFile)){
+        const failure=load(failureFile);
+        if(rejectPreparedRevision(q,{...failure,gameId:task.gameId,now:Date.now()})){
+          save(q);log({action:'prepared-revision-rejected',gameId:task.gameId,reason:failure.reason});
+        }
+      }
+    }
+    if(lane==='admission'){
+      try{
+        const staged=await stagePreparedCycle(root,q);
+        if(staged.changed)log({action:'publication-candidate-staged',prepared:staged.prepared,rejected:staged.rejected});
+      }catch(error){
+        log({action:'publication-requires-review',code:/^[A-Z_]+$/.test(error.message)?error.message:'PUBLICATION_INPUT_INVALID'});
+      }
+    }
     // Once a independently reviewed publication includes its applied-profile
     // handoff, publish it without waiting for the next conversational turn.
     // No profile is generated and no permission is renewed here.
@@ -111,20 +132,6 @@ try{
         sourceAllowance:0,failureEvidenceHash:task.failureEvidenceHash,rejectedProofHash:task.rejectedProofHash,
         evidenceHash:hash(task.proof),proof:task.proof};
       publishImmutableInbox(path.join(root,'.local','preparation-worker','admission','inbox'),event);
-    }
-    for(const task of q.tasks.filter(t=>t.status==='prepared')){
-      const current=inputsFor(task.gameId,index);
-      if(task.proof?.revisionHash!==current.revisionHash){
-        task.status='queued';task.proof=null;delete task.proofHash;
-        task.reason='PREPARATION_IMPLEMENTATION_CHANGED';q.revision++;save(q);continue;
-      }
-      const failureFile=path.join(dir,task.gameId+'-failure.json');
-      if(fs.existsSync(failureFile)){
-        const failure=load(failureFile);
-        if(rejectPreparedRevision(q,{...failure,gameId:task.gameId,now:Date.now()})){
-          save(q);log({action:'prepared-revision-rejected',gameId:task.gameId,reason:failure.reason});
-        }
-      }
     }
     // Compare content, including implementation changes, rather than timestamps.
     // Retry the affected game once per input revision, not every idle tick.

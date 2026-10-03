@@ -63,6 +63,17 @@ jobs:
           else
             python3 scripts/run_offline_preflight.py --workers "$SG_PREFLIGHT_WORKERS"
           fi
+      - name: Seal Linux preparation evidence for the independent local admission workers
+        run: |
+          python3 scripts/feature_reuse_index.py --output .local/preparation-feature-index.json
+          node scripts/export-preparation-linux.mjs
+      - name: Deliver ciphertext only; no raw game records or credentials
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sg-work-line-${{ github.run_id }}-${{ github.run_attempt }}-linux
+          path: preparation-sealed/evidence.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Report preparation boundary
         run: |
           echo 'Offline preparation checks passed. No SG source request or database connection was made.' >> "$GITHUB_STEP_SUMMARY"

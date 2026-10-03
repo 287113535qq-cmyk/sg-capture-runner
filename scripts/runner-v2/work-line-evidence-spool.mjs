@@ -28,8 +28,9 @@ export function evidenceSpool({dir,recipient,origin,publication}){
    const {plan,batch,receipt,archive}=envelope;
    assert(hash(captureFaultReceipt({plan,batch,archiveKey:receipt.archiveKey,archive,group:receipt.group}))===hash(receipt),'EVIDENCE_FAULT_CHANGED');
    const binding=publication?.bindings?.[String(plan.gameId)],task=publication?.inventory?.tasks?.find(t=>t.gameId===plan.gameId);
-   assert(publication?.schema==='sg-prepared-publication-v1'&&binding?.planHash===hash(plan)&&binding.group===receipt.group
-    &&task?.status==='prepared'&&validatePreparationProof(task.proof,plan.gameId)===binding.proofHash,'EVIDENCE_ORIGINAL_PREPARATION');
+   assert(publication?.schema==='sg-prepared-publication-v1'&&publication.sourceAllowance===0
+    &&binding?.planHash===hash(plan)&&binding.group===receipt.group&&task?.status==='prepared'
+    &&task.proofHash===binding.proofHash&&validatePreparationProof(task.proof,plan.gameId)===binding.proofHash,'EVIDENCE_ORIGINAL_PREPARATION');
    return publish({...envelope,schema:'sg-capture-fault-export-v1',publication,sourceAllowance:0});
   }
  };
