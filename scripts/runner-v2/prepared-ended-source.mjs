@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {loadCountPermission} from './complete-count.mjs';
+import {finalizePreparedAudit} from './prepared-audit-completion.mjs';
 
 // Bounded deferred finalization after the original matrix and all leases end.
 // The original finalizer's wait limit can expire first; it grants no new BET.
@@ -28,6 +29,9 @@ export async function finalizePreparedEndedSource({store,campaign,plan,profile,a
  const key=`count-prepared-close:${plan.trialId}:${run}:complete`;
  const old=(await store.get('journal',key))?.value;
  const c=(await store.get('state','campaign'))?.value,g=c?.games.find(g=>g.game_id===plan.gameId);
+ if(pool.confirmed===plan.target&&['ready','active'].includes(g?.status)){
+  return finalizePreparedAudit({store,plan,pool,spec,campaign:c,sourceRun:run,sourceCommit:ended.head_sha,boundary,now});
+ }
  if(old){
   assert(old.schema==='sg-count-prepared-close-v1'&&old.sourceRun===run&&old.activation===profile.activation
    &&old.sourceCommit===ended.head_sha&&old.unknownAttempts===0&&old.newBetAllowance===0

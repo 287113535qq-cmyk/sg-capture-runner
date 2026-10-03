@@ -33,6 +33,47 @@ test('ended prepared source closes once and does not wait, replay or grant quota
  assert.deepEqual(r,{closed:true,completePreserved:0,sourceRequests:0,newBetAllowance:0});
  assert.equal((await finalizePreparedEndedSource(f.args)).alreadyClosed,true);assert.equal(f.calls(),1);
 });
+function auditedFixture(){
+ const f=fixture(),a=f.args,plan=a.plan,sessionHash='c'.repeat(64);
+ const b={id:1,worker:0,start:1,end:300000,checkpoint:300000,journaled:300000,sessionHash,
+  pending:null,pendingOriginal:null,bootstrapAwaiting:null,leaseUntil:0};
+ const item={id:1,worker:0,start:1,end:300000,sessionHash,closed:true,complete:300000,evidenceHash:hash(b)};
+ const key=`complete-count:${plan.trialId}:${plan.countAllocation}`;
+ const spec=f.docs.get('journal/'+key).value;Object.assign(spec,{baselineBatchCount:1,baselineHash:hash([item]),firstSequence:300001});
+ f.docs.get('journal/'+key+':complete').value.specHash=hash(spec);
+ f.set('state','batch:'+plan.trialId+':1',b);
+ f.set('state','pool:'+plan.trialId,{enabled:true,failure:null,planHash:hash(plan),confirmed:300000,nextBatchId:2,nextSequence:300001,
+  workers:{0:{leaseUntil:0,activeBatch:null}},countAllocation:{specHash:hash(spec),reserved:0,batches:{1:item}}});
+ f.set('state','campaign',{enabled:true,activeGame:plan.gameId,formalCount:{activation:plan.countAllocation},
+  audit:{owner:'primary:55:1:3',until:100000,gameId:plan.gameId},games:[{game_id:plan.gameId,status:'ready',baseline:100}]});
+ f.set('journal','game-audit:'+plan.trialId,{trialId:plan.trialId,planHash:hash(plan),fullReadback:300000,recordsHash:'d'.repeat(64)});
+ const store=a.store;store.getMany=async(c,ks)=>Promise.all(ks.map(k=>store.get(c,k)));
+ store.create=async(c,k,v)=>{assert(!f.docs.has(c+'/'+k));f.set(c,k,v);};
+ store.update=async(c,k,fn)=>{const v=fn(structuredClone(f.docs.get(c+'/'+k).value));f.set(c,k,v);return store.get(c,k);};
+ return f;
+}
+test('ended full audit completes once, retaining historical baseline and the immutable 300000 readback',async()=>{
+ const f=auditedFixture(),a=f.args,proofBefore=hash(f.docs.get('journal/game-audit:'+a.plan.trialId));
+ const r=await finalizePreparedEndedSource(a),c=f.docs.get('state/campaign').value;
+ assert.equal(r.auditedComplete,true);assert.equal(r.fullReadback,300000);
+ assert.equal(r.sourceRequests,0);assert.equal(r.newBetAllowance,0);assert.equal(c.games[0].baseline,100);
+ assert.equal(c.games[0].confirmed,300000);assert.equal(c.games[0].status,'complete');assert.equal(c.activeGame,null);assert.equal(c.audit,null);
+ assert.equal(hash(f.docs.get('journal/game-audit:'+a.plan.trialId)),proofBefore);assert.equal(f.calls(),0);
+});
+for(const cause of ['proof-missing','proof-count','proof-plan','producer','pending','lease','changed-scene'])
+ test('ended audit finalization rejects '+cause+' without releasing ownership',async()=>{
+  const f=auditedFixture(),a=f.args,trial=a.plan.trialId;
+  if(cause==='proof-missing')f.docs.delete('journal/game-audit:'+trial);
+  if(cause==='proof-count')f.docs.get('journal/game-audit:'+trial).value.fullReadback=299999;
+  if(cause==='proof-plan')f.docs.get('journal/game-audit:'+trial).value.planHash='f'.repeat(64);
+  if(cause==='producer')f.docs.get('state/campaign').value.audit.owner='primary:99:1:3';
+  if(cause==='pending')f.docs.get('state/batch:'+trial+':1').value.pendingOriginal={awaiting:'unknown'};
+  if(cause==='lease')f.docs.get('state/pool:'+trial).value.workers[0].leaseUntil=11;
+  if(cause==='changed-scene'){let n=0;a.boundary=async()=>{if(++n===2)f.docs.get('state/campaign').value.audit.owner='changed';};}
+  await assert.rejects(finalizePreparedEndedSource(a));
+  assert.equal(f.docs.get('state/campaign').value.games[0].status,'ready');
+  assert(!f.docs.has(`journal/prepared-audit-complete:${trial}:55:1:before`));
+ });
 for(const bad of ['running','wrong-owner','wrong-profile','wrong-permit','missing-job','late-lease','scene-changed','unknown-close'])
 test('ended prepared source refuses '+bad,async()=>{
  const f=fixture(),a=f.args;

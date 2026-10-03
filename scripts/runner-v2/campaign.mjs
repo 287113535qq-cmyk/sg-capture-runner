@@ -211,7 +211,9 @@ export class GithubCampaign {
     await this.store.create('journal','game-audit:'+plan.trialId,proof,{immutable:true});
     await this.store.update('state','campaign',v=>{
       assert(v.activeGame===plan.gameId && v.audit?.owner===this.owner && v.audit.until>this.now(),'AUDIT_LEASE_LOST');
-      const g=v.games.find(x=>x.game_id===plan.gameId);assert(g.baseline+count===300000);
+      // Complete-count already includes preserved baseline records. Legacy
+      // plans count only new records and still add their separate baseline.
+      const g=v.games.find(x=>x.game_id===plan.gameId);assert(countSpec?count===plan.target:g.baseline+count===300000);
       g.status='complete';g.confirmed=count;g.completed=this.now()/1000;v.activeGame=null;v.audit=null;return v;
     });
     });

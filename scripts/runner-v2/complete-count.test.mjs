@@ -99,6 +99,8 @@ test('production campaign -> controller -> capture -> complete -> audit crosses 
   assert.equal(calls,1);
  }
  assert.equal((await f.read()).confirmed,3);assert.equal((await rpc('next',owner)).done,true);
+ // A reviewed count allocation has already included the old pilot baseline.
+ await f.store.update('state','campaign',v=>{v.games[0].baseline=100;return v;});
  assert.equal((await f.campaign.select()).action,'audit');assert.equal((await f.campaign.audit(f.plan)).fullReadback,3);
  assert.equal((await f.store.get('state','campaign')).value.games[0].status,'complete');
  assert.deepEqual([...f.rounds.values()].map(r=>r.sequence),[1,301,302]);
