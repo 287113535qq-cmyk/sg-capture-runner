@@ -1,6 +1,7 @@
 // Portable synthetic control fixture. Parser is a test double; no official data.
 import test from 'node:test';import assert from 'node:assert/strict';
 import {retireDemoPool} from './retire-demo-pool.mjs';import {protocolHash as hash} from './protocol-resume.mjs';import {receiptKey} from './durable-queue.mjs';
+import {captureFaultReceipt} from './capture-fault-receipt.mjs';
 function fixture(){
  const plan={trialId:'synthetic-demo',gameId:32820,phase:1,buy:0},pool={enabled:false,nextBatchId:2,workers:{7:{leaseUntil:0}}},pending={sequence:3,attempt:'unfinished',awaiting:null,raw:{steps:[{msgId:'BET'}]}};
  pool.planHash=hash(plan);
@@ -98,6 +99,39 @@ test('formal retirement Mongo conflict retains reservation and original private 
  const f=largeCountFixture();f.corrupt();await assert.rejects(retireDemoPool(f.args),/MONGO_CONTENT_CONFLICT/);
  assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,100);
  assert(f.get('state','batch:synthetic-demo:106').value.pending);
+});
+
+function capturedCountFault(){
+ const f=largeCountFixture(),spec=f.docs.get('journal/'+f.key).value;
+ f.args.plan.gameId=32714;spec.gameId=32714;spec.planHash=hash(f.args.plan);f.pool.planHash=hash(f.args.plan);
+ f.pool.countAllocation.specHash=hash(spec);f.docs.get('journal/'+f.key+':complete').value.specHash=hash(spec);
+ f.docs.get('journal/'+f.key+':complete').value.planHash=hash(f.args.plan);f.args.expectedPoolHash=hash(f.pool);
+ f.batch.pending.sequence=f.batch.journaled+1;f.batch.pending.raw.requestFlowVersion='huff-action-v1';
+ f.args.capturedFault={batchId:f.batch.id,pendingHash:hash(f.batch.pending),code:'HUFF_ACTION_DISPLAY_COUNTERS'};
+ return f;
+}
+
+test('received action fault is archived with its original plan after queued complete records flush, before immutable settlement',async()=>{
+ const f=capturedCountFault(),original=structuredClone(f.batch);await retireDemoPool(f.args);
+ const b=f.get('state','batch:synthetic-demo:106').value;
+ const archive=f.get('journal',b.abandonedDemo).value,receipt=f.get('journal',b.workLineFault).value;
+ assert.deepEqual(archive.pending,original.pending);assert.equal(b.checkpoint,b.journaled);assert.equal(b.pending,null);
+ assert.deepEqual(receipt,captureFaultReceipt({plan:f.args.plan,batch:{...b,pending:archive.pending},
+  archiveKey:b.abandonedDemo,archive,group:'primary'}));
+ const fault=[...f.docs.values()].find(r=>r.value.schema==='sg-retired-count-fault-v1').value;
+ assert.equal(fault.originalBatchHash,hash(original));assert.deepEqual(fault.batch,b);
+ const settled=[...f.docs.values()].find(r=>r.value.schema==='sg-count-batch-settlement-v1').value;
+ assert.deepEqual(settled.batch,b);assert.equal(f.get('state','pool:synthetic-demo').value.countAllocation.reserved,0);
+ assert.equal(receipt.sourceAllowance,0);assert.equal(f.mongo.size,2);
+});
+
+for(const cause of ['pending-hash','unknown-response','closed','foreign-game'])test('captured retirement rejects '+cause+' before writes',async()=>{
+ const f=capturedCountFault();
+ if(cause==='pending-hash')f.args.capturedFault.pendingHash='0'.repeat(64);
+ if(cause==='unknown-response')f.batch.pending.awaiting='FREE_GAME';
+ if(cause==='closed')f.pool.countAllocation.batches[106].closed=true;
+ if(cause==='foreign-game')f.args.plan.gameId=32820;
+ const before=hash([...f.docs]);await assert.rejects(retireDemoPool(f.args));assert.equal(hash([...f.docs]),before);
 });
 test('network retirement reuses admission-bound closed history and audits only current records',async()=>{
  const f=largeCountFixture(),spec=f.docs.get('journal/'+f.key).value;

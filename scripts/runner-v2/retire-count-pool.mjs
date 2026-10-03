@@ -6,10 +6,13 @@ import {checkLedger,settleCountBatch,auditCountBatch} from './complete-count.mjs
 import {reviewClosedBatchDecoration} from './closed-batch-decoration.mjs';
 import {reviewBeforeOnlyRetirement,reviewPreparedBeforeOnlyRetirement} from './before-only-retirement.mjs';
 import {reviewHistoryPrefix} from './count-window-history.mjs';
+import {captureFaultReceipt} from './capture-fault-receipt.mjs';
+import {faultCapsule} from './fault-capsule.mjs';
+import {ACTION_VERSION as HUFF_ACTION_VERSION} from '../trial/huff-action-contract.mjs';
 
 // Formal pools can have thousands of historical batches. Stream receipts and
 // private snapshots in bounded pages; retain immutable closed batches verbatim.
-export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,now=Date.now}){
+export async function retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,capturedFault,now=Date.now}){
  const started=performance.now(),cost={schema:'sg-retirement-cost-v1',verifiedRecords:0,verificationPages:0,
   verificationMs:0,fullReadbackMs:0,boundedBatchVerification:typeof parser.verifyPage==='function'};
  assert(Array.isArray(closedBatchDecorations)&&closedBatchDecorations.length<=1
@@ -17,6 +20,13 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
  assert(spec.sessionRotation==='closed-batches-v1'&&!pool.enabled&&hash(pool)===expectedPoolHash
   &&pool.planHash===hash(plan)&&Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'COUNT_RETIRE_POOL_UNSAFE');
  checkLedger(pool,plan,spec);
+ if(capturedFault){
+  const b=(await store.get('state',`batch:${plan.trialId}:${capturedFault.batchId}`))?.value;
+  assert(group==='primary'&&plan.gameId===32714&&b?.pending?.raw?.requestFlowVersion===HUFF_ACTION_VERSION
+   &&b.pending.awaiting===null&&!b.pendingOriginal&&!b.bootstrapAwaiting&&!b.abandonedDemo&&!b.workLineFault
+   &&!pool.countAllocation.batches[b.id]?.closed&&hash(b.pending)===capturedFault.pendingHash
+   &&/^[A-Z][A-Z_]{0,79}$/.test(capturedFault.code),'COUNT_FAULT_CAPTURE_SCOPE');
+ }
  if(historyPermit){const saved=(await store.get('journal',`count-run:${plan.trialId}:${historyPermit.run}`))?.value;
   assert(saved&&hash(saved)===hash(historyPermit),'COUNT_RETIRE_HISTORY_PERMISSION');}
  const history=historyPermit?await reviewHistoryPrefix({store,plan,pool,spec,permit:historyPermit,retirement:true}):null;
@@ -85,13 +95,30 @@ export async function retireCountPool({store,transport,gate,parser,plan,boundary
       insert:records=>transport.request('rounds_insert',{trialId:plan.trialId,records})}});
     const waiting=await queue.outstanding();if(waiting.length){const r=await writer.deliver(waiting);assert(!r.paused&&r.confirmed===waiting.length,'COUNT_RETIRE_FLUSH');}
     assert((await queue.outstanding()).length===0,'COUNT_RETIRE_FLUSH');
+    let faultFields={};
+    if(capturedFault?.batchId===b.id){
+     const settled=(await store.get('state',key))?.value;
+     assert(settled?.checkpoint===settled.journaled&&hash(settled.pending)===capturedFault.pendingHash,
+      'COUNT_FAULT_CAPTURE_PROGRESS');
+     const archiveKey=`abandoned-demo:${plan.trialId}:${b.id}:${hash(settled.pending)}`;
+     const archive={schema:'sg-abandoned-demo-v1',trialId:plan.trialId,batchId:b.id,reason:capturedFault.code,
+      disposition:'interrupted-abandoned-without-replay',pending:settled.pending,pendingOriginal:null,
+      diagnostic:faultCapsule({plan,raw:settled.pending.raw,code:capturedFault.code}),sourceRequests:0};
+     await save(archiveKey,archive);
+     const receipt=captureFaultReceipt({plan,batch:settled,archiveKey,archive,group});
+     const faultKey=`capture-fault:${plan.trialId}:${b.id}:${hash(receipt)}`;await save(faultKey,receipt);
+     faultFields={abandonedDemo:archiveKey,workLineFault:faultKey};
+    }
     await store.update('state',key,v=>{
      assert(v.owner===owner&&v.epoch===b.epoch+1&&v.journaled===b.journaled&&v.checkpoint===v.journaled
       &&hash(v.pending)===hash(b.pending),'COUNT_RETIRE_PROGRESS_CHANGED');
-     return {...v,pending:null,pendingOriginal:null,bootstrapAwaiting:null,protocolResume:null,failure:null,retiredCount:beforeKey};
+     return {...v,...faultFields,pending:null,pendingOriginal:null,bootstrapAwaiting:null,protocolResume:null,failure:null,retiredCount:beforeKey};
     });
     const frozen=(await store.get('state',key)).value,settlementKey=`count-settlement:${plan.trialId}:${spec.activation}:${b.id}`;
     const evidence={schema:'sg-count-batch-settlement-v1',activation:spec.activation,trialId:plan.trialId,batch:frozen,fullReadback:true};
+    if(capturedFault?.batchId===b.id)await save(prefix+`:fault:${b.id}`,{
+     schema:'sg-retired-count-fault-v1',batch:frozen,originalBatchHash:hash(b),retirementKey:beforeKey,
+     sourceRequests:0,newBetAllowance:0});
     settlements.push({batch:{id:b.id,worker:b.worker,start:b.start,end:b.end},evidence,key:settlementKey});
     abandoned+=Number(!!(b.pending||b.pendingOriginal||b.bootstrapAwaiting));
    }

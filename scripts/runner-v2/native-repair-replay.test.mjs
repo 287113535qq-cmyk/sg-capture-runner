@@ -58,8 +58,7 @@ test('stopped batch follows its immutable abandoned archive without restoring pe
  }
 });
 
-test('historical action fault exports its independently registered original plan and exact native receipt',async()=>{
- const make=()=>{
+function historicalActionFixture(){
   const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),plan=read('config/round-one-plans.json')[32714];
   const name='formal-prepared-count-32714-671f5512b92219003f11c4d49c55cf616b245386d2084618e4eb333ae57125c6.json';
   const captured=preparedCountPlan(plan,read('config/'+name),read('config/prepared-count-authorizations.json').profiles[name]);
@@ -82,13 +81,46 @@ test('historical action fault exports its independently registered original plan
    getMany:async(c,keys)=>Promise.all(keys.map(k=>store.get(c,k)))};
   return {store,plan,repairKey,revisionHash:'b'.repeat(64),docs,batch,receipt,captured,
    transport:{request:async()=>[record]}};
- };
+}
+test('historical action fault exports its independently registered original plan and exact native receipt',async()=>{
+ const make=historicalActionFixture;
  const a=make(),before=hash([...a.docs]),task=await exportNativeRepairReplay(a);
  validateNativeRepairReplay(task);assert.equal(hash([...a.docs]),before);
  assert.deepEqual(task.faults[0].evidence.captureEvidence.plan,a.captured);
  assert.deepEqual(task.faults[0].evidence.captureEvidence.receipt,a.receipt);
  for(const change of [x=>x.docs.delete('journal/'+x.batch.workLineFault),
   x=>x.receipt.planHash='f'.repeat(64),x=>x.receipt.rawHash='f'.repeat(64),x=>x.receipt.sourceAllowance=1]){
+  const b=make();change(b);await assert.rejects(exportNativeRepairReplay(b));
+ }
+});
+
+test('paged retirement retains the original action pending and its final receipt as separately bound immutable snapshots',async()=>{
+ const make=()=>{
+  const a=historicalActionFixture(),prefix='retired-count:'+a.plan.trialId+':fixed',archiveKey='shared-close:before';
+  const abandoned=a.docs.get('journal/'+a.batch.abandonedDemo),original={...a.batch,pending:abandoned.pending};
+  delete original.abandonedDemo;delete original.workLineFault;
+  const key=prefix+':batch:1',frozen={...a.batch,retiredCount:key};
+  const before={schema:'sg-retired-count-before-v1',plan:a.captured,pool:{nextBatchId:2}};
+  const result={schema:'sg-retired-count-result-v1',trialId:a.plan.trialId,sourceRequests:0,newBetAllowance:0,
+   completePreserved:1,beforeHash:hash({plan:before.plan,pool:before.pool})};
+  a.docs.set('state/pool:'+a.plan.trialId,{nextBatchId:2,confirmed:1,retiredCount:prefix});
+  a.docs.set('state/batch:'+a.plan.trialId+':1',frozen);
+  a.docs.set('journal/'+prefix+':before',before);a.docs.set('journal/'+prefix+':complete',result);
+  a.docs.set('journal/'+prefix+':page:1',{schema:'sg-retired-count-page-v1',entries:[{batchId:1,beforeHash:hash(original)}]});
+  a.docs.set('journal/'+key,{schema:'sg-retired-count-batch-v1',batch:original});
+  a.docs.set('journal/'+prefix+':fault:1',{schema:'sg-retired-count-fault-v1',batch:frozen,
+   originalBatchHash:hash(original),retirementKey:key,sourceRequests:0,newBetAllowance:0});
+  a.docs.set('journal/'+archiveKey,{schema:'sg-count-shared-before-v1',terminalRecords:[]});
+  const repair=a.docs.get('state/'+a.repairKey);repair.archiveKey=archiveKey;repair.evidence=[{key:prefix+':complete',hash:hash(result)}];
+  return {...a,prefix,original,frozen};
+ };
+ const a=make(),before=hash([...a.docs]),task=await exportNativeRepairReplay(a);
+ validateNativeRepairReplay(task);assert.equal(hash([...a.docs]),before);
+ assert.deepEqual(task.faults[0].evidence.captureEvidence.plan,a.captured);
+ for(const change of [x=>x.docs.delete('journal/'+x.prefix+':fault:1'),
+  x=>x.docs.get('journal/'+x.prefix+':fault:1').originalBatchHash='0'.repeat(64),
+  x=>x.original.pending.raw.steps.push({msgId:'FREE_GAME'}),x=>x.frozen.checkpoint=0,
+  x=>x.docs.delete('journal/'+x.batch.workLineFault)]){
   const b=make();change(b);await assert.rejects(exportNativeRepairReplay(b));
  }
 });
@@ -187,9 +219,18 @@ test('reconciled terminal returns to flow repair from its original proof and con
  }
 });
 
-for(const kind of ['shared','prepared'])test(kind+' closure advances only its archived previous native repair identity',async()=>{
+for(const kind of ['shared','prepared','abandoned-shared'])test(kind+' closure advances only its archived previous native repair identity',async()=>{
  const make=()=>{
   const a=kind==='shared'?receivedTerminalFixture():retiredFixture(2),previousKey='game-repair:fixture:'+'d'.repeat(64);
+  if(kind==='abandoned-shared'){
+   a.closure='count-shared-close:fixture:9:1';
+   a.docs.get('state/'+a.repairKey).archiveKey=a.closure+':before';
+   const fields={profileHash:'a'.repeat(64),disposition:'interrupted-abandoned-without-replay',
+    faultCode:'HUFF_ACTION_DISPLAY_COUNTERS',faultPendingHash:'b'.repeat(64)};
+   a.docs.set('journal/'+a.closure+':before',{schema:'sg-count-shared-before-v1',...fields});
+   a.docs.set('journal/'+a.closure+':complete',{schema:'sg-count-shared-close-v1',repairKey:a.repairKey,
+    abandonedAttempts:1,...fields});
+  }
   if(kind==='prepared'){
    a.closure='count-prepared-close:fixture:9:1';
    a.docs.get('state/'+a.repairKey).archiveKey=a.closure+':before';

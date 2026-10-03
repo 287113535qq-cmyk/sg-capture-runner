@@ -9,6 +9,7 @@ import {reviewPyramidsRetrigger} from '../trial/pyramids-retrigger-review.mjs';
 import {reviewFifteenSequence} from '../trial/pyramids-fifteen-review.mjs';
 import {pyramidsHoldReview} from '../trial/pyramids-hold-review.mjs';
 import {DurableQueue,receiptKey} from './durable-queue.mjs';
+import {ACTION_VERSION as HUFF_ACTION_VERSION} from '../trial/huff-action-contract.mjs';
 
 // Reviewed, ended shared stop only. No SG transport or new count permission.
 // Close the faulty game first; the peer hold continues to protect both groups.
@@ -114,6 +115,7 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  assert(!await store.get('journal',key+':before'),'SHARED_CLOSE_ALREADY_STARTED');
  const save=async(k,v)=>{await store.create('journal',k,v,{immutable:true});assert(hash((await store.get('journal',k))?.value)===hash(v),'SHARED_CLOSE_READBACK');};
  await save(key+':before',{schema:'sg-count-shared-before-v1',profileHash:hash(profile),pool,campaign,hold,batchesHash:hash(batches),
+  ...(evidence&&!reconcile?{disposition:profile.disposition,faultCode:profile.faultCode,faultPendingHash:profile.faultPendingHash}:{}),
   ...(reconcile?{terminalRecords:profile.terminalRecords}:{}),commit,run,at:now(),sourceRequests:0});
  const guarded=async()=>{await boundary();assert(hash((await store.get('state','campaign'))?.value)===profile.campaignHash
   &&hash((await store.get('state','global-hold'))?.value)===profile.holdHash,'SHARED_CLOSE_SCENE_CHANGED');};
@@ -136,6 +138,9 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
  }
  const retired=await retireDemoPool({store,transport,gate,parser,plan,boundary:guarded,owner:run,
   expectedPoolHash:hash(frozen),commit:profile.sourceCommit,group,closedBatchDecorations:profile.closedBatchDecorations??[],
+  capturedFault:evidence&&!reconcile&&group==='primary'&&plan.gameId===32714
+   &&batches.find(b=>b.id===hold.details.batchId)?.pending?.raw?.requestFlowVersion===HUFF_ACTION_VERSION
+   ?{batchId:hold.details.batchId,pendingHash:profile.faultPendingHash,code:profile.faultCode}:undefined,
   historyPermit:evidence&&permit.historyBoundary?permit:undefined,now});
  assert(retired.completePreserved===complete&&retired.abandonedAttempts===abandoned&&retired.sourceRequests===0
   &&retired.newBetAllowance===0,'SHARED_CLOSE_RETIREMENT');
@@ -148,6 +153,8 @@ export async function closeCountShared({store,transport,gate,parser,plan,profile
   retirement:after.retiredCount,retirementHash:hash(retired),recordsHash:retired.recordsHash,repairKey,
   sourceRequests:0,newBetAllowance:0,requiresNewSession:true,group,commit,run,at:now()};
  if(reconcile)result.receivedTerminalsReconciled=terminalRecords.length;
+ if(evidence&&!reconcile)Object.assign(result,{disposition:profile.disposition,faultCode:profile.faultCode,
+  faultPendingHash:profile.faultPendingHash});
  await save(key+':settled',result);await guarded();
  if(faulty){
   await store.create('state',repairKey,{schema:'sg-game-repair-v1',gameId:plan.gameId,trialId:plan.trialId,status:'pending-adapter',

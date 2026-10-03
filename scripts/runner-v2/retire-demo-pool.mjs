@@ -8,14 +8,15 @@ import {retireCountPool} from './retire-count-pool.mjs';
 // Retire an idle demo pool without attempting source-session recovery. Complete
 // records are verified/flushed; interrupted attempts are retained only in the
 // private analysis journal and removed from active batches. No source transport.
-export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,now=Date.now}){
+export async function retireDemoPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,commit=process.env.GITHUB_SHA,group='primary',closedBatchDecorations=[],beforeOnlyRecovery,historyPermit,capturedFault,now=Date.now}){
  assert(typeof boundary==='function'&&plan.buy===0&&plan.phase===1&&typeof owner==='string'&&owner.length>0,'RETIRE_SCOPE');
  assert(group==='primary'||(group==='secondary'&&([32719,32721].includes(plan.gameId)&&plan.trialId===`sg_r1_20260928_${plan.gameId}`
   ||plan.gameId===32812&&plan.trialId==='sg_r1_20261003_32812'&&plan.adapter==='veryfruity-wms-action-v1'&&plan.runnerGroup==='secondary')),'RETIRE_GROUP_SCOPE');
  await boundary();await store.writable();
  const poolKey='pool:'+plan.trialId,pool=(await store.get('state',poolKey))?.value;
  const countSpec=pool?await loadCountPermission({store,plan,pool,commit}):null;
- if(countSpec?.sessionRotation==='closed-batches-v1')return retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec:countSpec,group,closedBatchDecorations,beforeOnlyRecovery,historyPermit,now});
+ if(countSpec?.sessionRotation==='closed-batches-v1')return retireCountPool({store,transport,gate,parser,plan,boundary,owner,expectedPoolHash,pool,spec:countSpec,group,closedBatchDecorations,beforeOnlyRecovery,historyPermit,capturedFault,now});
+ assert(!capturedFault,'COUNT_FAULT_FORMAL_SCOPE');
  assert(!beforeOnlyRecovery,'BEFORE_ONLY_FORMAL_SCOPE');
  assert(pool&&!pool.enabled&&pool.planHash===hash(plan)&&hash(pool)===expectedPoolHash&&pool.nextBatchId>0&&pool.nextBatchId<=101,'RETIRE_POOL_CHANGED');
  assert(Object.values(pool.workers).every(w=>w.leaseUntil<=now()),'RETIRE_WORKER_ACTIVE');
