@@ -10,7 +10,7 @@ function fixture(){
     github:{hasOtherRun:async()=>other,dispatch:async()=>{dispatched++;}}}};
 }
 test('whole-matrix continuation occurs once, and never for short capture, holds or existing queue',async()=>{
-  for(const modify of [f=>f.campaign.validationLimit=10,f=>f.campaign.enabled=false,f=>f.hold(),f=>f.other(),
+  for(const modify of [f=>f.campaign.validationLimit=10,f=>f.campaign.protocolValidation=true,f=>f.campaign.enabled=false,f=>f.hold(),f=>f.other(),
     f=>f.campaign.games[0].status='active',f=>f.campaign.games[1].status='needs-adapter']){
     const f=fixture();modify(f);assert.equal((await continueAfterGame(f.args)).continued,false);assert.equal(f.dispatches(),0);
   }

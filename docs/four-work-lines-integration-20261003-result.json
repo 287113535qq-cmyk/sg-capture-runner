@@ -178,16 +178,16 @@
     "sourceRequests": 0,
     "newBetAllowance": 0,
     "linuxRun": 37100683351,
-    "consumerRun": 37101137495,
+    "consumerRun": 37103460985,
     "eligibleGame": 32714,
     "nativeReadbackFiles": 2,
     "runtimeUpdateCandidate": true,
     "runtimeUpdateApplied": true,
-    "runtimeUpdateRun": "37102119366:1",
-    "runtimeUpdateCommit": "93b6f8d4ee10a57505b2b5c6746e931897f5dfec",
-    "finalPreflightRun": 37101767954,
+    "runtimeUpdateRun": "37103137211:1",
+    "runtimeUpdateCommit": "c72cefa986d46173467be4292c63e788596434a2",
+    "finalPreflightRun": 37102960529,
     "settledRuntimeLocalPassed": true,
-    "settledRuntimeLinuxPassed": false,
+    "settledRuntimeLinuxPassed": true,
     "settledRuntimeActualApplied": false,
     "genericFormalRepairLocalPassed": true,
     "genericFormalRepairLinuxPassed": true,
@@ -197,6 +197,13 @@
     "firstSourceWindowMinutes": 5,
     "firstSourceRevisionClaimOnce": true,
     "boundedWindowLocalPassed": true,
-    "boundedWindowLinuxPassed": false
+    "boundedWindowLinuxPassed": true
+  },
+  "nextGameContinuation": {
+    "formalPreparedWorkflowConnected": true,
+    "localTestsPassed": true,
+    "linuxPassed": false,
+    "actualSourceDispatch": false,
+    "verificationWindowAutoRelay": false
   }
 }

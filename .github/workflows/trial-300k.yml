@@ -1188,7 +1188,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/formal-relay-control.mjs
       - name: Continue next game with a fresh complete matrix
-        if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure') && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && (inputs.role || 'capture') == 'capture' && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
+        if: success() && (needs.trial.result == 'success' || needs.trial.result == 'failure' || needs.formal-capture.result == 'success' || needs.formal-capture.result == 'failure') && vars.SG_TRIAL_ENABLED == 'true' && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && ((inputs.role || 'capture') == 'capture' || inputs.role == 'formal-count') && (inputs.round_one_limit || '0') == '0' && steps.state.outputs.campaign_status == 'running'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/continue-campaign.mjs

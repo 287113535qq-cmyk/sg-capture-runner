@@ -9,6 +9,8 @@ import {authenticatedRead} from './github-boundary.mjs';
 import fs from 'node:fs';
 import {publishedPreparedSelector} from './prepared-campaign-selector.mjs';
 import {preparedContinuationInputs} from './prepared-continuation-inputs.mjs';
+import {preparedNextGameAllowed} from './prepared-next-game.mjs';
+import {formalCountProfilePath} from './formal-count-plan.mjs';
 
 const repo=process.env.GITHUB_REPOSITORY,runId=process.env.GITHUB_RUN_ID,attempt=process.env.GITHUB_RUN_ATTEMPT;
 assert(repositories[repo] && process.env.GH_TOKEN);
@@ -20,6 +22,12 @@ async function api(suffix,options={}){
   assert(response.ok,'CONTINUATION_API_FAILED');return response.status===204?null:response.json();
 }
 try{
+  const inputs=JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH,'utf8')).inputs??{};
+  const profile=inputs.role==='formal-count'?JSON.parse(fs.readFileSync(formalCountProfilePath(),'utf8')):null;
+  if(!await preparedNextGameAllowed({inputs,profile,store,run:runId+':'+attempt,commit:process.env.GITHUB_SHA})){
+    console.log(JSON.stringify({continued:false,reason:'PREPARED_VERIFICATION_OR_LEGACY_RUN'}));
+    process.exitCode=0;
+  }else{
   // Same reviewed inventory as capture selection, before spending a matrix run.
   // This prevents an empty preparation queue from dispatching old ready rows.
   const publication=JSON.parse(fs.readFileSync('config/prepared-inventory.json','utf8'));
@@ -36,5 +44,6 @@ try{
     dispatch:inputs=>api('dispatches',{method:'POST',body:JSON.stringify({ref:'main',inputs})})
   }});
   console.log(JSON.stringify(result));
+  }
 }catch{console.log(JSON.stringify({error:'CONTINUATION_REQUIRES_REVIEW'}));process.exitCode=2;}
 finally{transport.close();}

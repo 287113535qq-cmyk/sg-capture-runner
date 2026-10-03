@@ -5,7 +5,7 @@ export async function continueAfterGame({store,transport,runId,attempt,github,pr
   const c=(await store.get('state','campaign'))?.value;
   const bound=(await store.get('state',`capture-run:${runId}:${attempt}`))?.value;
   const holds=await transport.request('global_holds');
-  if(!c?.enabled || c.validationLimit || holds.length!==2 || holds.some(x=>!x||x.value.active))return {continued:false,reason:'CONTROL_PAUSED'};
+  if(!c?.enabled || c.validationLimit || c.protocolValidation || holds.length!==2 || holds.some(x=>!x||x.value.active))return {continued:false,reason:'CONTROL_PAUSED'};
   const finished=c.games.find(g=>g.game_id===bound?.gameId);
   if(!finished || !['complete','parked-protocol'].includes(finished.status))return {continued:false,reason:'GAME_NOT_FINISHED'};
   if(!c.games.some(g=>g.status==='ready'||g.status==='active'))return {continued:false,reason:'NO_READY_GAMES'};
