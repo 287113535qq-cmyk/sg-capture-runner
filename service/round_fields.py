@@ -333,6 +333,9 @@ def derive(raw):
     from five_treasures_fields import SOURCE as FIVE_SOURCE, settled as five_settled, mapping_hash as five_mapping
     if raw.get('sourceKey') == FIVE_SOURCE:
         return five_settled(raw, five_mapping())
+    from eighty_fortunes_fields import SOURCE as EIGHTY_SOURCE, settled as eighty_settled, mapping_hash as eighty_mapping
+    if raw.get('sourceKey') == EIGHTY_SOURCE:
+        return eighty_settled(raw, eighty_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

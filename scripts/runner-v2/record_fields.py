@@ -31,6 +31,7 @@ from veryfruity_action_fields import VeryFruityActionFields, SOURCE as VERYFRUIT
 from five_treasures_fields import FiveTreasuresFields, SOURCE as FIVE_SOURCE
 from fortunes_megaways_fields import FortunesMegawaysFields, SOURCE as FORTUNES_SOURCE
 from acorn_base_fields import AcornBaseFields, SOURCE as ACORN_SOURCE
+from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
 
 adapters = {}
 
@@ -58,6 +59,8 @@ def execute(request):
             adapters[key]=FortunesMegawaysFields(plan)
         if plan['sourceKey']==ACORN_SOURCE:
             adapters[key]=AcornBaseFields(plan)
+        if plan['sourceKey']==EIGHTY_SOURCE:
+            adapters[key]=EightyFortunesFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
@@ -73,6 +76,9 @@ def execute(request):
     if request.get('op') in ('explicit_dragon_route','explicit_dragon_intent'):
         from explicit_request_dragon import route,intent
         return route(plan,request['raw']) if request['op']=='explicit_dragon_route' else intent(plan,request['raw'],request['payload'])
+    if request.get('op') == 'eighty_bootstrap':
+        assert plan['sourceKey'] == EIGHTY_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'acorn_bootstrap':
         assert plan['sourceKey'] == ACORN_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
@@ -144,7 +150,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

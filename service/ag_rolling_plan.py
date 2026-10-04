@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -87,6 +87,34 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRoutesValidated') == 2000 and wired.get('rawHashesUnchanged') is True
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == 0
+                and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'eighty-fortunes-wms-v1':
+        from eighty_fortunes_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32750 and plan['runtimeGameId'] == 32972 and plan['runtimeSlug'] == 'eightyeightfortunes'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 176 and plan['maxSteps'] == 12
+                and plan.get('wmsGameId') == 20077 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1001 and proof.get('acceptedBaseRounds') == 992
+                and proof.get('acceptedJackpotRounds') == 4 and proof.get('acceptedFreeRounds') == 1
+                and proof.get('rejectedPartialFreeRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 4
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('fullFreeProbeSha256') == TYPE_PROFILE['evidence']['fullFreeProbeSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 997
+                and all(re.fullmatch('[a-f0-9]{64}', h) for h in proof['acceptedRawHashes'])
+                and wired.get('schema') == 'sg-ag-wms-eighty-codec-replay-v1' and wired.get('evidenceHash') == digest(unsigned)
+                and wired.get('gameId') == 32750 and wired.get('runtimeGameId') == 32972 and wired.get('wmsGameId') == 20077
+                and wired.get('historyFileSha256') == proof['historyFileSha256'] and wired.get('fullFreeProbeSha256') == proof['fullFreeProbeSha256']
+                and wired.get('acceptedBaseRounds') == 992 and wired.get('acceptedJackpotRounds') == 4 and wired.get('acceptedFreeRounds') == 1
+                and wired.get('sampledRounds') == 1001 and wired.get('rejectedPartialFreeRounds') == 4
+                and wired.get('rejectedHistoricalIndices') == [v['sampleIndex'] for v in proof['rejectedHistoricalPrefixes']]
+                and wired.get('sourceRoutesValidated') == 2004 and wired.get('rawHashesUnchanged') is True
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('legacyOrdinaryAndJackpotParityRounds') == 996 and wired.get('fullProbeCorrectedWinRaw') == 5930
+                and wired.get('fullProbeLegacyOmissionRaw') == 880 and wired.get('unreviewed1760TriggerTerminalRejected') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
     if plan.get('zeroAbpmContract') is not None:
