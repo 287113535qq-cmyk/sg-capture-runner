@@ -13,8 +13,13 @@ export async function closePreparation({profile,target,store,transport,boundary,
  assert(permit?.run===previous.previousRun&&permit.queueId===profile.payload.queueId&&ended?.run===permit.run
   &&ended.activation===previous.previousActivation&&ended.commit===permit.commit&&queueHash(ended)===previous.endedProofHash,'SG_AG_CLOSE_PREVIOUS_WINDOW');
  const oldRun=await readEnded(previous.previousRun.split(':')[0]),oldJobs=await readEndedJobs(previous.previousRun.split(':')[0]);
+ const activeJobs=oldJobs.jobs.filter(j=>j.conclusion!=='skipped');
+ const lanes=activeJobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));
  assert(oldRun?.status==='completed'&&oldRun.head_sha===permit.commit&&oldJobs.total_count===oldJobs.jobs.length
-  &&oldJobs.total_count===22&&oldJobs.jobs.every(j=>j.status==='completed'),'SG_AG_CLOSE_OLD_ACTOR_ACTIVE');
+  &&oldJobs.total_count<100&&oldJobs.jobs.every(j=>j.status==='completed')&&activeJobs.length===22
+  &&lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20
+  &&activeJobs.some(j=>j.name==='ag-rolling-admit'&&j.conclusion==='success')
+  &&activeJobs.some(j=>j.name==='ag-rolling-finalize'&&j.conclusion==='success'),'SG_AG_CLOSE_OLD_ACTOR_ACTIVE');
  const receipt={...recovery.receipt,closureRun:run,closureCommit:commit,closureProfileHash:queueHash(profile),
   operation:'close-ended-admission',fullCaptureWindowEnded:false};
  const key='rolling-admission-ended:'+receipt.targetActivation+':'+receipt.targetRun;
