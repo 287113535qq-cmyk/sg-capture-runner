@@ -10,6 +10,7 @@ import {captureCollector} from '../../trial/collector-loader.mjs';
 import {heldBalanceFields,BALANCE_CONTRACT} from './sg-held-balance.mjs';
 import {automaticFreeNext,automaticFreeFields,AUTOMATIC_FREE_CONTRACT} from './sg-automatic-free.mjs';
 import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
+import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbePick,explicitProbeIntent} from './sg-explicit-probe.mjs';
 const require=createRequire(import.meta.url);let registered=false;
 function loadCollector(){if(!registered){require('../../../collector/node_modules/ts-node').register({
  project:path.resolve('collector/tsconfig.json'),transpileOnly:true});registered=true;}}
@@ -40,12 +41,29 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[],
    ...(plan.balanceContract===BALANCE_CONTRACT?{balanceContract:BALANCE_CONTRACT}:{}),
    ...(plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?{automaticFreeContract:AUTOMATIC_FREE_CONTRACT}:{}),
+   ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
   async reviewExplicit(raw){
    const js=reviewExplicitPrefix(plan,raw),py=await parser.call({op:'review_explicit',plan,raw});
    assert(stable(js)===stable(py),'SG_JS_PY_EXPLICIT_REVIEW_MISMATCH');return js;
   },
-  async next(raw){const js=raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeNext(plan,raw):contract?contract.next(plan,raw):nextRequest(raw);
+  async next(raw,chooseOption){
+   if(raw.explicitProbeContract!==undefined){
+    const route=explicitProbeRoute(plan,raw),py=await parser.call({op:'explicit_probe_route',plan,raw});
+    assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_PROBE_MISMATCH');
+    if(route){
+     let request=route.request;
+     if(route.options.length){
+      const selected=typeof chooseOption==='function'?await chooseOption(route.options):route.options[0];
+      assert(route.options.some(o=>o.pickIndex===selected?.pickIndex&&o.position===selected?.position),'EXPLICIT_PROBE_POSITION');
+      request=explicitProbePick(plan,raw,selected.position);
+     }
+     explicitProbeIntent(plan,raw,payload(request));
+     assert((await parser.call({op:'explicit_probe_intent',plan,raw,payload:payload(request)}))?.validated===true,'SG_REQUEST_MODE');
+     return request;
+    }
+   }
+   const js=raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeNext(plan,raw):contract?contract.next(plan,raw):nextRequest(raw);
    const py=await parser.call({op:'next',plan,raw});assert(stable(js)===stable(py),'SG_JS_PY_ROUTE_MISMATCH');
    if(js)assert((await parser.call({op:'intent',plan,raw,payload:payload(js)}))?.validated===true,'SG_REQUEST_MODE');
    return js;},

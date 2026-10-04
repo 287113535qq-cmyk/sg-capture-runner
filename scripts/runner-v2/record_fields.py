@@ -58,6 +58,9 @@ def execute(request):
     if request.get('op') == 'review_explicit':
         from explicit_request_review import review_explicit_prefix
         return review_explicit_prefix(plan, request['raw'])
+    if request.get('op') in ('explicit_probe_route','explicit_probe_intent'):
+        from explicit_request_probe import route,intent
+        return route(plan,request['raw']) if request['op']=='explicit_probe_route' else intent(plan,request['raw'],request['payload'])
     if request.get('op') == 'five_bootstrap':
         assert plan['sourceKey'] == FIVE_SOURCE
         return adapter.bootstrap(request['step'], request['session'])

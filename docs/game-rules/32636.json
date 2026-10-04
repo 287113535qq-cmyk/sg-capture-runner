@@ -117,9 +117,9 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
+    "service/native_nextgen_fields.py": "3e899a6bc2d520f745ada1801a0f197f0bb55a521a4ab1b2ba0acfe8a2994ccf",
     "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
-    "scripts/runner-v2/record_fields.py": "de09e53959d595a54f13faa43372edf3fd0d49f982ca6b5b9ad1f7c67dc7c85a",
+    "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
     "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
     "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
     "collector/sg.piggies.ts": "874141a07df1df4c3674ec5217b4e0340f46c58d5cccff30d72fbde1f001ba51",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8ae0624b828a4c53abf1634b727f04241e34b0d60bbd0709e302f2a8c307dbaf"
+  "ruleHash": "0d69499d19812f69c39a20f3ac9b790088b62261ebade7264a9dfa3d49860e4c"
 }

@@ -10,6 +10,10 @@ let cached;
 const amount=v=>{const n=integer(v);assert(n>=0,'INVALID_MONEY_EVIDENCE');return n;};
 function scope(plan){
  cached??=JSON.parse(fs.readFileSync('config/ag-rolling-explicit-request-reviews.json','utf8'));
+ const {explicitProbeContract,explicitProbeContractHash,...base}=plan;
+ if(explicitProbeContract!==undefined||explicitProbeContractHash!==undefined){
+  assert(explicitProbeContract==='nextgen-explicit-request-evidence-v1'&&explicitProbeContractHash===queueHash(cached),'EXPLICIT_REVIEW_PLAN_BINDING');plan=base;
+ }
  const id=String(plan.gameId),binding=cached.sourceBindings?.[id];
  assert(['32474','32497'].includes(id)&&binding&&binding.planHash===queueHash(plan)
   &&plan.adapter==='native-nextgen-v1'&&plan.rollingPlan==='sg-ag-rolling-plan-v1'

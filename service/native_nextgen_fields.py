@@ -38,6 +38,10 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if raw.get('explicitProbeContract') is not None:
+            from explicit_request_probe import binding,is_feature
+            binding(self.plan,raw)
+            check(not is_feature(raw),'INCOMPLETE_EXPLICIT_PROBE')
         if raw.get('automaticFreeContract') is not None:
             from automatic_free_fields import binding,settled
             binding(self.plan)

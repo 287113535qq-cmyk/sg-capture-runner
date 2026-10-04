@@ -130,7 +130,9 @@
         "BPR": "108",
         "GN": "carnivalcowcoincombo96",
         "RB": "5"
-      }
+      },
+      "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
+      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
     },
     "32476": {
       "schema": "sg-work-pool-v1",
@@ -266,7 +268,9 @@
         "BPL": "5",
         "GN": "dragonjinlongjinbao96",
         "LB": "50"
-      }
+      },
+      "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
+      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
     },
     "32500": {
       "schema": "sg-work-pool-v1",
@@ -1905,7 +1909,7 @@
       "workers": 20,
       "gameId": 32716,
       "runtimeGameId": 33116,
-      "name": "Huff N’ Even More Puff Grand",
+      "name": "Huff N\u2019 Even More Puff Grand",
       "runtimeSlug": "hnempgrand96",
       "sourceKey": "hnempgrand96-ag-rolling-nextgen-v1",
       "mode": "demo",
@@ -3341,7 +3345,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32474,
       "runtimeGameId": 33027,
-      "planHash": "2438a1298918958738f535cc11790790799b6ada6e7468442594ab0cd5109b79",
+      "planHash": "7f17f16ca13a9625aa1fe704c565859911dc697e32682c5affd99c689bbac1da",
       "historyFileSha256": "b45d34fd3db0fee99cefb52ef7528aca4ba56566262f700520a9e4258e1dc5ce",
       "acceptedBaseRounds": 100,
       "acceptedFreeRounds": 0,
@@ -3450,7 +3454,22 @@
       ],
       "unhandledHistoricalVariants": {},
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "2438a1298918958738f535cc11790790799b6ada6e7468442594ab0cd5109b79",
+      "explicitProbeEvidence": {
+        "schema": "sg-ag-explicit-request-probe-evidence-v1",
+        "contractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
+        "ownNativePrefixes": 104,
+        "nativeEvidenceHash": "f0bc9c26a1aea98b3591daabb0c1b8ccf7d27f6b9ca1cfb3e8690591e198b721",
+        "historicalEvidenceHash": "72dbeb2d4064cbc3e7932164d8209cd8016859d64955e998d42732ac6273d39b",
+        "independentJsPython": true,
+        "maxReviewedContinuations": 2,
+        "fullSpecialTerminalsObserved": 0,
+        "settlementApproved": false,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32476": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
@@ -3767,7 +3786,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32497,
       "runtimeGameId": 33032,
-      "planHash": "ee05be7ecfeceb03eeac2809a6ee7347f84a3986ac03e64d67f63a7b64ae4da6",
+      "planHash": "9ab063f12be79bb78b0e6956aa071ab5298f913e7775be97cde1b317f9471385",
       "historyFileSha256": "421c21bf1d008e3f61b2d26a846aae434500d9268d189397c2410ad3f2770899",
       "acceptedBaseRounds": 99,
       "acceptedFreeRounds": 0,
@@ -3875,7 +3894,22 @@
       ],
       "unhandledHistoricalVariants": {},
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "ee05be7ecfeceb03eeac2809a6ee7347f84a3986ac03e64d67f63a7b64ae4da6",
+      "explicitProbeEvidence": {
+        "schema": "sg-ag-explicit-request-probe-evidence-v1",
+        "contractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
+        "ownNativePrefixes": 96,
+        "nativeEvidenceHash": "60671f389d1b0a927806a90a871456317f7a3edfb808d45bae2ef84c57b1b3e4",
+        "historicalEvidenceHash": "84fe73ba22ded4e0316201dadd34d2dae50faf700926014b48aa4e78722e1cb1",
+        "independentJsPython": true,
+        "maxReviewedContinuations": 1,
+        "fullSpecialTerminalsObserved": 0,
+        "settlementApproved": false,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32500": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
