@@ -163,7 +163,9 @@
         "BPL": "10",
         "GN": "chainreactorsdeluxe96",
         "LB": "5"
-      }
+      },
+      "balanceContract": "nextgen-held-award-balance-v1",
+      "balanceContractHash": "5d6cf1cb54f4a014aa8e81fb7d05e0b9775e64da439db93087c1a8d9e23fc85d"
     },
     "32486": {
       "schema": "sg-work-pool-v1",
@@ -294,7 +296,9 @@
         "BPL": "5",
         "GN": "dragonspincrosslinkfire96",
         "LB": "40"
-      }
+      },
+      "balanceContract": "nextgen-held-award-balance-v1",
+      "balanceContractHash": "b72fb3f723083cd88bffbf23dbbd25690c4cc0ba27f9a124f92f39f6b83a7e04"
     },
     "32501": {
       "schema": "sg-work-pool-v1",
@@ -326,7 +330,9 @@
         "BPL": "5",
         "GN": "dragonspincrosslinkwater96",
         "LB": "40"
-      }
+      },
+      "balanceContract": "nextgen-held-award-balance-v1",
+      "balanceContractHash": "3ffb57a98df04296bcd1fe74e2c724590870ea6f159677cfb7b5049555eeaef6"
     },
     "32502": {
       "schema": "sg-work-pool-v1",
@@ -359,7 +365,9 @@
         "BPR": "176",
         "GN": "dragonunleashedprosperitypackets96",
         "RB": "5"
-      }
+      },
+      "balanceContract": "nextgen-held-award-balance-v1",
+      "balanceContractHash": "36be8ed19061e34519b314c265dfa20ab7352a8d6ad5df74f3da45a223dd1bb1"
     },
     "32503": {
       "schema": "sg-work-pool-v1",
@@ -425,7 +433,9 @@
         "BPR": "176",
         "GN": "dragonunleashedtreasuredhappiness96",
         "RB": "5"
-      }
+      },
+      "balanceContract": "nextgen-held-award-balance-v1",
+      "balanceContractHash": "1bfaa3b0e1764f5ff4b580568e7bd5a53a4f9586e0c5f9ac6d8e680848f62409"
     },
     "32514": {
       "schema": "sg-work-pool-v1",
@@ -3403,7 +3413,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32476,
       "runtimeGameId": 33028,
-      "planHash": "ef806ed636cc60a44065864c24a29701f15d86509a8605d13776c647e3d93169",
+      "planHash": "cf8b69d19146673faa8e3c15f053eeb59b57ae17225a04828fe8455d6e8c085b",
       "historyFileSha256": "f00683b806ea7a56fa18c9692988ca7399992c97b2d6433cb6e2a904593f936c",
       "acceptedBaseRounds": 40,
       "acceptedFreeRounds": 0,
@@ -3454,7 +3464,18 @@
         "UNRECONCILED_FINAL_BALANCE": 60
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "ef806ed636cc60a44065864c24a29701f15d86509a8605d13776c647e3d93169",
+      "balanceRepair": {
+        "schema": "sg-ag-balance-repair-evidence-v1",
+        "contractHash": "5d6cf1cb54f4a014aa8e81fb7d05e0b9775e64da439db93087c1a8d9e23fc85d",
+        "nativeRounds": 1,
+        "nativeEvidenceHash": "ae635229e733d0fac1e99f6e01819b514067380b4ff73a30031ccfea51bff2c7",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32486": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
@@ -3804,7 +3825,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32500,
       "runtimeGameId": 33033,
-      "planHash": "0ac7e53b17a4a665af12959f2ba541a824c77b4e65240534f1d9b5d513d41754",
+      "planHash": "3502702762558f0d48261c94c4cecfb159aa49690fb0d6d847fbbd8445df2bc5",
       "historyFileSha256": "2d4158a12ab3cbfb37a8b279f47b23993bf89f76cbf66299a39aa0d24a896622",
       "acceptedBaseRounds": 93,
       "acceptedFreeRounds": 0,
@@ -3910,13 +3931,24 @@
         "UNKNOWN_TRIAL_FEATURE": 4
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "0ac7e53b17a4a665af12959f2ba541a824c77b4e65240534f1d9b5d513d41754",
+      "balanceRepair": {
+        "schema": "sg-ag-balance-repair-evidence-v1",
+        "contractHash": "b72fb3f723083cd88bffbf23dbbd25690c4cc0ba27f9a124f92f39f6b83a7e04",
+        "nativeRounds": 17,
+        "nativeEvidenceHash": "bbbf8f48d18c5e53e9599ccc4d265cbba562d62de58420beaeb527993d65686e",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32501": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32501,
       "runtimeGameId": 33034,
-      "planHash": "7039f15e847d2d6e5dc68e874305d812df77e5ab17300fbf1f1b2628dd82c920",
+      "planHash": "d3b30bbf266a0143c86debf7aff7dff89a9e358b8ddb0dee357e81b5b381a76c",
       "historyFileSha256": "87a197b3634e6e7048c32b3e3e01c27c7f76849bea5948b347f6a6048bf7d672",
       "acceptedBaseRounds": 99,
       "acceptedFreeRounds": 0,
@@ -4026,13 +4058,24 @@
         "UNKNOWN_TRIAL_FEATURE": 1
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "7039f15e847d2d6e5dc68e874305d812df77e5ab17300fbf1f1b2628dd82c920",
+      "balanceRepair": {
+        "schema": "sg-ag-balance-repair-evidence-v1",
+        "contractHash": "3ffb57a98df04296bcd1fe74e2c724590870ea6f159677cfb7b5049555eeaef6",
+        "nativeRounds": 1,
+        "nativeEvidenceHash": "8ee58b6da86e182f353146833700d0a1bd5142924baf71239a4cd0b7e640034c",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32502": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32502,
       "runtimeGameId": 33035,
-      "planHash": "ffcc315729466136e3bc85007d8838456c4696032b8302bfddce09d311e93415",
+      "planHash": "2fb576fd38b7bee5b7f17e637cee158685a00f6754cd70b49e967d68a796d927",
       "historyFileSha256": "701580cee31fb68c75fbeb128b3b4c2d4daa04d3f85b44c62909cc54c42e8189",
       "acceptedBaseRounds": 100,
       "acceptedFreeRounds": 0,
@@ -4141,7 +4184,18 @@
       ],
       "unhandledHistoricalVariants": {},
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "ffcc315729466136e3bc85007d8838456c4696032b8302bfddce09d311e93415",
+      "balanceRepair": {
+        "schema": "sg-ag-balance-repair-evidence-v1",
+        "contractHash": "36be8ed19061e34519b314c265dfa20ab7352a8d6ad5df74f3da45a223dd1bb1",
+        "nativeRounds": 7,
+        "nativeEvidenceHash": "98f587478c4869c42cb419db74016b6be35ac5b3fbf7b6d4269742977ce1d5ce",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32503": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
@@ -4262,7 +4316,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32504,
       "runtimeGameId": 33037,
-      "planHash": "4b6fccbaeae7695e043b27ecf3ff6b0060cb86a38f183d8785d546472d9f2fce",
+      "planHash": "03404953b69a2f818d7b2687d39096be829df3fd6a40ec97df5636727ef0eb82",
       "historyFileSha256": "9a11bf0fbc1a1d41992e39dc0609b0ff83e79ace8dda03cf3fe2aca3aca70183",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 0,
@@ -4371,7 +4425,18 @@
         "UNRECONCILED_FINAL_BALANCE": 1
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "4b6fccbaeae7695e043b27ecf3ff6b0060cb86a38f183d8785d546472d9f2fce",
+      "balanceRepair": {
+        "schema": "sg-ag-balance-repair-evidence-v1",
+        "contractHash": "1bfaa3b0e1764f5ff4b580568e7bd5a53a4f9586e0c5f9ac6d8e680848f62409",
+        "nativeRounds": 7,
+        "nativeEvidenceHash": "0dc04e9ba1816298fd9b134c20d07bcff425561515fdd1aea14f07c2f62ee65c",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32514": {
       "schema": "sg-ag-rolling-offline-adapter-v1",

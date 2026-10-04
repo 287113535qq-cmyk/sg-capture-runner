@@ -1,0 +1,163 @@
+{
+  "schema": "sg-ag-rolling-balance-contracts-v1",
+  "contract": "nextgen-held-award-balance-v1",
+  "sourceAllowance": 0,
+  "sources": {
+    "dragonspincrosslinkfire96-ag-rolling-nextgen-v1": {
+      "gameId": 32500,
+      "runtimeGameId": 33033,
+      "sourceKey": "dragonspincrosslinkfire96-ag-rolling-nextgen-v1",
+      "betRaw": 100,
+      "requestParams": {
+        "BPL": "5",
+        "GN": "dragonspincrosslinkfire96",
+        "LB": "40"
+      },
+      "nativeRawHashes": [
+        "1e60c84a3e69b92edbc34cb2dd992f88a5a4eb8eff4edabca4c3f5cc3822d7bb",
+        "6daae554df07fb27c455a7d514e6f45ef491667f2d7c1f4df049d914bbb59fa2",
+        "e387d21f31c4e64000ca0294135bf360ebd5edb55d315eeedb45c86ea2297e68",
+        "0f4a021fd7caa186cbd998442310baa1ba2ca9af32623a6d8cde24e1f355b698",
+        "c8ebf1bd671a7a4286393c0267681a23b654533ebd0a5b01e41943a73a2d6451",
+        "aa7ba9b593409478e45335809ab2058a800cfb5da1c041ef9cf3903f25cd8088",
+        "9ed1a5a8842a8f3a2f2d0d40a9434e135632eaa76a129d41e54166af4dccb147",
+        "ca887713eb150be5309005bbcb554496885f456f995f7dc777f1990265337ec9",
+        "0a7b9e58135a77554f2d48ef54efe6bd087bf6d1f734f2ee20038e30eeea447c",
+        "5ab2cf300e7dd2e0d57027f64dd5dceaa9d534976096ca245dac6f2d8b420e80",
+        "04cf5d52bfc82675a48a45c4bb9f255759302b5cc992b0ee05742f5f593a405a",
+        "4107ebcab587db6b07ce77aaa54822eed3aa9b5e4a15f1c9e0428459281da5d4",
+        "49ea26e75de26628b5ebcef605820d836642f88cc343586cbf3762106149660b",
+        "dc65a2ea923d4c15eca49db476f0091ba7a5154c684421b645a389c22d81ebae",
+        "cc9768e97fd81f9ce98a0b669303d9850c5df5280af73d10bddd110f369b65c0",
+        "a627fd687a6af3324d81d7ed59a3a449f7b5932d2d02f156610774e7a32f3580",
+        "5c8dcb20790ec1afb5c766e9066b5b9c133a6972235a4dad3556918689c337c8"
+      ],
+      "closedHashes": [
+        "0f85ae356f0ef24f60cdb614b140d8c30b8a7a283e683cebc62a84f7310eb94a",
+        "bc28f1fd484eca83e1334f8cc8a977b3ce6ae7ccfcc81aa7482365bd61dac3f2",
+        "e53a45f4c2c77271379b679ab152d1dbda99fca96c6290fd418393354cf2d511",
+        "1b4f47c9c4f052c27c3559d0b01b592cf5a2716f77aa672d8390e436e9600ae1",
+        "7a3d0ff56ed713097548c3b2b45c5ddc9b9b43be2ab0935d57a94f531a3bdafe",
+        "158c95a21518e998d3fceaee7b640bcf7a26cb9a53ba42b7d595c78c39a3d44c",
+        "6bfa797c409ab7b96eee828863de05f94990a7aace9634e408f018e097df9ebc",
+        "fdfe55b26a1139ebebb52f056e2bf4189dd256d8619c79bc21ccfeebb2adec94",
+        "a7efafd0d22510a2fefd81bd0d6c5fed910bac1707bb6d2c10974536f5e23e24",
+        "5fc8a339a5da7b8e48a4856f41e54582652bc95b2cddcaf8c5a4d0139c564eec",
+        "3f8564af8a670c9cdd00d9c752e199c2c7233555afc9a6bfd17b3f87a13c36a2",
+        "fe547e9616be69e31f4c88707628510823d5bbadc7562a95389e955572754002",
+        "29a7c287d08f33ea69d0de217adba5045b8d141fdc4a7f008974254a7459ef1a",
+        "32e24ae65e214a171d0e669f1e62c0051817399213b8e979ca19d06909b2c12b",
+        "df2aca256b284e62d2a5a24f75b0344f9aba63cdff8cb86404397274b4acb641",
+        "9a1497d8c22e949d3181f54a7bb04ebb17e71c5e5b525c468072f19371e80fd2",
+        "3dd2f9bac4d3f8e9202fc99bf855435d72e0311d6f1e5a4fda8df220a3a3bee2"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    },
+    "dragonunleashedtreasuredhappiness96-ag-rolling-nextgen-v1": {
+      "gameId": 32504,
+      "runtimeGameId": 33037,
+      "sourceKey": "dragonunleashedtreasuredhappiness96-ag-rolling-nextgen-v1",
+      "betRaw": 176,
+      "requestParams": {
+        "AP": "false",
+        "BPR": "176",
+        "GN": "dragonunleashedtreasuredhappiness96",
+        "RB": "5"
+      },
+      "nativeRawHashes": [
+        "65513212f13355450c6fba208f5b124ad41efed6df6a6e8f14401ea3df501dcd",
+        "2b5c32bb351ef0477dec2fd1a43ce6215df3d1d3308a560c9c7412dee5efdd8e",
+        "8677ba76b73e9cd16941bae90744715386a18bf6a5059e62470de770c1457336",
+        "431ce7547d31c2d83ba141ab4aba0ca58d396111126c63b5ee992992e4f5ebd3",
+        "d2da79b46e5001f7e272b949172ffce55343fd6fe0fd25e573ecc15beac49fdc",
+        "608d304b0fe03ed570c4c4a73864dfc93cb0994b14b43837b35ead99407a60c7",
+        "25e37fd8f3255c5e5167bb578f018d4ffe9bd469987b962b24568e8ccd5bb28e"
+      ],
+      "closedHashes": [
+        "16e1527034c80731d6ff994e55295037a01968c4352e38db7a51292c18aa4428",
+        "237272dd1591c14efba15387d3cbed0ed27e86146367089b05a19f40a35ac46c",
+        "57f73c308b6acc9ce3c25b7cd2a25c5b75ea135d1b8398bccf7fb9d2ef4e9018",
+        "42db2ae8e11c95eab218180a65d0bf2fa2d2f133c206889b442ea185b2fafb85",
+        "d50f0045ceffd1c2ca4ac93e27f2139e94aeda0a40df5bfe80c8c670e292ab11",
+        "c2a3366eed2bbccae46cc05d884a0a18da957795b2dffa66e6bfb8efdf04708f",
+        "3e9f60f51b4bee17d43c285855df9309c2a66a3288abf77387e71a23c27335a6"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    },
+    "dragonunleashedprosperitypackets96-ag-rolling-nextgen-v1": {
+      "gameId": 32502,
+      "runtimeGameId": 33035,
+      "sourceKey": "dragonunleashedprosperitypackets96-ag-rolling-nextgen-v1",
+      "betRaw": 176,
+      "requestParams": {
+        "AP": "false",
+        "BPR": "176",
+        "GN": "dragonunleashedprosperitypackets96",
+        "RB": "5"
+      },
+      "nativeRawHashes": [
+        "d265c62580a827b00640d10f67dfc4adddef21efc8ba73f96a3dd07b83b7306e",
+        "bc11d694fc40abccdfba17b05fbc42246a9e8aad48b599af6178c89b7b97663a",
+        "5e3c20ffd2dd055e8662d6279f692a57c6b6f533fb90aa2ccdbb338bc0fd4c99",
+        "8e76642c9b9324317f590b1043dafcee340ef661322a3f2eb018b8aee4b7148c",
+        "614547a0464cb63752aa71716f7cb5137966634c3e423999050080331a4820e1",
+        "54911db63925c3ab6c48830f5ba097fc7d678ecb1b92098570e5a5a36fd46c8c",
+        "eaddf4ca239f53bdf948753eb1b5ac4d5691940cf151c1c6b6ec8f1235939f50"
+      ],
+      "closedHashes": [
+        "7647cbe945323b97d2095189a9dca8ab25b6c87cd82b8e5a992967f99fcf6ffb",
+        "668ef02ebfc69801f347abc2c6ad15dd760d74953a993112875fcb65638af421",
+        "4b05f1d6a5e5e99c18971c4ddb033e4ebdadb989eb43193af4c7d2a5489d3a1d",
+        "46f8c42a9c314dae25105aeee79c2c7cafa384adcfa016b1e57e9dfe220bc2d4",
+        "1cd16c857a54f4b159a810e3d7e6f7b4583424716c544e1bfb4f42bc3298401d",
+        "72c3984cb6a21c88ea6026b5c78e9bc907349d65cbd45e180087d0ee93906e0e",
+        "ff90ea89e8ed72344b2dde8efe15468e7ac8fb1351842102415e17f0c33d6b28"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    },
+    "dragonspincrosslinkwater96-ag-rolling-nextgen-v1": {
+      "gameId": 32501,
+      "runtimeGameId": 33034,
+      "sourceKey": "dragonspincrosslinkwater96-ag-rolling-nextgen-v1",
+      "betRaw": 100,
+      "requestParams": {
+        "BPL": "5",
+        "GN": "dragonspincrosslinkwater96",
+        "LB": "40"
+      },
+      "nativeRawHashes": [
+        "582b487c1d71ed0636a8574ba98f2f8bc42fbbd31d505d822bba8cc76d11d680"
+      ],
+      "closedHashes": [
+        "b71c84186f71d4a5701554ed160378b121ff31810cb4953d97f2488f59e7cf94"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    },
+    "chainreactorsdeluxe96-ag-rolling-nextgen-v1": {
+      "gameId": 32476,
+      "runtimeGameId": 33028,
+      "sourceKey": "chainreactorsdeluxe96-ag-rolling-nextgen-v1",
+      "betRaw": 10,
+      "requestParams": {
+        "AP": "false",
+        "BPL": "10",
+        "GN": "chainreactorsdeluxe96",
+        "LB": "5"
+      },
+      "nativeRawHashes": [
+        "a0782a2b80051d3fbf212f1174d484b66bcc398faad2e36d0365ed8bbab0e706"
+      ],
+      "closedHashes": [
+        "d63d3fb87377b271ddf73d7426f6aca1175d76d8d1264d1e7b0d8f0328eb78d9"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
+    }
+  },
+  "evidenceObservedAt": 1791072136,
+  "originalQueueId": "rolling-20261003225355-f0d07c84"
+}

@@ -38,6 +38,11 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if raw.get('balanceContract') is not None:
+            from held_balance_fields import binding, settled
+            binding(self.plan)
+            check(raw.get('sourceKey')==self.plan['sourceKey'],'TRIAL_PROFILE_REQUIRED')
+            return settled(raw)
         check(raw.get('fixtureOnly') is False and raw.get('protocol')=='nextgen'
             and raw.get('sourceKey')==self.plan['sourceKey'] and raw.get('roundFieldsVersion')==VERSION,'TRIAL_PROFILE_REQUIRED')
         steps=raw['steps'];check(0<len(steps)<=100 and steps[0]['msgId']=='BET','INVALID_ROUND_STEPS')
