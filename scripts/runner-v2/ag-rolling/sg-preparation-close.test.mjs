@@ -14,14 +14,25 @@ function setup(){
  const gh={id:123,run_attempt:1,head_sha:commit,status:'completed',conclusion:'failure',event:'workflow_dispatch',path:'.github/workflows/trial-300k.yml',repository:{full_name:'zyzuoyang/sg-capture-runner'}};
  const jobs={total_count:2,jobs:[{id:1,name:'ag-rolling-admit',status:'completed',conclusion:'failure'},{id:2,name:'AG rolling lane ${{ matrix.lane }}',status:'completed',conclusion:'skipped'}]};
  const args={profile,target,store,transport:{request:async()=>({group:'primary',gatewaySha256:profile.nativeGatewayHash,accessManifestHash:profile.nativeManifestHash})},boundary:async()=>{},
-  readEnded:async id=>id==='123'?gh:{status:'completed',head_sha:ended.commit},readEndedJobs:async id=>id==='123'?jobs:{total_count:22,jobs:Array.from({length:22},()=>({status:'completed'}))},commit:'h'.repeat(40),run:'124:1',now:()=>1000};
- return {args,docs,writes,gh,jobs};
+  readEnded:async id=>id==='123'?gh:{status:'completed',head_sha:ended.commit},readEndedJobs:async id=>id==='123'?jobs:oldJobs,commit:'h'.repeat(40),run:'124:1',now:()=>1000};
+ const oldJobs={total_count:59,jobs:[{name:'ag-rolling-admit',status:'completed',conclusion:'success'},
+ ...Array.from({length:20},(_,i)=>({name:'AG rolling lane '+(i+1),status:'completed',conclusion:i===19?'cancelled':'failure'})),
+ {name:'ag-rolling-finalize',status:'completed',conclusion:'success'},
+ ...Array.from({length:37},(_,i)=>({name:'conditional-'+i,status:'completed',conclusion:'skipped'}))]};
+ return {args,docs,writes,gh,jobs,oldJobs};
 }
 test('source-free GitHub closure seals the exact claim and keeps the old full-window anchor, without task, lease or round writes',async()=>{
  const s=setup(),old=structuredClone(s.args.target);const result=await closePreparation(s.args);
  assert.equal(result.sourceRequests,0);assert.equal(result.taskWrites,0);assert.equal(result.roundWrites,0);assert.deepEqual(s.args.target,old);
  assert.equal(s.writes.length,2);assert.deepEqual(s.writes[1],['cas','rolling-source']);const after=s.docs.get('state/rolling-source').value;
  assert.equal(after.status,'idle');assert.equal(after.lastRun,'122:1');assert.equal(after.lastAdmissionClosed.run,'123:1');
+});
+test('59-job workflow with 37 skipped conditional jobs is sealed only when every original lane and both control jobs have ended',async()=>{
+ for(const change of [s=>s.oldJobs.jobs[2].status='in_progress',s=>s.oldJobs.jobs.splice(3,1),
+  s=>s.oldJobs.jobs[2].name=s.oldJobs.jobs[1].name,s=>s.oldJobs.jobs[21].conclusion='failure',
+  s=>s.oldJobs.jobs[22].conclusion='success',s=>s.oldJobs.jobs[0].conclusion='failure']){
+  const s=setup();change(s);await assert.rejects(closePreparation(s.args),/SG_AG_CLOSE_OLD_ACTOR_ACTIVE/);assert.equal(s.writes.length,0);
+ }
 });
 test('an unknown closure CAS is issued once and never retried or credited as a completed capture window',async()=>{
  const s=setup();let n=0;s.args.store.cas=async()=>{n++;throw Object.assign(new Error('unknown'),{outcomeUnknown:true});};

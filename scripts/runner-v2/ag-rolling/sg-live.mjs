@@ -23,6 +23,7 @@ import {auditTasks,readOnlyAuditTransport} from './sg-admission-audit.mjs';
 import {cohortRepos,cohortView,joinCohort,participantKey,inspectParticipant,endedCohortJobs} from './sg-federation.mjs';
 import {companionBoundary} from './sg-federated-boundary.mjs';
 import {closePreparation} from './sg-preparation-close.mjs';
+import {protocolFaultCode} from './sg-fault-code.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
@@ -237,7 +238,7 @@ try{
   assert(await store.cas('state','rolling-source',before,{owner:null,queueId:null,status:'idle',lastRun:run,
    lastQueueId:profile.payload.queueId,endedProofHash:queueHash(result)}),'SG_AG_SOURCE_FENCE');log(JSON.stringify(result));
  }
-}catch(error){const code=error.code??error.message;log(JSON.stringify({outcome:'stopped',code:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_CONTROL_STOPPED'}));process.exitCode=2;}
+}catch(error){log(JSON.stringify({outcome:'stopped',code:protocolFaultCode(error)}));process.exitCode=2;}
 finally{await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
  log(JSON.stringify({kind:'sg-ag-admission-read-performance',reader:index+1,...context.reader.metrics()}));context.parser.close();context.reader.close();}
  log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}
