@@ -128,8 +128,8 @@ try{
    oldProfile:read('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/trial-300k.yml'});
   const result=await activateQueue({profile,store,transport,boundary,commit,run,
    readLinux:id=>gh(`repos/287113535qq-cmyk/sg-capture-runner/actions/runs/${id}`),
-   readEnded:id=>gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${id}`),
-   readEndedJobs:id=>gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${id}/jobs?filter=all&per_page=100`),
+   readEnded:(id,repository=cohortRepos.primary)=>gh(`repos/${repository}/actions/runs/${id}`),
+   readEndedJobs:(id,repository=cohortRepos.primary)=>gh(`repos/${repository}/actions/runs/${id}/jobs?filter=all&per_page=100`),
    readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
    checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
    prepareResume:async({game,queueId,ended,previous,guard})=>{

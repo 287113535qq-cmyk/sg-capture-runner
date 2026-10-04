@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
 import {validateSgPayload} from './sg-contract.mjs';
+import {inspectFederationRevision,resumeFederation} from './sg-federation.mjs';
 // Revisions extend AG's ordered game list; they never replace its campaigns
 // or reset a task namespace. Adapter hash changes are checked separately by
 // the reviewed repair manifest and the independent saved-prefix audit.
@@ -20,6 +21,7 @@ export function inspectQueueRevision({profile,previous,prior}){
  assert(queueHash(oldHeader)===queueHash(newHeader)&&next.length>=old.length
   &&old.every((game,i)=>queueHash(game)===queueHash(next[i])),'SG_QUEUE_PREVIOUS_GAMES_CHANGED');
  assert(previous.manifest.length===old.length&&profile.manifest.length===next.length,'SG_QUEUE_MANIFEST_INVENTORY');
+ inspectFederationRevision({previous,profile});
  for(const game of old){
   const before=previous.manifest.find(e=>e.gameId===game.gameId),after=profile.manifest.find(e=>e.gameId===game.gameId);
   const {planHash:p,adapterProofHash:h,...oldEntry}=before,{planHash:q,adapterProofHash:k,...newEntry}=after;
@@ -77,5 +79,6 @@ export function appendQueueGames({previous,manifest,plans,evidence,resume,now=Da
   gameBindings:added.map(game=>{const entry=nextManifest.find(e=>e.gameId===game.gameId);
    return {gameId:game.gameId,planHash:entry.planHash,adapterProofHash:entry.adapterProofHash};})}:undefined;
  validateSgPayload(payload,nextManifest);
- return {payload,manifest:nextManifest,...(append?{append}:{}),excluded};
+ const federation=resumeFederation({previous,payload});
+ return {payload,manifest:nextManifest,...(append?{append}:{}),...(federation?{federation}:{}),excluded};
 }
