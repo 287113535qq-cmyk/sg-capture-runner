@@ -149,12 +149,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "d6d0730daef4d7640446a80700b8abc94d0f3dff7f2a5d71b5b8cc692e9ec80f",
-    "service/round_fields.py": "4386317b88653dd22df0c55efb81943ac48002bbe4ff38cb56c7829e48c63088",
-    "scripts/runner-v2/record_fields.py": "d3112d5f70973afb4996c2de3e636bed649ff23894a4956bb4e445d04cde1f91",
+    "service/round_fields.py": "675d8320193bd5109047f19c738a4b598accfd2352dcddd21104ea9e7a5e8fd7",
+    "scripts/runner-v2/record_fields.py": "130f18a7f0b72b1d3761df19d8823a5be2c70bd50c1c474c7470fb79dbb10870",
     "service/beaver_fields.py": "60dfaf941bd7de2c37c7abde442193200d5a2504dc620269540ed23e9c5eb8e2",
     "scripts/trial/beaver-protocol.mjs": "85a7d348079f70fac7b9a461efd0bae2307d800e4518a65fe7008066e228ef48",
     "collector/sg.beaver.ts": "e26c3e4a41aecaa9a6047935cb1f822194a41381a18af2c84999bf28dc0cc57a",
-    "service/game_rule_catalog.py": "1dee5032746645b8ca0b3a6c17768acf9265bba84bee6dc312a16e130c8d2f2a"
+    "service/game_rule_catalog.py": "dd15100c7d5df3a82924a01ad1059368f66e848836f0de0d3fa1a3b2ae844993"
   },
   "reviewDocuments": [
     "docs/beaver-free-observation-20260929.md",
@@ -185,5 +185,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f3fca0096398d56acec476000c813f42122e6f93c106b1b0a4b1640cee895ce4"
+  "ruleHash": "49d817646aa1b6cc75a2744fb5c6cfaa981b099dea825fba4bd4b818ae881ee5"
 }

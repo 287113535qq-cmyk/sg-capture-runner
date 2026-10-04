@@ -72,7 +72,7 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('classification pending', rule['complete'])
         self.assertIn('service/veryfruity_action_fields.py', rule['files'])
 
-    def test_five_treasures_offline_candidate_documents_its_actual_wms_identity_and_settlement(self):
+    def test_five_treasures_documents_identity_and_limited_actual_canaries_without_authorizing_capture(self):
         card=self.cards[32749]
         self.assertFalse(card['captureAuthorization'])
         self.assertEqual(card['runtimeGameId'],32971)
@@ -80,8 +80,30 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertEqual(card['roundRule']['family'],'five-treasures-wms-v1')
         self.assertIn('FreeSpinChoice',card['roundRule']['messages'])
         self.assertIn('CASH_BALANCE',card['settlement']['stakeRaw'])
-        self.assertIn('离线候选',card['roundRule']['bounds'])
+        self.assertIn('两次真实canary各10局',card['roundRule']['bounds'])
+        self.assertIn('不代表整款完成',card['roundRule']['bounds'])
         self.assertNotIn('B=AB',card['settlement']['required'])
+
+    def test_acorn_ordinary_only_document_does_not_claim_unknown_feature_coverage(self):
+        card=self.cards[32752]
+        self.assertFalse(card['captureAuthorization'])
+        self.assertFalse(card['allSpecialStageTypesCovered'])
+        self.assertEqual(card['runtimeGameId'],32974)
+        self.assertEqual(card['parameters']['wmsGameId'],20174)
+        self.assertEqual(card['roundRule']['messages'],['Init','Logic','EndGame'])
+        self.assertIn('目前仅普通单Logic',card['roundRule']['continue'])
+        self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
+        self.assertIn('特殊形状拒绝',card['settlement']['required'])
+
+    def test_fortunes_megaways_adapter_is_documented_as_a_distinct_offline_wms_candidate(self):
+        card=self.cards[32751]
+        self.assertFalse(card['captureAuthorization'])
+        self.assertFalse(card['allSpecialStageTypesCovered'])
+        self.assertEqual(card['runtimeGameId'],32973)
+        self.assertEqual(card['parameters']['wmsGameId'],20371)
+        self.assertEqual(card['roundRule']['family'],'fortunes-megaways-wms-v1')
+        self.assertIn('级联奖只计入对应Logic',card['settlement']['required'])
+        self.assertIn('尚无native scope',card['roundRule']['bounds'])
 
 
 if __name__ == '__main__':
