@@ -133,6 +133,20 @@ def contract(game_id):
                       'BGInfo / Balances':'首帧下注16，后续报告stake16不重复扣款；余额=初值-16+逐Logic累计奖。',
                       'BaseGameRecoveryInfo':'只首局ReelResults和TopReelInfo的原样引用，不增加任何奖。',
                       'EndGame':'完整确认、现金保持，半局不能计完整。'}})
+    elif game_id == 32753:
+        native.update({'family':'actionbank-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32975与WMS Header20369分别绑定；独立匿名新Init能力核验后，首Logic Stake.total200/PaylineCount1/CurrencyMultiplier1。',
+            'continue':'只普通单Logic；readyForEndGame=Y、无FSInfo且vaultCount0..3才产生EndGame。响应stakePerLine10/paylineCount20不改变请求PaylineCount1或总下注200。',
+            'complete':'完整普通Logic后唯一EndGame确认，ready=N且无GameResult、现金保持；每帧会话、observer现金、奖额和及BG累计独立双验。',
+            'bounds':'离线候选：前1000自身历史仅989普通完整/1978请求沿实际codec→独立Python IPC→record/verify一致。11旧免费半局ready=N、FSInfo进度0就EndGame仍拒绝，不继续、不回计，不把旧bonus0标签当完整。真实Init/在线canary/native scope未观察或安装；不在当前81队列。免费、vault4、MaxWin、未知节点/ways、恢复和缺终局一律拒绝。',
+            'files':['scripts/runner-v2/ag-rolling/sg-actionbank-base.mjs','scripts/runner-v2/ag-rolling/sg-actionbank-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-actionbank-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'service/actionbank_base_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header':'20369/version1_0、isRecovering=N；普通Logic ready=Y，EndGame ready=N；响应逐帧轮换会话。',
+                      'Stake / PaylineCount':'固定总额200；请求count1与响应20线分别验证，不互相替代。',
+                      'ReelResults':'单spin、索引0、9个ReelStops；普通freeSpin=N/bonusAwarded=N、scatterWinCount0。',
+                      'AnywayWin / BGInfo':'至多2个不重复winIndex、11种自身ways、awardIndex0..10；奖额和、totalSpinWin、totalWin与BG累计完全相等；vaultCount0..3。',
+                      'FSInfo / EndGame':'11旧半局原raw/hash保留且不给End许可；新免费响应必须另行审查。'}})
     elif game_id == 32752:
         native.update({'family':'acorn-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'本游戏目录runtime32974与WMS Header20174分别固定。新匿名Init只有严格已限定能力形状且Stakes含100后，首Logic固定Stake100、lines30、fsOn1、isBuyABonus0及CurrencyMultiplier1。实际Init尚未观察；未知形状停止封存。',
@@ -313,7 +327,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752'):
+    for key in ('32749','32750','32751','32752','32753'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -377,6 +391,11 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
                 'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
                 'required':'固定实际16，GameMode0；级联奖只计入对应Logic，恢复引用不重复计奖，最终EndGame确认及每帧现金严格双验。'}
+        if plan and plan.get('adapter') == 'actionbank-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
+                'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
+                'required':'固定实际200；仅readyY普通完整，Anyway奖额和及BG累计一致，EndGame确认现金保持；11旧免费半局拒绝。'}
         if plan and plan.get('adapter') == 'acorn-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',

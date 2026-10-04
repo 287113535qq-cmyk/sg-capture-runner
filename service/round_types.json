@@ -4471,6 +4471,24 @@
         "fullFreeRounds": 1,
         "rejectedPartialFreeRounds": 4
       }
+    },
+    "actionbankplus-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "actionbank-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32753,
+        "runtimeGameId": 32975,
+        "wmsGameId": 20369,
+        "historyFileSha256": "721d75dedb9f9c14660fd5e135fe1bd1da4dadadff75d3492a73c0420ba6b69a",
+        "fullBaseRounds": 989,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

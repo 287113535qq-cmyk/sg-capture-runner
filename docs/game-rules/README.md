@@ -112,7 +112,7 @@
 | [32750](32750.json) | 88 Fortunes | implemented-subset | 1 |
 | [32751](32751.json) | 88 Fortunes Megaways | implemented-subset | 1 |
 | [32752](32752.json) | Acorn Pixie | implemented-subset | 0 |
-| [32753](32753.json) | Action Bank Plus | not-documented | 待确认 |
+| [32753](32753.json) | Action Bank Plus | implemented-subset | 0 |
 | [32754](32754.json) | Arthur and the Round Table | not-documented | 待确认 |
 | [32755](32755.json) | Blazing X Asia | not-documented | 待确认 |
 | [32756](32756.json) | Celestial King | not-documented | 待确认 |
