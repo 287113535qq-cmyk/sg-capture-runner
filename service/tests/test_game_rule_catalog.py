@@ -155,6 +155,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('spinWins固定0',rule['complete'])
         self.assertEqual(card['typeMappings']['cooljewels-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_crystalforest_card_binds_own_cascade_masks_and_zero_free_coverage(self):
+        card=self.cards[32759];rule=card['roundRule']
+        self.assertEqual(rule['family'],'crystalforest-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32981);self.assertEqual(card['parameters']['wmsGameId'],20142)
+        self.assertIn('1000',rule['bounds']);self.assertIn('2000',rule['bounds']);self.assertIn('0免费覆盖',rule['bounds'])
+        self.assertIn('1419',rule['fields']['Cascade']);self.assertIn('197',rule['fields']['Cascade']);self.assertIn('位集合',rule['fields']['Cascade'])
+        self.assertIn('没有readyForEndGame',rule['continue'])
+        self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_cheshire_card_keeps_own_positions_mystery_and_zero_feature_coverage(self):
         card=self.cards[32757];rule=card['roundRule']
         self.assertEqual(rule['family'],'cheshire-base-wms-v1')
