@@ -102,3 +102,21 @@ test('prefix-only Money Raid feature evidence does not authorize an unseen featu
   assert.throws(()=>automaticFreeFields(p,r,hash),/UNREVIEWED_AUTOMATIC_TERMINAL/);
  }
 });
+
+test('Hurricane only admits its reviewed automatic FID3 terminal and retains ordinary free rounds',()=>{
+ const p=registry.plans['32550'];
+ for(const fid of ['3|','0|']){
+  const r=sample(p);for(let i=0;i<r.steps.length;i++)change(r,i,'FID=1|',`FID=${fid}`);
+  assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,2)}),{MSGID:'FREE_GAME'});
+  assert.equal(automaticFreeNext(p,r),null);
+  assert.equal(automaticFreeFields(p,r,hash).money.endBalanceRaw,942);
+  assert.throws(()=>automaticFreeFields(p,{...r,steps:r.steps.slice(0,2)},hash),/INCOMPLETE/);
+ }
+ const raw=sample(p);for(let i=0;i<raw.steps.length;i++)change(raw,i,'FID=1|','FID=3|');
+ for(const value of ['1|','2|','2|4|','2|5|','2|6|','3|&CFG=3','3|&FS_3=0','3|&NFR_3=1'])
+  assert.throws(()=>automaticFreeNext(p,change(structuredClone(raw),0,'FID=3|',`FID=${value}`)),/UNKNOWN_TRIAL_FEATURE/);
+ assert.throws(()=>automaticFreeNext(p,change(structuredClone(raw),0,'NFG=2','NFG=0')),/UNKNOWN_TRIAL_FEATURE/);
+ assert.throws(()=>automaticFreeNext(p,change(structuredClone(raw),1,'NFG=1','NFG=101')),/TRIAL_FREE_LIMIT/);
+ const unmarked=structuredClone(raw);delete unmarked.automaticFreeContract;
+ assert.throws(()=>automaticFreeNext(p,unmarked),/PROFILE_REQUIRED/);
+});

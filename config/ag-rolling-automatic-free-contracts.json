@@ -952,6 +952,67 @@
       "nativeObservedAt": 1791077442,
       "sourceRequests": 0,
       "mongoWrites": 0
+    },
+    "hurricanehorsecoincombo-ag-rolling-nextgen-v1": {
+      "gameId": 32550,
+      "runtimeGameId": 33052,
+      "sourceKey": "hurricanehorsecoincombo-ag-rolling-nextgen-v1",
+      "betRaw": 108,
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "hurricanehorsecoincombo",
+        "RB": "5"
+      },
+      "balanceContract": null,
+      "allowedFids": {
+        "BET": [
+          "3|"
+        ],
+        "FREE_GAME": [
+          "3|"
+        ]
+      },
+      "allowTerminalFeatureId": true,
+      "terminalFids": [
+        "3|"
+      ],
+      "nativeFaultRawHashes": [
+        "4f40d7c7cd4de60d250d4fa676cda4e59f758cc8c560062b688e04d5e2e5ff5e",
+        "ea8d815f9c9dcc18d7b7b132da51f77bef4b99b15df97953fa6579b6debf8034",
+        "3a201330e2b02404f33a1cd88bada8f2b83e106ed86a15021acfebabe3d677c8",
+        "3e0e2ce1e556ab411ea0ee78da1e53d3f90cdf256ce807359ec21d33e9b4e493",
+        "5edc66f98c0406b85ca051c125004e94721639527fa6851daa61306feae5e4e9",
+        "340ee770dfe03815bbd53fafc3ee8d995e804692cbd7fa57cbddb82fb798b514",
+        "7de49de2a969ee99a954f3aead459ab56f8eb4e79068cc71ff47696b6500958e",
+        "429795514abe3610c2838436c60290e27b19457800cadef9bdfcc01c5a917b1f",
+        "951d8e89fae3501fb61a9797fd495b5e599ca37f512b6a2e4613b5923bdd3498",
+        "4c6ab234b180edc2730db079472f661978fb08421a038cd02e703d5d2e2cd259"
+      ],
+      "nativeClosedHashes": [
+        "cecf9c571f5052de50d7cafa21c4e9b58a461d0768bfeb39a2eeb7b2d71639bd",
+        "6b22fd2e4bd2424a33274b89d24afa88247037880bdcd49eeffdcf28b4a28faa",
+        "a2cd057cf7b3886d19d692c3670795b5473f5bda982af5960bf4c795de1ce6bb",
+        "4003d674dec6f50cc6363832e9e14f08775a3aca161e364b4e71e6982c12f865",
+        "c40fa38e1570f6974911dfdbc0940ed2606518ea21744944c13b3e5c8fc0a771",
+        "5f0ccbb062908777957165f049d058de3d7fc73e3b838b5efbbef6a0b9da1c0a",
+        "5bb8fd80bc39fb6457c554a1ba8bd3256eadda9d78ab5e27cb99c5964ffb0b4c",
+        "c1da8f2b1089198f6f1db2105de94eb4dd164b49ac3cd0ab2554c5a0c024cd17",
+        "be83332c4364615cc9c97a6d62f9bace9d2e6690018111f480cfc6d308742be7",
+        "cb2dc6b755c0a00b71911cd98716dc086ccd1bbe952b74a316dc69384d45a90b"
+      ],
+      "historicalFullRawHashes": [
+        "659fe17ab0807880551b037904a7c6ec5dde6f38aa61f0c2f8cc0a8e4e7d46ef",
+        "4791d10c874f9cdbee07b4de24db963c246e331c9ffadd30d24ba637c1d3ec12"
+      ],
+      "historyFileSha256": "bc953e664272ff494bdef60706fc84d86983f39cc8e9adf73a29dfc3cdd5d213",
+      "nativeObservedAt": 1791084200,
+      "historicalCoveredFids": [
+        "0|",
+        "3|"
+      ],
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   }
 }
