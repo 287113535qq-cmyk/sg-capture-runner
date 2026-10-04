@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_drumsexplosion_card_binds_own_ready_replacement_and_decision(self):
+        card=self.cards[32761];rule=card['roundRule']
+        self.assertEqual(rule['family'],'drumsexplosion-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32983);self.assertEqual(card['parameters']['wmsGameId'],20454)
+        self.assertIn('994',rule['bounds']);self.assertIn('1988',rule['bounds']);self.assertIn('6个DecisionInfo',rule['bounds'])
+        self.assertIn('344',rule['fields']['AnywayWin']);self.assertIn('81',rule['fields']['AnywayWin']);self.assertIn('230',rule['fields']['AnywayWin'])
+        self.assertIn('readyForEndGameY',rule['start']);self.assertIn('4种wildReplace和2种bonusReplace',rule['continue'])
+        self.assertEqual(card['typeMappings']['drumsexplosion-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_dancingdrums_card_binds_own_ways_awards_and_rejected_upicks(self):
         card=self.cards[32760];rule=card['roundRule']
         self.assertEqual(rule['family'],'dancingdrums-base-wms-v1')

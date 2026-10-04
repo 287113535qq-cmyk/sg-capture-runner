@@ -74,13 +74,13 @@
     "scripts/runner-v2/ag-rolling/sg-crystalforest-base.mjs": "a2deac6b5ca933aab483b3f6cebca0408d8da435adf9c636a1d80940b92e0baf",
     "scripts/runner-v2/ag-rolling/sg-crystalforest-source.mjs": "a9010bf260e622a1e08451a6d4b48c1487fb1f8b549be8e8872e8a36570f05d0",
     "scripts/runner-v2/ag-rolling/sg-crystalforest-codec.mjs": "e916e31a0ea0984d28af1337916025e24bfd1e4efde3900881ee2e7ee4552573",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "a6b07c0061d3983dc3ea7b417bce2d80d74736146d008f1ee6072eb5880cb2d9",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "f78ca5b2ee1c35522347db5ee567076b37255858b6e1bcbbb81e14f1897468f6",
     "service/crystalforest_base_fields.py": "d9f2491cd5105ecc0a3dfb0815558832730a7b22ee1f0ed1bf35f8eeb3868e97",
     "config/ag-rolling-crystalforest-base-contract.json": "bb355196c19afec64a510f2dcb5a39ad20039da0ef00962dd67e286baa4575d9",
-    "service/ag_rolling_plan.py": "4e16718e51ddb241b59ec53b2631d5563dc4734d434a2ce7237420256c4e8e75",
-    "scripts/runner-v2/record_fields.py": "4f115cf4ff358e831efa09758b633144a7daf0740a53c4907605c64a145ffebc",
-    "service/round_fields.py": "25d2778b701d3b1f922f7acc186ceaa34d13a080f15c07e4234c33c9562b63c0",
-    "service/game_rule_catalog.py": "8a11302ca0e78e8fb686cfa2165565aefcbf64201d9ba0990e7a358272660190"
+    "service/ag_rolling_plan.py": "20c25a098c651a042c80ebc1aeb1ae2850d16ffc8598ba103d2c552ffc6d674a",
+    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
+    "service/round_fields.py": "23dea1b1468bb4c080fcba72f37ae99486cf766c02fcb82f92b642de0ad8e325",
+    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -92,5 +92,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "be8a14fddca130bc527d539307ae9a7e82c8b6e3ac24930a0a58a40c9424d833"
+  "ruleHash": "2cbac371fd435f650080be1c23456b9dc5301cd8574a50a433db121502e3a278"
 }

@@ -4641,6 +4641,25 @@
         "fullBaseRounds": 993,
         "fullFreeRounds": 0
       }
+    },
+    "drumsexplosion-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "drumsexplosion-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 176,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32761,
+        "runtimeGameId": 32983,
+        "wmsGameId": 20454,
+        "ordinaryContractHash": "4879d56d712f7299413040f5a5d5e57c2f7d9b60a818daa244e1d787e35c5fcd",
+        "historyFileSha256": "536b9229bc138ab0d9d9263c68e2e38f27f06acf160a10866d8c30c1a1e771c5",
+        "fullBaseRounds": 994,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
