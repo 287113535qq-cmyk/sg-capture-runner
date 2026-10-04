@@ -9,6 +9,7 @@ import {actionContract} from '../../trial/pyramids-action-contracts.mjs';
 import {captureCollector} from '../../trial/collector-loader.mjs';
 import {heldBalanceFields,BALANCE_CONTRACT} from './sg-held-balance.mjs';
 import {automaticFreeNext,automaticFreeFields,AUTOMATIC_FREE_CONTRACT} from './sg-automatic-free.mjs';
+import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
 const require=createRequire(import.meta.url);let registered=false;
 function loadCollector(){if(!registered){require('../../../collector/node_modules/ts-node').register({
  project:path.resolve('collector/tsconfig.json'),transpileOnly:true});registered=true;}}
@@ -40,6 +41,10 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    ...(plan.balanceContract===BALANCE_CONTRACT?{balanceContract:BALANCE_CONTRACT}:{}),
    ...(plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?{automaticFreeContract:AUTOMATIC_FREE_CONTRACT}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
+  async reviewExplicit(raw){
+   const js=reviewExplicitPrefix(plan,raw),py=await parser.call({op:'review_explicit',plan,raw});
+   assert(stable(js)===stable(py),'SG_JS_PY_EXPLICIT_REVIEW_MISMATCH');return js;
+  },
   async next(raw){const js=raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeNext(plan,raw):contract?contract.next(plan,raw):nextRequest(raw);
    const py=await parser.call({op:'next',plan,raw});assert(stable(js)===stable(py),'SG_JS_PY_ROUTE_MISMATCH');
    if(js)assert((await parser.call({op:'intent',plan,raw,payload:payload(js)}))?.validated===true,'SG_REQUEST_MODE');

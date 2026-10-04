@@ -55,6 +55,9 @@ def execute(request):
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') == 'review_explicit':
+        from explicit_request_review import review_explicit_prefix
+        return review_explicit_prefix(plan, request['raw'])
     if request.get('op') == 'five_bootstrap':
         assert plan['sourceKey'] == FIVE_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
