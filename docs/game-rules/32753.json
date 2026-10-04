@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "actionbankplus-base-ag-rolling-wms-v1",
+  "planHash": "b0ef7eb112eb082170bc99cff10a4cc386caf9751a3002ced64c3926cf297793",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32753",
+    "runtimeSlug": "actionbankplus",
+    "buy": 0,
+    "betRaw": 200,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20369
+  },
+  "roundRule": {
+    "family": "actionbank-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32975与WMS Header20369分别绑定；独立匿名新Init能力核验后，首Logic Stake.total200/PaylineCount1/CurrencyMultiplier1。",
+    "continue": "只普通单Logic；readyForEndGame=Y、无FSInfo且vaultCount0..3才产生EndGame。响应stakePerLine10/paylineCount20不改变请求PaylineCount1或总下注200。",
+    "complete": "完整普通Logic后唯一EndGame确认，ready=N且无GameResult、现金保持；每帧会话、observer现金、奖额和及BG累计独立双验。",
+    "bounds": "离线候选：前1000自身历史仅989普通完整/1978请求沿实际codec→独立Python IPC→record/verify一致。11旧免费半局ready=N、FSInfo进度0就EndGame仍拒绝，不继续、不回计，不把旧bonus0标签当完整。真实Init/在线canary/native scope未观察或安装；不在当前81队列。免费、vault4、MaxWin、未知节点/ways、恢复和缺终局一律拒绝。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-actionbank-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-actionbank-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-actionbank-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/actionbank_base_fields.py",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "Header": "20369/version1_0、isRecovering=N；普通Logic ready=Y，EndGame ready=N；响应逐帧轮换会话。",
+      "Stake / PaylineCount": "固定总额200；请求count1与响应20线分别验证，不互相替代。",
+      "ReelResults": "单spin、索引0、9个ReelStops；普通freeSpin=N/bonusAwarded=N、scatterWinCount0。",
+      "AnywayWin / BGInfo": "至多2个不重复winIndex、11种自身ways、awardIndex0..10；奖额和、totalSpinWin、totalWin与BG累计完全相等；vaultCount0..3。",
+      "FSInfo / EndGame": "11旧半局原raw/hash保留且不给End许可；新免费响应必须另行审查。"
+    }
+  },
+  "typeMappings": {
+    "actionbankplus-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "actionbankplus-base-ag-rolling-wms-v1": "536777d913c4e8e1a460c076008abad613b4a108a85d17d73e3a46110be7f759"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin",
+    "bet": "stakeRaw / 100",
+    "mul": "ordinary Logic totalWin / stakeRaw",
+    "required": "固定实际200；仅readyY普通完整，Anyway奖额和及BG累计一致，EndGame确认现金保持；11旧免费半局拒绝。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "2e51cfaaa92c13bf9a0ec8d6e732cce6015a455021237182b0cd0b74badd177b"
+    "scripts/runner-v2/ag-rolling/sg-actionbank-base.mjs": "2f021d4c55c0e9714acb1f85c32f683baeabb3195ceae463b8cb1ef7e1477905",
+    "scripts/runner-v2/ag-rolling/sg-actionbank-source.mjs": "6ea9b08d099ac3e466ca3ffb3c39641a6621e6dccb4d0ab3d6e339e5e840bc15",
+    "scripts/runner-v2/ag-rolling/sg-actionbank-codec.mjs": "82427eabd46090ab32d300c85412cb00c0d518ce9ac6a56483e2019413efa806",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c36a505893360f1312558ad495d594dae442748a1935a99efe9433770c7b4685",
+    "service/actionbank_base_fields.py": "e9b4f68b87fc542abce35e9b03730b1e7ce8a5c9c36b8b022c8d9df4e76d4403",
+    "service/ag_rolling_plan.py": "c4a747f7cc97b5d610aab3a35f2b5c86ba7a243ee20400960f81aefa83ca005a",
+    "scripts/runner-v2/record_fields.py": "0d9005f1a8eeabf54febaf979c6ebd7790c899f647b2c73b94f9bc479462feab",
+    "service/round_fields.py": "21f95eb7b565f6694d95dc44cfa3e48794bb3d5480d9150241d7fc09a35034b6",
+    "service/game_rule_catalog.py": "9eb56fcb1dad41f2f08279ca69970e6e254c7efa7fa7bffe89500f2c532c9920"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2c39d8ae03b3e534669f46cb193c75b6fc9094a5a1a26409cd76ef288b9b5e68"
+  "ruleHash": "f01c2b6908aa3176d7abca4245efa11a967a7b0ebf86016caab35263000375e9"
 }

@@ -109,6 +109,17 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
         self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
 
+    def test_actionbank_card_distinguishes_partial_free_from_ordinary_evidence(self):
+        card=self.cards[32753]
+        self.assertEqual(card['roundRule']['family'],'actionbank-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32975)
+        self.assertFalse(card['captureAuthorization'])
+        self.assertFalse(card['allSpecialStageTypesCovered'])
+        self.assertEqual(card['parameters']['wmsGameId'],20369)
+        self.assertIn('989',card['roundRule']['bounds'])
+        self.assertIn('11旧免费半局',card['roundRule']['bounds'])
+        self.assertIn('真实Init',card['roundRule']['bounds'])
+
     def test_acorn_ordinary_only_document_does_not_claim_unknown_feature_coverage(self):
         card=self.cards[32752]
         self.assertFalse(card['captureAuthorization'])

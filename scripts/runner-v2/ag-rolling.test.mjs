@@ -19,4 +19,5 @@ import './ag-rolling/sg-explicit-dragon.test.mjs';
 import './ag-rolling/sg-fortunes-wiring.test.mjs';
 import './ag-rolling/sg-acorn-wiring.test.mjs';
 import './ag-rolling/sg-eighty-wiring.test.mjs';
+import './ag-rolling/sg-actionbank-wiring.test.mjs';
 import './ag-rolling/sg-automatic-terminal.test.mjs';
