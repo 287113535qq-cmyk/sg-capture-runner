@@ -36,3 +36,5 @@ import './ag-rolling/sg-crystalforest-wiring.test.mjs';
 import './ag-rolling/sg-dancingdrums-wiring.test.mjs';
 
 import './ag-rolling/sg-drumsexplosion-wiring.test.mjs';
+
+import './ag-rolling/sg-desertcats-wiring.test.mjs';

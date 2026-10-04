@@ -4660,6 +4660,25 @@
         "fullBaseRounds": 994,
         "fullFreeRounds": 0
       }
+    },
+    "desertcats-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "desertcats-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32762,
+        "runtimeGameId": 32984,
+        "wmsGameId": 20315,
+        "ordinaryContractHash": "0d3316ce98f2df01b16883e213a563588119f6c6af96baa590f99803aa66abaf",
+        "historyFileSha256": "2fa8a267fbd1678e6e800117afde685f0d32bf414c5feffe4d22b9c727a0f256",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

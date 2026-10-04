@@ -76,12 +76,12 @@
     "scripts/runner-v2/ag-rolling/sg-actionbank-base.mjs": "2f021d4c55c0e9714acb1f85c32f683baeabb3195ceae463b8cb1ef7e1477905",
     "scripts/runner-v2/ag-rolling/sg-actionbank-source.mjs": "6ea9b08d099ac3e466ca3ffb3c39641a6621e6dccb4d0ab3d6e339e5e840bc15",
     "scripts/runner-v2/ag-rolling/sg-actionbank-codec.mjs": "82427eabd46090ab32d300c85412cb00c0d518ce9ac6a56483e2019413efa806",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "f78ca5b2ee1c35522347db5ee567076b37255858b6e1bcbbb81e14f1897468f6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
     "service/actionbank_base_fields.py": "e9b4f68b87fc542abce35e9b03730b1e7ce8a5c9c36b8b022c8d9df4e76d4403",
-    "service/ag_rolling_plan.py": "20c25a098c651a042c80ebc1aeb1ae2850d16ffc8598ba103d2c552ffc6d674a",
-    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
-    "service/round_fields.py": "23dea1b1468bb4c080fcba72f37ae99486cf766c02fcb82f92b642de0ad8e325",
-    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
+    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
+    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
+    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
+    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f196a25b70a4e24ebe1f5f9ae8555ca3e7453309ada56a3663b782c80d946c8f"
+  "ruleHash": "f2338b50271f1f589248772f71508b3562432b3bafb499c75d77a59689c7a18e"
 }
