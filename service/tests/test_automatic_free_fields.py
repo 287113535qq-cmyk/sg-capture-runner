@@ -58,4 +58,22 @@ class AutomaticFreeTests(unittest.TestCase):
     def test_unmarked_historical_feature_is_not_silently_approved_by_a_new_plan(self):
         r=sample();r.pop('automaticFreeContract');r.pop('balanceContract')
         with self.assertRaisesRegex(FieldError,'UNKNOWN_TRIAL_FEATURE'):NativeNextgenFields(PLAN).settled(r)
+    def test_reviewed_long_continuation_is_source_bound_and_keeps_partial_rounds_incomplete(self):
+        from automatic_free_fields import next_request
+        for game in ['32529','32530']:
+            p=REGISTRY['plans'][game];r=sample(p);held=1000-p['betRaw'];steps=[]
+            for i in range(101):
+                msg='BET' if i==0 else 'FREE_GAME';remaining=100-i;ab=held if remaining else held+i
+                q='&'.join(f'{k}={v}' for k,v in {**p['requestParams'],'PID':'gdmgcmoffline-automatic','MSGID':msg}.items())
+                payload=f'MSGID={msg}&IFG={int(i>0)}&NFG={remaining}&FID=0|&B={held+i}&AB={ab}&TW={i}'
+                steps.append({'methodName':'processGameMessage','msgId':msg,'requestPayload':q,'responsePayload':payload,
+                 'responseXml':'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+payload.replace('&','&amp;')+'</PAYLOAD></GDMRESPONSE>',
+                 'responseBalance':ab,'elapsedMs':0})
+            r['steps']=steps;a=NativeNextgenFields(p)
+            self.assertIsNone(a.next_request(r));self.assertEqual(a.settled(r)['money']['endBalanceRaw'],1000)
+            partial={**r,'steps':steps[:100]};self.assertEqual(next_request(partial),{'MSGID':'FREE_GAME'})
+            with self.assertRaisesRegex(FieldError,'INCOMPLETE'):a.settled(partial)
+            with self.assertRaisesRegex(FieldError,'PLAN_BINDING'):NativeNextgenFields({**p,'maxSteps':100}).settled(r)
+            with self.assertRaisesRegex(FieldError,'INVALID_ROUND_STEPS'):a.settled({**r,'steps':[steps[0]]*1027})
+            with self.assertRaisesRegex(FieldError,'INVALID_ROUND_STEPS'):settled({**sample(),'steps':[sample()['steps'][0]]*101})
 if __name__=='__main__':unittest.main()

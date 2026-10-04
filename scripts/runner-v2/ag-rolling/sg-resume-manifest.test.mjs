@@ -48,3 +48,23 @@ test('a reviewed automatic-free repair needs its own complete historical settlem
  proof.automaticFreeRepair.historicalFullRounds=4;proof.automaticFreeRepair.failedRoundsCredited=1;
  assert.throws(()=>rebaseResumeManifest(f),/REPAIR_UNREVIEWED/);
 });
+
+test('only an independently reviewed 100-frame truncation can raise the bounded limit without changing its existing namespace',()=>{
+ const f=fixture();f.previousPlans.plans[32500].maxSteps=100;
+ const old=f.previousPlans.plans[32500],oldProof=f.previousPlans.proofs[32500];oldProof.planHash=queueHash(old);
+ f.previous.manifest[0].planHash=queueHash(old);f.previous.manifest[0].adapterProofHash=queueHash(oldProof);
+ const p=f.plans.plans[32500],proof=f.plans.proofs[32500];p.maxSteps=1026;
+ p.automaticFreeContract='nextgen-automatic-nfg-free-v1';p.automaticFreeContractHash='f'.repeat(64);
+ proof.previousPlanHash=queueHash(old);proof.planHash=queueHash(p);
+ proof.automaticFreeRepair={schema:'sg-ag-automatic-free-repair-evidence-v1',contractHash:'f'.repeat(64),
+  nativeFaultPrefixes:6,nativeEvidenceHash:'d'.repeat(64),historicalFullRounds:99,historicalEvidenceHash:'e'.repeat(64),
+  independentJsPython:true,sourceRequests:0,mongoWrites:0,failedRoundsCredited:0,
+  continuationLimitRepair:{schema:'sg-ag-evidenced-continuation-limit-v1',previousMaxSteps:100,maxSteps:1026,
+   oldLimitError:'SG_ROUND_STEP_LIMIT',nativePrefixesAtOldLimit:6,nativeRemainingMin:4}};
+ const before=queueHash(f);assert.equal(rebaseResumeManifest(f)[0].planHash,proof.planHash);assert.equal(queueHash(f),before);
+ for(const damage of [x=>delete x.plans.proofs[32500].automaticFreeRepair.continuationLimitRepair,
+  x=>x.plans.plans[32500].maxSteps=1027,x=>x.plans.proofs[32500].automaticFreeRepair.continuationLimitRepair.nativeRemainingMin=0,
+  x=>x.plans.proofs[32500].automaticFreeRepair.continuationLimitRepair.nativePrefixesAtOldLimit=5]){
+  const altered=structuredClone(f);damage(altered);assert.throws(()=>rebaseResumeManifest(altered),/REPAIR_UNREVIEWED/);
+ }
+});

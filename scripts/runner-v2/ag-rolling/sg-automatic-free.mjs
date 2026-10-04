@@ -14,12 +14,14 @@ export function automaticFreePrefix(plan,raw){
   &&plan.rollingPlan==='sg-ag-rolling-plan-v1'&&plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT
   &&plan.automaticFreeContractHash===queueHash(e)
   &&['gameId','runtimeGameId','sourceKey','betRaw','requestParams'].every(k=>stable(plan[k])===stable(e[k]))
-  &&(plan.balanceContract??null)===(e.balanceContract??null),'AUTOMATIC_FREE_PLAN_BINDING');
+  &&(plan.balanceContract??null)===(e.balanceContract??null)
+  &&plan.maxSteps===(e.maxSteps??100),'AUTOMATIC_FREE_PLAN_BINDING');
  assert(raw?.automaticFreeContract===AUTOMATIC_FREE_CONTRACT&&raw.sourceKey===plan.sourceKey
   &&raw.fixtureOnly===false&&raw.protocol==='nextgen'&&raw.roundFieldsVersion==='sg-round-fields-v1'
   &&(raw.balanceContract??null)===(e.balanceContract??null),'AUTOMATIC_FREE_PROFILE_REQUIRED');
  const start=amount(raw.startBalanceRaw),stake=amount(e.betRaw);assert(start>=stake&&stake>0,'INVALID_WAGER_BASIS');
- assert(Array.isArray(raw.steps)&&raw.steps.length<=100,'INVALID_ROUND_STEPS');
+ const limit=e.maxSteps??100;assert([100,1026].includes(limit),'AUTOMATIC_FREE_LIMIT_BINDING');
+ assert(Array.isArray(raw.steps)&&raw.steps.length<=limit,'INVALID_ROUND_STEPS');
  const held=start-stake;let remaining=0,win=0,balance=null,player;
  for(let i=0;i<raw.steps.length;i++){
   const step=raw.steps[i],msg=i?'FREE_GAME':'BET';

@@ -20,7 +20,8 @@ def binding(plan):
     check(e is not None and plan.get('rollingPlan')=='sg-ag-rolling-plan-v1'
           and plan.get('automaticFreeContract')==CONTRACT and plan.get('automaticFreeContractHash')==digest(e)
           and all(plan.get(k)==e[k] for k in ('gameId','runtimeGameId','sourceKey','betRaw','requestParams'))
-          and plan.get('balanceContract')==e.get('balanceContract'),'AUTOMATIC_FREE_PLAN_BINDING')
+          and plan.get('balanceContract')==e.get('balanceContract')
+          and plan.get('maxSteps')==e.get('maxSteps',100),'AUTOMATIC_FREE_PLAN_BINDING')
     return e
 
 def prefix(raw):
@@ -29,7 +30,8 @@ def prefix(raw):
           and raw.get('protocol')=='nextgen' and raw.get('roundFieldsVersion')==VERSION
           and raw.get('balanceContract')==e.get('balanceContract'),'AUTOMATIC_FREE_PROFILE_REQUIRED')
     start=amount(raw.get('startBalanceRaw'));stake=amount(e['betRaw']);check(start>=stake>0,'INVALID_WAGER_BASIS')
-    steps=raw.get('steps');check(isinstance(steps,list) and len(steps)<=100,'INVALID_ROUND_STEPS')
+    limit=e.get('maxSteps',100);check(limit in (100,1026),'AUTOMATIC_FREE_LIMIT_BINDING')
+    steps=raw.get('steps');check(isinstance(steps,list) and len(steps)<=limit,'INVALID_ROUND_STEPS')
     held=start-stake;remaining=0;win=0;balance=None;player=None
     for i,step in enumerate(steps):
         msg='BET' if i==0 else 'FREE_GAME'

@@ -16,6 +16,17 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const {balanceContract,balanceContractHash,automaticFreeContract,automaticFreeContractHash,...unchangedPlan}=plan;
   const {planHash:boundHash,previousPlanHash,balanceRepair,automaticFreeRepair,...unchangedProof}=proof;
   const {planHash:oldBoundHash,...previousProof}=oldProof;
+  const limitRepair=automaticFreeRepair?.continuationLimitRepair;
+  if(limitRepair!==undefined){
+   assert(limitRepair.schema==='sg-ag-evidenced-continuation-limit-v1'
+    &&oldPlan.maxSteps===100&&plan.maxSteps===1026&&limitRepair.previousMaxSteps===100&&limitRepair.maxSteps===1026
+    &&limitRepair.oldLimitError==='SG_ROUND_STEP_LIMIT'
+    &&Number.isSafeInteger(limitRepair.nativePrefixesAtOldLimit)&&limitRepair.nativePrefixesAtOldLimit>0
+    &&limitRepair.nativePrefixesAtOldLimit===automaticFreeRepair.nativeFaultPrefixes
+    &&Number.isSafeInteger(limitRepair.nativeRemainingMin)&&limitRepair.nativeRemainingMin>0&&limitRepair.nativeRemainingMin<=100,
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   unchangedPlan.maxSteps=oldPlan.maxSteps;
+  }
   assert(queueHash(unchangedPlan)===queueHash(oldPlan)&&queueHash(unchangedProof)===queueHash(previousProof)
    &&previousPlanHash===entry.planHash&&oldBoundHash===entry.planHash&&boundHash===planHash,
    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
