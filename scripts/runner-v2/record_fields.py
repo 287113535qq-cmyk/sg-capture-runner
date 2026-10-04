@@ -29,6 +29,7 @@ from morepuff_fields import MorepuffSequence, SOURCE as MOREPUFF_SOURCE
 from luxor_fields import LuxorSequence, SOURCE as LUXOR_SOURCE
 from veryfruity_action_fields import VeryFruityActionFields, SOURCE as VERYFRUITY_SOURCE
 from five_treasures_fields import FiveTreasuresFields, SOURCE as FIVE_SOURCE
+from fortunes_megaways_fields import FortunesMegawaysFields, SOURCE as FORTUNES_SOURCE
 
 adapters = {}
 
@@ -52,6 +53,8 @@ def execute(request):
             adapters[key]=HuffActionFields(plan)
         if plan['sourceKey']==FIVE_SOURCE:
             adapters[key]=FiveTreasuresFields(plan)
+        if plan['sourceKey']==FORTUNES_SOURCE:
+            adapters[key]=FortunesMegawaysFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
@@ -67,6 +70,9 @@ def execute(request):
     if request.get('op') in ('explicit_dragon_route','explicit_dragon_intent'):
         from explicit_request_dragon import route,intent
         return route(plan,request['raw']) if request['op']=='explicit_dragon_route' else intent(plan,request['raw'],request['payload'])
+    if request.get('op') == 'fortunes_bootstrap':
+        assert plan['sourceKey'] == FORTUNES_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'five_bootstrap':
         assert plan['sourceKey'] == FIVE_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
@@ -132,7 +138,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

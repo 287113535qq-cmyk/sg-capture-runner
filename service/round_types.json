@@ -4407,6 +4407,26 @@
         "runtimeGameId": 33090,
         "sourceId": "d1347ea8-7903-11ea-b3b3-0ad5da7db292"
       }
+    },
+    "eightyeightfortunesmegaways-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "fortunes-megaways-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 16,
+      "baseBonus": 0,
+      "freeTypes": {
+        "automatic-ten-or-twelve-free": 1
+      },
+      "evidence": {
+        "captureGameId": 32751,
+        "runtimeGameId": 32973,
+        "wmsGameId": 20371,
+        "historyFileSha256": "aae26c15702909d4402d0e40e0aee6cbb6b1f9f8ca935218d613273d015ca50c",
+        "fullBaseRounds": 996,
+        "fullFreeRounds": 4
+      }
     }
   }
 }

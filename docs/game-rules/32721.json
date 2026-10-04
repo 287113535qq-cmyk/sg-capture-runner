@@ -378,8 +378,8 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "d6d0730daef4d7640446a80700b8abc94d0f3dff7f2a5d71b5b8cc692e9ec80f",
-    "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
-    "scripts/runner-v2/record_fields.py": "549fb6ecc8b5c5423635fe35e44a556cf210b804b8d439c41ea1eb545d92bcf2",
+    "service/round_fields.py": "4386317b88653dd22df0c55efb81943ac48002bbe4ff38cb56c7829e48c63088",
+    "scripts/runner-v2/record_fields.py": "d3112d5f70973afb4996c2de3e636bed649ff23894a4956bb4e445d04cde1f91",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
     "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
@@ -410,7 +410,7 @@
     "scripts/runner-v2/round-analysis-journal.mjs": "ce4ea10e8b77ebf1bbb9d02f6685e383bd157abd0bc80524ef166d5a7a0fec65",
     "scripts/runner-v2/pyramids-action-analysis.mjs": "cc2c2e2e3e7397eaffc6a67e5d375842b6b740bedb5d77ac958f1f7f31119b36",
     "scripts/runner-v2/pyramids-action-repair-profile.mjs": "7756a9b9bd5cbc61f822c5c1680ab73d75a507dd068357bc7bd858f932501037",
-    "service/game_rule_catalog.py": "ece3c531fd598f4943da99ba8a8363621d1cff4205a4ed84d332fdc64d77abc9"
+    "service/game_rule_catalog.py": "1dee5032746645b8ca0b3a6c17768acf9265bba84bee6dc312a16e130c8d2f2a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e3beb44227afe8022ce6e22fc395a6f907d3aae02c2d5574262fa2247673a167"
+  "ruleHash": "804e2c291e4591eb1b72800b8a2fcf9034d50b72ea91926c8eb3e4b356af80d8"
 }

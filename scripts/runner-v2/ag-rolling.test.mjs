@@ -16,3 +16,4 @@ import './ag-rolling/sg-federated-boundary.test.mjs';
 import './ag-rolling/sg-federated-resume.test.mjs';
 import './ag-rolling/sg-explicit-continuation.test.mjs';
 import './ag-rolling/sg-explicit-dragon.test.mjs';
+import './ag-rolling/sg-fortunes-wiring.test.mjs';

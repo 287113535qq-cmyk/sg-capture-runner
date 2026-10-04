@@ -333,6 +333,9 @@ def derive(raw):
     from five_treasures_fields import SOURCE as FIVE_SOURCE, settled as five_settled, mapping_hash as five_mapping
     if raw.get('sourceKey') == FIVE_SOURCE:
         return five_settled(raw, five_mapping())
+    from fortunes_megaways_fields import SOURCE as FORTUNES_SOURCE, settled as fortunes_settled, mapping_hash as fortunes_mapping
+    if raw.get('sourceKey') == FORTUNES_SOURCE:
+        return fortunes_settled(raw, fortunes_mapping())
     if raw.get('automaticFreeContract') is not None:
         from automatic_free_fields import settled as automatic_settled
         return automatic_settled(raw)

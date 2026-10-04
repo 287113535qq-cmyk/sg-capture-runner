@@ -90,6 +90,21 @@ def contract(game_id):
                      'service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
             'fields':{'Header':'WMS20442/version1_0/demo Y；session值私有且逐帧轮换。','FSInfo':'固定本游戏已证实6帧，freeSpinNumber逐帧推进；extraSpinsAwarded必须0。',
                       'Stake / cash':'首帧实际176；后续报告stake176不重复扣款。','JackpotInfo':'index0奖独立于totalSpinWin，二者之和等于totalWin。','EndGame':'完整确认与现金保持是完成前置条件。'}})
+    elif game_id == 32751:
+        native.update({'family':'fortunes-megaways-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtimeGameId32973与WMS Header.gameID20371分别固定；匿名新会话Init核验后首Logic固定Stake16、gameMode0、PaylineCount1和CurrencyMultiplier1。',
+            'continue':'本游戏已观察PickerInfo0对应10免费、起始级联倍数6；PickerInfo1对应12免费、起始倍数4。没有客户端选择请求，继续自动Logic；逐帧freeSpinNumber递增，后续extraSpinsAwarded必须0。响应sessionID独立核验后绑定下一请求。',
+            'complete':'末Logic readyForEndGame=Y后唯一EndGame确认且余额保持才完整。每次Logic totalWin等于自身全部级联ReelSpin奖之和，不能再次加BaseGameRecoveryInfo里的旧首局奖；累计赢分和现金逐帧一致。',
+            'bounds':'离线候选：完整历史文件SHA及1000局996普通4免费在实际codec/Python IPC/record/verify全通过，2042条请求路由匹配。尚无native scope、Linux或真实Init/canary。只接受已观察10/12免费和1..5级联；重触发、额外奖励、其他picker、gameMode、MaxWin或未知节点严格拒绝。原始历史不抵扣300000目标。',
+            'files':['scripts/runner-v2/ag-rolling/sg-fortunes-megaways.mjs','scripts/runner-v2/ag-rolling/sg-fortunes-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-fortunes-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'service/fortunes_megaways_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header':'WMS20371/version1_0/demo Y；响应session逐帧绑定，不公开实际值。',
+                      'FSInfo':'只已观察Picker0的10帧、Picker1的12帧；总数保持、进度递增、额外授予0。',
+                      'ReelResults / CascadeInfo':'1..5级联，自身spinIndex顺序、奖项计数、奖额之和与totalWin一致；免费prev倍数等于上帧cur，cur增量等于本帧级联次数-1。',
+                      'BGInfo / Balances':'首帧下注16，后续报告stake16不重复扣款；余额=初值-16+逐Logic累计奖。',
+                      'BaseGameRecoveryInfo':'只首局ReelResults和TopReelInfo的原样引用，不增加任何奖。',
+                      'EndGame':'完整确认、现金保持，半局不能计完整。'}})
     elif game_id == 32795:
         native.update({'family': 'pearl-wms-additive-free-v2', 'messages': ['Init', 'Logic', 'EndGame'],
             'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
@@ -307,6 +322,11 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
                 'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
                 'required':'固定实际176；逐帧现金与累计奖一致，最终EndGame完整确认且现金保持。'}
+        if plan and plan.get('adapter') == 'fortunes-megaways-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
+                'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
+                'required':'固定实际16，GameMode0；级联奖只计入对应Logic，恢复引用不重复计奖，最终EndGame确认及每帧现金严格双验。'}
         card['ruleHash'] = digest(card); output[gid] = card
     return output
 
