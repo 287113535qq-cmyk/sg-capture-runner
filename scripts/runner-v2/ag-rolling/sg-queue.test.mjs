@@ -183,3 +183,52 @@ test('resume requires ended actor and no live lease, and refuses missing respons
  assert.equal((await m.store.get('state',m.key)).value.status,'failed');
  m.store.docs.delete(responseKey);await assert.rejects(()=>resetEndedTask(common),/SOURCE_MISSING/);
 });
+async function successfulCanary(){
+ const m=await partialCanary();m.store.docs.delete('journal/'+m.unresolved);
+ const prefix=stagingPrefix('queue',game,'canary',1),first=(await m.store.get('journal',prefix+'0000000001')).value;
+ const owner=first.owner,sessionHash=first.record.sourceSessionHash;
+ for(let n=6;n<=10;n++){
+  const row=structuredClone(first),step=row.record.raw.steps[0];step.rollingSource.requestNo=n;
+  row.ordinal=n;row.record._id=queueHash(['old',n]);row.record.contentHash=queueHash(['old-content',n]);row.record.sequence=n;
+  const intent={queueId:'queue',gameId:game.gameId,kind:'canary',index:1,owner,sessionHash,requestNo:n,msgId:'BET',requestPayload:step.requestPayload};
+  for(const type of ['intent','response'])await m.store.create('journal',sourceJournalKey({queueId:'queue',game,kind:'canary',index:1,
+   owner,sessionHash,requestNo:n,type}),type==='response'?{...intent,step}:intent);
+  await m.store.create('journal',prefix+String(n).padStart(10,'0'),row);
+ }
+ const hash=createHash('sha256');for(let n=1;n<=10;n++)hash.update(stable((await m.store.get('journal',prefix+String(n).padStart(10,'0'))).value.record)+'\n');
+ const before=await m.store.get('state',m.key),proof={queueId:'queue',gameId:game.gameId,campaignId:game.campaignId,
+  taskId:'canary:1',owner,count:10,recordsHash:hash.digest('hex'),segments:[{first:1,last:10,owner}],
+  fullReadback:true,independentlyVerified:true,pending:0,unknownRequests:0,activeLeases:0};
+ await m.store.cas('state',m.key,before,{...before.value,status:'success',exitCode:0,owner,count:10,proof});return m;
+}
+test('a revised adapter revalidates successful native rounds and source bytes without resetting or writing the task',async()=>{
+ const m=await successfulCanary(),before=queueHash([...m.store.docs]);m.transport.calls.length=0;let verified=0;
+ const task=await resetEndedTask({...m,game,queueId:'queue',kind:'canary',index:1,guard,ended,
+  verifyRecords:async rows=>{verified+=rows.length;return {verified:true,count:rows.length};}});
+ assert.equal(verified,10);assert.equal(task.status,'success');assert.equal(task.count,10);
+ assert.equal(queueHash([...m.store.docs]),before);assert.equal(m.transport.formal.size,0);
+ assert.ok(m.transport.calls.every(c=>c.op==='scan'));
+});
+test('changed normalization, native prefix, durable response or live owner blocks successful task reuse',async()=>{
+ for(const type of ['normalizer','prefix','response','lease','task-race','active-source']){
+  const m=await successfulCanary(),common={...m,game,queueId:'queue',kind:'canary',index:1,guard,ended,
+   verifyRecords:async rows=>({verified:true,count:rows.length})};
+  let pattern;
+  if(type==='normalizer'){common.verifyRecords=async()=>({verified:false,count:10});pattern=/INDEPENDENT/;}
+  if(type==='prefix'){m.store.docs.get('journal/'+stagingPrefix('queue',game,'canary',1)+'0000000003').value.record.contentHash='c'.repeat(64);pattern=/PREFIX_CHANGED/;}
+  if(type==='response'){const key=[...m.store.docs.keys()].find(k=>k.endsWith(':0000000003:response'));
+   m.store.docs.get(key).value.step.msgId='CHANGED';pattern=/SOURCE_CHANGED/;}
+  if(type==='lease'){await m.store.create('state',stagingLeaseKey('queue',game,'canary',1),{expiresAt:Date.now()+60000});pattern=/LIVE_LEASE/;}
+  if(type==='task-race'){let checks=0;common.guard=async()=>{if(++checks===3)m.store.docs.get('state/'+m.key).value.owner='foreign';};pattern=/TASK_CHANGED/;}
+  if(type==='active-source'){common.ended={...ended,status:'in_progress'};pattern=/ENDED_SOURCE/;}
+  await assert.rejects(()=>resetEndedTask(common),pattern);assert.equal((await m.store.get('state',m.key)).value.status,'success');
+ }
+});
+test('a pending resumed prefix is checked again and cannot cross windows with an altered immutable receipt',async()=>{
+ const m=await partialCanary(),common={...m,game,queueId:'queue',kind:'canary',index:1,guard,ended,
+  verifyRecords:async rows=>({verified:true,count:rows.length})};
+ const task=await resetEndedTask(common),before=queueHash([...m.store.docs]);
+ assert.deepEqual(await resetEndedTask(common),task);assert.equal(queueHash([...m.store.docs]),before);
+ m.store.docs.get('journal/'+task.resume.receiptKey).value.endedProofHash='b'.repeat(64);
+ await assert.rejects(()=>resetEndedTask(common),/PENDING_RECEIPT/);assert.equal((await m.store.get('state',m.key)).value.resume.count,5);
+});

@@ -60,17 +60,43 @@ export async function inspectStaging({store,transport,game,queueId,kind,index,gu
  }
  return {count,recordsHash:hash.digest('hex'),segments,fullReadback:true,independentlyVerified:true};
 }
-export async function resetEndedTask({store,transport,game,queueId,kind,index,guard,verifyRecords,ended,now=Date.now}){
+export async function resetEndedTask({store,transport,game,queueId,kind,index,guard,verifyRecords,ended,
+ revalidateSuccess=true,now=Date.now}){
  const key=taskKey(queueId,game,`${kind}:${index}`),before=await store.get('state',key),task=before?.value;
  assert(task?.queueId===queueId&&task.campaignId===game.campaignId,'SG_RESUME_TASK_SCOPE');
- if(task.status==='success'||task.status==='pending')return task;
- assert(['running','failed','blocked'].includes(task.status)&&ended?.status==='completed'
+ // Unchanged adapters retain the task's previous complete proof. Revised
+ // adapters must verify the same native bytes, including already successful
+ // tasks; a previous status alone cannot approve a new normalizer.
+ if(task.status==='success'&&!revalidateSuccess||task.status==='pending'&&!task.resume)return task;
+ assert(['running','failed','blocked','success','pending'].includes(task.status)&&ended?.status==='completed'
   &&ended.queueId===queueId&&typeof ended.run==='string'&&ended.sourceJobsEnded===true,'SG_RESUME_ENDED_SOURCE_REQUIRED');
  const lease=(await store.get('state',stagingLeaseKey(queueId,game,kind,index)))?.value;
  assert(canResetInterruptedTasks(ended.status,lease?.expiresAt>now()?1:0),'SG_RESUME_LIVE_LEASE');
  const quota=kind==='canary'?10:quotas(game.baseline)[index-1];
  const accepted=await inspectStaging({store,transport,game,queueId,kind,index,guard,verifyRecords,
   max:quota+(kind==='worker'?7:0)});
+ if(task.status==='success'||task.status==='pending'){
+  const proof=task.status==='success'?task.proof:task.resume;
+  assert(proof?.fullReadback===true&&proof.independentlyVerified===true
+   &&proof.count===accepted.count&&proof.recordsHash===accepted.recordsHash
+   &&stable(proof.segments)===stable(accepted.segments),'SG_RESUME_ACCEPTED_PREFIX_CHANGED');
+  if(task.status==='success')assert(task.exitCode===0&&task.count===accepted.count&&accepted.count>=quota
+   &&proof.queueId===queueId&&proof.gameId===game.gameId&&proof.campaignId===game.campaignId
+   &&proof.taskId===task._id&&proof.owner===task.owner&&proof.pending===0
+   &&proof.unknownRequests===0&&proof.activeLeases===0,'SG_RESUME_SUCCESS_PROOF');
+  else {
+   const receipt=(await store.get('journal',proof.receiptKey))?.value;
+   assert(receipt?.schema==='sg-ag-rolling-resume-prefix-v1'&&queueHash(receipt)===proof.receiptHash
+    &&receipt.queueId===queueId&&receipt.gameId===game.gameId&&receipt.campaignId===game.campaignId
+    &&receipt.taskId===task._id&&receipt.count===accepted.count&&receipt.recordsHash===accepted.recordsHash
+    &&stable(receipt.segments)===stable(accepted.segments),'SG_RESUME_PENDING_RECEIPT');
+  }
+  await guard();
+  const currentLease=(await store.get('state',stagingLeaseKey(queueId,game,kind,index)))?.value;
+  assert(!currentLease||currentLease.expiresAt<=now(),'SG_RESUME_LIVE_LEASE');
+  assert(queueHash((await store.get('state',key))?.value)===queueHash(task),'SG_RESUME_TASK_CHANGED');
+  return task;
+ }
  const receipt={schema:'sg-ag-rolling-resume-prefix-v1',queueId,gameId:game.gameId,campaignId:game.campaignId,
   taskId:task._id,previousTaskHash:queueHash(task),endedRun:ended.run,endedProofHash:ended.proofHash,...accepted,
   unknownOrUnfinishedSource:'retained-unreplayed-unaccounted',sourceRequests:0};

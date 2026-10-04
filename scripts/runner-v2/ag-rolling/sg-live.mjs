@@ -104,8 +104,14 @@ try{
     assert(queueHash(previous)===permit.profileHash&&previous.payload.queueId===queueId
      &&previous.payload.games.some(g=>queueHash(g)===queueHash(game)),'SG_AG_RESUME_GAME_CHANGED');
     const plan=registry.plans[game.gameId];
+    const baseline=await inspectFormalBaseline({profile,game,plan,store,transport,ended,guard});
+    if(baseline.status==='complete')return; // Its immutable proof survives staging cleanup.
+    const oldEntry=previous.manifest.find(g=>g.gameId===game.gameId),entry=profile.manifest.find(g=>g.gameId===game.gameId);
+    assert(oldEntry&&entry,'SG_AG_RESUME_MANIFEST_REQUIRED');
+    const revalidateSuccess=oldEntry.planHash!==entry.planHash||oldEntry.adapterProofHash!==entry.adapterProofHash;
     for(const [kind,index] of [...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])])
-     await resetEndedTask({store,transport,game,queueId,kind,index,guard,ended,verifyRecords:rows=>verifyRecords(plan,rows)});
+     await resetEndedTask({store,transport,game,queueId,kind,index,guard,ended,revalidateSuccess,
+      verifyRecords:rows=>verifyRecords(plan,rows)});
    },
    checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
