@@ -73,7 +73,7 @@ jobs:
   ag-rolling-admit:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && github.repository == 'zyzuoyang/sg-capture-runner'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 125
     env:
       GH_TOKEN: ${{ github.token }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}

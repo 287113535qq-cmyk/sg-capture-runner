@@ -24,6 +24,15 @@ export function queueProfile({name,profile,authorization,plans,readBytes}){
    'SG_AG_QUEUE_RUNTIME_CHANGED');
  }
  validateSgPayload(profile.payload,profile.manifest);
+ if(profile.preparationRecovery){
+  const r=profile.preparationRecovery;
+  assert(profile.resume&&r.schema==='sg-ag-preparing-recovery-v1'
+   &&Object.keys(r).sort().join(',')==='nativeSourceHash,schema,targetActivation,targetCommit,targetProfileHash,targetRun'
+   &&/^[a-f0-9]{64}$/.test(r.targetActivation??'')&&r.targetActivation!==profile.activation
+   &&/^[0-9]+:1$/.test(r.targetRun??'')&&/^[a-f0-9]{40}$/.test(r.targetCommit??'')
+   &&/^[a-f0-9]{64}$/.test(r.targetProfileHash??'')&&/^[a-f0-9]{64}$/.test(r.nativeSourceHash??''),
+   'SG_AG_PREPARING_RECOVERY_PROFILE');
+ }
  if(profile.append)assert(profile.resume&&profile.append.schema==='sg-ag-rolling-append-v1'
   &&/^[a-f0-9]{64}$/.test(profile.append.previousPayloadHash??'')
   &&/^[a-f0-9]{64}$/.test(profile.append.previousManifestHash??'')
