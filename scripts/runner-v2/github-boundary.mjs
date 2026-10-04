@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {original} from './expired-run-review.mjs';
+import {withGithubHttpDiagnostic,withGithubListDiagnostic} from './github-read-diagnostic.mjs';
 const repos=[original.repository,'287113535qq-cmyk/sg-capture-runner'];
 export function githubBoundary({read,run,commit,now=Date.now,workflowPath='.github/workflows/trial-300k.yml'}){
   assert(['.github/workflows/trial-300k.yml','.github/workflows/demo-maintenance.yml'].includes(workflowPath),'CURRENT_WORKFLOW_CHANGED');
@@ -14,15 +15,16 @@ export function githubBoundary({read,run,commit,now=Date.now,workflowPath='.gith
     for(let offset=0;offset<queries.length;offset+=5){
       const wave=queries.slice(offset,offset+5);
       const settled=await Promise.allSettled(wave.map(async query=>({
-        repository:query.repository,result:await read(query.path)
+        repository:query.repository,path:query.path,result:await read(query.path)
       })));
       const failed=settled.find(item=>item.status==='rejected');
       if(failed)throw failed.reason;
       lists.push(...settled.map(item=>item.value));
     }
-    for(const {repository,result} of lists){
-      assert(Number.isInteger(result.total_count) && result.total_count<100
-        && Array.isArray(result.workflow_runs) && result.workflow_runs.length===result.total_count,'GITHUB_RUN_LIST_TRUNCATED');
+    for(const {repository,path,result} of lists){
+      try{assert(Number.isInteger(result.total_count) && result.total_count<100
+        && Array.isArray(result.workflow_runs) && result.workflow_runs.length===result.total_count,'GITHUB_RUN_LIST_TRUNCATED');}
+      catch(error){throw withGithubListDiagnostic(error,path,result);}
       for(const item of result.workflow_runs){
         assert(repository===original.repository && (item.id===id || item.id===original.id),'OTHER_RUN_ACTIVE');
         if(item.id===id)assert(item.head_sha===commit && item.run_attempt===1
@@ -46,6 +48,8 @@ export function authenticatedRead(token){
   return async path=>{
     assert(path.startsWith('repos/') && !path.includes('..'),'INVALID_GITHUB_PATH');
     const r=await fetch('https://api.github.com/'+path,{headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json'},redirect:'error',signal:AbortSignal.timeout(15000)});
-    assert(r.ok,'GITHUB_RUN_READ_FAILED');return r.json();
+    try{assert(r.ok,'GITHUB_RUN_READ_FAILED');}
+    catch(error){throw withGithubHttpDiagnostic(error,path,r);}
+    return r.json();
   };
 }
