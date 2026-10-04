@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "a6b07c0061d3983dc3ea7b417bce2d80d74736146d008f1ee6072eb5880cb2d9",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "f78ca5b2ee1c35522347db5ee567076b37255858b6e1bcbbb81e14f1897468f6",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "4e16718e51ddb241b59ec53b2631d5563dc4734d434a2ce7237420256c4e8e75",
-    "scripts/runner-v2/record_fields.py": "4f115cf4ff358e831efa09758b633144a7daf0740a53c4907605c64a145ffebc",
-    "service/round_fields.py": "25d2778b701d3b1f922f7acc186ceaa34d13a080f15c07e4234c33c9562b63c0",
-    "service/game_rule_catalog.py": "8a11302ca0e78e8fb686cfa2165565aefcbf64201d9ba0990e7a358272660190"
+    "service/ag_rolling_plan.py": "20c25a098c651a042c80ebc1aeb1ae2850d16ffc8598ba103d2c552ffc6d674a",
+    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
+    "service/round_fields.py": "23dea1b1468bb4c080fcba72f37ae99486cf766c02fcb82f92b642de0ad8e325",
+    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fea831ee0b987c03cdfa450d4f3316a963042d35000759c4172f5cb4672465b2"
+  "ruleHash": "e68069d41e5161d017bfdc53e2baf92138cfd546653adc3cd13cbecb57d1b52b"
 }

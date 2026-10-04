@@ -71,8 +71,8 @@
     "scripts/trial/veryfruity-session.mjs": "40a7580f993611c6146d64664dc17c71d465e4da32a5c9c93121008c8914ad75",
     "scripts/trial/veryfruity-worker.mjs": "3c81416f5b8b7d835fd511685fcc8a0e36cd1e1477a7abd67cf6255f06878906",
     "collector/sg.veryfruity-action.ts": "4ac0ec5ea294c948cbb8ee3133cb3b7c53fa2f41079d529d0feff2eded59642f",
-    "scripts/runner-v2/record_fields.py": "4f115cf4ff358e831efa09758b633144a7daf0740a53c4907605c64a145ffebc",
-    "service/game_rule_catalog.py": "8a11302ca0e78e8fb686cfa2165565aefcbf64201d9ba0990e7a358272660190"
+    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
+    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -94,5 +94,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6ccbace4cef4b97f0282ecdba7b9d3241cf8ab68d62ce02bfca8511771324747"
+  "ruleHash": "9986e3047d69003f6b98bf4a394b03167760bbde54fa127c2e11bc6996325275"
 }

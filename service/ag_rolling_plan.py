@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -170,6 +170,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == '420f4d29d1445b59b0cd4b8a0259c49fc81f9ae644de7e60b6d4c3460e6e6bab'
                 and wired.get('schema') == 'sg-ag-wms-dancingdrums-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == '943aa922f6af1a44d6d0bccb9919f957b655555a80b6c5a186b4e5030dd9c6f1'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'drumsexplosion-base-wms-v1':
+        from drumsexplosion_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32761 and plan['runtimeGameId'] == 32983 and plan['runtimeSlug'] == 'dancingdrumsexplosion'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 176 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20454 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 994 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 6
+                and proof.get('unhandledHistoricalVariants') == {'DRUMSEXPLOSION_FEATURE_NOT_ADAPTED':6}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 994
+                and digest(proof['acceptedRawHashes']) == 'edcc885aab8dbf39ff81cdf890cd39b73327e5e342bb74ecd1c11231b86e0648'
+                and digest(proof['rejectedHistoricalPrefixes']) == 'aefca1518f0f1344c69fd78f421ceb59c2c99d367bc3f6c387e21de4d9de9224'
+                and wired.get('schema') == 'sg-ag-wms-drumsexplosion-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '728c3901b05dbd8751be1f24598a8aa14ddcb536a219eadcb34cff3e0c8189b6'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

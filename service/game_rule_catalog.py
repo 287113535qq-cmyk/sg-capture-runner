@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32761:
+        native.update({'family':'drumsexplosion-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32983与WMS Header20454分别固定；自己的AccountData/CurrencyMultiplier1→Header→Stake.total176，没有lines/paylineCount/PaylineCount。请求与目录slug dancingdrumsexplosion；响应stake176，没有stakePerLine/paylineCount，普通readyForEndGameY。',
+            'continue':'自身普通单spin0/reelset0、5stops、最多3个AnywayWin，连续winIndex0..2；scatterWinCount0/freeSpinN/bonusAwardedN。4种wildReplace和2种bonusReplace只核验形状，不猜特殊或再次加奖。DecisionInfo、免费、Scatter、Feature、MaxWin、未知形状停止。',
+            'complete':'完整普通readyY后唯一Header-only EndGame，响应Header.readyN/空AccountData/Balances、无GameResult且现金保持。每个winVal只加一次，不再乘ways；奖额和=totalSpinWin=Logic totalWin=BG累计，现金=start-176+奖。',
+            'bounds':'自己的全文件SHA核验，前1000实际994普通完整/1988自身历史请求，6个DecisionInfo readyN旧早End仍拒绝；实际codec→独立PY IPC→record/verify一致，历史不抵目标。Init仅synthetic限定能力形状，无真实Init/native scope/livecanary/当前队列准入；未知传输单次封存、不retry/resend。',
+            'files':['scripts/runner-v2/ag-rolling/sg-drumsexplosion-base.mjs','scripts/runner-v2/ag-rolling/sg-drumsexplosion-source.mjs','scripts/runner-v2/ag-rolling/sg-drumsexplosion-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/drumsexplosion_base_fields.py','config/ag-rolling-drumsexplosion-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'AnywayWin':'344个自身普通AnywayWin，81种awardIndex/ways/winVal组合和230种位置文本；位置3..8个、唯一编号0..14。未知tuple/位置停止，ways不再次乘奖。',
+                'BGInfo / Stake':'下注总额176；BG totalWagerWin/bgWinnings与奖额和一致，isMaxWin0。wildReplace/bonusReplace不是第二次奖额或倍率。',
+                'DecisionInfo':'6个旧特殊indices48/389/455/492/576/870，picksAwarded1/picksUsed0/ScatterWin奖0且readyN；旧bonus1标签和raw保持，不续局/重放/回计。'}})
     elif game_id == 32760:
         native.update({'family':'dancingdrums-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32982与WMS Header20207分别绑定；自己的Header→Stake.total528/paylineCount1→AccountData/CurrencyMultiplier1。请求和目录slug dancingdrums；响应stake528，没有stakePerLine/paylineCount或readyForEndGame。',
@@ -411,7 +421,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -516,6 +526,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'drumsexplosion-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of own AnywayWin.winVal','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注176；自己的AnywayWin计数/奖额/ways tuple/位置与BG替换形状一致；readyY后唯一EndGame readyN确认，DecisionInfo等未知特殊停止。'}
         if plan and plan.get('adapter') == 'dancingdrums-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of own AnywayWin.winVal','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
