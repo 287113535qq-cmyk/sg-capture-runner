@@ -54,6 +54,33 @@ test('codec initialization failure releases its unopened source session without 
   createCodec:async()=>{throw Error('bad plan');},createSession:async()=>({identity:sessionHash,close(){closed++;},send(){assert.fail();}})});
  await assert.rejects(()=>p.open());assert.equal(closed,1);
 });
+test('concurrent close drains one issued source response before closing the spool and publishes only one closure',async()=>{
+ const j=journalFixture(),local=spool();let release,requests=0,sourceCloses=0,codecCloses=0;
+ const p=createProtocolSessions({...identity,plan:{maxSteps:100},journal:j,guard:async()=>{},spoolFactory:()=>local,
+  createCodec:async()=>({...fakeCodec(),close(){codecCloses++;}}),
+  createSession:async()=>({identity:sessionHash,close(){sourceCloses++;},async send(requestPayload,msgId){
+   requests++;if(requests===1)await new Promise(resolve=>release=resolve);return {requestPayload,msgId};}})});
+ const session=await p.open(),capture=session.captureRound({});
+ while(!release)await new Promise(r=>setTimeout(r,1));
+ const close1=session.close(),close2=session.close();assert.equal(close1,close2);
+ await new Promise(r=>setImmediate(r));assert.equal(sourceCloses,0);assert.equal(local.status().closed,false);
+ await assert.rejects(()=>session.captureRound({}),/REENTRY/);
+ release();assert.equal((await capture).data.complete,true);await close1;
+ assert.equal(requests,2);assert.equal(sourceCloses,1);assert.equal(codecCloses,1);
+ assert.equal(j.events.filter(e=>e==='close').length,1);assert.equal(local.status().closed,true);
+ assert.equal((await p.inspectSource()).pending,0);
+});
+test('close during an issued unknown source call preserves its unresolved intent without any replay',async()=>{
+ const j=journalFixture(),local=spool();let release,requests=0;
+ const p=createProtocolSessions({...identity,plan:{maxSteps:100},journal:j,guard:async()=>{},spoolFactory:()=>local,
+  createCodec:async()=>fakeCodec(),createSession:async()=>({identity:sessionHash,close(){},async send(){
+   requests++;await new Promise(resolve=>release=resolve);throw Error('source unknown');}})});
+ const session=await p.open(),capture=assert.rejects(()=>session.captureRound({}),e=>e.code==='SOURCE_NETWORK_OUTCOME_UNKNOWN');
+ while(!release)await new Promise(r=>setTimeout(r,1));const closing=session.close();
+ assert.equal(local.status().closed,false);release();await capture;await closing;
+ const audit=await p.inspectSource();assert.equal(requests,1);assert.equal(audit.unknownRequests,1);assert(audit.pending>0);
+ assert.equal(j.events.filter(e=>e==='close').length,1);
+});
 function nativeMemory(){
  const docs=new Map();return {docs,
   store:{get:async(c,k)=>structuredClone(docs.get(k)??null),getMany:async(c,keys)=>keys.map(k=>structuredClone(docs.get(k)??null))},
