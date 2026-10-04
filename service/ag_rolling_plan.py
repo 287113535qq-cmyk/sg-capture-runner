@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -89,6 +89,29 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'blazing-x-wms-v1':
+        from blazing_x_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32755 and plan['runtimeGameId'] == 32977 and plan['runtimeSlug'] == 'blazingxasia'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 240 and plan['maxSteps'] == 12
+                and plan.get('wmsGameId') == 20363 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 997 and proof.get('acceptedFreeRounds') == 3
+                and proof.get('freeHistoricalIndices') == [77,667,714] and proof.get('unhandledHistoricalVariants') == {}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 1000
+                and digest(proof['acceptedRawHashes']) == 'd042e587846fad977b65fd2fd4c8a26005e9d989ce4a21d35a817e1a362e39b9'
+                and wired.get('schema') == 'sg-ag-wms-blazing-codec-replay-v1' and wired.get('evidenceHash') == digest(unsigned)
+                and wired.get('gameId') == 32755 and wired.get('runtimeGameId') == 32977 and wired.get('wmsGameId') == 20363
+                and wired.get('historyFileSha256') == proof['historyFileSha256']
+                and wired.get('acceptedBaseRounds') == 997 and wired.get('sampledRounds') == 1000 and wired.get('acceptedFreeRounds') == 3
+                and wired.get('freeHistoricalIndices') == [77,667,714] and wired.get('sourceRoutesValidated') == 2030
+                and wired.get('rawHashesUnchanged') is True and wired.get('acceptedRawHashesHash') == digest(proof['acceptedRawHashes'])
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0
+                and wired.get('fullRecordsHash') == 'a8d8e2a398b063b4f59edf0eb8f4be5bf03b2c7091565cb29e4f2fbf0aa142ea', 'ROLLING_WMS_PLAN_SCOPE')
     if plan['adapter'] == 'actionbank-base-wms-v1':
         from actionbank_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
         wired = proof.get('wiringEvidence', {})

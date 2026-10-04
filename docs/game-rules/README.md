@@ -114,7 +114,7 @@
 | [32752](32752.json) | Acorn Pixie | implemented-subset | 0 |
 | [32753](32753.json) | Action Bank Plus | implemented-subset | 0 |
 | [32754](32754.json) | Arthur and the Round Table | not-documented | 待确认 |
-| [32755](32755.json) | Blazing X Asia | not-documented | 待确认 |
+| [32755](32755.json) | Blazing X Asia | implemented-subset | 1 |
 | [32756](32756.json) | Celestial King | not-documented | 待确认 |
 | [32757](32757.json) | Cheshire Cat | not-documented | 待确认 |
 | [32758](32758.json) | Cool Jewels | not-documented | 待确认 |
