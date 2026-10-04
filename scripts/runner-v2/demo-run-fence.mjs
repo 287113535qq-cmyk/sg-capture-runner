@@ -2,6 +2,7 @@ import {joblessFencedRead} from './count-jobless-fence.mjs';
 import assert from 'node:assert/strict';
 import {protocolHash as hash} from './protocol-resume.mjs';
 import {githubBoundary} from './github-boundary.mjs';
+import {withGithubListDiagnostic} from './github-read-diagnostic.mjs';
 export const stalled=Object.freeze({id:36612306276,repository:'zyzuoyang/sg-capture-runner',commit:'c433f74c5ef4bda1cbe3cbde9ec17fffe0122b44',profileHash:'9a4d0db5fa18564d9cee14c1b6c7891217b23dd77027d5c656b9328831deee22',generation:'53448c2a8f711899004d05c065f947cd8fb737f9da8152f69ccd7f4da7d53ed2'});
 export const revokedMarker=Object.freeze({schema:'sg-demo-run-revoked-v1',run:stalled.id+':1',commit:stalled.commit,profileHash:stalled.profileHash});
 export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.now,workflowPath='.github/workflows/demo-maintenance.yml'}){
@@ -19,7 +20,8 @@ export function maintenanceBoundary({read,store,oldProfile,run,commit,now=Date.n
  const filtered=async path=>{
   const r=await joblessFencedRead({read,store})(path);
   if(!path.startsWith(`repos/${stalled.repository}/actions/runs?`))return r;
-  assert(Number.isInteger(r.total_count)&&r.total_count<100&&Array.isArray(r.workflow_runs)&&r.workflow_runs.length===r.total_count,'GITHUB_RUN_LIST_TRUNCATED');
+  try{assert(Number.isInteger(r.total_count)&&r.total_count<100&&Array.isArray(r.workflow_runs)&&r.workflow_runs.length===r.total_count,'GITHUB_RUN_LIST_TRUNCATED');}
+  catch(error){throw withGithubListDiagnostic(error,path,r);}
   const found=r.workflow_runs.filter(x=>x.id===stalled.id);assert(found.length<=1,'STALLED_DUPLICATE');
   if(found.length)assert(path.includes('status=queued')&&found[0].head_sha===stalled.commit&&found[0].run_attempt===1&&found[0].path==='.github/workflows/trial-300k.yml','STALLED_LIST_CHANGED');
   return {...r,total_count:r.total_count-found.length,workflow_runs:r.workflow_runs.filter(x=>x.id!==stalled.id)};
