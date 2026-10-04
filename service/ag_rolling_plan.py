@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -149,6 +149,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'
                 and wired.get('schema') == 'sg-ag-wms-crystalforest-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == '2e397148a3d90fd4df4fb9ddbd52b3ccfbef54235168b92159de3689663cc3c9'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'dancingdrums-base-wms-v1':
+        from dancingdrums_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32760 and plan['runtimeGameId'] == 32982 and plan['runtimeSlug'] == 'dancingdrums'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 528 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20207 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 993 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 7
+                and proof.get('unhandledHistoricalVariants') == {'DANCINGDRUMS_FEATURE_NOT_ADAPTED':7}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 993
+                and digest(proof['acceptedRawHashes']) == '58f07d89ee8c900c0c61f9b10c5da32b488f22b56ed96f24ff765cb27c068de5'
+                and digest(proof['rejectedHistoricalPrefixes']) == '420f4d29d1445b59b0cd4b8a0259c49fc81f9ae644de7e60b6d4c3460e6e6bab'
+                and wired.get('schema') == 'sg-ag-wms-dancingdrums-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '943aa922f6af1a44d6d0bccb9919f957b655555a80b6c5a186b4e5030dd9c6f1'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

@@ -32,3 +32,5 @@ import './ag-rolling/sg-cheshire-wiring.test.mjs';
 import './ag-rolling/sg-cooljewels-wiring.test.mjs';
 
 import './ag-rolling/sg-crystalforest-wiring.test.mjs';
+
+import './ag-rolling/sg-dancingdrums-wiring.test.mjs';
