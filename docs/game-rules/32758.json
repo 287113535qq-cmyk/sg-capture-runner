@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "cooljewels-base-ag-rolling-wms-v1",
+  "planHash": "e3047a8c19394315e6607c1480c960fbce53804c0f49d1e5021676e0c2d14730",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32758",
+    "runtimeSlug": "cooljewels",
+    "buy": 0,
+    "betRaw": 50,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20150
+  },
+  "roundRule": {
+    "family": "cooljewels-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32980与WMS Header20150分别绑定；自己的Header→AccountData/CurrencyMultiplier1→Stake.multiplier1/total50。请求gameCodeRGI cooljewels_prt，目录slug cooljewels。响应stake50/stakePerLine0/paylineCount0。",
+    "continue": "仅自身普通单Logic内完整ReactorChain：1..6有序drop，先前drop有cluster，末drop为0cluster；每drop最多7cluster、36格layout符号0..13。没有readyForEndGame字段。Feature/FS_Info、未知cluster或MaxWin停止。",
+    "complete": "普通消除链完整后唯一Header-only EndGame，响应严格Header/Balances，无GameResult且现金保持。cluster_awards每个位置奖额只加一次=Logic totalWin，现金=start-50+奖；ReelSpin.spinWins固定0，不当消除奖总额。",
+    "bounds": "自己的完整文件SHA核验，前1000中994普通完整/1988请求，6个旧免费触发直接EndGame拒绝；不续局、不信用历史。实际codec→独立PY IPC→record/verify；Init仅synthetic限定能力形状，无真实Init/native scope/livecanary/当前队列准入。未知传输一次封存、不retry/resend。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/cooljewels_base_fields.py",
+      "config/ag-rolling-cooljewels-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "ReactorChain": "1733个普通layout/1466个cluster自身证据，961种drop/root/watermark/award组合、730种位置文本、94种root/位置组合；位置0..5×0..5，奖数与唯一位置数一致。未知形状拒绝。",
+      "Stake / ReelSpin": "实际下注50/multiplier1；单spin0/reelset0、6stops、winCountPL0/SC0、spinWins0/freeN/bonusN，不能借Payline奖额逻辑。",
+      "MaxWin_Info / Balances": "maxWinValue25000000只是上限，maxWin必须false/cappedWins0；现金双验，End不再加奖。"
+    }
+  },
+  "typeMappings": {
+    "cooljewels-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "cooljewels-base-ag-rolling-wms-v1": "8b45e57ec2f0494ff96185b0b20290946f6524ad73d92b38d79b2f707c0f6076"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + sum of all ReactorCluster.cluster_awards",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "总下注50/multiplier1；自己的ReactorChain terminal零cluster和award sum/cash双验，唯一EndGame确认；ReelSpin.spinWins固定0。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "337d3f3b208921ede16310b2f5c1317a0bacd0008bd710b2ad40a0e2d43a5da1"
+    "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
+    "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
+    "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "153e8793f0bcdb87d489a5a4dd62174830a1bdf2d5ab6a46e8b2c680944d05c0",
+    "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
+    "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
+    "service/ag_rolling_plan.py": "44258dd68e6468917bcd989d26b94027626077b035a7fded14f7b7b982ed63a8",
+    "scripts/runner-v2/record_fields.py": "c6aed1e46cc68ed13b89be6367af335fdf97e92d8811aed8b13069ca4d40a852",
+    "service/round_fields.py": "c03401e98799c975c1689efd8ddf3240a3d951c17383a06390b5887efdfcb1d6",
+    "service/game_rule_catalog.py": "d00ba912d0fe20111cacd5814f6dbdce3308d02b68ef3761fb1da6c1475286db"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -36,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7d395aeb2b5a45f0531a64a1288531054017b6c12bd2e39140d8551a51910774"
+  "ruleHash": "5dd184278f34bce69a6b9f184d3f3aa6d0e972f1e3cd57e5e7cc8814718fd088"
 }

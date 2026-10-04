@@ -146,6 +146,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
         self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
 
+    def test_cooljewels_card_binds_own_reactor_terminal_and_early_free_end(self):
+        card=self.cards[32758];rule=card['roundRule']
+        self.assertEqual(rule['family'],'cooljewels-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32980);self.assertEqual(card['parameters']['wmsGameId'],20150)
+        self.assertIn('994',rule['bounds']);self.assertIn('1988',rule['bounds']);self.assertIn('6个旧免费触发',rule['bounds'])
+        self.assertIn('961',rule['fields']['ReactorChain']);self.assertIn('730',rule['fields']['ReactorChain'])
+        self.assertIn('spinWins固定0',rule['complete'])
+        self.assertEqual(card['typeMappings']['cooljewels-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_cheshire_card_keeps_own_positions_mystery_and_zero_feature_coverage(self):
         card=self.cards[32757];rule=card['roundRule']
         self.assertEqual(rule['family'],'cheshire-base-wms-v1')
