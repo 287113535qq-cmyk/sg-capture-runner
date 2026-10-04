@@ -78,6 +78,19 @@ def contract(game_id):
             'bounds':'仅本地候选，未在线应用。72份自身前缀144条已有请求及72条候选intent沿实际codec/Python一致，99份原接受历史普通完整字段/hash不变。原v1契约、96份触发证明及全部旧raw/半局保留，不重放或回计；新窗口须精确Linux、证据约束manifest转发与旧prefix复核。',
             'files':['scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs','scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs',
                      'service/explicit_request_dragon.py','service/explicit_request_probe.py','config/ag-rolling-explicit-dragon-contracts.json']})
+    elif game_id == 32595:
+        native.update({'family':'nextgen-moneyraid-terminal-evidence-v2','messages':['BET','FREE_GAME'],
+            'start':'固定本游戏runtime33066、moneyraidwapiti96、下注200及原请求模板；新raw同时保留原v1和v2 marker。',
+            'continue':'自身104份自然闭合证据中，FID2初始7次，FID3初始9/10/11/12次；NFG每帧减1、TFG固定、CFGG逐帧加1、FID不变。其他初始次数、重触发、显式选择或未知字段拒绝。',
+            'complete':'只在自身完整路径NFG0、每帧TW/CW/FGTW及现金、请求PID/响应SID、成功XML独立JS/Python一致后批准FID2/3自然终局；请求PID与响应SID分别固定。普通与FID1沿原v1规则。',
+            'bounds':'仅本地v2，未在线应用。91份FID2及13份FID3共872条自身请求通过实际codec/Python IPC/record/verify；原97份accepted普通及99份v1完整记录字段/hash保留，1份bet0余额刷新仍拒绝。旧v1 marker的FID2/3终局仍拒绝，104份旧失败局不续跑、不重放、不回计。新窗口须精确Linux与证据绑定的逐层manifest转发，并完整复核旧prefix。',
+            'files':['scripts/runner-v2/ag-rolling/sg-automatic-terminal.mjs','scripts/runner-v2/ag-rolling/sg-automatic-free.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs','service/automatic_terminal_fields.py',
+                     'service/automatic_free_fields.py','service/native_nextgen_fields.py','config/ag-rolling-automatic-terminal-contracts.json'],
+            'fields':{'NFG / TFG / CFGG':'仅自身已观察初始次数，逐帧递减与累计次数一致；没有重触发许可。',
+                      'TW / CW / FGTW':'累计奖、逐帧增量和免费累计奖分别核验，不重复加奖。',
+                      'B / AB':'B=初始余额-200+TW；AB为扣款余额或终帧含奖余额，观察余额等于AB。',
+                      'PID / SID':'请求PID与响应SID各自在一大局内稳定，二者不是同一个标识。'}})
     elif game_id == 32749:
         native.update({'family':'five-treasures-wms-v1','messages':['Init','Logic','FreeSpinChoice','EndGame'],
             'start':'目录runtimeGameId32971与WMS Header.gameID20442分别固定；匿名新会话Init独立核验，首Logic固定Stake176和PaylineCount1。',
@@ -308,6 +321,8 @@ def cards(root=ROOT):
     for key in ('32588','32666'):
         if key in rolling and rolling[key].get('zeroAbpmContract')=='nextgen-zero-abpm-base-v1':
             plans[key]=rolling[key]  # A documented offline boundary grants no source permission.
+    if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
+        plans['32595']=rolling['32595']
     profiles = json.loads((root / 'service/round_types.json').read_text(encoding='utf-8'))['profiles']
     # Index already-saved focused analyses, not broad progress tables that list every game.
     known = {str(g['gameId']) for g in games}

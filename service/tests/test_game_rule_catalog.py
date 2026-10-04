@@ -28,6 +28,9 @@ class GameRuleCatalogTests(unittest.TestCase):
 
     def test_actual_plan_and_mapping_hashes_match_runtime(self):
         plans = json.loads((ROOT / 'config/round-one-plans.json').read_text(encoding='utf-8'))
+        rolling=json.loads((ROOT/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
+        if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
+            plans['32595']=rolling['32595']
         for gid, plan in plans.items():
             card = self.cards[int(gid)]
             self.assertEqual(card['planHash'], digest(plan))
@@ -42,6 +45,16 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertNotIn('HARDHAT', goals['roundRule']['bounds'])
         self.assertIn('docs/huff-goals-client-review-20260928.md', goals['analysisDocuments'])
         self.assertEqual(self.cards[32471]['roundRule']['family'], 'book-of-sevens-native-v1')
+
+    def test_moneyraid_documents_own_terminal_counts_old_marker_boundary_and_no_authorization(self):
+        card=self.cards[32595];rule=card['roundRule']
+        self.assertFalse(card['captureAuthorization']);self.assertEqual(card['runtimeGameId'],33066)
+        self.assertEqual(rule['family'],'nextgen-moneyraid-terminal-evidence-v2')
+        self.assertEqual(rule['messages'],['BET','FREE_GAME'])
+        for value in ['104份','872条','旧v1 marker','不回计','未在线应用']:self.assertIn(value,rule['bounds'])
+        self.assertIn('FID2初始7次',rule['continue']);self.assertIn('FID3初始9/10/11/12次',rule['continue'])
+        self.assertNotIn('FEATURE_PICK',rule['messages'])
+        self.assertNotEqual((self.cards[32550]['roundRule'] or {}).get('family'),rule['family'])
 
     def test_unsupported_games_remain_undocumented_and_prior_analyses_are_linked(self):
         unsupported = [c for c in self.cards.values() if c['roundRule'] is None]

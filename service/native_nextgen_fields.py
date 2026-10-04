@@ -38,6 +38,9 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if raw.get('automaticTerminalContract') is not None:
+            from automatic_terminal_fields import settled
+            return settled(raw,self.plan)
         if raw.get('explicitDragonContract') is not None:
             from explicit_request_dragon import binding
             binding(self.plan,raw)
@@ -80,6 +83,9 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if raw.get('automaticTerminalContract') is not None:
+            from automatic_terminal_fields import next_request
+            return next_request(raw,self.plan)
         if self.plan.get('zeroAbpmContract') is not None or raw.get('zeroAbpmContract') is not None:
             from zero_abpm_fields import binding,next_request
             binding(self.plan)

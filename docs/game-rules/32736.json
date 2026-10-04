@@ -90,10 +90,10 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "d6d0730daef4d7640446a80700b8abc94d0f3dff7f2a5d71b5b8cc692e9ec80f",
-    "service/round_fields.py": "1beb1bbaae26d26c0731322c76809326fc3ad6f2dd4b21b62d85a938979482f2",
+    "service/native_nextgen_fields.py": "7aabaf7b09d7211a6f6c789511771b7fad28fdb02acdbfd908935c01d293001a",
+    "service/round_fields.py": "eb1d07890e861d44d0887a71a460366a500cf824731fdfb832a9171a19c33e51",
     "scripts/runner-v2/record_fields.py": "e969da0ab48ac7d2fa6056c68efefd7d0bf3026697407655281a1143c93e29b9",
-    "service/game_rule_catalog.py": "701ce028ba93e223334363e47cbd5fdc25d650fc2edbd180e8ac128b7eaa5131"
+    "service/game_rule_catalog.py": "2e51cfaaa92c13bf9a0ec8d6e732cce6015a455021237182b0cd0b74badd177b"
   },
   "reviewDocuments": [
     "docs/natural-feature-review-32671-32736.md"
@@ -119,5 +119,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6c464db56f0220b07e4ad7de0a37316bf523f904d0c9789a3ffd5ade6b621a62"
+  "ruleHash": "29b6a2cd7884b1f07c7221b54eb1428cdea7c8a285a81b833e9eb6aa99ec4f5e"
 }

@@ -35,7 +35,7 @@
 | [32555](32555.json) | Hypercharged Temple of Atlantis | not-documented | 待确认 |
 | [32588](32588.json) | Merlin's Money Burst | implemented-subset | 1 |
 | [32590](32590.json) | Mighty Monkey Coin Combo | not-documented | 待确认 |
-| [32595](32595.json) | Money Raid Wapiti | not-documented | 待确认 |
+| [32595](32595.json) | Money Raid Wapiti | implemented-subset | 1 |
 | [32614](32614.json) | Quick Hit Blitz Blue | not-documented | 待确认 |
 | [32615](32615.json) | Quick Hit Blitz Gold | not-documented | 待确认 |
 | [32616](32616.json) | Quick Hit Blitz Purple | not-documented | 待确认 |

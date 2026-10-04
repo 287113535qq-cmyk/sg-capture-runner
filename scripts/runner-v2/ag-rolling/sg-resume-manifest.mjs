@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
+import {AUTOMATIC_TERMINAL,terminalBinding} from './sg-automatic-terminal.mjs';
 import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
@@ -15,6 +16,46 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.automaticTerminalContract!==undefined){
+   const {automaticTerminalContract,automaticTerminalContractHash,...previousPlan}=plan;
+   const {planHash:bound,automaticTerminalEvidence:evidence,...previousProof}=proof;
+   if(oldPlan.automaticFreeContract===undefined){
+    const intermediateProof={...previousProof,planHash:queueHash(previousPlan)};
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:intermediateProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   const {planHash:oldBound,...oldFields}=oldProof,wire=evidence?.wiringEvidence;
+   assert(id==='32595'&&oldPlan.automaticFreeContract==='nextgen-automatic-nfg-free-v1'
+    &&oldPlan.automaticTerminalContract===undefined&&automaticTerminalContract===AUTOMATIC_TERMINAL
+    &&queueHash(previousPlan)===queueHash(oldPlan)&&queueHash(previousProof)===queueHash(oldFields)
+    &&oldBound===entry.planHash&&bound===planHash
+    &&evidence?.schema==='sg-ag-moneyraid-terminal-repair-evidence-v2'
+    &&evidence.previousPlanHash===entry.planHash&&evidence.previousProofHash===entry.adapterProofHash
+    &&evidence.contractHash===automaticTerminalContractHash&&evidence.ownClosedNaturalRounds===104&&evidence.durableFrameCount===872
+    &&queueHash(evidence.terminalFidCounts)===queueHash({'2|':91,'3|':13})
+    &&/^[a-f0-9]{64}$/.test(evidence.nativeEvidenceHash??'')&&evidence.independentJsPython===true
+    &&evidence.sourceRequests===0&&evidence.mongoWrites===0&&evidence.failedRoundsCredited===0
+    &&wire?.schema==='sg-ag-moneyraid-terminal-codec-replay-v2'
+    &&wire.evidenceHash===queueHash(Object.fromEntries(Object.entries(wire).filter(([k])=>k!=='evidenceHash')))
+    &&wire.previousPlanHash===entry.planHash&&wire.contractHash===automaticTerminalContractHash
+    &&wire.ownClosedNaturalFullRounds===104&&wire.actualOwnCodecPythonRequests===872&&wire.oldMarkerUnreviewedTerminalRejected===104
+    &&wire.oldAcceptedUnmarkedRecordParity===97&&wire.oldMarkedV1RecordParity===99&&wire.futureHistoricalFieldsParity===99
+    &&wire.oldBetZeroRefreshStillRejected===1&&wire.actualCodecPythonRecordAndVerify===true
+    &&wire.acceptedOldRawHashesUnchanged===true&&wire.sourceRequests===0&&wire.mongoWrites===0&&wire.failedRoundsCredited===0,
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   const {policy}=terminalBinding(plan,{fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',
+    automaticFreeContract:oldPlan.automaticFreeContract,automaticTerminalContract,steps:[]});
+   assert(evidence.nativeEvidenceHash===policy.nativeEvidenceHash
+    &&queueHash(wire.terminalFidCounts)===queueHash(evidence.terminalFidCounts)
+    &&wire.futureHistoricalRoutes===118&&wire.independentEveryFrameFinanceAndRequests===true
+    &&/^[a-f0-9]{64}$/.test(wire.ownFullRecordsHash??'')
+    &&policy.nativeRawHashes?.length===104&&new Set(policy.nativeRawHashes).size===104
+    &&policy.nativeClosedHashes?.length===104
+    &&[...policy.nativeRawHashes,...policy.nativeClosedHashes].every(h=>/^[a-f0-9]{64}$/.test(h)),
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.explicitDragonContract!==undefined){
    const {explicitDragonContract,explicitDragonContractHash,...previousPlan}=plan;
    const {planHash:bound,explicitDragonEvidence:evidence,...previousProof}=proof;

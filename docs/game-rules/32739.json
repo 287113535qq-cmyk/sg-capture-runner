@@ -152,15 +152,15 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "d6d0730daef4d7640446a80700b8abc94d0f3dff7f2a5d71b5b8cc692e9ec80f",
-    "service/round_fields.py": "1beb1bbaae26d26c0731322c76809326fc3ad6f2dd4b21b62d85a938979482f2",
+    "service/native_nextgen_fields.py": "7aabaf7b09d7211a6f6c789511771b7fad28fdb02acdbfd908935c01d293001a",
+    "service/round_fields.py": "eb1d07890e861d44d0887a71a460366a500cf824731fdfb832a9171a19c33e51",
     "scripts/runner-v2/record_fields.py": "e969da0ab48ac7d2fa6056c68efefd7d0bf3026697407655281a1143c93e29b9",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "service/demon_nested_fields.py": "e8d69cd2fea147406dfb99330ece786542b4f2306a2d14086e9e7db2d2a8219e",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "701ce028ba93e223334363e47cbd5fdc25d650fc2edbd180e8ac128b7eaa5131"
+    "service/game_rule_catalog.py": "2e51cfaaa92c13bf9a0ec8d6e732cce6015a455021237182b0cd0b74badd177b"
   },
   "reviewDocuments": [
     "docs/demon-pair-recovery-20260929.md",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "3ce643d4d3ce87ef6efed42ce5ed6841c05c08a004fb80ef25d886f7290447dd"
+  "ruleHash": "c95aab741ec967e92e4bb7739a99245a007503f4604832835ba3ceb3ed121529"
 }
