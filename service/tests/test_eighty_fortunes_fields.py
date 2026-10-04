@@ -1,5 +1,6 @@
-import copy,json,unittest
+import copy,json,sys,unittest
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from unittest.mock import patch
 from eighty_fortunes_fields import SOURCE,HEADER,review,settled,bootstrap,mapping_hash
 from round_fields import FieldError,derive
