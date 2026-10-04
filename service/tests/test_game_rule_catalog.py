@@ -15,6 +15,15 @@ class GameRuleCatalogTests(unittest.TestCase):
     def setUpClass(cls):
         cls.cards = cards()
 
+    def test_arthur_ordinary_card_preserves_own_special_boundaries(self):
+        card=self.cards[32754];rule=card['roundRule']
+        self.assertEqual(rule['family'],'arthur-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32976)
+        self.assertEqual(card['parameters']['wmsGameId'],20467)
+        self.assertFalse(card['captureAuthorization'])
+        for text in ('986','1972','14自身','6免费','3Excalibur','5Wild','extra3/5','真实Init'):
+            self.assertIn(text,rule['bounds'])
+
     def test_all_games_have_honest_unknown_coverage_and_no_capture_permission(self):
         games = json.loads((ROOT / 'config/games.json').read_text(encoding='utf-8'))
         self.assertEqual(set(self.cards), {g['gameId'] for g in games})

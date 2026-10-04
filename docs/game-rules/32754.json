@@ -6,21 +6,81 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "arthurandtheroundtable-base-ag-rolling-wms-v1",
+  "planHash": "58fbe03940484224f03b8712e5c0ff2027e56a6b2faeb80fa7869ed446e2836d",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32754",
+    "runtimeSlug": "arthurandtheroundtable",
+    "buy": 0,
+    "betRaw": 200,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20467
+  },
+  "roundRule": {
+    "family": "arthur-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32976与WMS Header20467分别绑定；仅新的匿名Init限定能力核验后，首Logic Stake.total200/PaylineCount20/CurrencyMultiplier1。",
+    "continue": "仅自身普通单Logic，readyForEndGame=Y、无Wheel/FS/Excalibur/Token/WildInfo后允许唯一EndGame；不继续历史特殊局。",
+    "complete": "两帧普通Logic→EndGame；EndGame ready=N且无GameResult/SymbolGrids，现金保持。每帧会话、observer现金、Payline奖额和、spinWins、totalWin及BG累计独立双验。",
+    "bounds": "离线候选：自身全history SHA固定；前1000中986普通完整/1972请求沿actual codec→独立Python IPC→record/verify一致；14自身特殊路径首响应后拒绝（6免费、3Excalibur、5Wild overlay），旧raw/hash/标签保留且历史不抵扣目标。6免费末计数等于total且readyY只是未适配的有限观察；3Excalibur readyN就旧End仍拒绝，不当完整。免费extra3/5、Token feature和Wild overlay均未授权继续或结算。真实Init/在线canary/native scope未观察或安装；不在当前81队列。MaxWin、未知节点/奖表/网格、恢复和缺EndGame拒绝。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-arthur-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-arthur-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-arthur-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/arthur_base_fields.py",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "Header / Stake": "20467/version1_0/isRecoveringN；实际总下注200，请求及响应均20线/stakePerLine10；普通readyY，EndGame readyN。",
+      "ReelResults / PaylineWin": "单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。",
+      "SymbolGrids / BGInfo": "自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。",
+      "Wheel / FS / Excalibur / Wild": "14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。"
+    }
+  },
+  "typeMappings": {
+    "arthurandtheroundtable-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "arthurandtheroundtable-base-ag-rolling-wms-v1": "b6bea1a46ffdb504d184550d7b38c0957434f39c1819ac9e7f3a74b692d9d99a"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin",
+    "bet": "stakeRaw / 100",
+    "mul": "ordinary Logic totalWin / stakeRaw",
+    "required": "固定200；仅自身readyY普通完整，Payline奖额和/网格/BG一致，EndGame确认现金保持；14特殊路径仍拒绝。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "6e6eee193ada8ce42b396ee8eacd317ecad2d5fd90b1ceb9777c938108edd688"
+    "scripts/runner-v2/ag-rolling/sg-arthur-base.mjs": "12a9013d0e8dc83c948a4ec67916a35c1d16e243670f14ee11805a1c603ab7d4",
+    "scripts/runner-v2/ag-rolling/sg-arthur-source.mjs": "9b277d086f9ece5ee7fd8971f4c33436b3e7a7a31bf1fb6c90bca75175ffe414",
+    "scripts/runner-v2/ag-rolling/sg-arthur-codec.mjs": "8c023208116360af642e3ccf5807b9ce8940c2508a8ce68e996ecf6e0b9cd520",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b9436ab78a88a4b4f660084de7a4c614ad62cea09dbbc18ff30749b0e0fed91e",
+    "service/arthur_base_fields.py": "a0bea7fb9dfb5463f04e8a98b6d2d5abc563abe0c516187f0327aa51fab186ea",
+    "service/ag_rolling_plan.py": "35e341a9d39ccc77c12c70ee735ce40b812e663d45eef167c7fe21ea816358d5",
+    "scripts/runner-v2/record_fields.py": "36715782f8303ba3e4788b4272a88ce4f606cca5c8e247cb64b9ad49365f2fd7",
+    "service/round_fields.py": "2f0c89d139c497b9c9d14a5c7f5b33349199fc8037a2ebd92f56e7c0670071c3",
+    "service/game_rule_catalog.py": "a9a1f979c5fdc9c6d6b32ebffbdd4a3d144bb62f3b13f62510d3869f704d0823"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +92,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7810b335b30d87b14b774201bedada3fb630d75fa0e85b877e5fef21468e9315"
+  "ruleHash": "8e8dee15cb7cffdc283da985404cd7444bef58414e15829b8242760834cc7739"
 }

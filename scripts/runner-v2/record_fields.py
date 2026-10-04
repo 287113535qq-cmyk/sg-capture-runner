@@ -33,6 +33,7 @@ from fortunes_megaways_fields import FortunesMegawaysFields, SOURCE as FORTUNES_
 from acorn_base_fields import AcornBaseFields, SOURCE as ACORN_SOURCE
 from actionbank_base_fields import ActionBankBaseFields, SOURCE as ACTIONBANK_SOURCE
 from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
+from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
 
 adapters = {}
@@ -65,6 +66,8 @@ def execute(request):
             adapters[key]=ActionBankBaseFields(plan)
         if plan['sourceKey']==BLAZING_SOURCE:
             adapters[key]=BlazingXFields(plan)
+        if plan['sourceKey']==ARTHUR_SOURCE:
+            adapters[key]=ArthurBaseFields(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
     adapter = adapters[key]
@@ -84,6 +87,9 @@ def execute(request):
         return route(plan,request['raw']) if request['op']=='explicit_dragon_route' else intent(plan,request['raw'],request['payload'])
     if request.get('op') == 'eighty_bootstrap':
         assert plan['sourceKey'] == EIGHTY_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'arthur_bootstrap':
+        assert plan['sourceKey'] == ARTHUR_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'blazing_bootstrap':
         assert plan['sourceKey'] == BLAZING_SOURCE
@@ -162,7 +168,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

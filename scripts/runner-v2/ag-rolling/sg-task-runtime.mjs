@@ -14,6 +14,8 @@ import {actionbankSession} from './sg-actionbank-source.mjs';
 import {actionbankCodec} from './sg-actionbank-codec.mjs';
 import {blazingSession} from './sg-blazing-source.mjs';
 import {blazingCodec} from './sg-blazing-codec.mjs';
+import {arthurSession} from './sg-arthur-source.mjs';
+import {arthurCodec} from './sg-arthur-codec.mjs';
 import {eightySession} from './sg-eighty-source.mjs';
 import {eightyCodec} from './sg-eighty-codec.mjs';
 import {createStagingStore} from './sg-staging-store.mjs';
@@ -23,8 +25,8 @@ import {analyzer} from '../analyzer.mjs';
 // selection, no shared count allocator, and no source request at construction.
 export function createTaskRuntime({store,transport,game,queueId,kind,index,quota,owner,plan,base,guard,
  resume,createSession,createCodec,spoolFactory=localSpool,createAnalyzer=analyzer}){
- createSession??=plan.adapter==='five-treasures-wms-v1'?fiveSession:plan.adapter==='fortunes-megaways-wms-v1'?fortunesSession:plan.adapter==='acorn-base-wms-v1'?acornSession:plan.adapter==='eighty-fortunes-wms-v1'?eightySession:plan.adapter==='actionbank-base-wms-v1'?actionbankSession:plan.adapter==='blazing-x-wms-v1'?blazingSession:nextgenSession;
- createCodec??=plan.adapter==='five-treasures-wms-v1'?fiveCodec:plan.adapter==='fortunes-megaways-wms-v1'?fortunesCodec:plan.adapter==='acorn-base-wms-v1'?acornCodec:plan.adapter==='eighty-fortunes-wms-v1'?eightyCodec:plan.adapter==='actionbank-base-wms-v1'?actionbankCodec:plan.adapter==='blazing-x-wms-v1'?blazingCodec:nextgenCodec;
+ createSession??=plan.adapter==='five-treasures-wms-v1'?fiveSession:plan.adapter==='fortunes-megaways-wms-v1'?fortunesSession:plan.adapter==='acorn-base-wms-v1'?acornSession:plan.adapter==='eighty-fortunes-wms-v1'?eightySession:plan.adapter==='actionbank-base-wms-v1'?actionbankSession:plan.adapter==='blazing-x-wms-v1'?blazingSession:plan.adapter==='arthur-base-wms-v1'?arthurSession:nextgenSession;
+ createCodec??=plan.adapter==='five-treasures-wms-v1'?fiveCodec:plan.adapter==='fortunes-megaways-wms-v1'?fortunesCodec:plan.adapter==='acorn-base-wms-v1'?acornCodec:plan.adapter==='eighty-fortunes-wms-v1'?eightyCodec:plan.adapter==='actionbank-base-wms-v1'?actionbankCodec:plan.adapter==='blazing-x-wms-v1'?blazingCodec:plan.adapter==='arthur-base-wms-v1'?arthurCodec:nextgenCodec;
  const id=taskId(kind,index),limits=quotas(game.baseline);
  assert(String(plan.gameId)===game.gameId&&plan.buy===0&&plan.database==='sg_capture_staging_v1'
   &&quota===(kind==='canary'?10:limits[index-1]),'SG_TASK_PLAN_SCOPE');
