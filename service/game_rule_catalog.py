@@ -40,6 +40,14 @@ def contract(game_id):
         native['family'] = 'book-of-sevens-native-v1'
         native['files'][0] = 'service/trial_fields.py'
         native['fields']['BPL / LB'] = '请求和响应固定 BPL=5、LB=5；实际下注 25。'
+    elif game_id in (32588,32666):
+        native.update({'family':'nextgen-zero-abpm-base-v1','messages':['BET'],
+            'start':'固定本游戏的sourceKey、runtimeGameId、请求模板及下注金额；响应ABPM必须精确为0。',
+            'continue':'当前只接受一个普通BET响应，不批准FREE_GAME、选择或其他奖励续局。',
+            'complete':'逐帧XML与响应全文一致，IFG0、NFG缺失或0、普通FID；B=AB=初始余额-固定下注+TW且观察余额一致。',
+            'bounds':'新增离线候选：两款200条历史中197普通完整记录经实际JS codec与Python record/verify一致；两条异常扣款及一条未审查免费局仍拒绝。尚未安装新增scope、运行新Linux或通过两次真实canary。其他来源仍拒绝ABPM，非0模式、未知FID、FS/NFR/CFG和半局一律拒绝。',
+            'files':['scripts/runner-v2/ag-rolling/sg-zero-abpm.mjs','scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs',
+                     'service/zero_abpm_fields.py','service/native_nextgen_fields.py','config/ag-rolling-zero-abpm-contracts.json']})
     elif game_id == 32636:
         native.update({'family': 'piggies-single-free-retrigger-v1',
             'continue': '独立免费 NFG>0，TFG=NFG+CFGG；每次进度加1，重触发按TFG增量核对剩余次数。',
@@ -228,6 +236,9 @@ def cards(root=ROOT):
         # This new offline WMS candidate has its own documented boundary;
         # the card grants no source permission or live admission.
         plans['32749'] = rolling['32749']
+    for key in ('32588','32666'):
+        if key in rolling and rolling[key].get('zeroAbpmContract')=='nextgen-zero-abpm-base-v1':
+            plans[key]=rolling[key]  # A documented offline boundary grants no source permission.
     profiles = json.loads((root / 'service/round_types.json').read_text(encoding='utf-8'))['profiles']
     # Index already-saved focused analyses, not broad progress tables that list every game.
     known = {str(g['gameId']) for g in games}

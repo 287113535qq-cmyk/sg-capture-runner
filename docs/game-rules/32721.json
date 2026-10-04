@@ -377,9 +377,9 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "3e899a6bc2d520f745ada1801a0f197f0bb55a521a4ab1b2ba0acfe8a2994ccf",
-    "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
-    "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
+    "service/native_nextgen_fields.py": "ee87f3593abd0d5e427042f8704ccfd87ea679c4ad46206307ad9dc986fc7236",
+    "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
+    "scripts/runner-v2/record_fields.py": "dd3131135f90b7dcea511ec39c0698098fa534ec479e0672d2e9521647a4a16f",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
     "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
@@ -410,7 +410,7 @@
     "scripts/runner-v2/round-analysis-journal.mjs": "ce4ea10e8b77ebf1bbb9d02f6685e383bd157abd0bc80524ef166d5a7a0fec65",
     "scripts/runner-v2/pyramids-action-analysis.mjs": "cc2c2e2e3e7397eaffc6a67e5d375842b6b740bedb5d77ac958f1f7f31119b36",
     "scripts/runner-v2/pyramids-action-repair-profile.mjs": "7756a9b9bd5cbc61f822c5c1680ab73d75a507dd068357bc7bd858f932501037",
-    "service/game_rule_catalog.py": "6c2d64de60ab0253de2792f147943b458c8b5f28eb884fdcb1413cf8e186024c"
+    "service/game_rule_catalog.py": "e7b757f554e738738da88caa72b9210d8b5b1d1111dc0b082f7d07c1ec866c36"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a1f0cab23ba76aac3218ba182c3e8c26eff1d8782de1237b1e36c9373c12c0b7"
+  "ruleHash": "275aebf2c06518d6842cab12e766ccf857bcfdd33d960871b62c9f0becd48609"
 }

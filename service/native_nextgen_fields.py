@@ -38,6 +38,11 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if self.plan.get('zeroAbpmContract') is not None or raw.get('zeroAbpmContract') is not None:
+            from zero_abpm_fields import binding,settled
+            binding(self.plan)
+            check(raw.get('sourceKey')==self.plan['sourceKey'],'ZERO_ABPM_PROFILE_REQUIRED')
+            return settled(raw)
         if raw.get('explicitProbeContract') is not None:
             from explicit_request_probe import binding,is_feature
             binding(self.plan,raw)
@@ -69,6 +74,11 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if self.plan.get('zeroAbpmContract') is not None or raw.get('zeroAbpmContract') is not None:
+            from zero_abpm_fields import binding,next_request
+            binding(self.plan)
+            check(raw.get('sourceKey')==self.plan['sourceKey'],'ZERO_ABPM_PROFILE_REQUIRED')
+            return next_request(raw)
         if raw.get('automaticFreeContract') is not None:
             from automatic_free_fields import binding,next_request
             binding(self.plan)

@@ -127,12 +127,12 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "3e899a6bc2d520f745ada1801a0f197f0bb55a521a4ab1b2ba0acfe8a2994ccf",
-    "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
-    "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
+    "service/native_nextgen_fields.py": "ee87f3593abd0d5e427042f8704ccfd87ea679c4ad46206307ad9dc986fc7236",
+    "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
+    "scripts/runner-v2/record_fields.py": "dd3131135f90b7dcea511ec39c0698098fa534ec479e0672d2e9521647a4a16f",
     "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
     "scripts/trial/squid-protocol.mjs": "645d73295cc08a43fce4949b680b1370301f53ae78a7487743ce3ec14b8e9d0e",
-    "service/game_rule_catalog.py": "6c2d64de60ab0253de2792f147943b458c8b5f28eb884fdcb1413cf8e186024c"
+    "service/game_rule_catalog.py": "e7b757f554e738738da88caa72b9210d8b5b1d1111dc0b082f7d07c1ec866c36"
   },
   "reviewDocuments": [
     "docs/squid-jackpot-protocol.md"
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "dabe93300c87d51919790ce143541db4de33efcbb7deaffd79ea13c55a72475a"
+  "ruleHash": "8ff1365341800239a3420cec5d3a6aef2521d391c5dd9cac6fa8b8dd665fcaf8"
 }

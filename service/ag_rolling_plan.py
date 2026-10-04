@@ -45,4 +45,12 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == 0 and wired.get('mongoWrites') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
+    if plan.get('zeroAbpmContract') is not None:
+        from zero_abpm_fields import binding
+        entry=binding(plan);replay=proof.get('zeroAbpmReplay',{})
+        require(replay.get('schema')=='sg-ag-zero-abpm-codec-replay-v1' and replay.get('actualRecordAndVerifyIpc') is True
+                and replay.get('historyFileSha256')==proof['historyFileSha256']==entry['historyFileSha256']
+                and replay.get('contractHash')==digest(entry) and replay.get('sourceRequests')==replay.get('mongoWrites')==0
+                and len(proof.get('acceptedRawHashes',[]))==proof['acceptedBaseRounds']
+                and re.fullmatch('[a-f0-9]{64}',replay.get('fullRecordsHash','')) is not None,'ROLLING_ZERO_ABPM_PROOF')
     return dict(plan)

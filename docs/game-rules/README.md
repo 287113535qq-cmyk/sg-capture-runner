@@ -33,7 +33,7 @@
 | [32548](32548.json) | Huff N' Puff Money Mansion | not-documented | 待确认 |
 | [32550](32550.json) | Hurricane Horse Coin Combo | not-documented | 待确认 |
 | [32555](32555.json) | Hypercharged Temple of Atlantis | not-documented | 待确认 |
-| [32588](32588.json) | Merlin's Money Burst | not-documented | 待确认 |
+| [32588](32588.json) | Merlin's Money Burst | implemented-subset | 1 |
 | [32590](32590.json) | Mighty Monkey Coin Combo | not-documented | 待确认 |
 | [32595](32595.json) | Money Raid Wapiti | not-documented | 待确认 |
 | [32614](32614.json) | Quick Hit Blitz Blue | not-documented | 待确认 |
@@ -56,7 +56,7 @@
 | [32641](32641.json) | Rockets! Red Glare | not-documented | 待确认 |
 | [32644](32644.json) | Shields of the Wild | not-documented | 待确认 |
 | [32651](32651.json) | Squid Game One More Game | implemented-subset | 3 |
-| [32666](32666.json) | The Wild 3 | not-documented | 待确认 |
+| [32666](32666.json) | The Wild 3 | implemented-subset | 1 |
 | [32671](32671.json) | Thunder Drums Samurai Storm | implemented-subset | 1 |
 | [32681](32681.json) | Trinity Pots Rising Wilds | not-documented | 待确认 |
 | [32686](32686.json) | Ultimate Fire Link Cash Falls Olvera Street | not-documented | 待确认 |

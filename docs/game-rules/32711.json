@@ -89,10 +89,10 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "3e899a6bc2d520f745ada1801a0f197f0bb55a521a4ab1b2ba0acfe8a2994ccf",
-    "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
-    "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
-    "service/game_rule_catalog.py": "6c2d64de60ab0253de2792f147943b458c8b5f28eb884fdcb1413cf8e186024c"
+    "service/native_nextgen_fields.py": "ee87f3593abd0d5e427042f8704ccfd87ea679c4ad46206307ad9dc986fc7236",
+    "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
+    "scripts/runner-v2/record_fields.py": "dd3131135f90b7dcea511ec39c0698098fa534ec479e0672d2e9521647a4a16f",
+    "service/game_rule_catalog.py": "e7b757f554e738738da88caa72b9210d8b5b1d1111dc0b082f7d07c1ec866c36"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -118,5 +118,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "860bf4bcb3794fa0349a62a41adaa04cfba369a8245950604d7efe7792b34225"
+  "ruleHash": "4b0e6015235c1d337287757a936ef31901c25b55ca462bbc115fa2a1404b342d"
 }

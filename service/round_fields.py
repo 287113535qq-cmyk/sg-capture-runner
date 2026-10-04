@@ -326,6 +326,9 @@ def types(raw, kind):
     return buy, bonus, mapping_hash
 
 def derive(raw):
+    if raw.get('zeroAbpmContract') is not None:
+        from zero_abpm_fields import settled as zero_settled
+        return zero_settled(raw)
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
     from five_treasures_fields import SOURCE as FIVE_SOURCE, settled as five_settled, mapping_hash as five_mapping
     if raw.get('sourceKey') == FIVE_SOURCE:
