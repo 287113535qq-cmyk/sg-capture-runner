@@ -336,6 +336,9 @@ def derive(raw):
     from eighty_fortunes_fields import SOURCE as EIGHTY_SOURCE, settled as eighty_settled, mapping_hash as eighty_mapping
     if raw.get('sourceKey') == EIGHTY_SOURCE:
         return eighty_settled(raw, eighty_mapping())
+    from arthur_feature_fields import CONTRACT as ARTHUR_FEATURE, settled as arthur_feature_settled
+    if raw.get("arthurFeatureContract") is not None:
+        return arthur_feature_settled(raw)
     from arthur_base_fields import SOURCE as ARTHUR_SOURCE, settled as arthur_settled, mapping_hash as arthur_mapping
     if raw.get('sourceKey') == ARTHUR_SOURCE:
         return arthur_settled(raw, arthur_mapping())

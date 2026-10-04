@@ -96,7 +96,7 @@
     "service/zero_abpm_fields.py": "67746813a37b43a99a5b765d09285c0538df46cdd0ef6f3c7be5d71e98be2ebf",
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
     "config/ag-rolling-zero-abpm-contracts.json": "44f87b093e52d0b6d0ab232419733c7a958a36c6a53de0c18c0521813116307f",
-    "service/game_rule_catalog.py": "136dba7cb04e284023f42a6a5881f42ba78d2943767ee8929f30dcb90e700b56"
+    "service/game_rule_catalog.py": "500887b59fd77d1babddfe2e346d4352265cfdab1b6823d3d2bf5291c4021d2a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -108,5 +108,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a916cd7d74095d7e02911490be72dd9126a2d9a36f53dac815938f9b59bfda9d"
+  "ruleHash": "5ef0146d1f94cbdbb500ddd341647ac3fe143477fbbbf0cfc1e0ec8b63e9d0b8"
 }

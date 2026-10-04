@@ -22,4 +22,5 @@ import './ag-rolling/sg-eighty-wiring.test.mjs';
 import './ag-rolling/sg-actionbank-wiring.test.mjs';
 import './ag-rolling/sg-blazing-wiring.test.mjs';
 import './ag-rolling/sg-arthur-wiring.test.mjs';
+import './ag-rolling/sg-arthur-feature.test.mjs';
 import './ag-rolling/sg-automatic-terminal.test.mjs';

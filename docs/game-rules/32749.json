@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b9436ab78a88a4b4f660084de7a4c614ad62cea09dbbc18ff30749b0e0fed91e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "97b88dadba355e544849fd82fa4b84219107cdd6483b8f8453579f22eb799c3a",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "b2aefa1c715170c7ea0a1dda23d33d9d2ee61c39548d78a0648b35dc92537a06",
-    "scripts/runner-v2/record_fields.py": "1f93040ec8bcec7e2c13af7fe082b470153e22fea1e2ea7b30d2eed336c81f11",
-    "service/round_fields.py": "2f0c89d139c497b9c9d14a5c7f5b33349199fc8037a2ebd92f56e7c0670071c3",
-    "service/game_rule_catalog.py": "136dba7cb04e284023f42a6a5881f42ba78d2943767ee8929f30dcb90e700b56"
+    "service/ag_rolling_plan.py": "2bd89e237007d74e87b8cadb3e1f2f371cd8886340f36897307f0fd3b709ef9f",
+    "scripts/runner-v2/record_fields.py": "072d6da56a2f18e187710a74224b2f1dd35ed02da771171b4c56203c71ed451f",
+    "service/round_fields.py": "ec08f1c8e8aa3e5547d94b2fcc720dd3fb15012d0c5c4f42e325a9772b0801fe",
+    "service/game_rule_catalog.py": "500887b59fd77d1babddfe2e346d4352265cfdab1b6823d3d2bf5291c4021d2a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "175a69442e297d4d06850cbe451765c19e1e2b4956fe70e7761f7d74c6bfe731"
+  "ruleHash": "450569d7afdd6ea4ce599ac61e6b13cc619ce5e1826cd4e820016fc441457e69"
 }

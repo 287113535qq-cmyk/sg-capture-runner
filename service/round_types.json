@@ -4527,6 +4527,27 @@
         "fullBaseRounds": 986,
         "fullFreeRounds": 0
       }
+    },
+    "arthurandtheroundtable-free-wild-ag-rolling-wms-v2": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "arthur-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {
+        "free": 1
+      },
+      "evidence": {
+        "captureGameId": 32754,
+        "runtimeGameId": 32976,
+        "wmsGameId": 20467,
+        "historyFileSha256": "2b798fbe1dd9728ce22df8df9371203bc34288d57f4aa64ea2d7bacc1d28aae3",
+        "fullFreeRounds": 6,
+        "fullWildRounds": 5,
+        "contractHash": "e735f6ab2616ed7eb1f4e4044b634e00f80ac26559e1db19f02979171840072f"
+      }
     }
   }
 }

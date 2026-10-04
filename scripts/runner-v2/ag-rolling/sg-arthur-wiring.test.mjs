@@ -11,7 +11,8 @@ const plan=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json')).plans['32
 const init=(session='rotated',balance=1000)=>`<GameResponse type="Init"><Header gameID="20467" versionID="1_0" isRecovering="N" readyForEndGame="N" sessionID="${session}"/><Balances><Balance name="CASH_BALANCE" value="${balance}"/></Balances><GameInfo><Stakes>200|400|</Stakes><PageInfo pageCount="1"/></GameInfo></GameResponse>`;
 const step=(msg,payload,text)=>({msgId:msg,requestPayload:payload,responsePayload:text,responseXml:text,responseBalance:Number(text.match(/name="CASH_BALANCE" value="(\d+)"/)[1]),elapsedMs:0});
 const base={mode:'demo',sessionId:'Free:offline-only',operatorId:'offline'};
-const ctx={base,plan,queueId:'offline',kind:'canary',index:1,owner:'offline-owner',ordinal:1,guard:async()=>{}};
+const legacyPlan=({...(({arthurFeatureContract,arthurFeatureContractHash,...p})=>p)(plan),maxSteps:2});
+const ctx={base,plan:legacyPlan,queueId:'offline',kind:'canary',index:1,owner:'offline-owner',ordinal:1,guard:async()=>{}};
 const logic=(session='paid',cash=850)=>`<GameResponse type="Logic"><Header gameID="20467" versionID="1_0" isRecovering="N" readyForEndGame="Y" sessionID="${session}"/><Balances><Balance name="CASH_BALANCE" value="${cash}"/></Balances><GameResult stake="200" stakePerLine="10" paylineCount="20" totalWin="50" betID=""><ReelResults numSpins="1"><ReelSpin spinIndex="0" reelsetIndex="0" winCountPL="1" winCountSC="0" spinWins="50" freeSpin="N" bonusAwarded="N"><ReelStops>1|2|3|4|5</ReelStops><PaylineWin index="0" winVal="50" awardIndex="1" awardTableIndex="0"/></ReelSpin></ReelResults><BGInfo totalWagerWin="50" bgWinnings="50" isMaxWin="0"/></GameResult><SymbolGrids>0|1|2|3|4;5|6|7|8|9;10|1|2|3|4</SymbolGrids></GameResponse>`;
 const end=(session='end',cash=850)=>`<GameResponse type="EndGame"><Header gameID="20467" versionID="1_0" isRecovering="N" readyForEndGame="N" sessionID="${session}"/><Balances><Balance name="CASH_BALANCE" value="${cash}"/></Balances></GameResponse>`;
 const raw=()=>({fixtureOnly:false,protocol:'wms',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:1000,
@@ -21,7 +22,7 @@ test('Arthur transport has distinct anonymous owners, fixed catalog/WMS IDs and 
   calls++;return {ok:true,status:200,headers:{getSetCookie:()=>[]},text:async()=>init()};}});
  const other=arthurSession({...ctx,ordinal:2,fetchSource:async()=>{throw Error('unused');}});
  assert.equal(calls,0);assert.notEqual(s.identity,other.identity);assert.notEqual(s.session,other.session);
- assert.throws(()=>arthurSession({...ctx,plan:{...plan,runtimeGameId:20467},fetchSource:async()=>{}}),/SOURCE_SCOPE/);
+ assert.throws(()=>arthurSession({...ctx,plan:{...legacyPlan,runtimeGameId:20467},fetchSource:async()=>{}}),/SOURCE_SCOPE/);
  await s.send(arthurPayload({MSGID:'Logic'},s.session,true),'Logic');assert.equal(calls,1);assert.equal(guards[0].msgId,'BET');s.close();other.close();
 });
 test('Arthur actual Python IPC independently validates Init, ordinary routing, money and full record',async()=>{
@@ -60,7 +61,7 @@ test('Arthur unknown transport issues one Init and retains its unresolved durabl
  let calls=0,intents=0,responses=0,closed;
  const protocol=createProtocolSessions({game:{gameId:'32754'},queueId:'offline',kind:'canary',index:1,owner:'offline-owner',plan,guard:async()=>{},
   spoolFactory:()=>({append(){},confirmed(){},close(){}}),journal:{open:async()=>{},intent:async()=>{intents++;return {durable:true};},response:async()=>{responses++;return {durable:true};},close:async v=>{closed=v;},auditSources:async()=>{}},
-  createSession:c=>arthurSession({...ctx,...c,fetchSource:async()=>{calls++;throw Error('unknown');}}),
+  createSession:c=>arthurSession({...ctx,...c,plan:legacyPlan,fetchSource:async()=>{calls++;throw Error('unknown');}}),
   createCodec:(_p,s)=>arthurCodec({plan,session:s,sequence:()=>1,worker:20,batchId:21})});
  const s=await protocol.open();await assert.rejects(()=>s.captureRound({}),/SOURCE_NETWORK_OUTCOME_UNKNOWN/);await s.close();assert.equal(calls,1);assert.equal(intents,1);assert.equal(responses,0);assert.equal(closed.awaiting,1);assert.equal(closed.unknownRequests,1);assert.equal(closed.ready,false);
 });
