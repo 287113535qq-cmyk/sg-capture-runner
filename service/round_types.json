@@ -4331,6 +4331,26 @@
         "runtimeGameId": 33192,
         "sourceId": "ea4646af-007c-470a-9231-5bc1245f96cf"
       }
+    },
+    "fivetreasures-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "five-treasures-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 176,
+      "baseBonus": 0,
+      "freeTypes": {
+        "six-free-choice-0-through-4": 1
+      },
+      "evidence": {
+        "captureGameId": 32749,
+        "runtimeGameId": 32971,
+        "wmsGameId": 20442,
+        "historyFileSha256": "4f7edf964dd81cbf036c18485eca4725d568d634077f34c73710cc9c48ad2cf4",
+        "fullBaseRounds": 995,
+        "fullFreeRounds": 5
+      }
     }
   }
 }

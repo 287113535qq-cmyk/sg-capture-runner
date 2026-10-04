@@ -30,7 +30,8 @@ export function createProtocolSessions({game,queueId,kind,index,owner,plan,creat
    try{await journal.open({...identity,sessionHash:state.sessionHash,ordinal});}
    catch(error){await session.close();codec.close?.();spool.close();throw error;}
    const exchange=async(msgId,requestPayload)=>{
-    assert(!state.awaiting&&!state.closed,'SG_PROTOCOL_UNRESOLVED_INTENT');await guard({stage:'intent',msgId,activeRound:state.activeRound});
+    assert(!state.awaiting&&!state.closed,'SG_PROTOCOL_UNRESOLVED_INTENT');
+    await guard({stage:'intent',msgId:codec.guardMsg?.(msgId,requestPayload)??msgId,activeRound:state.activeRound});
     const request={...identity,sessionHash:state.sessionHash,requestNo:++state.requestNo,msgId,requestPayload};
     state.awaiting=request.requestNo;
     let started=performance.now();

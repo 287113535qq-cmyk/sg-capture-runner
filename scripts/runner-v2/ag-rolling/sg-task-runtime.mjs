@@ -4,13 +4,17 @@ import {createProtocolSessions} from './sg-protocol-session.mjs';
 import {createSourceJournal} from './sg-source-journal.mjs';
 import {nextgenSession} from './sg-nextgen-source.mjs';
 import {nextgenCodec} from './sg-nextgen-codec.mjs';
+import {fiveSession} from './sg-five-source.mjs';
+import {fiveCodec} from './sg-five-codec.mjs';
 import {createStagingStore} from './sg-staging-store.mjs';
 import {localSpool} from '../local-spool.mjs';
 import {analyzer} from '../analyzer.mjs';
 // Compose the SG boundary of one original AG task. No legacy campaign/pool
 // selection, no shared count allocator, and no source request at construction.
 export function createTaskRuntime({store,transport,game,queueId,kind,index,quota,owner,plan,base,guard,
- resume,createSession=nextgenSession,createCodec=nextgenCodec,spoolFactory=localSpool,createAnalyzer=analyzer}){
+ resume,createSession,createCodec,spoolFactory=localSpool,createAnalyzer=analyzer}){
+ createSession??=plan.adapter==='five-treasures-wms-v1'?fiveSession:nextgenSession;
+ createCodec??=plan.adapter==='five-treasures-wms-v1'?fiveCodec:nextgenCodec;
  const id=taskId(kind,index),limits=quotas(game.baseline);
  assert(String(plan.gameId)===game.gameId&&plan.buy===0&&plan.database==='sg_capture_staging_v1'
   &&quota===(kind==='canary'?10:limits[index-1]),'SG_TASK_PLAN_SCOPE');

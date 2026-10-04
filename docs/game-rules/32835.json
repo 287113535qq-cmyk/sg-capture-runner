@@ -125,15 +125,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
-    "service/round_fields.py": "105f89396f5eac67143e7c71b9922aa5836d519701968c10d12f2d3abd879cd6",
-    "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
+    "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
+    "scripts/runner-v2/record_fields.py": "416952dbf465588597296ff4c214e301d1e3369d24684c987318a87690691cec",
     "service/luxor_fields.py": "0f6d87b03b0da534f6dd53f6cc0a8c3dd18fa16adbf2ffc33b00d3af70d7f7cc",
     "scripts/trial/luxor-protocol.mjs": "f3274191777b9f7cdd9c36731f846647b482121b04d304bb552b0bd73aa60c20",
     "collector/sg.luxor.ts": "d61d31d9353eaba4dde909e4c0dcb8872f5f1a318c28ce74bfef82b2af223b5d",
     "service/free_game_counters.py": "e450aa898f6fefb138a3f2d6d286187eb0c7ee27eba9a885d040a1046f5ea53b",
     "scripts/trial/free-game-counters.mjs": "11fe2277b7f5200b2f1895b5477391050b3a2377bdec77d7128454348229f5af",
     "collector/free-game-counters.cjs": "af96c0e48145633b4e602038dab6290745a7aabf04ef0b8864e51e21f4aff6c4",
-    "service/game_rule_catalog.py": "6804fe35565f50424ee4c12cd2a9a7926937954c65d3d14661e756edc3caafdc"
+    "service/game_rule_catalog.py": "6c2d64de60ab0253de2792f147943b458c8b5f28eb884fdcb1413cf8e186024c"
   },
   "reviewDocuments": [
     "docs/luxor-free-integration-20260930.md"
@@ -165,5 +165,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0b7048fbaa65f3f7c66e0627dcce928ad717b00650cfb6561168966decb74123"
+  "ruleHash": "0af8ce1cfcd6e18e87064deb25d1cb852e07a4f8c5efb3e3247a460aca4d467a"
 }

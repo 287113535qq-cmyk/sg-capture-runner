@@ -72,6 +72,17 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('classification pending', rule['complete'])
         self.assertIn('service/veryfruity_action_fields.py', rule['files'])
 
+    def test_five_treasures_offline_candidate_documents_its_actual_wms_identity_and_settlement(self):
+        card=self.cards[32749]
+        self.assertFalse(card['captureAuthorization'])
+        self.assertEqual(card['runtimeGameId'],32971)
+        self.assertEqual(card['parameters']['wmsGameId'],20442)
+        self.assertEqual(card['roundRule']['family'],'five-treasures-wms-v1')
+        self.assertIn('FreeSpinChoice',card['roundRule']['messages'])
+        self.assertIn('CASH_BALANCE',card['settlement']['stakeRaw'])
+        self.assertIn('离线候选',card['roundRule']['bounds'])
+        self.assertNotIn('B=AB',card['settlement']['required'])
+
 
 if __name__ == '__main__':
     unittest.main()

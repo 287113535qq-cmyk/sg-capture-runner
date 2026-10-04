@@ -327,6 +327,9 @@ def types(raw, kind):
 
 def derive(raw):
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
+    from five_treasures_fields import SOURCE as FIVE_SOURCE, settled as five_settled, mapping_hash as five_mapping
+    if raw.get('sourceKey') == FIVE_SOURCE:
+        return five_settled(raw, five_mapping())
     if raw.get('automaticFreeContract') is not None:
         from automatic_free_fields import settled as automatic_settled
         return automatic_settled(raw)

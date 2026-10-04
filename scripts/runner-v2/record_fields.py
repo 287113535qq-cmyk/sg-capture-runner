@@ -28,6 +28,7 @@ from jinzita_fields import JinzitaSequence, SOURCE as JINZITA_SOURCE
 from morepuff_fields import MorepuffSequence, SOURCE as MOREPUFF_SOURCE
 from luxor_fields import LuxorSequence, SOURCE as LUXOR_SOURCE
 from veryfruity_action_fields import VeryFruityActionFields, SOURCE as VERYFRUITY_SOURCE
+from five_treasures_fields import FiveTreasuresFields, SOURCE as FIVE_SOURCE
 
 adapters = {}
 
@@ -49,9 +50,14 @@ def execute(request):
             adapters[key]=VeryFruityActionFields(plan)
         if plan['sourceKey']==HUFF_SOURCE and plan.get('featureProfile')==HUFF_ACTION_VERSION:
             adapters[key]=HuffActionFields(plan)
+        if plan['sourceKey']==FIVE_SOURCE:
+            adapters[key]=FiveTreasuresFields(plan)
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') == 'five_bootstrap':
+        assert plan['sourceKey'] == FIVE_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'nextgen_bootstrap':
         assert plan['adapter'] == 'native-nextgen-v1'
         import xml.etree.ElementTree as ET
@@ -114,7 +120,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

@@ -46,6 +46,18 @@ def contract(game_id):
             'complete': '官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。',
             'bounds': '历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，34已用/66注销。PGS2/GE2已独立size2映射接入三方与capture；33旧全文不变，真实仅触发帧、十帧终局合成，尚未重新准入，不代表整款玩法覆盖或正式300000准入。'})
         native['files'] += ['service/piggies_fields.py', 'scripts/trial/piggies-protocol.mjs', 'collector/sg.piggies.ts']
+    elif game_id == 32749:
+        native.update({'family':'five-treasures-wms-v1','messages':['Init','Logic','FreeSpinChoice','EndGame'],
+            'start':'目录runtimeGameId32971与WMS Header.gameID20442分别固定；匿名新会话Init独立核验，首Logic固定Stake176和PaylineCount1。',
+            'continue':'免费触发后沿原AG选择回调均衡5个选项，pickIndex1..5对应WMS FreeSpinChoice0..4；选择请求本身是Logic XML并执行第一免费帧，后续5次Logic。逐响应sessionID绑定下一请求。',
+            'complete':'第6免费帧后readyForEndGame=Y，随后唯一EndGame确认；普通局同样必须EndGame。逐帧现金、累积奖、ReelSpin及独立Jackpot奖双验才完整。',
+            'bounds':'只离线候选：1000历史完整局995普通5免费通过JS/Python；源发送、codec和record独立校验已接通本地，尚无native scope、Linux或两个真实canary。Init能力验证只有合成测试，真实响应仍须严格现场验证。额外奖励、重触发、恢复与未知节点拒绝，旧局不计入目标。',
+            'files':['scripts/runner-v2/ag-rolling/sg-five-treasures.mjs','scripts/runner-v2/ag-rolling/sg-five-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-five-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-protocol-session.mjs','service/five_treasures_fields.py',
+                     'service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header':'WMS20442/version1_0/demo Y；session值私有且逐帧轮换。','FSInfo':'固定本游戏已证实6帧，freeSpinNumber逐帧推进；extraSpinsAwarded必须0。',
+                      'Stake / cash':'首帧实际176；后续报告stake176不重复扣款。','JackpotInfo':'index0奖独立于totalSpinWin，二者之和等于totalWin。','EndGame':'完整确认与现金保持是完成前置条件。'}})
     elif game_id == 32795:
         native.update({'family': 'pearl-wms-additive-free-v2', 'messages': ['Init', 'Logic', 'EndGame'],
             'start': '新会话Init核验后首Logic扣款200；后续免费Logic重复Stake200但不再扣款。',
@@ -211,6 +223,11 @@ def cards(root=ROOT):
     plans = json.loads((root / 'config/round-one-plans.json').read_text(encoding='utf-8'))
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
+    rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
+    if '32749' in rolling:
+        # This new offline WMS candidate has its own documented boundary;
+        # the card grants no source permission or live admission.
+        plans['32749'] = rolling['32749']
     profiles = json.loads((root / 'service/round_types.json').read_text(encoding='utf-8'))['profiles']
     # Index already-saved focused analyses, not broad progress tables that list every game.
     known = {str(g['gameId']) for g in games}
@@ -250,6 +267,11 @@ def cards(root=ROOT):
             'observations': {'status': 'separate-audit-or-parked-evidence', 'actualSpecialStageCount': None,
                 'journalKey': 'game-rules:<trialId>:<recordsHash>:<archiveHash>', 'retroactiveScanPerformed': False},
             'privacy': '不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。'}
+        if plan and plan.get('adapter') == 'five-treasures-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'],wmsChoiceCount=plan['wmsChoiceCount'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
+                'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
+                'required':'固定实际176；逐帧现金与累计奖一致，最终EndGame完整确认且现金保持。'}
         card['ruleHash'] = digest(card); output[gid] = card
     return output
 
