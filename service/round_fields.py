@@ -369,6 +369,9 @@ def derive(raw):
     from desertcats_base_fields import SOURCE as DESERTCATS_SOURCE, settled as desertcats_settled, mapping_hash as desertcats_mapping
     if raw.get('sourceKey') == DESERTCATS_SOURCE:
         return desertcats_settled(raw, desertcats_mapping())
+    from jekyll_base_fields import SOURCE as JEKYLL_SOURCE, settled as jekyll_settled, mapping_hash as jekyll_mapping
+    if raw.get('sourceKey') == JEKYLL_SOURCE:
+        return jekyll_settled(raw, jekyll_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

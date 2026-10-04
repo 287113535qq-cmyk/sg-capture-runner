@@ -4679,6 +4679,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "drjekyllgoeswild-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "jekyll-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32763,
+        "runtimeGameId": 32985,
+        "wmsGameId": 20126,
+        "ordinaryContractHash": "1fed9dab6f86869ededba50117c9795e1ab70e5337ac7c6e4d20d54001f1b585",
+        "historyFileSha256": "585e16a720d8d45db88a21f62f7ba394cf99a19a6d02ac47a6e62440255f9922",
+        "fullBaseRounds": 554,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
