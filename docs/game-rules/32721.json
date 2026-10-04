@@ -377,8 +377,8 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "23515e5950c104e7d4ca2f54b8bee50e3854745ea46874a9939efe270e575117",
-    "service/round_fields.py": "eab67e29bc08cb8f57774c9ec6a09d7b7145a9540fd8f6c38ce112da9cf132f4",
+    "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
+    "service/round_fields.py": "105f89396f5eac67143e7c71b9922aa5836d519701968c10d12f2d3abd879cd6",
     "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "38011125e5796c42b7a8c5adf183b3966fd6f33d90eef9e8bffd643aac24a80c"
+  "ruleHash": "cf7a74b7ddffbd7ae1034a38f2483d3db0e26fae0f45b8124dbceec1ebb4d4f2"
 }

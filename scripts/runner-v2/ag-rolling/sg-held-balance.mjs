@@ -31,7 +31,8 @@ export function heldBalanceFields(plan,raw,mappingHash){
    &&p.CFG===undefined&&p.ABPM===undefined&&!String(p.GSD??'').includes('#lives~'),'UNKNOWN_TRIAL_FEATURE');
   const remaining=amount(p.NFG??'0');assert(remaining<=100&&(i===0||p.NFG!==undefined),'TRIAL_FREE_LIMIT');
   const b=amount(p.B),ab=amount(p.AB),currentWin=amount(p.TW);
-  assert(ab===held&&b-ab===currentWin&&currentWin>=win,'HELD_BALANCE_RELATION_MISMATCH');
+  const terminal=i===raw.steps.length-1&&remaining===0;
+  assert(b===held+currentWin&&(ab===held||terminal&&ab===b)&&currentWin>=win,'HELD_BALANCE_RELATION_MISMATCH');
   assert(amount(step.responseBalance)===ab,'HELD_BALANCE_OBSERVER_MISMATCH');
   const xml=parseXml(step.responseXml);assert(xml.tag.toUpperCase()==='GDMRESPONSE'
    &&one(xml,'SUCCESS').children.map(n=>n.text??'').join('').toLowerCase()==='true'

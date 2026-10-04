@@ -327,6 +327,9 @@ def types(raw, kind):
 
 def derive(raw):
     check(isinstance(raw, dict) and raw.get('roundFieldsVersion') == VERSION, 'ROUND_FIELDS_VERSION_REQUIRED')
+    if raw.get('automaticFreeContract') is not None:
+        from automatic_free_fields import settled as automatic_settled
+        return automatic_settled(raw)
     if raw.get('balanceContract') is not None:
         from held_balance_fields import settled as held_settled
         return held_settled(raw)

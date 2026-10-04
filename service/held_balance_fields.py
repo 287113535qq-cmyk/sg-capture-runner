@@ -1,7 +1,8 @@
 """Evidence-pinned rolling NextGen deferred award balance contract.
 
-B contains the cumulative round award; AB is the unchanged deducted balance.
-Both remain mandatory and every frame must prove B=AB+TW and AB=start-stake.
+B contains the cumulative round award. AB is the deducted balance until the
+terminal response, where the source may credit the award into AB as well.
+Both remain mandatory: B=start-stake+TW; AB can change only at settlement.
 Unmarked historical records keep their original settlement and mapping hashes.
 """
 import json
@@ -57,7 +58,9 @@ def settled(raw):
         remaining=amount(p.get('NFG','0'));check(remaining<=100 and (i==0 or 'NFG' in p),'TRIAL_FREE_LIMIT')
         check('#lives~' not in p.get('GSD',''),'UNKNOWN_TRIAL_FEATURE')
         b,ab,win=(amount(p.get(k)) for k in ('B','AB','TW'))
-        check(ab==held and b-ab==win and win>=previous_win,'HELD_BALANCE_RELATION_MISMATCH')
+        terminal=i==len(steps)-1 and remaining==0
+        check(b==held+win and (ab==held or terminal and ab==b) and win>=previous_win,
+              'HELD_BALANCE_RELATION_MISMATCH')
         check(amount(step.get('responseBalance'))==ab,'HELD_BALANCE_OBSERVER_MISMATCH')
         text=step.get('responseXml')
         check(isinstance(text,str) and len(text)<262144 and '<!DOCTYPE' not in text.upper()

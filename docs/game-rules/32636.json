@@ -117,8 +117,8 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "23515e5950c104e7d4ca2f54b8bee50e3854745ea46874a9939efe270e575117",
-    "service/round_fields.py": "eab67e29bc08cb8f57774c9ec6a09d7b7145a9540fd8f6c38ce112da9cf132f4",
+    "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
+    "service/round_fields.py": "105f89396f5eac67143e7c71b9922aa5836d519701968c10d12f2d3abd879cd6",
     "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
     "service/piggies_fields.py": "fa133e80052a3e004600a4ccd23ff53a83fa99978043d7f13b02fc299fc39d70",
     "scripts/trial/piggies-protocol.mjs": "a0a67129970c8f2e4d850dee360008d444a563b76c4d5c57f07a58c67c85cd0d",
@@ -159,5 +159,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "944a0c06a7797234c529573ae1296cdc955d6812946a37062a4ce382df74b437"
+  "ruleHash": "b033a3089f2c4576a035d2ae15730925e591bb4c7b4e1b587f6c842425e5ea56"
 }

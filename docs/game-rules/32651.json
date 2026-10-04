@@ -127,8 +127,8 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "23515e5950c104e7d4ca2f54b8bee50e3854745ea46874a9939efe270e575117",
-    "service/round_fields.py": "eab67e29bc08cb8f57774c9ec6a09d7b7145a9540fd8f6c38ce112da9cf132f4",
+    "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
+    "service/round_fields.py": "105f89396f5eac67143e7c71b9922aa5836d519701968c10d12f2d3abd879cd6",
     "scripts/runner-v2/record_fields.py": "351e40d1b2d6051227a7e75c1057a1675856b996df90aae2a67f3c33e544afcc",
     "service/squid_fields.py": "9e7cd411b7cbe4c18677db3d7b67173245bc204b1f591de7c58e61fd79f3149d",
     "scripts/trial/squid-protocol.mjs": "645d73295cc08a43fce4949b680b1370301f53ae78a7487743ce3ec14b8e9d0e",
@@ -184,5 +184,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "74479981eac505cea20e3f4be1ce00d4ffa0af021541199db9885caffe4163c0"
+  "ruleHash": "82b9d1333f5b753a115677ec97da2fad2845d8c80dac6557bbf8e87ee79aa34c"
 }
