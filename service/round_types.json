@@ -4566,6 +4566,24 @@
         "fullBaseRounds": 994,
         "fullFreeRounds": 0
       }
+    },
+    "cheshirecat-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "cheshire-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 240,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32757,
+        "runtimeGameId": 32979,
+        "wmsGameId": 20132,
+        "historyFileSha256": "5558724ad866381308c379b32726423d5af90489d974f8301a72b4866244d66f",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

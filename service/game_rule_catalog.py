@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32757:
+        native.update({'family':'cheshire-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32979与WMS Header20132分别绑定；自身AccountData/CurrencyMultiplier1→Header→Stake.total240/lines40，响应stake240/stakePerLine6/paylineCount40分别核验。',
+            'continue':'只已观察的普通单Logic：spin0/reelset0，freeN/bonusN/scatter0，mysterySymbol1..10、isMaxWin0及固定maxWin25000000。没有readyForEndGame字段，不借其它游戏的ready门。未知Feature/FS/恢复停止。',
+            'complete':'完整普通Logic后唯一Header-only EndGame；响应严格Header/AccountData/Balances且无GameResult，现金保持。Payline奖額之和=spinWins=Logic totalWin=BG累计，现金=start-240+奖。',
+            'bounds':'离线候选：自身全文件SHA核验，前1000均为完整普通路径/2000自己的历史请求，经actual codec→独立Python IPC→record/verify一致，不是原生目标信用。0免费覆盖。Init仅synthetic限定能力形状，真实Init/native scope/livecanary/当前队列准入0。未知传输单次封存、不retry/resend。',
+            'files':['scripts/runner-v2/ag-rolling/sg-cheshire-base.mjs','scripts/runner-v2/ag-rolling/sg-cheshire-source.mjs','scripts/runner-v2/ag-rolling/sg-cheshire-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/cheshire_base_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Stake':'实际总下注240、lines40、CurrencyMultiplier1；运行目录ID32979不同于WMS Header20132。',
+                'PaylineWin':'最多40唯一线0..39、30种自身awardIndex/table0，104种自己的3..5位置文本；位置编号0..19，未知形状拒绝。',
+                'BGInfo / Balances':'mysterySymbol1..10，MaxWin上限字段固定25000000但isMaxWin必须0；BG累计与每帧现金双验，End不再加奖。'}})
     elif game_id == 32756:
         native.update({'family':'celestial-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32978与WMS Header20210分别绑定；首Logic自身AccountData/CurrencyMultiplier1→Header→Stake.total100/lines30。响应stakePerLine3×30不是实际总下注，不能改成90。',
@@ -372,7 +382,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -469,6 +479,10 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
                 'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
                 'required':'固定实际200；仅readyY普通完整，Anyway奖额和及BG累计一致，EndGame确认现金保持；11旧免费半局拒绝。'}
+        if plan and plan.get('adapter') == 'cheshire-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin','bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
+                'required':'总下注240/40线；普通未知形状拒绝，Payline sum/spinWin/Logic/BG/现金一致，唯一EndGame确认；自身没有ready字段。'}
         if plan and plan.get('adapter') == 'celestial-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin','bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',

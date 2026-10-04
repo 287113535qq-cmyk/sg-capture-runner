@@ -26,3 +26,5 @@ import './ag-rolling/sg-arthur-feature.test.mjs';
 import './ag-rolling/sg-automatic-terminal.test.mjs';
 
 import './ag-rolling/sg-celestial-wiring.test.mjs';
+
+import './ag-rolling/sg-cheshire-wiring.test.mjs';

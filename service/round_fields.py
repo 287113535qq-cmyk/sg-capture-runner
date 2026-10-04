@@ -351,6 +351,9 @@ def derive(raw):
     from celestial_base_fields import SOURCE as CELESTIAL_SOURCE, settled as celestial_settled, mapping_hash as celestial_mapping
     if raw.get('sourceKey') == CELESTIAL_SOURCE:
         return celestial_settled(raw, celestial_mapping())
+    from cheshire_base_fields import SOURCE as CHESHIRE_SOURCE, settled as cheshire_settled, mapping_hash as cheshire_mapping
+    if raw.get('sourceKey') == CHESHIRE_SOURCE:
+        return cheshire_settled(raw, cheshire_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

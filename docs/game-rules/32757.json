@@ -6,21 +6,80 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "cheshirecat-base-ag-rolling-wms-v1",
+  "planHash": "2ed80cdbd4713e681934a34c691e30f1268afae1e1867bcec21b8434733a6367",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32757",
+    "runtimeSlug": "cheshirecat",
+    "buy": 0,
+    "betRaw": 240,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20132
+  },
+  "roundRule": {
+    "family": "cheshire-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32979与WMS Header20132分别绑定；自身AccountData/CurrencyMultiplier1→Header→Stake.total240/lines40，响应stake240/stakePerLine6/paylineCount40分别核验。",
+    "continue": "只已观察的普通单Logic：spin0/reelset0，freeN/bonusN/scatter0，mysterySymbol1..10、isMaxWin0及固定maxWin25000000。没有readyForEndGame字段，不借其它游戏的ready门。未知Feature/FS/恢复停止。",
+    "complete": "完整普通Logic后唯一Header-only EndGame；响应严格Header/AccountData/Balances且无GameResult，现金保持。Payline奖額之和=spinWins=Logic totalWin=BG累计，现金=start-240+奖。",
+    "bounds": "离线候选：自身全文件SHA核验，前1000均为完整普通路径/2000自己的历史请求，经actual codec→独立Python IPC→record/verify一致，不是原生目标信用。0免费覆盖。Init仅synthetic限定能力形状，真实Init/native scope/livecanary/当前队列准入0。未知传输单次封存、不retry/resend。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-cheshire-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-cheshire-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-cheshire-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/cheshire_base_fields.py",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "Stake": "实际总下注240、lines40、CurrencyMultiplier1；运行目录ID32979不同于WMS Header20132。",
+      "PaylineWin": "最多40唯一线0..39、30种自身awardIndex/table0，104种自己的3..5位置文本；位置编号0..19，未知形状拒绝。",
+      "BGInfo / Balances": "mysterySymbol1..10，MaxWin上限字段固定25000000但isMaxWin必须0；BG累计与每帧现金双验，End不再加奖。"
+    }
+  },
+  "typeMappings": {
+    "cheshirecat-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "cheshirecat-base-ag-rolling-wms-v1": "a2ae77dedbb8bc19ca04e29089dec534fdf6427c7a1dad5edc7a0e9aab165695"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin",
+    "bet": "stakeRaw / 100",
+    "mul": "ordinary Logic totalWin / stakeRaw",
+    "required": "总下注240/40线；普通未知形状拒绝，Payline sum/spinWin/Logic/BG/现金一致，唯一EndGame确认；自身没有ready字段。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "672768eb19d3da43c6593b1577a7d3d57236c2d849145fd3e514f73e21f7b1eb"
+    "scripts/runner-v2/ag-rolling/sg-cheshire-base.mjs": "6adec279b15fabde1f15615f38b0a92e7432b7a3c297130d21d1a7c1c96b886d",
+    "scripts/runner-v2/ag-rolling/sg-cheshire-source.mjs": "a866b5b91f0695a5fc62170a709a4d60bd31d783ea68dd207e76f49e61b5ee58",
+    "scripts/runner-v2/ag-rolling/sg-cheshire-codec.mjs": "13f9e1988f4b2a7a50088dc912fb5f4ddcdba2dafed9971343f2e28ada301528",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "49308f4397ac14260d49547dbbddc56888ef2a21be7d7de2d76d21ba41019f64",
+    "service/cheshire_base_fields.py": "e394f7de4080a439fa9d038a06fd48740396909623b04e8eae91a7211ff999d9",
+    "service/ag_rolling_plan.py": "f4c17d67241b1795cfa74c58f8a3a94e99597adb385d4bfcd41d8dd8e475a3b2",
+    "scripts/runner-v2/record_fields.py": "f6b267d27877f00e2fd8d742e162a50baf04671d61c091126949e30656a752f2",
+    "service/round_fields.py": "bd67ca8b6e9c6b918cf289c3d1ec6eef06ee1e9829a150ab5fb203bd53368bdf",
+    "service/game_rule_catalog.py": "337d3f3b208921ede16310b2f5c1317a0bacd0008bd710b2ad40a0e2d43a5da1"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +91,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "dae49723cf63fd0b839eef2b76049a3420e0d532dcd6ee1cce56fa783a90dbf5"
+  "ruleHash": "e87ab06ca776c102486f1931a2736b35625c906b720843c52dec04e7609b2539"
 }

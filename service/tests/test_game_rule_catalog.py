@@ -146,6 +146,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
         self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
 
+    def test_cheshire_card_keeps_own_positions_mystery_and_zero_feature_coverage(self):
+        card=self.cards[32757];rule=card['roundRule']
+        self.assertEqual(rule['family'],'cheshire-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32979);self.assertEqual(card['parameters']['wmsGameId'],20132)
+        self.assertIn('1000',rule['bounds']);self.assertIn('0免费覆盖',rule['bounds'])
+        self.assertIn('104',rule['fields']['PaylineWin']);self.assertIn('0..19',rule['fields']['PaylineWin'])
+        self.assertIn('没有readyForEndGame',rule['continue'])
+        self.assertEqual(card['typeMappings']['cheshirecat-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_celestial_ordinary_card_keeps_hns_early_end_and_own_total_stake_boundary(self):
         card=self.cards[32756];rule=card['roundRule']
         self.assertEqual(rule['family'],'celestial-base-wms-v1')
