@@ -492,7 +492,7 @@
       "betRaw": 100,
       "betPerLine": 5,
       "lineBet": 5,
-      "maxSteps": 100,
+      "maxSteps": 1026,
       "mongoBatchSize": 100,
       "minRequestIntervalMs": 0,
       "database": "sg_capture_staging_v1",
@@ -507,7 +507,9 @@
         "GN": "goldfishfeedingtimedeluxetreasure96",
         "LB": "50",
         "REC": "0"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "7460e8d2f87abfcd23121bd7e362998b149231093fde3b2a102c852fe8c0eae4"
     },
     "32530": {
       "schema": "sg-work-pool-v1",
@@ -525,7 +527,7 @@
       "betRaw": 100,
       "betPerLine": 5,
       "lineBet": 5,
-      "maxSteps": 100,
+      "maxSteps": 1026,
       "mongoBatchSize": 100,
       "minRequestIntervalMs": 0,
       "database": "sg_capture_staging_v1",
@@ -540,7 +542,9 @@
         "BPL": "5",
         "GN": "goldfishfeedingtime96",
         "LB": "50"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "489a9d9e34897adb0a9ffadaf9d4efa96087e009e49c1f3dfa0cc8120dbdd857"
     },
     "32532": {
       "schema": "sg-work-pool-v1",
@@ -670,7 +674,9 @@
         "BPR": "10",
         "GN": "huffnmorepuff96",
         "RB": "5"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "f57853f13e98307d81f5bd51638644b92d63f145de1438b97bd7b6f9b70792e6"
     },
     "32547": {
       "schema": "sg-work-pool-v1",
@@ -865,7 +871,9 @@
         "BPR": "10",
         "GN": "moneyraidwapiti96",
         "RB": "6"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "943c25e021300fed45fb72a4af0ea234797a23a088d3a9a59d9991b7c7876aea"
     },
     "32614": {
       "schema": "sg-work-pool-v1",
@@ -4599,7 +4607,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32529,
       "runtimeGameId": 33040,
-      "planHash": "8679f1ae206c451c42ad1a943f83346f0ca3bea2e35bd694532093bb24ace6c6",
+      "planHash": "2d637753f3352510723c669d29dee128b1933547bddbaa47f8c6423802138773",
       "historyFileSha256": "73c1ef2e8de5ad272fb351d7d3a5854122697b42c384410a7f419a74e94bcb42",
       "acceptedBaseRounds": 99,
       "acceptedFreeRounds": 0,
@@ -4709,13 +4717,34 @@
         "TRIAL_ACTUAL_COST_MISMATCH": 1
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "8679f1ae206c451c42ad1a943f83346f0ca3bea2e35bd694532093bb24ace6c6",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "7460e8d2f87abfcd23121bd7e362998b149231093fde3b2a102c852fe8c0eae4",
+        "nativeFaultPrefixes": 6,
+        "nativeEvidenceHash": "79af93cc18a455ae208071d50d6b26cde7c40bb4952eb36597b6467e546cf660",
+        "historicalFullRounds": 99,
+        "historicalEvidenceHash": "ff21d7ab420a2027e38cbddbe9cdf0527e8b4c541d615a4aa6112e4c69455453",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0,
+        "continuationLimitRepair": {
+          "schema": "sg-ag-evidenced-continuation-limit-v1",
+          "previousMaxSteps": 100,
+          "maxSteps": 1026,
+          "nativePrefixesAtOldLimit": 6,
+          "oldLimitError": "SG_ROUND_STEP_LIMIT",
+          "nativeRemainingMin": 7
+        }
+      }
     },
     "32530": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32530,
       "runtimeGameId": 33041,
-      "planHash": "2b1b020d6e70dbcbd5d501dd540f53552002d8ad45d17f6886cfb09f35181c5c",
+      "planHash": "01f7b6c14c0b3a1b5bda2c0583df9962349da33806af3eee1a4bfa3e4ef0f326",
       "historyFileSha256": "66bf264dd31c115eeef8f87d519a609ece637a4ffcb9313488255b37f0a69d4b",
       "acceptedBaseRounds": 98,
       "acceptedFreeRounds": 1,
@@ -4823,7 +4852,28 @@
       ],
       "unhandledHistoricalVariants": {},
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "2b1b020d6e70dbcbd5d501dd540f53552002d8ad45d17f6886cfb09f35181c5c",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "489a9d9e34897adb0a9ffadaf9d4efa96087e009e49c1f3dfa0cc8120dbdd857",
+        "nativeFaultPrefixes": 6,
+        "nativeEvidenceHash": "2207cf0e33d8f6305adbc9590791260f471f829f409e9c8b1e29024b641c56bc",
+        "historicalFullRounds": 99,
+        "historicalEvidenceHash": "3f208ed663c8e55b28f38f7387ecb6c00d4eb951d59bbf4c2bef7c78c273dcc3",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0,
+        "continuationLimitRepair": {
+          "schema": "sg-ag-evidenced-continuation-limit-v1",
+          "previousMaxSteps": 100,
+          "maxSteps": 1026,
+          "nativePrefixesAtOldLimit": 6,
+          "oldLimitError": "SG_ROUND_STEP_LIMIT",
+          "nativeRemainingMin": 4
+        }
+      }
     },
     "32532": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
@@ -5171,7 +5221,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32545,
       "runtimeGameId": 33048,
-      "planHash": "d0a38d1c891c903f6ef1279414230763de2af808f50669b985ac7ea1e8bf0e41",
+      "planHash": "2f26114fc94f2b98b50b1876fb552e99051e4a3acc6c20f42dfb10bb83e6afa2",
       "historyFileSha256": "6f51322348d763b15f76c941441ebe3fc4c7184c0f888291bd497fcedb432c82",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 1,
@@ -5280,7 +5330,20 @@
         "UNKNOWN_TRIAL_FEATURE": 2
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "d0a38d1c891c903f6ef1279414230763de2af808f50669b985ac7ea1e8bf0e41",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "f57853f13e98307d81f5bd51638644b92d63f145de1438b97bd7b6f9b70792e6",
+        "nativeFaultPrefixes": 72,
+        "nativeEvidenceHash": "01c6fe5320351a17c4dabfdc90669876691ff0fd5d4b03b9b3fd5ebc1b6091c8",
+        "historicalFullRounds": 3,
+        "historicalEvidenceHash": "3b6b11eba035868b3ba241e9164a97c2b9595901e67588c54da73a183f366268",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32547": {
       "schema": "sg-ag-rolling-offline-adapter-v1",
@@ -5860,7 +5923,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32595,
       "runtimeGameId": 33066,
-      "planHash": "2ceeeb6b68bbefa0d6071bd5f864e70027ac5b1a89d6fb4554a246f7c70e7ca3",
+      "planHash": "4355d6e7ec5f69e1729d968812caf16d257241d2008587490a9beefcfbae9f81",
       "historyFileSha256": "94a5f500967c35e9b16eda43015cedaa1e482bb8f5fc97af8c0e97be31aa6dbf",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 0,
@@ -5968,7 +6031,20 @@
         "UNKNOWN_TRIAL_FEATURE": 2
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "2ceeeb6b68bbefa0d6071bd5f864e70027ac5b1a89d6fb4554a246f7c70e7ca3",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "943c25e021300fed45fb72a4af0ea234797a23a088d3a9a59d9991b7c7876aea",
+        "nativeFaultPrefixes": 48,
+        "nativeEvidenceHash": "918f9bfcc748b423a31fd3fc47d3cfb76aba300100d8f7a1c0ff7a64f923d617",
+        "historicalFullRounds": 2,
+        "historicalEvidenceHash": "12d6ae9e1b6499abe11570d295792812c192bf53f2d09e8c377dfc9eb1a66853",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32614": {
       "schema": "sg-ag-rolling-offline-adapter-v1",

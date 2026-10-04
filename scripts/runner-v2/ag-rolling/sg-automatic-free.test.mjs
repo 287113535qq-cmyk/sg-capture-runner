@@ -54,3 +54,43 @@ test('real SG codec and Python independently route, normalize and verify an auto
   assert.equal(result.record.normalized.money.betRaw,100);assert.equal(result.endBalanceRaw,950);
  }finally{codec.close();}
 });
+
+function longSample(p,n=101){
+ const r=sample(p),held=1000-p.betRaw;
+ r.steps=Array.from({length:n},(_,i)=>{
+  const msg=i?'FREE_GAME':'BET',remaining=n-1-i,win=i,ab=remaining?held:held+win;
+  const responsePayload=`MSGID=${msg}&IFG=${Number(i>0)}&NFG=${remaining}&FID=0|&B=${held+win}&AB=${ab}&TW=${win}`;
+  return {methodName:'processGameMessage',msgId:msg,requestPayload:Object.entries({...p.requestParams,PID:pid,MSGID:msg}).map(([k,v])=>k+'='+v).join('&'),
+   responsePayload,responseXml:'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>',
+   responseBalance:ab,elapsedMs:0};
+ });return r;
+}
+test('reviewed Gold Fish continuations drain a round beyond 100 frames, while incomplete, unmarked, oversized and cross-source rounds fail',()=>{
+ for(const p of ['32529','32530'].map(id=>registry.plans[id])){
+  const r=longSample(p);assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,100)}),{MSGID:'FREE_GAME'});
+  assert.equal(automaticFreeNext(p,r),null);assert.equal(automaticFreeFields(p,r,hash).money.betRaw,p.betRaw);
+  assert.throws(()=>automaticFreeFields(p,{...r,steps:r.steps.slice(0,100)},hash),/INCOMPLETE/);
+  assert.throws(()=>automaticFreeNext({...p,maxSteps:100},r),/PLAN_BINDING/);
+  assert.throws(()=>automaticFreeNext(p,{...r,automaticFreeContract:undefined}),/PROFILE_REQUIRED/);
+  assert.throws(()=>automaticFreeNext(p,{...r,steps:Array(1027).fill(r.steps[0])}),/INVALID_ROUND_STEPS/);
+  assert.throws(()=>automaticFreeNext(plan,{...sample(),steps:Array(101).fill(sample().steps[0])}),/INVALID_ROUND_STEPS/);
+ }
+});
+test('the real Python record path independently verifies a synthetic 101-frame reviewed continuation without widening other games',async()=>{
+ const p=registry.plans['32530'],codec=await nextgenCodec({plan:p,session:{pid},sequence:()=>1,worker:0,batchId:1});
+ try{const r=longSample(p);assert.equal(await codec.next(r),null);
+  const prepared=await codec.prepare(r,{attempt:'offline-long-synthetic',sessionHash:hash});
+  assert.equal(prepared.independentlyVerified,true);assert.equal(prepared.record.normalized.bonus,1);
+  assert.equal(prepared.endBalanceRaw,1000);assert.equal(prepared.record.raw.steps.length,101);
+ }finally{codec.close();}
+});
+test('new automatic variants retain fixed source, exact free request and conservative choice/unknown-feature rejection',()=>{
+ for(const [id,fid] of [['32545','2|'],['32595','1|']]){
+  const p=registry.plans[id],r=sample(p);
+  for(const s of r.steps){s.responsePayload=s.responsePayload.replace('FID=1|',`FID=${fid}`);
+   s.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+s.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';}
+  assert.equal(automaticFreeFields(p,r,hash).bonus,1);
+  assert.throws(()=>automaticFreeNext(p,change(structuredClone(r),0,`FID=${fid}`,'FID=4|')),/FEATURE/);
+  assert.throws(()=>automaticFreeNext(p,change(structuredClone(r),0,`FID=${fid}`,`FID=${fid}&CFG=1`)),/FEATURE/);
+ }
+});
