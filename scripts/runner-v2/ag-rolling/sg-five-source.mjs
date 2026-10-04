@@ -15,7 +15,7 @@ export function fivePayload(next,session,first=false){
 // intents, HTTP, fsync, ACK, limits and closure; there is no request retry.
 export function fiveSession({base,plan,queueId,kind,index,owner,ordinal,guard,fetchSource=fetch,now=Date.now}){
  if(fetchSource===fetch)assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
-  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner','SG_GITHUB_SOURCE_REQUIRED');
+  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'||process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner'&&process.env.SG_AG_COHORT==='secondary'),'SG_GITHUB_SOURCE_REQUIRED');
  assert(plan.adapter==='five-treasures-wms-v1'&&plan.sourceKey===SOURCE&&plan.gameId===32749
   &&plan.runtimeGameId===32971&&plan.betRaw===176&&plan.buy===0&&plan.maxSteps===8
   &&base?.mode==='demo'&&/^Free:/i.test(base.sessionId??'')&&typeof base.operatorId==='string'&&base.operatorId.length>0

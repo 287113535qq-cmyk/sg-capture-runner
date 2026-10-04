@@ -8,7 +8,7 @@ def append_rolling_scopes(old, plans):
     assert old.get('metadataWritesEnabled') is True and old.get('roundWritesEnabled') is True
     assert plans.get('schema') == 'sg-ag-rolling-plan-registry-v1' and plans.get('sourceAllowance') == 0
     desired = copy.deepcopy(old)
-    desired.update(rollingJournalBatchEnabled=True, rollingCleanupEnabled=True, rollingGameCountEnabled=True)
+    desired.update(rollingJournalBatchEnabled=True, rollingCleanupEnabled=True, rollingGameCountEnabled=True, rollingSharedNamespace='primary')
     added = {}
     for key, plan in plans['plans'].items():
         assert str(plan['gameId']) == key and plan['mode'] == 'demo' and plan['buy'] == 0

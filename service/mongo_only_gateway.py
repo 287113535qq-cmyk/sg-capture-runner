@@ -43,6 +43,18 @@ class Gateway:
         need(manifest.get('schema') == 'sg-mongo-only-access-v2', 'MANIFEST_REQUIRED')
         self.db, self.group, self.manifest, self.sample = database, group, manifest, sample
 
+    def metadata_group(self, alias, key, write=False):
+        # A fixed namespace capability only. GitHub owns game/task assignment,
+        # permissions and leases. Legacy metadata remains in its original group.
+        if self.manifest.get('rollingSharedNamespace') == 'primary' and key.startswith('rolling-'):
+            if self.group == 'secondary' and write:
+                pattern = (r'rolling-task:[a-f0-9]{64}:(worker:([1-9]|1[0-9]|20)|canary:[12])|rolling-lease:[a-f0-9]{64}'
+                           if alias == 'state' else
+                           r'rolling-stage:[a-f0-9]{64}:[0-9]{10}|rolling-source:[a-f0-9]{64}:[0-9]{10}:(open|intent|response|closed)|rolling-session:[a-f0-9]{64}:[0-9]{10}|rolling-participant:[a-f0-9]{64}:secondary')
+                need(re.fullmatch(pattern, key), 'ROLLING_COORDINATOR_WRITE_DENIED')
+            return 'primary'
+        return self.group
+
     def scope(self, request):
         trial = request.get('trialId')
         need(isinstance(trial, str) and trial in self.manifest['trials'], 'TRIAL_NOT_ALLOWED')
@@ -79,6 +91,7 @@ class Gateway:
                     'rollingJournalBatchEnabled': self.manifest.get('rollingJournalBatchEnabled') is True,
                     'rollingCleanupEnabled': self.manifest.get('rollingCleanupEnabled') is True,
                     'rollingGameCountEnabled': self.manifest.get('rollingGameCountEnabled') is True,
+                    'rollingNamespace': self.manifest.get('rollingSharedNamespace'),
                     'gatewaySha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     'accessManifestHash': hashlib.sha256(json.dumps(self.manifest, sort_keys=True,
                         separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()}
@@ -88,6 +101,15 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'rolling_boundary_records':
+            need(set(r) == {'schema', 'op'} and self.manifest.get('rollingSharedNamespace') == 'primary', 'ROLLING_BOUNDARY_DISABLED')
+            # The same six existing immutable legacy boundary records; no
+            # caller query or new exemption is accepted.
+            prefix = 'primary/demo-generation:sg_r1_20260928_32820:53448c2a8f711899004d05c065f947cd8fb737f9da8152f69ccd7f4da7d53ed2'
+            keys = [prefix, prefix+':before', prefix+':complete', prefix+':parked-source',
+                    'primary/count-run:sg_r1_20261001_32799:36854881370:1',
+                    'primary/count-jobless-revocation:sg_r1_20261001_32799:36854881370:1:complete']
+            return list(self.db[COLLECTIONS['journal']].find({'_id': {'$in': keys}}, max_time_ms=10000).limit(6))
         if op == 'rolling_campaign_baselines':
             need(self.group == 'primary' and set(r) == {'schema', 'op'}
                  and self.manifest.get('rollingGameCountEnabled') is True, 'ROLLING_BASELINE_READ_DISABLED')
@@ -189,7 +211,7 @@ class Gateway:
             need(isinstance(keys, list) and 1 <= len(keys) <= 100
                  and all(isinstance(k, str) and re.fullmatch(r'[a-zA-Z0-9:_-]{1,180}', k) for k in keys)
                  and len(set(keys)) == len(keys), 'BAD_KEYS')
-            ids = [self.group + '/' + k for k in keys]
+            ids = [self.metadata_group(alias, k) + '/' + k for k in keys]
             return list(self.db[COLLECTIONS[alias]].find({'_id': {'$in': ids}}, max_time_ms=10000).limit(100))
         if op == 'frozen_trial_bytes':
             # Fixed, root-configured private backup bytes only. The Runner
@@ -301,6 +323,7 @@ class Gateway:
             ], maxTimeMS=30000))
             return {'acknowledged': True}
         if op == 'rolling_journal_delete':
+            need(self.group == 'primary', 'ROLLING_COORDINATOR_WRITE_DENIED')
             need(set(r) == {'schema', 'op', 'keys'}, 'ROLLING_DELETE_REQUEST_SCOPE')
             need(self.manifest.get('metadataWritesEnabled') is True
                  and self.manifest.get('rollingCleanupEnabled') is True, 'ROLLING_DELETE_DISABLED')
@@ -329,7 +352,7 @@ class Gateway:
                 keys.append(row['key'])
             need(len(set(keys)) == len(keys), 'ROLLING_BATCH_DUPLICATE')
             from pymongo import UpdateOne
-            documents = [{'_id': self.group + '/' + row['key'], 'version': 0, 'value': row['value']}
+            documents = [{'_id': self.metadata_group('journal' if op == 'rolling_journal_insert' else 'state', row['key'], write=True) + '/' + row['key'], 'version': 0, 'value': row['value']}
                          for row in rows]
             result = self.db[COLLECTIONS['journal' if op == 'rolling_journal_insert' else 'state']].bulk_write(
                 [UpdateOne({'_id': d['_id']}, {'$setOnInsert': d}, upsert=True) for d in documents],
@@ -341,10 +364,10 @@ class Gateway:
             collection = self.db[COLLECTIONS[alias]]
             key = r.get('key')
             need(isinstance(key, str) and re.fullmatch(r'[a-zA-Z0-9:_-]{1,180}', key), 'BAD_KEY')
-            identity = self.group + '/' + key
+            identity = self.metadata_group(alias, key, write=op in ('create', 'cas')) + '/' + key
             if op == 'scan':
                 need(alias == 'journal', 'SCAN_NOT_ALLOWED')
-                prefix = self.group + '/' + key
+                prefix = self.metadata_group(alias, key) + '/' + key
                 cursor = r.get('after', prefix)
                 need(isinstance(cursor, str) and cursor.startswith(prefix), 'BAD_CURSOR')
                 # Bounded indexed prefix range; never caller-provided Mongo queries.

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {cohortRepos} from './sg-federation.mjs';
 // The independent AG controller shares lane 20's hosted runner. It uses its
 // own process/SSH connection and zero source credentials; it occupies no
 // additional GitHub job slot and never blocks the original lane loop.
@@ -19,7 +20,7 @@ export async function runRollingJob({lane,environment,spawnProcess=spawn,signal,
  signal?.addEventListener('abort',cancel,{once:true});
  let controller,source;
  try{
-  if(lane===20){const env={...environment,SG_AG_CONTROLLER_LANE:'20'};
+  if(lane===20&&environment.GITHUB_REPOSITORY!==cohortRepos.secondary){const env={...environment,SG_AG_CONTROLLER_LANE:'20'};
    delete env.SG_TRIAL_DEMO_CONFIG;delete env.SG_AG_LANE;
    controller=start('controller',env);
    controller.ended.then(result=>log(JSON.stringify({phase:'controller-process-ended',...result,sourceRequests:0})));
@@ -36,7 +37,7 @@ export async function runRollingJob({lane,environment,spawnProcess=spawn,signal,
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
  assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
-  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
+  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
   'SG_AG_GITHUB_JOB_OWNER');
  const stop=new AbortController(),cancel=()=>stop.abort();
  process.on('SIGTERM',cancel);process.on('SIGINT',cancel);

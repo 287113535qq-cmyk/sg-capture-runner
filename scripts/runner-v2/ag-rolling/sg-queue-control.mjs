@@ -4,8 +4,10 @@ import {queueHash} from './sg-queue-profile.mjs';
 import {inspectQueueRevision} from './sg-queue-revision.mjs';
 import {verifyPreparingRecovery} from './sg-preparing-recovery.mjs';
 import {preparingGuard} from './sg-admission-audit.mjs';
+import {inspectParticipant,participantKey,cohortRepos} from './sg-federation.mjs';
 // Queue-wide writes happen once at admission/finalization, never per round.
 export async function activateQueue({profile,store,transport,boundary,checkBaselines,checkNewGame,readPrevious,readLinux,readEnded,readEndedJobs,prepareResume,commit,run,now=Date.now}){
+ assert(!profile.operation,'SG_AG_CONTROL_PROFILE_HAS_NO_SOURCE');
  assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_QUEUE_RUN');
  await boundary();
  const linux=await readLinux(profile.linuxRun);
@@ -15,6 +17,7 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
  assert(hello?.database==='sg_capture_staging_v1'&&hello.rollingJournalBatchEnabled===true,'SG_QUEUE_NATIVE_CAPABILITY');
  assert(hello.group==='primary'&&hello.rollingCleanupEnabled===true&&hello.gatewaySha256===profile.nativeGatewayHash
   &&hello.accessManifestHash===profile.nativeManifestHash,'SG_QUEUE_NATIVE_INSTALLATION_CHANGED');
+ if(profile.federation)assert(hello.rollingNamespace==='primary','SG_AG_SHARED_NATIVE_REQUIRED');
  let ended,previous,prior,recovery;
  if(profile.resume){
   const resume=profile.resume;
@@ -85,7 +88,12 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
  assert(await store.cas('state','rolling-source',before,{...state,status:'running',expiresAt:permit.expiresAt}),'SG_QUEUE_OWNERSHIP');
  return {queueId,games:profile.payload.games.length,lanes:20,sessionsPerLane:8,run,commit,sourceRequests:0};
 }
-export async function sourcePermit({profile,store,run,commit,sourceJobsEnded=false,now=Date.now}){
+export async function sourcePermit({profile,store,run,commit,repository=cohortRepos.primary,coordinatorRun=run,sourceJobsEnded=false,now=Date.now}){
+ assert(!profile.operation,'SG_AG_CONTROL_PROFILE_HAS_NO_SOURCE');
+ if(repository===cohortRepos.secondary){
+  inspectParticipant({profile,receipt:(await store.get('journal',participantKey(profile)))?.value,coordinatorRun,commit,run});
+ }else assert(repository===cohortRepos.primary&&coordinatorRun===run,'SG_AG_SOURCE_REPOSITORY');
+ run=coordinatorRun;
  const permit=(await store.get('journal','rolling-activation:'+profile.activation+':complete'))?.value;
  const source=(await store.get('state','rolling-source'))?.value;
  assert(permit?.schema==='sg-ag-rolling-permit-v1'&&permit.queueId===profile.payload.queueId&&permit.run===run

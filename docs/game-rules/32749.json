@@ -81,7 +81,7 @@
   },
   "codeSources": {
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
-    "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "fd79b05d9e178076228a777f1427cf3d2c00b2df2423588cbedd0893b9ff7037",
+    "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "ea9ab7ba5f7723e6eb07c1f541d389580e303622184f7c9b6e717155898b3d65",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "6e0883c2f5423be6b2a2c36b4e1bcc9bc7c5e5ff8024920bc73a1a3cc830d136"
+  "ruleHash": "d8c42ec43c35ae239a3614746e927fe15e7ca25de21b56b636f9ea06baf525a5"
 }

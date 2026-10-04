@@ -73,6 +73,43 @@ class GatewayTests(unittest.TestCase):
                        'trials':{'sg_r1_20260928_32723':{'group':'primary','gameId':32723,'runtimeGameId':33123,'target':299900}}}
         self.g=Gateway(self.db,'primary',self.manifest,sample=lambda:{'rawCounters':True})
     def call(self,op,**kw):return self.g.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+    def test_shared_rolling_namespace_reuses_primary_tasks_without_aliasing_legacy_metadata(self):
+        self.manifest['rollingSharedNamespace']='primary'
+        other=Gateway(self.db,'secondary',self.manifest)
+        call=lambda op,**kw:other.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+        key='rolling-task:'+'a'*64+':worker:1'
+        self.call('create',collection='state',key=key,value={'status':'pending','oldPrefixCount':500})
+        before=call('read',collection='state',key=key)
+        self.assertEqual(before['_id'],'primary/'+key)
+        self.assertTrue(call('cas',collection='state',key=key,version=before['version'],value={'status':'running','oldPrefixCount':500})['replaced'])
+        self.assertEqual(self.call('read',collection='state',key=key)['value']['oldPrefixCount'],500)
+        call('create',collection='state',key='campaign',value={'preserved':'secondary'})
+        self.assertIsNone(self.call('read',collection='state',key='campaign'))
+        self.assertEqual(call('read',collection='state',key='campaign')['_id'],'secondary/campaign')
+        self.assertEqual(call('hello')['group'],'secondary')
+        self.assertEqual(call('hello')['rollingNamespace'],'primary')
+    def test_secondary_shared_source_records_are_insert_only_but_coordinator_formal_and_cleanup_writes_stay_primary(self):
+        self.manifest.update(rollingSharedNamespace='primary',rollingJournalBatchEnabled=True,rollingCleanupEnabled=True)
+        other=Gateway(self.db,'secondary',self.manifest)
+        call=lambda op,**kw:other.dispatch({'schema':'sg-mongo-only-v2','op':op,**kw})
+        key='rolling-source:'+'a'*64+':0000000001:intent'
+        rows=[{'key':key,'value':{'requestHash':'b'*64}}]
+        native=SimpleNamespace(UpdateOne=lambda q,u,upsert:SimpleNamespace(_filter=q,_doc=u,_upsert=upsert))
+        with patch.dict(sys.modules,{'pymongo':native}):
+            self.assertEqual(call('rolling_journal_insert',records=rows)['inserted'],1)
+            self.assertEqual(call('rolling_journal_insert',records=rows)['inserted'],0)
+        self.assertEqual(self.call('read',collection='journal',key=key)['_id'],'primary/'+key)
+        for alias,key in [('state','rolling-source'),('journal','rolling-activation:'+'a'*64+':complete'),('journal','rolling-ended:queue:123:1'),('journal','rolling-merge:'+'b'*64)]:
+            with self.assertRaisesRegex(Refused,'COORDINATOR_WRITE_DENIED'):call('create',collection=alias,key=key,value={})
+        with self.assertRaisesRegex(Refused,'COORDINATOR_WRITE_DENIED'):call('rolling_journal_delete',keys=[rows[0]['key']])
+        with self.assertRaisesRegex(Refused,'GROUP_IS_NOT_CLIENT_INPUT'):call('read',collection='state',key='campaign',group='primary')
+    def test_shared_namespace_cannot_be_enabled_by_a_request_or_an_unreviewed_manifest_value(self):
+        other=Gateway(self.db,'secondary',self.manifest)
+        key='rolling-task:'+'a'*64+':worker:1'
+        self.call('create',collection='state',key=key,value={'x':1})
+        for value in [None,'secondary','both',True]:
+            self.manifest['rollingSharedNamespace']=value
+            self.assertIsNone(other.dispatch({'schema':'sg-mongo-only-v2','op':'read','collection':'state','key':key,'rollingSharedNamespace':'primary'}))
     def test_rolling_batch_is_capability_gated_insert_only_and_group_scoped(self):
         rows=[{'key':'rolling-stage:'+'a'*64+':0000000001','value':{'private':1}},
               {'key':'rolling-source:'+'a'*64+':0000000001:intent','value':{'private':2}}]

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
 import {validateSgPayload} from './sg-contract.mjs';
+import {inspectFederation} from './sg-federation.mjs';
 const digest=value=>createHash('sha256').update(stable(value)).digest('hex');
 export function queueProfile({name,profile,authorization,plans,readBytes}){
  assert(/^ag-rolling-queue-[a-f0-9]{64}\.json$/.test(name??'')&&profile?.schema==='sg-ag-rolling-queue-v1'
@@ -24,6 +25,8 @@ export function queueProfile({name,profile,authorization,plans,readBytes}){
    'SG_AG_QUEUE_RUNTIME_CHANGED');
  }
  validateSgPayload(profile.payload,profile.manifest);
+ if(profile.federation)inspectFederation(profile);
+ if(profile.operation)assert(profile.operation==='close-ended-admission'&&profile.sourceAllowance===0&&profile.preparationRecovery&&!profile.federation,'SG_AG_CONTROL_OPERATION');
  if(profile.preparationRecovery){
   const r=profile.preparationRecovery;
   assert(profile.resume&&r.schema==='sg-ag-preparing-recovery-v1'
