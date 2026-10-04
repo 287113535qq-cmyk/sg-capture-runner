@@ -84,7 +84,7 @@
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "fd79b05d9e178076228a777f1427cf3d2c00b2df2423588cbedd0893b9ff7037",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "ea9ab7ba5f7723e6eb07c1f541d389580e303622184f7c9b6e717155898b3d65",
-    "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "29cb78c801914c2b021613909d0b51f327d4fa3fd017487373a1ceba18451448",
+    "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
     "service/ag_rolling_plan.py": "c2169396cc77dd2d242f9056e4d5e9e74cb01e6902f4d8ff020ae3cf9fb604b2",
     "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "dd344b2659f476458d16be11403025e3dfeedb20d3ad39bbc73c4d468c285a63"
+  "ruleHash": "f2c12e5f56fb9dcdbf3f269401a072bf827971f252da37c9fa925c6b06dfb02f"
 }

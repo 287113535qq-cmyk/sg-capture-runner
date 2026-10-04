@@ -27,6 +27,7 @@ export function createProtocolSessions({game,queueId,kind,index,owner,plan,creat
    const state={sessionHash:session.identity,ordinal,requestNo:0,awaiting:null,activeRound:false,protocolFaults:0,
     unknownRequests:0,closed:false,ready:false,balance:null,roundNo:0,
     performance:{source:{count:0,totalMs:0},intent:{count:0,totalMs:0},response:{count:0,totalMs:0},normalize:{count:0,totalMs:0}}};sessions.push(state);
+   let capturing=false,captureTail=Promise.resolve(),closingPromise=null;
    try{await journal.open({...identity,sessionHash:state.sessionHash,ordinal});}
    catch(error){await session.close();codec.close?.();spool.close();throw error;}
    const exchange=async(msgId,requestPayload)=>{
@@ -54,7 +55,9 @@ export function createProtocolSessions({game,queueId,kind,index,owner,plan,creat
    return {
     identity:session.identity,
     async captureRound({chooseOption,signal}){
-     assert(!state.closed&&!state.activeRound&&!state.awaiting,'SG_PROTOCOL_REENTRY');
+     assert(!closingPromise&&!capturing&&!state.closed&&!state.activeRound&&!state.awaiting,'SG_PROTOCOL_REENTRY');
+     capturing=true;
+     const capture=(async()=>{
      try{
       if(!state.ready){state.balance=await codec.bootstrap(exchange);state.ready=true;}
       if(Number.isSafeInteger(plan.betRaw)&&state.balance<plan.betRaw){
@@ -81,11 +84,20 @@ export function createProtocolSessions({game,queueId,kind,index,owner,plan,creat
        optionIndex:prepared.optionIndex??0,data:{complete:true,independentlyVerified:true,unknownRequests:0,
         roundEvents:prepared.roundEvents??[],sgRecord:prepared.record}};
      }catch(error){state.protocolFaults++;
-      state.lastFault=protocolFaultCode(error);throw error;}
+      state.lastFault=protocolFaultCode(error);throw error;}finally{capturing=false;}
+     })();
+     captureTail=capture.catch(()=>{});return capture;
     },
-    async close(){if(state.closed)return;await session.close();spool.close();
-     await codec.close?.();
-     await journal.close({...identity,...structuredClone(state),closed:true});state.closed=true;},
+    close(){
+     if(closingPromise)return closingPromise;
+     // AG may request close while its source call is awaiting a response.
+     // Retain that sole natural operation until it resolves, including an
+     // unknown result. Never close the spool underneath append()/confirmed().
+     closingPromise=(async()=>{
+      await captureTail;await session.close();spool.close();await codec.close?.();
+      await journal.close({...identity,...structuredClone(state),closed:true});state.closed=true;
+     })();return closingPromise;
+    },
    };
   },
   async inspectSource(){
