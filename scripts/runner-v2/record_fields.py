@@ -64,6 +64,9 @@ def execute(request):
     if request.get('op') in ('explicit_continuation_route','explicit_continuation_intent'):
         from explicit_request_continuation import route,intent
         return route(plan,request['raw']) if request['op']=='explicit_continuation_route' else intent(plan,request['raw'],request['payload'])
+    if request.get('op') in ('explicit_dragon_route','explicit_dragon_intent'):
+        from explicit_request_dragon import route,intent
+        return route(plan,request['raw']) if request['op']=='explicit_dragon_route' else intent(plan,request['raw'],request['payload'])
     if request.get('op') == 'five_bootstrap':
         assert plan['sourceKey'] == FIVE_SOURCE
         return adapter.bootstrap(request['step'], request['session'])

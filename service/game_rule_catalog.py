@@ -71,13 +71,13 @@ def contract(game_id):
                       'PID / SID':'请求PID及响应SID在自身大局内固定；不公开实际值。',
                       '终局':'未获特殊终局证据，始终拒绝结清与信用。'}})
     elif game_id == 32497:
-        native.update({'family':'nextgen-explicit-request-evidence-v1','messages':['BET','FEATURE_START'],
-            'start':'只本游戏CFG0自身触发可请求新会话FEATURE_START；真实前端后续请求为FP0|1|1，但尚不构成响应后的源许可。',
-            'continue':'未审查的START响应即停止封存；不继续PICK、END或旧半局。',
-            'complete':'仅普通完整记录可独立全文/金额验证；显式奖励始终INCOMPLETE，不信用。',
-            'bounds':'原v1契约和96份自身触发证明保留；Carnival新版本不扩大Dragon权限。',
-            'files':['scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs','scripts/runner-v2/ag-rolling/sg-explicit-review.mjs',
-                     'service/explicit_request_probe.py','service/explicit_request_review.py','config/ag-rolling-explicit-request-reviews.json']})
+        native.update({'family':'nextgen-dragon-start-evidence-v2','messages':['BET','FEATURE_START','FEATURE_PICK'],
+            'start':'只本游戏CFG0自身触发可请求新匿名会话FEATURE_START；旧v1 marker仍在START响应后停止。',
+            'continue':'新v2只接受72份自身START的精确字段集合及7种PD字段集合，逐帧金额/会话/XML、固定下注100和PD数值边界独立双验；真实前端下一请求固定FP0|1|1。缺NFG许可仅限本游戏已观察START，不全局放开。',
+            'complete':'首个新PICK响应尚未观察，即停止封存；没有END或FREE许可，显式奖励始终INCOMPLETE且不信用。普通完整记录仍须独立全文、金额与哈希验证。',
+            'bounds':'仅本地候选，未在线应用。72份自身前缀144条已有请求及72条候选intent沿实际codec/Python一致，99份原接受历史普通完整字段/hash不变。原v1契约、96份触发证明及全部旧raw/半局保留，不重放或回计；新窗口须精确Linux、证据约束manifest转发与旧prefix复核。',
+            'files':['scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs','scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs',
+                     'service/explicit_request_dragon.py','service/explicit_request_probe.py','config/ag-rolling-explicit-dragon-contracts.json']})
     elif game_id == 32749:
         native.update({'family':'five-treasures-wms-v1','messages':['Init','Logic','FreeSpinChoice','EndGame'],
             'start':'目录runtimeGameId32971与WMS Header.gameID20442分别固定；匿名新会话Init独立核验，首Logic固定Stake176和PaylineCount1。',

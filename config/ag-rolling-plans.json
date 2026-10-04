@@ -272,7 +272,9 @@
         "LB": "50"
       },
       "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
-      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
+      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
+      "explicitDragonContract": "nextgen-dragon-start-evidence-v2",
+      "explicitDragonContractHash": "9d3641885ddd6a3d855579d9c463a4f8ab0c7b781528808baa62ef60f7e2f657"
     },
     "32500": {
       "schema": "sg-work-pool-v1",
@@ -3875,7 +3877,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32497,
       "runtimeGameId": 33032,
-      "planHash": "9ab063f12be79bb78b0e6956aa071ab5298f913e7775be97cde1b317f9471385",
+      "planHash": "38698c3720ae83510f1f840e4d461bed547dfef2ae5a123a54ed23907aae90b9",
       "historyFileSha256": "421c21bf1d008e3f61b2d26a846aae434500d9268d189397c2410ad3f2770899",
       "acceptedBaseRounds": 99,
       "acceptedFreeRounds": 0,
@@ -3993,6 +3995,23 @@
         "historicalEvidenceHash": "84fe73ba22ded4e0316201dadd34d2dae50faf700926014b48aa4e78722e1cb1",
         "independentJsPython": true,
         "maxReviewedContinuations": 1,
+        "fullSpecialTerminalsObserved": 0,
+        "settlementApproved": false,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      },
+      "explicitDragonEvidence": {
+        "schema": "sg-ag-explicit-dragon-repair-evidence-v2",
+        "contractHash": "9d3641885ddd6a3d855579d9c463a4f8ab0c7b781528808baa62ef60f7e2f657",
+        "previousPlanHash": "9ab063f12be79bb78b0e6956aa071ab5298f913e7775be97cde1b317f9471385",
+        "previousProofHash": "8e143b5321c7f2c71c21289843e2c13ace800c039b55d3c8fb2a3ab4339035d0",
+        "ownNativePrefixes": 72,
+        "nativeEvidenceHash": "b7f82832437e31306ea7830666e2f7d29e8867eae5b310dee86c5e3f62f37602",
+        "frontendEvidenceHash": "bd76291e2f96849387cf0dfe7edba277907947eca3b79b2a47f22126eae0fd3b",
+        "maximumReviewedResponses": 2,
+        "maximumReviewedContinuations": 2,
+        "independentJsPython": true,
         "fullSpecialTerminalsObserved": 0,
         "settlementApproved": false,
         "sourceRequests": 0,

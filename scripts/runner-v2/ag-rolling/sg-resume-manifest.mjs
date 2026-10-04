@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
+import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
 // every original campaign, quota and staging namespace. Admission replays
@@ -14,6 +15,34 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.explicitDragonContract!==undefined){
+   const {explicitDragonContract,explicitDragonContractHash,...previousPlan}=plan;
+   const {planHash:bound,explicitDragonEvidence:evidence,...previousProof}=proof;
+   if(oldPlan.explicitProbeContract===undefined){
+    const intermediateProof={...previousProof,planHash:queueHash(previousPlan)};
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:intermediateProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   const {planHash:oldBound,...oldFields}=oldProof;
+   assert(id==='32497'&&oldPlan.explicitProbeContract==='nextgen-explicit-request-evidence-v1'
+    &&oldPlan.explicitDragonContract===undefined&&explicitDragonContract===EXPLICIT_DRAGON
+    &&queueHash(previousPlan)===queueHash(oldPlan)&&queueHash(previousProof)===queueHash(oldFields)
+    &&oldBound===entry.planHash&&bound===planHash
+    &&evidence?.schema==='sg-ag-explicit-dragon-repair-evidence-v2'
+    &&evidence.contractHash===explicitDragonContractHash&&evidence.previousPlanHash===entry.planHash
+    &&evidence.previousProofHash===entry.adapterProofHash&&evidence.ownNativePrefixes===72
+    &&/^[a-f0-9]{64}$/.test(evidence.nativeEvidenceHash??'')
+    &&evidence.frontendEvidenceHash==='bd76291e2f96849387cf0dfe7edba277907947eca3b79b2a47f22126eae0fd3b'
+    &&evidence.maximumReviewedResponses===2&&evidence.maximumReviewedContinuations===2
+    &&evidence.independentJsPython===true&&evidence.fullSpecialTerminalsObserved===0
+    &&evidence.settlementApproved===false&&evidence.sourceRequests===0&&evidence.mongoWrites===0
+    &&evidence.failedRoundsCredited===0,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   dragonBinding(plan,{fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,
+    roundFieldsVersion:'sg-round-fields-v1',explicitProbeContract:oldPlan.explicitProbeContract,
+    explicitDragonContract,steps:[]});
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.explicitContinuationContract!==undefined){
    const {explicitContinuationContract,explicitContinuationContractHash,...previousPlan}=plan;
    const {planHash:bound,explicitContinuationEvidence:evidence,...previousProof}=proof;

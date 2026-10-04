@@ -12,6 +12,7 @@ import {automaticFreeNext,automaticFreeFields,AUTOMATIC_FREE_CONTRACT} from './s
 import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
 import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbePick,explicitProbeIntent} from './sg-explicit-probe.mjs';
 import {EXPLICIT_CONTINUATION,continuationRoute,continuationPick,continuationIntent} from './sg-explicit-continuation.mjs';
+import {dragonRoute,dragonIntent} from './sg-explicit-dragon.mjs';
 import {ZERO_ABPM,zeroAbpmNext,zeroAbpmFields} from './sg-zero-abpm.mjs';
 const require=createRequire(import.meta.url);let registered=false;
 function loadCollector(){if(!registered){require('../../../collector/node_modules/ts-node').register({
@@ -45,6 +46,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    ...(plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?{automaticFreeContract:AUTOMATIC_FREE_CONTRACT}:{}),
    ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(plan.explicitContinuationContract!==undefined?{explicitContinuationContract:plan.explicitContinuationContract}:{}),
+   ...(plan.explicitDragonContract!==undefined?{explicitDragonContract:plan.explicitDragonContract}:{}),
    ...(plan.zeroAbpmContract===ZERO_ABPM?{zeroAbpmContract:ZERO_ABPM}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
   async reviewExplicit(raw){
@@ -52,6 +54,15 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    assert(stable(js)===stable(py),'SG_JS_PY_EXPLICIT_REVIEW_MISMATCH');return js;
   },
   async next(raw,chooseOption){
+   if(raw.explicitDragonContract!==undefined){
+    const route=dragonRoute(plan,raw),py=await parser.call({op:'explicit_dragon_route',plan,raw});
+    assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_DRAGON_MISMATCH');
+    if(route){
+     dragonIntent(plan,raw,payload(route.request));
+     assert((await parser.call({op:'explicit_dragon_intent',plan,raw,payload:payload(route.request)}))?.validated===true,'SG_REQUEST_MODE');
+     return route.request;
+    }
+   }
    if(raw.explicitContinuationContract!==undefined){
     const route=continuationRoute(plan,raw),py=await parser.call({op:'explicit_continuation_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_CONTINUATION_MISMATCH');
