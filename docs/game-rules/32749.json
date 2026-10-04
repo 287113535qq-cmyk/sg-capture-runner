@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c36a505893360f1312558ad495d594dae442748a1935a99efe9433770c7b4685",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "95a85c3721a422537f4c66219b2e49f00fe4070a33936f2a18121a9d255c01cb",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "c4a747f7cc97b5d610aab3a35f2b5c86ba7a243ee20400960f81aefa83ca005a",
-    "scripts/runner-v2/record_fields.py": "0d9005f1a8eeabf54febaf979c6ebd7790c899f647b2c73b94f9bc479462feab",
-    "service/round_fields.py": "21f95eb7b565f6694d95dc44cfa3e48794bb3d5480d9150241d7fc09a35034b6",
-    "service/game_rule_catalog.py": "9eb56fcb1dad41f2f08279ca69970e6e254c7efa7fa7bffe89500f2c532c9920"
+    "service/ag_rolling_plan.py": "8a243211971aa19ca717bb719450034e50180e49e9946ae23f173eb46326f02e",
+    "scripts/runner-v2/record_fields.py": "6a3ab369dbf2bd0110f1866e03cc7bc1df7d5cf10a79aa3d7008fd5c135ac72d",
+    "service/round_fields.py": "0145d2b4d9ed3921683902e7776a911079ec86d055cae84a10b0746ae6ab41bd",
+    "service/game_rule_catalog.py": "6e6eee193ada8ce42b396ee8eacd317ecad2d5fd90b1ceb9777c938108edd688"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4bb6d597cd77476eaa511fd3909932cfad3296d514123c65c59b974277ce887c"
+  "ruleHash": "368abbe4b9662202fb1997cecba230575939d368c65d98940046fe51a853812e"
 }

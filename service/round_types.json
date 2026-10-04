@@ -4489,6 +4489,26 @@
         "fullBaseRounds": 989,
         "fullFreeRounds": 0
       }
+    },
+    "blazingxasia-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "blazing-x-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 240,
+      "baseBonus": 0,
+      "freeTypes": {
+        "automatic-ten-free": 1
+      },
+      "evidence": {
+        "captureGameId": 32755,
+        "runtimeGameId": 32977,
+        "wmsGameId": 20363,
+        "historyFileSha256": "acf144670a09a7d65415c4b67ce9afee874d42748aed776a20475859e118858b",
+        "fullBaseRounds": 997,
+        "fullFreeRounds": 3
+      }
     }
   }
 }

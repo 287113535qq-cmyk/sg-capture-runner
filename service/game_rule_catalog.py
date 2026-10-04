@@ -133,6 +133,20 @@ def contract(game_id):
                       'BGInfo / Balances':'首帧下注16，后续报告stake16不重复扣款；余额=初值-16+逐Logic累计奖。',
                       'BaseGameRecoveryInfo':'只首局ReelResults和TopReelInfo的原样引用，不增加任何奖。',
                       'EndGame':'完整确认、现金保持，半局不能计完整。'}})
+    elif game_id == 32755:
+        native.update({'family':'blazing-x-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32977与WMS Header20363分别绑定；独立匿名Init能力核验后，首Logic Stake.total240/PaylineCount40/CurrencyMultiplier1。响应stakePerLine20×40不改变实际240。',
+            'continue':'普通readyY后EndGame；自身免费触发scatter480/960首帧已兑现，免费10次Header-only Logic，FS编号0→10、总数10、prevFSX沿前帧currFSX、已观察倍率状态逐帧核验。',
+            'complete':'最后Logic readyY后唯一EndGame readyN、无GameResult且现金保持才完整；逐帧cash=start-240+累计Logic奖，BG累计及FS累计独立双验。BaseGameRecoveryInfo仅首局转轴引用，不再次加奖。',
+            'bounds':'离线候选：自身前1000历史997普通+3完整免费，2030请求沿真实codec→独立Python IPC→record/verify一致。XInfo仅自身有限形状审查；重触发、额外免费、未知倍率或X状态、MaxWin、恢复或未知节点拒绝。真实Init/在线canary/native scope未观察或安装，不在当前81队列；旧历史不抵扣目标。',
+            'files':['scripts/runner-v2/ag-rolling/sg-blazing-x.mjs','scripts/runner-v2/ag-rolling/sg-blazing-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-blazing-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'service/blazing_x_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header':'20363/version1_0/isRecoveringN；普通或免费末Logic readyY，EndGame readyN；响应会话逐帧衔接。',
+                      'Stake / PaylineCount':'请求总额240、count40；response stakePerLine20和paylineCount40独立固定，不推导800总额。',
+                      'ReelResults':'单spin索引0、5个ReelStops；唯一Payline索引0..39/award0..24，奖额和=spinWins。触发ScatterWin自身0奖仅标记免费，触发奖来自FS scatterPayout。',
+                      'BGInfo / FSInfo':'BG总累计=Logic累计，bgWinnings保持首局奖；FS编号逐帧0..10，fsWinnings=累计减首局奖，scatterPayout480/960保持。',
+                      'XInfo / BaseGameRecoveryInfo':'普通31种自身状态；免费XInfo保持自身首局，末帧仅已观察reset允许；恢复转轴必须完整等于首局，不计奖金。'}})
     elif game_id == 32753:
         native.update({'family':'actionbank-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32975与WMS Header20369分别绑定；独立匿名新Init能力核验后，首Logic Stake.total200/PaylineCount1/CurrencyMultiplier1。',
@@ -327,7 +341,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753'):
+    for key in ('32749','32750','32751','32752','32753','32755'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -391,6 +405,11 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
                 'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
                 'required':'固定实际16，GameMode0；级联奖只计入对应Logic，恢复引用不重复计奖，最终EndGame确认及每帧现金严格双验。'}
+        if plan and plan.get('adapter') == 'blazing-x-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(own Logic totalWin)',
+                'bet':'stakeRaw / 100','mul':'sum(own Logic totalWin) / stakeRaw',
+                'required':'实际240；BG累计/FS累计/每帧现金/10免费计数及EndGame确认独立双验，恢复转轴不重复计奖。'}
         if plan and plan.get('adapter') == 'actionbank-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',

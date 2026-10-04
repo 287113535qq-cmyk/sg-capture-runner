@@ -109,6 +109,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
         self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
 
+    def test_blazing_card_has_own_ten_free_and_distinct_actual_wager(self):
+        card=self.cards[32755]
+        self.assertEqual(card['roundRule']['family'],'blazing-x-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32977)
+        self.assertEqual(card['parameters']['wmsGameId'],20363)
+        self.assertIn('997普通+3完整免费',card['roundRule']['bounds'])
+        self.assertIn('真实Init',card['roundRule']['bounds'])
+        self.assertIn('实际240',card['settlement']['required'])
+
     def test_actionbank_card_distinguishes_partial_free_from_ordinary_evidence(self):
         card=self.cards[32753]
         self.assertEqual(card['roundRule']['family'],'actionbank-base-wms-v1')
