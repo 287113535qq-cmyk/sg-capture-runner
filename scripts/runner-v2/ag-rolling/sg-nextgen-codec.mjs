@@ -9,6 +9,7 @@ import {actionContract} from '../../trial/pyramids-action-contracts.mjs';
 import {captureCollector} from '../../trial/collector-loader.mjs';
 import {heldBalanceFields,BALANCE_CONTRACT} from './sg-held-balance.mjs';
 import {automaticFreeNext,automaticFreeFields,AUTOMATIC_FREE_CONTRACT} from './sg-automatic-free.mjs';
+import {AUTOMATIC_TERMINAL,terminalNext,terminalFields} from './sg-automatic-terminal.mjs';
 import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
 import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbePick,explicitProbeIntent} from './sg-explicit-probe.mjs';
 import {EXPLICIT_CONTINUATION,continuationRoute,continuationPick,continuationIntent} from './sg-explicit-continuation.mjs';
@@ -44,6 +45,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[],
    ...(plan.balanceContract===BALANCE_CONTRACT?{balanceContract:BALANCE_CONTRACT}:{}),
    ...(plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?{automaticFreeContract:AUTOMATIC_FREE_CONTRACT}:{}),
+   ...(plan.automaticTerminalContract===AUTOMATIC_TERMINAL?{automaticTerminalContract:AUTOMATIC_TERMINAL}:{}),
    ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(plan.explicitContinuationContract!==undefined?{explicitContinuationContract:plan.explicitContinuationContract}:{}),
    ...(plan.explicitDragonContract!==undefined?{explicitDragonContract:plan.explicitDragonContract}:{}),
@@ -93,13 +95,13 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
      return request;
     }
    }
-   const js=raw.zeroAbpmContract!==undefined?zeroAbpmNext(plan,raw):raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeNext(plan,raw):contract?contract.next(plan,raw):nextRequest(raw);
+   const js=raw.automaticTerminalContract!==undefined?terminalNext(plan,raw):raw.zeroAbpmContract!==undefined?zeroAbpmNext(plan,raw):raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeNext(plan,raw):contract?contract.next(plan,raw):nextRequest(raw);
    const py=await parser.call({op:'next',plan,raw});assert(stable(js)===stable(py),'SG_JS_PY_ROUTE_MISMATCH');
    if(js)assert((await parser.call({op:'intent',plan,raw,payload:payload(js)}))?.validated===true,'SG_REQUEST_MODE');
    return js;},
   async prepare(raw,{attempt,sessionHash}){
    const py=await parser.call({op:'fields',plan,raw});
-   const js=raw.zeroAbpmContract!==undefined?zeroAbpmFields(plan,raw,py.typeMappingHash):raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeFields(plan,raw,py.typeMappingHash):raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,raw,py.typeMappingHash):contract?captureCollector(contract.collectorKind).prepareNextgenActionRound(raw,plan):
+   const js=raw.automaticTerminalContract!==undefined?terminalFields(plan,raw,py.typeMappingHash):raw.zeroAbpmContract!==undefined?zeroAbpmFields(plan,raw,py.typeMappingHash):raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeFields(plan,raw,py.typeMappingHash):raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,raw,py.typeMappingHash):contract?captureCollector(contract.collectorKind).prepareNextgenActionRound(raw,plan):
     captureCollector('nextgen').prepareNextgenRound(raw,{buy:py.buy,bonus:py.bonus,typeMappingHash:py.typeMappingHash});
    assert(stable(js)===stable(py),'SG_JS_PY_FIELDS_MISMATCH');
    const record=await parser.call({op:'record',plan,raw,normalized:js,sequence:sequence(),attempt,

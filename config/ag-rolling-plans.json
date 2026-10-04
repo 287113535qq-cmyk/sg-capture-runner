@@ -883,7 +883,9 @@
         "RB": "6"
       },
       "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
-      "automaticFreeContractHash": "aff8fc5e4dff63b46af81702be9cc7ef4a73608324e937eb67b0c7bcb6f57142"
+      "automaticFreeContractHash": "aff8fc5e4dff63b46af81702be9cc7ef4a73608324e937eb67b0c7bcb6f57142",
+      "automaticTerminalContract": "nextgen-moneyraid-terminal-evidence-v2",
+      "automaticTerminalContractHash": "84250ccebcd590749a69ee66338ff012626bd164d8da6e1850e42c7c45caeca7"
     },
     "32614": {
       "schema": "sg-work-pool-v1",
@@ -1913,7 +1915,7 @@
       "workers": 20,
       "gameId": 32716,
       "runtimeGameId": 33116,
-      "name": "Huff N\u2019 Even More Puff Grand",
+      "name": "Huff N’ Even More Puff Grand",
       "runtimeSlug": "hnempgrand96",
       "sourceKey": "hnempgrand96-ag-rolling-nextgen-v1",
       "mode": "demo",
@@ -6185,7 +6187,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32595,
       "runtimeGameId": 33066,
-      "planHash": "b41ea308d1d80aac8f9d7fabddc08b96a5d8fd9e805da35229962f2a0abbfe00",
+      "planHash": "ec7ad7bd427209e6d422c07656d3b3a977a56c918955d2435cea76308e2840ae",
       "historyFileSha256": "94a5f500967c35e9b16eda43015cedaa1e482bb8f5fc97af8c0e97be31aa6dbf",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 0,
@@ -6306,6 +6308,53 @@
         "sourceRequests": 0,
         "mongoWrites": 0,
         "failedRoundsCredited": 0
+      },
+      "automaticTerminalEvidence": {
+        "schema": "sg-ag-moneyraid-terminal-repair-evidence-v2",
+        "previousPlanHash": "b41ea308d1d80aac8f9d7fabddc08b96a5d8fd9e805da35229962f2a0abbfe00",
+        "previousProofHash": "7accf30f8a8ea285885b3757b30066b10ca873c3385a52b4dad85be791b0f13f",
+        "contractHash": "84250ccebcd590749a69ee66338ff012626bd164d8da6e1850e42c7c45caeca7",
+        "ownClosedNaturalRounds": 104,
+        "nativeEvidenceHash": "c882a0923ba871261961f28c1e9a961753dbd63a895ca8b5550a70a3bc8475e4",
+        "durableFrameCount": 872,
+        "terminalFidCounts": {
+          "2|": 91,
+          "3|": 13
+        },
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0,
+        "wiringEvidence": {
+          "schema": "sg-ag-moneyraid-terminal-codec-replay-v2",
+          "gameId": 32595,
+          "sourceCommit": "53a4a3592e36f14aac9e71e0a0080148751155a5",
+          "previousPlanHash": "b41ea308d1d80aac8f9d7fabddc08b96a5d8fd9e805da35229962f2a0abbfe00",
+          "contractHash": "84250ccebcd590749a69ee66338ff012626bd164d8da6e1850e42c7c45caeca7",
+          "ownClosedNaturalFullRounds": 104,
+          "terminalFidCounts": {
+            "2|": 91,
+            "3|": 13
+          },
+          "actualOwnCodecPythonRequests": 872,
+          "ownNormalizedHash": "34c1afb9fe73355dd3969dccc1e180a007208586a5a76504078cf1df1f6e3ac5",
+          "ownFullRecordsHash": "559f5e58735142df8636af2ba04d9d1b14afbf871ef8360917c75941c4b099bf",
+          "oldMarkerUnreviewedTerminalRejected": 104,
+          "oldAcceptedUnmarkedRecordParity": 97,
+          "oldMarkedV1RecordParity": 99,
+          "oldRecordHashesUnchanged": "3ed97e99570197642ed8e13248c9c51b22105aec009437c677e52c03ce6d5492",
+          "futureHistoricalFieldsParity": 99,
+          "futureHistoricalRoutes": 118,
+          "oldBetZeroRefreshStillRejected": 1,
+          "actualCodecPythonRecordAndVerify": true,
+          "independentEveryFrameFinanceAndRequests": true,
+          "acceptedOldRawHashesUnchanged": true,
+          "sourceRequests": 0,
+          "mongoWrites": 0,
+          "failedRoundsCredited": 0,
+          "liveApplied": false,
+          "evidenceHash": "7881f5e634605cc7c697e24c5dedaae99568c04d27995097770f25eeb7633e4a"
+        }
       }
     },
     "32614": {

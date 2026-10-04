@@ -342,6 +342,9 @@ def derive(raw):
     from fortunes_megaways_fields import SOURCE as FORTUNES_SOURCE, settled as fortunes_settled, mapping_hash as fortunes_mapping
     if raw.get('sourceKey') == FORTUNES_SOURCE:
         return fortunes_settled(raw, fortunes_mapping())
+    if raw.get('automaticTerminalContract') is not None:
+        from automatic_terminal_fields import settled as terminal_settled
+        return terminal_settled(raw)
     if raw.get('automaticFreeContract') is not None:
         from automatic_free_fields import settled as automatic_settled
         return automatic_settled(raw)

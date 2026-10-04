@@ -377,8 +377,8 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "d6d0730daef4d7640446a80700b8abc94d0f3dff7f2a5d71b5b8cc692e9ec80f",
-    "service/round_fields.py": "1beb1bbaae26d26c0731322c76809326fc3ad6f2dd4b21b62d85a938979482f2",
+    "service/native_nextgen_fields.py": "7aabaf7b09d7211a6f6c789511771b7fad28fdb02acdbfd908935c01d293001a",
+    "service/round_fields.py": "eb1d07890e861d44d0887a71a460366a500cf824731fdfb832a9171a19c33e51",
     "scripts/runner-v2/record_fields.py": "e969da0ab48ac7d2fa6056c68efefd7d0bf3026697407655281a1143c93e29b9",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
@@ -410,7 +410,7 @@
     "scripts/runner-v2/round-analysis-journal.mjs": "ce4ea10e8b77ebf1bbb9d02f6685e383bd157abd0bc80524ef166d5a7a0fec65",
     "scripts/runner-v2/pyramids-action-analysis.mjs": "cc2c2e2e3e7397eaffc6a67e5d375842b6b740bedb5d77ac958f1f7f31119b36",
     "scripts/runner-v2/pyramids-action-repair-profile.mjs": "7756a9b9bd5cbc61f822c5c1680ab73d75a507dd068357bc7bd858f932501037",
-    "service/game_rule_catalog.py": "701ce028ba93e223334363e47cbd5fdc25d650fc2edbd180e8ac128b7eaa5131"
+    "service/game_rule_catalog.py": "2e51cfaaa92c13bf9a0ec8d6e732cce6015a455021237182b0cd0b74badd177b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f48382b881db5000e28ab859a0efce7f46b0975d4eb73fac1d58b8650b83ed15"
+  "ruleHash": "a68a954ea472b0425568e9303ff33b1f28a508b8cd45dbe9e4c1e72213e95c3c"
 }

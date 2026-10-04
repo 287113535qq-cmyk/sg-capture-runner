@@ -117,6 +117,34 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
+    if plan.get('automaticTerminalContract') is not None:
+        from automatic_terminal_fields import CONTRACT,binding,policy
+        p=policy();e=proof.get('automaticTerminalEvidence',{});wire=e.get('wiringEvidence',{})
+        binding(plan,dict(fixtureOnly=False,protocol='nextgen',sourceKey=plan['sourceKey'],roundFieldsVersion='sg-round-fields-v1',
+                         automaticFreeContract=plan['automaticFreeContract'],automaticTerminalContract=CONTRACT,steps=[]))
+        require(e.get('schema')=='sg-ag-moneyraid-terminal-repair-evidence-v2'
+                and e.get('previousPlanHash')==p['sourceBinding']['previousPlanHash']
+                and e.get('previousProofHash')==p['sourceBinding']['previousProofHash']
+                and e.get('contractHash')==plan['automaticTerminalContractHash']
+                and e.get('nativeEvidenceHash')==p['nativeEvidenceHash'] and e.get('ownClosedNaturalRounds')==104
+                and e.get('durableFrameCount')==872 and e.get('terminalFidCounts')=={'2|':91,'3|':13}
+                and e.get('independentJsPython') is True and e.get('sourceRequests')==e.get('mongoWrites')==e.get('failedRoundsCredited')==0
+                and len(p.get('nativeRawHashes',[]))==len(set(p.get('nativeRawHashes',[])))==104
+                and len(p.get('nativeClosedHashes',[]))==104
+                and all(re.fullmatch('[a-f0-9]{64}',h) for h in p['nativeRawHashes']+p['nativeClosedHashes'])
+                and wire.get('schema')=='sg-ag-moneyraid-terminal-codec-replay-v2'
+                and wire.get('evidenceHash')==digest({k:v for k,v in wire.items() if k!='evidenceHash'})
+                and wire.get('previousPlanHash')==e['previousPlanHash'] and wire.get('contractHash')==e['contractHash']
+                and wire.get('ownClosedNaturalFullRounds')==104 and wire.get('terminalFidCounts')==e['terminalFidCounts']
+                and wire.get('actualOwnCodecPythonRequests')==872 and wire.get('oldMarkerUnreviewedTerminalRejected')==104
+                and wire.get('oldAcceptedUnmarkedRecordParity')==97 and wire.get('oldMarkedV1RecordParity')==99
+                and wire.get('futureHistoricalFieldsParity')==99 and wire.get('futureHistoricalRoutes')==118
+                and wire.get('oldBetZeroRefreshStillRejected')==1
+                and wire.get('actualCodecPythonRecordAndVerify') is True and wire.get('independentEveryFrameFinanceAndRequests') is True
+                and wire.get('acceptedOldRawHashesUnchanged') is True
+                and wire.get('sourceRequests')==wire.get('mongoWrites')==wire.get('failedRoundsCredited')==0
+                and re.fullmatch('[a-f0-9]{64}',wire.get('ownFullRecordsHash','')) is not None,
+                'ROLLING_AUTOMATIC_TERMINAL_PROOF')
     if plan.get('zeroAbpmContract') is not None:
         from zero_abpm_fields import binding
         entry=binding(plan);replay=proof.get('zeroAbpmReplay',{})
