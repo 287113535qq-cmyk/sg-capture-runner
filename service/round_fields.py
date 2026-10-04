@@ -354,6 +354,9 @@ def derive(raw):
     from cheshire_base_fields import SOURCE as CHESHIRE_SOURCE, settled as cheshire_settled, mapping_hash as cheshire_mapping
     if raw.get('sourceKey') == CHESHIRE_SOURCE:
         return cheshire_settled(raw, cheshire_mapping())
+    from cooljewels_base_fields import SOURCE as COOLJEWELS_SOURCE, settled as cooljewels_settled, mapping_hash as cooljewels_mapping
+    if raw.get('sourceKey') == COOLJEWELS_SOURCE:
+        return cooljewels_settled(raw, cooljewels_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

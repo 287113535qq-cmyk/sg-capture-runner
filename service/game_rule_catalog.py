@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32758:
+        native.update({'family':'cooljewels-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32980与WMS Header20150分别绑定；自己的Header→AccountData/CurrencyMultiplier1→Stake.multiplier1/total50。请求gameCodeRGI cooljewels_prt，目录slug cooljewels。响应stake50/stakePerLine0/paylineCount0。',
+            'continue':'仅自身普通单Logic内完整ReactorChain：1..6有序drop，先前drop有cluster，末drop为0cluster；每drop最多7cluster、36格layout符号0..13。没有readyForEndGame字段。Feature/FS_Info、未知cluster或MaxWin停止。',
+            'complete':'普通消除链完整后唯一Header-only EndGame，响应严格Header/Balances，无GameResult且现金保持。cluster_awards每个位置奖额只加一次=Logic totalWin，现金=start-50+奖；ReelSpin.spinWins固定0，不当消除奖总额。',
+            'bounds':'自己的完整文件SHA核验，前1000中994普通完整/1988请求，6个旧免费触发直接EndGame拒绝；不续局、不信用历史。实际codec→独立PY IPC→record/verify；Init仅synthetic限定能力形状，无真实Init/native scope/livecanary/当前队列准入。未知传输一次封存、不retry/resend。',
+            'files':['scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs','scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs','scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/cooljewels_base_fields.py','config/ag-rolling-cooljewels-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'ReactorChain':'1733个普通layout/1466个cluster自身证据，961种drop/root/watermark/award组合、730种位置文本、94种root/位置组合；位置0..5×0..5，奖数与唯一位置数一致。未知形状拒绝。',
+                'Stake / ReelSpin':'实际下注50/multiplier1；单spin0/reelset0、6stops、winCountPL0/SC0、spinWins0/freeN/bonusN，不能借Payline奖额逻辑。',
+                'MaxWin_Info / Balances':'maxWinValue25000000只是上限，maxWin必须false/cappedWins0；现金双验，End不再加奖。'}})
     elif game_id == 32757:
         native.update({'family':'cheshire-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32979与WMS Header20132分别绑定；自身AccountData/CurrencyMultiplier1→Header→Stake.total240/lines40，响应stake240/stakePerLine6/paylineCount40分别核验。',
@@ -382,7 +392,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -479,6 +489,10 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
                 'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
                 'required':'固定实际200；仅readyY普通完整，Anyway奖额和及BG累计一致，EndGame确认现金保持；11旧免费半局拒绝。'}
+        if plan and plan.get('adapter') == 'cooljewels-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all ReactorCluster.cluster_awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'总下注50/multiplier1；自己的ReactorChain terminal零cluster和award sum/cash双验，唯一EndGame确认；ReelSpin.spinWins固定0。'}
         if plan and plan.get('adapter') == 'cheshire-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin','bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',

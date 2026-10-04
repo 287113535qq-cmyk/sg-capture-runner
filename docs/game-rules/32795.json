@@ -95,7 +95,7 @@
     "service/pearl_award_fields.py": "66734762716320a8b10530f3ec0efc44e21ea62ade772764b26707b729bfc806",
     "scripts/trial/pearl-award-protocol.mjs": "974ccfae35d99d9702c52631a42dd8aa5e1bc56952114bd8210fb347e25251ce",
     "collector/sg.pearl-award.ts": "28124369ee49cf0794df8351aa76c83f763ef83bb64d7eb9eb74542a27c4802b",
-    "service/game_rule_catalog.py": "337d3f3b208921ede16310b2f5c1317a0bacd0008bd710b2ad40a0e2d43a5da1"
+    "service/game_rule_catalog.py": "d00ba912d0fe20111cacd5814f6dbdce3308d02b68ef3761fb1da6c1475286db"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -147,5 +147,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "00154040d01bd39ba761ccb23826dc991d5cd8e711a23a1fbb55b468993b33bb"
+  "ruleHash": "4549cd6d3ceb33c0860d828dc65b9579e817736ef335f7bb57c21a6b00becead"
 }

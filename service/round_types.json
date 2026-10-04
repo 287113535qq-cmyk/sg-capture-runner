@@ -4584,6 +4584,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "cooljewels-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "cooljewels-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 50,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32758,
+        "runtimeGameId": 32980,
+        "wmsGameId": 20150,
+        "ordinaryContractHash": "701a7cd045cce2959ce8ae748f056a97142b1eb673367e22b17f389f9254ad5a",
+        "historyFileSha256": "a9419249c81f4673a537160835a54f248802db482dd6711fa24fda405dd202aa",
+        "fullBaseRounds": 994,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
