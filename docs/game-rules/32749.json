@@ -6,21 +6,90 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "fivetreasures-ag-rolling-wms-v1",
+  "planHash": "523d3ae871f99b6555f5fc0d59f6e1b42dff31cc7cfccf028e85a3babd918bef",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32749",
+    "runtimeSlug": "fivetreasures",
+    "buy": 0,
+    "betRaw": 176,
+    "requestParams": null,
+    "maxSteps": 8,
+    "wmsGameId": 20442,
+    "wmsChoiceCount": 5
+  },
+  "roundRule": {
+    "family": "five-treasures-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "FreeSpinChoice",
+      "EndGame"
+    ],
+    "start": "目录runtimeGameId32971与WMS Header.gameID20442分别固定；匿名新会话Init独立核验，首Logic固定Stake176和PaylineCount1。",
+    "continue": "免费触发后沿原AG选择回调均衡5个选项，pickIndex1..5对应WMS FreeSpinChoice0..4；选择请求本身是Logic XML并执行第一免费帧，后续5次Logic。逐响应sessionID绑定下一请求。",
+    "complete": "第6免费帧后readyForEndGame=Y，随后唯一EndGame确认；普通局同样必须EndGame。逐帧现金、累积奖、ReelSpin及独立Jackpot奖双验才完整。",
+    "bounds": "只离线候选：1000历史完整局995普通5免费通过JS/Python；源发送、codec和record独立校验已接通本地，尚无native scope、Linux或两个真实canary。Init能力验证只有合成测试，真实响应仍须严格现场验证。额外奖励、重触发、恢复与未知节点拒绝，旧局不计入目标。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs",
+      "scripts/runner-v2/ag-rolling/sg-five-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-five-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs",
+      "service/five_treasures_fields.py",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "Header": "WMS20442/version1_0/demo Y；session值私有且逐帧轮换。",
+      "FSInfo": "固定本游戏已证实6帧，freeSpinNumber逐帧推进；extraSpinsAwarded必须0。",
+      "Stake / cash": "首帧实际176；后续报告stake176不重复扣款。",
+      "JackpotInfo": "index0奖独立于totalSpinWin，二者之和等于totalWin。",
+      "EndGame": "完整确认与现金保持是完成前置条件。"
+    }
+  },
+  "typeMappings": {
+    "fivetreasures-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {
+        "six-free-choice-0-through-4": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "fivetreasures-ag-rolling-wms-v1": "75240ce9692ccff4b03aef01dddcfc14ce83b83957baa1a2cae6578ff5747993"
+  },
+  "configuredNaturalBonusCodes": [
+    1
+  ],
+  "configuredOutcomeCategoryCount": 1,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)",
+    "bet": "stakeRaw / 100",
+    "mul": "sum(Logic totalWin) / stakeRaw",
+    "required": "固定实际176；逐帧现金与累计奖一致，最终EndGame完整确认且现金保持。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "6804fe35565f50424ee4c12cd2a9a7926937954c65d3d14661e756edc3caafdc"
+    "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
+    "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "fd79b05d9e178076228a777f1427cf3d2c00b2df2423588cbedd0893b9ff7037",
+    "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "ea9ab7ba5f7723e6eb07c1f541d389580e303622184f7c9b6e717155898b3d65",
+    "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "29cb78c801914c2b021613909d0b51f327d4fa3fd017487373a1ceba18451448",
+    "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
+    "service/ag_rolling_plan.py": "c2169396cc77dd2d242f9056e4d5e9e74cb01e6902f4d8ff020ae3cf9fb604b2",
+    "scripts/runner-v2/record_fields.py": "416952dbf465588597296ff4c214e301d1e3369d24684c987318a87690691cec",
+    "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
+    "service/game_rule_catalog.py": "6c2d64de60ab0253de2792f147943b458c8b5f28eb884fdcb1413cf8e186024c"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "60f374202737802a2d9ea6968050d832440460db8302aba1d6ab3ff052dff306"
+  "ruleHash": "27666188cf0458a229f143c1a60c5d85b35a28d70c9433ccfa375c9669c2411b"
 }

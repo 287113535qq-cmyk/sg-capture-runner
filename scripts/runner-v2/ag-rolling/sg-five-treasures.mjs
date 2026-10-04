@@ -2,7 +2,7 @@ import {parseXml,one,children,need,uint} from '../../trial/pearl-protocol.mjs';
 import {stable} from '../mongo-writer.mjs';
 // Offline WMS codec boundary. No source, scheduler, registry or storage calls.
 export const SOURCE='fivetreasures-ag-rolling-wms-v1';
-const HEADER={affiliate:'0',ccyCode:'',channel:'I',freePlay:'Y',gameCodeRGI:'fivetreasures',gameID:'20442',
+export const HEADER={affiliate:'0',ccyCode:'',channel:'I',freePlay:'Y',gameCodeRGI:'fivetreasures',gameID:'20442',
  glsID:'65535',lang:'en_US',promotions:'N',userID:'null',userType:'C',versionID:'1_0'};
 const same=(a,b)=>stable(a)===stable(b);
 const SCHEMA={
@@ -32,6 +32,30 @@ export function request(text,msg,first=false){
   &&!children(one(q,'FreeSpinChoice')).length,'WMS_CHOICE_NOT_ADAPTED');
  else need(['Logic','EndGame'].includes(msg)&&same(tags(q),['Header']),'WMS_REQUEST_MISMATCH');
  return h.a.sessionID;
+}
+export function fiveResponse(text,msg){
+ const root=parseXml(text),h=one(root,'Header').a;
+ need(root.tag==='GameResponse'&&same(root.a,{type:msg==='FreeSpinChoice'?'Logic':msg})
+  &&h.gameID==='20442'&&h.versionID==='1_0'&&h.isRecovering==='N','WMS_RESPONSE_IDENTITY_MISMATCH');
+ need(typeof h.sessionID==='string'&&h.sessionID.length>0&&h.sessionID.length<=1024,'WMS_SESSION_REQUIRED');
+ const b=one(root,'Balances');need(children(b).length===1&&one(b,'Balance').a.name==='CASH_BALANCE','WMS_BALANCE_MISMATCH');
+ return {root,session:h.sessionID,balance:uint(one(b,'Balance').a.value)};
+}
+export function fiveBootstrap(step,session){
+ const q=parseXml(step.requestPayload),h=one(q,'Header');
+ need(step.msgId==='Init'&&q.tag==='GameRequest'&&same(q.a,{type:'Init'})&&same(tags(q),['Header'])
+  &&!children(h).length&&same(h.a,{...HEADER,sessionID:session}),'WMS_REQUEST_MISMATCH');
+ need(same(parseXml(step.responsePayload),parseXml(step.responseXml))
+  &&uint(step.elapsedMs)<=300000&&!step.sourceRejected,'WMS_XML_EVIDENCE_MISMATCH');
+ const result=fiveResponse(step.responsePayload,'Init'),nodes=[];
+ const walk=n=>{nodes.push(n);children(n).forEach(walk);};walk(result.root);
+ need(one(result.root,'Header').a.readyForEndGame==='N'
+  &&!nodes.some(n=>['GameResult','BaseGameRecoveryInfo','Feature'].includes(n.tag)),'WMS_INIT_REQUIRES_REVIEW');
+ const stakes=nodes.filter(n=>n.tag==='Stakes'),pages=nodes.filter(n=>n.tag==='PageInfo');
+ need(stakes.length===1&&stakes[0].children.map(n=>n.text??'').join('').split('|').filter(Boolean).map(uint).includes(176)
+  &&pages.length<=1&&(!pages.length||uint(pages[0].a.pageCount)<=1),'WMS_INIT_REQUIRES_REVIEW');
+ need(uint(step.responseBalance)===result.balance,'WMS_BALANCE_MISMATCH');
+ return {validated:true,session:result.session,balanceRaw:result.balance};
 }
 export function review(raw){
  need(raw?.sourceKey===SOURCE&&raw.protocol==='wms'&&raw.fixtureOnly===false&&raw.roundFieldsVersion==='sg-round-fields-v1','WMS_PROFILE_REQUIRED');

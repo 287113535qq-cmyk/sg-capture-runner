@@ -5,12 +5,77 @@ Only the evidenced ordinary stake and six-spin choices 0 through 4 are accepted.
 module has no source transport, admission registration or Mongo operations.
 """
 from pearl_fields import parse, one
-from round_fields import amount, check, VERSION
+from round_fields import amount, check, VERSION, type_profile
 
 SOURCE = 'fivetreasures-ag-rolling-wms-v1'
 HEADER = dict(affiliate='0', ccyCode='', channel='I', freePlay='Y',
               gameCodeRGI='fivetreasures', gameID='20442', glsID='65535',
               lang='en_US', promotions='N', userID='null', userType='C', versionID='1_0')
+TYPE_PROFILE = {'fixtureOnly': False, 'protocol': 'wms', 'adapter': 'five-treasures-wms-v1',
+                'mode': 'demo', 'buy': 0, 'betRaw': 176, 'baseBonus': 0,
+                'freeTypes': {'six-free-choice-0-through-4': 1},
+                'evidence': {'captureGameId': 32749, 'runtimeGameId': 32971, 'wmsGameId': 20442,
+                             'historyFileSha256': '4f7edf964dd81cbf036c18485eca4725d568d634077f34c73710cc9c48ad2cf4',
+                             'fullBaseRounds': 995, 'fullFreeRounds': 5}}
+
+
+def mapping_hash():
+    profile, signature = type_profile(SOURCE)
+    check(profile == TYPE_PROFILE, 'WMS_MAPPING_REQUIRED')
+    return signature
+
+
+def bootstrap(step, session):
+    q = parse(step.get('requestPayload'))
+    h = one(q, 'Header')
+    check(step.get('msgId') == 'Init' and q.tag == 'GameRequest' and q.attrib == {'type': 'Init'}
+          and [n.tag for n in q] == ['Header'] and not len(h)
+          and h.attrib == {**HEADER, 'sessionID': session}, 'WMS_REQUEST_MISMATCH')
+    check(step.get('responsePayload') == step.get('responseXml') and amount(step.get('elapsedMs')) <= 300000
+          and not step.get('sourceRejected'), 'WMS_XML_EVIDENCE_MISMATCH')
+    root = parse(step['responsePayload'])
+    rh = one(root, 'Header')
+    check(root.tag == 'GameResponse' and root.attrib == {'type': 'Init'} and rh.get('gameID') == '20442'
+          and rh.get('versionID') == '1_0' and rh.get('isRecovering') == 'N'
+          and rh.get('readyForEndGame') == 'N', 'WMS_INIT_REQUIRES_REVIEW')
+    check(not any(n.tag in ('GameResult', 'BaseGameRecoveryInfo', 'Feature') for n in root.iter()), 'WMS_INIT_REQUIRES_REVIEW')
+    stakes, pages = list(root.iter('Stakes')), list(root.iter('PageInfo'))
+    check(len(stakes) == 1 and 176 in [amount(x) for x in (stakes[0].text or '').split('|') if x]
+          and len(pages) <= 1 and (not pages or amount(pages[0].get('pageCount')) <= 1), 'WMS_INIT_REQUIRES_REVIEW')
+    balances = one(root, 'Balances')
+    b = one(balances, 'Balance')
+    balance = amount(b.get('value'))
+    check(len(balances) == 1 and b.get('name') == 'CASH_BALANCE' and amount(step.get('responseBalance')) == balance,
+          'WMS_BALANCE_MISMATCH')
+    value = rh.get('sessionID')
+    check(isinstance(value, str) and 0 < len(value) <= 1024, 'WMS_SESSION_REQUIRED')
+    return {'validated': True, 'session': value, 'balanceRaw': balance}
+
+
+class FiveTreasuresFields:
+    def __init__(self, plan):
+        check(plan.get('gameId') == 32749 and plan.get('runtimeGameId') == 32971 and plan.get('sourceKey') == SOURCE
+              and plan.get('adapter') == 'five-treasures-wms-v1' and plan.get('buy') == 0
+              and plan.get('betRaw') == 176 and plan.get('maxSteps') == 8, 'WMS_PROFILE_REQUIRED')
+        self.plan = plan
+        mapping_hash()
+
+    def next_request(self, raw):
+        msg = review(raw)['next']
+        return {'MSGID': msg} if msg is not None else None
+
+    def validate_intent(self, raw, payload):
+        state = review(raw)
+        check(state['next'] is not None, 'WMS_SEQUENCE_MISMATCH')
+        session = request(payload, state['next'], first=not raw['steps'])
+        check(state['session'] is None or state['session'] == session, 'WMS_SESSION_CHAIN_MISMATCH')
+        return {'validated': True}
+
+    def bootstrap(self, step, session):
+        return bootstrap(step, session)
+
+    def settled(self, raw):
+        return settled(raw, mapping_hash())
 SCHEMA = {
     'GameResponse': ('type', 'Header AccountData Balances GameResult'),
     'Header': ('sessionID ccyCode deciSep thousandSep lang gameID versionID fullVersionID isRecovering readyForEndGame', ''),
