@@ -24,6 +24,11 @@ export function queueProfile({name,profile,authorization,plans,readBytes}){
    'SG_AG_QUEUE_RUNTIME_CHANGED');
  }
  validateSgPayload(profile.payload,profile.manifest);
+ if(profile.append)assert(profile.resume&&profile.append.schema==='sg-ag-rolling-append-v1'
+  &&/^[a-f0-9]{64}$/.test(profile.append.previousPayloadHash??'')
+  &&/^[a-f0-9]{64}$/.test(profile.append.previousManifestHash??'')
+  &&/^[a-f0-9]{64}$/.test(profile.append.emptyEvidenceHash??'')
+  &&Array.isArray(profile.append.gameBindings)&&profile.append.gameBindings.length>0,'SG_AG_QUEUE_APPEND_PROFILE');
  for(const game of profile.payload.games){
   const plan=plans.plans[game.gameId],proof=plans.proofs[game.gameId],entry=profile.manifest.find(g=>g.gameId===game.gameId);
   assert(plan&&String(plan.gameId)===game.gameId&&plan.buy===0&&plan.target===300000&&game.baseline===0

@@ -14,6 +14,7 @@ export async function inspectFormalBaseline({profile,game,plan,store,transport,e
  const state=(await store.get('state',key))?.value;
  const native=await transport.request('rounds_count',{trialId:plan.trialId});
  assert(Number.isSafeInteger(native?.count)&&native.count>=0,'SG_AG_FORMAL_COUNT_REQUIRED');
+ assert(state?.status!=='merging','SG_AG_FORMAL_MERGE_UNSETTLED');
  if(native.count===0&&state?.status!=='complete')return {status:'empty',count:0};
  assert(profile.resume&&ended?.status==='completed'&&ended.sourceJobsEnded===true
   &&ended.queueId===profile.payload.queueId&&ended.run===profile.resume.previousRun,'SG_AG_FORMAL_BASELINE_CHANGED');
