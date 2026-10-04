@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "desertcats-base-ag-rolling-wms-v1",
+  "planHash": "b1df505bbd0fd557fcbed87e1a9bb01c4369fb37b26bb914578945a5598c3044",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32762",
+    "runtimeSlug": "desertcats",
+    "buy": 0,
+    "betRaw": 200,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20315
+  },
+  "roundRule": {
+    "family": "desertcats-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32984与WMS Header20315分别固定；自己的Header→Stake.total200→PaylineCount.count50→AccountData/CurrencyMultiplier1，响应stake200/stakePerLine4/paylineCount50。Header没有readyForEndGame，不借别款ready门。",
+    "continue": "自身普通单spin0/reelset0、7stops、最多50唯一Payline线0..49，winCountSC0/freeSpinN/bonusAwardedN。QuickHits、Symbol、WildReel必须278种自己的联合形状；未知免费、Feature、MaxWin、额外Spin、未知奖项或形状停止。",
+    "complete": "完整普通后唯一Header-only EndGame，响应空AccountData/无GameResult且现金保持。Payline和=spinWins，Payline和+QuickHits.winValue=Logic totalWin=BG累计；现金=start-200+奖。Symbol/WildReel不再次乘奖。",
+    "bounds": "自己的全文件SHA核验，前1000普通完整/2000历史请求，10局独立QuickHits奖2000；实际codec→独立PY IPC→record/verify一致，历史不抵目标。没有免费覆盖；Init仅synthetic限定能力形状，无真实Init/native scope/livecanary/当前队列准入；未知传输单次封存、不retry/resend。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/desertcats_base_fields.py",
+      "config/ag-rolling-desertcats-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "PaylineWin": "4970个自身Payline，48种awardIndex/awardTableIndex/winVal组合、204种位置文本；3..7个唯一位置0..27。线0..49唯一，未知tuple/位置停止。",
+      "QuickHits / Symbol / WildReel": "仅自身278种numOfGems/winValue/replacement/pattern联合形状，numOfGems0..5奖0、6奖2000；QuickHits独立入Logic奖一次，ReelSpin.spinWins只Payline和，Symbol/WildReel不乘奖。",
+      "BGInfo / Stake": "下注总额200，BG totalWagerWin/bgWinnings均含QuickHits；baseGameSpinsRemaining0/isBigBet0/isMaxWin0。"
+    }
+  },
+  "typeMappings": {
+    "desertcats-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "desertcats-base-ag-rolling-wms-v1": "6149c0c601b2ab0b66cb97a7c74ccc06814ba3349104ee3faf233a536955ec1c"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + own Payline sum + QuickHits.winValue",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注200；自己的Payline计数/奖额/位置和QuickHits/Symbol/WildReel联合形状一致；唯一EndGame确认，未知特殊停止。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
+    "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs": "ed501a2b04bc0d929964e8bec97802f7a296b38889df5f4ec3a4a2079c3dc8b4",
+    "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs": "940e7e4d37cbbdec25b6cea5513643aeb10f153e44cd291df57cbc08a133254f",
+    "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs": "588dcac812ab3e40565b9a4844e70abacd980939d6d6778622d85232f83d52f7",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
+    "service/desertcats_base_fields.py": "9caa82edd904940e77dcd952958c0eb8f8d701ca676ca75527a47d15c414d98d",
+    "config/ag-rolling-desertcats-base-contract.json": "86b32bd9dae1cd96380d2a1bc581839f34950da5201de5f512ef65e92d49c06d",
+    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
+    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
+    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
+    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d59c7f58bc31b4c97d5f5047fe1c180354daf03088ab9917eff7e803ec175809"
+  "ruleHash": "aaaa6a828f938a516917c08f7c776c58d463fdb57312c4af49a51f356ba02ad9"
 }

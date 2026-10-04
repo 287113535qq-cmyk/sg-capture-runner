@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_desertcats_card_binds_own_separate_quickhits_without_ready(self):
+        card=self.cards[32762];rule=card['roundRule']
+        self.assertEqual(rule['family'],'desertcats-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32984);self.assertEqual(card['parameters']['wmsGameId'],20315)
+        self.assertIn('1000',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('10局独立QuickHits',rule['bounds'])
+        self.assertIn('4970',rule['fields']['PaylineWin']);self.assertIn('48种',rule['fields']['PaylineWin']);self.assertIn('204种',rule['fields']['PaylineWin'])
+        self.assertIn('没有readyForEndGame',rule['start']);self.assertIn('278种',rule['continue'])
+        self.assertEqual(card['typeMappings']['desertcats-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_drumsexplosion_card_binds_own_ready_replacement_and_decision(self):
         card=self.cards[32761];rule=card['roundRule']
         self.assertEqual(rule['family'],'drumsexplosion-base-wms-v1')

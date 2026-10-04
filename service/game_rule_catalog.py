@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32762:
+        native.update({'family':'desertcats-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32984与WMS Header20315分别固定；自己的Header→Stake.total200→PaylineCount.count50→AccountData/CurrencyMultiplier1，响应stake200/stakePerLine4/paylineCount50。Header没有readyForEndGame，不借别款ready门。',
+            'continue':'自身普通单spin0/reelset0、7stops、最多50唯一Payline线0..49，winCountSC0/freeSpinN/bonusAwardedN。QuickHits、Symbol、WildReel必须278种自己的联合形状；未知免费、Feature、MaxWin、额外Spin、未知奖项或形状停止。',
+            'complete':'完整普通后唯一Header-only EndGame，响应空AccountData/无GameResult且现金保持。Payline和=spinWins，Payline和+QuickHits.winValue=Logic totalWin=BG累计；现金=start-200+奖。Symbol/WildReel不再次乘奖。',
+            'bounds':'自己的全文件SHA核验，前1000普通完整/2000历史请求，10局独立QuickHits奖2000；实际codec→独立PY IPC→record/verify一致，历史不抵目标。没有免费覆盖；Init仅synthetic限定能力形状，无真实Init/native scope/livecanary/当前队列准入；未知传输单次封存、不retry/resend。',
+            'files':['scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs','scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs','scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/desertcats_base_fields.py','config/ag-rolling-desertcats-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin':'4970个自身Payline，48种awardIndex/awardTableIndex/winVal组合、204种位置文本；3..7个唯一位置0..27。线0..49唯一，未知tuple/位置停止。',
+                'QuickHits / Symbol / WildReel':'仅自身278种numOfGems/winValue/replacement/pattern联合形状，numOfGems0..5奖0、6奖2000；QuickHits独立入Logic奖一次，ReelSpin.spinWins只Payline和，Symbol/WildReel不乘奖。',
+                'BGInfo / Stake':'下注总额200，BG totalWagerWin/bgWinnings均含QuickHits；baseGameSpinsRemaining0/isBigBet0/isMaxWin0。'}})
     elif game_id == 32761:
         native.update({'family':'drumsexplosion-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32983与WMS Header20454分别固定；自己的AccountData/CurrencyMultiplier1→Header→Stake.total176，没有lines/paylineCount/PaylineCount。请求与目录slug dancingdrumsexplosion；响应stake176，没有stakePerLine/paylineCount，普通readyForEndGameY。',
@@ -421,7 +431,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -526,6 +536,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'desertcats-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum + QuickHits.winValue','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注200；自己的Payline计数/奖额/位置和QuickHits/Symbol/WildReel联合形状一致；唯一EndGame确认，未知特殊停止。'}
         if plan and plan.get('adapter') == 'drumsexplosion-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of own AnywayWin.winVal','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

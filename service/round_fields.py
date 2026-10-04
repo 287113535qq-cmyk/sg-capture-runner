@@ -366,6 +366,9 @@ def derive(raw):
     from drumsexplosion_base_fields import SOURCE as DRUMSEXPLOSION_SOURCE, settled as drumsexplosion_settled, mapping_hash as drumsexplosion_mapping
     if raw.get('sourceKey') == DRUMSEXPLOSION_SOURCE:
         return drumsexplosion_settled(raw, drumsexplosion_mapping())
+    from desertcats_base_fields import SOURCE as DESERTCATS_SOURCE, settled as desertcats_settled, mapping_hash as desertcats_mapping
+    if raw.get('sourceKey') == DESERTCATS_SOURCE:
+        return desertcats_settled(raw, desertcats_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

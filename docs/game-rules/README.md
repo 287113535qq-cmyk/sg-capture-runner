@@ -121,7 +121,7 @@
 | [32759](32759.json) | Crystal Forest | implemented-subset | 0 |
 | [32760](32760.json) | Dancing Drums | implemented-subset | 0 |
 | [32761](32761.json) | Dancing Drums Explosion | implemented-subset | 0 |
-| [32762](32762.json) | Desert Cats | not-documented | 待确认 |
+| [32762](32762.json) | Desert Cats | implemented-subset | 0 |
 | [32763](32763.json) | Dr. Jekyll Goes Wild | not-documented | 待确认 |
 | [32764](32764.json) | Dragon Spin | not-documented | 待确认 |
 | [32765](32765.json) | Drop and Lock Deep Sea Magic | not-documented | 待确认 |

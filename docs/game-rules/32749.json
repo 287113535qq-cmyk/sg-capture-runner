@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "f78ca5b2ee1c35522347db5ee567076b37255858b6e1bcbbb81e14f1897468f6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "20c25a098c651a042c80ebc1aeb1ae2850d16ffc8598ba103d2c552ffc6d674a",
-    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
-    "service/round_fields.py": "23dea1b1468bb4c080fcba72f37ae99486cf766c02fcb82f92b642de0ad8e325",
-    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
+    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
+    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
+    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
+    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e4851ad03acaae14ebb0ca2b4c06ae534f867ddf5ac0ec2555d5cb8aca06657b"
+  "ruleHash": "2f3403080e045a0786e786c34bcefab7f2351a584d6f9e8b9841b79019270583"
 }

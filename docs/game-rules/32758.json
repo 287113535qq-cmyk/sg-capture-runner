@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "f78ca5b2ee1c35522347db5ee567076b37255858b6e1bcbbb81e14f1897468f6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "20c25a098c651a042c80ebc1aeb1ae2850d16ffc8598ba103d2c552ffc6d674a",
-    "scripts/runner-v2/record_fields.py": "eeea24143e717014f5378b510a286e5b0b60d70acfb5f201c68c9a80707e1422",
-    "service/round_fields.py": "23dea1b1468bb4c080fcba72f37ae99486cf766c02fcb82f92b642de0ad8e325",
-    "service/game_rule_catalog.py": "5b7ab07222b6df670ace9be31fa744dbab8233c35d3703a895f6b9b5e1fa1891"
+    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
+    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
+    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
+    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e68069d41e5161d017bfdc53e2baf92138cfd546653adc3cd13cbecb57d1b52b"
+  "ruleHash": "0ab14a793acb7123ff9dd9e52f60c1f844fcd4cf8c924985d5d8e553f8accae3"
 }
