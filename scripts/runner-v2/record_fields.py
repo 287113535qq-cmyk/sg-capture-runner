@@ -134,9 +134,9 @@ def execute(request):
         if op == 'bootstrap':
             return adapter.bootstrap(request['step'])
     if op == 'next':
-        return adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION,RESUME_ACTION_VERSION) else {'MSGID':'BET'}
+        return adapter.next_request(raw) if raw['steps'] or plan.get('zeroAbpmContract') is not None or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION,RESUME_ACTION_VERSION) else {'MSGID':'BET'}
     if op == 'intent':
-        next_step=adapter.next_request(raw) if raw['steps'] or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION,RESUME_ACTION_VERSION) else {'MSGID':'BET'}
+        next_step=adapter.next_request(raw) if raw['steps'] or plan.get('zeroAbpmContract') is not None or plan.get('featureProfile') in (ACTION_VERSION,DIRECT_ACTION_VERSION,RESUME_ACTION_VERSION) else {'MSGID':'BET'}
         assert next_step is not None
         parsed=adapter.request_params(request['payload'],next_step['MSGID'])
         assert all(parsed.get(k)==v for k,v in next_step.items())

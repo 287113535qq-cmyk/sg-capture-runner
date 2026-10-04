@@ -4351,6 +4351,62 @@
         "fullBaseRounds": 995,
         "fullFreeRounds": 5
       }
+    },
+    "merlinsmoneyburst95-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32588,
+        "runtimeGameId": 33063,
+        "sourceId": "d13472a4-7903-11ea-b3b3-0ad5da7db292"
+      }
+    },
+    "thewildthree-ag-rolling-nextgen-v1": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "adapter": "native-nextgen-v1",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "evidence": {
+        "captureGameId": 32666,
+        "runtimeGameId": 33090,
+        "sourceId": "d1347ea8-7903-11ea-b3b3-0ad5da7db292"
+      }
     }
   }
 }
