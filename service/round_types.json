@@ -4622,6 +4622,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "dancingdrums-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "dancingdrums-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 528,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32760,
+        "runtimeGameId": 32982,
+        "wmsGameId": 20207,
+        "ordinaryContractHash": "79b3bc1e2fd10b97c8e941633f9ac64e266a95d14ed255a4f005249879d876a2",
+        "historyFileSha256": "f0d4a3b6cefd00c3f66e54833fb5c8fe0943a55876e96f37b12620f3db6cec30",
+        "fullBaseRounds": 993,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

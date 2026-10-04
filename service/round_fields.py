@@ -360,6 +360,9 @@ def derive(raw):
     from crystalforest_base_fields import SOURCE as CRYSTALFOREST_SOURCE, settled as crystalforest_settled, mapping_hash as crystalforest_mapping
     if raw.get('sourceKey') == CRYSTALFOREST_SOURCE:
         return crystalforest_settled(raw, crystalforest_mapping())
+    from dancingdrums_base_fields import SOURCE as DANCINGDRUMS_SOURCE, settled as dancingdrums_settled, mapping_hash as dancingdrums_mapping
+    if raw.get('sourceKey') == DANCINGDRUMS_SOURCE:
+        return dancingdrums_settled(raw, dancingdrums_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

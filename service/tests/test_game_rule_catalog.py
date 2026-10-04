@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_dancingdrums_card_binds_own_ways_awards_and_rejected_upicks(self):
+        card=self.cards[32760];rule=card['roundRule']
+        self.assertEqual(rule['family'],'dancingdrums-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32982);self.assertEqual(card['parameters']['wmsGameId'],20207)
+        self.assertIn('993',rule['bounds']);self.assertIn('1986',rule['bounds']);self.assertIn('7个UPicksDecision',rule['bounds'])
+        self.assertIn('415',rule['fields']['AnywayWin']);self.assertIn('78',rule['fields']['AnywayWin']);self.assertIn('239',rule['fields']['AnywayWin'])
+        self.assertIn('没有stakePerLine/paylineCount或readyForEndGame',rule['start'])
+        self.assertEqual(card['typeMappings']['dancingdrums-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_cheshire_card_keeps_own_positions_mystery_and_zero_feature_coverage(self):
         card=self.cards[32757];rule=card['roundRule']
         self.assertEqual(rule['family'],'cheshire-base-wms-v1')

@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6962b663c43ba7091c5285c17daafa1236e31fa530a474e54937569e73e5b8c6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "a6b07c0061d3983dc3ea7b417bce2d80d74736146d008f1ee6072eb5880cb2d9",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "8841403bb498ea9c890dc293d7ff68f106827f767c0da0e903242ef0bdafcccb",
-    "scripts/runner-v2/record_fields.py": "c2c41a9fdf3fec97bee68172661a72e4b17613e2a68539619b34a775f64464c3",
-    "service/round_fields.py": "6409529396fac6b6ae90e98d4671f1a94c3823e9c0050c5b436ec628bde8bebc",
-    "service/game_rule_catalog.py": "5818ebfff29888bd73dbd86f30d7839d0047953d4dabfacc5a969ec4e4965931"
+    "service/ag_rolling_plan.py": "4e16718e51ddb241b59ec53b2631d5563dc4734d434a2ce7237420256c4e8e75",
+    "scripts/runner-v2/record_fields.py": "4f115cf4ff358e831efa09758b633144a7daf0740a53c4907605c64a145ffebc",
+    "service/round_fields.py": "25d2778b701d3b1f922f7acc186ceaa34d13a080f15c07e4234c33c9562b63c0",
+    "service/game_rule_catalog.py": "8a11302ca0e78e8fb686cfa2165565aefcbf64201d9ba0990e7a358272660190"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "63178dddbd8d39da515fba94cf56c1945c0213f614a670bf9a525249795947e0"
+  "ruleHash": "89b327a113092df618201b158d0c5accbb47a627f905654cced7c0e2702ff2f4"
 }

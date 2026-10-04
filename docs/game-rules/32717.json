@@ -90,9 +90,9 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "6409529396fac6b6ae90e98d4671f1a94c3823e9c0050c5b436ec628bde8bebc",
-    "scripts/runner-v2/record_fields.py": "c2c41a9fdf3fec97bee68172661a72e4b17613e2a68539619b34a775f64464c3",
-    "service/game_rule_catalog.py": "5818ebfff29888bd73dbd86f30d7839d0047953d4dabfacc5a969ec4e4965931"
+    "service/round_fields.py": "25d2778b701d3b1f922f7acc186ceaa34d13a080f15c07e4234c33c9562b63c0",
+    "scripts/runner-v2/record_fields.py": "4f115cf4ff358e831efa09758b633144a7daf0740a53c4907605c64a145ffebc",
+    "service/game_rule_catalog.py": "8a11302ca0e78e8fb686cfa2165565aefcbf64201d9ba0990e7a358272660190"
   },
   "reviewDocuments": [
     "docs/huff-goals-client-review-20260928.md"
@@ -134,5 +134,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "074e1600ec3c0b1c126b824fd80d245d3632a71d02316fce6415d438756d3175"
+  "ruleHash": "79caef6e7e42c94cf2c5d53a69ba50c12ee02fc4b82d544e79fa549d8125aded"
 }
