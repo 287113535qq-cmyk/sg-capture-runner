@@ -55,7 +55,11 @@ test('a new probe is captured through durable intent, response and closure once;
     const responsePayload=`MSGID=${msg}&B=1000&AB=1000&TW=0&IFG=0&NFG=0`;
     return {methodName:'processGameMessage',msgId:msg,requestPayload:payload,responsePayload,responseBalance:1000,elapsedMs:0,
      responseXml:'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>'};
-   }}),createCodec:(plan,session)=>nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),
+   }}),createCodec:async(plan,session)=>{
+    const codec=await nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),createRaw=codec.createRaw;
+    // Replay the stored v1 marker path under a later registered plan.
+    codec.createRaw=q=>{const raw=createRaw(q);delete raw.explicitContinuationContract;return raw;};return codec;
+   },
   }).open();
   try{await assert.rejects(()=>source.captureRound({chooseOption:async options=>options[14]}),unknownAck?/JOURNAL_ACK_UNKNOWN/:/EXPLICIT_PROBE_RESPONSE_REVIEW_REQUIRED/);}
   finally{await source.close();}

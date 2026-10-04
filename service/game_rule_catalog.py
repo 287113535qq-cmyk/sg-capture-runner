@@ -54,6 +54,30 @@ def contract(game_id):
             'complete': '官方请求与退出逻辑确认NFG0；同时必须通过完整XML、同会话、GCT未强制结束、B=AB及实际下注100校验。',
             'bounds': '历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，34已用/66注销。PGS2/GE2已独立size2映射接入三方与capture；33旧全文不变，真实仅触发帧、十帧终局合成，尚未重新准入，不代表整款玩法覆盖或正式300000准入。'})
         native['files'] += ['service/piggies_fields.py', 'scripts/trial/piggies-protocol.mjs', 'collector/sg.piggies.ts']
+    elif game_id == 32474:
+        native.update({'family':'nextgen-carnival-request-evidence-v2','messages':['BET','FEATURE_START','FEATURE_PICK'],
+            'start':'普通BET沿原完整校验；精确本游戏CFG1触发后才允许FEATURE_START。新会话与旧半局隔离。',
+            'continue':'START只接受48份自身故障中的两种固定字段集合，包括22份缺NFG但资金一致的响应。首次PICK由真实前端1|1|position构造；只有26份已观察position0的固定首次响应允许第二次PICK1|2|position，并排除已选0。',
+            'complete':'显式奖励终局尚未观察；第二次PICK响应及其他未审查形状立即封存停止，绝不把半局归一或计完整。普通完整记录仍必须独立字段、金额及全文核验。',
+            'bounds':'仅本地新版本，未在线应用。48份自身前缀122条已有请求及694条候选intent沿JS/Python独立一致；100份历史普通完整字段/hash不变。旧v1 marker/policy与已保存raw保留原语义，不重放旧请求；无FEATURE_END或FREE_GAME许可。新窗口须完整Linux、不可变manifest转发和旧prefix复核。',
+            'files':['scripts/runner-v2/ag-rolling/sg-explicit-continuation.mjs','scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-explicit-review.mjs','scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs',
+                     'service/explicit_request_continuation.py','service/explicit_request_probe.py','service/explicit_request_review.py',
+                     'service/native_nextgen_fields.py','scripts/runner-v2/record_fields.py','config/ag-rolling-explicit-continuation-contracts.json'],
+            'fields':{'CFG / FTV_1':'只本游戏CFG1与已审查pick上限、奖项形状；未知其他feature拒绝。',
+                      'NFG':'缺失许可仅固定START形状，不能全局改成可选；首次PICK必须显式3。',
+                      'CFP_1 / FPM_1':'已观察首PICK计数1、所选位置0；用真实前端已选数+1生成下一ordinal。',
+                      'B / AB / TW':'每帧B=初始余额-108+累计TW；AB为扣款或含奖余额，观察余额必须等于AB。',
+                      'PID / SID':'请求PID及响应SID在自身大局内固定；不公开实际值。',
+                      '终局':'未获特殊终局证据，始终拒绝结清与信用。'}})
+    elif game_id == 32497:
+        native.update({'family':'nextgen-explicit-request-evidence-v1','messages':['BET','FEATURE_START'],
+            'start':'只本游戏CFG0自身触发可请求新会话FEATURE_START；真实前端后续请求为FP0|1|1，但尚不构成响应后的源许可。',
+            'continue':'未审查的START响应即停止封存；不继续PICK、END或旧半局。',
+            'complete':'仅普通完整记录可独立全文/金额验证；显式奖励始终INCOMPLETE，不信用。',
+            'bounds':'原v1契约和96份自身触发证明保留；Carnival新版本不扩大Dragon权限。',
+            'files':['scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs','scripts/runner-v2/ag-rolling/sg-explicit-review.mjs',
+                     'service/explicit_request_probe.py','service/explicit_request_review.py','config/ag-rolling-explicit-request-reviews.json']})
     elif game_id == 32749:
         native.update({'family':'five-treasures-wms-v1','messages':['Init','Logic','FreeSpinChoice','EndGame'],
             'start':'目录runtimeGameId32971与WMS Header.gameID20442分别固定；匿名新会话Init独立核验，首Logic固定Stake176和PaylineCount1。',

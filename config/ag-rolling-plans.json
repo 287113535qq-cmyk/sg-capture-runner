@@ -132,7 +132,9 @@
         "RB": "5"
       },
       "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
-      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
+      "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
+      "explicitContinuationContract": "nextgen-carnival-request-evidence-v2",
+      "explicitContinuationContractHash": "9685e6ead74937d8f39a59804e61dabdabb3adc3075d26345b287288f59068d5"
     },
     "32476": {
       "schema": "sg-work-pool-v1",
@@ -1909,7 +1911,7 @@
       "workers": 20,
       "gameId": 32716,
       "runtimeGameId": 33116,
-      "name": "Huff N’ Even More Puff Grand",
+      "name": "Huff N\u2019 Even More Puff Grand",
       "runtimeSlug": "hnempgrand96",
       "sourceKey": "hnempgrand96-ag-rolling-nextgen-v1",
       "mode": "demo",
@@ -3415,7 +3417,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32474,
       "runtimeGameId": 33027,
-      "planHash": "7f17f16ca13a9625aa1fe704c565859911dc697e32682c5affd99c689bbac1da",
+      "planHash": "f813a221270d78e3164696d24d48d5a465f9d22c014b50c4eb38280fafe7e0d3",
       "historyFileSha256": "b45d34fd3db0fee99cefb52ef7528aca4ba56566262f700520a9e4258e1dc5ce",
       "acceptedBaseRounds": 100,
       "acceptedFreeRounds": 0,
@@ -3534,6 +3536,23 @@
         "historicalEvidenceHash": "72dbeb2d4064cbc3e7932164d8209cd8016859d64955e998d42732ac6273d39b",
         "independentJsPython": true,
         "maxReviewedContinuations": 2,
+        "fullSpecialTerminalsObserved": 0,
+        "settlementApproved": false,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      },
+      "explicitContinuationEvidence": {
+        "schema": "sg-ag-explicit-continuation-repair-evidence-v2",
+        "contractHash": "9685e6ead74937d8f39a59804e61dabdabb3adc3075d26345b287288f59068d5",
+        "previousPlanHash": "7f17f16ca13a9625aa1fe704c565859911dc697e32682c5affd99c689bbac1da",
+        "previousProofHash": "f6283462d1a6e5ffa6afe73aabee6d0829f1fc4791b5dc02a48fc8313aa38fbb",
+        "ownNativePrefixes": 48,
+        "nativeEvidenceHash": "c0fc34e1e279d500931c3b25f7a6593c3f551ddeca76b5fa24209e5fb1227382",
+        "frontendEvidenceHash": "519151bd5ea98058fa6d1f41a74c0fa235cb1bb959a74589a8926ce925073771",
+        "maximumReviewedOrdinal": 2,
+        "maximumReviewedResponses": 3,
+        "independentJsPython": true,
         "fullSpecialTerminalsObserved": 0,
         "settlementApproved": false,
         "sourceRequests": 0,

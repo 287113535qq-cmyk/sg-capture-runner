@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
+import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
 // every original campaign, quota and staging namespace. Admission replays
 // successful prefixes under this binding before it grants source permission.
@@ -13,6 +14,36 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.explicitContinuationContract!==undefined){
+   const {explicitContinuationContract,explicitContinuationContractHash,...previousPlan}=plan;
+   const {planHash:bound,explicitContinuationEvidence:evidence,...previousProof}=proof;
+   if(oldPlan.explicitProbeContract===undefined){
+    // Historical unmarked windows still traverse both immutable evidence
+    // revisions. Neither request/history gate can be skipped by the v2 marker.
+    const intermediateProof={...previousProof,planHash:queueHash(previousPlan)};
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:intermediateProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   const {planHash:oldBound,...oldFields}=oldProof;
+   assert(id==='32474'&&oldPlan.explicitProbeContract==='nextgen-explicit-request-evidence-v1'
+    &&oldPlan.explicitContinuationContract===undefined&&explicitContinuationContract===EXPLICIT_CONTINUATION
+    &&queueHash(previousPlan)===queueHash(oldPlan)&&queueHash(previousProof)===queueHash(oldFields)
+    &&oldBound===entry.planHash&&bound===planHash
+    &&evidence?.schema==='sg-ag-explicit-continuation-repair-evidence-v2'
+    &&evidence.contractHash===explicitContinuationContractHash&&evidence.previousPlanHash===entry.planHash
+    &&evidence.previousProofHash===entry.adapterProofHash&&evidence.ownNativePrefixes===48
+    &&/^[a-f0-9]{64}$/.test(evidence.nativeEvidenceHash??'')
+    &&evidence.frontendEvidenceHash==='519151bd5ea98058fa6d1f41a74c0fa235cb1bb959a74589a8926ce925073771'
+    &&evidence.maximumReviewedOrdinal===2&&evidence.maximumReviewedResponses===3
+    &&evidence.independentJsPython===true&&evidence.fullSpecialTerminalsObserved===0
+    &&evidence.settlementApproved===false&&evidence.sourceRequests===0&&evidence.mongoWrites===0
+    &&evidence.failedRoundsCredited===0,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   continuationBinding(plan,{fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,
+    roundFieldsVersion:'sg-round-fields-v1',explicitProbeContract:oldPlan.explicitProbeContract,
+    explicitContinuationContract,steps:[]});
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   const {balanceContract,balanceContractHash,automaticFreeContract,automaticFreeContractHash,explicitProbeContract,explicitProbeContractHash,...unchangedPlan}=plan;
   const {planHash:boundHash,previousPlanHash,balanceRepair,automaticFreeRepair,explicitProbeEvidence,...unchangedProof}=proof;
   const {planHash:oldBoundHash,...previousProof}=oldProof;
