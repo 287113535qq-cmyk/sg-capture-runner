@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import {reviewExplicitPrefix,reviewedPickRequest} from './sg-explicit-review.mjs';
 import {nextgenCodec} from './sg-nextgen-codec.mjs';
 const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),pid='gdmgcmoffline-explicit';
+const currentRegistry=structuredClone(registry);
+const {carnivalPickContract,carnivalPickContractHash,...previousCarnival}=registry.plans['32474'];registry.plans['32474']=previousCarnival;
 function frame(p,msg,reply){
  const q=msg==='BET'?{...p.requestParams,PID:pid,MSGID:msg}:{GN:p.runtimeSlug,PID:pid,MSGID:msg,CFG:p.gameId===32474?'1':'0'};
  const responsePayload='MSGID='+msg+'&B='+(1000-p.betRaw)+'&AB='+(1000-p.betRaw)+'&TW=0&IFG=0&'+reply;
@@ -53,7 +55,7 @@ test('request reviews reject altered wager, source, session, balances, XML and o
  const q=sample();q.steps[0].requestPayload+='&REC=1';assert.throws(()=>reviewExplicitPrefix(p,q),/REQUEST/);
 });
 test('real independent IPC review cannot authorize the existing source next or record path',async()=>{
- const p=registry.plans['32474'],codec=await nextgenCodec({plan:p,session:{pid},sequence:()=>1,worker:0,batchId:1});
+ const p=registry.plans['32474'],codec=await nextgenCodec({plan:currentRegistry.plans['32474'],session:{pid},sequence:()=>1,worker:0,batchId:1});
  try{
   const raw=sample('32474',true),review=await codec.reviewExplicit(raw);
   assert.equal(review.settlementApproved,false);assert.equal(review.sourceAllowance,0);

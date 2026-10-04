@@ -38,6 +38,13 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if self.plan.get('carnivalPickContract') is not None or raw.get('carnivalPickContract') is not None:
+            from carnival_pick_fields import binding,previous
+            if raw.get('carnivalPickContract') is not None:
+                binding(self.plan,raw)
+                from explicit_request_probe import is_feature
+                check(not is_feature(raw),'INCOMPLETE_CARNIVAL_PICK')
+            return NativeNextgenFields(previous(self.plan)).settled({k:v for k,v in raw.items() if k!='carnivalPickContract'})
         if raw.get('automaticTerminalContract') is not None:
             from automatic_terminal_fields import settled
             return settled(raw,self.plan)
@@ -83,6 +90,10 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if self.plan.get('carnivalPickContract') is not None or raw.get('carnivalPickContract') is not None:
+            from carnival_pick_fields import binding,previous
+            if raw.get('carnivalPickContract') is not None:binding(self.plan,raw)
+            return NativeNextgenFields(previous(self.plan)).next_request({k:v for k,v in raw.items() if k!='carnivalPickContract'})
         if raw.get('automaticTerminalContract') is not None:
             from automatic_terminal_fields import next_request
             return next_request(raw,self.plan)

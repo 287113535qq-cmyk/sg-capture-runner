@@ -5,6 +5,8 @@ import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbeIntent} from './sg-explic
 import {nextgenCodec} from './sg-nextgen-codec.mjs';
 import {createProtocolSessions} from './sg-protocol-session.mjs';
 const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),pid='gdmgcmoffline-probe';
+const currentRegistry=structuredClone(registry);
+const {carnivalPickContract,carnivalPickContractHash,...previousCarnival}=registry.plans['32474'];registry.plans['32474']=previousCarnival;
 function sample(id='32474',start=false){
  const p=registry.plans[id],cfg=id==='32474'?'1':'0',held=1000-p.betRaw;
  const frame=(msg,reply)=>{const q=msg==='BET'?{...p.requestParams,PID:pid,MSGID:msg}:{GN:p.runtimeSlug,PID:pid,MSGID:msg,CFG:cfg};
@@ -32,7 +34,7 @@ test('probe authority cannot expand source, wager, marker, previous request, ord
  assert.throws(()=>explicitProbeIntent(p,r,`GN=${p.runtimeSlug}&PID=${pid}&MSGID=FEATURE_END&CFG=1`),/POSITION/);
 });
 test('actual independent IPC uses the original AG chooseOption callback and refuses full fields after the new pick response',async()=>{
- const p=registry.plans['32474'],r=sample('32474',true),codec=await nextgenCodec({plan:p,session:{pid},sequence:()=>1,worker:0,batchId:1});
+ const p=registry.plans['32474'],r=sample('32474',true),codec=await nextgenCodec({plan:currentRegistry.plans['32474'],session:{pid},sequence:()=>1,worker:0,batchId:1});
  try{
   const next=await codec.next(r,async options=>options[14]);assert.deepEqual(next,{MSGID:'FEATURE_PICK',CFG:'1',FP:'1|1|14'});
   await assert.rejects(()=>codec.next(r,async()=>({pickIndex:16,position:15})),/POSITION/);
@@ -56,9 +58,9 @@ test('a new probe is captured through durable intent, response and closure once;
     return {methodName:'processGameMessage',msgId:msg,requestPayload:payload,responsePayload,responseBalance:1000,elapsedMs:0,
      responseXml:'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>'};
    }}),createCodec:async(plan,session)=>{
-    const codec=await nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),createRaw=codec.createRaw;
+    const codec=await nextgenCodec({plan:currentRegistry.plans['32474'],session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),createRaw=codec.createRaw;
     // Replay the stored v1 marker path under a later registered plan.
-    codec.createRaw=q=>{const raw=createRaw(q);delete raw.explicitContinuationContract;return raw;};return codec;
+    codec.createRaw=q=>{const raw=createRaw(q);delete raw.explicitContinuationContract;delete raw.carnivalPickContract;return raw;};return codec;
    },
   }).open();
   try{await assert.rejects(()=>source.captureRound({chooseOption:async options=>options[14]}),unknownAck?/JOURNAL_ACK_UNKNOWN/:/EXPLICIT_PROBE_RESPONSE_REVIEW_REQUIRED/);}

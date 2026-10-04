@@ -134,7 +134,9 @@
       "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
       "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
       "explicitContinuationContract": "nextgen-carnival-request-evidence-v2",
-      "explicitContinuationContractHash": "9685e6ead74937d8f39a59804e61dabdabb3adc3075d26345b287288f59068d5"
+      "explicitContinuationContractHash": "9685e6ead74937d8f39a59804e61dabdabb3adc3075d26345b287288f59068d5",
+      "carnivalPickContract": "nextgen-carnival-pick-evidence-v3",
+      "carnivalPickContractHash": "691e20e7c004f9eff2578dd25a9e4789b6cf8e55156e7bcd51c0e172017612fb"
     },
     "32476": {
       "schema": "sg-work-pool-v1",
@@ -3577,7 +3579,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32474,
       "runtimeGameId": 33027,
-      "planHash": "f813a221270d78e3164696d24d48d5a465f9d22c014b50c4eb38280fafe7e0d3",
+      "planHash": "2a4ba5d774c85f3bb457a612538d67e8fab81e7fc10b92a01caf76d269658df7",
       "historyFileSha256": "b45d34fd3db0fee99cefb52ef7528aca4ba56566262f700520a9e4258e1dc5ce",
       "acceptedBaseRounds": 100,
       "acceptedFreeRounds": 0,
@@ -3718,6 +3720,46 @@
         "sourceRequests": 0,
         "mongoWrites": 0,
         "failedRoundsCredited": 0
+      },
+      "carnivalPickEvidence": {
+        "schema": "sg-ag-carnival-pick-repair-evidence-v3",
+        "previousPlanHash": "f813a221270d78e3164696d24d48d5a465f9d22c014b50c4eb38280fafe7e0d3",
+        "previousProofHash": "844177861bfdb5ad5005f678d16680ec1440d78a75779e0988657ec110aa8a4d",
+        "contractHash": "691e20e7c004f9eff2578dd25a9e4789b6cf8e55156e7bcd51c0e172017612fb",
+        "wiringEvidence": {
+          "schema": "sg-ag-carnival-pick-codec-replay-v3",
+          "nativeEvidenceHash": "8196376019fbae07fc13955dd958a4b6f28850d47c1676372c5252834f4e000c",
+          "ownClosedPrefixes": 77,
+          "actualOwnCodecPythonRequests": 244,
+          "actualCodecPythonRecordAndVerify": true,
+          "oldAcceptedRecordParity": 100,
+          "oldV2FailureParity": 77,
+          "oldV2FailureSemantics": {
+            "EXPLICIT_CONTINUATION_RESPONSE_REVIEW_REQUIRED": 23,
+            "EXPLICIT_CONTINUATION_REQUEST": 54
+          },
+          "ownSpecialSettlementRejected": 77,
+          "originalFrontendConstructorRequests": 1065,
+          "independentOptionIntentRoutes": 1065,
+          "ownPrefixRoutesHash": "2a28de97b229a6a2a7e4a0286e46b55bf396194bcf16e094e68103e1c61057d2",
+          "ownCandidateIntentsHash": "573ba150ecefcae84796d0a813b5ad256ce38d41aa4da0cade8171c2c4b5be67",
+          "oldOrdinaryFieldsHash": "08d4e236c6d8efb331b3ab33027f80bf7b0dddbdd518f108e55b5442702b1bbd",
+          "oldOrdinaryRecordFormsHash": "030272447fd5513e089aa2a76a5b929b7fd5dd07a7ef27e6cbfed902647cb785",
+          "acceptedRawHashesUnchanged": true,
+          "independentEveryFrameFinanceAndRequests": true,
+          "oldRawAndClosedEvidenceUnchanged": true,
+          "firstPickPositions": {
+            "0": 23,
+            "1": 54
+          },
+          "firstPickWithoutNfgCount": 36,
+          "secondPickResponseCount": 13,
+          "maximumReviewedOrdinal": 3,
+          "fullSpecialTerminalsObserved": 0,
+          "sourceRequests": 0,
+          "mongoWrites": 0,
+          "failedRoundsCredited": 0
+        }
       }
     },
     "32476": {

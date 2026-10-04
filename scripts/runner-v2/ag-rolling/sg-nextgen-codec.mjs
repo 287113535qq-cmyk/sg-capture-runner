@@ -14,6 +14,7 @@ import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
 import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbePick,explicitProbeIntent} from './sg-explicit-probe.mjs';
 import {EXPLICIT_CONTINUATION,continuationRoute,continuationPick,continuationIntent} from './sg-explicit-continuation.mjs';
 import {dragonRoute,dragonIntent} from './sg-explicit-dragon.mjs';
+import {CARNIVAL_PICK,carnivalPrevious,carnivalRoute,carnivalPick,carnivalIntent} from './sg-carnival-pick.mjs';
 import {ZERO_ABPM,zeroAbpmNext,zeroAbpmFields} from './sg-zero-abpm.mjs';
 const require=createRequire(import.meta.url);let registered=false;
 function loadCollector(){if(!registered){require('../../../collector/node_modules/ts-node').register({
@@ -23,7 +24,7 @@ function loadCollector(){if(!registered){require('../../../collector/node_module
 // keeps eight concurrent sources independent without concurrent private IPC.
 export async function nextgenCodec({plan,session,sequence,worker,batchId,createAnalyzer=analyzer}){
  assert(plan.adapter==='native-nextgen-v1'&&plan.buy===0&&typeof sequence==='function','SG_NEXTGEN_CODEC_SCOPE');
- const parser=createAnalyzer(),contract=actionContract(plan);loadCollector();
+ const parser=createAnalyzer(),contract=actionContract(plan),legacyPlan=plan.carnivalPickContract===undefined?plan:carnivalPrevious(plan);loadCollector();
  try{assert((await parser.call({op:'plan',plan}))?.validated===true,'SG_CODEC_PLAN');}
  catch(error){parser.close();throw error;}
  const payload=next=>Object.entries(['INIT','REELSTRIP'].includes(next.MSGID)?
@@ -49,13 +50,29 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(plan.explicitContinuationContract!==undefined?{explicitContinuationContract:plan.explicitContinuationContract}:{}),
    ...(plan.explicitDragonContract!==undefined?{explicitDragonContract:plan.explicitDragonContract}:{}),
+   ...(plan.carnivalPickContract!==undefined?{carnivalPickContract:plan.carnivalPickContract}:{}),
    ...(plan.zeroAbpmContract===ZERO_ABPM?{zeroAbpmContract:ZERO_ABPM}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
   async reviewExplicit(raw){
-   const js=reviewExplicitPrefix(plan,raw),py=await parser.call({op:'review_explicit',plan,raw});
+   const js=reviewExplicitPrefix(legacyPlan,raw),py=await parser.call({op:'review_explicit',plan,raw});
    assert(stable(js)===stable(py),'SG_JS_PY_EXPLICIT_REVIEW_MISMATCH');return js;
   },
   async next(raw,chooseOption){
+   if(raw.carnivalPickContract!==undefined){
+    const route=carnivalRoute(plan,raw),py=await parser.call({op:'carnival_pick_route',plan,raw});
+    assert(stable(route)===stable(py),'SG_JS_PY_CARNIVAL_PICK_MISMATCH');
+    if(route){
+     let request=route.request;
+     if(route.options.length){
+      const selected=typeof chooseOption==='function'?await chooseOption(route.options):route.options[0];
+      assert(route.options.some(o=>o.pickIndex===selected?.pickIndex&&o.position===selected?.position),'CARNIVAL_PICK_POSITION');
+      request=carnivalPick(plan,raw,selected.position);
+     }
+     carnivalIntent(plan,raw,payload(request));
+     assert((await parser.call({op:'carnival_pick_intent',plan,raw,payload:payload(request)}))?.validated===true,'SG_REQUEST_MODE');
+     return request;
+    }
+   }
    if(raw.explicitDragonContract!==undefined){
     const route=dragonRoute(plan,raw),py=await parser.call({op:'explicit_dragon_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_DRAGON_MISMATCH');
@@ -65,32 +82,32 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
      return route.request;
     }
    }
-   if(raw.explicitContinuationContract!==undefined){
-    const route=continuationRoute(plan,raw),py=await parser.call({op:'explicit_continuation_route',plan,raw});
+   if(raw.explicitContinuationContract!==undefined&&raw.carnivalPickContract===undefined){
+    const route=continuationRoute(legacyPlan,raw),py=await parser.call({op:'explicit_continuation_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_CONTINUATION_MISMATCH');
     if(route){
      let request=route.request;
      if(route.options.length){
       const selected=typeof chooseOption==='function'?await chooseOption(route.options):route.options[0];
       assert(route.options.some(o=>o.pickIndex===selected?.pickIndex&&o.position===selected?.position),'EXPLICIT_CONTINUATION_POSITION');
-      request=continuationPick(plan,raw,selected.position);
+      request=continuationPick(legacyPlan,raw,selected.position);
      }
-     continuationIntent(plan,raw,payload(request));
+     continuationIntent(legacyPlan,raw,payload(request));
      assert((await parser.call({op:'explicit_continuation_intent',plan,raw,payload:payload(request)}))?.validated===true,'SG_REQUEST_MODE');
      return request;
     }
    }
-   if(raw.explicitProbeContract!==undefined){
-    const route=explicitProbeRoute(plan,raw),py=await parser.call({op:'explicit_probe_route',plan,raw});
+   if(raw.explicitProbeContract!==undefined&&raw.carnivalPickContract===undefined){
+    const route=explicitProbeRoute(legacyPlan,raw),py=await parser.call({op:'explicit_probe_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_PROBE_MISMATCH');
     if(route){
      let request=route.request;
      if(route.options.length){
       const selected=typeof chooseOption==='function'?await chooseOption(route.options):route.options[0];
       assert(route.options.some(o=>o.pickIndex===selected?.pickIndex&&o.position===selected?.position),'EXPLICIT_PROBE_POSITION');
-      request=explicitProbePick(plan,raw,selected.position);
+      request=explicitProbePick(legacyPlan,raw,selected.position);
      }
-     explicitProbeIntent(plan,raw,payload(request));
+     explicitProbeIntent(legacyPlan,raw,payload(request));
      assert((await parser.call({op:'explicit_probe_intent',plan,raw,payload:payload(request)}))?.validated===true,'SG_REQUEST_MODE');
      return request;
     }

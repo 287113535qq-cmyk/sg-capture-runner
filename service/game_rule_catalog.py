@@ -55,21 +55,21 @@ def contract(game_id):
             'bounds': '历史100条中99条通过，含6条自然免费终局、3条重触发；另1条实际扣款异常拒绝。历史仅作离线证据，新trial不计入历史额度。真实试点33完整含1自然免费，34已用/66注销。PGS2/GE2已独立size2映射接入三方与capture；33旧全文不变，真实仅触发帧、十帧终局合成，尚未重新准入，不代表整款玩法覆盖或正式300000准入。'})
         native['files'] += ['service/piggies_fields.py', 'scripts/trial/piggies-protocol.mjs', 'collector/sg.piggies.ts']
     elif game_id == 32474:
-        native.update({'family':'nextgen-carnival-request-evidence-v2','messages':['BET','FEATURE_START','FEATURE_PICK'],
-            'start':'普通BET沿原完整校验；精确本游戏CFG1触发后才允许FEATURE_START。新会话与旧半局隔离。',
-            'continue':'START只接受48份自身故障中的两种固定字段集合，包括22份缺NFG但资金一致的响应。首次PICK由真实前端1|1|position构造；只有26份已观察position0的固定首次响应允许第二次PICK1|2|position，并排除已选0。',
-            'complete':'显式奖励终局尚未观察；第二次PICK响应及其他未审查形状立即封存停止，绝不把半局归一或计完整。普通完整记录仍必须独立字段、金额及全文核验。',
-            'bounds':'仅本地新版本，未在线应用。48份自身前缀122条已有请求及694条候选intent沿JS/Python独立一致；100份历史普通完整字段/hash不变。旧v1 marker/policy与已保存raw保留原语义，不重放旧请求；无FEATURE_END或FREE_GAME许可。新窗口须完整Linux、不可变manifest转发和旧prefix复核。',
-            'files':['scripts/runner-v2/ag-rolling/sg-explicit-continuation.mjs','scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs',
-                     'scripts/runner-v2/ag-rolling/sg-explicit-review.mjs','scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs',
-                     'service/explicit_request_continuation.py','service/explicit_request_probe.py','service/explicit_request_review.py',
-                     'service/native_nextgen_fields.py','scripts/runner-v2/record_fields.py','config/ag-rolling-explicit-continuation-contracts.json'],
-            'fields':{'CFG / FTV_1':'只本游戏CFG1与已审查pick上限、奖项形状；未知其他feature拒绝。',
-                      'NFG':'缺失许可仅固定START形状，不能全局改成可选；首次PICK必须显式3。',
-                      'CFP_1 / FPM_1':'已观察首PICK计数1、所选位置0；用真实前端已选数+1生成下一ordinal。',
-                      'B / AB / TW':'每帧B=初始余额-108+累计TW；AB为扣款或含奖余额，观察余额必须等于AB。',
-                      'PID / SID':'请求PID及响应SID在自身大局内固定；不公开实际值。',
-                      '终局':'未获特殊终局证据，始终拒绝结清与信用。'}})
+        native.update({'family':'nextgen-carnival-pick-evidence-v3','messages':['BET','FEATURE_START','FEATURE_PICK'],
+            'start':'普通BET沿原完整校验；CFG1触发与START两种已审查形状仍经过原v1/v2证据门。旧raw保留原marker和原停止语义。',
+            'continue':'77份新匿名自身前缀中，首PICK position0有23份、position1有54份；只各自完整或全无NFG计数两种精确keyset，36份无NFG形状要求FID1|。CFP/CFR1、FPM实际首位置、FTV及金额逐帧独立双验后，排除已选位置并请求第二PICK。只有13份已观察顺序0→1的第二响应、CFP/CFR2与FPM0;1;|允许第三PICK1|3|position，排除0/1。',
+            'complete':'第三PICK响应和其他未审查第二响应必须停止封存；没有FEATURE_END或FREE_GAME许可，显式奖励完整信用仍为0。普通完整记录继续逐局双验、任务全文回读及300000原生验收。',
+            'bounds':'v3仅本地新版本，未在线应用；当前受检v2已经发布且采集中。77份自身closed前缀244条已有请求、1065条真实前端候选constructor与独立JS/Python actual codec IPC一致；100份原普通完整字段与各自原raw形式record哈希不变。原v1/v2 policy与JS/Python字节保持，77份新失败及48份历史半局不续、不重放、不回计；三层manifest转发和mandatory wiringEvidence全文hash必须通过。新版本须等待当前双仓完整ended、精确Linux/sealed后才可新不可变接续。',
+            'files':['scripts/runner-v2/ag-rolling/sg-carnival-pick.mjs','service/carnival_pick_fields.py',
+                     'config/ag-rolling-carnival-pick-contracts.json','scripts/runner-v2/ag-rolling/sg-explicit-continuation.mjs',
+                     'service/explicit_request_continuation.py','scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs',
+                     'service/native_nextgen_fields.py','scripts/runner-v2/record_fields.py','scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs'],
+            'fields':{'CFG / FTV_1':'固定CFG1；FTV必须自身首BET原值，maxPicks大于已完成PICK数；不猜奖励或终局。',
+                      'NFG / FID':'首次有计数要求NFG/TFG/FGT3、FID1|0|；无计数必须完整固定keyset和FID1|。第二已观察响应仅有计数形状。',
+                      'CFP_1 / CFR_1 / FPM_1':'计数1/2和实际已选位置全文一致；第二响应只已观察0→1，不把任意顺序当已批准。',
+                      'B / AB / TW':'每帧B=初始余额-108+首BET的TW；两次PICK奖额没有增长，观察AB等于held或含奖余额。',
+                      'PID / SID / XML':'请求PID与响应SID分别固定；新PICK XML只OGS_RC0/SUCCESStrue/PAYLOAD且全文一致。',
+                      '终局':'新特殊终局许可仍为0；旧failed/half不续跑或回计。'}})
     elif game_id == 32497:
         native.update({'family':'nextgen-dragon-start-evidence-v2','messages':['BET','FEATURE_START','FEATURE_PICK'],
             'start':'只本游戏CFG0自身触发可请求新匿名会话FEATURE_START；旧v1 marker仍在START响应后停止。',
@@ -364,6 +364,8 @@ def cards(root=ROOT):
             plans[key]=rolling[key]  # A documented offline boundary grants no source permission.
     if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
         plans['32595']=rolling['32595']
+    if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
+        plans['32474']=rolling['32474']
     profiles = json.loads((root / 'service/round_types.json').read_text(encoding='utf-8'))['profiles']
     # Index already-saved focused analyses, not broad progress tables that list every game.
     known = {str(g['gameId']) for g in games}
