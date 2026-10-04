@@ -49,3 +49,53 @@ export function endedCohortJobs(jobs,{localLaneEnded=false}={}){
  return lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20
   &&lanes.every(j=>j.status==='completed'||j.name==='AG rolling lane 20'&&localLaneEnded);
 }
+// A revision keeps each existing game's cohort. Only reviewed games appended
+// to the ordered payload receive a new assignment; task namespaces do not move.
+export function resumeFederation({previous,payload}){
+ if(!previous.federation)return undefined;
+ const old=inspectFederation(previous),games=previous.payload.games;
+ assert(payload.queueId===previous.payload.queueId&&payload.games.length>=games.length
+  &&games.every((g,i)=>hash(g)===hash(payload.games[i])),'SG_AG_FEDERATION_PAYLOAD_CHANGED');
+ const next=structuredClone(old),counts={primary:0,secondary:0};
+ for(const row of next.assignments)counts[row.cohort]++;
+ for(const game of payload.games.slice(games.length)){
+  const cohort=counts.primary<=counts.secondary?'primary':'secondary';
+  next.assignments.push({gameId:game.gameId,cohort});counts[cohort]++;
+ }
+ inspectFederation({payload,federation:next});return next;
+}
+export function inspectFederationRevision({previous,profile}){
+ if(!previous.federation)return;
+ assert(profile.federation&&hash(profile.federation)===hash(resumeFederation({previous,payload:profile.payload})),
+  'SG_AG_PREVIOUS_COHORTS_CHANGED');
+}
+// Independent GH readback is required in addition to the sealed native end
+// receipt. Neither a completed primary nor a copied participant ends a lane.
+export async function verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs}){
+ if(!previous.federation)return null;
+ inspectFederation(previous);
+ assert(typeof readEnded==='function'&&typeof readEndedJobs==='function','SG_AG_FEDERATED_ENDED_READERS_REQUIRED');
+ assert(prior?.schema==='sg-ag-rolling-permit-v1'&&prior.activation===previous.activation
+  &&prior.profileHash===hash(previous)&&prior.queueId===previous.payload.queueId
+  &&receipt?.schema==='sg-ag-rolling-window-ended-v1'&&receipt.activation===previous.activation
+  &&receipt.profileHash===hash(previous)&&receipt.queueId===prior.queueId&&receipt.run===prior.run
+  &&receipt.commit===prior.commit&&receipt.sourceRequests===0
+  &&receipt.federationHash===hash(previous.federation),'SG_AG_FEDERATED_ENDED_RECEIPT');
+ const participant=(await store.get('journal',participantKey(previous)))?.value;
+ inspectParticipant({profile:previous,receipt:participant,coordinatorRun:prior.run,commit:prior.commit});
+ assert(receipt.participant&&hash(participant)===hash(receipt.participant),'SG_AG_ENDED_PARTICIPANT_CHANGED');
+ for(const [cohort,run] of [['primary',prior.run],['secondary',participant.run]]){
+  const repository=cohortRepos[cohort],id=run.split(':')[0];
+  const workflow=await readEnded(id,repository);
+  assert(workflow?.id===Number(id)&&workflow.run_attempt===1&&workflow.status==='completed'
+   &&workflow.head_branch==='main'&&workflow.head_sha===prior.commit&&workflow.event==='workflow_dispatch'
+   &&workflow.path==='.github/workflows/trial-300k.yml','SG_AG_PREVIOUS_COHORT_ACTIVE');
+  const jobs=await readEndedJobs(id,repository);
+  assert(endedCohortJobs(jobs)&&jobs.jobs.every(j=>j.status==='completed'),'SG_AG_PREVIOUS_COHORT_JOBS_ACTIVE');
+  const controls=cohort==='primary'?['ag-rolling-admit','ag-rolling-finalize']:['ag-rolling-join'];
+  assert(controls.every(name=>jobs.jobs.filter(j=>j.name===name&&j.conclusion==='success').length===1)
+   &&jobs.jobs.filter(j=>j.conclusion!=='skipped').every(j=>controls.includes(j.name)
+    ||/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name)),'SG_AG_PREVIOUS_COHORT_CONTROL_FAILED');
+ }
+ return {primaryRun:prior.run,secondaryRun:participant.run,federationHash:hash(previous.federation),sourceRequests:0};
+}

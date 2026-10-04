@@ -4,7 +4,7 @@ import {queueHash} from './sg-queue-profile.mjs';
 import {inspectQueueRevision} from './sg-queue-revision.mjs';
 import {verifyPreparingRecovery} from './sg-preparing-recovery.mjs';
 import {preparingGuard} from './sg-admission-audit.mjs';
-import {inspectParticipant,participantKey,cohortRepos} from './sg-federation.mjs';
+import {inspectParticipant,participantKey,cohortRepos,verifyEndedFederation} from './sg-federation.mjs';
 // Queue-wide writes happen once at admission/finalization, never per round.
 export async function activateQueue({profile,store,transport,boundary,checkBaselines,checkNewGame,readPrevious,readLinux,readEnded,readEndedJobs,prepareResume,commit,run,now=Date.now}){
  assert(!profile.operation,'SG_AG_CONTROL_PROFILE_HAS_NO_SOURCE');
@@ -36,6 +36,7 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
   assert(workflow?.status==='completed'&&workflow.head_sha===prior.commit,'SG_QUEUE_PREVIOUS_SOURCE_ACTIVE');
   ended={status:workflow.status,sourceJobsEnded:true,run:prior.run,queueId:prior.queueId,proofHash:resume.endedProofHash};
   previous=await readPrevious(resume.previousActivation);
+  await verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs});
   if(profile.preparationRecovery){
    assert(typeof readEndedJobs==='function','SG_PREPARING_ENDED_JOBS_REQUIRED');
    recovery=await verifyPreparingRecovery({profile,target:await readPrevious(profile.preparationRecovery.targetActivation),
