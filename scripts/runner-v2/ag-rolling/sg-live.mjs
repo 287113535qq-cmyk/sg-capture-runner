@@ -17,6 +17,7 @@ import {runSgLane} from './sg-lane.mjs';
 import {mergeGame} from './sg-merge.mjs';
 import {resetEndedTask} from './sg-resume.mjs';
 import {inspectFormalBaseline} from './sg-formal-baseline.mjs';
+import {inspectNewGame} from './sg-new-game.mjs';
 import {LANE_BUDGET_MS} from './ag-core.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
@@ -98,8 +99,9 @@ try{
   const result=await activateQueue({profile,store,transport,boundary,commit,run,
    readLinux:id=>gh(`repos/287113535qq-cmyk/sg-capture-runner/actions/runs/${id}`),
    readEnded:id=>gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${id}`),
-   prepareResume:async({game,queueId,ended,guard})=>{
-    const previous=read(`config/ag-rolling-queue-${profile.resume.previousActivation}.json`);
+   readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
+   checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
+   prepareResume:async({game,queueId,ended,previous,guard})=>{
     const permit=(await store.get('journal','rolling-activation:'+profile.resume.previousActivation+':complete'))?.value;
     assert(queueHash(previous)===permit.profileHash&&previous.payload.queueId===queueId
      &&previous.payload.games.some(g=>queueHash(g)===queueHash(game)),'SG_AG_RESUME_GAME_CHANGED');

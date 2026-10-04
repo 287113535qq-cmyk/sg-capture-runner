@@ -49,7 +49,9 @@ test('one changed task or live canary lease blocks completed-game reuse',async()
  await assert.rejects(()=>inspectFormalBaseline(f),/LIVE_LEASE/);
 });
 test('partial merge retains all evidence and requires ended-actor settlement before source admission',async()=>{
- const f=fixture();f.setCount(150000);f.docs.get('state/'+f.key).value.status='merging';
- const before=queueHash([...f.docs]);await assert.rejects(()=>inspectFormalBaseline(f),/MERGED_BASELINE_PROOF/);
- assert.equal(queueHash([...f.docs]),before);
+ for(const count of [0,150000]){
+  const f=fixture();f.setCount(count);f.docs.get('state/'+f.key).value.status='merging';
+  const before=queueHash([...f.docs]);await assert.rejects(()=>inspectFormalBaseline(f),/FORMAL_MERGE_UNSETTLED/);
+  assert.equal(queueHash([...f.docs]),before);
+ }
 });

@@ -78,6 +78,7 @@ class Gateway:
                     'stateDeltaEnabled': self.manifest.get('stateDeltaEnabled') is True,
                     'rollingJournalBatchEnabled': self.manifest.get('rollingJournalBatchEnabled') is True,
                     'rollingCleanupEnabled': self.manifest.get('rollingCleanupEnabled') is True,
+                    'rollingGameCountEnabled': self.manifest.get('rollingGameCountEnabled') is True,
                     'gatewaySha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     'accessManifestHash': hashlib.sha256(json.dumps(self.manifest, sort_keys=True,
                         separators=(',', ':'), ensure_ascii=False).encode()).hexdigest()}
@@ -87,6 +88,23 @@ class Gateway:
             collection = self.db[COLLECTIONS['state']]
             return [collection.find_one({'_id': group + '/global-hold'}, max_time_ms=10000)
                     for group in ('primary', 'secondary')]
+        if op == 'rolling_campaign_baselines':
+            need(self.group == 'primary' and set(r) == {'schema', 'op'}
+                 and self.manifest.get('rollingGameCountEnabled') is True, 'ROLLING_BASELINE_READ_DISABLED')
+            # Fixed native projection only. GitHub checks game identity,
+            # historical baselines and admission eligibility.
+            return list(self.db[COLLECTIONS['state']].find(
+                {'_id': {'$in': ['primary/campaign', 'secondary/campaign']}},
+                {'_id': 1, 'value.games.game_id': 1, 'value.games.baseline': 1,
+                 'value.games.confirmed': 1, 'value.games.status': 1}, max_time_ms=10000).limit(2))
+        if op == 'rolling_game_index_prepare':
+            need(self.group == 'primary' and set(r) == {'schema', 'op'}
+                 and self.manifest.get('rollingGameCountEnabled') is True, 'ROLLING_INDEX_DISABLED')
+            # Fixed storage setup only, invoked by the idle-window native
+            # installer. No document, source request or quota is changed.
+            name = self.db['official_rounds'].create_index([('gameId', 1)],
+                name='rolling_game_count', unique=False, maxTimeMS=45000)
+            return {'indexName': name}
         if op == 'parallel_rhino_jobless_fence':
             # Two immutable identity proofs only. GitHub decides whether to fence.
             need(self.group == 'secondary' and set(r) == {'schema', 'op'}, 'BOUNDARY_SCOPE_DENIED')
@@ -351,9 +369,18 @@ class Gateway:
             result = collection.replace_one({'_id': identity, 'version': expected},
                                             {'_id': identity, 'version': expected + 1, 'value': value})
             return {'replaced': result.matched_count == 1, 'version': expected + 1}
-        if op in ('rounds_read', 'rounds_scan', 'rounds_insert', 'rounds_count'):
+        if op in ('rounds_read', 'rounds_scan', 'rounds_insert', 'rounds_count', 'rounds_game_count'):
             trial, scope = self.scope(r)
             collection = self.db['official_rounds']
+            if op == 'rounds_game_count':
+                need(set(r) == {'schema', 'op', 'trialId'}, 'ROUND_GAME_COUNT_REQUEST_SCOPE')
+                need(self.manifest.get('rollingGameCountEnabled') is True
+                     and scope.get('rolling') is True and self.group == 'primary'
+                     and type(scope.get('gameId')) is int, 'ROUND_GAME_COUNT_DISABLED')
+                # A fixed registered game count includes its old trials. No
+                # caller query, mutation, quota or game decision runs here.
+                return {'gameId': scope['gameId'], 'count': collection.count_documents(
+                    {'gameId': scope['gameId']}, hint='rolling_game_count', maxTimeMS=10000)}
             if op == 'rounds_count':
                 need(set(r) == {'schema', 'op', 'trialId'}, 'ROUND_COUNT_REQUEST_SCOPE')
                 return {'count': collection.count_documents({'trialId': trial}, maxTimeMS=10000)}

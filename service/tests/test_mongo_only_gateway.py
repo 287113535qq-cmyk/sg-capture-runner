@@ -150,6 +150,61 @@ class GatewayTests(unittest.TestCase):
         self.assertEqual(self.call('rounds_count',trialId='sg_r1_20260928_32723'),{'count':73})
         for extra in ({'query':{}},{'group':'secondary'},{'limit':999}):
             with self.assertRaises(Refused):self.call('rounds_count',trialId='sg_r1_20260928_32723',**extra)
+    def test_rolling_game_count_reads_legacy_trials_without_client_query_or_writes(self):
+        trial='sg_ag_r1_20261004_32723'
+        self.manifest['trials'][trial]={'group':'primary','rolling':True,'gameId':32723,
+            'runtimeGameId':33123,'target':300000,'maxSequence':300140}
+        with self.assertRaisesRegex(Refused,'ROUND_GAME_COUNT_DISABLED'):self.call('rounds_game_count',trialId=trial)
+        self.manifest['rollingGameCountEnabled']=True
+        queries=[]
+        def count(query,**kw):
+            queries.append(query);self.assertEqual(kw,{'hint':'rolling_game_count','maxTimeMS':10000})
+            # Historical rows have another trial and are still included.
+            rows=[{'gameId':32723,'trialId':'old-trial'}, {'gameId':32723,'trialId':trial},
+                  {'gameId':32724,'trialId':'other-trial'}]
+            return sum(r['gameId']==query.get('gameId') for r in rows)
+        self.db['official_rounds'].count_documents=count
+        self.assertEqual(self.call('rounds_game_count',trialId=trial),{'gameId':32723,'count':2})
+        self.assertEqual(queries,[{'gameId':32723}])
+        for extra in ({'gameId':32724},{'query':{}},{'trialId':'unknown'}, {'group':'secondary'}):
+            with self.assertRaises(Refused):self.call('rounds_game_count',**{'trialId':trial,**extra})
+        with self.assertRaises(Refused):self.call('rounds_game_count',trialId='sg_r1_20260928_32723')
+        secondary=Gateway(self.db,'secondary',self.manifest)
+        with self.assertRaises(Refused):secondary.dispatch({'schema':'sg-mongo-only-v2','op':'rounds_game_count','trialId':trial})
+        self.assertEqual(queries,[{'gameId':32723}]);self.assertTrue(self.call('hello')['rollingGameCountEnabled'])
+        self.assertTrue(all(c.rows=={} for c in self.db.values()))
+    def test_rolling_baseline_projection_is_two_fixed_campaigns_only_and_readonly(self):
+        with self.assertRaises(Refused):self.call('rolling_campaign_baselines')
+        self.manifest['rollingGameCountEnabled']=True
+        self.db['capture_state_v2'].rows['primary/private']={'_id':'primary/private','value':{'secret':True}}
+        before=copy.deepcopy(self.db['capture_state_v2'].rows);calls=[]
+        class Cursor(list):
+            def limit(self,n):self.limit_count=n;return self[:n]
+        def find(query,projection,**kw):
+            calls.append((query,projection,kw));return Cursor([{'_id':'primary/campaign'},{'_id':'secondary/campaign'}])
+        self.db['capture_state_v2'].find=find
+        self.assertEqual(self.call('rolling_campaign_baselines'),[{'_id':'primary/campaign'},{'_id':'secondary/campaign'}])
+        self.assertEqual(calls,[({'_id':{'$in':['primary/campaign','secondary/campaign']}},
+            {'_id':1,'value.games.game_id':1,'value.games.baseline':1,'value.games.confirmed':1,'value.games.status':1},
+            {'max_time_ms':10000})])
+        for extra in ({'query':{}},{'group':'secondary'},{'gameId':32723},{'projection':{}}):
+            with self.assertRaises(Refused):self.call('rolling_campaign_baselines',**extra)
+        with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch(
+            {'schema':'sg-mongo-only-v2','op':'rolling_campaign_baselines'})
+        self.assertEqual(len(calls),1);self.assertEqual(before,self.db['capture_state_v2'].rows)
+    def test_rolling_index_setup_is_fixed_native_storage_io_with_no_round_mutation(self):
+        with self.assertRaises(Refused):self.call('rolling_game_index_prepare')
+        self.manifest['rollingGameCountEnabled']=True;calls=[]
+        def create(keys,**opts):
+            calls.append((keys,opts));return opts['name']
+        self.db['official_rounds'].create_index=create
+        self.assertEqual(self.call('rolling_game_index_prepare'),{'indexName':'rolling_game_count'})
+        self.assertEqual(calls,[([('gameId',1)],{'name':'rolling_game_count','unique':False,'maxTimeMS':45000})])
+        for extra in ({'collection':'production'},{'keys':[('private',1)]},{'options':{}},{'group':'secondary'}):
+            with self.assertRaises(Refused):self.call('rolling_game_index_prepare',**extra)
+        with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch(
+            {'schema':'sg-mongo-only-v2','op':'rolling_game_index_prepare'})
+        self.assertEqual(len(calls),1);self.assertTrue(all(c.rows=={} for c in self.db.values()))
     def test_delta_cas_requires_separate_capability_and_preserves_full_document(self):
         key='pool:sg_r1_20260928_32723'
         old={'history':[{'old':1}],'workers':{'0':{'lease':1,'active':{'id':2}},'1':{'lease':9}},'removed':True}

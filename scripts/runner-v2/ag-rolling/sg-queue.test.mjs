@@ -103,6 +103,7 @@ test('queue activation provisions all 22 tasks in batches before source permissi
  const m=memory(),profile={activation:'a'.repeat(64),codeCommit:'b'.repeat(40),linuxRun:123,
   nativeGatewayHash:'a'.repeat(64),nativeManifestHash:'b'.repeat(64),payload:{queueId:'queue',games:[game]}};
  const common={...m,profile,run:'456:1',commit:'c'.repeat(40),boundary:guard,checkBaselines:guard,
+  checkNewGame:guard,
   readLinux:async()=>({status:'completed',conclusion:'success',head_sha:profile.codeCommit,path:'.github/workflows/preflight.yml'})};
  await assert.rejects(()=>sourcePermit(common),/PERMISSION/);
  const result=await activateQueue(common);assert.equal(result.games,1);assert.equal(result.sourceRequests,0);
