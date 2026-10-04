@@ -15,6 +15,14 @@ class GameRuleCatalogTests(unittest.TestCase):
     def setUpClass(cls):
         cls.cards = cards()
 
+    def test_dragon_end_v3_documents_only_own_end_request_boundary(self):
+        card=self.cards[32497];rule=card['roundRule']
+        self.assertFalse(card['captureAuthorization']);self.assertEqual(rule['family'],'nextgen-dragon-end-evidence-v3')
+        self.assertEqual(card['runtimeGameId'],33032)
+        for value in ('88份','257条','81条','99份','未在线应用','mandatory wiringEvidence'):
+            self.assertIn(value,rule['bounds'])
+        self.assertIn('CFP_0',rule['continue']);self.assertIn('首END',rule['complete'])
+
     def test_carnival_v3_keeps_own_first_second_shape_and_no_special_settlement(self):
         card=self.cards[32474];rule=card['roundRule']
         self.assertFalse(card['captureAuthorization']);self.assertEqual(rule['family'],'nextgen-carnival-pick-evidence-v3')
@@ -50,6 +58,8 @@ class GameRuleCatalogTests(unittest.TestCase):
             plans['32595']=rolling['32595']
         if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
             plans['32474']=rolling['32474']
+        if rolling.get('32497',{}).get('dragonEndContract')=='nextgen-dragon-end-evidence-v3':
+            plans['32497']=rolling['32497']
         for gid, plan in plans.items():
             card = self.cards[int(gid)]
             self.assertEqual(card['planHash'], digest(plan))

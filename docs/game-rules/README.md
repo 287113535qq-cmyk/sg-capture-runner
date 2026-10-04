@@ -16,7 +16,7 @@
 | [32477](32477.json) | Cherry 8 | not-documented | 待确认 |
 | [32486](32486.json) | Colossal Splash Ink & Win | not-documented | 待确认 |
 | [32489](32489.json) | Dancing Drums Link | not-documented | 待确认 |
-| [32497](32497.json) | Dragon Jin Long Jin Bao | not-documented | 待确认 |
+| [32497](32497.json) | Dragon Jin Long Jin Bao | implemented-subset | 1 |
 | [32500](32500.json) | Dragon Spin Cross Link Fire | not-documented | 待确认 |
 | [32501](32501.json) | Dragon Spin Cross Link Water | not-documented | 待确认 |
 | [32502](32502.json) | Dragon Unleashed - Prosperity Packets | not-documented | 待确认 |

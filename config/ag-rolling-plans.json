@@ -276,7 +276,9 @@
       "explicitProbeContract": "nextgen-explicit-request-evidence-v1",
       "explicitProbeContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd",
       "explicitDragonContract": "nextgen-dragon-start-evidence-v2",
-      "explicitDragonContractHash": "9d3641885ddd6a3d855579d9c463a4f8ab0c7b781528808baa62ef60f7e2f657"
+      "explicitDragonContractHash": "9d3641885ddd6a3d855579d9c463a4f8ab0c7b781528808baa62ef60f7e2f657",
+      "dragonEndContract": "nextgen-dragon-end-evidence-v3",
+      "dragonEndContractHash": "7131fe63ebc2d7600490c1942f04983bbdd1dc81763ba9a9547ee22a5fc7a6ea"
     },
     "32500": {
       "schema": "sg-work-pool-v1",
@@ -4077,7 +4079,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32497,
       "runtimeGameId": 33032,
-      "planHash": "38698c3720ae83510f1f840e4d461bed547dfef2ae5a123a54ed23907aae90b9",
+      "planHash": "a9fa454bb02814a861eeebd64d7a74b128ce811c0e4924e0e4b8b5924229eb39",
       "historyFileSha256": "421c21bf1d008e3f61b2d26a846aae434500d9268d189397c2410ad3f2770899",
       "acceptedBaseRounds": 99,
       "acceptedFreeRounds": 0,
@@ -4217,6 +4219,36 @@
         "sourceRequests": 0,
         "mongoWrites": 0,
         "failedRoundsCredited": 0
+      },
+      "dragonEndEvidence": {
+        "schema": "sg-ag-dragon-end-repair-evidence-v3",
+        "previousPlanHash": "38698c3720ae83510f1f840e4d461bed547dfef2ae5a123a54ed23907aae90b9",
+        "previousProofHash": "bb9bfc73f7644a39980dab1b34308f8515780dca460b94610a5ccbd8233a5c0c",
+        "contractHash": "7131fe63ebc2d7600490c1942f04983bbdd1dc81763ba9a9547ee22a5fc7a6ea",
+        "wiringEvidence": {
+          "schema": "sg-ag-dragon-end-codec-replay-v3",
+          "nativeEvidenceHash": "d8ec0615fba6c4e68647b74a5241273d36c854ede02b3e940443fe693b2a2871",
+          "ownClosedPrefixes": 88,
+          "actualOwnCodecPythonRequests": 257,
+          "originalFrontendCandidateRequests": 81,
+          "parentStartRejectionsRetained": 7,
+          "oldV2FailureParity": 88,
+          "actualCodecPythonRecordAndVerify": true,
+          "oldAcceptedRecordParity": 99,
+          "ownSpecialSettlementRejected": 88,
+          "ownPrefixRoutesHash": "fd7e3564d963b2e992a0ceb5f3374064ef30185ccd04481e9fd6525174529b94",
+          "ownCandidateIntentsHash": "e4f8fc24a5650c5ccace858886a4b25c3b1ef73a26a274d6d55207f0827197bb",
+          "oldOrdinaryFieldsHash": "706b5269e8960065b81bde75e962bd96855e29b9cf2f7b0cbd2cbae4cbcf6d94",
+          "oldOrdinaryRecordFormsHash": "c090cb89088035bfb85625c6141e8c4b326d8c7c181d11820c14f71c882dd937",
+          "acceptedRawHashesUnchanged": true,
+          "oldRawAndClosedEvidenceUnchanged": true,
+          "independentEveryFrameFinanceAndRequests": true,
+          "endResponsesObserved": 0,
+          "fullSpecialTerminalsObserved": 0,
+          "sourceRequests": 0,
+          "mongoWrites": 0,
+          "failedRoundsCredited": 0
+        }
       }
     },
     "32500": {

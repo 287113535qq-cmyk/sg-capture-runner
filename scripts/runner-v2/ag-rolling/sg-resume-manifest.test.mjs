@@ -72,8 +72,8 @@ test('only an independently reviewed 100-frame truncation can raise the bounded 
 test('an explicit probe preserves its old ordinary proof and permits only the reviewed request boundary, never special settlement',()=>{
  const r=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8'));
  for(const id of ['32474','32497']){
-  const plan=r.plans[id],proof=r.proofs[id],{explicitProbeContract,explicitProbeContractHash,explicitContinuationContract,explicitContinuationContractHash,explicitDragonContract,explicitDragonContractHash,carnivalPickContract,carnivalPickContractHash,...oldPlan}=plan;
-  const {previousPlanHash,explicitProbeEvidence,explicitContinuationEvidence,explicitDragonEvidence,carnivalPickEvidence,...oldProof}=proof;oldProof.planHash=previousPlanHash;
+  const plan=r.plans[id],proof=r.proofs[id],{explicitProbeContract,explicitProbeContractHash,explicitContinuationContract,explicitContinuationContractHash,explicitDragonContract,explicitDragonContractHash,carnivalPickContract,carnivalPickContractHash,dragonEndContract,dragonEndContractHash,...oldPlan}=plan;
+  const {previousPlanHash,explicitProbeEvidence,explicitContinuationEvidence,explicitDragonEvidence,carnivalPickEvidence,dragonEndEvidence,...oldProof}=proof;oldProof.planHash=previousPlanHash;
   const previous={manifest:[{gameId:id,planHash:queueHash(oldPlan),adapterProofHash:queueHash(oldProof),campaignId:'same-namespace'}]};
   const f={previous,previousPlans:{plans:{[id]:structuredClone(oldPlan)},proofs:{[id]:structuredClone(oldProof)}},plans:{plans:{[id]:plan},proofs:{[id]:proof}}};
   const before=queueHash(f);assert.equal(rebaseResumeManifest(f)[0].planHash,queueHash(plan));assert.equal(queueHash(f),before);

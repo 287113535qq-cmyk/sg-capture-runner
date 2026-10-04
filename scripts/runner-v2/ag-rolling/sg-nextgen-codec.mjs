@@ -14,6 +14,7 @@ import {reviewExplicitPrefix} from './sg-explicit-review.mjs';
 import {EXPLICIT_PROBE,explicitProbeRoute,explicitProbePick,explicitProbeIntent} from './sg-explicit-probe.mjs';
 import {EXPLICIT_CONTINUATION,continuationRoute,continuationPick,continuationIntent} from './sg-explicit-continuation.mjs';
 import {dragonRoute,dragonIntent} from './sg-explicit-dragon.mjs';
+import {DRAGON_END,dragonEndPrevious,dragonEndRoute,dragonEndIntent} from './sg-dragon-end.mjs';
 import {CARNIVAL_PICK,carnivalPrevious,carnivalRoute,carnivalPick,carnivalIntent} from './sg-carnival-pick.mjs';
 import {ZERO_ABPM,zeroAbpmNext,zeroAbpmFields} from './sg-zero-abpm.mjs';
 const require=createRequire(import.meta.url);let registered=false;
@@ -24,7 +25,7 @@ function loadCollector(){if(!registered){require('../../../collector/node_module
 // keeps eight concurrent sources independent without concurrent private IPC.
 export async function nextgenCodec({plan,session,sequence,worker,batchId,createAnalyzer=analyzer}){
  assert(plan.adapter==='native-nextgen-v1'&&plan.buy===0&&typeof sequence==='function','SG_NEXTGEN_CODEC_SCOPE');
- const parser=createAnalyzer(),contract=actionContract(plan),legacyPlan=plan.carnivalPickContract===undefined?plan:carnivalPrevious(plan);loadCollector();
+ const parser=createAnalyzer(),contract=actionContract(plan),legacyPlan=plan.carnivalPickContract!==undefined?carnivalPrevious(plan):plan.dragonEndContract!==undefined?dragonEndPrevious(plan):plan;loadCollector();
  try{assert((await parser.call({op:'plan',plan}))?.validated===true,'SG_CODEC_PLAN');}
  catch(error){parser.close();throw error;}
  const payload=next=>Object.entries(['INIT','REELSTRIP'].includes(next.MSGID)?
@@ -50,6 +51,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(plan.explicitContinuationContract!==undefined?{explicitContinuationContract:plan.explicitContinuationContract}:{}),
    ...(plan.explicitDragonContract!==undefined?{explicitDragonContract:plan.explicitDragonContract}:{}),
+   ...(plan.dragonEndContract!==undefined?{dragonEndContract:plan.dragonEndContract}:{}),
    ...(plan.carnivalPickContract!==undefined?{carnivalPickContract:plan.carnivalPickContract}:{}),
    ...(plan.zeroAbpmContract===ZERO_ABPM?{zeroAbpmContract:ZERO_ABPM}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
@@ -58,6 +60,15 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    assert(stable(js)===stable(py),'SG_JS_PY_EXPLICIT_REVIEW_MISMATCH');return js;
   },
   async next(raw,chooseOption){
+   if(raw.dragonEndContract!==undefined){
+    const route=dragonEndRoute(plan,raw),py=await parser.call({op:'dragon_end_route',plan,raw});
+    assert(stable(route)===stable(py),'SG_JS_PY_DRAGON_END_MISMATCH');
+    if(route){
+     dragonEndIntent(plan,raw,payload(route.request));
+     assert((await parser.call({op:'dragon_end_intent',plan,raw,payload:payload(route.request)}))?.validated===true,'SG_REQUEST_MODE');
+     return route.request;
+    }
+   }
    if(raw.carnivalPickContract!==undefined){
     const route=carnivalRoute(plan,raw),py=await parser.call({op:'carnival_pick_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_CARNIVAL_PICK_MISMATCH');
@@ -73,11 +84,11 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
      return request;
     }
    }
-   if(raw.explicitDragonContract!==undefined){
-    const route=dragonRoute(plan,raw),py=await parser.call({op:'explicit_dragon_route',plan,raw});
+   if(raw.explicitDragonContract!==undefined&&raw.dragonEndContract===undefined){
+    const route=dragonRoute(legacyPlan,raw),py=await parser.call({op:'explicit_dragon_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_DRAGON_MISMATCH');
     if(route){
-     dragonIntent(plan,raw,payload(route.request));
+     dragonIntent(legacyPlan,raw,payload(route.request));
      assert((await parser.call({op:'explicit_dragon_intent',plan,raw,payload:payload(route.request)}))?.validated===true,'SG_REQUEST_MODE');
      return route.request;
     }
@@ -97,7 +108,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
      return request;
     }
    }
-   if(raw.explicitProbeContract!==undefined&&raw.carnivalPickContract===undefined){
+   if(raw.explicitProbeContract!==undefined&&raw.carnivalPickContract===undefined&&raw.dragonEndContract===undefined){
     const route=explicitProbeRoute(legacyPlan,raw),py=await parser.call({op:'explicit_probe_route',plan,raw});
     assert(stable(route)===stable(py),'SG_JS_PY_EXPLICIT_PROBE_MISMATCH');
     if(route){

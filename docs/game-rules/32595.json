@@ -92,12 +92,12 @@
   "codeSources": {
     "scripts/runner-v2/ag-rolling/sg-automatic-terminal.mjs": "26750904d75662176e8fe6eab033c8a22a49396a2d9a00f64689450e482df7bd",
     "scripts/runner-v2/ag-rolling/sg-automatic-free.mjs": "2c7c5a9c6d9be2d8fbd2b36608c1189d3a7511e6a45b7a960b712207187c9af3",
-    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "95a181bb860af32244b5c02a71c978e6f3a18d785e2d78908ae60b48b0920c65",
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "75e38b6554f32c421de8bf1c560a6581539d65e0b23f6daafd53d75dc3da3fbb",
     "service/automatic_terminal_fields.py": "79cbc3dc1da7b465b87ac057c77d3658810146dfe5bcb9cb4fb033b54618ea28",
     "service/automatic_free_fields.py": "83bec2dd58c8dd08e9af820a2dd94e10b9457cca0065383972bf2a4a701dc6b3",
-    "service/native_nextgen_fields.py": "1e1586d3daae82be30d1b6181b79011b6c825f67a47f7ab8a4abd7d015ccb955",
+    "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
     "config/ag-rolling-automatic-terminal-contracts.json": "1095e85bea4f684a1864a2b8ae697d29674084a6983cc0e3706b71902a92d1d4",
-    "service/game_rule_catalog.py": "6549562fec4a268552af59f30dcb10b908dbef4fb92a78304e20cc8b2aa54917"
+    "service/game_rule_catalog.py": "136dba7cb04e284023f42a6a5881f42ba78d2943767ee8929f30dcb90e700b56"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -117,5 +117,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "200f8b2046cd0cc94277bd182b39a2657db5e154c01f88d69515a1fe7e01f8b1"
+  "ruleHash": "306125afdf24866731afb12218022d801617e8eae285adc2403556a8752a0394"
 }
