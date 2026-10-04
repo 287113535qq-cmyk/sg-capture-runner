@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "acornpixie-base-ag-rolling-wms-v1",
+  "planHash": "28688a14de2548fe878ce7e1150627947b8a12e4c9e5ddadd942dda8421aee8a",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32752",
+    "runtimeSlug": "acornpixie",
+    "buy": 0,
+    "betRaw": 100,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20174
+  },
+  "roundRule": {
+    "family": "acorn-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "本游戏目录runtime32974与WMS Header20174分别固定。新匿名Init只有严格已限定能力形状且Stakes含100后，首Logic固定Stake100、lines30、fsOn1、isBuyABonus0及CurrencyMultiplier1。实际Init尚未观察；未知形状停止封存。",
+    "continue": "目前仅普通单Logic；逐帧响应session经独立双验后绑定唯一EndGame请求。不能借其他WMS玩法放开免费或奖励。",
+    "complete": "普通Logic的totalWin、spinWins、PaylineWin奖额之和、BGInfo累计与现金完全一致；EndGame独立确认无GameResult、现金保持才完整。stakePerLine2与30线是响应元数据，实际总下注严格为100。",
+    "bounds": "只离线候选：1000自身普通完整历史在实际JS codec/Python IPC/record/verify一致，2000条请求匹配；未注册进当前81队列、无native scope或真实Init/canary。只接受9种已观察WildClusterMask与普通无bonus/free形状；FS、购买奖励、MaxWin、额外奖、未知节点或缺确认一律拒绝。全部特殊玩法覆盖仍未知，旧raw不抵扣新300000目标。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-acorn-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-acorn-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-acorn-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/acorn_base_fields.py",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "Header": "20174/version1_0、isRecovering=N；会话值私有并按响应逐帧绑定。",
+      "Stake": "首请求总额100、30线、fsOn1、buy0；响应stakePerLine2不替代总额。",
+      "ReelResults": "单spin、索引0、普通freeSpin=N/bonusAwarded=N；只9种自身WildClusterMask，5个ReelStops。",
+      "PaylineWin / BGInfo": "30条以内、不重复的0..29线索引；奖额和、spinWins、totalWin与BG累计完全一致。",
+      "EndGame": "唯一确认，余额保持；不把特殊触发或半局计完整。"
+    }
+  },
+  "typeMappings": {
+    "acornpixie-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "acornpixie-base-ag-rolling-wms-v1": "504eba322fa8e6b92e0c7ca68d630312d79c9dee7a23e415693432e0a06dadbe"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin",
+    "bet": "stakeRaw / 100",
+    "mul": "ordinary Logic totalWin / stakeRaw",
+    "required": "固定实际100；普通单spin/payline奖额和及BG累计严格一致，EndGame确认现金保持；特殊形状拒绝。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "1dee5032746645b8ca0b3a6c17768acf9265bba84bee6dc312a16e130c8d2f2a"
+    "scripts/runner-v2/ag-rolling/sg-acorn-base.mjs": "7650444d6b69ee19e86fd3ae001c17261a2824c39cc1e08c94e7e12384881f58",
+    "scripts/runner-v2/ag-rolling/sg-acorn-source.mjs": "a14d68bde66aa05a0686531225a064694e2e084e6715677583b8e3b20f2d5c57",
+    "scripts/runner-v2/ag-rolling/sg-acorn-codec.mjs": "8c10ec03041e8f8ebb07cbc7649d699ac350fa0c81e1557349950135f564ea73",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "50f9cef2a5d0383d9f086b2a2a22fdf5d6836edb37084272af3f786c3269f42a",
+    "service/acorn_base_fields.py": "e73a6b8f87f66396624b365106bd0fec1cab4fc7bba7ca42a857d4bc5cff3b64",
+    "service/ag_rolling_plan.py": "109dfd97e4bcf93967d9dcac56012a33593cf0ce24bd0fb878c22ae56dd86bb9",
+    "scripts/runner-v2/record_fields.py": "130f18a7f0b72b1d3761df19d8823a5be2c70bd50c1c474c7470fb79dbb10870",
+    "service/round_fields.py": "675d8320193bd5109047f19c738a4b598accfd2352dcddd21104ea9e7a5e8fd7",
+    "service/game_rule_catalog.py": "dd15100c7d5df3a82924a01ad1059368f66e848836f0de0d3fa1a3b2ae844993"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "31b3b78543df9458ab5a4443b3dc72728d2e1d633a7c134bf0df386011e90cc0"
+  "ruleHash": "f1b69f799fdee9bb18eb5dd3c38669f30017b685abc662d947176d8124b511bd"
 }

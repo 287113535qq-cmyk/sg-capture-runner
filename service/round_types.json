@@ -4427,6 +4427,24 @@
         "fullBaseRounds": 996,
         "fullFreeRounds": 4
       }
+    },
+    "acornpixie-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "acorn-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32752,
+        "runtimeGameId": 32974,
+        "wmsGameId": 20174,
+        "historyFileSha256": "658e90cb8e1a967639e1342982579bc21670824ad8244918529fd40bd494d8d8",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
