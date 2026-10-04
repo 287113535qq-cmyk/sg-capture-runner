@@ -76,4 +76,11 @@ class AutomaticFreeTests(unittest.TestCase):
             with self.assertRaisesRegex(FieldError,'PLAN_BINDING'):NativeNextgenFields({**p,'maxSteps':100}).settled(r)
             with self.assertRaisesRegex(FieldError,'INVALID_ROUND_STEPS'):a.settled({**r,'steps':[steps[0]]*1027})
             with self.assertRaisesRegex(FieldError,'INVALID_ROUND_STEPS'):settled({**sample(),'steps':[sample()['steps'][0]]*101})
+    def test_native_prefix_only_feature_ids_do_not_approve_unseen_terminals(self):
+        p=REGISTRY['plans']['32595'];a=NativeNextgenFields(p)
+        for fid in ['2|','3|']:
+            r=sample(p)
+            for i in range(len(r['steps'])):change(r,i,'FID=1|',f'FID={fid}')
+            self.assertEqual(a.next_request({**r,'steps':r['steps'][:2]}),{'MSGID':'FREE_GAME'})
+            with self.assertRaisesRegex(FieldError,'UNREVIEWED_AUTOMATIC_TERMINAL'):a.settled(r)
 if __name__=='__main__':unittest.main()

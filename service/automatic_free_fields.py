@@ -48,6 +48,8 @@ def prefix(raw):
         fid=p.get('FID','0|');ordinary=fid in ('','0','0|')
         check(ordinary or fid in e['allowedFids'].get(msg,[]) and (remaining>0 or i>0 and e['allowTerminalFeatureId']),
               'UNKNOWN_TRIAL_FEATURE')
+        check(remaining>0 or ordinary or 'terminalFids' not in e or fid in e['terminalFids'],
+              'UNREVIEWED_AUTOMATIC_TERMINAL')
         check(not any(k.startswith(('FS_','NFR_')) for k in p) and 'CFG' not in p and 'ABPM' not in p
               and '#lives~' not in p.get('GSD',''),'UNKNOWN_TRIAL_FEATURE')
         b,ab,current=(amount(p.get(k)) for k in ('B','AB','TW'))
