@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs": "ed501a2b04bc0d929964e8bec97802f7a296b38889df5f4ec3a4a2079c3dc8b4",
     "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs": "940e7e4d37cbbdec25b6cea5513643aeb10f153e44cd291df57cbc08a133254f",
     "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs": "588dcac812ab3e40565b9a4844e70abacd980939d6d6778622d85232f83d52f7",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "aa11813daac1bbe39e636cbeb559aa250f0c6da19664ce90c7c1630ae761ccf3",
     "service/desertcats_base_fields.py": "9caa82edd904940e77dcd952958c0eb8f8d701ca676ca75527a47d15c414d98d",
     "config/ag-rolling-desertcats-base-contract.json": "86b32bd9dae1cd96380d2a1bc581839f34950da5201de5f512ef65e92d49c06d",
-    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
-    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
-    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
-    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
+    "service/ag_rolling_plan.py": "3fa3d5466b0954b0b58e0dfd105200bfc1100bb96ec0b894a8d67bf6d4b88ec2",
+    "scripts/runner-v2/record_fields.py": "e9a6f8ccf62c99e2407b521e0ffd513ad6e4a7877f5988428c242152a6348d60",
+    "service/round_fields.py": "452666c9cf58afc3e798bbabad8696374eff297a9bfaec5eec0be045f7f76ba7",
+    "service/game_rule_catalog.py": "8267d9b4d044de70976bb2faabeaa0e30b7ea3fa717889cd28670fa8d54edf03"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "aaaa6a828f938a516917c08f7c776c58d463fdb57312c4af49a51f356ba02ad9"
+  "ruleHash": "8550bb9395bdd9007a537b47127d8a68c9dd290fa1b71e6f336a524942289479"
 }

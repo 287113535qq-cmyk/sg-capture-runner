@@ -74,13 +74,13 @@
     "scripts/runner-v2/ag-rolling/sg-crystalforest-base.mjs": "a2deac6b5ca933aab483b3f6cebca0408d8da435adf9c636a1d80940b92e0baf",
     "scripts/runner-v2/ag-rolling/sg-crystalforest-source.mjs": "a9010bf260e622a1e08451a6d4b48c1487fb1f8b549be8e8872e8a36570f05d0",
     "scripts/runner-v2/ag-rolling/sg-crystalforest-codec.mjs": "e916e31a0ea0984d28af1337916025e24bfd1e4efde3900881ee2e7ee4552573",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "b80648d51cb2efeecf46c2ad81971874a12cb8867abc91c592ecee8cca5b3507",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "aa11813daac1bbe39e636cbeb559aa250f0c6da19664ce90c7c1630ae761ccf3",
     "service/crystalforest_base_fields.py": "d9f2491cd5105ecc0a3dfb0815558832730a7b22ee1f0ed1bf35f8eeb3868e97",
     "config/ag-rolling-crystalforest-base-contract.json": "bb355196c19afec64a510f2dcb5a39ad20039da0ef00962dd67e286baa4575d9",
-    "service/ag_rolling_plan.py": "1232beccab8262bbdf34f057ada6d67f9f03b1efb04f0fec0906e5002555721d",
-    "scripts/runner-v2/record_fields.py": "e2d5c3778a2d4bc09d5ea88531eeef221df6d4f87080af063211ac35e3d6da1a",
-    "service/round_fields.py": "3df5154c20b723bbbbacb8c04021b315c86abee9194a11c88225a2c246ba878c",
-    "service/game_rule_catalog.py": "822b816426f4f5aa628cf4e9719581560a2a2279fe21fd814dda5c637bac4eea"
+    "service/ag_rolling_plan.py": "3fa3d5466b0954b0b58e0dfd105200bfc1100bb96ec0b894a8d67bf6d4b88ec2",
+    "scripts/runner-v2/record_fields.py": "e9a6f8ccf62c99e2407b521e0ffd513ad6e4a7877f5988428c242152a6348d60",
+    "service/round_fields.py": "452666c9cf58afc3e798bbabad8696374eff297a9bfaec5eec0be045f7f76ba7",
+    "service/game_rule_catalog.py": "8267d9b4d044de70976bb2faabeaa0e30b7ea3fa717889cd28670fa8d54edf03"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -92,5 +92,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e29fdf871330c534aa5639660766dfac6130eae832d8fb7d41dbc3acbfac4383"
+  "ruleHash": "37ebbf13479a39e06d79d7ccea7f7290e662d7b8b68974a0b1fb0189033caf2e"
 }

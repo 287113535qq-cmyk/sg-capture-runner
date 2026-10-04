@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_jekyll_card_keeps_own_ordinary_and_marked_scatter_boundaries(self):
+        card=self.cards[32763];rule=card['roundRule']
+        self.assertEqual(rule['family'],'jekyll-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32985);self.assertEqual(card['parameters']['wmsGameId'],20126)
+        self.assertIn('554',rule['bounds']);self.assertIn('1108历史请求',rule['bounds']);self.assertIn('446份',rule['bounds'])
+        self.assertIn('171',rule['fields']['PaylineWin']);self.assertIn('16种',rule['fields']['PaylineWin']);self.assertIn('22种',rule['fields']['PaylineWin'])
+        self.assertIn('无AccountData',rule['complete']);self.assertIn('reelset0或1',rule['continue'])
+        self.assertEqual(card['typeMappings']['drjekyllgoeswild-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_desertcats_card_binds_own_separate_quickhits_without_ready(self):
         card=self.cards[32762];rule=card['roundRule']
         self.assertEqual(rule['family'],'desertcats-base-wms-v1')
