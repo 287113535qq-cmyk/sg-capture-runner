@@ -7,7 +7,7 @@ export const EXPLICIT_PROBE='nextgen-explicit-request-evidence-v1';
 let policy;
 export function explicitProbeBinding(plan,raw){
  policy??=JSON.parse(fs.readFileSync('config/ag-rolling-explicit-request-reviews.json','utf8'));
- const {explicitProbeContract,explicitProbeContractHash,...base}=plan;
+ const {explicitProbeContract,explicitProbeContractHash,explicitContinuationContract,explicitContinuationContractHash,...base}=plan;
  assert(explicitProbeContract===EXPLICIT_PROBE&&explicitProbeContractHash===queueHash(policy)
   &&policy.sourceBindings?.[String(plan.gameId)]?.planHash===queueHash(base)
   &&base.adapter==='native-nextgen-v1'&&base.buy===0&&base.maxSteps===100,'EXPLICIT_PROBE_BINDING');

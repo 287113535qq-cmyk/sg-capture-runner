@@ -87,9 +87,9 @@
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
     "service/ag_rolling_plan.py": "622f020cae9f36d46b1a90d45ac12609f93b6f7dfe7715d8dce5b20b4e8b1f87",
-    "scripts/runner-v2/record_fields.py": "dd3131135f90b7dcea511ec39c0698098fa534ec479e0672d2e9521647a4a16f",
+    "scripts/runner-v2/record_fields.py": "4b923c88b09cc95ae34af60dbb240b883d6cf0473ef6c542e63ee9aae034ca28",
     "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
-    "service/game_rule_catalog.py": "e7b757f554e738738da88caa72b9210d8b5b1d1111dc0b082f7d07c1ec866c36"
+    "service/game_rule_catalog.py": "2330f041ca557113fe306824580d0d1d2766f9f0976baaa591a8e636a2877b03"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d8c42ec43c35ae239a3614746e927fe15e7ca25de21b56b636f9ea06baf525a5"
+  "ruleHash": "b60294ad5b0b8dc115c4713fae8c1e14681a43705228bbc9500d90e2affdea95"
 }

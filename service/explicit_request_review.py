@@ -14,7 +14,7 @@ def scope(plan):
     if 'explicitProbeContract' in plan or 'explicitProbeContractHash' in plan:
         check(plan.get('explicitProbeContract')=='nextgen-explicit-request-evidence-v1'
               and plan.get('explicitProbeContractHash')==digest(policy()),'EXPLICIT_REVIEW_PLAN_BINDING')
-        plan={k:v for k,v in plan.items() if k not in ('explicitProbeContract','explicitProbeContractHash')}
+        plan={k:v for k,v in plan.items() if k not in ('explicitProbeContract','explicitProbeContractHash','explicitContinuationContract','explicitContinuationContractHash')}
     p=policy();key=str(plan.get('gameId'));entry=p.get('sourceBindings',{}).get(key)
     check(key in ('32474','32497') and entry is not None and entry['planHash']==digest(plan)
           and plan.get('adapter')=='native-nextgen-v1' and plan.get('rollingPlan')=='sg-ag-rolling-plan-v1'

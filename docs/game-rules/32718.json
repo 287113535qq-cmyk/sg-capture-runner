@@ -152,16 +152,16 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "ee87f3593abd0d5e427042f8704ccfd87ea679c4ad46206307ad9dc986fc7236",
+    "service/native_nextgen_fields.py": "33183019f4552af14a6a56174d96041e106f5e68ee4e6e547ef562fc595fdd16",
     "service/round_fields.py": "397148d0db7276204f394907fef945e28d19199b37f41041d94c4c28122de602",
-    "scripts/runner-v2/record_fields.py": "dd3131135f90b7dcea511ec39c0698098fa534ec479e0672d2e9521647a4a16f",
+    "scripts/runner-v2/record_fields.py": "4b923c88b09cc95ae34af60dbb240b883d6cf0473ef6c542e63ee9aae034ca28",
     "service/morepuff_fields.py": "5daa6e78402db09326710e1abfa2560e8fc8e5ba5dec2ffaed6a6c8b638292d1",
     "scripts/trial/morepuff-protocol.mjs": "cd9baab5dc7ce8a7484a91f253d8a3eadfc655e6899d1a2bb61e79745b484b5f",
     "collector/sg.morepuff.ts": "d30882d2952b36ec5b9a4bedf6055934679d90f2d1c4a5a75217bcba20811648",
     "service/morepuff_megahat_review.py": "163cba04ae5598931914750dd5ec6afc97f9aa13f5be307b285bfccc86ae7378",
     "scripts/trial/morepuff-megahat-review.mjs": "2709cbda6ebe4a6c613d3dab1afb2707980e5b5fc5f8377c3ca94f1e93a14451",
     "collector/sg.morepuff-megahat.ts": "145184c91f927a5944452dfdc66dab02c13d6dc6a1b64e1fc1f2b6ac3d947a4b",
-    "service/game_rule_catalog.py": "e7b757f554e738738da88caa72b9210d8b5b1d1111dc0b082f7d07c1ec866c36"
+    "service/game_rule_catalog.py": "2330f041ca557113fe306824580d0d1d2766f9f0976baaa591a8e636a2877b03"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -207,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "aa25bfcdc36c9a93590c38aac1ff2ae78dcdaefc9069ab00097487809c68b6ab"
+  "ruleHash": "63f6f58e7c9484c6c03eee7ec6fd1826cf7737329ac5068748a298c9bf89aad3"
 }

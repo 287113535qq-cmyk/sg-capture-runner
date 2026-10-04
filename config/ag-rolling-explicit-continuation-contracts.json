@@ -1,0 +1,112 @@
+{
+  "schema": "sg-ag-carnival-continuation-evidence-v2",
+  "contract": "nextgen-carnival-request-evidence-v2",
+  "sourceBinding": {
+    "gameId": 32474,
+    "previousPlanHash": "7f17f16ca13a9625aa1fe704c565859911dc697e32682c5affd99c689bbac1da",
+    "sourceKey": "carnivalcowcoincombo96-ag-rolling-nextgen-v1",
+    "runtimeGameId": 33027,
+    "runtimeSlug": "carnivalcowcoincombo96",
+    "betRaw": 108,
+    "requestParams": {
+      "BPR": "108",
+      "GN": "carnivalcowcoincombo96",
+      "RB": "5"
+    },
+    "previousContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
+  },
+  "frontendSha256": "519151bd5ea98058fa6d1f41a74c0fa235cb1bb959a74589a8926ce925073771",
+  "ownClosedPrefixes": 48,
+  "ownPrefixHash": "8892f967c35d46f21038f189f361a2a26eaca3bf2745f80a8759a7f170ebc254",
+  "evidence": {
+    "ag-candidate-fault-prefixes-explicit-probe-response-1791102848-private.json": {
+      "ownPrefixes": 26,
+      "prefixHash": "03d14d17f17fc768d58b3c7e4220d472ad12b4dc503cb8299c53c894abc38a31",
+      "fileSha256": "71b446129f3245491c7e64a163e41895795cfb81ed5512c7c869febddf48e651"
+    },
+    "ag-candidate-fault-prefixes-explicit-money-1791102854-private.json": {
+      "ownPrefixes": 22,
+      "prefixHash": "5bc0095746f03989d4efe1d42d6421f087476a0985561f1ba1ed3b41817838ef",
+      "fileSha256": "3b9ffa3e9b4fd738268f74b60f2c7b7f66ff75cb1851fc9aaf6b4cc56a338d9d"
+    }
+  },
+  "startWithNfgKeys": [
+    "AB",
+    "B",
+    "CFGG",
+    "CW",
+    "FGT",
+    "FGTW",
+    "FRBAL",
+    "GA",
+    "GSD",
+    "IFG",
+    "MSGID",
+    "NFG",
+    "SID",
+    "TFG",
+    "TW",
+    "VER"
+  ],
+  "startWithoutNfgKeys": [
+    "AB",
+    "B",
+    "FRBAL",
+    "GA",
+    "GSD",
+    "IFG",
+    "MSGID",
+    "SID",
+    "TW",
+    "VER"
+  ],
+  "firstPickKeys": [
+    "AB",
+    "B",
+    "CFG",
+    "CFGG",
+    "CFP_1",
+    "CFR_1",
+    "CW",
+    "FGT",
+    "FGTW",
+    "FID",
+    "FPM_1",
+    "FRBAL",
+    "FS_1",
+    "FTV_1",
+    "GA",
+    "GSD",
+    "IFG",
+    "MSGID",
+    "NFG",
+    "NFR_1",
+    "SID",
+    "TFG",
+    "TW",
+    "VER"
+  ],
+  "firstPickConstants": {
+    "CFG": "1",
+    "CFGG": "0",
+    "CFP_1": "1",
+    "CFR_1": "1",
+    "CW": "0",
+    "FGT": "3",
+    "FGTW": "0",
+    "FID": "1|0|",
+    "FPM_1": "0;|",
+    "FS_1": "1",
+    "NFG": "3",
+    "NFR_1": "1",
+    "TFG": "3"
+  },
+  "firstPickObservedPosition": 0,
+  "maximumReviewedOrdinal": 2,
+  "maximumReviewedResponses": 3,
+  "fullSpecialTerminalsObserved": 0,
+  "settlementApproved": false,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "failedRoundsCredited": 0
+}

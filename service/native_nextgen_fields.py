@@ -38,6 +38,9 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if raw.get('explicitContinuationContract') is not None:
+            from explicit_request_continuation import binding
+            binding(self.plan,raw)
         if self.plan.get('zeroAbpmContract') is not None or raw.get('zeroAbpmContract') is not None:
             from zero_abpm_fields import binding,settled
             binding(self.plan)
