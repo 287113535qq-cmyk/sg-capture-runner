@@ -7,6 +7,7 @@ import {params,integer} from '../../trial/capture-batch.mjs';
 import {nextRequest} from '../../trial/squid-protocol.mjs';
 import {actionContract} from '../../trial/pyramids-action-contracts.mjs';
 import {captureCollector} from '../../trial/collector-loader.mjs';
+import {heldBalanceFields,BALANCE_CONTRACT} from './sg-held-balance.mjs';
 const require=createRequire(import.meta.url);let registered=false;
 function loadCollector(){if(!registered){require('../../../collector/node_modules/ts-node').register({
  project:path.resolve('collector/tsconfig.json'),transpileOnly:true});registered=true;}}
@@ -35,6 +36,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
   },
   createRaw({balance}){return {fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,
    roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[],
+   ...(plan.balanceContract===BALANCE_CONTRACT?{balanceContract:BALANCE_CONTRACT}:{}),
    ...(contract?{requestFlowVersion:contract.version,actionContractHash:contract.hash}:{})};},
   async next(raw){const js=contract?contract.next(plan,raw):nextRequest(raw);
    const py=await parser.call({op:'next',plan,raw});assert(stable(js)===stable(py),'SG_JS_PY_ROUTE_MISMATCH');
@@ -42,7 +44,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    return js;},
   async prepare(raw,{attempt,sessionHash}){
    const py=await parser.call({op:'fields',plan,raw});
-   const js=contract?captureCollector(contract.collectorKind).prepareNextgenActionRound(raw,plan):
+   const js=raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,raw,py.typeMappingHash):contract?captureCollector(contract.collectorKind).prepareNextgenActionRound(raw,plan):
     captureCollector('nextgen').prepareNextgenRound(raw,{buy:py.buy,bonus:py.bonus,typeMappingHash:py.typeMappingHash});
    assert(stable(js)===stable(py),'SG_JS_PY_FIELDS_MISMATCH');
    const record=await parser.call({op:'record',plan,raw,normalized:js,sequence:sequence(),attempt,
