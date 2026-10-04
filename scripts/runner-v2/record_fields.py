@@ -36,6 +36,7 @@ from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
 from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
 from arthur_feature_fields import fields_factory as arthur_fields_factory
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
+from cheshire_base_fields import CheshireBaseFields, SOURCE as CHESHIRE_SOURCE
 from celestial_base_fields import CelestialBaseFields, SOURCE as CELESTIAL_SOURCE
 
 adapters = {}
@@ -72,6 +73,8 @@ def execute(request):
             adapters[key]=arthur_fields_factory(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
+        if plan['sourceKey']==CHESHIRE_SOURCE:
+            adapters[key]=CheshireBaseFields(plan)
         if plan['sourceKey']==CELESTIAL_SOURCE:
             adapters[key]=CelestialBaseFields(plan)
     adapter = adapters[key]
@@ -103,6 +106,9 @@ def execute(request):
         return route(plan,request['raw']) if request['op']=='explicit_dragon_route' else intent(plan,request['raw'],request['payload'])
     if request.get('op') == 'celestial_bootstrap':
         assert plan['sourceKey'] == CELESTIAL_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'cheshire_bootstrap':
+        assert plan['sourceKey'] == CHESHIRE_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'eighty_bootstrap':
         assert plan['sourceKey'] == EIGHTY_SOURCE
@@ -187,7 +193,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':
