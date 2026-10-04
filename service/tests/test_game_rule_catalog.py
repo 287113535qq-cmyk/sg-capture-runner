@@ -15,6 +15,14 @@ class GameRuleCatalogTests(unittest.TestCase):
     def setUpClass(cls):
         cls.cards = cards()
 
+    def test_carnival_v3_keeps_own_first_second_shape_and_no_special_settlement(self):
+        card=self.cards[32474];rule=card['roundRule']
+        self.assertFalse(card['captureAuthorization']);self.assertEqual(rule['family'],'nextgen-carnival-pick-evidence-v3')
+        self.assertEqual(card['runtimeGameId'],33027)
+        for value in ('77份','244条','1065条','100份','未在线应用','mandatory wiringEvidence'):
+            self.assertIn(value,rule['bounds'])
+        self.assertIn('13份',rule['continue']);self.assertIn('第三PICK',rule['complete'])
+
     def test_arthur_ordinary_card_preserves_own_special_boundaries(self):
         card=self.cards[32754];rule=card['roundRule']
         self.assertEqual(rule['family'],'arthur-base-wms-v1')
@@ -40,6 +48,8 @@ class GameRuleCatalogTests(unittest.TestCase):
         rolling=json.loads((ROOT/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
         if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
             plans['32595']=rolling['32595']
+        if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
+            plans['32474']=rolling['32474']
         for gid, plan in plans.items():
             card = self.cards[int(gid)]
             self.assertEqual(card['planHash'], digest(plan))

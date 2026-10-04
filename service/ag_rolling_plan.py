@@ -197,6 +197,9 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
+    if plan.get('carnivalPickContract') is not None:
+        from carnival_pick_fields import validate_proof
+        validate_proof(plan,proof)
     if plan.get('automaticTerminalContract') is not None:
         from automatic_terminal_fields import CONTRACT,binding,policy
         p=policy();e=proof.get('automaticTerminalEvidence',{});wire=e.get('wiringEvidence',{})

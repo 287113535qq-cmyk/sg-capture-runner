@@ -8,6 +8,10 @@ import {nextgenCodec} from './sg-nextgen-codec.mjs';
 import {rebaseResumeManifest} from './sg-resume-manifest.mjs';
 import {createProtocolSessions} from './sg-protocol-session.mjs';
 const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),plan=registry.plans['32474'],pid='gdmgcmoffline-continuation';
+const currentPlan=structuredClone(plan);
+const {carnivalPickContract,carnivalPickContractHash,...previousCarnival}=plan;
+delete plan.carnivalPickContract;delete plan.carnivalPickContractHash;
+const {carnivalPickEvidence,...previousProof}=registry.proofs['32474'];previousProof.planHash=carnivalPickEvidence.previousPlanHash;registry.proofs['32474']=previousProof;
 function sample({missing=false,picked=true}={}){
  const held=1000-plan.betRaw,common={B:String(held),AB:String(held),TW:'0',IFG:'0',SID:'offline-fixed-session',FRBAL:'0',GA:'0',GSD:'',VER:'1'};
  const frame=(msg,p,fp)=>{const payload=Object.entries({...common,MSGID:msg,...p}).map(([k,v])=>`${k}=${v}`).join('&');
@@ -49,7 +53,7 @@ test('saved v1 markers retain their old stop and missing-counter behavior under 
  const start=sample({missing:true,picked:false});delete start.explicitContinuationContract;assert.throws(()=>explicitProbeRoute(plan,start),/INVALID_SOURCE_MONEY/);
 });
 test('actual independent IPC chooses the second PICK, rejects repeated positions and never prepares a special record',async()=>{
- const raw=sample(),codec=await nextgenCodec({plan,session:{pid},sequence:()=>assert.fail('no credit'),worker:0,batchId:1});
+ const raw=sample(),codec=await nextgenCodec({plan:currentPlan,session:{pid},sequence:()=>assert.fail('no credit'),worker:0,batchId:1});
  try{assert.deepEqual(await codec.next(raw,async options=>options.at(-1)),{MSGID:'FEATURE_PICK',CFG:'1',FP:'1|2|14'});
   await assert.rejects(()=>codec.next(raw,async()=>({pickIndex:1,position:0})),/POSITION/);
   await assert.rejects(()=>codec.prepare(raw,{attempt:'offline',sessionHash:'a'.repeat(64)}),/INCOMPLETE_EXPLICIT_PROBE/);
@@ -78,7 +82,7 @@ test('durable exchange drains and closes once after an unknown second PICK ACK, 
      return {methodName:'processGameMessage',msgId:msg,requestPayload:payload,responsePayload,responseBalance:1000,elapsedMs:0,responseXml:'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>'};
     }
     const step=raw.steps.find(s=>s.msgId===msg);return {...step,requestPayload:payload};}}),
-   createCodec:(plan,session)=>nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21})}).open();
+   createCodec:async(plan,session)=>{const codec=await nextgenCodec({plan:currentPlan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),create=codec.createRaw;codec.createRaw=q=>{const raw=create(q);delete raw.carnivalPickContract;return raw;};return codec;}}).open();
   try{await assert.rejects(()=>source.captureRound({chooseOption:async options=>options[0]}),unknown?/JOURNAL_ACK_UNKNOWN/:/EXPLICIT_CONTINUATION_RESPONSE_REVIEW_REQUIRED/);}finally{await source.close();}
   assert.deepEqual(sends,['INIT','REELSTRIP','BET','FEATURE_START','FEATURE_PICK','FEATURE_PICK']);assert.equal(closing,1);assert.equal(closed.performance.normalize.count,0);assert.equal(closed.awaiting,unknown?6:null);
   for(let i=0;i<sends.length;i++){const at=events.indexOf('source:'+sends[i],i===5?events.lastIndexOf('source:FEATURE_PICK'):0);assert(events.slice(0,at).includes('intent:'+sends[i]));assert(events[at+1]==='fsync');}

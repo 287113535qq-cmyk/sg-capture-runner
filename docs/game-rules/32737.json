@@ -90,10 +90,10 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "7aabaf7b09d7211a6f6c789511771b7fad28fdb02acdbfd908935c01d293001a",
+    "service/native_nextgen_fields.py": "1e1586d3daae82be30d1b6181b79011b6c825f67a47f7ab8a4abd7d015ccb955",
     "service/round_fields.py": "2f0c89d139c497b9c9d14a5c7f5b33349199fc8037a2ebd92f56e7c0670071c3",
-    "scripts/runner-v2/record_fields.py": "36715782f8303ba3e4788b4272a88ce4f606cca5c8e247cb64b9ad49365f2fd7",
-    "service/game_rule_catalog.py": "a9a1f979c5fdc9c6d6b32ebffbdd4a3d144bb62f3b13f62510d3869f704d0823"
+    "scripts/runner-v2/record_fields.py": "37d7c55b9e9a97b8ab0b74a0c4a6279c6b3529b7a6e5c5d3c5bf33f744f4579c",
+    "service/game_rule_catalog.py": "6549562fec4a268552af59f30dcb10b908dbef4fb92a78304e20cc8b2aa54917"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -111,5 +111,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a8e61acf097d602b18a926b9ae9e7176c162bf497ab3549778de39c7fb22a38f"
+  "ruleHash": "f091571a9d2ad445610c93c0e52e80b9a82bd9f9c62119b323460c541ee1b125"
 }

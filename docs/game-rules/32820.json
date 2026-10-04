@@ -148,13 +148,13 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "7aabaf7b09d7211a6f6c789511771b7fad28fdb02acdbfd908935c01d293001a",
+    "service/native_nextgen_fields.py": "1e1586d3daae82be30d1b6181b79011b6c825f67a47f7ab8a4abd7d015ccb955",
     "service/round_fields.py": "2f0c89d139c497b9c9d14a5c7f5b33349199fc8037a2ebd92f56e7c0670071c3",
-    "scripts/runner-v2/record_fields.py": "36715782f8303ba3e4788b4272a88ce4f606cca5c8e247cb64b9ad49365f2fd7",
+    "scripts/runner-v2/record_fields.py": "37d7c55b9e9a97b8ab0b74a0c4a6279c6b3529b7a6e5c5d3c5bf33f744f4579c",
     "service/beaver_fields.py": "60dfaf941bd7de2c37c7abde442193200d5a2504dc620269540ed23e9c5eb8e2",
     "scripts/trial/beaver-protocol.mjs": "85a7d348079f70fac7b9a461efd0bae2307d800e4518a65fe7008066e228ef48",
     "collector/sg.beaver.ts": "e26c3e4a41aecaa9a6047935cb1f822194a41381a18af2c84999bf28dc0cc57a",
-    "service/game_rule_catalog.py": "a9a1f979c5fdc9c6d6b32ebffbdd4a3d144bb62f3b13f62510d3869f704d0823"
+    "service/game_rule_catalog.py": "6549562fec4a268552af59f30dcb10b908dbef4fb92a78304e20cc8b2aa54917"
   },
   "reviewDocuments": [
     "docs/beaver-free-observation-20260929.md",
@@ -185,5 +185,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "59e194ce14ade376f26fc561f3ec3852ad614a61c842a10578e3d2188d041673"
+  "ruleHash": "672d5a63841739cc7010b548ca7623f53842e084ada8aac40338dfaf46fa1df9"
 }

@@ -11,7 +11,7 @@
 | [32443](32443.json) | A Hot Hot Blazing Christmas | not-documented | 待确认 |
 | [32464](32464.json) | Big Spinner | not-documented | 待确认 |
 | [32471](32471.json) | Book of Sevens | implemented-subset | 1 |
-| [32474](32474.json) | Carnival Cow Coin Combo | not-documented | 待确认 |
+| [32474](32474.json) | Carnival Cow Coin Combo | implemented-subset | 1 |
 | [32476](32476.json) | Chain Reactors Deluxe | not-documented | 待确认 |
 | [32477](32477.json) | Cherry 8 | not-documented | 待确认 |
 | [32486](32486.json) | Colossal Splash Ink & Win | not-documented | 待确认 |

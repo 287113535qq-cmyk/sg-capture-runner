@@ -73,6 +73,12 @@ def execute(request):
     adapter = adapters[key]
     if request.get('op') == 'plan':
         return {'validated': True}
+    if request.get('op') in ('carnival_pick_route','carnival_pick_intent'):
+        from carnival_pick_fields import route,intent
+        return route(plan,request['raw']) if request['op']=='carnival_pick_route' else intent(plan,request['raw'],request['payload'])
+    if plan.get('carnivalPickContract') is not None and request.get('op') in ('review_explicit','explicit_probe_route','explicit_probe_intent','explicit_continuation_route','explicit_continuation_intent'):
+        from carnival_pick_fields import previous
+        plan=previous(plan)
     if request.get('op') == 'review_explicit':
         from explicit_request_review import review_explicit_prefix
         return review_explicit_prefix(plan, request['raw'])

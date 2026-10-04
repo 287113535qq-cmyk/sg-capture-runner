@@ -8,6 +8,7 @@ from round_fields import FieldError
 
 ROOT=Path(__file__).resolve().parents[2]
 PLAN=json.loads((ROOT/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']['32474']
+PLAN={k:v for k,v in PLAN.items() if k not in ('carnivalPickContract','carnivalPickContractHash')}
 PID='gdmgcmoffline-python-continuation'
 def sample(missing=False,picked=True):
     held=1000-PLAN['betRaw'];common={'B':str(held),'AB':str(held),'TW':'0','IFG':'0','SID':'offline-test','FRBAL':'0','GA':'0','GSD':'','VER':'1'}
