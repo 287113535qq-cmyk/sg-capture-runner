@@ -132,6 +132,18 @@ test('registered queue binds unchanged AG payload, exact code bytes, plan histor
  awaitReject(()=>queueProfile({...options,readBytes:()=>Buffer.from('changed')}),/RUNTIME_CHANGED/);
  const changed=structuredClone(profile);changed.payload.games[0].baseline=5;awaitReject(()=>queueProfile({...options,profile:changed}),/AUTHORIZATION/);
  awaitReject(()=>queueProfile({...options,plans:{...plans,alreadyComplete:[32723]}}),/CODE_PROOF/);
+ const recovery={schema:'sg-ag-preparing-recovery-v1',targetActivation:'b'.repeat(64),targetRun:'122:1',
+  targetCommit:'c'.repeat(40),targetProfileHash:'d'.repeat(64),nativeSourceHash:'e'.repeat(64)};
+ const resign=value=>{
+  const {activation,...body}=value,p={...body,activation:queueHash(body)},name=`ag-rolling-queue-${queueHash(body)}.json`;
+   return {...options,profile:p,name,authorization:{...authorization,profiles:{[name]:{profileHash:queueHash(p)}}}};
+ };
+ const resumed={...profile,resume:{previousActivation:'f'.repeat(64),previousRun:'121:1',endedProofHash:'a'.repeat(64)},preparationRecovery:recovery};
+ assert(queueProfile(resign(resumed)));
+ const noResume={...resumed};delete noResume.resume;
+ awaitReject(()=>queueProfile(resign(noResume)),/PREPARING_RECOVERY_PROFILE/);
+ awaitReject(()=>queueProfile(resign({...resumed,preparationRecovery:{...recovery,nativeSourceHash:'missing'}})),/PREPARING_RECOVERY_PROFILE/);
+ awaitReject(()=>queueProfile(resign({...resumed,preparationRecovery:{...recovery,ignoreSource:true}})),/PREPARING_RECOVERY_PROFILE/);
 });
 function awaitReject(call,pattern){assert.throws(call,pattern);}
 async function partialCanary(){
@@ -232,4 +244,75 @@ test('a pending resumed prefix is checked again and cannot cross windows with an
  assert.deepEqual(await resetEndedTask(common),task);assert.equal(queueHash([...m.store.docs]),before);
  m.store.docs.get('journal/'+task.resume.receiptKey).value.endedProofHash='b'.repeat(64);
  await assert.rejects(()=>resetEndedTask(common),/PENDING_RECEIPT/);assert.equal((await m.store.get('state',m.key)).value.resume.count,5);
+});
+async function recoveryAdmission(){
+ const m=memory(),g={...game,baseline:0},queueId='queue',previousActivation='d'.repeat(64);
+ const common={schema:'sg-ag-rolling-queue-v1',group:'primary',target:300000,lanes:20,sessionsPerLane:8,
+  canaries:2,canaryRounds:10,stagingOveragePerLane:7,codeCommit:'e'.repeat(40),linuxRun:123,
+  nativeGatewayHash:'a'.repeat(64),nativeManifestHash:'b'.repeat(64)};
+ const previous={...common,activation:previousActivation,payload:{version:1,queueId,games:[g]},
+  manifest:[{...g,phase:'ready',planHash:'f'.repeat(64),adapterProofHash:'a'.repeat(64)}]};
+ const oldRun='122:1',oldCommit='1'.repeat(40);
+ const oldPermit={schema:'sg-ag-rolling-permit-v1',queueId,run:oldRun,commit:oldCommit,
+  activation:previousActivation,profileHash:queueHash(previous)};
+ const end={schema:'sg-ag-rolling-window-ended-v1',queueId,run:oldRun,commit:oldCommit,
+  activation:previousActivation,profileHash:queueHash(previous)};
+ const added={gameId:'32588',dbName:'sg_32588',campaignId:'sg_32588-queue',baseline:0,mongoUri:'sg-native://primary/sg_32588'};
+ const entry={...added,phase:'ready',planHash:'3'.repeat(64),adapterProofHash:'4'.repeat(64)};
+ const target={...common,activation:'5'.repeat(64),payload:{version:1,queueId,games:[g,added]},manifest:[...previous.manifest,entry],
+  resume:{previousActivation,previousRun:oldRun,endedProofHash:queueHash(end)},
+  append:{schema:'sg-ag-rolling-append-v1',previousPayloadHash:queueHash(previous.payload),previousManifestHash:queueHash(previous.manifest),
+   emptyEvidenceHash:'6'.repeat(64),gameBindings:[{gameId:added.gameId,planHash:entry.planHash,adapterProofHash:entry.adapterProofHash}]}};
+ const targetRun='123:1',targetCommit='7'.repeat(40),source={owner:targetRun,queueId,status:'preparing',activation:target.activation,commit:targetCommit,expiresAt:999999};
+ const start={schema:'sg-ag-rolling-activation-v1',queueId,activation:target.activation,profileHash:queueHash(target),commit:targetCommit,run:targetRun,sourceRequests:0};
+ await prepareTasks({...m,game:g,queueId,guard});
+ await m.store.create('journal','rolling-activation:'+previousActivation+':complete',oldPermit);
+ await m.store.create('journal','rolling-ended:'+queueId+':'+oldRun,end);
+ await m.store.create('state','rolling-source',source);await m.store.create('journal','rolling-activation:'+target.activation,start);
+ await m.store.create('journal','unknown-old-intent',{retain:true});
+ const profile={...structuredClone(target),activation:'8'.repeat(64),preparationRecovery:{schema:'sg-ag-preparing-recovery-v1',
+  targetRun,targetCommit,targetActivation:target.activation,targetProfileHash:queueHash(target),nativeSourceHash:queueHash(source)}};
+ const jobs={total_count:2,jobs:[{id:1,name:'ag-rolling-admit',status:'completed',conclusion:'failure'},
+  {id:2,name:'AG rolling lane ${{ matrix.lane }}',status:'completed',conclusion:'skipped'}]};
+ const targetWorkflow={id:123,run_attempt:1,status:'completed',conclusion:'failure',head_sha:targetCommit,event:'workflow_dispatch',
+  repository:{full_name:'zyzuoyang/sg-capture-runner'},path:'.github/workflows/trial-300k.yml'};
+ const oldTasks=queueHash([...m.store.docs].filter(([k])=>k.includes('rolling-task:')));let resumed=0,newChecks=0;
+ const args={...m,profile,run:'124:1',commit:'9'.repeat(40),boundary:guard,checkBaselines:guard,now:()=>1000,
+  readLinux:async()=>({status:'completed',conclusion:'success',head_sha:profile.codeCommit,path:'.github/workflows/preflight.yml'}),
+  readPrevious:async a=>a===previousActivation?previous:target,
+  readEnded:async id=>id==='122'?{status:'completed',head_sha:oldCommit}:targetWorkflow,readEndedJobs:async()=>jobs,
+  checkNewGame:async({game})=>{assert.equal(game.gameId,added.gameId);newChecks++;},
+  prepareResume:async({game,guard})=>{assert.equal(game.gameId,g.gameId);await guard();resumed++;}};
+ return {args,m,target,source,targetWorkflow,jobs,oldTasks,oldGame:g,added,counts:()=>({resumed,newChecks})};
+}
+test('a completed zero-source admission is sealed and forwarded once while all old tasks and unknown requests remain intact',async()=>{
+ const s=await recoveryAdmission(),targetHash=queueHash(s.target),before=queueHash((await s.m.store.get('journal','unknown-old-intent')).value);
+ const writes=[],original=s.m.store.cas.bind(s.m.store);
+ s.m.store.cas=async(c,k,b,v)=>{writes.push({k,v});return original(c,k,b,v);};
+ const result=await activateQueue(s.args);assert.equal(result.sourceRequests,0);assert.equal(result.games,2);
+ assert.equal(queueHash(s.target),targetHash);assert.deepEqual(s.counts(),{resumed:1,newChecks:2});
+ const seal=(await s.m.store.get('journal','rolling-admission-ended:'+s.target.activation+':123:1')).value;
+ assert.equal(seal.sourceRequests,0);assert.equal(seal.roundWrites,0);assert.equal(seal.retainedTasksAndPrefixes,true);
+ assert.deepEqual(writes.map(w=>w.v.status),['preparing','running']);assert(writes.every(w=>w.k==='rolling-source'));
+ assert.equal(queueHash([...s.m.store.docs].filter(([k,v])=>k.includes('rolling-task:')&&v.value.campaignId===s.oldGame.campaignId)),s.oldTasks);
+ assert.equal(queueHash((await s.m.store.get('journal','unknown-old-intent')).value),before);
+ assert.equal((await s.m.store.get('journal','rolling-activation:'+s.target.activation+':complete')),null);
+ await sourcePermit(s.args);assert.equal(s.m.transport.formal.size,0);
+});
+test('unknown forwarding CAS is never retried or followed by a new permit or task provision',async()=>{
+ const s=await recoveryAdmission(),original=s.m.store.cas.bind(s.m.store);let issued=0;
+ s.m.store.cas=async(...args)=>{issued++;await original(...args);throw Object.assign(new Error('MONGO_OPERATION_OUTCOME_UNKNOWN'),{outcomeUnknown:true});};
+ await assert.rejects(activateQueue(s.args),/OUTCOME_UNKNOWN/);assert.equal(issued,1);assert.equal(s.counts().resumed,0);
+ assert.equal((await s.m.store.get('journal','rolling-activation:'+s.args.profile.activation+':complete')),null);
+ assert.equal([...s.m.store.docs].filter(([k])=>k.includes('rolling-task:')).length,22);
+ assert.equal((await s.m.store.get('journal','unknown-old-intent')).value.retain,true);
+});
+test('an active admission actor or complete source permit prevents any forwarding or activation journal write',async()=>{
+ for(const type of ['actor','permit']){
+  const s=await recoveryAdmission();
+  if(type==='actor')s.targetWorkflow.status='in_progress';
+  else await s.m.store.create('journal','rolling-activation:'+s.target.activation+':complete',{source:true});
+  const before=queueHash([...s.m.store.docs]);await assert.rejects(activateQueue(s.args),/ACTOR_NOT_ENDED|PERMIT_EXISTS/);
+  assert.equal(queueHash([...s.m.store.docs]),before);assert.equal(s.counts().resumed,0);
+ }
 });

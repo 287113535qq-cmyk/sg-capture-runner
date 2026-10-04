@@ -8,3 +8,5 @@ import './ag-rolling/sg-formal-baseline.test.mjs';
 import './ag-rolling/sg-five-treasures.test.mjs';
 import './ag-rolling/sg-fault-code.test.mjs';
 import './ag-rolling/sg-held-balance.test.mjs';
+import './ag-rolling/sg-admission-audit.test.mjs';
+import './ag-rolling/sg-preparing-recovery.test.mjs';

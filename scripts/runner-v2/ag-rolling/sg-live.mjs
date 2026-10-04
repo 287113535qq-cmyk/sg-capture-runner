@@ -19,6 +19,7 @@ import {resetEndedTask} from './sg-resume.mjs';
 import {inspectFormalBaseline} from './sg-formal-baseline.mjs';
 import {inspectNewGame} from './sg-new-game.mjs';
 import {LANE_BUDGET_MS} from './ag-core.mjs';
+import {auditTasks,readOnlyAuditTransport} from './sg-admission-audit.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
@@ -32,13 +33,13 @@ const registry=read('config/ag-rolling-plans.json'),profile=queueProfile({name,p
  authorization:read('config/ag-rolling-authorizations.json'),plans:registry,readBytes:file=>fs.readFileSync(file)});
 const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit=process.env.GITHUB_SHA;
 assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_AG_RUN_IDENTITY');
-const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)?LANE_BUDGET_MS:40*60000);
+const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)?LANE_BUDGET_MS:mode==='admit'?120*60000:40*60000);
 const store=new RunnerState({transport,gate,deadline}),stop=new AbortController();
 let localLaneEnded=false;
 if(mode==='controller')process.on('message',message=>{
  if(message?.type==='lane-source-ended'&&message.lane===20)localLaneEnded=true;
 });
-let mergeParser,mergeTail=Promise.resolve(),recoverMerging;
+let mergeParser,mergeTail=Promise.resolve(),recoverMerging,auditReaders=[];
 process.on('SIGTERM',()=>stop.abort());process.on('SIGINT',()=>stop.abort());
 const log=row=>console.log(row),sourceCheck={at:-Infinity,pending:null};let tasksChecking=new Map(),sourceJobsEnded=false;
 async function globalGuard(context={}){
@@ -99,6 +100,7 @@ try{
   const result=await activateQueue({profile,store,transport,boundary,commit,run,
    readLinux:id=>gh(`repos/287113535qq-cmyk/sg-capture-runner/actions/runs/${id}`),
    readEnded:id=>gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${id}`),
+   readEndedJobs:id=>gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${id}/jobs?filter=all&per_page=100`),
    readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
    checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
    prepareResume:async({game,queueId,ended,previous,guard})=>{
@@ -111,9 +113,16 @@ try{
     const oldEntry=previous.manifest.find(g=>g.gameId===game.gameId),entry=profile.manifest.find(g=>g.gameId===game.gameId);
     assert(oldEntry&&entry,'SG_AG_RESUME_MANIFEST_REQUIRED');
     const revalidateSuccess=oldEntry.planHash!==entry.planHash||oldEntry.adapterProofHash!==entry.adapterProofHash;
-    for(const [kind,index] of [...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])])
-     await resetEndedTask({store,transport,game,queueId,kind,index,guard,ended,revalidateSuccess,
-      verifyRecords:rows=>verifyRecords(plan,rows)});
+    if(!auditReaders.length)auditReaders=Array.from({length:4},()=>{
+     const reader=readOnlyAuditTransport(serializeTransport(connectGateway({compression:true}))),parser=analyzer();
+     const readStore=new RunnerState({transport:reader,gate,deadline});
+     const scopedStore={get:readStore.get.bind(readStore),getMany:readStore.getMany.bind(readStore),
+      create:store.create.bind(store),cas:store.cas.bind(store)};
+     return {reader,parser,store:scopedStore};
+    });
+    await auditTasks([...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])],{
+     contexts:auditReaders,audit:async([kind,index],context)=>resetEndedTask({store:context.store,transport:context.reader,
+      game,queueId,kind,index,guard,ended,revalidateSuccess,verifyRecords:rows=>context.parser.verifyPage(plan,[...rows].sort((a,b)=>a.sequence-b.sequence))})});
    },
    checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
@@ -191,4 +200,6 @@ try{
    lastQueueId:profile.payload.queueId,endedProofHash:queueHash(result)}),'SG_AG_SOURCE_FENCE');log(JSON.stringify(result));
  }
 }catch(error){const code=error.code??error.message;log(JSON.stringify({outcome:'stopped',code:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_CONTROL_STOPPED'}));process.exitCode=2;}
-finally{await mergeTail;mergeParser?.close();log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}
+finally{await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
+ log(JSON.stringify({kind:'sg-ag-admission-read-performance',reader:index+1,...context.reader.metrics()}));context.parser.close();context.reader.close();}
+ log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}
