@@ -1,0 +1,172 @@
+{
+  "schema": "sg-ag-dragon-start-evidence-v2",
+  "contract": "nextgen-dragon-start-evidence-v2",
+  "sourceBinding": {
+    "gameId": 32497,
+    "sourceKey": "dragonjinlongjinbao96-ag-rolling-nextgen-v1",
+    "runtimeGameId": 33032,
+    "runtimeSlug": "dragonjinlongjinbao96",
+    "betRaw": 100,
+    "requestParams": {
+      "AP": "false",
+      "BPL": "5",
+      "GN": "dragonjinlongjinbao96",
+      "LB": "50"
+    },
+    "previousPlanHash": "9ab063f12be79bb78b0e6956aa071ab5298f913e7775be97cde1b317f9471385",
+    "previousContractHash": "fbd4b9898efccc57a4424a8c2f34687f9afa2698b62a4e1808bc488b35e280fd"
+  },
+  "frontendSha256": "bd76291e2f96849387cf0dfe7edba277907947eca3b79b2a47f22126eae0fd3b",
+  "ownClosedPrefixes": 72,
+  "ownPrefixHash": "c2d41b119575842c678e8960492291200539534821538b6451cfcc18e82ec3d7",
+  "evidence": {
+    "ag-candidate-fault-prefixes-dragon-start-response-1791105591-private.json": {
+      "ownPrefixes": 72,
+      "prefixHash": "c2d41b119575842c678e8960492291200539534821538b6451cfcc18e82ec3d7",
+      "fileSha256": "923d3235ff100019fb7937e691650ef1a38445d38775f22bcf87defe9d4c5843"
+    }
+  },
+  "startKeys": [
+    "AB",
+    "B",
+    "FRBAL",
+    "GA",
+    "GSD",
+    "IFG",
+    "MSGID",
+    "PD",
+    "SID",
+    "TW",
+    "VER"
+  ],
+  "pdKeySets": [
+    [
+      "cashSymbols_100",
+      "currLives_100",
+      "pLives_100",
+      "prevRingLoc_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "cashSymbols_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "currLives_100",
+      "currRingLoc_100",
+      "pLives_100",
+      "prevRingLoc_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "currLives_100",
+      "currRingLoc_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "currLives_100",
+      "pLives_100",
+      "prevRingLoc_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "pLives_100",
+      "prevRingLoc_100",
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ],
+    [
+      "rid_100",
+      "stops_100",
+      "totalBet_100",
+      "va_100"
+    ]
+  ],
+  "pdValueLengthBounds": {
+    "cashSymbols_100": [
+      6,
+      38
+    ],
+    "currLives_100": [
+      1,
+      1
+    ],
+    "currRingLoc_100": [
+      3,
+      3
+    ],
+    "pLives_100": [
+      1,
+      1
+    ],
+    "prevRingLoc_100": [
+      3,
+      31
+    ],
+    "rid_100": [
+      1,
+      1
+    ],
+    "stops_100": [
+      13,
+      17
+    ],
+    "totalBet_100": [
+      3,
+      3
+    ],
+    "va_100": [
+      52,
+      58
+    ]
+  },
+  "pdScalarValues": {
+    "currLives_100": [
+      "1",
+      "2",
+      "3"
+    ],
+    "pLives_100": [
+      "1",
+      "2",
+      "3"
+    ],
+    "rid_100": [
+      "0",
+      "1",
+      "2"
+    ],
+    "totalBet_100": [
+      "100"
+    ]
+  },
+  "candidatePick": {
+    "MSGID": "FEATURE_PICK",
+    "CFG": "0",
+    "FP": "0|1|1"
+  },
+  "maximumReviewedResponses": 2,
+  "maximumReviewedContinuations": 2,
+  "fullSpecialTerminalsObserved": 0,
+  "settlementApproved": false,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "failedRoundsCredited": 0
+}

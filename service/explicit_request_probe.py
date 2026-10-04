@@ -5,7 +5,7 @@ from round_fields import check,params,VERSION
 from store import digest
 CONTRACT='nextgen-explicit-request-evidence-v1'
 def binding(plan,raw):
-    base={k:v for k,v in plan.items() if k not in ('explicitProbeContract','explicitProbeContractHash','explicitContinuationContract','explicitContinuationContractHash')}
+    base={k:v for k,v in plan.items() if k not in ('explicitProbeContract','explicitProbeContractHash','explicitContinuationContract','explicitContinuationContractHash','explicitDragonContract','explicitDragonContractHash')}
     p=policy()
     check(plan.get('explicitProbeContract')==CONTRACT and plan.get('explicitProbeContractHash')==digest(p)
           and p.get('sourceBindings',{}).get(str(plan['gameId']),{}).get('planHash')==digest(base)
