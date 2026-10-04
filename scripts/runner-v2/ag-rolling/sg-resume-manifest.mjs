@@ -13,8 +13,8 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
-  const {balanceContract,balanceContractHash,automaticFreeContract,automaticFreeContractHash,...unchangedPlan}=plan;
-  const {planHash:boundHash,previousPlanHash,balanceRepair,automaticFreeRepair,...unchangedProof}=proof;
+  const {balanceContract,balanceContractHash,automaticFreeContract,automaticFreeContractHash,explicitProbeContract,explicitProbeContractHash,...unchangedPlan}=plan;
+  const {planHash:boundHash,previousPlanHash,balanceRepair,automaticFreeRepair,explicitProbeEvidence,...unchangedProof}=proof;
   const {planHash:oldBoundHash,...previousProof}=oldProof;
   const limitRepair=automaticFreeRepair?.continuationLimitRepair;
   if(limitRepair!==undefined){
@@ -30,7 +30,21 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   assert(queueHash(unchangedPlan)===queueHash(oldPlan)&&queueHash(unchangedProof)===queueHash(previousProof)
    &&previousPlanHash===entry.planHash&&oldBoundHash===entry.planHash&&boundHash===planHash,
    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
-  assert(balanceContract!==undefined||automaticFreeContract!==undefined,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+  assert(balanceContract!==undefined||automaticFreeContract!==undefined||explicitProbeContract!==undefined,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+  if(explicitProbeContract!==undefined)assert(['32474','32497'].includes(id)
+   &&balanceContract===undefined&&automaticFreeContract===undefined
+   &&explicitProbeContract==='nextgen-explicit-request-evidence-v1'&&/^[a-f0-9]{64}$/.test(explicitProbeContractHash??'')
+   &&explicitProbeEvidence?.schema==='sg-ag-explicit-request-probe-evidence-v1'
+   &&explicitProbeEvidence.contractHash===explicitProbeContractHash
+   &&Number.isSafeInteger(explicitProbeEvidence.ownNativePrefixes)&&explicitProbeEvidence.ownNativePrefixes>0
+   &&/^[a-f0-9]{64}$/.test(explicitProbeEvidence.nativeEvidenceHash??'')
+   &&/^[a-f0-9]{64}$/.test(explicitProbeEvidence.historicalEvidenceHash??'')
+   &&explicitProbeEvidence.independentJsPython===true&&explicitProbeEvidence.fullSpecialTerminalsObserved===0
+   &&explicitProbeEvidence.settlementApproved===false
+   &&explicitProbeEvidence.maxReviewedContinuations===(id==='32474'?2:1)
+   &&explicitProbeEvidence.sourceRequests===0&&explicitProbeEvidence.mongoWrites===0&&explicitProbeEvidence.failedRoundsCredited===0,
+   'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+  else assert(explicitProbeContractHash===undefined&&explicitProbeEvidence===undefined,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
   if(balanceContract!==undefined)assert(balanceContract==='nextgen-held-award-balance-v1'&&/^[a-f0-9]{64}$/.test(balanceContractHash??'')
    &&balanceRepair?.schema==='sg-ag-balance-repair-evidence-v1'&&balanceRepair.contractHash===balanceContractHash
    &&Number.isSafeInteger(balanceRepair.nativeRounds)&&balanceRepair.nativeRounds>0

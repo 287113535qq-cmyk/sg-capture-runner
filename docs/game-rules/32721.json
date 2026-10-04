@@ -377,9 +377,9 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
-    "service/native_nextgen_fields.py": "3ce7f6c54768e1870cd0ca44170f0852bef2908b0e5cca1f7f02533b15d95609",
+    "service/native_nextgen_fields.py": "3e899a6bc2d520f745ada1801a0f197f0bb55a521a4ab1b2ba0acfe8a2994ccf",
     "service/round_fields.py": "b8fd14bbf20c2989a9dbe3170167bdb013e9e467459da5c20c592d12a99c4e47",
-    "scripts/runner-v2/record_fields.py": "de09e53959d595a54f13faa43372edf3fd0d49f982ca6b5b9ad1f7c67dc7c85a",
+    "scripts/runner-v2/record_fields.py": "9d1a186b3004952aa8baae470642c24de4ddef794159f784325ae220b3ff54e5",
     "service/pyramids_major_plan.py": "13f5280f302ceb6187429d272e73e98946e7749c313106237603a2d5dd8a19b5",
     "scripts/runner-v2/pyramids-major-repair-profile.mjs": "7d57eef612e74b90033379d838c849b8370e6941836d9e7fa76e09e955ba97f5",
     "scripts/runner-v2/pyramids-major-retirement.mjs": "7d7daa289c4c050a8751dc59bdc954d5451b8308acd09fbce72a6d4a08efca4d",
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "eb767a3c294abd7dd6a17b640199c794e1fe37deb86e15900e9b128341047c6a"
+  "ruleHash": "a1f0cab23ba76aac3218ba182c3e8c26eff1d8782de1237b1e36c9373c12c0b7"
 }

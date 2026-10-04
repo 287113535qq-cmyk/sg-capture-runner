@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
 import {rebaseResumeManifest} from './sg-resume-manifest.mjs';
+import fs from 'node:fs';
 function fixture(){
  const plan={gameId:32500,trialId:'fixed-trial',sourceKey:'fixed-source',buy:0,betRaw:100,requestParams:{GN:'fixed',BPL:'5',LB:'40'}};
  const proof={planHash:queueHash(plan),acceptedBaseRounds:93,historyFileSha256:'a'.repeat(64),acceptedRawHashes:['b'.repeat(64)]};
@@ -66,5 +67,22 @@ test('only an independently reviewed 100-frame truncation can raise the bounded 
   x=>x.plans.plans[32500].maxSteps=1027,x=>x.plans.proofs[32500].automaticFreeRepair.continuationLimitRepair.nativeRemainingMin=0,
   x=>x.plans.proofs[32500].automaticFreeRepair.continuationLimitRepair.nativePrefixesAtOldLimit=5]){
   const altered=structuredClone(f);damage(altered);assert.throws(()=>rebaseResumeManifest(altered),/REPAIR_UNREVIEWED/);
+ }
+});
+test('an explicit probe preserves its old ordinary proof and permits only the reviewed request boundary, never special settlement',()=>{
+ const r=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8'));
+ for(const id of ['32474','32497']){
+  const plan=r.plans[id],proof=r.proofs[id],{explicitProbeContract,explicitProbeContractHash,...oldPlan}=plan;
+  const {previousPlanHash,explicitProbeEvidence,...oldProof}=proof;oldProof.planHash=previousPlanHash;
+  const previous={manifest:[{gameId:id,planHash:queueHash(oldPlan),adapterProofHash:queueHash(oldProof),campaignId:'same-namespace'}]};
+  const f={previous,previousPlans:{plans:{[id]:structuredClone(oldPlan)},proofs:{[id]:structuredClone(oldProof)}},plans:{plans:{[id]:plan},proofs:{[id]:proof}}};
+  const before=queueHash(f);assert.equal(rebaseResumeManifest(f)[0].planHash,queueHash(plan));assert.equal(queueHash(f),before);
+  for(const damage of [v=>v.plans.proofs[id].explicitProbeEvidence.settlementApproved=true,
+   v=>v.plans.proofs[id].explicitProbeEvidence.maxReviewedContinuations++,
+   v=>v.plans.proofs[id].explicitProbeEvidence.failedRoundsCredited=1,
+   v=>v.plans.proofs[id].acceptedRawHashes=[],v=>v.plans.plans[id].requestParams.GN='foreign']){
+   const bad=structuredClone(f);damage(bad);assert.throws(()=>rebaseResumeManifest(bad),/REPAIR_UNREVIEWED/);
+  }
+  assert.throws(()=>rebaseResumeManifest({...f,completedGameIds:[id]}),/COMPLETED_ADAPTER_CHANGED/);
  }
 });
