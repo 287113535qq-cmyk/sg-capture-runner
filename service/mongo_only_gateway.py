@@ -103,7 +103,7 @@ class Gateway:
             # Fixed storage setup only, invoked by the idle-window native
             # installer. No document, source request or quota is changed.
             name = self.db['official_rounds'].create_index([('gameId', 1)],
-                name='rolling_game_count', unique=False, maxTimeMS=45000)
+                name='rolling_game_count', unique=False, maxTimeMS=300000)
             return {'indexName': name}
         if op == 'parallel_rhino_jobless_fence':
             # Two immutable identity proofs only. GitHub decides whether to fence.

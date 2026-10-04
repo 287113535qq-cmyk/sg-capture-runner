@@ -199,12 +199,24 @@ class GatewayTests(unittest.TestCase):
             calls.append((keys,opts));return opts['name']
         self.db['official_rounds'].create_index=create
         self.assertEqual(self.call('rolling_game_index_prepare'),{'indexName':'rolling_game_count'})
-        self.assertEqual(calls,[([('gameId',1)],{'name':'rolling_game_count','unique':False,'maxTimeMS':45000})])
+        self.assertEqual(calls,[([('gameId',1)],{'name':'rolling_game_count','unique':False,'maxTimeMS':300000})])
         for extra in ({'collection':'production'},{'keys':[('private',1)]},{'options':{}},{'group':'secondary'}):
             with self.assertRaises(Refused):self.call('rolling_game_index_prepare',**extra)
         with self.assertRaises(Refused):Gateway(self.db,'secondary',self.manifest).dispatch(
             {'schema':'sg-mongo-only-v2','op':'rolling_game_index_prepare'})
         self.assertEqual(len(calls),1);self.assertTrue(all(c.rows=={} for c in self.db.values()))
+    def test_rolling_index_timeout_is_not_retried_and_preserves_rounds(self):
+        self.manifest['rollingGameCountEnabled']=True;calls=[]
+        self.db['official_rounds'].rows['preserved']={'gameId':32714,'sequence':1}
+        before=copy.deepcopy(self.db['official_rounds'].rows)
+        failure=RuntimeError('INDEX_BUILD_TIMEOUT')
+        def create(keys,**opts):
+            calls.append((keys,opts));raise failure
+        self.db['official_rounds'].create_index=create
+        with self.assertRaises(RuntimeError) as raised:self.call('rolling_game_index_prepare')
+        self.assertIs(raised.exception,failure)
+        self.assertEqual(len(calls),1)
+        self.assertEqual(self.db['official_rounds'].rows,before)
     def test_delta_cas_requires_separate_capability_and_preserves_full_document(self):
         key='pool:sg_r1_20260928_32723'
         old={'history':[{'old':1}],'workers':{'0':{'lease':1,'active':{'id':2}},'1':{'lease':9}},'removed':True}
