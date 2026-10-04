@@ -4603,6 +4603,25 @@
         "fullBaseRounds": 994,
         "fullFreeRounds": 0
       }
+    },
+    "crystalforest-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "crystalforest-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 25,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32759,
+        "runtimeGameId": 32981,
+        "wmsGameId": 20142,
+        "ordinaryContractHash": "cea5b9022b20d763b51cf042457cda0ae15e33d67b1694b90c025cdaad960295",
+        "historyFileSha256": "81f436a78b30dfc4fc23dab62d4365cc6a56fc4ce35ea7e20fcad79516522b16",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

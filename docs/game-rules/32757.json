@@ -74,12 +74,12 @@
     "scripts/runner-v2/ag-rolling/sg-cheshire-base.mjs": "6adec279b15fabde1f15615f38b0a92e7432b7a3c297130d21d1a7c1c96b886d",
     "scripts/runner-v2/ag-rolling/sg-cheshire-source.mjs": "a866b5b91f0695a5fc62170a709a4d60bd31d783ea68dd207e76f49e61b5ee58",
     "scripts/runner-v2/ag-rolling/sg-cheshire-codec.mjs": "13f9e1988f4b2a7a50088dc912fb5f4ddcdba2dafed9971343f2e28ada301528",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "153e8793f0bcdb87d489a5a4dd62174830a1bdf2d5ab6a46e8b2c680944d05c0",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6962b663c43ba7091c5285c17daafa1236e31fa530a474e54937569e73e5b8c6",
     "service/cheshire_base_fields.py": "e394f7de4080a439fa9d038a06fd48740396909623b04e8eae91a7211ff999d9",
-    "service/ag_rolling_plan.py": "44258dd68e6468917bcd989d26b94027626077b035a7fded14f7b7b982ed63a8",
-    "scripts/runner-v2/record_fields.py": "c6aed1e46cc68ed13b89be6367af335fdf97e92d8811aed8b13069ca4d40a852",
-    "service/round_fields.py": "c03401e98799c975c1689efd8ddf3240a3d951c17383a06390b5887efdfcb1d6",
-    "service/game_rule_catalog.py": "d00ba912d0fe20111cacd5814f6dbdce3308d02b68ef3761fb1da6c1475286db"
+    "service/ag_rolling_plan.py": "8841403bb498ea9c890dc293d7ff68f106827f767c0da0e903242ef0bdafcccb",
+    "scripts/runner-v2/record_fields.py": "c2c41a9fdf3fec97bee68172661a72e4b17613e2a68539619b34a775f64464c3",
+    "service/round_fields.py": "6409529396fac6b6ae90e98d4671f1a94c3823e9c0050c5b436ec628bde8bebc",
+    "service/game_rule_catalog.py": "5818ebfff29888bd73dbd86f30d7839d0047953d4dabfacc5a969ec4e4965931"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -91,5 +91,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "3c171e5d058d119671f231bad3c948b7639615d7513cd715b795830b472d84cd"
+  "ruleHash": "da248d776f3bf51adcc24f3b873526fc609d16c1296e74e71810db972b3e8964"
 }

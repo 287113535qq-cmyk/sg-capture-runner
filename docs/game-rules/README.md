@@ -118,7 +118,7 @@
 | [32756](32756.json) | Celestial King | implemented-subset | 0 |
 | [32757](32757.json) | Cheshire Cat | implemented-subset | 0 |
 | [32758](32758.json) | Cool Jewels | implemented-subset | 0 |
-| [32759](32759.json) | Crystal Forest | not-documented | 待确认 |
+| [32759](32759.json) | Crystal Forest | implemented-subset | 0 |
 | [32760](32760.json) | Dancing Drums | not-documented | 待确认 |
 | [32761](32761.json) | Dancing Drums Explosion | not-documented | 待确认 |
 | [32762](32762.json) | Desert Cats | not-documented | 待确认 |

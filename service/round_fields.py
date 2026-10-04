@@ -357,6 +357,9 @@ def derive(raw):
     from cooljewels_base_fields import SOURCE as COOLJEWELS_SOURCE, settled as cooljewels_settled, mapping_hash as cooljewels_mapping
     if raw.get('sourceKey') == COOLJEWELS_SOURCE:
         return cooljewels_settled(raw, cooljewels_mapping())
+    from crystalforest_base_fields import SOURCE as CRYSTALFOREST_SOURCE, settled as crystalforest_settled, mapping_hash as crystalforest_mapping
+    if raw.get('sourceKey') == CRYSTALFOREST_SOURCE:
+        return crystalforest_settled(raw, crystalforest_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
