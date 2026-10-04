@@ -20,21 +20,37 @@ import {inspectFormalBaseline} from './sg-formal-baseline.mjs';
 import {inspectNewGame} from './sg-new-game.mjs';
 import {LANE_BUDGET_MS} from './ag-core.mjs';
 import {auditTasks,readOnlyAuditTransport} from './sg-admission-audit.mjs';
+import {cohortRepos,cohortView,joinCohort,participantKey,inspectParticipant,endedCohortJobs} from './sg-federation.mjs';
+import {companionBoundary} from './sg-federated-boundary.mjs';
+import {closePreparation} from './sg-preparation-close.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
- &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
+ &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
  'SG_AG_GITHUB_OWNER');
 const mode=process.argv[2],name=process.env.SG_AG_QUEUE_PROFILE;
-assert(['admit','lane','controller','reconcile'].includes(mode)&&/^ag-rolling-queue-[a-f0-9]{64}\.json$/.test(name??''),'SG_AG_LIVE_MODE');
+assert(['admit','join','preparation-close','lane','controller','reconcile'].includes(mode)&&/^ag-rolling-queue-[a-f0-9]{64}\.json$/.test(name??''),'SG_AG_LIVE_MODE');
 if(mode==='controller')assert(process.env.GITHUB_JOB==='ag-rolling-capture'&&process.env.SG_AG_CONTROLLER_LANE==='20'
  &&process.env.SG_TRIAL_DEMO_CONFIG===undefined&&process.env.SG_AG_LANE===undefined,'SG_AG_CONTROLLER_SCOPE');
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const registry=read('config/ag-rolling-plans.json'),profile=queueProfile({name,profile:read('config/'+name),
  authorization:read('config/ag-rolling-authorizations.json'),plans:registry,readBytes:file=>fs.readFileSync(file)});
-const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit=process.env.GITHUB_SHA;
+const run=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT,commit=process.env.GITHUB_SHA,repository=process.env.GITHUB_REPOSITORY;
+const view=cohortView(profile,repository);process.env.SG_AG_COHORT=view.cohort;
+assert(view.cohort==='primary'||['join','lane'].includes(mode),'SG_AG_COORDINATOR_MODE');
+assert(mode!=='join'||process.env.GITHUB_JOB==='ag-rolling-join'&&view.cohort==='secondary','SG_AG_JOIN_JOB');
+let coordinatorRun=view.cohort==='primary'?run:process.env.SG_AG_COORDINATOR_RUN;
+assert(/^\d+:1$/.test(coordinatorRun??''),'SG_AG_COORDINATOR_RUN');
 assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_AG_RUN_IDENTITY');
 const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)?LANE_BUDGET_MS:mode==='admit'?120*60000:40*60000);
 const store=new RunnerState({transport,gate,deadline}),stop=new AbortController();
+let sourceDeadline=deadline;
+if(['lane','controller'].includes(mode)){
+ const permit=await sourcePermit({profile,store,run,commit,repository,coordinatorRun});
+ if(profile.federation)sourceDeadline=Math.min(deadline,permit.startsAt+LANE_BUDGET_MS);
+ store.deadline=sourceDeadline;
+ const hello=await transport.request('hello');assert(hello.group===view.cohort&&hello.gatewaySha256===profile.nativeGatewayHash
+  &&hello.accessManifestHash===profile.nativeManifestHash&&(!profile.federation||hello.rollingNamespace==='primary'),'SG_AG_COHORT_NATIVE_CHANGED');
+}
 let localLaneEnded=false;
 if(mode==='controller')process.on('message',message=>{
  if(message?.type==='lane-source-ended'&&message.lane===20)localLaneEnded=true;
@@ -48,7 +64,7 @@ async function globalGuard(context={}){
  if(sourceCheck.pending)await sourceCheck.pending;
  else if(Date.now()-sourceCheck.at>=1000){
   const checking=(async()=>{
-   await sourcePermit({profile,store,run,commit,sourceJobsEnded});
+   await sourcePermit({profile,store,run,commit,repository,coordinatorRun,sourceJobsEnded});
    const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');
    sourceCheck.at=Date.now();
   })();sourceCheck.pending=checking;
@@ -60,6 +76,7 @@ async function globalGuard(context={}){
 }
 function taskGuard(context){
  const {game,queueId,kind,index,owner}=context;
+ assert(view.payload.games.some(g=>queueHash(g)===queueHash(game)),'SG_AG_GAME_ASSIGNED_TO_OTHER_COHORT');
  return async request=>{
   await globalGuard(request);const id=`${kind}:${index}`,key=taskKey(queueId,game,id);
   let check=tasksChecking.get(key);
@@ -94,7 +111,18 @@ async function merge(game){
   reason:result.reason??null}));return result;
 }
 try{
- if(mode==='admit'){
+ if(mode==='preparation-close'){
+  const gh=authenticatedRead(process.env.GH_TOKEN),boundary=maintenanceBoundary({read:gh,store,oldProfile:read('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/trial-300k.yml'});
+  const linux=await gh(`repos/287113535qq-cmyk/sg-capture-runner/actions/runs/${profile.linuxRun}`);
+  assert(linux.status==='completed'&&linux.conclusion==='success'&&linux.head_branch==='main'&&linux.head_sha===profile.codeCommit,'SG_AG_CLOSE_LINUX');
+  log(JSON.stringify(await closePreparation({profile,target:read('config/ag-rolling-queue-'+profile.preparationRecovery.targetActivation+'.json'),
+   store,transport,boundary,run,commit,readEnded:id=>gh(`repos/${cohortRepos.primary}/actions/runs/${id}`),
+   readEndedJobs:id=>gh(`repos/${cohortRepos.primary}/actions/runs/${id}/jobs?filter=all&per_page=100`)})));
+ }else if(mode==='join'){
+  const gh=authenticatedRead(process.env.GH_TOKEN),boundary=companionBoundary({read:gh,store,transport,profile,run,coordinatorRun,commit,oldProfile:read('config/demo-pilot-beaver-20260930.json')});
+  log(JSON.stringify(await joinCohort({profile,store,transport,boundary,run,coordinatorRun,commit,
+   checkPermit:()=>sourcePermit({profile,store,run:coordinatorRun,commit})})));
+ }else if(mode==='admit'){
   const gh=authenticatedRead(process.env.GH_TOKEN),boundary=maintenanceBoundary({read:gh,store,
    oldProfile:read('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/trial-300k.yml'});
   const result=await activateQueue({profile,store,transport,boundary,commit,run,
@@ -137,8 +165,8 @@ try{
    }});log(JSON.stringify(result));
  }else if(mode==='lane'){
   const base=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG??'{}'),lane=Number(process.env.SG_AG_LANE);
-  const healthy=await runSgLane({payload:profile.payload,manifest:profile.manifest,lane,
-   runId:process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT,store,deadline,signal:stop.signal,log,
+  const healthy=await runSgLane({payload:view.payload,manifest:view.manifest,lane,
+   runId:process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT,store,deadline:sourceDeadline,signal:stop.signal,log,
    guard:()=>globalGuard(),createTask:async context=>{
     const row=(await store.get('state',taskKey(context.queueId,context.game,`${context.kind}:${context.index}`)))?.value;
     assert(row?.owner===context.owner&&row.status==='running','SG_AG_TASK_OWNER');
@@ -148,7 +176,7 @@ try{
   process.exitCode=healthy?0:2;
  }else if(mode==='controller'){
   const gh=authenticatedRead(process.env.GH_TOKEN),completed=new Set();
-  while(!stop.signal.aborted&&Date.now()<deadline){
+  while(!stop.signal.aborted&&Date.now()<sourceDeadline){
    for(const game of profile.payload.games){if(completed.has(game.gameId))continue;
     try{const result=await merge(game);if(result.count===300000)completed.add(game.gameId);}
     catch(error){if(error.outcomeUnknown===true||transport.status().poison||stop.signal.aborted)throw error;
@@ -157,9 +185,11 @@ try{
    }
    const jobs=await gh(`repos/zyzuoyang/sg-capture-runner/actions/runs/${process.env.GITHUB_RUN_ID}/jobs?filter=all&per_page=100`);
    assert(jobs.total_count===jobs.jobs.length&&jobs.total_count<100,'SG_AG_JOBS_TRUNCATED');
-   const lanes=jobs.jobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));
-   if(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20
-    &&lanes.every(j=>j.status==='completed'||j.name==='AG rolling lane 20'&&localLaneEnded))break;
+   let companionEnded=!profile.federation;
+   if(profile.federation){const receipt=(await store.get('journal',participantKey(profile)))?.value;
+    if(receipt){inspectParticipant({profile,receipt,coordinatorRun:run,commit});
+     companionEnded=endedCohortJobs(await gh(`repos/${cohortRepos.secondary}/actions/runs/${receipt.run.split(':')[0]}/jobs?filter=all&per_page=100`));}}
+   if(endedCohortJobs(jobs,{localLaneEnded})&&companionEnded)break;
    await new Promise(r=>setTimeout(r,30000));
   }
   log(JSON.stringify({phase:'controller-ended',complete:completed.size,sourceRequests:0}));
@@ -168,6 +198,13 @@ try{
   assert(jobs.total_count===jobs.jobs.length&&jobs.total_count<100,'SG_AG_JOBS_TRUNCATED');
   const lanes=jobs.jobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));
   assert(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20&&lanes.every(j=>j.status==='completed'),'SG_AG_SOURCE_JOBS_ACTIVE');
+  if(profile.federation){
+   for(;;){const receipt=(await store.get('journal',participantKey(profile)))?.value;
+    assert(receipt,'SG_AG_COMPANION_NOT_JOINED');inspectParticipant({profile,receipt,coordinatorRun:run,commit});
+    const other=await gh(`repos/${cohortRepos.secondary}/actions/runs/${receipt.run.split(':')[0]}/jobs?filter=all&per_page=100`);
+    if(endedCohortJobs(other))break;assert(Date.now()<deadline,'SG_AG_COMPANION_JOBS_ACTIVE');await new Promise(r=>setTimeout(r,10000));
+   }
+  }
   sourceJobsEnded=true;
   recoverMerging=async previous=>{
    assert(previous.owner===run+':ag-rolling-capture:controller','SG_MERGE_RECOVERY_OWNER');
@@ -194,7 +231,8 @@ try{
   const result={schema:'sg-ag-rolling-window-ended-v1',queueId:profile.payload.queueId,run,commit,
    activation:profile.activation,profileHash:queueHash(profile),
    complete:results.filter(r=>r.count===300000).length,retained:results.filter(r=>r.count!==300000).length,
-   games:results.map(r=>({gameId:r.gameId,status:r.status??'complete',count:r.count??0})),sourceRequests:0};
+   games:results.map(r=>({gameId:r.gameId,status:r.status??'complete',count:r.count??0})),sourceRequests:0,
+   ...(profile.federation?{federationHash:queueHash(profile.federation),participant:(await store.get('journal',participantKey(profile))).value}:{} )};
   await store.create('journal','rolling-ended:'+profile.payload.queueId+':'+run,result,{immutable:true});
   assert(await store.cas('state','rolling-source',before,{owner:null,queueId:null,status:'idle',lastRun:run,
    lastQueueId:profile.payload.queueId,endedProofHash:queueHash(result)}),'SG_AG_SOURCE_FENCE');log(JSON.stringify(result));

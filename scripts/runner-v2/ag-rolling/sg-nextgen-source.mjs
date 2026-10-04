@@ -8,7 +8,7 @@ const xml=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'
 // intent boundary and never retries an HTTP request.
 export function nextgenSession({base,plan,queueId,kind,index,owner,ordinal,guard,fetchSource=fetch,now=Date.now}){
  if(fetchSource===fetch)assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
-  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner',
+  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&(process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'||process.env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner'&&process.env.SG_AG_COHORT==='secondary'),
   'SG_GITHUB_SOURCE_REQUIRED');
  assert(base?.mode==='demo'&&base.serverAddress==='ogs-gdm-usnj.nyxop.net/nextgen'
   &&/^Free:/i.test(base.sessionId??'')&&typeof base.operatorId==='string'&&base.operatorId.length>0
