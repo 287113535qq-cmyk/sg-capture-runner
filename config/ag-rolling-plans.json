@@ -774,7 +774,9 @@
         "BPR": "5",
         "GN": "hurricanehorsecoincombo",
         "RB": "5"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "b7d0cabe8f80de4491a854edd116315997ebb3e16065e78c4cbaac40f5f72579"
     },
     "32555": {
       "schema": "sg-work-pool-v1",
@@ -5605,7 +5607,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32550,
       "runtimeGameId": 33052,
-      "planHash": "c97b0594b1f14765df1b393d25f322cf00b702ce9c427886e6600a25f3e4e4c3",
+      "planHash": "0eeaba683104cfd915748c9cc84d9cf77b3562e487b652a2647f29545c9e7bfd",
       "historyFileSha256": "bc953e664272ff494bdef60706fc84d86983f39cc8e9adf73a29dfc3cdd5d213",
       "acceptedBaseRounds": 98,
       "acceptedFreeRounds": 1,
@@ -5715,7 +5717,20 @@
         "UNKNOWN_TRIAL_FEATURE": 1
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "c97b0594b1f14765df1b393d25f322cf00b702ce9c427886e6600a25f3e4e4c3",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "b7d0cabe8f80de4491a854edd116315997ebb3e16065e78c4cbaac40f5f72579",
+        "nativeFaultPrefixes": 10,
+        "nativeEvidenceHash": "fbd67953df6f22dd0257b5eed2bf2e678b0f68ddf173421572eb68f034e395e4",
+        "historicalFullRounds": 2,
+        "historicalEvidenceHash": "3a21421474080e7faa946f466248f94bc2e752fa90f9e86e217c629cbab444db",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32555": {
       "schema": "sg-ag-rolling-offline-adapter-v1",

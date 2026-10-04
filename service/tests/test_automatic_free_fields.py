@@ -83,4 +83,25 @@ class AutomaticFreeTests(unittest.TestCase):
             for i in range(len(r['steps'])):change(r,i,'FID=1|',f'FID={fid}')
             self.assertEqual(a.next_request({**r,'steps':r['steps'][:2]}),{'MSGID':'FREE_GAME'})
             with self.assertRaisesRegex(FieldError,'UNREVIEWED_AUTOMATIC_TERMINAL'):a.settled(r)
+    def test_hurricane_reviewed_terminal_keeps_all_other_native_choices_and_partial_rounds_rejected(self):
+        p=REGISTRY['plans']['32550'];a=NativeNextgenFields(p)
+        for fid in ['3|','0|']:
+            r=sample(p)
+            for i in range(len(r['steps'])):change(r,i,'FID=1|',f'FID={fid}')
+            self.assertIsNone(a.next_request(r))
+            self.assertEqual(a.settled(r)['money']['endBalanceRaw'],942)
+            partial={**r,'steps':r['steps'][:2]}
+            self.assertEqual(a.next_request(partial),{'MSGID':'FREE_GAME'})
+            with self.assertRaisesRegex(FieldError,'INCOMPLETE'):a.settled(partial)
+        r=sample(p)
+        for i in range(len(r['steps'])):change(r,i,'FID=1|','FID=3|')
+        for value in ['1|','2|','2|4|','2|5|','2|6|','3|&CFG=3','3|&FS_3=0','3|&NFR_3=1']:
+            with self.assertRaisesRegex(FieldError,'UNKNOWN_TRIAL_FEATURE'):
+                a.next_request(change(copy.deepcopy(r),0,'FID=3|',f'FID={value}'))
+        with self.assertRaisesRegex(FieldError,'UNKNOWN_TRIAL_FEATURE'):
+            a.next_request(change(copy.deepcopy(r),0,'NFG=2','NFG=0'))
+        with self.assertRaisesRegex(FieldError,'TRIAL_FREE_LIMIT'):
+            a.next_request(change(copy.deepcopy(r),1,'NFG=1','NFG=101'))
+        unmarked=copy.deepcopy(r);unmarked.pop('automaticFreeContract')
+        with self.assertRaisesRegex(FieldError,'UNKNOWN_TRIAL_FEATURE'):a.next_request(unmarked)
 if __name__=='__main__':unittest.main()

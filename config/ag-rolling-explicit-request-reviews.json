@@ -1,0 +1,39 @@
+{
+  "schema": "sg-ag-explicit-frontend-request-review-v1",
+  "ownNativePrefixes": 200,
+  "nativeObservedAt": 1791079338,
+  "ownPrefixesAndFrontendConstructorsHash": "da308d0f3599d7a580667942bdc62f0734f3998e2094ae65e4bb4b0ba776d079",
+  "sourceBindings": {
+    "32474": {
+      "frontendSha256": "519151bd5ea98058fa6d1f41a74c0fa235cb1bb959a74589a8926ce925073771",
+      "constructorHash": "ab65bf377feb8f1e7226cbe34fd26110f247ba311a5e9d460b2361728f28546e",
+      "captureReportHash": "2a1e0f8d8524c5d03ae46cee9779013eb09391aa1587b84da075be2b21e9ab5d",
+      "planHash": "2438a1298918958738f535cc11790790799b6ada6e7468442594ab0cd5109b79"
+    },
+    "32497": {
+      "frontendSha256": "bd76291e2f96849387cf0dfe7edba277907947eca3b79b2a47f22126eae0fd3b",
+      "constructorHash": "f423ac2f6efd2c196663820039f943287de2cd5d94edb2e87d42d43b6b6177a3",
+      "captureReportHash": "9d8179b472e56f1b364ed184bfdc5ac6e1af5dfd9fe257c039a3b7eebe1427e5",
+      "planHash": "ee05be7ecfeceb03eeac2809a6ee7347f84a3986ac03e64d67f63a7b64ae4da6"
+    }
+  },
+  "frontendJsIndependentPythonRequestAgreement": true,
+  "originalInitialPick": "0|1|0",
+  "carnivalFrontendPick": "1|pickOrdinal|chosenPosition",
+  "dragonFrontendPick": "0|1|1",
+  "historicalStartResponsesVerified": 1,
+  "historicalSameSessionRejectedPicksVerified": 1,
+  "sourceRejectCode": "ERROR_FEATURE_PARAMETERS",
+  "historicalStartRejectedPickEvidenceHash": "cafcc05d657f1b18606b8ff6016ba52dd8857b5504a5f4d73e7d0578fbddb5c4",
+  "trafficFileSha256": "fb3e1d0bf08062c9136e4ef6f7bd525261980f193f0ad0286b4e87f0b4866b3d",
+  "failedExchangeFileSha256": "98832afe59ea1177bce5e8a3d7412cfac67fbd55fa0b893841e08886ecc6f481",
+  "fullSpecialTerminalsObserved": 0,
+  "sourceRequests": 0,
+  "mongoWrites": 0,
+  "failedRoundsCredited": 0,
+  "liveRepairApplied": false,
+  "requiredNextEvidence": "new-session actual picks, Carnival position bounds, every response and full terminal; no old request replay",
+  "rollingPlanChanged": false,
+  "automaticAdmission": false,
+  "diagnosticEvidenceOnly": true
+}
