@@ -153,6 +153,17 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32756:
+        native.update({'family':'celestial-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32978与WMS Header20210分别绑定；首Logic自身AccountData/CurrencyMultiplier1→Header→Stake.total100/lines30。响应stakePerLine3×30不是实际总下注，不能改成90。',
+            'continue':'仅普通单Logic，ReelResults/BGInfo且baseGameSpinsRemaining0、固定WildIndex11重复五项；本游戏没有readyForEndGame字段，不借其它游戏的ready标记。HNS/Feature出现立即拒绝。',
+            'complete':'普通完整Logic后唯一Header-only EndGame；响应无GameResult且现金保持。每帧会话/计时/XML/observer余额、Payline奖额和、Logic totalWin与BG累计双验。',
+            'bounds':'离线候选：自身全文件SHA核实，前1000旧历史仅994普通完整/1988请求沿actual codec→独立Python IPC→record/verify一致。6条bonus0旧记录含HNS剩余3次却已EndGame，仍拒绝、不继续/重放/回计。真实Init/native scope/livecanary/当前队列准入均0。新HNS、WildIndex、奖项、MaxWin、恢复或未知传输停止。',
+            'files':['scripts/runner-v2/ag-rolling/sg-celestial-base.mjs','scripts/runner-v2/ag-rolling/sg-celestial-source.mjs','scripts/runner-v2/ag-rolling/sg-celestial-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/celestial_base_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Stake':'请求total100/lines30；响应stake100/stakePerLine3/paylineCount30分别核验。',
+                'ReelResults':'单spin0/reelset0、5停点、最多12唯一Payline线0..29及自身25种awardIndex，奖额之和=spinWins=Logic totalWin。',
+                'BGInfo / Balances':'remaining0/maxwin0、BG累计等于本Logic奖，现金=start-100+奖；EndGame保持。',
+                'HNSInfo / Feature':'自身6旧半局hnsSpinsRemaining3，即使bonusAwarded=N、旧bonus0且旧End cash稳定仍不能完整。'}})
     elif game_id == 32755:
         native.update({'family':'blazing-x-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32977与WMS Header20363分别绑定；独立匿名Init能力核验后，首Logic Stake.total240/PaylineCount40/CurrencyMultiplier1。响应stakePerLine20×40不改变实际240。',
@@ -361,7 +372,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -458,6 +469,10 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
                 'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
                 'required':'固定实际200；仅readyY普通完整，Anyway奖额和及BG累计一致，EndGame确认现金保持；11旧免费半局拒绝。'}
+        if plan and plan.get('adapter') == 'celestial-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin','bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
+                'required':'固定实际100而非90；普通无HNS/Feature，奖额和/BG/每帧现金一致，唯一EndGame确认；没有readyForEndGame字段。'}
         if plan and plan.get('adapter') == 'acorn-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',

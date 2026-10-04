@@ -146,6 +146,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
         self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
 
+    def test_celestial_ordinary_card_keeps_hns_early_end_and_own_total_stake_boundary(self):
+        card=self.cards[32756];rule=card['roundRule']
+        self.assertEqual(rule['family'],'celestial-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32978)
+        self.assertEqual(card['parameters']['wmsGameId'],20210)
+        self.assertIn('994',rule['bounds']);self.assertIn('剩余3次',rule['bounds'])
+        self.assertIn('不能改成90',rule['start']);self.assertIn('没有readyForEndGame',rule['continue'])
+        self.assertEqual(card['typeMappings']['celestialking-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_blazing_card_has_own_ten_free_and_distinct_actual_wager(self):
         card=self.cards[32755]
         self.assertEqual(card['roundRule']['family'],'blazing-x-wms-v1')

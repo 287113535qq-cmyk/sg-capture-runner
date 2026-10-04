@@ -4548,6 +4548,24 @@
         "fullWildRounds": 5,
         "contractHash": "e735f6ab2616ed7eb1f4e4044b634e00f80ac26559e1db19f02979171840072f"
       }
+    },
+    "celestialking-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "celestial-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32756,
+        "runtimeGameId": 32978,
+        "wmsGameId": 20210,
+        "historyFileSha256": "9f3da6af4e7b8e8375bba0f3512273726995b5c134b95f9a796c834f871190f0",
+        "fullBaseRounds": 994,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

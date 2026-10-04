@@ -348,6 +348,9 @@ def derive(raw):
     from actionbank_base_fields import SOURCE as ACTIONBANK_SOURCE, settled as actionbank_settled, mapping_hash as actionbank_mapping
     if raw.get('sourceKey') == ACTIONBANK_SOURCE:
         return actionbank_settled(raw, actionbank_mapping())
+    from celestial_base_fields import SOURCE as CELESTIAL_SOURCE, settled as celestial_settled, mapping_hash as celestial_mapping
+    if raw.get('sourceKey') == CELESTIAL_SOURCE:
+        return celestial_settled(raw, celestial_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

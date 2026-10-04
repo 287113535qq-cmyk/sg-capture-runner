@@ -115,7 +115,7 @@
 | [32753](32753.json) | Action Bank Plus | implemented-subset | 0 |
 | [32754](32754.json) | Arthur and the Round Table | implemented-subset | 1 |
 | [32755](32755.json) | Blazing X Asia | implemented-subset | 1 |
-| [32756](32756.json) | Celestial King | not-documented | 待确认 |
+| [32756](32756.json) | Celestial King | implemented-subset | 0 |
 | [32757](32757.json) | Cheshire Cat | not-documented | 待确认 |
 | [32758](32758.json) | Cool Jewels | not-documented | 待确认 |
 | [32759](32759.json) | Crystal Forest | not-documented | 待确认 |

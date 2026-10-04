@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -67,6 +67,27 @@ def validate_rolling_plan(plan):
                 and wired.get('rawHashesUnchanged') is True and wired.get('actualRecordAndVerifyIpc') is True
                 and wired.get('independentJsPythonFields') is True and wired.get('sourceRequests') == 0 and wired.get('mongoWrites') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'celestial-base-wms-v1':
+        from celestial_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32756 and plan['runtimeGameId'] == 32978 and plan['runtimeSlug'] == 'celestialking'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 100 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20210 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 994 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 6
+                and proof.get('unhandledHistoricalVariants') == {'CELESTIAL_FEATURE_NOT_ADAPTED':6}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 994
+                and digest(proof['acceptedRawHashes']) == '97af3d0e9ecf05d8f8057252f3285347aadc5d76361503ceb13e691d7b868826'
+                and digest(proof['rejectedHistoricalPrefixes']) == 'cfc23d5a01ac8c8900a4365dd8d1aa2f4d3aaf77caa596e59a15a77149ebff7b'
+                and wired.get('schema') == 'sg-ag-wms-celestial-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '44bba4b8c362842e171c21dd8fa18909454a8ea28dd7510aba9001b3fe06fc62'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')
     if plan['adapter'] == 'acorn-base-wms-v1':
         from acorn_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
