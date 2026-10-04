@@ -41,6 +41,14 @@ class HeldBalanceTests(unittest.TestCase):
         for raw in cases:
             with self.subTest(rawHash=digest(raw)),self.assertRaises(FieldError):settled(raw)
 
+    def test_available_balance_can_credit_exact_award_only_at_a_complete_terminal(self):
+        raw=response(sample(),2,'AB=900','AB=950');raw['steps'][2]['responseBalance']=950
+        self.assertEqual(settled(raw)['money']['endBalanceRaw'],950)
+        early=response(sample(),1,'AB=900','AB=920');early['steps'][1]['responseBalance']=920
+        wrong=response(sample(),2,'AB=900','AB=949');wrong['steps'][2]['responseBalance']=949
+        for raw in [early,wrong]:
+            with self.assertRaisesRegex(FieldError,'RELATION'):settled(raw)
+
     def test_unfinished_feature_or_extra_paid_round_cannot_be_counted(self):
         raw=sample();raw['steps'].pop()
         with self.assertRaisesRegex(FieldError,'INCOMPLETE'):settled(raw)

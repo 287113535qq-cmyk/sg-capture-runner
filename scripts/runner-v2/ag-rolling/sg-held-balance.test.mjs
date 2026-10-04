@@ -17,6 +17,14 @@ test('held award fields reconcile both balances and cumulative wins on every fra
  for(const r of [change(raw(),1,'AB=900','AB=901'),change(raw(),1,'B=920','B=921'),change(raw(),2,'B=950&AB=900&TW=50','B=910&AB=900&TW=10')])assert.throws(()=>heldBalanceFields(plan,r,hash),/RELATION/);
  const r=raw();r.steps[1].responseBalance++;assert.throws(()=>heldBalanceFields(plan,r,hash),/OBSERVER/);
 });
+test('the source may credit the same award into available balance only on a complete terminal response',()=>{
+ const r=change(raw(),2,'AB=900','AB=950');r.steps[2].responseBalance=950;
+ assert.deepEqual(heldBalanceFields(plan,r,hash).money,{startBalanceRaw:1000,endBalanceRaw:950,totalWinRaw:50,betRaw:100});
+ const early=change(raw(),1,'AB=900','AB=920');early.steps[1].responseBalance=920;
+ assert.throws(()=>heldBalanceFields(plan,early,hash),/RELATION/);
+ const mismatch=change(raw(),2,'AB=900','AB=949');mismatch.steps[2].responseBalance=949;
+ assert.throws(()=>heldBalanceFields(plan,mismatch,hash),/RELATION/);
+});
 test('held award adapter does not relax feature closure, source/session scope or XML evidence',()=>{
  const partial=raw();partial.steps.pop();assert.throws(()=>heldBalanceFields(plan,partial,hash),/INCOMPLETE/);
  for(const changed of [{betRaw:101},{sourceKey:'other'},{balanceContractHash:'f'.repeat(64)}])assert.throws(()=>heldBalanceFields({...plan,...changed},raw(),hash),/BINDING/);

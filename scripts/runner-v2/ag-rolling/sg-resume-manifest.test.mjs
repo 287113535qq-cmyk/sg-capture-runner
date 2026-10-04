@@ -37,3 +37,14 @@ test('completed adapter changes and any mismatched old immutable binding are ref
  delete f.completedGameIds;f.previousPlans.proofs[32500].acceptedBaseRounds=0;
  assert.throws(()=>rebaseResumeManifest(f),/OLD_ADAPTER_BINDING/);
 });
+test('a reviewed automatic-free repair needs its own complete historical settlement and preserves previous financial identity',()=>{
+ const f=fixture(),p=f.plans.plans[32500],proof=f.plans.proofs[32500];
+ p.automaticFreeContract='nextgen-automatic-nfg-free-v1';p.automaticFreeContractHash='f'.repeat(64);proof.planHash=queueHash(p);
+ proof.automaticFreeRepair={schema:'sg-ag-automatic-free-repair-evidence-v1',contractHash:'f'.repeat(64),
+  nativeFaultPrefixes:51,nativeEvidenceHash:'d'.repeat(64),historicalFullRounds:4,historicalEvidenceHash:'e'.repeat(64),
+  independentJsPython:true,sourceRequests:0,mongoWrites:0,failedRoundsCredited:0};
+ assert.equal(rebaseResumeManifest(f)[0].planHash,proof.planHash);
+ proof.automaticFreeRepair.historicalFullRounds=0;assert.throws(()=>rebaseResumeManifest(f),/REPAIR_UNREVIEWED/);
+ proof.automaticFreeRepair.historicalFullRounds=4;proof.automaticFreeRepair.failedRoundsCredited=1;
+ assert.throws(()=>rebaseResumeManifest(f),/REPAIR_UNREVIEWED/);
+});

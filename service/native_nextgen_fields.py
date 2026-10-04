@@ -38,6 +38,13 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if raw.get('automaticFreeContract') is not None:
+            from automatic_free_fields import binding,settled
+            binding(self.plan)
+            if raw.get('balanceContract') is not None:
+                from held_balance_fields import binding as balance_binding
+                balance_binding(self.plan)
+            return settled(raw)
         if raw.get('balanceContract') is not None:
             from held_balance_fields import binding, settled
             binding(self.plan)
@@ -58,4 +65,8 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if raw.get('automaticFreeContract') is not None:
+            from automatic_free_fields import binding,next_request
+            binding(self.plan)
+            return next_request(raw)
         return {'MSGID':'FREE_GAME'} if self.frame(raw['steps'][-1]) else None
