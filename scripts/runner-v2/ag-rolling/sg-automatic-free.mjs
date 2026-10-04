@@ -35,6 +35,8 @@ export function automaticFreePrefix(plan,raw){
   remaining=amount(p.NFG??'0');assert(remaining<=100&&(i===0||p.NFG!==undefined),'TRIAL_FREE_LIMIT');
   const fid=p.FID??'0|';assert(['','0','0|'].includes(fid)||(e.allowedFids[msg]??[]).includes(fid)
    &&(remaining>0||i>0&&e.allowTerminalFeatureId),'UNKNOWN_TRIAL_FEATURE');
+  assert(remaining>0||['','0','0|'].includes(fid)||e.terminalFids===undefined||e.terminalFids.includes(fid),
+   'UNREVIEWED_AUTOMATIC_TERMINAL');
   assert(!Object.keys(p).some(k=>k.startsWith('FS_')||k.startsWith('NFR_'))&&p.CFG===undefined
    &&p.ABPM===undefined&&!String(p.GSD??'').includes('#lives~'),'UNKNOWN_TRIAL_FEATURE');
   const b=amount(p.B),ab=amount(p.AB),current=amount(p.TW),terminal=i===raw.steps.length-1&&remaining===0;

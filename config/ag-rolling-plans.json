@@ -873,7 +873,7 @@
         "RB": "6"
       },
       "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
-      "automaticFreeContractHash": "943c25e021300fed45fb72a4af0ea234797a23a088d3a9a59d9991b7c7876aea"
+      "automaticFreeContractHash": "aff8fc5e4dff63b46af81702be9cc7ef4a73608324e937eb67b0c7bcb6f57142"
     },
     "32614": {
       "schema": "sg-work-pool-v1",
@@ -5923,7 +5923,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32595,
       "runtimeGameId": 33066,
-      "planHash": "4355d6e7ec5f69e1729d968812caf16d257241d2008587490a9beefcfbae9f81",
+      "planHash": "b41ea308d1d80aac8f9d7fabddc08b96a5d8fd9e805da35229962f2a0abbfe00",
       "historyFileSha256": "94a5f500967c35e9b16eda43015cedaa1e482bb8f5fc97af8c0e97be31aa6dbf",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 0,
@@ -6035,7 +6035,7 @@
       "previousPlanHash": "2ceeeb6b68bbefa0d6071bd5f864e70027ac5b1a89d6fb4554a246f7c70e7ca3",
       "automaticFreeRepair": {
         "schema": "sg-ag-automatic-free-repair-evidence-v1",
-        "contractHash": "943c25e021300fed45fb72a4af0ea234797a23a088d3a9a59d9991b7c7876aea",
+        "contractHash": "aff8fc5e4dff63b46af81702be9cc7ef4a73608324e937eb67b0c7bcb6f57142",
         "nativeFaultPrefixes": 48,
         "nativeEvidenceHash": "918f9bfcc748b423a31fd3fc47d3cfb76aba300100d8f7a1c0ff7a64f923d617",
         "historicalFullRounds": 2,

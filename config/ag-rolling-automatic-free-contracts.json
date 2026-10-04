@@ -668,7 +668,10 @@
         "1|"
       ],
       "sourceRequests": 0,
-      "mongoWrites": 0
+      "mongoWrites": 0,
+      "terminalFids": [
+        "1|"
+      ]
     },
     "goldfishfeedingtimedeluxetreasure96-ag-rolling-nextgen-v1": {
       "gameId": 32529,

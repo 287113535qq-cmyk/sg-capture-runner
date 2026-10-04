@@ -94,3 +94,11 @@ test('new automatic variants retain fixed source, exact free request and conserv
   assert.throws(()=>automaticFreeNext(p,change(structuredClone(r),0,`FID=${fid}`,`FID=${fid}&CFG=1`)),/FEATURE/);
  }
 });
+test('prefix-only Money Raid feature evidence does not authorize an unseen feature terminal',()=>{
+ const p=registry.plans['32595'];
+ for(const fid of ['2|','3|']){
+  const r=sample(p);for(let i=0;i<r.steps.length;i++)change(r,i,'FID=1|',`FID=${fid}`);
+  assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,2)}),{MSGID:'FREE_GAME'});
+  assert.throws(()=>automaticFreeFields(p,r,hash),/UNREVIEWED_AUTOMATIC_TERMINAL/);
+ }
+});
