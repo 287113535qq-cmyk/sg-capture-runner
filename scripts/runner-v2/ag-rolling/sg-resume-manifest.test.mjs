@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {queueHash} from './sg-queue-profile.mjs';
+import {rebaseResumeManifest} from './sg-resume-manifest.mjs';
+function fixture(){
+ const plan={gameId:32500,trialId:'fixed-trial',sourceKey:'fixed-source',buy:0,betRaw:100,requestParams:{GN:'fixed',BPL:'5',LB:'40'}};
+ const proof={planHash:queueHash(plan),acceptedBaseRounds:93,historyFileSha256:'a'.repeat(64),acceptedRawHashes:['b'.repeat(64)]};
+ const previousPlans={plans:{32500:plan},proofs:{32500:proof}};
+ const previous={payload:{queueId:'queue',games:[{gameId:'32500',campaignId:'retained-campaign',baseline:0}]},
+  manifest:[{gameId:'32500',phase:'ready',planHash:queueHash(plan),adapterProofHash:queueHash(proof),campaignId:'retained-campaign'}]};
+ const repaired={...structuredClone(plan),balanceContract:'nextgen-held-award-balance-v1',balanceContractHash:'c'.repeat(64)};
+ const repairProof={...proof,previousPlanHash:queueHash(plan),planHash:queueHash(repaired),balanceRepair:{
+  schema:'sg-ag-balance-repair-evidence-v1',contractHash:'c'.repeat(64),nativeRounds:17,nativeEvidenceHash:'d'.repeat(64),
+  independentJsPython:true,sourceRequests:0,mongoWrites:0,failedRoundsCredited:0}};
+ return {previous,previousPlans,plans:{plans:{32500:repaired},proofs:{32500:repairProof}}};
+}
+test('resume forwards only the reviewed repair hashes and leaves the original queue and manifest immutable',()=>{
+ const f=fixture(),before=queueHash(f.previous),manifest=rebaseResumeManifest(f);
+ assert.equal(queueHash(f.previous),before);assert.equal(manifest[0].campaignId,'retained-campaign');
+ assert.equal(manifest[0].planHash,queueHash(f.plans.plans[32500]));assert.equal(manifest[0].adapterProofHash,queueHash(f.plans.proofs[32500]));
+});
+test('unchanged adapters and completed games keep the exact original manifest',()=>{
+ const f=fixture();f.plans=structuredClone(f.previousPlans);f.completedGameIds=['32500'];
+ assert.deepEqual(rebaseResumeManifest(f),f.previous.manifest);
+});
+test('adapter forwarding rejects changed history, source request, quota, evidence, financial identity or credited failed rounds',()=>{
+ for(const damage of [f=>f.plans.plans[32500].betRaw++,f=>f.plans.plans[32500].requestParams.BPL='6',
+  f=>f.plans.proofs[32500].acceptedRawHashes=[],f=>f.plans.proofs[32500].balanceRepair.failedRoundsCredited=1,
+  f=>f.plans.proofs[32500].balanceRepair.independentJsPython=false,
+  f=>f.plans.proofs[32500].balanceRepair.sourceRequests=1,f=>f.plans.proofs[32500].balanceRepair.nativeEvidenceHash='missing',
+  f=>f.plans.proofs[32500].previousPlanHash='e'.repeat(64)]){
+  const f=fixture();damage(f);assert.throws(()=>rebaseResumeManifest(f),/REPAIR_UNREVIEWED/);
+ }
+});
+test('completed adapter changes and any mismatched old immutable binding are refused',()=>{
+ const f=fixture();f.completedGameIds=['32500'];assert.throws(()=>rebaseResumeManifest(f),/COMPLETED_ADAPTER_CHANGED/);
+ delete f.completedGameIds;f.previousPlans.proofs[32500].acceptedBaseRounds=0;
+ assert.throws(()=>rebaseResumeManifest(f),/OLD_ADAPTER_BINDING/);
+});
