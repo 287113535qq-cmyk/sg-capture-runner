@@ -133,6 +133,19 @@ def contract(game_id):
                       'BGInfo / Balances':'首帧下注16，后续报告stake16不重复扣款；余额=初值-16+逐Logic累计奖。',
                       'BaseGameRecoveryInfo':'只首局ReelResults和TopReelInfo的原样引用，不增加任何奖。',
                       'EndGame':'完整确认、现金保持，半局不能计完整。'}})
+    elif game_id == 32754:
+        native.update({'family':'arthur-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32976与WMS Header20467分别绑定；仅新的匿名Init限定能力核验后，首Logic Stake.total200/PaylineCount20/CurrencyMultiplier1。',
+            'continue':'仅自身普通单Logic，readyForEndGame=Y、无Wheel/FS/Excalibur/Token/WildInfo后允许唯一EndGame；不继续历史特殊局。',
+            'complete':'两帧普通Logic→EndGame；EndGame ready=N且无GameResult/SymbolGrids，现金保持。每帧会话、observer现金、Payline奖额和、spinWins、totalWin及BG累计独立双验。',
+            'bounds':'离线候选：自身全history SHA固定；前1000中986普通完整/1972请求沿actual codec→独立Python IPC→record/verify一致；14自身特殊路径首响应后拒绝（6免费、3Excalibur、5Wild overlay），旧raw/hash/标签保留且历史不抵扣目标。6免费末计数等于total且readyY只是未适配的有限观察；3Excalibur readyN就旧End仍拒绝，不当完整。免费extra3/5、Token feature和Wild overlay均未授权继续或结算。真实Init/在线canary/native scope未观察或安装；不在当前81队列。MaxWin、未知节点/奖表/网格、恢复和缺EndGame拒绝。',
+            'files':['scripts/runner-v2/ag-rolling/sg-arthur-base.mjs','scripts/runner-v2/ag-rolling/sg-arthur-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-arthur-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'service/arthur_base_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header / Stake':'20467/version1_0/isRecoveringN；实际总下注200，请求及响应均20线/stakePerLine10；普通readyY，EndGame readyN。',
+                      'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
+                      'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
+                      'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
     elif game_id == 32755:
         native.update({'family':'blazing-x-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32977与WMS Header20363分别绑定；独立匿名Init能力核验后，首Logic Stake.total240/PaylineCount40/CurrencyMultiplier1。响应stakePerLine20×40不改变实际240。',
@@ -341,7 +354,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32755'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -405,6 +418,11 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
                 'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
                 'required':'固定实际16，GameMode0；级联奖只计入对应Logic，恢复引用不重复计奖，最终EndGame确认及每帧现金严格双验。'}
+        if plan and plan.get('adapter') == 'arthur-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
+                'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
+                'required':'固定200；仅自身readyY普通完整，Payline奖额和/网格/BG一致，EndGame确认现金保持；14特殊路径仍拒绝。'}
         if plan and plan.get('adapter') == 'blazing-x-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(own Logic totalWin)',
