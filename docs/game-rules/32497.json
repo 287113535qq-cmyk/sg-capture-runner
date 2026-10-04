@@ -6,21 +6,105 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "dragonjinlongjinbao96-ag-rolling-nextgen-v1",
+  "planHash": "a9fa454bb02814a861eeebd64d7a74b128ce811c0e4924e0e4b8b5924229eb39",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32497",
+    "runtimeSlug": "dragonjinlongjinbao96",
+    "buy": 0,
+    "betRaw": 100,
+    "requestParams": {
+      "AP": "false",
+      "BPL": "5",
+      "GN": "dragonjinlongjinbao96",
+      "LB": "50"
+    },
+    "maxSteps": 100
+  },
+  "roundRule": {
+    "family": "nextgen-dragon-end-evidence-v3",
+    "messages": [
+      "BET",
+      "FEATURE_START",
+      "FEATURE_PICK",
+      "FEATURE_END"
+    ],
+    "start": "普通BET沿原完整校验；CFG0触发和START的原v1/v2自身证据门保持。7份不满足原PD门的START仍拒绝。",
+    "continue": "88份自身closed前缀257条已有请求中，81份首PICK固定FP0|1|1及精确FID0|、FS_0=1、CFP/CFR1、FPM1;|、TFW0、NFR1、7种自身PD数值形状。原前端ZYa将CFP_0映射G7并设置Eu，gP据此选择FEATURE_END，SPa只发CFG0且无FP；与独立JS/Python和实际codec IPC一致。",
+    "complete": "首END的新响应必须停止封存；没有特殊终局验收许可，不发第二END、FREE_GAME或下一BET，不续旧半局。普通完整记录继续每局双验、任务全文回读与300000整款验收。",
+    "bounds": "v3仅本地，未在线应用；当前受检v2已发布且采集中。88份前缀、257条已有请求及81条候选END经真实前端和独立codec/Python核验；99份原普通完整raw与record哈希保持。旧v2的88份停止语义、7份START拒绝及原v1/v2 policy和运行字节不变。首END未知ACK单次封存不重发，特殊终局信用0。mandatory wiringEvidence和原→v1→v2→v3不可变接续必须通过，未来须双仓完整ended后新精确Linux/sealed才可发布。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-dragon-end.mjs",
+      "service/dragon_end_fields.py",
+      "config/ag-rolling-dragon-end-contracts.json",
+      "scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs",
+      "service/explicit_request_dragon.py",
+      "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs",
+      "service/native_nextgen_fields.py",
+      "scripts/runner-v2/record_fields.py",
+      "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs"
+    ],
+    "fields": {
+      "FID / FS_0 / CFP_0": "原前端分别映射xO/m8/G7；CFP_0=1设置Eu并选END，不把NFR当END判据。",
+      "PD": "只自身已观察7种keyset、数值编码长度和scalar集合；不由lives/cashSymbols猜奖励或终局。",
+      "B / AB / TW": "每帧B=初始-100+自身BET的TW；PICK中TW不变，观察AB等于held或含奖余额。",
+      "PID / SID / XML": "请求PID与响应SID分别固定；PICK只有OGS_RC0/SUCCESStrue/PAYLOAD三节点及全文一致。",
+      "终局": "END响应未观察，特殊终局许可0；旧failed/half不续、不重放、不回计。"
+    }
+  },
+  "typeMappings": {
+    "dragonjinlongjinbao96-ag-rolling-nextgen-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "dragonjinlongjinbao96-ag-rolling-nextgen-v1": "c21120af1529353f338478587d56f30b3420c229dd43cea67de7471ae2942164"
+  },
+  "configuredNaturalBonusCodes": [
+    1
+  ],
+  "configuredOutcomeCategoryCount": 1,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "6549562fec4a268552af59f30dcb10b908dbef4fb92a78304e20cc8b2aa54917"
+    "scripts/runner-v2/ag-rolling/sg-dragon-end.mjs": "42c92831518c365990b15c543db909ce90aae5f8c31ecd597ee8c83cb321ef65",
+    "service/dragon_end_fields.py": "c3cde517964162f7cf46faff5bd29c8efb2408ffd775e6a94bfdd64469575493",
+    "config/ag-rolling-dragon-end-contracts.json": "afe0fb6a5c21aa1fb77218f973217d60ddc06e5e3993e833671147603670429a",
+    "scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs": "72e3eeaec16b930f69f80b6e1fc0064f7448a28e9643d864b7757693677d7077",
+    "service/explicit_request_dragon.py": "2dbd759dc76889b747d0b1666f28b0405ed884907a8539bbb61c88718b1c4f2b",
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "75e38b6554f32c421de8bf1c560a6581539d65e0b23f6daafd53d75dc3da3fbb",
+    "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
+    "scripts/runner-v2/record_fields.py": "1f93040ec8bcec7e2c13af7fe082b470153e22fea1e2ea7b30d2eed336c81f11",
+    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "5c6d162be258d297dbc40626184c59e4acefe0b61111226b96768427a8b4967e",
+    "service/game_rule_catalog.py": "136dba7cb04e284023f42a6a5881f42ba78d2943767ee8929f30dcb90e700b56"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +116,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ec1157bae3d91bc6c40ae41af15fca63b06ec84c00d2f83e764b599de566c229"
+  "ruleHash": "60b64b4632e9028c28a13f6776ab0e73e2d5bf35f2fca0852146300ec4462acb"
 }

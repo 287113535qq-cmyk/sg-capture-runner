@@ -5,6 +5,7 @@ from native_nextgen_fields import NativeNextgenFields
 from round_fields import FieldError
 REG=json.loads((pathlib.Path(__file__).resolve().parents[2]/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))
 REG['plans']['32474']={k:v for k,v in REG['plans']['32474'].items() if k not in ('carnivalPickContract','carnivalPickContractHash')}
+REG['plans']['32497']={k:v for k,v in REG['plans']['32497'].items() if k not in ('dragonEndContract','dragonEndContractHash')}
 
 def frame(p,msg,reply):
     q={**p['requestParams'],'PID':'gdmgcmoffline-explicit','MSGID':msg} if msg=='BET' else {

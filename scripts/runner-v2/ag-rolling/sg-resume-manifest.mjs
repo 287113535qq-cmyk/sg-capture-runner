@@ -4,6 +4,7 @@ import {AUTOMATIC_TERMINAL,terminalBinding} from './sg-automatic-terminal.mjs';
 import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 import {CARNIVAL_PICK,carnivalPrevious,carnivalProof} from './sg-carnival-pick.mjs';
+import {DRAGON_END,dragonEndPrevious,dragonEndProof} from './sg-dragon-end.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
 // every original campaign, quota and staging namespace. Admission replays
 // successful prefixes under this binding before it grants source permission.
@@ -17,6 +18,22 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.dragonEndContract!==undefined){
+   const previousPlan=dragonEndPrevious(plan),{planHash:bound,dragonEndEvidence:e,...fields}=proof;
+   const previousProof={...fields,planHash:queueHash(previousPlan)};
+   // Unmarked and v1 history must pass the original -> v1 -> v2 gates first.
+   if(oldPlan.explicitDragonContract===undefined){
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:previousProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   assert(id==='32497'&&oldPlan.dragonEndContract===undefined&&plan.dragonEndContract===DRAGON_END
+    &&queueHash(oldPlan)===queueHash(previousPlan)&&queueHash(oldProof)===queueHash(previousProof)
+    &&e?.previousPlanHash===entry.planHash&&e?.previousProofHash===entry.adapterProofHash&&bound===planHash,
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   dragonEndProof(plan,proof);
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.carnivalPickContract!==undefined){
    const previousPlan=carnivalPrevious(plan),{planHash:bound,carnivalPickEvidence:e,...fields}=proof;
    const previousProof={...fields,planHash:queueHash(previousPlan)};

@@ -7,7 +7,9 @@ import {nextgenCodec} from './sg-nextgen-codec.mjs';
 import {rebaseResumeManifest} from './sg-resume-manifest.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 import {createProtocolSessions} from './sg-protocol-session.mjs';
-const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),plan=registry.plans['32497'],pid='gdmgcmoffline-dragon';
+const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),currentPlan=registry.plans['32497'],pid='gdmgcmoffline-dragon';
+const {dragonEndContract,dragonEndContractHash,...plan}=currentPlan;
+const {dragonEndEvidence,...previousProofFields}=registry.proofs['32497'];registry.proofs['32497']={...previousProofFields,planHash:queueHash(plan)};
 function sample(){
  const held=1000-plan.betRaw,common={B:String(held),AB:String(held),TW:'0',IFG:'0',SID:'offline-dragon',FRBAL:'0',GA:'0',GSD:'',VER:'1'};
  const frame=(msg,p)=>{const payload=Object.entries({...common,MSGID:msg,...p}).map(([k,v])=>`${k}=${v}`).join('&');
@@ -46,7 +48,7 @@ test('old stored v1 markers still stop, and any new PICK response, END or FREE r
  for(const request of ['MSGID=FEATURE_PICK&CFG=0&FP=0|1|0','MSGID=FEATURE_PICK&CFG=0&FP=0|2|1','MSGID=FEATURE_END&CFG=0','MSGID=FREE_GAME'])assert.throws(()=>dragonIntent(plan,sample(),`GN=${plan.runtimeSlug}&PID=${pid}&${request}`),/INTENT_CHANGED/);
 });
 test('actual independent IPC permits the fixed PICK and refuses special normalization',async()=>{
- const raw=sample(),codec=await nextgenCodec({plan,session:{pid},sequence:()=>assert.fail('no credit'),worker:0,batchId:1});
+ const raw=sample(),codec=await nextgenCodec({plan:currentPlan,session:{pid},sequence:()=>assert.fail('no credit'),worker:0,batchId:1});
  try{assert.deepEqual(await codec.next(raw),{MSGID:'FEATURE_PICK',CFG:'0',FP:'0|1|1'});await assert.rejects(()=>codec.prepare(raw,{attempt:'offline',sessionHash:'a'.repeat(64)}),/INCOMPLETE_EXPLICIT_PROBE/);}finally{codec.close();}
 });
 test('new resume forward retains v1 proof/history and rejects altered evidence or completed adapters',()=>{
@@ -62,12 +64,12 @@ test('new resume forward retains v1 proof/history and rejects altered evidence o
 test('new anonymous exchange drains one unreviewed PICK or unknown ACK and never replays or credits it',async()=>{
  for(const unknown of [false,true]){
   const raw=sample(),sends=[];let closed,closing=0;
-  const source=await createProtocolSessions({game:{gameId:'32497'},queueId:'offline-dragon',kind:'canary',index:1,owner:'offline',plan,guard:async()=>{},
+  const source=await createProtocolSessions({game:{gameId:'32497'},queueId:'offline-dragon',kind:'canary',index:1,owner:'offline',plan:currentPlan,guard:async()=>{},
    journal:{async open(){},async intent(){return {durable:true};},async response(){if(unknown&&sends.length===5)throw Error('unknown-ack');return {durable:true};},async close(q){closing++;closed=q;},async auditSources(){assert.fail('incomplete');}},
    spoolFactory:()=>({append(){},confirmed(){},close(){}}),createSession:async()=>({identity:'a'.repeat(64),pid,async close(){},async send(payload,msg){
     sends.push(msg);if(['INIT','REELSTRIP'].includes(msg)){const p=`MSGID=${msg}&B=1000&AB=1000&TW=0&IFG=0&NFG=0`;return {methodName:'processGameMessage',msgId:msg,requestPayload:payload,responsePayload:p,responseBalance:1000,elapsedMs:0,responseXml:'<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+p.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>'};}
     return {...(raw.steps.find(s=>s.msgId===msg)??raw.steps[1]),msgId:msg,requestPayload:payload};}}),
-   createCodec:(plan,session)=>nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21})}).open();
+   createCodec:async(plan,session)=>{const codec=await nextgenCodec({plan,session,sequence:()=>assert.fail('no record'),worker:20,batchId:21}),create=codec.createRaw;codec.createRaw=value=>{const raw=create(value);delete raw.dragonEndContract;return raw;};return codec;}}).open();
   try{await assert.rejects(()=>source.captureRound({}),unknown?/JOURNAL_ACK_UNKNOWN/:/EXPLICIT_DRAGON_RESPONSE_REVIEW_REQUIRED/);}finally{await source.close();}
   assert.deepEqual(sends,['INIT','REELSTRIP','BET','FEATURE_START','FEATURE_PICK']);assert.equal(closing,1);assert.equal(closed.performance.normalize.count,0);assert.equal(closed.awaiting,unknown?5:null);
  }

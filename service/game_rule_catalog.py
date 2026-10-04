@@ -71,13 +71,20 @@ def contract(game_id):
                       'PID / SID / XML':'请求PID与响应SID分别固定；新PICK XML只OGS_RC0/SUCCESStrue/PAYLOAD且全文一致。',
                       '终局':'新特殊终局许可仍为0；旧failed/half不续跑或回计。'}})
     elif game_id == 32497:
-        native.update({'family':'nextgen-dragon-start-evidence-v2','messages':['BET','FEATURE_START','FEATURE_PICK'],
-            'start':'只本游戏CFG0自身触发可请求新匿名会话FEATURE_START；旧v1 marker仍在START响应后停止。',
-            'continue':'新v2只接受72份自身START的精确字段集合及7种PD字段集合，逐帧金额/会话/XML、固定下注100和PD数值边界独立双验；真实前端下一请求固定FP0|1|1。缺NFG许可仅限本游戏已观察START，不全局放开。',
-            'complete':'首个新PICK响应尚未观察，即停止封存；没有END或FREE许可，显式奖励始终INCOMPLETE且不信用。普通完整记录仍须独立全文、金额与哈希验证。',
-            'bounds':'仅本地候选，未在线应用。72份自身前缀144条已有请求及72条候选intent沿实际codec/Python一致，99份原接受历史普通完整字段/hash不变。原v1契约、96份触发证明及全部旧raw/半局保留，不重放或回计；新窗口须精确Linux、证据约束manifest转发与旧prefix复核。',
-            'files':['scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs','scripts/runner-v2/ag-rolling/sg-explicit-probe.mjs',
-                     'service/explicit_request_dragon.py','service/explicit_request_probe.py','config/ag-rolling-explicit-dragon-contracts.json']})
+        native.update({'family':'nextgen-dragon-end-evidence-v3','messages':['BET','FEATURE_START','FEATURE_PICK','FEATURE_END'],
+            'start':'普通BET沿原完整校验；CFG0触发和START的原v1/v2自身证据门保持。7份不满足原PD门的START仍拒绝。',
+            'continue':'88份自身closed前缀257条已有请求中，81份首PICK固定FP0|1|1及精确FID0|、FS_0=1、CFP/CFR1、FPM1;|、TFW0、NFR1、7种自身PD数值形状。原前端ZYa将CFP_0映射G7并设置Eu，gP据此选择FEATURE_END，SPa只发CFG0且无FP；与独立JS/Python和实际codec IPC一致。',
+            'complete':'首END的新响应必须停止封存；没有特殊终局验收许可，不发第二END、FREE_GAME或下一BET，不续旧半局。普通完整记录继续每局双验、任务全文回读与300000整款验收。',
+            'bounds':'v3仅本地，未在线应用；当前受检v2已发布且采集中。88份前缀、257条已有请求及81条候选END经真实前端和独立codec/Python核验；99份原普通完整raw与record哈希保持。旧v2的88份停止语义、7份START拒绝及原v1/v2 policy和运行字节不变。首END未知ACK单次封存不重发，特殊终局信用0。mandatory wiringEvidence和原→v1→v2→v3不可变接续必须通过，未来须双仓完整ended后新精确Linux/sealed才可发布。',
+            'files':['scripts/runner-v2/ag-rolling/sg-dragon-end.mjs','service/dragon_end_fields.py','config/ag-rolling-dragon-end-contracts.json',
+                     'scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs','service/explicit_request_dragon.py',
+                     'scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs','service/native_nextgen_fields.py',
+                     'scripts/runner-v2/record_fields.py','scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs'],
+            'fields':{'FID / FS_0 / CFP_0':'原前端分别映射xO/m8/G7；CFP_0=1设置Eu并选END，不把NFR当END判据。',
+                      'PD':'只自身已观察7种keyset、数值编码长度和scalar集合；不由lives/cashSymbols猜奖励或终局。',
+                      'B / AB / TW':'每帧B=初始-100+自身BET的TW；PICK中TW不变，观察AB等于held或含奖余额。',
+                      'PID / SID / XML':'请求PID与响应SID分别固定；PICK只有OGS_RC0/SUCCESStrue/PAYLOAD三节点及全文一致。',
+                      '终局':'END响应未观察，特殊终局许可0；旧failed/half不续、不重放、不回计。'}})
     elif game_id == 32595:
         native.update({'family':'nextgen-moneyraid-terminal-evidence-v2','messages':['BET','FREE_GAME'],
             'start':'固定本游戏runtime33066、moneyraidwapiti96、下注200及原请求模板；新raw同时保留原v1和v2 marker。',
@@ -366,6 +373,8 @@ def cards(root=ROOT):
         plans['32595']=rolling['32595']
     if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
         plans['32474']=rolling['32474']
+    if rolling.get('32497',{}).get('dragonEndContract')=='nextgen-dragon-end-evidence-v3':
+        plans['32497']=rolling['32497']
     profiles = json.loads((root / 'service/round_types.json').read_text(encoding='utf-8'))['profiles']
     # Index already-saved focused analyses, not broad progress tables that list every game.
     known = {str(g['gameId']) for g in games}
