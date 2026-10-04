@@ -4445,6 +4445,32 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "eightyeightfortunes-deferred-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "eighty-fortunes-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 176,
+      "baseBonus": 0,
+      "freeTypes": {
+        "ten-free-deferred-trigger880": 1
+      },
+      "featureTypes": {
+        "fu-bat-type0-or1-fixed-shape": 1
+      },
+      "evidence": {
+        "captureGameId": 32750,
+        "runtimeGameId": 32972,
+        "wmsGameId": 20077,
+        "historyFileSha256": "4d0715cb7c6b9569aeefc6c94751701c21dfdb3184a287588238ab94c55bf669",
+        "fullFreeProbeSha256": "1876bda693a79a8a4a0324240913657f1d3c806edc0f5d4a5950a04705f25188",
+        "fullBaseRounds": 992,
+        "fullJackpotRounds": 4,
+        "fullFreeRounds": 1,
+        "rejectedPartialFreeRounds": 4
+      }
     }
   }
 }

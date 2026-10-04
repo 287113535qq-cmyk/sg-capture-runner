@@ -10,6 +10,8 @@ import {fortunesSession} from './sg-fortunes-source.mjs';
 import {fortunesCodec} from './sg-fortunes-codec.mjs';
 import {acornSession} from './sg-acorn-source.mjs';
 import {acornCodec} from './sg-acorn-codec.mjs';
+import {eightySession} from './sg-eighty-source.mjs';
+import {eightyCodec} from './sg-eighty-codec.mjs';
 import {createStagingStore} from './sg-staging-store.mjs';
 import {localSpool} from '../local-spool.mjs';
 import {analyzer} from '../analyzer.mjs';
@@ -17,8 +19,8 @@ import {analyzer} from '../analyzer.mjs';
 // selection, no shared count allocator, and no source request at construction.
 export function createTaskRuntime({store,transport,game,queueId,kind,index,quota,owner,plan,base,guard,
  resume,createSession,createCodec,spoolFactory=localSpool,createAnalyzer=analyzer}){
- createSession??=plan.adapter==='five-treasures-wms-v1'?fiveSession:plan.adapter==='fortunes-megaways-wms-v1'?fortunesSession:plan.adapter==='acorn-base-wms-v1'?acornSession:nextgenSession;
- createCodec??=plan.adapter==='five-treasures-wms-v1'?fiveCodec:plan.adapter==='fortunes-megaways-wms-v1'?fortunesCodec:plan.adapter==='acorn-base-wms-v1'?acornCodec:nextgenCodec;
+ createSession??=plan.adapter==='five-treasures-wms-v1'?fiveSession:plan.adapter==='fortunes-megaways-wms-v1'?fortunesSession:plan.adapter==='acorn-base-wms-v1'?acornSession:plan.adapter==='eighty-fortunes-wms-v1'?eightySession:nextgenSession;
+ createCodec??=plan.adapter==='five-treasures-wms-v1'?fiveCodec:plan.adapter==='fortunes-megaways-wms-v1'?fortunesCodec:plan.adapter==='acorn-base-wms-v1'?acornCodec:plan.adapter==='eighty-fortunes-wms-v1'?eightyCodec:nextgenCodec;
  const id=taskId(kind,index),limits=quotas(game.baseline);
  assert(String(plan.gameId)===game.gameId&&plan.buy===0&&plan.database==='sg_capture_staging_v1'
   &&quota===(kind==='canary'?10:limits[index-1]),'SG_TASK_PLAN_SCOPE');

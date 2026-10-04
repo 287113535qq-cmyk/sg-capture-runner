@@ -90,6 +90,21 @@ def contract(game_id):
                      'service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
             'fields':{'Header':'WMS20442/version1_0/demo Y；session值私有且逐帧轮换。','FSInfo':'固定本游戏已证实6帧，freeSpinNumber逐帧推进；extraSpinsAwarded必须0。',
                       'Stake / cash':'首帧实际176；后续报告stake176不重复扣款。','JackpotInfo':'index0奖独立于totalSpinWin，二者之和等于totalWin。','EndGame':'完整确认与现金保持是完成前置条件。'}})
+    elif game_id == 32750:
+        native.update({'family':'eighty-fortunes-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'本游戏runtime32972与WMS Header20077分别固定；新匿名Init仅接受已限定能力shape且Stakes含176，真实Init尚未观察。首Logic使用SpinInfo creditBet88和betMultiplier2，实际扣款176。',
+            'continue':'自身免费触发授予10帧，继续Header-only Logic；remaining逐帧递减、extra0、last仅末帧Y。触发奖在首个免费续帧才兑现一次，首局cash不含该奖。BaseGameRecoveryInfo只原首局ReelResults引用，不再加奖。自身Jackpot只接受已观察3种pickLength/金额/type组合，没有客户端选择请求。',
+            'complete':'普通及固定Jackpot须唯一EndGame确认且现金保持。免费只有trigger880的真实完整终局获证明；trigger1760可核验已观察触发prefix，但终局仍拒绝，不允许END或信用。逐Logic奖、独立Jackpot、累计奖、每帧cash与会话独立JS/Python双验。',
+            'bounds':'仅离线候选，未进当前81队列、无native scope或真实Init/canary。1000自身历史中992普通和4Jackpot完整保留，4份旧免费半局仍拒绝；另1份真实12帧完整probe通过，总997完整及2004请求路径在实际codec/Python IPC/record/verify一致。旧probe标签漏计880，按原raw现金证据累计5930；原raw和旧标签不修改，历史不抵扣新目标。其他trigger、Jackpot形状、额外免费、重触发、恢复、MaxWin、未知节点严格拒绝；不代表全部特殊玩法覆盖。',
+            'files':['scripts/runner-v2/ag-rolling/sg-eighty-fortunes.mjs','scripts/runner-v2/ag-rolling/sg-eighty-source.mjs',
+                     'scripts/runner-v2/ag-rolling/sg-eighty-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs',
+                     'service/eighty_fortunes_fields.py','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'Header':'20077/version1_0、isRecovering=N；响应session逐帧绑定，实际值私有。',
+                      'SpinInfo':'88乘2实际176；免费续帧仅Header，不再次扣款。',
+                      'FreeGame':'初始10、extra0；trigger880延后首续帧兑现一次，trigger1760缺完整终局仍拒绝。',
+                      'GameWinInfo / cash':'累计Logic奖加trigger；首帧只兑现Logic奖，后续cash与累计兑现奖一致。',
+                      'Jackpot':'独立奖与reel奖之和等于totalWin，不重复计奖、不发猜测pick。',
+                      'EndGame':'仅已证明终态允许唯一确认，无确认或未知终态不能计完整。'}})
     elif game_id == 32751:
         native.update({'family':'fortunes-megaways-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtimeGameId32973与WMS Header.gameID20371分别固定；匿名新会话Init核验后首Logic固定Stake16、gameMode0、PaylineCount1和CurrencyMultiplier1。',
@@ -285,7 +300,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32751','32752'):
+    for key in ('32749','32750','32751','32752'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -337,6 +352,11 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',
                 'bet':'stakeRaw / 100','mul':'sum(Logic totalWin) / stakeRaw',
                 'required':'固定实际176；逐帧现金与累计奖一致，最终EndGame完整确认且现金保持。'}
+        if plan and plan.get('adapter') == 'eighty-fortunes-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin) + deferred trigger award',
+                'bet':'stakeRaw / 100','mul':'(sum(Logic totalWin) + deferred trigger award) / stakeRaw',
+                'required':'固定实际176；触发奖首续帧兑现一次，首帧不提前兑现；trigger1760终局拒绝，只有已证明终态与EndGame确认才完整。'}
         if plan and plan.get('adapter') == 'fortunes-megaways-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(Logic totalWin)',

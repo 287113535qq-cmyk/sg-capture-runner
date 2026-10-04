@@ -109,7 +109,7 @@
 | [32747](32747.json) | Xiao Fu Bao 2 | implemented-subset | 1 |
 | [32748](32748.json) | Zeus II | not-documented | 待确认 |
 | [32749](32749.json) | 5 Treasures | implemented-subset | 1 |
-| [32750](32750.json) | 88 Fortunes | not-documented | 待确认 |
+| [32750](32750.json) | 88 Fortunes | implemented-subset | 1 |
 | [32751](32751.json) | 88 Fortunes Megaways | implemented-subset | 1 |
 | [32752](32752.json) | Acorn Pixie | implemented-subset | 0 |
 | [32753](32753.json) | Action Bank Plus | not-documented | 待确认 |

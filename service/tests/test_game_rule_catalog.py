@@ -84,6 +84,18 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('不代表整款完成',card['roundRule']['bounds'])
         self.assertNotIn('B=AB',card['settlement']['required'])
 
+    def test_eighty_fortunes_documents_deferred_cash_and_limited_terminal_proof(self):
+        card=self.cards[32750]
+        self.assertFalse(card['captureAuthorization'])
+        self.assertFalse(card['allSpecialStageTypesCovered'])
+        self.assertEqual(card['runtimeGameId'],32972)
+        self.assertEqual(card['parameters']['wmsGameId'],20077)
+        self.assertEqual(card['roundRule']['family'],'eighty-fortunes-wms-v1')
+        self.assertIn('首个免费续帧才兑现一次',card['roundRule']['continue'])
+        self.assertIn('trigger1760终局拒绝',card['settlement']['required'])
+        self.assertIn('4份旧免费半局仍拒绝',card['roundRule']['bounds'])
+        self.assertIn('无native scope或真实Init/canary',card['roundRule']['bounds'])
+
     def test_acorn_ordinary_only_document_does_not_claim_unknown_feature_coverage(self):
         card=self.cards[32752]
         self.assertFalse(card['captureAuthorization'])

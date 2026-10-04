@@ -18,3 +18,4 @@ import './ag-rolling/sg-explicit-continuation.test.mjs';
 import './ag-rolling/sg-explicit-dragon.test.mjs';
 import './ag-rolling/sg-fortunes-wiring.test.mjs';
 import './ag-rolling/sg-acorn-wiring.test.mjs';
+import './ag-rolling/sg-eighty-wiring.test.mjs';
