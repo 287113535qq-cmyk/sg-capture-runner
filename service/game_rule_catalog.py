@@ -389,7 +389,18 @@ def cards(root=ROOT):
     output = {}
     for game in sorted(games, key=lambda x: x['gameId']):
         gid = game['gameId']; plan = plans.get(str(gid)); rule = contract(gid) if plan else None
+        if gid==32754 and plan and plan.get('arthurFeatureContract')=='wms-arthur-free-wild-evidence-v2':
+            rule={**rule,'family':'wms-arthur-free-wild-evidence-v2',
+                'continue':'新匿名 v2 marker：自身 Wheel index5/1/6/3→免费8/10/12/5；Header-only Logic，编号逐帧推进，extra仅3/5且总数≤20。47自身Token joint转移及倍率1/3/5独立核验；未知状态停止。Wild只自身5种15格overlay，不另计奖。',
+                'complete':'免费编号等于动态total且readyY后唯一EndGame readyN/noresult/现金保持；末activeFeature可仍1。普通、免费、Wild分别归类，每帧奖额和、BG/FS累计和资金双验；恢复转轴只是首帧引用。',
+                'bounds':'本地 versioned v2，未在线应用：986普通/1972请求旧raw-record哈希一致；6免费+5Wild合计97自身历史帧，997完整/2069请求沿actual codec→独立Python IPC→record→verify通过，mandatory wiringEvidence。原前端EndGame constructor隔离执行11次（对象构造，未执行XML serializer）。旧unmarked/v1的14自身特殊仍拒绝；3Excalibur早End不续。extra3/5、Token及特殊符号0..13/至多11线只限本v2；普通仍符号0..10/最多10线。真实Init/在线canary/native scope未观察或安装，不在当前81队列；历史不抵300000目标。',
+                'files':rule['files']+['scripts/runner-v2/ag-rolling/sg-arthur-feature.mjs','scripts/runner-v2/ag-rolling/sg-arthur-feature-codec.mjs','scripts/runner-v2/ag-rolling/sg-arthur-feature-source.mjs','service/arthur_feature_fields.py','config/ag-rolling-arthur-feature-contracts.json'],
+                'fields':{**rule['fields'],'Versioned Free / Wild':'原v1普通字节和type profile保持；v2 Free bonus1/freeGame，Wild bonus0/none保持自身旧标签。',
+                    'Token / FSInfo':'每帧prev/new chain，自己的47种joint状态；38种倍率/awardIndex/winVal联合tuple，奖值已含倍率，不再乘。',
+                    'Scatter / Recovery':'首trigger有零ScatterWin；extra bonusY/winCountSC1却无ScatterWin分别核验。恢复转轴仅自己首ReelResults引用，不重复支付。'}}
         mapping = {k: v for k, v in profiles.items() if plan and (k == plan['sourceKey'] or k.startswith(plan['sourceKey'] + '-')) and v.get('fixtureOnly') is False}
+        if gid==32754 and plan and plan.get('arthurFeatureContract'):
+            mapping['arthurandtheroundtable-free-wild-ag-rolling-wms-v2']=profiles['arthurandtheroundtable-free-wild-ag-rolling-wms-v2']
         # Export only reviewed selectors/type mappings, never arbitrary payloads.
         types = {k: {f: v.get(f) for f in ['protocol', 'modeSelectorKeys', 'modes', 'freeSelector', 'freeTypes', 'featureSelector', 'featureTypes']} for k, v in mapping.items()}
         codes = sorted({n for p in mapping.values() for field in ['freeTypes', 'featureTypes'] for n in (p.get(field) or {}).values() if type(n) is int and n > 0})
@@ -434,6 +445,9 @@ def cards(root=ROOT):
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + ordinary Logic totalWin',
                 'bet':'stakeRaw / 100','mul':'ordinary Logic totalWin / stakeRaw',
                 'required':'固定200；仅自身readyY普通完整，Payline奖额和/网格/BG一致，EndGame确认现金保持；14特殊路径仍拒绝。'}
+            if plan.get('arthurFeatureContract'):
+                card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(own Logic totalWin)','bet':'stakeRaw / 100','mul':'sum(own Logic totalWin) / stakeRaw',
+                    'required':'固定200；v2每帧BG/FS累计与现金一致；每个Payline值已经包含倍率，只加一次。唯一EndGame确认后完整，未知/Excalibur拒绝。'}
         if plan and plan.get('adapter') == 'blazing-x-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement'] = {'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum(own Logic totalWin)',

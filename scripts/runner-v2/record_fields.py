@@ -34,6 +34,7 @@ from acorn_base_fields import AcornBaseFields, SOURCE as ACORN_SOURCE
 from actionbank_base_fields import ActionBankBaseFields, SOURCE as ACTIONBANK_SOURCE
 from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
 from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
+from arthur_feature_fields import fields_factory as arthur_fields_factory
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
 
 adapters = {}
@@ -67,7 +68,7 @@ def execute(request):
         if plan['sourceKey']==BLAZING_SOURCE:
             adapters[key]=BlazingXFields(plan)
         if plan['sourceKey']==ARTHUR_SOURCE:
-            adapters[key]=ArthurBaseFields(plan)
+            adapters[key]=arthur_fields_factory(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
     adapter = adapters[key]

@@ -5,6 +5,7 @@ import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 import {CARNIVAL_PICK,carnivalPrevious,carnivalProof} from './sg-carnival-pick.mjs';
 import {DRAGON_END,dragonEndPrevious,dragonEndProof} from './sg-dragon-end.mjs';
+import {CONTRACT as ARTHUR_FEATURE,previous as arthurPrevious,validateProof as arthurFeatureProof} from './sg-arthur-feature.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
 // every original campaign, quota and staging namespace. Admission replays
 // successful prefixes under this binding before it grants source permission.
@@ -18,6 +19,13 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.arthurFeatureContract!==undefined){
+   const e=proof.arthurFeatureEvidence;
+   assert(id==='32754'&&oldPlan.arthurFeatureContract===undefined&&plan.arthurFeatureContract===ARTHUR_FEATURE
+    &&queueHash(oldPlan)===queueHash(arthurPrevious(plan))&&queueHash(oldProof)===queueHash(e?.previousProof)
+    &&e?.previousPlanHash===entry.planHash&&e?.previousProofHash===entry.adapterProofHash,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   arthurFeatureProof(plan,proof);return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.dragonEndContract!==undefined){
    const previousPlan=dragonEndPrevious(plan),{planHash:bound,dragonEndEvidence:e,...fields}=proof;
    const previousProof={...fields,planHash:queueHash(previousPlan)};

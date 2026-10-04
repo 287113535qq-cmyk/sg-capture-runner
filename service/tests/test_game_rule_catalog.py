@@ -33,12 +33,20 @@ class GameRuleCatalogTests(unittest.TestCase):
 
     def test_arthur_ordinary_card_preserves_own_special_boundaries(self):
         card=self.cards[32754];rule=card['roundRule']
-        self.assertEqual(rule['family'],'arthur-base-wms-v1')
+        self.assertEqual(rule['family'],'wms-arthur-free-wild-evidence-v2')
         self.assertEqual(card['runtimeGameId'],32976)
         self.assertEqual(card['parameters']['wmsGameId'],20467)
         self.assertFalse(card['captureAuthorization'])
         for text in ('986','1972','14自身','6免费','3Excalibur','5Wild','extra3/5','真实Init'):
             self.assertIn(text,rule['bounds'])
+
+    def test_arthur_feature_card_requires_actual_own_wiring_and_keeps_ordinary_limits(self):
+        card=self.cards[32754];rule=card['roundRule']
+        self.assertFalse(card['captureAuthorization']);self.assertEqual(card['parameters']['maxSteps'],22)
+        for value in ('997完整/2069','97自身','mandatory wiringEvidence','未在线应用','不抵300000','最多10线'):
+            self.assertIn(value,rule['bounds'])
+        self.assertIn('奖值已含倍率',rule['fields']['Token / FSInfo'])
+        self.assertEqual(card['configuredNaturalBonusCodes'],[1])
 
     def test_all_games_have_honest_unknown_coverage_and_no_capture_permission(self):
         games = json.loads((ROOT / 'config/games.json').read_text(encoding='utf-8'))

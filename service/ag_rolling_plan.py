@@ -89,7 +89,10 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
-    if plan['adapter'] == 'arthur-base-wms-v1':
+    if plan.get('arthurFeatureContract') is not None:
+        from arthur_feature_fields import validate_proof as arthur_feature_proof
+        arthur_feature_proof(plan,proof)
+    if plan['adapter'] == 'arthur-base-wms-v1' and plan.get('arthurFeatureContract') is None:
         from arthur_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
         wired = proof.get('wiringEvidence', {})
         unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
