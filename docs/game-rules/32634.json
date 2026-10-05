@@ -20,7 +20,7 @@
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
   "settlement": null,
   "codeSources": {
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +32,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f3040ea4a2fe8dc977650f8610d0d23fc29ba75595dea8dc9c34902ea810a465"
+  "ruleHash": "6faa3135a1040392787c028b8ee429438aac262b3fc46a47253f2e75c1ff5235"
 }

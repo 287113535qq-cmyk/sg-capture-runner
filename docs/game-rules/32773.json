@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-hercules-base.mjs": "d3d767b2478ff078eb57922d3e8b0b0e4c2a65713b27809dd7eedb992f0668a8",
     "scripts/runner-v2/ag-rolling/sg-hercules-source.mjs": "cfc32ad29d270ba1d2942f926dfe4876b38d69ac75a8a5e37c3109e085444b46",
     "scripts/runner-v2/ag-rolling/sg-hercules-codec.mjs": "86e0409712a27ad9c8bc03277358765924aa5b9b7402bd905a29ae20ee84a8af",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
     "service/hercules_base_fields.py": "479578b34bb84010a82fff1bea015197fb591250fcd04b8e0ad1b1f3f91187a0",
     "config/ag-rolling-hercules-base-contract.json": "72405cda284222505c83a6e79a36d74cc1373702604f8c91988794a1dd044311",
-    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
-    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
-    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
+    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
+    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ee1c4a8a094b914cfeb22fbcb4c41054217b88fa039fba672a2555c37ea8b5f4"
+  "ruleHash": "b368a80a67edbdbc4eecedf80a9814c24acf6e6d1788ed37ab43791cdcc08b26"
 }

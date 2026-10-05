@@ -411,6 +411,9 @@ def derive(raw):
     from moolah_base_fields import SOURCE as MOOLAH_SOURCE, settled as moolah_settled, mapping_hash as moolah_mapping
     if raw.get('sourceKey') == MOOLAH_SOURCE:
         return moolah_settled(raw, moolah_mapping())
+    from jinjimegaways_base_fields import SOURCE as JINJIMEGAWAYS_SOURCE, settled as jinjimegaways_settled, mapping_hash as jinjimegaways_mapping
+    if raw.get('sourceKey') == JINJIMEGAWAYS_SOURCE:
+        return jinjimegaways_settled(raw, jinjimegaways_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

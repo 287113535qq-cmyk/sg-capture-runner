@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
-    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
-    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
+    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
+    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "865159ae495498501cab9b32c5fd703b45c728074e2fd429c343ac896893b1ac"
+  "ruleHash": "deb58c1ff3cfc5b76ae0b59e4f7d8402876ddc559cd46b8422a81974a24546fd"
 }

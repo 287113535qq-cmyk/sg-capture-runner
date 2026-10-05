@@ -4945,6 +4945,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "jjbxmegaways-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "jinjimegaways-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 88,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32777,
+        "runtimeGameId": 32999,
+        "wmsGameId": 20468,
+        "ordinaryContractHash": "926f8323ca18ff889886cb0a81c746165ec78f6faab7b29cbcd0019412d3211d",
+        "historyFileSha256": "36b403ed282ac179f11e516f396b74fd09d978db9dc414c3f02a74c641f57232",
+        "fullBaseRounds": 991,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

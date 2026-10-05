@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-jekyll-base.mjs": "e4005552d03b3aa6abea9259059c71ca3623b5b76e27ab02bd901acc4224a105",
     "scripts/runner-v2/ag-rolling/sg-jekyll-source.mjs": "0ab39a8e0f78866e640b2ed4b60ef850155c45d35e299faed741cc9b7afec1cc",
     "scripts/runner-v2/ag-rolling/sg-jekyll-codec.mjs": "f419f1748c16fd5a21e5fe37d8268ffb35b09f42435e534e9e7bc7d78429f9db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
     "service/jekyll_base_fields.py": "c641bd47e0213c5a9693a08511c6891441803d8b9e925d3cdaf9d8b72eddeb12",
     "config/ag-rolling-jekyll-base-contract.json": "f9cf9021d8555e679a0d72cffa217468c4d0812c260d912a154f2f8f50d64241",
-    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
-    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
-    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
+    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
+    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "097f64a95d8ece96194caf0d68f3aea2369c3540e2e046bd10fc67f707f5b2e4"
+  "ruleHash": "e1302d911e9bdfe6b4f8911dd1fc7a36daa6888ccc1f4bc25b2f573a2b354d83"
 }

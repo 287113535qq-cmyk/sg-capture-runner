@@ -154,6 +154,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32777:
+        native.update({'family':'jinjimegaways-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32999与自己的WMS Header20468分别固定；AccountData/CurrencyMultiplier1→Header→Stake total88，无isBigBet；响应只有stake88/totalWin/betID，无stakePerLine/paylineCount；Header普通readyY。',
+            'continue':'单spin0/reelset0/1/2/3、6个ReelStops、freeN/bonusN/scatter0。937种自己的reelset/reelHeights完整joint双实现pin，TopReelInfo固定set9/stop0..88/positions37|38|39|40，SymbolGrids仅空形状；不猜第二奖励或特殊。',
+            'complete':'普通readyY后唯一Header-only EndGame，响应readyN/Header/空AccountData/Balances，无GameResult/SymbolGrids且现金保持。AnywayWin和=totalSpinWin=Logic totalWin=BG累计，现金=start-88+奖；ways奖已包含，不能再乘ways或高度。',
+            'bounds':'完整file SHA核验；前1000中991普通完整/1982历史请求，9个PickInfo触发readyN却旧EndGame仍拒绝，不称特殊终局。actual codec→独立PY IPC→record/verify及1991次自身source payload语义一致，原frontend constructor/XML serializer未执行。特殊需自己exact frontend及完整自然证据；旧half不续/重放/回计；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-jinjimegaways-base.mjs','scripts/runner-v2/ag-rolling/sg-jinjimegaways-source.mjs','scripts/runner-v2/ag-rolling/sg-jinjimegaways-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/jinjimegaways_base_fields.py','config/ag-rolling-jinjimegaways-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'AnywayWin':'347项自己的ways奖，110种award/ways/winVal tuple、286种3..11位置文本、unique0..40。每spin最多5项，winIndex连续0..n-1；各reelset奖项和位置分别pin。',
+                'TopReelInfo':'自己的set9/stop0..88/有序positions37|38|39|40仅形状；937个reelset/reelHeights组合、空SymbolGrids分别核验，不按名字另加奖。未知组合、文本、顺序或数值停止。',
+                'BGInfo':'totalWagerWin=bgWinnings=Logic奖、isMaxWin0，reelHeights6位2..7按完整own joint；没有isBigBet/remaining，foreign BG、Scatter/PickInfo/FS/恢复/MaxWin停止。'}})
     elif game_id == 32776:
         native.update({'family':'moolah-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32998与自己的WMS Header20145分别固定；AccountData/CurrencyMultiplier1→Header→Stake total25，无isBigBet；响应stake25/stakePerLine1/paylineCount25分别核验；Header无readyForEndGame。',
@@ -572,7 +582,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774','32775','32776'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774','32775','32776','32777'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -677,6 +687,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'jinjimegaways-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own AnywayWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注88；own reel-height/TopReelInfo/空SymbolGrids、ordinary readyY→唯一EndGame readyN/空AccountData现金保持；未知特殊停止。'}
         if plan and plan.get('adapter') == 'moolah-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Cascade PaylineWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

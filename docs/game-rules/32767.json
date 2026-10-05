@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs": "b596d1d05af6b391e41c35e26aa38992c27cf83f8789ac527e35ace608cdd1a0",
     "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs": "29807fd4b744ef0e8f0766131f3126312eb72b4e4105931bdc40247f960aba95",
     "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs": "f27fcba5f6fbdf30145bd8187f57644b05494e8fde66864a792f5f75df9f765a",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
     "service/firequeen_base_fields.py": "40ce02086c446ec98ba163126414c3a5a423ff90c311faa7a81f7e3ff709207e",
     "config/ag-rolling-firequeen-base-contract.json": "0775d3117c97e54ee39dd252a1b1e9181909e78155f93be838d903a7c0db79d2",
-    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
-    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
-    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
+    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
+    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "12bf8edd16c62a601a00ee7501d4f7caad1c19f44bb77f463a5ed3608e600afa"
+  "ruleHash": "6c6eea9e4f5630cc20d72c0ed1d6573493d480399f753152a167a80a60c5b9f8"
 }

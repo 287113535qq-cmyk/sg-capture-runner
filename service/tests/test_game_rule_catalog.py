@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_jinjimegaways_card_binds_own_ways_height_and_top_shape_with_partial_pick_rejection(self):
+        card=self.cards[32777];rule=card['roundRule']
+        self.assertEqual(rule['family'],'jinjimegaways-base-wms-v1');self.assertEqual(card['runtimeGameId'],32999);self.assertEqual(card['parameters']['wmsGameId'],20468)
+        self.assertIn('991普通完整',rule['bounds']);self.assertIn('1982历史请求',rule['bounds']);self.assertIn('9个PickInfo',rule['bounds'])
+        self.assertIn('347',rule['fields']['AnywayWin']);self.assertIn('110',rule['fields']['AnywayWin']);self.assertIn('937',rule['fields']['TopReelInfo'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total88',rule['start']);self.assertEqual(card['typeMappings']['jjbxmegaways-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_moolah_card_binds_cascade_chains_and_separate_line_identity(self):
         card=self.cards[32776];rule=card['roundRule']
         self.assertEqual(rule['family'],'moolah-base-wms-v1');self.assertEqual(card['runtimeGameId'],32998);self.assertEqual(card['parameters']['wmsGameId'],20145)
