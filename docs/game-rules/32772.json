@@ -79,7 +79,7 @@
     "service/heidibier_base_fields.py": "1f9417a99de7616b8023eba95b2fb59cfb9312c2c17e418775dadda822bb3cb6",
     "config/ag-rolling-heidibier-base-contract.json": "d858687b2eb6a4338a174321de15d44fa0b3c23884b3aed8fb4f3b908f64d950",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "117381b8eca2a915eff11d3c0d5f4023129dcfdc20b06555923525551a6fb20d"
+  "ruleHash": "438e011ea280504fb08b70c3be12437cf46b6c3dd200bf606168d56e836b4ba3"
 }

@@ -61,3 +61,12 @@ test('complete proof requires exact game, immutable result and all selected quot
  for(const edit of [x=>x.count--,x=>x.fullReadback=false,x=>x.selected[0]--,x=>x.gameId='32443']){const bad=structuredClone(p);edit(bad);assert.throws(()=>assertCompleteBinding({value:{status:'complete',result:bad}},{value:bad},binding));}
  assert.throws(()=>assertCompleteBinding({value:{status:'merging',result:p}},{value:p},binding));assert.equal(digest(p).length,64);
 });
+test('stored free replay checks every cash frame, own policy, session and natural zero terminal without fabricating timing',async()=>{
+ const parser=analyzer();try{
+  const r=await fixture(parser),d=businessDocument(r,binding,campaignId);
+  function step(msg,b,ab,tw,nfg){const response=`MSGID=${msg}&B=${b}&AB=${ab}&TW=${tw}&NFG=${nfg}&IFG=${Number(msg==='FREE_GAME')}&FID=0|`;return {msgId:msg,methodName:'processGameMessage',requestPayload:Object.entries({...plan.requestParams,PID:'gdmgcmSyntheticBusinessFixture',MSGID:msg}).map(([k,v])=>k+'='+v).join('&'),responsePayload:response,responseXml:'<GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD>'+response.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>',responseBalance:ab};}
+  d.bonus=1;d.mul=1;Object.assign(d.data,{endBalance:1000,totalWin:.2,stepCount:2,msgIds:['BET','FREE_GAME'],primaryBonusKind:'freeGame',specialKinds:['freeGame'],steps:[step('BET',99980,99980,0,1),step('FREE_GAME',100000,100000,20,0)]});delete d.data.money;
+  assert.equal((await verifyLegacyPage({documents:[d],plan,binding,parser})).newCaptureCredit,0);
+  for(const change of [x=>x.data.steps.pop(),x=>x.data.steps[1].requestPayload=x.data.steps[1].requestPayload.replace('gdmgcmSynthetic','gdmgcmChanged'),x=>x.data.steps[1].responseBalance--,x=>x.data.steps[0].responsePayload=x.data.steps[0].responsePayload.replace('NFG=1','NFG=0'),x=>x.data.steps[1].responsePayload=x.data.steps[1].responsePayload.replace('NFG=0','NFG=2'),x=>x.data.steps[1].responsePayload+='&CFG=0',x=>x.data.steps[1].responsePayload=x.data.steps[1].responsePayload.replace('FID=0|','FID=7|'),x=>x.data.steps[1].elapsedMs=300001,x=>x.data.steps[1].responseXml=x.data.steps[1].responseXml.replace('<OGS_RC>0','<OGS_RC>1')]){const bad=structuredClone(d);change(bad);await assert.rejects(verifyLegacyPage({documents:[bad],plan,binding,parser}));}
+ }finally{parser.close();}
+});

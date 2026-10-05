@@ -126,7 +126,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
-    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/jinzita_fields.py": "0f1d90ec268794c530c6aa440d443ee4b96801afb503570cb99a34d2375e791d",
     "scripts/trial/jinzita-protocol.mjs": "d717dbeaac7d56fcd85d1c2f75397c7064e8146eb617c146613408b4e3b018f6",
     "collector/sg.jinzita.ts": "5c99dc314441e8b786b854ec0bdfb7144e85ea48d56b10a00afcb400d4f56d8d",
@@ -157,5 +157,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f8ad15690659a880df349c16fa3836b930e0ae1c16f7006f658188031ede06a4"
+  "ruleHash": "69be7903a2d98363c5853567d92661ded315ae1f7d7ebb8a567c5f31a4f61eea"
 }

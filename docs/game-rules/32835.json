@@ -126,7 +126,7 @@
   "codeSources": {
     "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
-    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/luxor_fields.py": "0f6d87b03b0da534f6dd53f6cc0a8c3dd18fa16adbf2ffc33b00d3af70d7f7cc",
     "scripts/trial/luxor-protocol.mjs": "f3274191777b9f7cdd9c36731f846647b482121b04d304bb552b0bd73aa60c20",
     "collector/sg.luxor.ts": "d61d31d9353eaba4dde909e4c0dcb8872f5f1a318c28ce74bfef82b2af223b5d",
@@ -165,5 +165,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1c43d560b8734feb81de136597c7eef4386bfa52ec47c625f8718c9444e9cbce"
+  "ruleHash": "90789eeefbe77afe4ec1e7e83e77486e0c4047aad27ce7f16b1e958b14232fd3"
 }

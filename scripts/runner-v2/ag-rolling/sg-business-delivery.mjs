@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
 import {businessDocument,verifyBusinessPage} from './sg-business-document.mjs';
-import {inspectExistingOrdinary} from './sg-existing-business.mjs';
+import {inspectExistingNextgen} from './sg-existing-business.mjs';
 export const digest=v=>createHash('sha256').update(stable(v)).digest('hex');
 export function assertCompleteBinding(state,receipt,binding){
  const p=receipt?.value;
@@ -40,7 +40,7 @@ export async function deliverPage({records,binding,campaignId,parser,sink,audit,
 export async function verifyLegacyPage({documents,plan,binding,parser}){
  for(const d of documents){
   const oldBinding={...binding,rtp:d.rtp};
-  const js=inspectExistingOrdinary(d,plan,oldBinding);
+  const js=inspectExistingNextgen(d,plan,oldBinding);
   const py=(await parser.call({op:'existing_business',plan,binding:oldBinding,documents:[d]}))[0];
   const {recordHash,...fields}=js;
   assert(stable(fields)===stable(py),'SG_BUSINESS_LEGACY_JS_PY_MISMATCH');

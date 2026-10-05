@@ -297,11 +297,11 @@ def execute(request):
         from pyramids_flow_review import review_pyramids_flow
         return review_pyramids_flow(plan, request['raw'])
     if request.get('op') == 'existing_business':
-        from existing_business_fields import inspect_existing_ordinary
+        from existing_business_fields import inspect_existing_nextgen
         documents = request['documents']
         assert isinstance(documents, list) and 1 <= len(documents) <= 100
         assert len({d['_id'] for d in documents}) == len(documents)
-        return [inspect_existing_ordinary(d, plan, request['binding']) for d in documents]
+        return [inspect_existing_nextgen(d, plan, request['binding']) for d in documents]
     if request.get('op') == 'business_documents':
         from business_fields import business_document
         records = request['records']

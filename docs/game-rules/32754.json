@@ -100,7 +100,7 @@
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/arthur_base_fields.py": "a0bea7fb9dfb5463f04e8a98b6d2d5abc563abe0c516187f0327aa51fab186ea",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "scripts/runner-v2/ag-rolling/sg-arthur-feature.mjs": "667096b44eba2953ebfdd98a0eb844fc024aa386a3fcdd317d207e6ee94ce1ac",
     "scripts/runner-v2/ag-rolling/sg-arthur-feature-codec.mjs": "09851d99afd110f74e80e84b6de3fdaff19c4e482356ad10dc700fad639516e0",
@@ -119,5 +119,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "bb21d0a34cf837035d97ea24fb7d0f50d6ac38a2d3824cf8cb00b729d10f6fac"
+  "ruleHash": "132ae65221e4f617d36c9a9e899ae21b5230644e5d17f611382d84ee9e41d6c4"
 }
