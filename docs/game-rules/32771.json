@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-goldenchief-base.mjs": "f0cb447e36318efbb0e168bc5232d703025890871f7fb8dc149e94ead42451ec",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-source.mjs": "3f3d9a5515b2d8be22796c7184220ab6c4b819730de9a6bf5dfc4fe573865f87",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-codec.mjs": "fe1e47fa76c1ed5c04e182da740941a8b6631a5dae93eb162533ab113aa906fa",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
     "service/goldenchief_base_fields.py": "0d7c679ebfcd83cb765cfad552f6d92d54767583944b3f7ff04148fc51b8f806",
     "config/ag-rolling-goldenchief-base-contract.json": "bf7fa10c806272525415acf04124870776ebf8d84401b0a77457e22dfc25c4d9",
-    "service/ag_rolling_plan.py": "daafb836f0111f766b45488eb2086c4e825b5c66bcf749acb33ba5d626cabd18",
-    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
-    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
-    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
+    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
+    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
+    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
+    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "271d458c7a386314629fe075233cb38b13073c511069bcf363d0a6bc7ced13c6"
+  "ruleHash": "a1eab492f09ec7151d1d6ea97ad3dbd232858749edde51666022591fc32a944f"
 }

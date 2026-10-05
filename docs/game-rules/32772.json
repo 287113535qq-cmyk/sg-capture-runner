@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-heidibier-base.mjs": "119e6a8c49baa5523512cd240885d0d8cbbf878765ee558494809607b5714597",
     "scripts/runner-v2/ag-rolling/sg-heidibier-source.mjs": "025bae43d5ea731a21831ed0b67ca00aaacf515b69f05ad2af91405924ba7d44",
     "scripts/runner-v2/ag-rolling/sg-heidibier-codec.mjs": "9305c594b0da91cff75f2a80288e9137ef7932eeff7f8b77a4dfa43fd32fb459",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
     "service/heidibier_base_fields.py": "1f9417a99de7616b8023eba95b2fb59cfb9312c2c17e418775dadda822bb3cb6",
     "config/ag-rolling-heidibier-base-contract.json": "d858687b2eb6a4338a174321de15d44fa0b3c23884b3aed8fb4f3b908f64d950",
-    "service/ag_rolling_plan.py": "daafb836f0111f766b45488eb2086c4e825b5c66bcf749acb33ba5d626cabd18",
-    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
-    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
-    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
+    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
+    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
+    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
+    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1ac96f84bba328b3a4223f82c71bcf47dec3e58fc9cc6a07509078d1e110a8a5"
+  "ruleHash": "08c8b08ac207202adc719c26f76454848a47e073c279f7aa5439692c7ff4f9ec"
 }

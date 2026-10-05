@@ -4907,6 +4907,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "hulahulanights-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "hulahula-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32775,
+        "runtimeGameId": 32997,
+        "wmsGameId": 20188,
+        "ordinaryContractHash": "e085003f269cddc3e2250cd90e5a10907f64eb5243b91503e60818a5a66ab9d2",
+        "historyFileSha256": "c2989b6444a31f780a75f08197d0ceb981a56868bcb7638ef9cc60e407f79342",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

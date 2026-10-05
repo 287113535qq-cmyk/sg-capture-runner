@@ -154,6 +154,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32775:
+        native.update({'family':'hulahula-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32997与自己的WMS Header20188分别固定；Header→AccountData/CurrencyMultiplier1→Stake total100/isBigBet0；响应stake100/stakePerLine10/paylineCount10分别核验；Header没有readyForEndGame。',
+            'continue':'普通spin0/reelset0或1/5stops，freeSpinN/bonusAwardedN/scatter0；有序ReelResults/BGInfo。20种reelset/stackedSymbolIndex完整联合只核验，912/88两种reelset都普通，不猜免费或再加奖。',
+            'complete':'普通后唯一Header-only EndGame，响应Header/空AccountData/Balances，无GameResult且现金保持。Payline和=spinWins=Logic totalWin=BG wager/bg累计；现金=start-100+奖。',
+            'bounds':'完整file SHA核验；前1000中1000普通完整/2000历史请求，没有特殊覆盖。actual codec→独立PY IPC→record/verify一致；2000自身source payload语义核验，原frontend constructor/XML serializer未执行。未知特殊需要自己的exact frontend及完整自然证据，旧half不续/重放/回计；历史不抵目标；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-hulahula-base.mjs','scripts/runner-v2/ag-rolling/sg-hulahula-source.mjs','scripts/runner-v2/ag-rolling/sg-hulahula-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/hulahula_base_fields.py','config/ag-rolling-hulahula-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin':'248个自己普通PaylineWin，23种award/table/winVal tuple、30种3..5位置文本、unique0..14；10条active线内每spin线号去重；reelset0/1分别pin奖项13/17与位置21/30，最多10奖项。只加一次。',
+                'BGInfo / stackedSymbol':'20种reelset0或1/stackedSymbolIndex0..9完整联合；未知数值、foreign字段或新联合停止，不按stacked名字额外计奖。',
+                'BGInfo':'totalWagerWin=bgWinnings=Logic奖，baseGameSpinsRemaining/isBigBet/isMaxWin0，stackedSymbolIndex仅完整联合形状；未知FS/Feature/恢复/MaxWin停止。'}})
     elif game_id == 32774:
         native.update({'family':'himalayas-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32996与自己的WMS Header20230分别固定；Header→AccountData/CurrencyMultiplier1→Stake total200/isBigBet0；响应stake200/stakePerLine2/paylineCount100分别核验；Header没有readyForEndGame。',
@@ -552,7 +562,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774','32775'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -657,6 +667,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'hulahula-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own PaylineWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注100；自己的普通后唯一EndGame含空AccountData、现金保持；20种reelset/stackedSymbol仅形状，未知特殊停止。'}
         if plan and plan.get('adapter') == 'himalayas-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own PaylineWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

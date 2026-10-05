@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs": "b67ca396c902cdf3c8fe73aaf790f4819174f1cd8870ffc668498fa05840f05b",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs": "3eecf9b0ad9a3ec85fed735d724e64350b7df6f9a75ea224cecb6ed02875aba1",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs": "b210e9200d6e2192e94825d94418d09a531683a52a3fb5bbd1e9386d46dbf5dc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
     "service/eurekablast_base_fields.py": "b30cbf8eafb0e9d8263eddd6894ef979915acf2ba5e2dd966673a977a44e7355",
     "config/ag-rolling-eurekablast-base-contract.json": "6146afe2625d5cfe623b693744a23a53ed78e9b3e92913fb8315087ff73616b2",
-    "service/ag_rolling_plan.py": "daafb836f0111f766b45488eb2086c4e825b5c66bcf749acb33ba5d626cabd18",
-    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
-    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
-    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
+    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
+    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
+    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
+    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b425820df8daafe4f9feb3bc02052300a0d9401659efeb37aa9529b2c77d330e"
+  "ruleHash": "d36abbd381cc1db9f221930493190dd5e04bdfc0541a7f0515d88c3b71252771"
 }

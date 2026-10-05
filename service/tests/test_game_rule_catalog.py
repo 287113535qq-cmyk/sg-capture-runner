@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_hulahula_card_binds_own_stacked_symbol_and_stops_unknown(self):
+        card=self.cards[32775];rule=card['roundRule']
+        self.assertEqual(rule['family'],'hulahula-base-wms-v1');self.assertEqual(card['runtimeGameId'],32997);self.assertEqual(card['parameters']['wmsGameId'],20188)
+        self.assertIn('1000普通',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('没有特殊覆盖',rule['bounds'])
+        self.assertIn('248',rule['fields']['PaylineWin']);self.assertIn('30种',rule['fields']['PaylineWin']);self.assertIn('20种',rule['fields']['BGInfo / stackedSymbol'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total100',rule['start']);self.assertEqual(card['typeMappings']['hulahulanights-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_himalayas_card_binds_own_avalanche_joint_and_stops_unknown(self):
         card=self.cards[32774];rule=card['roundRule']
         self.assertEqual(rule['family'],'himalayas-base-wms-v1');self.assertEqual(card['runtimeGameId'],32996);self.assertEqual(card['parameters']['wmsGameId'],20230)
