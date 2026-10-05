@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
-    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
-    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
-    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
+    "service/ag_rolling_plan.py": "aca3639018f2fc0f88af338f0252c88a0dbf58f2da41e20b3f3d37daa943b0bc",
+    "scripts/runner-v2/record_fields.py": "6d56ea1d339c2a86ee3c60f62a5b68d50447885f8a1b7ce11e0ac5098fa52217",
+    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
+    "service/game_rule_catalog.py": "91974b0fd761f0bd7c709329e48032cc2c897b4df3584dc103812f4f77f03afb"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ad056689e1561244972f7bc5288359b1e644efad962912dc8b8332be0854f9a8"
+  "ruleHash": "4617ebf5d6a6afd51060d157233b9ef297a9a99930d00432d146f2f30ff42990"
 }

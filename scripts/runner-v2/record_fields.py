@@ -36,6 +36,7 @@ from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
 from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
 from arthur_feature_fields import fields_factory as arthur_fields_factory
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
+from himalayas_base_fields import HimalayasBaseFields, SOURCE as HIMALAYAS_SOURCE
 from hercules_base_fields import HerculesBaseFields, SOURCE as HERCULES_SOURCE
 from heidibier_base_fields import HeidiBierBaseFields, SOURCE as HEIDIBIER_SOURCE
 from goldenchief_base_fields import GoldenChiefBaseFields, SOURCE as GOLDENCHIEF_SOURCE
@@ -89,6 +90,8 @@ def execute(request):
             adapters[key]=arthur_fields_factory(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
+        if plan['sourceKey']==HIMALAYAS_SOURCE:
+            adapters[key]=HimalayasBaseFields(plan)
         if plan['sourceKey']==HERCULES_SOURCE:
             adapters[key]=HerculesBaseFields(plan)
         if plan['sourceKey']==HEIDIBIER_SOURCE:
@@ -206,6 +209,9 @@ def execute(request):
     if request.get('op') == 'hercules_bootstrap':
         assert plan['sourceKey'] == HERCULES_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'himalayas_bootstrap':
+        assert plan['sourceKey'] == HIMALAYAS_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'eighty_bootstrap':
         assert plan['sourceKey'] == EIGHTY_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
@@ -289,7 +295,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE, DEEPSEAMAGIC_SOURCE, EUREKABLAST_SOURCE, FIREQUEEN_SOURCE, FROZENINFERNO_SOURCE, FUDAOLE_SOURCE, GIANTSGOLD_SOURCE, GOLDENCHIEF_SOURCE, HEIDIBIER_SOURCE, HERCULES_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE, DEEPSEAMAGIC_SOURCE, EUREKABLAST_SOURCE, FIREQUEEN_SOURCE, FROZENINFERNO_SOURCE, FUDAOLE_SOURCE, GIANTSGOLD_SOURCE, GOLDENCHIEF_SOURCE, HEIDIBIER_SOURCE, HERCULES_SOURCE, HIMALAYAS_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

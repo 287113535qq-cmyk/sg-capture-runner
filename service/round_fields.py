@@ -402,6 +402,9 @@ def derive(raw):
     from hercules_base_fields import SOURCE as HERCULES_SOURCE, settled as hercules_settled, mapping_hash as hercules_mapping
     if raw.get('sourceKey') == HERCULES_SOURCE:
         return hercules_settled(raw, hercules_mapping())
+    from himalayas_base_fields import SOURCE as HIMALAYAS_SOURCE, settled as himalayas_settled, mapping_hash as himalayas_mapping
+    if raw.get('sourceKey') == HIMALAYAS_SOURCE:
+        return himalayas_settled(raw, himalayas_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

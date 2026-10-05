@@ -4888,6 +4888,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "himalayas-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "himalayas-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32774,
+        "runtimeGameId": 32996,
+        "wmsGameId": 20230,
+        "ordinaryContractHash": "cd38efc16246f08c4ac5971a6554101c4f11d90745cc24a2666e42c1db2c61d3",
+        "historyFileSha256": "1e118bfef7294f75d81359a33c8ef3a245503585c8244c44ab81761c4a129e56",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
