@@ -7,7 +7,7 @@ from native_nextgen_fields import NativeNextgenFields
 from round_fields import FieldError
 from store import digest
 ROOT=Path(__file__).resolve().parents[2]
-REG=json.loads((ROOT/'config/ag-rolling-plans.json').read_bytes());PLAN=REG['plans']['32497'];FIX=json.loads((ROOT/'service/tests/fixtures/dragon-end-v3-synthetic.json').read_bytes())
+REG=json.loads((ROOT/'config/ag-rolling-plans.json').read_bytes());PLAN={k:v for k,v in REG['plans']['32497'].items() if k not in ('dragonFreeContract','dragonFreeContractHash')};REG['proofs']['32497']={**{k:v for k,v in REG['proofs']['32497'].items() if k!='dragonFreeEvidence'},'planHash':digest(PLAN)};FIX=json.loads((ROOT/'service/tests/fixtures/dragon-end-v3-synthetic.json').read_bytes())
 def raw():return copy.deepcopy(FIX['raw'])
 def alter(r,k,v):
  s=r['steps'][-1];p=dict(x.split('=',1) for x in s['responsePayload'].split('&'))

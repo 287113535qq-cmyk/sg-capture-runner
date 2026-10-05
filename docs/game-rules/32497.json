@@ -8,7 +8,7 @@
   "liveQueueStatus": "read-from-Mongo-not-this-card",
   "ruleAvailability": "implemented-subset",
   "sourceKey": "dragonjinlongjinbao96-ag-rolling-nextgen-v1",
-  "planHash": "a9fa454bb02814a861eeebd64d7a74b128ce811c0e4924e0e4b8b5924229eb39",
+  "planHash": "fccb3630f169f7241d3518cc1dee70d75533e12f5c5f3fd5cd7ef2ac32a17055",
   "parameters": {
     "trialId": "sg_ag_r1_20261004_32497",
     "runtimeSlug": "dragonjinlongjinbao96",
@@ -23,34 +23,37 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "nextgen-dragon-end-evidence-v3",
+    "family": "nextgen-dragon-first-free-evidence-v4",
     "messages": [
       "BET",
       "FEATURE_START",
       "FEATURE_PICK",
-      "FEATURE_END"
+      "FEATURE_END",
+      "FREE_GAME"
     ],
-    "start": "普通BET沿原完整校验；CFG0触发和START的原v1/v2自身证据门保持。7份不满足原PD门的START仍拒绝。",
-    "continue": "88份自身closed前缀257条已有请求中，81份首PICK固定FP0|1|1及精确FID0|、FS_0=1、CFP/CFR1、FPM1;|、TFW0、NFR1、7种自身PD数值形状。原前端ZYa将CFP_0映射G7并设置Eu，gP据此选择FEATURE_END，SPa只发CFG0且无FP；与独立JS/Python和实际codec IPC一致。",
-    "complete": "首END的新响应必须停止封存；没有特殊终局验收许可，不发第二END、FREE_GAME或下一BET，不续旧半局。普通完整记录继续每局双验、任务全文回读与300000整款验收。",
-    "bounds": "v3仅本地，未在线应用；当前受检v2已发布且采集中。88份前缀、257条已有请求及81条候选END经真实前端和独立codec/Python核验；99份原普通完整raw与record哈希保持。旧v2的88份停止语义、7份START拒绝及原v1/v2 policy和运行字节不变。首END未知ACK单次封存不重发，特殊终局信用0。mandatory wiringEvidence和原→v1→v2→v3不可变接续必须通过，未来须双仓完整ended后新精确Linux/sealed才可发布。",
+    "start": "普通BET与原v1/v2/v3的START、PICK、END门逐层保持；旧7份START与88份v2前缀的拒绝不变。",
+    "continue": "70份自身closed自然END、280条既有请求及1670条indexed native rows双验。END FID1|且IFG0、CW/CFGG/FGTW0，NFG=TFG=FGT只7/8/10/12/15/20。自己的完整PICK→END字段联合逐hash绑定；未知联合拒绝。原前端NFG→Qe、缺省GCT→wm=false、FID1|→jq=false，显式选择器退出后FREE selector选FREE_GAME。自己的继承构造器把LB25改为LB50，BPL5，原reviewed AP=false保持；不借其它款BPR/RB或猜奖励。",
+    "complete": "只允许未来新匿名会话的一次first FREE。第一个FREE响应尚未观察，立即停止封存，不发第二FREE、END或下一BET；无特殊完整终局或信用。旧70/88/72半局不续、不重放、不回计。",
+    "bounds": "v4仅离线本地，未在线应用；v3此前已随4841发布，当前81队列仍原v3。70次原前端mapper/selector/继承object constructor与独立Python一致；280条既有请求+70候选意图沿actual codec/PY IPC核验，99份旧普通raw与record哈希保持。原XML serializer未执行，未观察FREE response。mandatory wiringEvidence与原→v1→v2→v3→v4每层proof不可缺；重签后改记录/原raw/次数/构造器/信用仍拒绝。当前两仓所有jobs真实ended后才可新精确Linux/sealed及同namespace immutable remaining-only发布。",
     "files": [
+      "scripts/runner-v2/ag-rolling/sg-dragon-first-free.mjs",
+      "service/dragon_first_free_fields.py",
+      "config/ag-rolling-dragon-first-free-contracts.json",
       "scripts/runner-v2/ag-rolling/sg-dragon-end.mjs",
       "service/dragon_end_fields.py",
       "config/ag-rolling-dragon-end-contracts.json",
-      "scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs",
-      "service/explicit_request_dragon.py",
       "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs",
       "service/native_nextgen_fields.py",
       "scripts/runner-v2/record_fields.py",
       "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs"
     ],
     "fields": {
-      "FID / FS_0 / CFP_0": "原前端分别映射xO/m8/G7；CFP_0=1设置Eu并选END，不把NFR当END判据。",
-      "PD": "只自身已观察7种keyset、数值编码长度和scalar集合；不由lives/cashSymbols猜奖励或终局。",
-      "B / AB / TW": "每帧B=初始-100+自身BET的TW；PICK中TW不变，观察AB等于held或含奖余额。",
-      "PID / SID / XML": "请求PID与响应SID分别固定；PICK只有OGS_RC0/SUCCESStrue/PAYLOAD三节点及全文一致。",
-      "终局": "END响应未观察，特殊终局许可0；旧failed/half不续、不重放、不回计。"
+      "NFG / TFG / FGT": "END后的初始免费计数三者严格一致且仅自身六个值；这不是终局计数。",
+      "FID / GCT": "FID1|使轮盘jq=false；缺失GCT的原frontend默认wm=false，未知GCT或extra拒绝。",
+      "BPL / LB": "END响应5/25分别核验；原Dragon请求继承构造器ni=5且强制iJ=50，所以发BPL5/LB50。",
+      "B / AB / TW": "END TW保持自己的BET奖，B=初始-100+TW、AB仍held；现金不作为免费终局或第二奖依据。",
+      "PID / SID / XML": "请求PID、响应SID分别固定；exact三XML节点、原PAYLOAD、计时、现金逐帧双验。",
+      "终局": "first FREE response未知；特殊settlement0，原普通type与所有旧marker/proof/raw保持。"
     }
   },
   "typeMappings": {
@@ -95,16 +98,17 @@
     "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
+    "scripts/runner-v2/ag-rolling/sg-dragon-first-free.mjs": "ada4a526c1ab044966a02707ce4863e9a4990bfdc6f12ed6ddaea54724e1806e",
+    "service/dragon_first_free_fields.py": "9546935244ed1a858756586959de16aca819f8726e74d640d212e49453b19c8d",
+    "config/ag-rolling-dragon-first-free-contracts.json": "b6a3425f529489d99514a8d8354647d32d2c5cb8cdfe6430962d2b3469cdf800",
     "scripts/runner-v2/ag-rolling/sg-dragon-end.mjs": "42c92831518c365990b15c543db909ce90aae5f8c31ecd597ee8c83cb321ef65",
     "service/dragon_end_fields.py": "c3cde517964162f7cf46faff5bd29c8efb2408ffd775e6a94bfdd64469575493",
     "config/ag-rolling-dragon-end-contracts.json": "afe0fb6a5c21aa1fb77218f973217d60ddc06e5e3993e833671147603670429a",
-    "scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs": "72e3eeaec16b930f69f80b6e1fc0064f7448a28e9643d864b7757693677d7077",
-    "service/explicit_request_dragon.py": "2dbd759dc76889b747d0b1666f28b0405ed884907a8539bbb61c88718b1c4f2b",
-    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "75e38b6554f32c421de8bf1c560a6581539d65e0b23f6daafd53d75dc3da3fbb",
-    "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "scripts/runner-v2/record_fields.py": "6d56ea1d339c2a86ee3c60f62a5b68d50447885f8a1b7ce11e0ac5098fa52217",
-    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "0076483a7f88830d1554a663f2acc0f1fcc90c51ccf6c56c276267bb5b4b3bb4",
-    "service/game_rule_catalog.py": "91974b0fd761f0bd7c709329e48032cc2c897b4df3584dc103812f4f77f03afb"
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "3c42d9376f0b02135b771586421b19f69cfc83a05a191df4848a3366f9dfb8ff",
+    "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
+    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
+    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "99f6da11ec0150637452892763fe03a38dde8f40fe75087918de911eec570d6e",
+    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -116,5 +120,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "01f9918ab1d73a2638bb35f9b223c142cc9a1a3c564f7fcb63417fd2e5ef4658"
+  "ruleHash": "d3c99a24e5936810fcee214b5f8365b2b45d74820c1f859a2aebe5273e4a1faf"
 }

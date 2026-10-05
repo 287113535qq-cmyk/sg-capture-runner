@@ -6,7 +6,7 @@ from explicit_request_probe import route as old_route
 from native_nextgen_fields import NativeNextgenFields
 from round_fields import FieldError
 PLAN=json.loads((Path(__file__).resolve().parents[2]/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']['32497']
-PLAN={k:v for k,v in PLAN.items() if k not in ('dragonEndContract','dragonEndContractHash')}
+PLAN={k:v for k,v in PLAN.items() if k not in ('dragonEndContract','dragonEndContractHash','dragonFreeContract','dragonFreeContractHash')}
 PID='gdmgcmoffline-python-dragon'
 def sample():
     common={'B':'900','AB':'900','TW':'0','IFG':'0','SID':'offline-fixed','FRBAL':'0','GA':'0','GSD':'','VER':'1'}

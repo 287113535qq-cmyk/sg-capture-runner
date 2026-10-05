@@ -137,6 +137,12 @@ def execute(request):
     if plan.get('carnivalPickContract') is not None and request.get('op') in ('review_explicit','explicit_probe_route','explicit_probe_intent','explicit_continuation_route','explicit_continuation_intent'):
         from carnival_pick_fields import previous
         plan=previous(plan)
+    if request.get('op') in ('dragon_free_route','dragon_free_intent'):
+        from dragon_first_free_fields import route,intent
+        return route(plan,request['raw']) if request['op']=='dragon_free_route' else intent(plan,request['raw'],request['payload'])
+    if plan.get('dragonFreeContract') is not None and request.get('op') in ('review_explicit','explicit_probe_route','explicit_probe_intent','explicit_dragon_route','explicit_dragon_intent','dragon_end_route','dragon_end_intent'):
+        from dragon_first_free_fields import previous
+        plan=previous(plan)
     if request.get('op') in ('dragon_end_route','dragon_end_intent'):
         from dragon_end_fields import route,intent
         return route(plan,request['raw']) if request['op']=='dragon_end_route' else intent(plan,request['raw'],request['payload'])

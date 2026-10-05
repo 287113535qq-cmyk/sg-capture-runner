@@ -78,10 +78,10 @@
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
     "service/heidibier_base_fields.py": "1f9417a99de7616b8023eba95b2fb59cfb9312c2c17e418775dadda822bb3cb6",
     "config/ag-rolling-heidibier-base-contract.json": "d858687b2eb6a4338a174321de15d44fa0b3c23884b3aed8fb4f3b908f64d950",
-    "service/ag_rolling_plan.py": "aca3639018f2fc0f88af338f0252c88a0dbf58f2da41e20b3f3d37daa943b0bc",
-    "scripts/runner-v2/record_fields.py": "6d56ea1d339c2a86ee3c60f62a5b68d50447885f8a1b7ce11e0ac5098fa52217",
+    "service/ag_rolling_plan.py": "daafb836f0111f766b45488eb2086c4e825b5c66bcf749acb33ba5d626cabd18",
+    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
     "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
-    "service/game_rule_catalog.py": "91974b0fd761f0bd7c709329e48032cc2c897b4df3584dc103812f4f77f03afb"
+    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4b1400501647324e3ae2982dec47639e6e2a290e6a19089338bbeb6d54f4dafb"
+  "ruleHash": "1ac96f84bba328b3a4223f82c71bcf47dec3e58fc9cc6a07509078d1e110a8a5"
 }

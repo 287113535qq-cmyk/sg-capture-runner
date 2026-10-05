@@ -71,20 +71,21 @@ def contract(game_id):
                       'PID / SID / XML':'请求PID与响应SID分别固定；新PICK XML只OGS_RC0/SUCCESStrue/PAYLOAD且全文一致。',
                       '终局':'新特殊终局许可仍为0；旧failed/half不续跑或回计。'}})
     elif game_id == 32497:
-        native.update({'family':'nextgen-dragon-end-evidence-v3','messages':['BET','FEATURE_START','FEATURE_PICK','FEATURE_END'],
-            'start':'普通BET沿原完整校验；CFG0触发和START的原v1/v2自身证据门保持。7份不满足原PD门的START仍拒绝。',
-            'continue':'88份自身closed前缀257条已有请求中，81份首PICK固定FP0|1|1及精确FID0|、FS_0=1、CFP/CFR1、FPM1;|、TFW0、NFR1、7种自身PD数值形状。原前端ZYa将CFP_0映射G7并设置Eu，gP据此选择FEATURE_END，SPa只发CFG0且无FP；与独立JS/Python和实际codec IPC一致。',
-            'complete':'首END的新响应必须停止封存；没有特殊终局验收许可，不发第二END、FREE_GAME或下一BET，不续旧半局。普通完整记录继续每局双验、任务全文回读与300000整款验收。',
-            'bounds':'v3仅本地，未在线应用；当前受检v2已发布且采集中。88份前缀、257条已有请求及81条候选END经真实前端和独立codec/Python核验；99份原普通完整raw与record哈希保持。旧v2的88份停止语义、7份START拒绝及原v1/v2 policy和运行字节不变。首END未知ACK单次封存不重发，特殊终局信用0。mandatory wiringEvidence和原→v1→v2→v3不可变接续必须通过，未来须双仓完整ended后新精确Linux/sealed才可发布。',
-            'files':['scripts/runner-v2/ag-rolling/sg-dragon-end.mjs','service/dragon_end_fields.py','config/ag-rolling-dragon-end-contracts.json',
-                     'scripts/runner-v2/ag-rolling/sg-explicit-dragon.mjs','service/explicit_request_dragon.py',
+        native.update({'family':'nextgen-dragon-first-free-evidence-v4','messages':['BET','FEATURE_START','FEATURE_PICK','FEATURE_END','FREE_GAME'],
+            'start':'普通BET与原v1/v2/v3的START、PICK、END门逐层保持；旧7份START与88份v2前缀的拒绝不变。',
+            'continue':'70份自身closed自然END、280条既有请求及1670条indexed native rows双验。END FID1|且IFG0、CW/CFGG/FGTW0，NFG=TFG=FGT只7/8/10/12/15/20。自己的完整PICK→END字段联合逐hash绑定；未知联合拒绝。原前端NFG→Qe、缺省GCT→wm=false、FID1|→jq=false，显式选择器退出后FREE selector选FREE_GAME。自己的继承构造器把LB25改为LB50，BPL5，原reviewed AP=false保持；不借其它款BPR/RB或猜奖励。',
+            'complete':'只允许未来新匿名会话的一次first FREE。第一个FREE响应尚未观察，立即停止封存，不发第二FREE、END或下一BET；无特殊完整终局或信用。旧70/88/72半局不续、不重放、不回计。',
+            'bounds':'v4仅离线本地，未在线应用；v3此前已随4841发布，当前81队列仍原v3。70次原前端mapper/selector/继承object constructor与独立Python一致；280条既有请求+70候选意图沿actual codec/PY IPC核验，99份旧普通raw与record哈希保持。原XML serializer未执行，未观察FREE response。mandatory wiringEvidence与原→v1→v2→v3→v4每层proof不可缺；重签后改记录/原raw/次数/构造器/信用仍拒绝。当前两仓所有jobs真实ended后才可新精确Linux/sealed及同namespace immutable remaining-only发布。',
+            'files':['scripts/runner-v2/ag-rolling/sg-dragon-first-free.mjs','service/dragon_first_free_fields.py','config/ag-rolling-dragon-first-free-contracts.json',
+                     'scripts/runner-v2/ag-rolling/sg-dragon-end.mjs','service/dragon_end_fields.py','config/ag-rolling-dragon-end-contracts.json',
                      'scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs','service/native_nextgen_fields.py',
                      'scripts/runner-v2/record_fields.py','scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs'],
-            'fields':{'FID / FS_0 / CFP_0':'原前端分别映射xO/m8/G7；CFP_0=1设置Eu并选END，不把NFR当END判据。',
-                      'PD':'只自身已观察7种keyset、数值编码长度和scalar集合；不由lives/cashSymbols猜奖励或终局。',
-                      'B / AB / TW':'每帧B=初始-100+自身BET的TW；PICK中TW不变，观察AB等于held或含奖余额。',
-                      'PID / SID / XML':'请求PID与响应SID分别固定；PICK只有OGS_RC0/SUCCESStrue/PAYLOAD三节点及全文一致。',
-                      '终局':'END响应未观察，特殊终局许可0；旧failed/half不续、不重放、不回计。'}})
+            'fields':{'NFG / TFG / FGT':'END后的初始免费计数三者严格一致且仅自身六个值；这不是终局计数。',
+                      'FID / GCT':'FID1|使轮盘jq=false；缺失GCT的原frontend默认wm=false，未知GCT或extra拒绝。',
+                      'BPL / LB':'END响应5/25分别核验；原Dragon请求继承构造器ni=5且强制iJ=50，所以发BPL5/LB50。',
+                      'B / AB / TW':'END TW保持自己的BET奖，B=初始-100+TW、AB仍held；现金不作为免费终局或第二奖依据。',
+                      'PID / SID / XML':'请求PID、响应SID分别固定；exact三XML节点、原PAYLOAD、计时、现金逐帧双验。',
+                      '终局':'first FREE response未知；特殊settlement0，原普通type与所有旧marker/proof/raw保持。'}})
     elif game_id == 32595:
         native.update({'family':'nextgen-moneyraid-terminal-evidence-v2','messages':['BET','FREE_GAME'],
             'start':'固定本游戏runtime33066、moneyraidwapiti96、下注200及原请求模板；新raw同时保留原v1和v2 marker。',
