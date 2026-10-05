@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "firequeen-base-ag-rolling-wms-v1",
+  "planHash": "654f2eef414f7135e0e67d814fd9894146494afe6b2441b64f2559734639e138",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32767",
+    "runtimeSlug": "firequeen_prt",
+    "buy": 0,
+    "betRaw": 50,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20192
+  },
+  "roundRule": {
+    "family": "firequeen-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32989与自己的WMS Header20192分别固定；Header→WagerInfo.totalStake50→AccountData/CurrencyMultiplier1；响应stake50/stakePerLine1/paylineCount100；Header没有readyForEndGame。",
+    "continue": "普通spin0/reelset0/11stops，最多70个唯一Payline线0..99，winCountSC0/freeSpinN/bonusAwardedN；GameResult为可有可无的WildTransformedReels后ReelResults/GameWinInfo/GameVariantInfo，13种自己Wild文本只验形状，不再加奖或乘倍。Feature/Scatter/免费/未知形状立即停止。",
+    "complete": "自己的GameWinInfo.isEndGameY普通后唯一Header-only EndGame，Header/空AccountData/Balances，无GameResult且现金保持。Payline和=spinWins=Logic totalWin=GameWinInfo累计；现金=start-50+奖。",
+    "bounds": "完整file SHA核验；前1000中989普通完整/1978历史请求，11个FreeSpins触发首响应拒绝。actual codec→独立PY IPC→record/verify一致；1989自身source payload语义核验，原frontend constructor/XML serializer未执行。旧isEndGameN的EndGame不是terminal；历史不抵目标；Init仅synthetic能力shape，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/firequeen_base_fields.py",
+      "config/ag-rolling-firequeen-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "PaylineWin": "3587个自己普通Payline，34种award/table/winVal tuple、153种3..5位置文本、唯一位置0..65；最多70线，index0..99唯一。新tuple/位置停止。",
+      "WildTransformedReels / Feature": "180普通存在13种固定Wild文本，809普通省略；均只验形状。11个自己的FreeSpins1/2/3首totalFSTriggered5/lastFreeSpinN/isEndGameN未适配，无FREE/END许可或信用。",
+      "GameWinInfo / WagerInfo": "下注50；totalWagerWin/totalBGWin=Payline奖和、totalFSWin0/maxWinValue25000000/isMaxWinN/isEndGameY；GameVariantInfo.rtp95.95。上限不当奖励。"
+    }
+  },
+  "typeMappings": {
+    "firequeen-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "firequeen-base-ag-rolling-wms-v1": "a2ffa95ad8de12559a95af76287143afbae82be30b9b0a187da65465a766f462"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + own Payline sum",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注50；自己的GameWinInfo.isEndGameY后唯一EndGame/空AccountData、现金保持；普通可省略Wild文本，11个FreeSpins停止。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
+    "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs": "b596d1d05af6b391e41c35e26aa38992c27cf83f8789ac527e35ace608cdd1a0",
+    "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs": "29807fd4b744ef0e8f0766131f3126312eb72b4e4105931bdc40247f960aba95",
+    "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs": "f27fcba5f6fbdf30145bd8187f57644b05494e8fde66864a792f5f75df9f765a",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6bae196040a5095f4d81ebf040ed8527fe77d9c697aedb4eaeebed5a8e1e4396",
+    "service/firequeen_base_fields.py": "40ce02086c446ec98ba163126414c3a5a423ff90c311faa7a81f7e3ff709207e",
+    "config/ag-rolling-firequeen-base-contract.json": "0775d3117c97e54ee39dd252a1b1e9181909e78155f93be838d903a7c0db79d2",
+    "service/ag_rolling_plan.py": "853bd09a9231e06edb9782ade068f270f6f5ec599ef88a54ee4ebf0991aef9c7",
+    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
+    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
+    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "90b7a62a5129a68e495e6f765cc783dbb34fa7ba6f88d282821c4bfde92bc776"
+  "ruleHash": "dfa930360775d0b8ce69bcd7efea34487b16146dcae4e839b422d72fa7ab064a"
 }

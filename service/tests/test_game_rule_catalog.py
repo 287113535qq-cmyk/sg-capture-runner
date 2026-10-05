@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_firequeen_card_binds_own_wager_info_wild_and_stops_free(self):
+        card=self.cards[32767];rule=card['roundRule']
+        self.assertEqual(rule['family'],'firequeen-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32989);self.assertEqual(card['parameters']['wmsGameId'],20192)
+        self.assertIn('989',rule['bounds']);self.assertIn('1978历史请求',rule['bounds']);self.assertIn('11个FreeSpins',rule['bounds'])
+        self.assertIn('3587',rule['fields']['PaylineWin']);self.assertIn('153种',rule['fields']['PaylineWin'])
+        self.assertIn('13种',rule['fields']['WildTransformedReels / Feature']);self.assertIn('空AccountData',rule['complete']);self.assertIn('WagerInfo',rule['start'])
+        self.assertEqual(card['typeMappings']['firequeen-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_eurekablast_card_binds_own_reelset0or1_and_stops_dynamite(self):
         card=self.cards[32766];rule=card['roundRule']
         self.assertEqual(rule['family'],'eurekablast-base-wms-v1')

@@ -4755,6 +4755,25 @@
         "fullBaseRounds": 975,
         "fullFreeRounds": 0
       }
+    },
+    "firequeen-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "firequeen-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 50,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32767,
+        "runtimeGameId": 32989,
+        "wmsGameId": 20192,
+        "ordinaryContractHash": "f64edfec9814b50ddb81886f32a084a24ee7ebdf878d2d2e5f2314cf989e12b4",
+        "historyFileSha256": "70ab349acdc4acf5bcaf8c756695e486a46611ba62880a93f6cec33708c023b0",
+        "fullBaseRounds": 989,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

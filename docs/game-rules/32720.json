@@ -125,15 +125,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "bc0165292ed2b0813cc87d159fe231833c710f5beb772d1b413782065d7721f6",
-    "scripts/runner-v2/record_fields.py": "2028a93cdde242c6903c4a071c69349907520ed73ba7d6eb6030cdb269738b2b",
+    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
+    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
     "service/jinzita_fields.py": "0f1d90ec268794c530c6aa440d443ee4b96801afb503570cb99a34d2375e791d",
     "scripts/trial/jinzita-protocol.mjs": "d717dbeaac7d56fcd85d1c2f75397c7064e8146eb617c146613408b4e3b018f6",
     "collector/sg.jinzita.ts": "5c99dc314441e8b786b854ec0bdfb7144e85ea48d56b10a00afcb400d4f56d8d",
     "service/free_game_counters.py": "e450aa898f6fefb138a3f2d6d286187eb0c7ee27eba9a885d040a1046f5ea53b",
     "scripts/trial/free-game-counters.mjs": "11fe2277b7f5200b2f1895b5477391050b3a2377bdec77d7128454348229f5af",
     "collector/free-game-counters.cjs": "af96c0e48145633b4e602038dab6290745a7aabf04ef0b8864e51e21f4aff6c4",
-    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
+    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -157,5 +157,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4b2085ca3a47049fc271d2ca552c186881037d67ee68af3c189d5aa12f33d748"
+  "ruleHash": "0fb7bc3877bc1d8271d0f6e94170fec0f48664ae4fda5d7a40bfa7090f96d322"
 }

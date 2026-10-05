@@ -91,7 +91,7 @@
     "service/rhino_fields.py": "c54eac8a54acca49b7506daf90e43471d704d61c79ca6e627f0c956b5858ae4f",
     "collector/rhino-review.cjs": "479a7ee92658c52c0b59a6a9dacb3d7066445893717fdcc003ef245800442ff3",
     "collector/sg.rhino.ts": "6601b2ccd0acd2a04b85f57c4f3e8efe1d0991bc2103721cf6c8782e7db807aa",
-    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
+    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -131,5 +131,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "51ea2061a63f424941b1a66278126a678a676db58b004ed4b85599f897cd4f9b"
+  "ruleHash": "85d6351c6977fdded390680505fabcbd742b5526fea969a76dead69f1412a21b"
 }
