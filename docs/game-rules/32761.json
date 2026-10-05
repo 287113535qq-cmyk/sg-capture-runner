@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-base.mjs": "1fc87b1e5ecc8809176d052119bfeeaa138999cff8baf623dc9e8a61c5e7382b",
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-source.mjs": "503230129e48c8412b60f0c3884aa69e80aba28adf4b34aced15a24176b7105e",
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-codec.mjs": "4c11d35fc552802befb8fc5918ba59cb240551c925f7fa03be01948c89cd7686",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
     "service/drumsexplosion_base_fields.py": "231a9aee9bf43ce27e42430fe366be7948473c2b2e9c7faa5f460dd033019cf9",
     "config/ag-rolling-drumsexplosion-base-contract.json": "1ffd9140df48b5654ce6fadc21156ac3567ff374c538ef95b4edfdd0955b2db6",
-    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
-    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
-    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
-    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
+    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
+    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
+    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
+    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "be2a10a78b81b37e502a0798b2d6677ad66f60cbf5b6911b685d212a55b1eff6"
+  "ruleHash": "c2ad9cbec38f0b58603abe3a6bea9158fc54fd5df17a178303ad28884610b835"
 }
