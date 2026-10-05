@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_jinsedragon_card_binds_own_ways_orb_payout_and_unknown_features(self):
+        card=self.cards[32779];rule=card['roundRule']
+        self.assertEqual(rule['family'],'jinsedragon-base-wms-v1');self.assertEqual(card['runtimeGameId'],33001);self.assertEqual(card['parameters']['wmsGameId'],20401)
+        self.assertIn('993普通完整',rule['bounds']);self.assertIn('1986历史请求',rule['bounds']);self.assertIn('5条免费',rule['bounds']);self.assertIn('Jackpot',rule['bounds']);self.assertIn('991',rule['continue'])
+        self.assertIn('296',rule['fields']['AnywayWin']);self.assertIn('37',rule['fields']['AnywayWin']);self.assertIn('winning=y',rule['fields']['Orbs']);self.assertIn('金额不入奖',rule['fields']['Orbs'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total100',rule['start']);self.assertEqual(card['typeMappings']['jinsedaodragon-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_jinjitreasure_card_binds_own_ways_and_mystery_scatter_shape_with_special_rejection(self):
         card=self.cards[32778];rule=card['roundRule']
         self.assertEqual(rule['family'],'jinjitreasure-base-wms-v1');self.assertEqual(card['runtimeGameId'],33000);self.assertEqual(card['parameters']['wmsGameId'],20322)

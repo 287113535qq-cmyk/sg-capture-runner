@@ -417,6 +417,9 @@ def derive(raw):
     from jinjitreasure_base_fields import SOURCE as JINJITREASURE_SOURCE, settled as jinjitreasure_settled, mapping_hash as jinjitreasure_mapping
     if raw.get('sourceKey') == JINJITREASURE_SOURCE:
         return jinjitreasure_settled(raw, jinjitreasure_mapping())
+    from jinsedragon_base_fields import SOURCE as JINSEDRAGON_SOURCE, settled as jinsedragon_settled, mapping_hash as jinsedragon_mapping
+    if raw.get('sourceKey') == JINSEDRAGON_SOURCE:
+        return jinsedragon_settled(raw, jinsedragon_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
-    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
-    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "bc4e75646bb2233cb0c550505e77cff964921c7f16404eaf3453692102c8926d"
+  "ruleHash": "b6d13df7149d981cbee6158c0276c6192da42b1c6edc200d50248e9598b44be3"
 }
