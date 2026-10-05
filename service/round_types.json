@@ -4698,6 +4698,25 @@
         "fullBaseRounds": 554,
         "fullFreeRounds": 0
       }
+    },
+    "dragonspin-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "dragonspin-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 210,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32764,
+        "runtimeGameId": 32986,
+        "wmsGameId": 20117,
+        "ordinaryContractHash": "e0d02babaa9e090ea111ca8c06aa3f98da96f3b043e56c5a4d63b7960ca20f2f",
+        "historyFileSha256": "1d2d3c56a4630656fc2073292cda5ba5b051bd4af82cdd7b6ebfd7326dad0658",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

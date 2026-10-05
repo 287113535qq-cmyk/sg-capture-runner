@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -233,6 +233,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == '3407ba0442661370a4e6aaddd33bb883556097b44b37861c8bb9d02de4fa7688'
                 and wired.get('schema') == 'sg-ag-wms-jekyll-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == '3e38781c3421decae28514275496d374792d3b6771a623974786232b66c9efe2'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'dragonspin-base-wms-v1':
+        from dragonspin_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32764 and plan['runtimeGameId'] == 32986 and plan['runtimeSlug'] == 'dragonspin'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 210 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20117 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 1000 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 0
+                and proof.get('unhandledHistoricalVariants') == {}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 1000
+                and digest(proof['acceptedRawHashes']) == '8038fd0d95c50627029ef428d96a6b360c17772a841655d4bb6cd2c5d24a3aee'
+                and digest(proof['rejectedHistoricalPrefixes']) == '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'
+                and wired.get('schema') == 'sg-ag-wms-dragonspin-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '414a6f8482900114ded4c1459d53cf2e46c1249230fdda843a8cbfb3bc965086'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

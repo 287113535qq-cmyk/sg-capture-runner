@@ -152,8 +152,8 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "452666c9cf58afc3e798bbabad8696374eff297a9bfaec5eec0be045f7f76ba7",
-    "scripts/runner-v2/record_fields.py": "e9a6f8ccf62c99e2407b521e0ffd513ad6e4a7877f5988428c242152a6348d60",
+    "service/round_fields.py": "98db8f42ce979c7ae3a167e4865cef1c5d3b70b4f26bb78b1ea6dd0c43b2ab02",
+    "scripts/runner-v2/record_fields.py": "d45b78d55a5b2fd6f1aefccf91924c2579e8ed3aba8f011de58bf2dd8f18e0c2",
     "service/inca_coin_review.py": "3665f381e7a6563413f2b94f1a3896ca0c90a9084ff562c7808d45a0823157dd",
     "scripts/trial/inca-coin-review.mjs": "61708ccf81324659219b1fbe8161c30bdaeb3663fee9d8705cb897fca34e1b5e",
     "service/inca_free_review.py": "b93b2518081adab43798ae24bc47235ae159330dcceaf2cc1a4ba838d505d543",
@@ -161,7 +161,7 @@
     "scripts/trial/inca-free-review.mjs": "f51436a1f3503607d52ec78b3ac5530cae00bcd097823d21ff197ae731412bed",
     "scripts/trial/inca-protocol.mjs": "45ad77ce8d5466a635ef4fdd1d58935fb14004682b67b67cceefdc88fecc4916",
     "collector/sg.inca.ts": "a573f1119a62dbf2e686b9cad3ab3c91f82edc5600ba78c2779cc153f44a795b",
-    "service/game_rule_catalog.py": "8267d9b4d044de70976bb2faabeaa0e30b7ea3fa717889cd28670fa8d54edf03"
+    "service/game_rule_catalog.py": "b7c34901425827752a463120c21a1e0e2bd91a7b8ad5ff854142e6bdd2f20a1c"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -187,5 +187,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2c82c964745ba6e162dec081221dc458506db7e78572c6d43bc6b4850e3f8d8f"
+  "ruleHash": "9ff9a2c503eb63f149fc6e1b1f6eef34722de24b94db474b0282399cb0d766f1"
 }

@@ -372,6 +372,9 @@ def derive(raw):
     from jekyll_base_fields import SOURCE as JEKYLL_SOURCE, settled as jekyll_settled, mapping_hash as jekyll_mapping
     if raw.get('sourceKey') == JEKYLL_SOURCE:
         return jekyll_settled(raw, jekyll_mapping())
+    from dragonspin_base_fields import SOURCE as DRAGONSPIN_SOURCE, settled as dragonspin_settled, mapping_hash as dragonspin_mapping
+    if raw.get('sourceKey') == DRAGONSPIN_SOURCE:
+        return dragonspin_settled(raw, dragonspin_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
