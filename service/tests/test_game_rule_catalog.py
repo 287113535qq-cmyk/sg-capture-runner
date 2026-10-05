@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_dragonspin_card_binds_own_replacement_without_extra_reward(self):
+        card=self.cards[32764];rule=card['roundRule']
+        self.assertEqual(rule['family'],'dragonspin-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32986);self.assertEqual(card['parameters']['wmsGameId'],20117)
+        self.assertIn('1000',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('772种',rule['fields']['MSReplacement / BonusData'])
+        self.assertIn('2525',rule['fields']['PaylineWin']);self.assertIn('26种',rule['fields']['PaylineWin']);self.assertIn('85种',rule['fields']['PaylineWin'])
+        self.assertIn('无AccountData',rule['complete']);self.assertIn('不再加奖',rule['complete'])
+        self.assertEqual(card['typeMappings']['dragonspin-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_jekyll_card_keeps_own_ordinary_and_marked_scatter_boundaries(self):
         card=self.cards[32763];rule=card['roundRule']
         self.assertEqual(rule['family'],'jekyll-base-wms-v1')

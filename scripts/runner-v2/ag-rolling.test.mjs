@@ -40,3 +40,5 @@ import './ag-rolling/sg-drumsexplosion-wiring.test.mjs';
 import './ag-rolling/sg-desertcats-wiring.test.mjs';
 
 import './ag-rolling/sg-jekyll-wiring.test.mjs';
+
+import './ag-rolling/sg-dragonspin-wiring.test.mjs';

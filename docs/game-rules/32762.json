@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs": "ed501a2b04bc0d929964e8bec97802f7a296b38889df5f4ec3a4a2079c3dc8b4",
     "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs": "940e7e4d37cbbdec25b6cea5513643aeb10f153e44cd291df57cbc08a133254f",
     "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs": "588dcac812ab3e40565b9a4844e70abacd980939d6d6778622d85232f83d52f7",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "aa11813daac1bbe39e636cbeb559aa250f0c6da19664ce90c7c1630ae761ccf3",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "70c9f22fd61cd8fab78b368fe0799df9dbde3e88da253d841157281e9220a59f",
     "service/desertcats_base_fields.py": "9caa82edd904940e77dcd952958c0eb8f8d701ca676ca75527a47d15c414d98d",
     "config/ag-rolling-desertcats-base-contract.json": "86b32bd9dae1cd96380d2a1bc581839f34950da5201de5f512ef65e92d49c06d",
-    "service/ag_rolling_plan.py": "3fa3d5466b0954b0b58e0dfd105200bfc1100bb96ec0b894a8d67bf6d4b88ec2",
-    "scripts/runner-v2/record_fields.py": "e9a6f8ccf62c99e2407b521e0ffd513ad6e4a7877f5988428c242152a6348d60",
-    "service/round_fields.py": "452666c9cf58afc3e798bbabad8696374eff297a9bfaec5eec0be045f7f76ba7",
-    "service/game_rule_catalog.py": "8267d9b4d044de70976bb2faabeaa0e30b7ea3fa717889cd28670fa8d54edf03"
+    "service/ag_rolling_plan.py": "3852e8a7b660613bc779a11180251cdad57b71ed79699cb5c07196b9016b2fbe",
+    "scripts/runner-v2/record_fields.py": "d45b78d55a5b2fd6f1aefccf91924c2579e8ed3aba8f011de58bf2dd8f18e0c2",
+    "service/round_fields.py": "98db8f42ce979c7ae3a167e4865cef1c5d3b70b4f26bb78b1ea6dd0c43b2ab02",
+    "service/game_rule_catalog.py": "b7c34901425827752a463120c21a1e0e2bd91a7b8ad5ff854142e6bdd2f20a1c"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8550bb9395bdd9007a537b47127d8a68c9dd290fa1b71e6f336a524942289479"
+  "ruleHash": "0b5a3a3e48ab929c52a51160215fdc0994594dca62d085e433fdeb7309aaff20"
 }

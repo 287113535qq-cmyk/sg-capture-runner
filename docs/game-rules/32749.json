@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "aa11813daac1bbe39e636cbeb559aa250f0c6da19664ce90c7c1630ae761ccf3",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "70c9f22fd61cd8fab78b368fe0799df9dbde3e88da253d841157281e9220a59f",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "3fa3d5466b0954b0b58e0dfd105200bfc1100bb96ec0b894a8d67bf6d4b88ec2",
-    "scripts/runner-v2/record_fields.py": "e9a6f8ccf62c99e2407b521e0ffd513ad6e4a7877f5988428c242152a6348d60",
-    "service/round_fields.py": "452666c9cf58afc3e798bbabad8696374eff297a9bfaec5eec0be045f7f76ba7",
-    "service/game_rule_catalog.py": "8267d9b4d044de70976bb2faabeaa0e30b7ea3fa717889cd28670fa8d54edf03"
+    "service/ag_rolling_plan.py": "3852e8a7b660613bc779a11180251cdad57b71ed79699cb5c07196b9016b2fbe",
+    "scripts/runner-v2/record_fields.py": "d45b78d55a5b2fd6f1aefccf91924c2579e8ed3aba8f011de58bf2dd8f18e0c2",
+    "service/round_fields.py": "98db8f42ce979c7ae3a167e4865cef1c5d3b70b4f26bb78b1ea6dd0c43b2ab02",
+    "service/game_rule_catalog.py": "b7c34901425827752a463120c21a1e0e2bd91a7b8ad5ff854142e6bdd2f20a1c"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "758293436488caf8b0c0faa67a3698824e2089cf7fd6046fa1435fc6f2bd7366"
+  "ruleHash": "aa54261eb8bfb01cb1dc251e97a75be56a593f3b40f627d3efb68f03b5f60da0"
 }

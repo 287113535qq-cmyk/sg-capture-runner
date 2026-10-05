@@ -36,6 +36,7 @@ from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
 from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
 from arthur_feature_fields import fields_factory as arthur_fields_factory
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
+from dragonspin_base_fields import DragonSpinBaseFields, SOURCE as DRAGONSPIN_SOURCE
 from jekyll_base_fields import JekyllBaseFields, SOURCE as JEKYLL_SOURCE
 from desertcats_base_fields import DesertCatsBaseFields, SOURCE as DESERTCATS_SOURCE
 from drumsexplosion_base_fields import DrumsExplosionBaseFields, SOURCE as DRUMSEXPLOSION_SOURCE
@@ -79,6 +80,8 @@ def execute(request):
             adapters[key]=arthur_fields_factory(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
+        if plan['sourceKey']==DRAGONSPIN_SOURCE:
+            adapters[key]=DragonSpinBaseFields(plan)
         if plan['sourceKey']==JEKYLL_SOURCE:
             adapters[key]=JekyllBaseFields(plan)
         if plan['sourceKey']==DESERTCATS_SOURCE:
@@ -145,6 +148,9 @@ def execute(request):
         return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'jekyll_bootstrap':
         assert plan['sourceKey'] == JEKYLL_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'dragonspin_bootstrap':
+        assert plan['sourceKey'] == DRAGONSPIN_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'eighty_bootstrap':
         assert plan['sourceKey'] == EIGHTY_SOURCE
@@ -229,7 +235,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':
