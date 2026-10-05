@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6bae196040a5095f4d81ebf040ed8527fe77d9c697aedb4eaeebed5a8e1e4396",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "853bd09a9231e06edb9782ade068f270f6f5ec599ef88a54ee4ebf0991aef9c7",
-    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
-    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
-    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
+    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
+    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
+    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
+    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "bf08047d84c6504cf0a1865209f730331693103b4b48880ced43815a4b8f4330"
+  "ruleHash": "5f7e17a370e9bd93c49ca1eb917554c7efefd73737ed048ed74517f3fc7b9184"
 }

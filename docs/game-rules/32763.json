@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-jekyll-base.mjs": "e4005552d03b3aa6abea9259059c71ca3623b5b76e27ab02bd901acc4224a105",
     "scripts/runner-v2/ag-rolling/sg-jekyll-source.mjs": "0ab39a8e0f78866e640b2ed4b60ef850155c45d35e299faed741cc9b7afec1cc",
     "scripts/runner-v2/ag-rolling/sg-jekyll-codec.mjs": "f419f1748c16fd5a21e5fe37d8268ffb35b09f42435e534e9e7bc7d78429f9db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6bae196040a5095f4d81ebf040ed8527fe77d9c697aedb4eaeebed5a8e1e4396",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
     "service/jekyll_base_fields.py": "c641bd47e0213c5a9693a08511c6891441803d8b9e925d3cdaf9d8b72eddeb12",
     "config/ag-rolling-jekyll-base-contract.json": "f9cf9021d8555e679a0d72cffa217468c4d0812c260d912a154f2f8f50d64241",
-    "service/ag_rolling_plan.py": "853bd09a9231e06edb9782ade068f270f6f5ec599ef88a54ee4ebf0991aef9c7",
-    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
-    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
-    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
+    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
+    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
+    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
+    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "187f5f25a14bb44626cfd5d334f013c063a8369633143ecc4272bf105b9b6b85"
+  "ruleHash": "be734eb45e0dcab0b06961a33bd9d68122129a7db9936bc1e51a0e2e5fe9b0bc"
 }

@@ -4774,6 +4774,25 @@
         "fullBaseRounds": 989,
         "fullFreeRounds": 0
       }
+    },
+    "frozeninferno-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "frozeninferno-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 5000,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32768,
+        "runtimeGameId": 32990,
+        "wmsGameId": 20090,
+        "ordinaryContractHash": "899d1b87af86e25f7ef97addad040e00b3dd5b61a26a3db96d81f682ca41acee",
+        "historyFileSha256": "5b938936e95ef077fdb89ad3fa2e2bbd7f9db7940c6bb2ac1006080c0ff78914",
+        "fullBaseRounds": 677,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
