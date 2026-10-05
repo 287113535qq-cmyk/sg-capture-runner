@@ -399,6 +399,9 @@ def derive(raw):
     from heidibier_base_fields import SOURCE as HEIDIBIER_SOURCE, settled as heidibier_settled, mapping_hash as heidibier_mapping
     if raw.get('sourceKey') == HEIDIBIER_SOURCE:
         return heidibier_settled(raw, heidibier_mapping())
+    from hercules_base_fields import SOURCE as HERCULES_SOURCE, settled as hercules_settled, mapping_hash as hercules_mapping
+    if raw.get('sourceKey') == HERCULES_SOURCE:
+        return hercules_settled(raw, hercules_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

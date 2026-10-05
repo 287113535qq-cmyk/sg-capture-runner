@@ -58,3 +58,5 @@ import './ag-rolling/sg-giantsgold-wiring.test.mjs';
 import './ag-rolling/sg-goldenchief-wiring.test.mjs';
 
 import './ag-rolling/sg-heidibier-wiring.test.mjs';
+
+import './ag-rolling/sg-hercules-wiring.test.mjs';

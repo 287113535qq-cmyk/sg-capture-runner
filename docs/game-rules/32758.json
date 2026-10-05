@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
-    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
-    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
-    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
+    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
+    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
+    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
+    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e826a762f489314641479ea83cdc62286d2e7c1d22ab8b42f4e556525900dafe"
+  "ruleHash": "ad056689e1561244972f7bc5288359b1e644efad962912dc8b8332be0854f9a8"
 }

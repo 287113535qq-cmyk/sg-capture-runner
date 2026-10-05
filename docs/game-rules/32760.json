@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
-    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
-    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
-    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
+    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
+    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
+    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
+    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1e36a52f165566716a122de89e58a2939c960e9cb7eaa62566a81cc5f6c5ecf9"
+  "ruleHash": "da01c7b15d87c4d09cb5fb7244a01f9da869b962150e97a28ba96895d9a04d96"
 }

@@ -153,14 +153,14 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
-    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
+    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
     "service/demon_fields.py": "fec6e9567533d0be162806346d11a7bd8a7b2efb6a91608eb3defe3b7c4620ec",
     "service/demon_nested_fields.py": "e8d69cd2fea147406dfb99330ece786542b4f2306a2d14086e9e7db2d2a8219e",
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
+    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
   },
   "reviewDocuments": [
     "docs/demon-pair-recovery-20260929.md",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "1def4fa6491afb252b751ce13ab52160f6d4f1c17fc04301b36af9d90a57f36b"
+  "ruleHash": "dcd916f9ef671a94ac706886dca25422d577727cb502ddc3467f84b3f426cae7"
 }

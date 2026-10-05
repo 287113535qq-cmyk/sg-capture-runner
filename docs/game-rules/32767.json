@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs": "b596d1d05af6b391e41c35e26aa38992c27cf83f8789ac527e35ace608cdd1a0",
     "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs": "29807fd4b744ef0e8f0766131f3126312eb72b4e4105931bdc40247f960aba95",
     "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs": "f27fcba5f6fbdf30145bd8187f57644b05494e8fde66864a792f5f75df9f765a",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
     "service/firequeen_base_fields.py": "40ce02086c446ec98ba163126414c3a5a423ff90c311faa7a81f7e3ff709207e",
     "config/ag-rolling-firequeen-base-contract.json": "0775d3117c97e54ee39dd252a1b1e9181909e78155f93be838d903a7c0db79d2",
-    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
-    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
-    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
-    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
+    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
+    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
+    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
+    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "f181c68f18557747fb74fac1a161052b1416c9bec0aa8cabeae0234be95c5310"
+  "ruleHash": "56b5e732b798a2d5844707a73d4316c153f72b8449554790be7a31530ddde841"
 }
