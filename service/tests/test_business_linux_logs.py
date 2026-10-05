@@ -27,6 +27,20 @@ class BusinessLinuxLogTests(unittest.TestCase):
     def test_later_aggregate_only_layout(self):
         self.assertEqual(module.parse_archive(self.archive([('1_preflight.txt',self.line),('preflight/system.txt','system')])),self.value)
 
+    def test_zero_numbered_aggregate_only_layout(self):
+        self.assertEqual(module.parse_archive(self.archive([('0_preflight.txt',self.line),('preflight/system.txt','system')])),self.value)
+
+    def test_zero_numbered_aggregate_and_step_must_agree(self):
+        self.assertEqual(module.parse_archive(self.archive([('0_preflight.txt',self.line),(self.step,self.line)])),self.value)
+
+    def test_zero_numbered_conflicting_result_rejected(self):
+        bad={**self.value,'passed':False}
+        with self.assertRaises(AssertionError):module.parse_archive(self.archive([('0_preflight.txt',self.line),(self.step,json.dumps(bad))]))
+
+    def test_noncanonical_or_other_zero_numbered_job_rejected(self):
+        for name in ['00_preflight.txt','0_other.txt']:
+            with self.subTest(name=name),self.assertRaises(AssertionError):module.parse_archive(self.archive([(name,self.line)]))
+
     def test_aggregate_and_step_must_agree(self):
         self.assertEqual(module.parse_archive(self.archive([('1_preflight.txt',self.line),(self.step,self.line)])),self.value)
 

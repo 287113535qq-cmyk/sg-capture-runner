@@ -9,7 +9,7 @@ def parse_archive(raw):
     for entry in entries:
         # GitHub initially returns step files alongside the aggregate job log,
         # then may return only the aggregate. Both contain the same joined JSON.
-        if not ('Fixed offline checks' in entry.filename or re.fullmatch(r'[1-9][0-9]*_preflight\.txt',entry.filename)):continue
+        if not ('Fixed offline checks' in entry.filename or re.fullmatch(r'(?:0|[1-9][0-9]*)_preflight\.txt',entry.filename)):continue
         found=[]
         for line in archive.read(entry).decode('utf-8',errors='strict').splitlines():
             at=line.find('{"schema": "sg-offline-preflight-v1"')
