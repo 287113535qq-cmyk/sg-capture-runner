@@ -375,6 +375,9 @@ def derive(raw):
     from dragonspin_base_fields import SOURCE as DRAGONSPIN_SOURCE, settled as dragonspin_settled, mapping_hash as dragonspin_mapping
     if raw.get('sourceKey') == DRAGONSPIN_SOURCE:
         return dragonspin_settled(raw, dragonspin_mapping())
+    from deepseamagic_base_fields import SOURCE as DEEPSEAMAGIC_SOURCE, settled as deepseamagic_settled, mapping_hash as deepseamagic_mapping
+    if raw.get('sourceKey') == DEEPSEAMAGIC_SOURCE:
+        return deepseamagic_settled(raw, deepseamagic_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

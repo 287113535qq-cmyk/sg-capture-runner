@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-jekyll-base.mjs": "e4005552d03b3aa6abea9259059c71ca3623b5b76e27ab02bd901acc4224a105",
     "scripts/runner-v2/ag-rolling/sg-jekyll-source.mjs": "0ab39a8e0f78866e640b2ed4b60ef850155c45d35e299faed741cc9b7afec1cc",
     "scripts/runner-v2/ag-rolling/sg-jekyll-codec.mjs": "f419f1748c16fd5a21e5fe37d8268ffb35b09f42435e534e9e7bc7d78429f9db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "70c9f22fd61cd8fab78b368fe0799df9dbde3e88da253d841157281e9220a59f",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "561137e27c4a9f20270b775fd81e14934ed002cecf7d7b022af4b17a97c15ba1",
     "service/jekyll_base_fields.py": "c641bd47e0213c5a9693a08511c6891441803d8b9e925d3cdaf9d8b72eddeb12",
     "config/ag-rolling-jekyll-base-contract.json": "f9cf9021d8555e679a0d72cffa217468c4d0812c260d912a154f2f8f50d64241",
-    "service/ag_rolling_plan.py": "3852e8a7b660613bc779a11180251cdad57b71ed79699cb5c07196b9016b2fbe",
-    "scripts/runner-v2/record_fields.py": "d45b78d55a5b2fd6f1aefccf91924c2579e8ed3aba8f011de58bf2dd8f18e0c2",
-    "service/round_fields.py": "98db8f42ce979c7ae3a167e4865cef1c5d3b70b4f26bb78b1ea6dd0c43b2ab02",
-    "service/game_rule_catalog.py": "b7c34901425827752a463120c21a1e0e2bd91a7b8ad5ff854142e6bdd2f20a1c"
+    "service/ag_rolling_plan.py": "c37bb1487c66c9c71c73a8f253dd5badc78f6b2920a1bd4e6b1c21b1a0c98ad2",
+    "scripts/runner-v2/record_fields.py": "f15a4fc8f84a0fae42b5bd041cafe7a5e43ddaefcccd1b3794bc33138d5c0a56",
+    "service/round_fields.py": "eeeb3b49f2d04f6f1efe50fc8be035b23b13c1c2ea16613b898d63e3f4217f8e",
+    "service/game_rule_catalog.py": "9916dd4ecca6e6bb87908e35de509aa812c2b8064e116aff9fbee14f4a94a52a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "74c2d50aa68f804f5d1bba8d8e23cd82c121a46add082f450d104e51997a70f2"
+  "ruleHash": "a01c6a3828ab3f9591e44bd8571a567203810e8839547b1ec0ada754ffe056fe"
 }

@@ -4717,6 +4717,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "deepseamagic-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "deepseamagic-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32765,
+        "runtimeGameId": 32987,
+        "wmsGameId": 20412,
+        "ordinaryContractHash": "e39cb6a6a14073c4f7871e5f477d94755d451d6f3eea28b97f59753a7e3ce52f",
+        "historyFileSha256": "3687348273df5d014e5fa08d285954ed40d70ed5d04ce0065a16ea635c2b1a98",
+        "fullBaseRounds": 991,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

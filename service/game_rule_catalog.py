@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32765:
+        native.update({'family':'deepseamagic-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32987与自己的WMS Header20412分别固定；AccountData/CurrencyMultiplier1→Header→Stake.total200，无PaylineCount/isBigBet；响应stake200/stakePerLine4/paylineCount50。',
+            'continue':'普通spin0/reelset0/5stops、最多40个唯一Payline线0..49，winCountSC0/freeSpinN/bonusAwardedN、自己的readyY；GameResult只ReelResults/可省略的BonusSymValues/BGInfo两种已观察顺序。DLInfo/FSInfo/Scatter/未知形状立即停止。',
+            'complete':'普通readyY后唯一Header-only EndGame，自己的readyN/空AccountData/Balances，无GameResult且现金保持。Payline和=spinWins=Logic totalWin=BG累计；现金=start-200+奖。BonusSymValues不再加奖或乘倍。',
+            'bounds':'自身完整file SHA核验，前1000中991普通完整/1982历史请求；9个DL/FS首响应拒绝。actual codec→独立PY IPC→record/verify一致；1991自身source payload语义核验，不声称原frontend constructor/XML serializer执行。历史不抵目标；Init仅synthetic能力形状，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-deepseamagic-base.mjs','scripts/runner-v2/ag-rolling/sg-deepseamagic-source.mjs','scripts/runner-v2/ag-rolling/sg-deepseamagic-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/deepseamagic_base_fields.py','config/ag-rolling-deepseamagic-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin':'1957个自身普通Payline，26种award/table/winVal tuple、94种2..5位置文本、唯一位置0..14；最多40线，index0..49唯一。新tuple/位置停止。',
+                'BonusSymValues':'660普通存在/331普通省略；348种15项完整文本固定，数值仅自己的-1或受证据正值。不根据文本猜DL/免费，也不再加奖。',
+                'BGInfo / Stake':'下注200；BG totalWagerWin/bgWinnings=Payline奖和、isMaxWin0；没有baseGameSpinsRemaining/isBigBet字段，foreign字段拒绝。'}})
     elif game_id == 32764:
         native.update({'family':'dragonspin-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32986与WMS Header20117分别固定；自己的AccountData/CurrencyMultiplier1→Header→Stake.total210，无PaylineCount；响应stake210/stakePerLine7/paylineCount30，没有readyForEndGame字段。',
@@ -451,7 +461,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -556,6 +566,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'deepseamagic-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注200；自己的readyY→readyN唯一EndGame/空AccountData，Payline奖和与现金一致；BonusSymValues只形状、DL/FS停止。'}
         if plan and plan.get('adapter') == 'dragonspin-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

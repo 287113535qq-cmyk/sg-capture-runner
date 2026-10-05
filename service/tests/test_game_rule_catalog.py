@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_deepseamagic_card_binds_own_optional_bonus_values_and_ready(self):
+        card=self.cards[32765];rule=card['roundRule']
+        self.assertEqual(rule['family'],'deepseamagic-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32987);self.assertEqual(card['parameters']['wmsGameId'],20412)
+        self.assertIn('991',rule['bounds']);self.assertIn('1982历史请求',rule['bounds']);self.assertIn('9个DL/FS',rule['bounds'])
+        self.assertIn('1957',rule['fields']['PaylineWin']);self.assertIn('94种',rule['fields']['PaylineWin'])
+        self.assertIn('348种',rule['fields']['BonusSymValues']);self.assertIn('空AccountData',rule['complete']);self.assertIn('不再加奖',rule['complete'])
+        self.assertEqual(card['typeMappings']['deepseamagic-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_dragonspin_card_binds_own_replacement_without_extra_reward(self):
         card=self.cards[32764];rule=card['roundRule']
         self.assertEqual(rule['family'],'dragonspin-base-wms-v1')
