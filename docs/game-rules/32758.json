@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-cooljewels-base.mjs": "0316c86ea8a90e89357e5f5a905a879a0116f29c76b85eee37686ed9179cbf37",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-source.mjs": "1144f3ba4450ab788115a1618da6424ceba6bce60b07167bc9e84a959d358006",
     "scripts/runner-v2/ag-rolling/sg-cooljewels-codec.mjs": "b7c126b962a7162173436b0da7421a08d6dc47b0d910ecf4e2c0ff859f141bfc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6a166b926ecfe5fcb0833498b94f8546ce83be0509cc4c5491b409c09f127bf5",
     "service/cooljewels_base_fields.py": "65fcfa334ab873827b8b1291ef3321eac572c1eb1c1db9aa93824c47557964a9",
     "config/ag-rolling-cooljewels-base-contract.json": "e4d5f6be57426bea29e55966fdd1d05f4e551082060257c1538c566f29faccd8",
-    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
-    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
-    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
-    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
+    "service/ag_rolling_plan.py": "bd1012928964a3c56af1cba438aad0a6da49076e4b96c350c91213656fc23031",
+    "scripts/runner-v2/record_fields.py": "5f4d8d8a1bf82f2d6e83a6afb0b39d0c3583f8ef2df658d710f804f5a2e487be",
+    "service/round_fields.py": "d8647673e15c7bd7afc33f450c38c95da62105fcef301972ba3426bdc9da173f",
+    "service/game_rule_catalog.py": "3ebc65f0b826fb0bc9e7a82909a9a5743aaf53857beb0877a391546c7aa48a64"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "25835e0abf908e1cf54ceaac1baec50c1553452d06960ee1503d7e0e789ef574"
+  "ruleHash": "dc143146bc25acf7dca81672ccdb80db6c315cd821a94ea41e57e1614cd98b55"
 }

@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6a166b926ecfe5fcb0833498b94f8546ce83be0509cc4c5491b409c09f127bf5",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
-    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
-    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
-    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
+    "service/ag_rolling_plan.py": "bd1012928964a3c56af1cba438aad0a6da49076e4b96c350c91213656fc23031",
+    "scripts/runner-v2/record_fields.py": "5f4d8d8a1bf82f2d6e83a6afb0b39d0c3583f8ef2df658d710f804f5a2e487be",
+    "service/round_fields.py": "d8647673e15c7bd7afc33f450c38c95da62105fcef301972ba3426bdc9da173f",
+    "service/game_rule_catalog.py": "3ebc65f0b826fb0bc9e7a82909a9a5743aaf53857beb0877a391546c7aa48a64"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0a988f3d63cd56836d9d7d63a0c4c179bcaa5e6d9d3e4688e8577869a97ee33a"
+  "ruleHash": "9e61fd9c9c19fc2754109c39d2b5e22ec6615390bd8bb1beefe64249687356d6"
 }

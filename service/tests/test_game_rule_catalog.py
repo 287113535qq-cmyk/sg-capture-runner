@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_giantsgold_card_binds_own_two_spins_clump_wild_and_stake(self):
+        card=self.cards[32770];rule=card['roundRule']
+        self.assertEqual(rule['family'],'giantsgold-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32992);self.assertEqual(card['parameters']['wmsGameId'],20129)
+        self.assertIn('1000',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('没有特殊或免费覆盖',rule['bounds'])
+        self.assertIn('664',rule['fields']['PaylineWin / ReelSpin']);self.assertIn('15种',rule['fields']['PaylineWin / ReelSpin'])
+        self.assertIn('75种',rule['fields']['ClumpPlaceholderInfo / PsudoSuperWildStack']);self.assertIn('空AccountData',rule['complete']);self.assertIn('paylineCount20',rule['start'])
+        self.assertEqual(card['typeMappings']['giantsgold-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_fudaole_card_binds_own_wager_ways_mystery_and_stops_features(self):
         card=self.cards[32769];rule=card['roundRule']
         self.assertEqual(rule['family'],'fudaole-base-wms-v1')

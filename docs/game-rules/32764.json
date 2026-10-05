@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "4253a1006405c9477c76d274a76da801be8230c257840c2f68b0860a3e8dff16",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-source.mjs": "249d96c10df5dc338ab39e83d94bc4ce8db301077c4cc3bbe2600b227cd80641",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-codec.mjs": "23bcd5780922341db22f8d14703438c0a0065d5a950c809413572f1d3dd2d5c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6a166b926ecfe5fcb0833498b94f8546ce83be0509cc4c5491b409c09f127bf5",
     "service/dragonspin_base_fields.py": "51d3cb2955a5e4b4e99c46e9928050f3ab2765e499d927b935687a0dad97ddb2",
     "config/ag-rolling-dragonspin-base-contract.json": "d2a9a2b9d51dabe6abd7c1587051929dc86e2c854c80e0c34f9f0f626f35dce7",
-    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
-    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
-    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
-    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
+    "service/ag_rolling_plan.py": "bd1012928964a3c56af1cba438aad0a6da49076e4b96c350c91213656fc23031",
+    "scripts/runner-v2/record_fields.py": "5f4d8d8a1bf82f2d6e83a6afb0b39d0c3583f8ef2df658d710f804f5a2e487be",
+    "service/round_fields.py": "d8647673e15c7bd7afc33f450c38c95da62105fcef301972ba3426bdc9da173f",
+    "service/game_rule_catalog.py": "3ebc65f0b826fb0bc9e7a82909a9a5743aaf53857beb0877a391546c7aa48a64"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0fcf90d876d8235f386be71cfbc342f0d6c3e324cf6cef98f34b5cdc4a5fbdb2"
+  "ruleHash": "32120bb704eebaaeae5e8797e47fb52b2d9562181a41f7f15e3e846de9593815"
 }
