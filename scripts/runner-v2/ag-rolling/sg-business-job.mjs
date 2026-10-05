@@ -13,6 +13,7 @@ import {businessDocument,verifyBusinessPage} from './sg-business-document.mjs';
 import {assertCompleteBinding,deliverPage,verifyLegacyPage,digest,missingDocuments} from './sg-business-delivery.mjs';
 import {taskKey} from './sg-task-store.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
+import {requireBusinessLinux} from './sg-business-linux.mjs';
 const require=createRequire(import.meta.url);
 const {MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
 require('../../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json',transpileOnly:true});
@@ -24,9 +25,10 @@ const bindings=JSON.parse(fs.readFileSync('config/ag-business-bindings.json')).b
 const plans=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json')).plans;
 const policy=JSON.parse(fs.readFileSync('config/ag-business-delivery-policy.json'));
 assert(ids.every(id=>bindings[id]&&policy.completeProofs[id]),'SG_BUSINESS_UNREVIEWED_GAME');
+const linuxProof=await requireBusinessLinux({id:process.env.SG_BUSINESS_LINUX_RUN,commit:process.env.GITHUB_SHA,token:process.env.GH_TOKEN});
 const client=new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000});
 const parser=analyzer();const owner=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT+':business';
-const report={schema:'sg-business-delivery-run-v1',run:owner,commit:process.env.GITHUB_SHA,games:[],sourceRequests:0,captureMetadataWrites:0};
+const report={schema:'sg-business-delivery-run-v1',run:owner,commit:process.env.GITHUB_SHA,linuxProof,games:[],sourceRequests:0,captureMetadataWrites:0};
 const jsonDoc=d=>({...d,_id:String(d._id)}),dbDoc=d=>({...d,_id:new ObjectId(d._id)});
 async function verifyNative(records,plan){
  for(const r of records){

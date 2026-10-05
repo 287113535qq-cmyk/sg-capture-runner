@@ -2,6 +2,10 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      business_linux_run:
+        description: Exact successful full Linux preflight for this business branch and commit
+        type: string
+        default: ''
       business_game_ids:
         description: Reviewed accepted games to finalize into their own simulate collection
         type: string
@@ -83,6 +87,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 330
     env:
+      GH_TOKEN: ${{ github.token }}
+      SG_BUSINESS_LINUX_RUN: ${{ inputs.business_linux_run }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_BUSINESS_MONGO_PASSWORD: ${{ secrets.SG_BUSINESS_MONGO_PASSWORD }}
       SG_BUSINESS_GAME_IDS: ${{ inputs.business_game_ids }}

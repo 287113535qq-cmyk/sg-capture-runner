@@ -3,8 +3,18 @@ import {analyzer} from './analyzer.mjs';import {stable} from './mongo-writer.mjs
 import {businessDocument} from './ag-rolling/sg-business-document.mjs';
 import {inspectExistingOrdinary} from './ag-rolling/sg-existing-business.mjs';
 import {deliverPage,missingDocuments,assertCompleteBinding,digest,verifyLegacyPage} from './ag-rolling/sg-business-delivery.mjs';
+import {verifyBusinessLinuxEvidence,requireBusinessLinux,BUSINESS_LINUX_REPOSITORY,BUSINESS_BRANCH} from './ag-rolling/sg-business-linux.mjs';
 const plan=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json')).plans['32442'];
 const binding=JSON.parse(fs.readFileSync('config/ag-business-bindings.json')).bindings['32442'];const campaignId='sg_32442-'+binding.queueId;
+function linuxFixture(){let n=0;return {run:{id:123,repository:{full_name:BUSINESS_LINUX_REPOSITORY},head_sha:'a'.repeat(40),head_branch:BUSINESS_BRANCH,run_attempt:1,event:'workflow_dispatch',path:'.github/workflows/preflight.yml',status:'completed',conclusion:'success'},jobs:{total_count:1,jobs:[{id:456,run_id:123,name:'preflight',status:'completed',conclusion:'success'}]},result:{schema:'sg-offline-preflight-v1',passed:true,complete:true,sourceRequests:0,mongoWrites:0,runs:[{workers:3,passed:true,groups:Object.entries({'python':8,'collector-protocol':3,'runner-persistence':3}).map(([group,count])=>({group,passed:true,expectedCommands:count,commands:Array.from({length:count},()=>({exitCode:0,argvHash:(++n).toString(16).padStart(64,'0')}))}))}]}};}
+test('business writes require exact successful branch Linux with all fourteen joined checks',()=>{
+ const f=linuxFixture();assert.equal(verifyBusinessLinuxEvidence(f,123,'a'.repeat(40)).joinedCommands,14);
+ for(const edit of [x=>x.run.head_sha='b'.repeat(40),x=>x.run.head_branch='main',x=>x.run.run_attempt=2,x=>x.jobs.total_count=2,x=>x.jobs.jobs[0].conclusion='cancelled',x=>x.result.runs[0].groups.pop(),x=>x.result.runs[0].groups[0].commands.pop(),x=>x.result.runs[0].groups[0].commands[0].exitCode=1,x=>x.result.sourceRequests=1]){const bad=structuredClone(f);edit(bad);assert.throws(()=>verifyBusinessLinuxEvidence(bad,123,'a'.repeat(40)));}
+});
+test('unknown Linux reads stop after one request before any business database connection',async()=>{
+ let reads=0;await assert.rejects(requireBusinessLinux({id:123,commit:'a'.repeat(40),token:'synthetic',fetchImpl:async()=>{reads++;throw Error('READ_UNKNOWN');}}),/READ_UNKNOWN/);assert.equal(reads,1);
+ const src=fs.readFileSync('scripts/runner-v2/ag-rolling/sg-business-job.mjs','utf8');assert(src.indexOf('await requireBusinessLinux(')<src.indexOf('new MongoClient('));
+});
 async function fixture(parser){
  const response='MSGID=BET&B=99980&AB=99980&TW=0&NFG=0&IFG=0&FID=0|';
  const raw={fixtureOnly:false,protocol:'nextgen',sourceKey:plan.sourceKey,roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:100000,steps:[{ts:'2026-01-01T00:00:00Z',msgId:'BET',methodName:'processGameMessage',requestPayload:Object.entries({...plan.requestParams,PID:'gdmgcmSyntheticBusinessFixture',MSGID:'BET'}).map(([k,v])=>k+'='+v).join('&'),responsePayload:response,responseBalance:99980,responseXml:'<GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD>'+response.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>',elapsedMs:1,httpStatus:200}]};
