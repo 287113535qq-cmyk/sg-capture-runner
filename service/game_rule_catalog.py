@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32768:
+        native.update({'family':'frozeninferno-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32990与自己的WMS Header20090分别固定；Header→AccountData/CurrencyMultiplier1→SpinInfo perLine125/total5000/mode0/isReset0/modeChange0；响应stake5000/stakePerLine125/paylineCount40；Header没有readyForEndGame。',
+            'continue':'普通spin0/reelset0/5stops，最多33个唯一Payline线0..39，winCountSC0/freeSpinN/bonusAwardedN；GameResult严格ReelResults/WildInfo/BaseGame。85种自己的WildData字段与文本联合形状只核验，不按direction或位置猜终局，不再次加奖。Feature/Scatter/免费/未知形状立即停止。',
+            'complete':'普通后唯一Header-only EndGame，响应仅Header/Balances，无AccountData/GameResult且现金保持。Payline和=spinWins=Logic totalWin；现金=start-5000+奖。',
+            'bounds':'完整file SHA核验；前1000中677普通完整/1354历史请求，323个FreeGames触发首响应拒绝。actual codec→独立PY IPC→record/verify一致；1677自身source payload语义核验，原frontend constructor/XML serializer未执行。旧免费触发后EndGame不是完整免费terminal；历史不抵目标；Init仅synthetic能力shape，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-frozeninferno-base.mjs','scripts/runner-v2/ag-rolling/sg-frozeninferno-source.mjs','scripts/runner-v2/ag-rolling/sg-frozeninferno-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/frozeninferno_base_fields.py','config/ag-rolling-frozeninferno-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin':'2838个自己普通Payline，30种award/table/winVal tuple、105种3..5位置文本、唯一位置0..19；最多33线，index0..39唯一。新tuple/位置停止。',
+                'WildInfo / Feature':'普通85种WildData mode/wildCount/previousWild/CurrentWild/direction/text联合形状；CurrentWild可为-1，严格按自己组合核验。323个Feature index1/name FreeGames/data.mode0/bonusPos0..19未适配，无FREE/END许可或信用。',
+                'BaseGame / SpinInfo':'下注5000；BaseGame gameMode0/isMaxWinN/maxWinValue25000000，只有上限不当奖励。SpinInfo固定mode0/isReset0/modeChange0，不借其它款Stake/WagerInfo字段。'}})
     elif game_id == 32767:
         native.update({'family':'firequeen-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32989与自己的WMS Header20192分别固定；Header→WagerInfo.totalStake50→AccountData/CurrencyMultiplier1；响应stake50/stakePerLine1/paylineCount100；Header没有readyForEndGame。',
@@ -481,7 +491,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -586,6 +596,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'frozeninferno-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注5000；自己的普通后唯一EndGame仅Header/Balances、现金保持；WildData只验形状，323个FreeGames停止。'}
         if plan and plan.get('adapter') == 'firequeen-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

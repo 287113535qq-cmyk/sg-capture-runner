@@ -48,3 +48,5 @@ import './ag-rolling/sg-deepseamagic-wiring.test.mjs';
 import './ag-rolling/sg-eurekablast-wiring.test.mjs';
 
 import './ag-rolling/sg-firequeen-wiring.test.mjs';
+
+import './ag-rolling/sg-frozeninferno-wiring.test.mjs';

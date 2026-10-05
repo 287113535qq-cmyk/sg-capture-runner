@@ -384,6 +384,9 @@ def derive(raw):
     from firequeen_base_fields import SOURCE as FIREQUEEN_SOURCE, settled as firequeen_settled, mapping_hash as firequeen_mapping
     if raw.get('sourceKey') == FIREQUEEN_SOURCE:
         return firequeen_settled(raw, firequeen_mapping())
+    from frozeninferno_base_fields import SOURCE as FROZENINFERNO_SOURCE, settled as frozeninferno_settled, mapping_hash as frozeninferno_mapping
+    if raw.get('sourceKey') == FROZENINFERNO_SOURCE:
+        return frozeninferno_settled(raw, frozeninferno_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

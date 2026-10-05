@@ -127,7 +127,7 @@
 | [32765](32765.json) | Drop and Lock Deep Sea Magic | implemented-subset | 0 |
 | [32766](32766.json) | Eureka Blast Superlock | implemented-subset | 0 |
 | [32767](32767.json) | Fire Queen | implemented-subset | 0 |
-| [32768](32768.json) | Frozen Inferno | not-documented | 待确认 |
+| [32768](32768.json) | Frozen Inferno | implemented-subset | 0 |
 | [32769](32769.json) | Fu Dao Le | not-documented | 待确认 |
 | [32770](32770.json) | Giant's Gold | not-documented | 待确认 |
 | [32771](32771.json) | Golden Chief | not-documented | 待确认 |

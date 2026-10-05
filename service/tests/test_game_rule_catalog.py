@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_frozeninferno_card_binds_own_spin_info_wild_and_stops_free(self):
+        card=self.cards[32768];rule=card['roundRule']
+        self.assertEqual(rule['family'],'frozeninferno-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32990);self.assertEqual(card['parameters']['wmsGameId'],20090)
+        self.assertIn('677',rule['bounds']);self.assertIn('1354历史请求',rule['bounds']);self.assertIn('323个FreeGames',rule['bounds'])
+        self.assertIn('2838',rule['fields']['PaylineWin']);self.assertIn('105种',rule['fields']['PaylineWin'])
+        self.assertIn('85种',rule['fields']['WildInfo / Feature']);self.assertIn('无AccountData',rule['complete']);self.assertIn('SpinInfo',rule['start'])
+        self.assertEqual(card['typeMappings']['frozeninferno-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_firequeen_card_binds_own_wager_info_wild_and_stops_free(self):
         card=self.cards[32767];rule=card['roundRule']
         self.assertEqual(rule['family'],'firequeen-base-wms-v1')

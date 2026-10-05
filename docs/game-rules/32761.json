@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-base.mjs": "1fc87b1e5ecc8809176d052119bfeeaa138999cff8baf623dc9e8a61c5e7382b",
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-source.mjs": "503230129e48c8412b60f0c3884aa69e80aba28adf4b34aced15a24176b7105e",
     "scripts/runner-v2/ag-rolling/sg-drumsexplosion-codec.mjs": "4c11d35fc552802befb8fc5918ba59cb240551c925f7fa03be01948c89cd7686",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6bae196040a5095f4d81ebf040ed8527fe77d9c697aedb4eaeebed5a8e1e4396",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
     "service/drumsexplosion_base_fields.py": "231a9aee9bf43ce27e42430fe366be7948473c2b2e9c7faa5f460dd033019cf9",
     "config/ag-rolling-drumsexplosion-base-contract.json": "1ffd9140df48b5654ce6fadc21156ac3567ff374c538ef95b4edfdd0955b2db6",
-    "service/ag_rolling_plan.py": "853bd09a9231e06edb9782ade068f270f6f5ec599ef88a54ee4ebf0991aef9c7",
-    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
-    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
-    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
+    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
+    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
+    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
+    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "738674e5052008b4dc7c20c214d4023a0e89b37e33810314e179120943031ad0"
+  "ruleHash": "b63a8a317105201f6efb5fcf442b6aa2e616842a572212ed48241f4c1ce67501"
 }
