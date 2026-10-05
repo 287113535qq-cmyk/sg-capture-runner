@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+import {assertNewTwoBusinessGameIds} from './ag-rolling/sg-business-new-two-scope.mjs';
+import {BUSINESS_BRANCH} from './ag-rolling/sg-business-linux.mjs';
+
+test('new own-native version admits each reviewed game only as a single distinct batch',()=>{for(const id of ['32595','32730'])assert.equal(assertNewTwoBusinessGameIds([id]),id);});
+test('multi-game, duplicate, empty and unreviewed batches fail before any target connection',()=>{for(const ids of [[],['32595','32730'],['32595','32595'],['32442'],['32731'],['32629'],['32595 '],null,'32595'])assert.throws(()=>assertNewTwoBusinessGameIds(ids),/SG_BUSINESS_NEW_TWO_EXCLUSIVE_GAME/);const src=fs.readFileSync('scripts/runner-v2/ag-rolling/sg-business-job.mjs','utf8');assert(src.indexOf('assertNewTwoBusinessGameIds(ids)')<src.indexOf('await requireBusinessLinux('));assert(src.indexOf('assertNewTwoBusinessGameIds(ids)')<src.indexOf('new MongoClient('));});
+test('independent new version pins its own actor and Linux branch while retaining source-free bindings',()=>{assert.equal(BUSINESS_BRANCH,'sg-business-native-32595-32730-20261005');const src=fs.readFileSync('scripts/runner-v2/ag-rolling/sg-business-job.mjs','utf8');assert(src.includes("process.env.GITHUB_REF==='refs/heads/"+BUSINESS_BRANCH+"'"));const p=JSON.parse(fs.readFileSync('config/ag-business-delivery-policy.json'));assert.equal(p.sourceAllowance,0);assert.equal(p.captureWrites,0);assert.equal(Object.keys(p.completeProofs).length,23);});

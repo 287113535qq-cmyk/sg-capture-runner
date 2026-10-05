@@ -235,6 +235,28 @@
         "baseline": 0,
         "mongoUri": "sg-native://primary/sg_32616"
       }
+    },
+    "32595": {
+      "receiptHash": "697043ca082d02d7642aece5d4c424447a4643e0ab631ec22715f528e3096854",
+      "recordsHash": "ab1a7906a5d581b593a10eaccfffbfd9afc6833140ef1b01cc612dd0de9e5607",
+      "sourceGame": {
+        "gameId": "32595",
+        "dbName": "sg_32595",
+        "campaignId": "sg_32595-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32595"
+      }
+    },
+    "32730": {
+      "receiptHash": "abafccc2aadf152e3937a4411a34181dd75a772959e419cd683f8409cf193e6f",
+      "recordsHash": "94121a0e95c2b91654b3393b8493937e286763ac91563ae627203bcf482ea37d",
+      "sourceGame": {
+        "gameId": "32730",
+        "dbName": "sg_32730",
+        "campaignId": "sg_32730-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32730"
+      }
     }
   }
 }
