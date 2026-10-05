@@ -7,7 +7,7 @@ import {createProtocolSessions} from './sg-protocol-session.mjs';
 const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),pid='gdmgcmoffline-probe';
 const currentRegistry=structuredClone(registry);
 const {carnivalPickContract,carnivalPickContractHash,...previousCarnival}=registry.plans['32474'];registry.plans['32474']=previousCarnival;
-const {dragonEndContract,dragonEndContractHash,...previousDragon}=registry.plans['32497'];registry.plans['32497']=previousDragon;
+const {dragonEndContract,dragonEndContractHash,dragonFreeContract,dragonFreeContractHash,...previousDragon}=registry.plans['32497'];registry.plans['32497']=previousDragon;
 function sample(id='32474',start=false){
  const p=registry.plans[id],cfg=id==='32474'?'1':'0',held=1000-p.betRaw;
  const frame=(msg,reply)=>{const q=msg==='BET'?{...p.requestParams,PID:pid,MSGID:msg}:{GN:p.runtimeSlug,PID:pid,MSGID:msg,CFG:cfg};

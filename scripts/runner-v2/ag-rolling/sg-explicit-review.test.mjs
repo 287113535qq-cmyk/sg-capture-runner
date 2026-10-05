@@ -6,7 +6,7 @@ import {nextgenCodec} from './sg-nextgen-codec.mjs';
 const registry=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json','utf8')),pid='gdmgcmoffline-explicit';
 const currentRegistry=structuredClone(registry);
 const {carnivalPickContract,carnivalPickContractHash,...previousCarnival}=registry.plans['32474'];registry.plans['32474']=previousCarnival;
-const {dragonEndContract,dragonEndContractHash,...previousDragon}=registry.plans['32497'];registry.plans['32497']=previousDragon;
+const {dragonEndContract,dragonEndContractHash,dragonFreeContract,dragonFreeContractHash,...previousDragon}=registry.plans['32497'];registry.plans['32497']=previousDragon;
 function frame(p,msg,reply){
  const q=msg==='BET'?{...p.requestParams,PID:pid,MSGID:msg}:{GN:p.runtimeSlug,PID:pid,MSGID:msg,CFG:p.gameId===32474?'1':'0'};
  const responsePayload='MSGID='+msg+'&B='+(1000-p.betRaw)+'&AB='+(1000-p.betRaw)+'&TW=0&IFG=0&'+reply;

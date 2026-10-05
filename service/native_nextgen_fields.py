@@ -38,6 +38,13 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if self.plan.get('dragonFreeContract') is not None or raw.get('dragonFreeContract') is not None:
+            from dragon_first_free_fields import binding,previous
+            if raw.get('dragonFreeContract') is not None:
+                binding(self.plan,raw)
+                from explicit_request_probe import is_feature
+                check(not is_feature(raw),'INCOMPLETE_DRAGON_FIRST_FREE')
+            return NativeNextgenFields(previous(self.plan)).settled({k:v for k,v in raw.items() if k!='dragonFreeContract'})
         if self.plan.get('dragonEndContract') is not None or raw.get('dragonEndContract') is not None:
             from dragon_end_fields import binding,previous
             if raw.get('dragonEndContract') is not None:
@@ -97,6 +104,10 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if self.plan.get('dragonFreeContract') is not None or raw.get('dragonFreeContract') is not None:
+            from dragon_first_free_fields import binding,previous
+            if raw.get('dragonFreeContract') is not None:binding(self.plan,raw)
+            return NativeNextgenFields(previous(self.plan)).next_request({k:v for k,v in raw.items() if k!='dragonFreeContract'})
         if self.plan.get('dragonEndContract') is not None or raw.get('dragonEndContract') is not None:
             from dragon_end_fields import binding,previous
             if raw.get('dragonEndContract') is not None:binding(self.plan,raw)

@@ -5,6 +5,7 @@ import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
 import {CARNIVAL_PICK,carnivalPrevious,carnivalProof} from './sg-carnival-pick.mjs';
 import {DRAGON_END,dragonEndPrevious,dragonEndProof} from './sg-dragon-end.mjs';
+import {DRAGON_FREE,dragonFreePrevious,dragonFreeProof} from './sg-dragon-first-free.mjs';
 import {CONTRACT as ARTHUR_FEATURE,previous as arthurPrevious,validateProof as arthurFeatureProof} from './sg-arthur-feature.mjs';
 // A new immutable window may bind a reviewed adapter repair while retaining
 // every original campaign, quota and staging namespace. Admission replays
@@ -25,6 +26,20 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
     &&queueHash(oldPlan)===queueHash(arthurPrevious(plan))&&queueHash(oldProof)===queueHash(e?.previousProof)
     &&e?.previousPlanHash===entry.planHash&&e?.previousProofHash===entry.adapterProofHash,'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
    arthurFeatureProof(plan,proof);return {...entry,planHash,adapterProofHash:proofHash};
+  }
+  if(plan.dragonFreeContract!==undefined){
+   const previousPlan=dragonFreePrevious(plan),{planHash:bound,dragonFreeEvidence:e,...fields}=proof;
+   const previousProof={...fields,planHash:queueHash(previousPlan)};
+   if(oldPlan.dragonEndContract===undefined){
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:previousProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   assert(id==='32497'&&oldPlan.dragonFreeContract===undefined&&plan.dragonFreeContract===DRAGON_FREE
+    &&queueHash(oldPlan)===queueHash(previousPlan)&&queueHash(oldProof)===queueHash(previousProof)
+    &&e?.previousPlanHash===entry.planHash&&e?.previousProofHash===entry.adapterProofHash&&bound===planHash,
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   dragonFreeProof(plan,proof);return {...entry,planHash,adapterProofHash:proofHash};
   }
   if(plan.dragonEndContract!==undefined){
    const previousPlan=dragonEndPrevious(plan),{planHash:bound,dragonEndEvidence:e,...fields}=proof;

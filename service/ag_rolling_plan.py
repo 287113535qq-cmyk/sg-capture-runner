@@ -599,9 +599,17 @@ def validate_rolling_plan(plan):
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0
                 and re.fullmatch('[a-f0-9]{64}', wired.get('fullRecordsHash', '')) is not None,
                 'ROLLING_WMS_PLAN_SCOPE')
+    if plan.get('dragonFreeContract') is not None:
+        from dragon_first_free_fields import validate_proof
+        validate_proof(plan,proof)
     if plan.get('dragonEndContract') is not None:
         from dragon_end_fields import validate_proof
-        validate_proof(plan,proof)
+        parent_plan=plan;parent_proof=proof
+        if plan.get('dragonFreeContract') is not None:
+            from dragon_first_free_fields import previous
+            parent_plan=previous(plan)
+            parent_proof={**{k:v for k,v in proof.items() if k!='dragonFreeEvidence'},'planHash':digest(parent_plan)}
+        validate_proof(parent_plan,parent_proof)
     if plan.get('carnivalPickContract') is not None:
         from carnival_pick_fields import validate_proof
         validate_proof(plan,proof)
