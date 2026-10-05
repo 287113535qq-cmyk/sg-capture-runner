@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_jinjitreasure_card_binds_own_ways_and_mystery_scatter_shape_with_special_rejection(self):
+        card=self.cards[32778];rule=card['roundRule']
+        self.assertEqual(rule['family'],'jinjitreasure-base-wms-v1');self.assertEqual(card['runtimeGameId'],33000);self.assertEqual(card['parameters']['wmsGameId'],20322)
+        self.assertIn('997普通完整',rule['bounds']);self.assertIn('1994历史请求',rule['bounds']);self.assertIn('2个DecisionInfo',rule['bounds']);self.assertIn('goldChanceAwarded1',rule['bounds'])
+        self.assertIn('269',rule['fields']['AnywayWin']);self.assertIn('58',rule['fields']['AnywayWin']);self.assertIn('279',rule['fields']['MysterySymbol/ScatterInfo'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total16',rule['start']);self.assertEqual(card['typeMappings']['jinjibaoxiendlesstreasure-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_jinjimegaways_card_binds_own_ways_height_and_top_shape_with_partial_pick_rejection(self):
         card=self.cards[32777];rule=card['roundRule']
         self.assertEqual(rule['family'],'jinjimegaways-base-wms-v1');self.assertEqual(card['runtimeGameId'],32999);self.assertEqual(card['parameters']['wmsGameId'],20468)

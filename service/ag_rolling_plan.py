@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1', 'fudaole-base-wms-v1', 'giantsgold-base-wms-v1', 'goldenchief-base-wms-v1', 'heidibier-base-wms-v1', 'hercules-base-wms-v1', 'himalayas-base-wms-v1', 'hulahula-base-wms-v1', 'moolah-base-wms-v1', 'jinjimegaways-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1', 'fudaole-base-wms-v1', 'giantsgold-base-wms-v1', 'goldenchief-base-wms-v1', 'heidibier-base-wms-v1', 'hercules-base-wms-v1', 'himalayas-base-wms-v1', 'hulahula-base-wms-v1', 'moolah-base-wms-v1', 'jinjimegaways-base-wms-v1', 'jinjitreasure-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -527,6 +527,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == '284137d61be9515802fedbff184facc81ccc6917e31092ce56cbad767a0fdcd4'
                 and wired.get('schema') == 'sg-ag-wms-jinjimegaways-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == 'c5ff0f6c10db5d44e2e8d81fe55a71358c3c72008c361972c79ffbca6ca18448'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'jinjitreasure-base-wms-v1':
+        from jinjitreasure_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32778 and plan['runtimeGameId'] == 33000 and plan['runtimeSlug'] == 'jinjibaoxiendlesstreasure'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 16 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20322 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 997 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 3
+                and proof.get('unhandledHistoricalVariants') == {'JINJITREASURE_FEATURE_NOT_ADAPTED':2,'JINJITREASURE_CUMULATIVE_WIN_MISMATCH':1}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 997
+                and digest(proof['acceptedRawHashes']) == '634b71247fe84206eb72a1392f2386047b851b03ee7397f9488401eaa4a9694d'
+                and digest(proof['rejectedHistoricalPrefixes']) == '2e16e2ce04dcf11c3bd45d71750a7d786dcb72c0bb01037aee03b0e3620db820'
+                and wired.get('schema') == 'sg-ag-wms-jinjitreasure-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '27e68d59cba9324f5c21a4c468f6e8e2cb77e469e1b77fb2977c22e9212634a0'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

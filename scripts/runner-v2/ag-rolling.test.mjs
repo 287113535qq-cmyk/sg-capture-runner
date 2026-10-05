@@ -74,3 +74,5 @@ import './ag-rolling/sg-hulahula-wiring.test.mjs';
 import './ag-rolling/sg-moolah-wiring.test.mjs';
 
 import './ag-rolling/sg-jinjimegaways-wiring.test.mjs';
+
+import './ag-rolling/sg-jinjitreasure-wiring.test.mjs';

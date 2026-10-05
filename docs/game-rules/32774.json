@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-himalayas-base.mjs": "cbe7b8e0a88b68183305f23a094f9f76c240a66f1ea93b58fa87d9d018edd960",
     "scripts/runner-v2/ag-rolling/sg-himalayas-source.mjs": "6631ea7fc0dcce01c950fbb39622719d6c62b3a2d009d00e1b93c72194cf5d0a",
     "scripts/runner-v2/ag-rolling/sg-himalayas-codec.mjs": "23f292e3aafc1eae7058ed9b0eb4587064c59c2a53f374816966b0f8a2c1c413",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
     "service/himalayas_base_fields.py": "5b1e4bfc792032adff5e99977d816f9451d1fa706a5256a31d6147845baa80be",
     "config/ag-rolling-himalayas-base-contract.json": "0fb36ac8b4f1c2fae19d320bbf49fc6def22e64baabe0a722589344e24d24578",
-    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
-    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
-    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
-    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
+    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
+    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
+    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
+    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "017b7f8d792fb549553356ac71880539713ba39e8f56f49f6041395791686b57"
+  "ruleHash": "0cfbf790c713099d010730d89c68beee41709adff1137249e97972d31ff9ec2c"
 }

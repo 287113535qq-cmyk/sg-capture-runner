@@ -4964,6 +4964,25 @@
         "fullBaseRounds": 991,
         "fullFreeRounds": 0
       }
+    },
+    "jinjibaoxiendlesstreasure-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "jinjitreasure-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 16,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32778,
+        "runtimeGameId": 33000,
+        "wmsGameId": 20322,
+        "ordinaryContractHash": "bdd2afed4391c69e552c36a3873d8efde2daaca01e2c6d4d1cb2a91a039670de",
+        "historyFileSha256": "994ed0836b4d1cd17396f92f07808a188d415f426f57efdefdf1e3f394eb8f8e",
+        "fullBaseRounds": 997,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

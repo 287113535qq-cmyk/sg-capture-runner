@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-moolah-base.mjs": "93d26c6ba4267209386c7eec87517a347e8ea0a41b958ba9d8d0524347860ab3",
     "scripts/runner-v2/ag-rolling/sg-moolah-source.mjs": "099daa9038ab88992d9ad8dff6c0198b396e34f13c5d3c871780c10481c15d4c",
     "scripts/runner-v2/ag-rolling/sg-moolah-codec.mjs": "1fea486185a7df8fc2904abd8df4c292626bf2e08bd53e9e99dea4962133176e",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
     "service/moolah_base_fields.py": "2986c991d0689f0edee9634da5cd9c1914cf4701c59b9e321893664a06ac9b57",
     "config/ag-rolling-moolah-base-contract.json": "e5041258b6918febe80a764df0ee447d84e30dfc6407d86eaa0718d0f5ed5535",
-    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
-    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
-    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
-    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
+    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
+    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
+    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
+    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "49c84b5640cbfdf7b7c7612665cae65d3e984babb0deb791b63efb4e133b5ee1"
+  "ruleHash": "ba555fadd34f790a69b4161172588bd91d2823dad716a05dc8a34eefd479cb34"
 }

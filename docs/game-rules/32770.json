@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs": "5d506c934b97d5980a94346a8d6b34c56a2ed0c43f0109d1eb747e291d201dc8",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs": "c9c52de067df4fc5fb24db818cadc776eefe0e32cd9c9ccaa23cb72797ae3d92",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs": "8e9a34f4ff0f33c79811cacfbeaf41496ef3feb14e6f2e8ed3057ed7c8c4c4db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
     "service/giantsgold_base_fields.py": "bdff2b2c5bb25a8f6c13a94c3bb1e8fc8f23ca40fd47b0eca678fff3fe48aa26",
     "config/ag-rolling-giantsgold-base-contract.json": "3abc93115680f7ee2cd8ca09d740956af23d0a7876225f1e48d33bb4194692ab",
-    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
-    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
-    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
-    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
+    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
+    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
+    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
+    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "951b5e58a2593fae0c0a98f1b440644e4cb4ef3a598415ec36bb979456a85f35"
+  "ruleHash": "c6eb61295260f0682847e73b5e52517f0dac49d6041df8e385936ab58adadda8"
 }

@@ -1,0 +1,3269 @@
+{
+  "schema": "wms-jinjitreasure-ordinary-evidence-v1",
+  "gameId": 32778,
+  "runtimeGameId": 33000,
+  "wmsGameId": 20322,
+  "betRaw": 16,
+  "ordinaryRounds": 997,
+  "rejectedIndices": [
+    526,
+    706,
+    852
+  ],
+  "historyFileSha256": "994ed0836b4d1cd17396f92f07808a188d415f426f57efdefdf1e3f394eb8f8e",
+  "historyFileBytes": 592439103,
+  "awardWaysWinPatterns": [
+    [
+      3,
+      1,
+      10
+    ],
+    [
+      3,
+      2,
+      20
+    ],
+    [
+      3,
+      3,
+      30
+    ],
+    [
+      3,
+      4,
+      40
+    ],
+    [
+      3,
+      6,
+      60
+    ],
+    [
+      4,
+      1,
+      10
+    ],
+    [
+      4,
+      2,
+      20
+    ],
+    [
+      5,
+      1,
+      10
+    ],
+    [
+      5,
+      3,
+      30
+    ],
+    [
+      6,
+      1,
+      10
+    ],
+    [
+      6,
+      2,
+      20
+    ],
+    [
+      6,
+      3,
+      30
+    ],
+    [
+      6,
+      4,
+      40
+    ],
+    [
+      7,
+      1,
+      10
+    ],
+    [
+      8,
+      1,
+      10
+    ],
+    [
+      8,
+      3,
+      30
+    ],
+    [
+      9,
+      1,
+      10
+    ],
+    [
+      9,
+      3,
+      30
+    ],
+    [
+      13,
+      1,
+      16
+    ],
+    [
+      14,
+      1,
+      16
+    ],
+    [
+      14,
+      2,
+      32
+    ],
+    [
+      14,
+      3,
+      48
+    ],
+    [
+      14,
+      6,
+      96
+    ],
+    [
+      15,
+      1,
+      16
+    ],
+    [
+      15,
+      2,
+      32
+    ],
+    [
+      16,
+      1,
+      20
+    ],
+    [
+      16,
+      2,
+      40
+    ],
+    [
+      16,
+      3,
+      60
+    ],
+    [
+      16,
+      4,
+      80
+    ],
+    [
+      16,
+      6,
+      120
+    ],
+    [
+      18,
+      1,
+      20
+    ],
+    [
+      18,
+      2,
+      40
+    ],
+    [
+      18,
+      3,
+      60
+    ],
+    [
+      18,
+      4,
+      80
+    ],
+    [
+      19,
+      1,
+      20
+    ],
+    [
+      20,
+      1,
+      20
+    ],
+    [
+      21,
+      1,
+      20
+    ],
+    [
+      25,
+      1,
+      20
+    ],
+    [
+      25,
+      3,
+      60
+    ],
+    [
+      26,
+      1,
+      20
+    ],
+    [
+      26,
+      2,
+      40
+    ],
+    [
+      26,
+      4,
+      80
+    ],
+    [
+      27,
+      1,
+      20
+    ],
+    [
+      30,
+      1,
+      30
+    ],
+    [
+      30,
+      2,
+      60
+    ],
+    [
+      30,
+      6,
+      180
+    ],
+    [
+      33,
+      1,
+      40
+    ],
+    [
+      33,
+      2,
+      80
+    ],
+    [
+      33,
+      3,
+      120
+    ],
+    [
+      33,
+      4,
+      160
+    ],
+    [
+      33,
+      6,
+      240
+    ],
+    [
+      34,
+      1,
+      40
+    ],
+    [
+      35,
+      2,
+      80
+    ],
+    [
+      39,
+      1,
+      100
+    ],
+    [
+      39,
+      2,
+      200
+    ],
+    [
+      39,
+      3,
+      300
+    ],
+    [
+      39,
+      6,
+      600
+    ],
+    [
+      39,
+      8,
+      800
+    ]
+  ],
+  "positionPatterns": [
+    "0|11|12",
+    "0|11|12|13",
+    "0|11|12|13|14",
+    "0|1|10|12",
+    "0|1|12",
+    "0|1|12|13",
+    "0|1|2",
+    "0|1|2|10",
+    "0|1|2|12",
+    "0|1|2|4|13|14",
+    "0|1|2|5",
+    "0|1|2|5|10",
+    "0|1|2|5|10|11",
+    "0|1|2|5|7|12",
+    "0|1|2|6|7|8|12",
+    "0|1|2|7",
+    "0|1|2|7|10|12",
+    "0|1|2|7|12",
+    "0|1|3|5|7|12",
+    "0|1|3|7",
+    "0|1|4|12|13",
+    "0|1|4|6|7|8|10|12",
+    "0|1|5|10|12",
+    "0|1|5|12",
+    "0|1|5|6|11|12",
+    "0|1|5|7|10",
+    "0|1|6|8|12",
+    "0|1|7",
+    "0|1|7|11|12",
+    "0|1|7|12",
+    "0|1|7|13",
+    "0|1|7|8",
+    "0|1|7|8|9",
+    "0|2|10|11",
+    "0|2|11",
+    "0|2|3|11",
+    "0|2|3|4|7|9|11|12",
+    "0|2|3|5|8|10|11|14",
+    "0|2|3|6",
+    "0|2|4|11|12|13",
+    "0|2|5|10|11",
+    "0|2|5|6|10",
+    "0|2|6",
+    "0|2|6|11|13",
+    "0|2|6|7",
+    "0|2|6|7|8|12",
+    "0|2|6|8",
+    "0|2|7|11",
+    "0|3|5|10|11|12|13",
+    "0|3|9|11|12",
+    "0|4|6|7|13",
+    "0|4|6|8|12",
+    "0|5|10|11|12",
+    "0|5|11|12",
+    "0|5|6|12",
+    "0|5|6|7|10|11",
+    "0|5|7|10|11",
+    "0|6|10|12",
+    "0|6|12",
+    "0|6|7",
+    "0|6|7|11|12",
+    "0|6|7|12|13",
+    "0|6|7|8|12",
+    "0|6|7|9|13",
+    "0|7|11",
+    "0|7|8|11",
+    "0|8|9|11|12|14",
+    "10|11|12",
+    "1|10|11|12",
+    "1|10|12",
+    "1|10|12|13",
+    "1|2|10",
+    "1|2|10|11|12",
+    "1|2|10|12",
+    "1|2|10|13",
+    "1|2|3|5",
+    "1|2|3|5|7|12|14",
+    "1|2|3|6|10|11",
+    "1|2|3|7|9|10",
+    "1|2|5",
+    "1|2|5|6",
+    "1|2|5|6|11",
+    "1|2|5|7",
+    "1|2|5|7|8",
+    "1|2|5|8",
+    "1|2|7|10",
+    "1|2|7|10|12",
+    "1|2|8|9|10",
+    "1|3|5|7|14",
+    "1|3|6|7|9|10|11|12",
+    "1|4|8|10|12",
+    "1|5|12",
+    "1|5|6|11|12|13",
+    "1|5|6|12",
+    "1|5|6|7",
+    "1|5|7",
+    "1|5|7|12",
+    "1|5|7|12|13|14",
+    "1|5|7|8",
+    "1|5|8|12",
+    "1|6|10|11|12",
+    "1|6|10|12",
+    "1|6|7|10",
+    "1|7|10",
+    "1|7|10|12",
+    "1|7|10|13",
+    "1|8|10|12",
+    "2|10|11",
+    "2|3|10|11",
+    "2|3|10|11|13|14",
+    "2|3|10|11|14",
+    "2|3|5|7|11|12|14",
+    "2|3|6|10",
+    "2|3|6|10|14",
+    "2|4|5|6|13",
+    "2|5|11",
+    "2|5|11|13",
+    "2|5|6",
+    "2|5|6|7",
+    "2|5|6|7|10",
+    "2|5|6|7|8",
+    "2|5|6|8",
+    "2|6|10",
+    "2|6|10|13",
+    "2|6|7|10",
+    "2|6|7|10|11",
+    "2|6|8|10",
+    "2|7|10|11",
+    "2|7|10|11|12",
+    "3|4|5|8|11|12|13",
+    "3|4|7|10|11|12|14",
+    "3|5|7|8|11",
+    "3|6|7|10",
+    "3|6|7|10|13",
+    "3|6|7|8|10|14",
+    "3|6|9|10|11|12|13",
+    "3|7|8|10|11",
+    "4|5|6|7|13",
+    "5|11|12",
+    "5|6|12",
+    "5|6|7",
+    "5|6|7|11",
+    "5|6|7|12",
+    "5|6|8|9|12|14",
+    "5|7|11",
+    "5|7|11|12",
+    "6|10|12",
+    "6|7|10",
+    "6|7|10|12",
+    "6|8|10|12",
+    "7|10|11",
+    "7|10|11|13",
+    "8|10|11|12"
+  ],
+  "positionLengths": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "stateJointPatterns": [
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|16|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|16|0|0|0|0|16|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|0|0|0|0|0|16|16|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|16|0|16|0|0|16|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|0|16|16|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|0|0|16|0|0|16|0|16|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|16|0|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|16|0|16|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|16|16|0|0|0|16|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "0|0|16|16|0|0|0|16|16|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|0|16|16|0|0|0|16|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|16|0|16|0|0|0|0|16|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|0|0|16|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|0|0|16|16|0|0|0|16|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|0|16|0|16|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|16|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "0|0|0|0|16|0|0|16|0|16|0|0|16|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|0|0|16|0|0|0|0|16|0|16|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|0|16|0|0|16|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|16|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|0|0|0|0|16|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|16|0|0|0|0|16|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|16|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|0|0|16|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|0|0|0|16|16|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "0|0|16|0|0|0|0|16|16|0|0|0|16|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|16|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|0|0|0|0|16|16|0|0|0|16|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|0|0|16|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|0|16|0|0|0|0|16|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|16|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|16|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|16|0|16|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "16|0|0|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "0|0|16|0|0|0|16|16|0|0|0|16|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|16|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|16|0|0|0|0|16|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|16|0|16|0|0|0|0|16|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "0|16|0|0|0|0|16|16|0|0|0|16|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|16|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|16|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|16|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "6"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|16|0|0|0|0|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|16|0|16|0|0|16|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|16|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "10"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|16|0|0|0|0|16|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "0|0|0|16|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "11"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|16|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|16|0|0|0|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "9"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|16|0|0|0|0|0|0|16|0|0|0|0|16|16"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "48",
+        "numScatters": "3",
+        "values": "16|0|16|0|0|16|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "8"
+      },
+      "scatter": {
+        "totalValue": "80",
+        "numScatters": "5",
+        "values": "16|0|0|0|0|16|0|16|0|0|16|0|16|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "16|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "13"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|16|0|0|0|0|16|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|0|0|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "12"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "16|0|0|0|0|16|0|0|16|0|0|0|0|16|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "7"
+      },
+      "scatter": {
+        "totalValue": "16",
+        "numScatters": "1",
+        "values": "0|0|0|0|0|0|0|0|0|0|16|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "5"
+      },
+      "scatter": {
+        "totalValue": "32",
+        "numScatters": "2",
+        "values": "0|0|0|0|16|0|0|0|0|16|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "4"
+      },
+      "scatter": {
+        "totalValue": "64",
+        "numScatters": "4",
+        "values": "0|16|16|0|0|0|16|16|0|0|0|0|0|0|0"
+      }
+    },
+    {
+      "mystery": {
+        "replacementSym": "14"
+      },
+      "scatter": {
+        "totalValue": "0",
+        "numScatters": "0",
+        "values": "0|0|0|0|0|0|0|0|0|0|0|0|0|0|0"
+      }
+    }
+  ],
+  "maxAnywayWins": 2,
+  "positionMaxExclusive": 15,
+  "ordinaryAnywayCount": 269,
+  "sourceRequests": 0,
+  "nativeWrites": 0,
+  "historicalCredit": 0,
+  "sourceAllowance": 0
+}

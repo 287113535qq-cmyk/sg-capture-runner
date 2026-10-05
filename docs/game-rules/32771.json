@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-goldenchief-base.mjs": "f0cb447e36318efbb0e168bc5232d703025890871f7fb8dc149e94ead42451ec",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-source.mjs": "3f3d9a5515b2d8be22796c7184220ab6c4b819730de9a6bf5dfc4fe573865f87",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-codec.mjs": "fe1e47fa76c1ed5c04e182da740941a8b6631a5dae93eb162533ab113aa906fa",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
     "service/goldenchief_base_fields.py": "0d7c679ebfcd83cb765cfad552f6d92d54767583944b3f7ff04148fc51b8f806",
     "config/ag-rolling-goldenchief-base-contract.json": "bf7fa10c806272525415acf04124870776ebf8d84401b0a77457e22dfc25c4d9",
-    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
-    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
-    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
-    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
+    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
+    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
+    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
+    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "315c393dda5c909ece938bf023c55efb92533225947db52ebbd45ec89062834d"
+  "ruleHash": "759b69f34265e7d724e55bb6cdc53e553cf03018ff6e46bb980f87cd1d594576"
 }

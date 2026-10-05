@@ -414,6 +414,9 @@ def derive(raw):
     from jinjimegaways_base_fields import SOURCE as JINJIMEGAWAYS_SOURCE, settled as jinjimegaways_settled, mapping_hash as jinjimegaways_mapping
     if raw.get('sourceKey') == JINJIMEGAWAYS_SOURCE:
         return jinjimegaways_settled(raw, jinjimegaways_mapping())
+    from jinjitreasure_base_fields import SOURCE as JINJITREASURE_SOURCE, settled as jinjitreasure_settled, mapping_hash as jinjitreasure_mapping
+    if raw.get('sourceKey') == JINJITREASURE_SOURCE:
+        return jinjitreasure_settled(raw, jinjitreasure_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
