@@ -80,3 +80,8 @@ import './ag-rolling/sg-jinjitreasure-wiring.test.mjs';
 import './ag-rolling/sg-jinsedragon-wiring.test.mjs';
 
 import './ag-rolling/sg-kingbabylon-wiring.test.mjs';
+
+import './ag-historical-labomba-core.test.mjs';
+import './ag-historical-labomba-document.test.mjs';
+import './ag-historical-labomba-actor.test.mjs';
+import './ag-historical-ended-federation.test.mjs';

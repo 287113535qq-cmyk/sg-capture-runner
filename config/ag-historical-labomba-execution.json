@@ -1,0 +1,17 @@
+{
+  "schema": "sg-historical-labomba-execution-v1",
+  "enabled": false,
+  "gameIds": [
+    "32723"
+  ],
+  "branch": "sg-business-historical-32723-20261005",
+  "manifestSha256": "cdc316ad38cb48d6ca981108738dd93b4d4033d161e19df1957984f44dc0a55e",
+  "minimumPermissionApproved": false,
+  "linuxPermissionGranted": false,
+  "limitation": "Own actual Linux14 plus9 sealed receipts, recovered native ending and explicit own least-privilege grant/readback are required before execution.",
+  "permission": {
+    "username": "sg_simulate_historical_32723_v1",
+    "sshAccount": "sghistorical32723",
+    "grantKey": "primary/historical-delivery-permission:32723:cdc316ad38cb48d6ca981108738dd93b4d4033d161e19df1957984f44dc0a55e"
+  }
+}
