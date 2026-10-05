@@ -45,6 +45,12 @@ export function assertOwnHistoricalGrant(grant,execution,env){
   &&v.sshAccount==='sghistorical32723'&&v.rtpFileSha256==='9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b',
   'HISTORICAL_MINIMUM_GRANT_REQUIRED');
  const linux=v.linux;
+ assert(execution.ssh?.host==='52.87.94.113'&&v.ssh?.nativeAccount==='sgcapture'&&v.ssh.historicalAccount==='sghistorical32723'
+  &&v.ssh.resourceOnly===true&&v.ssh.rtpHashOnly===true
+  &&v.ssh.hostKeyFingerprint===execution.ssh.hostKeyFingerprint&&v.ssh.knownHostsSha256===execution.ssh.knownHostsSha256
+  &&v.ssh.nativeIdentityFingerprint===execution.ssh.nativeIdentityFingerprint
+  &&v.ssh.historicalIdentityFingerprint===execution.ssh.historicalIdentityFingerprint,
+  'HISTORICAL_APPROVED_SSH_IDENTITY_READBACK_REQUIRED');
  assert(linux?.commit===env.GITHUB_SHA&&String(linux.run)===env.SG_BUSINESS_LINUX_RUN&&linux.joinedCommands===14
   &&linux.sealedReceipts?.length===9&&new Set(linux.sealedReceipts.map(r=>r.mailbox)).size===9
   &&linux.sealedReceipts.every(r=>r.received===true&&r.commit===env.GITHUB_SHA&&r.run===linux.run

@@ -1,33 +1,33 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';import {spawn,execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
+import {createRequire} from 'node:module';import {spawn} from 'node:child_process';
 import {analyzer} from '../analyzer.mjs';import {stable} from '../mongo-writer.mjs';
-import {connectGateway} from '../transport.mjs';import {ResourceGate} from '../resource-gate.mjs';import {RunnerState} from '../state-store.mjs';
+import {ResourceGate} from '../resource-gate.mjs';import {RunnerState} from '../state-store.mjs';
 import {authenticatedRead} from '../github-boundary.mjs';import {maintenanceBoundary} from '../demo-run-fence.mjs';
 import {captureCollector} from '../../trial/collector-loader.mjs';
 import {verifyLegacyPage,digest} from './sg-business-delivery.mjs';
-import {assertOwnHistoricalActor,assertOwnHistoricalGrant,assertOwnHistoricalPrivileges,parseHistoricalPrivateCredentials,HISTORICAL_USER,deliverOwnHistoricalGame} from './sg-historical-labomba-actor.mjs';
+import {assertOwnHistoricalGrant,assertOwnHistoricalPrivileges,HISTORICAL_USER,deliverOwnHistoricalGame} from './sg-historical-labomba-actor.mjs';
+import {historicalPreauth} from './sg-historical-labomba-preauth.mjs';
+import {receiveHistoricalPrivatePipe,withHistoricalMemoryIdentities,historicalChildEnvironment,historicalResourceTransport,historicalRtpHash} from './sg-historical-private-pipe.mjs';
 import {requireBusinessLinux} from './sg-historical-labomba-linux.mjs';
 import {verifyEndedFederation} from './sg-historical-ended-federation.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const manifestBytes=fs.readFileSync('config/ag-historical-labomba-manifest.json'),manifest=JSON.parse(manifestBytes);
-const execution=read('config/ag-historical-labomba-execution.json');
-assertOwnHistoricalActor(process.env,execution,createHash('sha256').update(manifestBytes).digest('hex'));
+const execution=historicalPreauth();
 // A reviewed executor must supply this private pipe. No password or token is accepted in argv, environment, or temporary files.
-assert(process.argv.length===2&&process.env.SG_BUSINESS_MONGO_PASSWORD===undefined
- &&process.env.SG_HISTORICAL_32723_MONGO_PASSWORD===undefined,'HISTORICAL_PRIVATE_PIPE_REQUIRED');
-const bytes=[],byte=Buffer.alloc(1);while(fs.readSync(0,byte,0,1,null)===1&&byte[0]!==10){assert(bytes.length<16384);bytes.push(byte[0]);}
-const auth=parseHistoricalPrivateCredentials(Buffer.from(bytes));bytes.length=0;
+assert(process.argv.length===2,'HISTORICAL_PRIVATE_PIPE_REQUIRED');
+const auth=await receiveHistoricalPrivatePipe();
 const linuxProof=await requireBusinessLinux({id:process.env.SG_BUSINESS_LINUX_RUN,commit:process.env.GITHUB_SHA,token:auth.ghToken});
 const gh=authenticatedRead(auth.ghToken);delete auth.ghToken;
+await withHistoricalMemoryIdentities(auth,execution.ssh,async({nativeIdentity,historicalIdentity})=>{
 const require=createRequire(import.meta.url);require('../../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json',transpileOnly:true});
 const {MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
 const client=new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:HISTORICAL_USER,password:auth.password},authSource:'admin',authMechanism:'SCRAM-SHA-1',
  retryReads:false,retryWrites:false,maxPoolSize:2,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:30000});delete auth.password;
-const parser=analyzer({python:process.env.PYTHON??'python3'});
-const py=spawn(process.env.PYTHON??'python3',['-B','scripts/runner-v2/historical_labomba_business_candidate.py'],{stdio:['pipe','pipe','pipe']});
+const childEnv=historicalChildEnvironment(process.env);
+const parser=analyzer({python:process.env.PYTHON??'python3',env:childEnv});
+const py=spawn(process.env.PYTHON??'python3',['-B','scripts/runner-v2/historical_labomba_business_candidate.py'],{env:childEnv,stdio:['pipe','pipe','pipe']});
 let pending=null,buffer=Buffer.alloc(0),closed=false;
 const fail=()=>{closed=true;if(pending){clearTimeout(pending.timer);pending.reject(Error('HISTORICAL_PY_CLOSED_NO_RETRY'));pending=null;}};
 py.on('error',fail);py.on('close',fail);py.stdin.on('error',fail);py.stderr.on('data',()=>{});
@@ -37,7 +37,7 @@ py.stdout.on('data',chunk=>{buffer=Buffer.concat([buffer,chunk]);if(buffer.lengt
  try{const value=JSON.parse(line);assert(value.ok,'HISTORICAL_PY_REJECTED');p.resolve(value.result);}catch{p.reject(Error('HISTORICAL_PY_REJECTED'));}});
 const independentConvert=records=>new Promise((resolve,reject)=>{assert(!closed&&!pending);const text=JSON.stringify({plan:manifest.plan,binding:manifest.binding,records})+'\n';
  assert(Buffer.byteLength(text)<=8*1024*1024);pending={resolve,reject,timer:setTimeout(()=>{fail();py.kill();},60000)};py.stdin.write(text);});
-const transport=connectGateway(),gate=new ResourceGate(),resourceStore=new RunnerState({transport,gate,deadline:Date.now()+325*60000});
+const transport=historicalResourceTransport(nativeIdentity),gate=new ResourceGate(),resourceStore=new RunnerState({transport,gate,deadline:Date.now()+325*60000});
 const owner=process.env.GITHUB_RUN_ID+':1:historical-32723';
 const report={schema:'sg-historical-labomba-run-v1',owner,commit:process.env.GITHUB_SHA,linuxProof,sourceRequests:0,nativeWrites:0,complete:false};
 const jsonDoc=d=>d?{...d,_id:String(d._id)}:null;
@@ -47,7 +47,7 @@ try{
  const options={hint:'_id_',maxTimeMS:15000};
  const store={get:(collection,key)=>{assert(['state','journal'].includes(collection));return (collection==='state'?states:journal).findOne({_id:'primary/'+key},options);},
   getMany:async(collection,keys)=>{const rows=await (collection==='state'?states:journal).find({_id:{$in:keys.map(k=>'primary/'+k)}},options).toArray();const by=new Map(rows.map(d=>[d._id,d]));return keys.map(k=>by.get('primary/'+k)??null);}};
- const boundary=maintenanceBoundary({read:gh,store,oldProfile:read('config/demo-pilot-beaver-20260930.json'),run:process.env.GITHUB_RUN_ID+':1',commit:process.env.GITHUB_SHA,workflowPath:'.github/workflows/trial-300k.yml'});
+ const boundary=maintenanceBoundary({read:gh,store,oldProfile:read('config/demo-pilot-beaver-20260930.json'),run:process.env.GITHUB_RUN_ID+':1',commit:process.env.GITHUB_SHA,workflowPath:'.github/workflows/historical-labomba.yml'});
  let lastBoundary=-Infinity,lastWindow=-Infinity;
  const guard=async()=>{
   await resourceStore.writable();assert(gate.status().metrics.diskFreeBytes>=25*1024**3,'HISTORICAL_DISK_RESERVE');
@@ -72,8 +72,7 @@ try{
   assert(Date.now()-start<=30000,'HISTORICAL_WINDOW_READBACK_STALE');lastWindow=start;}
   if(Date.now()-lastBoundary>=15000){await boundary();lastBoundary=Date.now();}
  };
- const currentRtp=async()=>{const hash=execFileSync('ssh',['-T','-i',process.env.SG_BUSINESS_SSH_KEY_FILE,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes',
-  '-o','UserKnownHostsFile='+process.env.SG_SSH_HOSTS_FILE,'-o','ConnectTimeout=10','sghistorical32723@'+process.env.SG_SSH_HOST,'32723'],{encoding:'utf8',timeout:20000}).trim();
+ const currentRtp=async()=>{const hash=await historicalRtpHash(historicalIdentity);
   assert(hash===manifest.rtpFileSha256,'HISTORICAL_OWN_CURRENT_RTP_CHANGED');};
  const claimPrefix='historical-game:32723:'+manifest.receiptValueHash;
  const audit={read:key=>{assert(key.startsWith(claimPrefix));return auditCollection.findOne({_id:key},options);},
@@ -96,3 +95,4 @@ try{
   verifyOriginals:documents=>verifyLegacyPage({documents,plan:manifest.plan,binding:manifest.binding,parser}),guard,currentRtp,emit:value=>console.log(JSON.stringify(value))});report.complete=true;
 }catch(error){report.reason=/^[A-Z_]+$/.test(error.message??'')?error.message:'HISTORICAL_IO_OR_VALIDATION_STOP_NO_RETRY';process.exitCode=2;}
 finally{parser.close();fail();py.stdin.end();py.kill();transport.close();await client.close();fs.mkdirSync('business-evidence',{recursive:true});fs.writeFileSync('business-evidence/result.json',JSON.stringify(report,null,2)+'\n',{flag:'wx'});}
+});

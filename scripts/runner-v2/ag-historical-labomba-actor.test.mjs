@@ -7,7 +7,8 @@ const env={GITHUB_ACTIONS:'true',RUNNER_OS:'Linux',RUNNER_ENVIRONMENT:'github-ho
  GITHUB_JOB:'ag-rolling-business-delivery',GITHUB_RUN_ATTEMPT:'1',GITHUB_RUN_ID:'999123',GITHUB_SHA:'a'.repeat(40),SG_BUSINESS_GAME_IDS:'32723',SG_BUSINESS_LINUX_RUN:'999124'};
 const execution={schema:'sg-historical-labomba-execution-v1',enabled:true,branch:HISTORICAL_BRANCH,gameIds:['32723'],manifestSha256:'b'.repeat(64),
  permission:{username:HISTORICAL_USER,sshAccount:'sghistorical32723',grantKey:'primary/historical-delivery-permission:32723:'+'b'.repeat(64)},
- window:{run:'37314031299:1',queueId:'rolling-20261003225355-f0d07c84',endedProofHash:'c'.repeat(64)}};
+ window:{run:'37314031299:1',queueId:'rolling-20261003225355-f0d07c84',endedProofHash:'c'.repeat(64)},
+ ssh:{host:'52.87.94.113',hostKeyFingerprint:'SHA256:fixture-host',knownHostsSha256:'e'.repeat(64),nativeIdentityFingerprint:'SHA256:fixture-native',historicalIdentityFingerprint:'SHA256:fixture-own'}};
 const canonical=p=>p.map(v=>({resource:v.resource,actions:[...v.actions].sort()})).sort((a,b)=>stable(a).localeCompare(stable(b)));
 test('malformed private input produces a fixed error without echoing any input value',()=>{
  const fixture={password:'synthetic-private-value',ghToken:'synthetic-token'};
@@ -18,6 +19,7 @@ test('malformed private input produces a fixed error without echoing any input v
 });
 function grant(){return {_id:execution.permission.grantKey,value:{schema:'sg-historical-labomba-permission-v1',gameId:32723,username:HISTORICAL_USER,minimumPermissionApproved:true,immutable:true,
  branch:HISTORICAL_BRANCH,manifestSha256:execution.manifestSha256,privilegesHash:digest(canonical(MINIMUM_PRIVILEGES)),sshAccount:'sghistorical32723',rtpFileSha256:manifest.rtpFileSha256,
+ ssh:{...execution.ssh,nativeAccount:'sgcapture',historicalAccount:'sghistorical32723',resourceOnly:true,rtpHashOnly:true},
  linux:{run:999124,commit:env.GITHUB_SHA,joinedCommands:14,sealedReceipts:Array.from({length:9},(_,i)=>({mailbox:'fixture:'+i,run:999124,commit:env.GITHUB_SHA,received:true,receiptHash:String(i).repeat(64)}))}}};}
 test('exclusive historical actor rejects other branches, games, attempts and disabled execution',()=>{
  assertOwnHistoricalActor(env,execution,execution.manifestSha256);
@@ -36,7 +38,8 @@ test('protected grant binds the own14 checks and all9 sealed mailboxes to this e
  assertOwnHistoricalGrant(grant(),execution,env);
  for(const mutate of [g=>g.value.gameId=32731,g=>g.value.minimumPermissionApproved=false,g=>g.value.linux.joinedCommands=13,
   g=>g.value.linux.commit='d'.repeat(40),g=>g.value.linux.sealedReceipts.pop(),g=>g.value.linux.sealedReceipts[1].mailbox='fixture:0',
-  g=>g.value.linux.sealedReceipts[0].run=37355624055,g=>g.value.privilegesHash='e'.repeat(64),g=>g.value.sshAccount='sgdelivery']){const g=grant();mutate(g);assert.throws(()=>assertOwnHistoricalGrant(g,execution,env));}
+  g=>g.value.linux.sealedReceipts[0].run=37355624055,g=>g.value.privilegesHash='e'.repeat(64),g=>g.value.sshAccount='sgdelivery',
+  g=>g.value.ssh.resourceOnly=false,g=>g.value.ssh.historicalIdentityFingerprint='SHA256:foreign-key']){const g=grant();mutate(g);assert.throws(()=>assertOwnHistoricalGrant(g,execution,env));}
 });
 const original=()=>({_id:'1'.repeat(24),gameId:33123,bet:1.25,mul:2,buy:0,bonus:0,rtp:[0,100],data:{steps:[{raw:'synthetic-unchanged'}],money:{start:10000,end:10125}}});
 function io(){const rows=new Map([[original()._id,original()]]),entries=new Map(),order=[];return {rows,entries,order,
