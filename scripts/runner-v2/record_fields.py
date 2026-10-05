@@ -36,6 +36,7 @@ from blazing_x_fields import BlazingXFields, SOURCE as BLAZING_SOURCE
 from arthur_base_fields import ArthurBaseFields, SOURCE as ARTHUR_SOURCE
 from arthur_feature_fields import fields_factory as arthur_fields_factory
 from eighty_fortunes_fields import EightyFortunesFields, SOURCE as EIGHTY_SOURCE
+from kingbabylon_base_fields import KingBabylonBaseFields, SOURCE as KINGBABYLON_SOURCE
 from jinsedragon_base_fields import JinseDragonBaseFields, SOURCE as JINSEDRAGON_SOURCE
 from jinjitreasure_base_fields import JinjiTreasureBaseFields, SOURCE as JINJITREASURE_SOURCE
 from jinjimegaways_base_fields import JinjiMegawaysBaseFields, SOURCE as JINJIMEGAWAYS_SOURCE
@@ -95,6 +96,8 @@ def execute(request):
             adapters[key]=arthur_fields_factory(plan)
         if plan['sourceKey']==EIGHTY_SOURCE:
             adapters[key]=EightyFortunesFields(plan)
+        if plan['sourceKey']==KINGBABYLON_SOURCE:
+            adapters[key]=KingBabylonBaseFields(plan)
         if plan['sourceKey']==JINSEDRAGON_SOURCE:
             adapters[key]=JinseDragonBaseFields(plan)
         if plan['sourceKey']==JINJITREASURE_SOURCE:
@@ -248,6 +251,9 @@ def execute(request):
     if request.get('op') == 'jinsedragon_bootstrap':
         assert plan['sourceKey'] == JINSEDRAGON_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'kingbabylon_bootstrap':
+        assert plan['sourceKey'] == KINGBABYLON_SOURCE
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'eighty_bootstrap':
         assert plan['sourceKey'] == EIGHTY_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
@@ -331,7 +337,7 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
-    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE, DEEPSEAMAGIC_SOURCE, EUREKABLAST_SOURCE, FIREQUEEN_SOURCE, FROZENINFERNO_SOURCE, FUDAOLE_SOURCE, GIANTSGOLD_SOURCE, GOLDENCHIEF_SOURCE, HEIDIBIER_SOURCE, HERCULES_SOURCE, HIMALAYAS_SOURCE, HULAHULA_SOURCE, MOOLAH_SOURCE, JINJIMEGAWAYS_SOURCE, JINJITREASURE_SOURCE, JINSEDRAGON_SOURCE):
+    if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE, DEEPSEAMAGIC_SOURCE, EUREKABLAST_SOURCE, FIREQUEEN_SOURCE, FROZENINFERNO_SOURCE, FUDAOLE_SOURCE, GIANTSGOLD_SOURCE, GOLDENCHIEF_SOURCE, HEIDIBIER_SOURCE, HERCULES_SOURCE, HIMALAYAS_SOURCE, HULAHULA_SOURCE, MOOLAH_SOURCE, JINJIMEGAWAYS_SOURCE, JINJITREASURE_SOURCE, JINSEDRAGON_SOURCE, KINGBABYLON_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)
         if op == 'intent':

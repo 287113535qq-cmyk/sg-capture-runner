@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs": "b67ca396c902cdf3c8fe73aaf790f4819174f1cd8870ffc668498fa05840f05b",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs": "3eecf9b0ad9a3ec85fed735d724e64350b7df6f9a75ea224cecb6ed02875aba1",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs": "b210e9200d6e2192e94825d94418d09a531683a52a3fb5bbd1e9386d46dbf5dc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/eurekablast_base_fields.py": "b30cbf8eafb0e9d8263eddd6894ef979915acf2ba5e2dd966673a977a44e7355",
     "config/ag-rolling-eurekablast-base-contract.json": "6146afe2625d5cfe623b693744a23a53ed78e9b3e92913fb8315087ff73616b2",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a1dce74de6332f6178c6e1a67886dc36d3e328f5d19df51b0530a54fee049a65"
+  "ruleHash": "64710b5ec4edd46f02637b3b757de6e902375fdb65ef4468e88c35ad08a795b1"
 }

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-goldenchief-base.mjs": "f0cb447e36318efbb0e168bc5232d703025890871f7fb8dc149e94ead42451ec",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-source.mjs": "3f3d9a5515b2d8be22796c7184220ab6c4b819730de9a6bf5dfc4fe573865f87",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-codec.mjs": "fe1e47fa76c1ed5c04e182da740941a8b6631a5dae93eb162533ab113aa906fa",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/goldenchief_base_fields.py": "0d7c679ebfcd83cb765cfad552f6d92d54767583944b3f7ff04148fc51b8f806",
     "config/ag-rolling-goldenchief-base-contract.json": "bf7fa10c806272525415acf04124870776ebf8d84401b0a77457e22dfc25c4d9",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b7fa9151a6dd1acaaf1cb3147b18ea63faf446de842e2c5cb7fea1047657f932"
+  "ruleHash": "87bd943170310552e73c60c3adcec212dd34dc7aac866300e54f56b7dfbb549e"
 }

@@ -420,6 +420,9 @@ def derive(raw):
     from jinsedragon_base_fields import SOURCE as JINSEDRAGON_SOURCE, settled as jinsedragon_settled, mapping_hash as jinsedragon_mapping
     if raw.get('sourceKey') == JINSEDRAGON_SOURCE:
         return jinsedragon_settled(raw, jinsedragon_mapping())
+    from kingbabylon_base_fields import SOURCE as KINGBABYLON_SOURCE, settled as kingbabylon_settled, mapping_hash as kingbabylon_mapping
+    if raw.get('sourceKey') == KINGBABYLON_SOURCE:
+        return kingbabylon_settled(raw, kingbabylon_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

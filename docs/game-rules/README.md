@@ -139,7 +139,7 @@
 | [32777](32777.json) | Jin Ji Bao Xi Endless Treasure Megaways | implemented-subset | 0 |
 | [32778](32778.json) | Jin Ji Bao Xi Endless Treasures | implemented-subset | 0 |
 | [32779](32779.json) | Jinse Dao Dragon | implemented-subset | 0 |
-| [32780](32780.json) | King of Babylon Action Spins | not-documented | 待确认 |
+| [32780](32780.json) | King of Babylon Action Spins | implemented-subset | 0 |
 | [32781](32781.json) | Kings Honour | not-documented | 待确认 |
 | [32782](32782.json) | Knight's Keep | not-documented | 待确认 |
 | [32783](32783.json) | Kronos | not-documented | 待确认 |

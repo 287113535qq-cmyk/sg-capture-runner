@@ -1,0 +1,393 @@
+{
+  "schema": "wms-kingbabylon-ordinary-evidence-v1",
+  "gameId": 32780,
+  "runtimeGameId": 33002,
+  "wmsGameId": 20402,
+  "historyFileSha256": "f426e928533c68599233273d5acb1e197101bf64895b56eae785f56ecc8be7fe",
+  "betRaw": 200,
+  "acceptedOrdinaryRounds": 977,
+  "rejectedHistoricalIndices": [
+    1,
+    3,
+    44,
+    97,
+    198,
+    235,
+    300,
+    319,
+    327,
+    332,
+    380,
+    420,
+    511,
+    545,
+    556,
+    560,
+    712,
+    744,
+    828,
+    853,
+    931,
+    956,
+    980
+  ],
+  "reelsetIndices": [
+    0
+  ],
+  "reelBGJointPatterns": [
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|1|0|0",
+      "goldenWildB": "1|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|1|0|0",
+      "goldenWildB": "1|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|1",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|0|0|0",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|1",
+      "goldenWildB": "0|0|1|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|1",
+      "goldenWildB": "0|0|1|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|0|0|0",
+      "goldenWildB": "1|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|1",
+      "goldenWildB": "0|0|1|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|1|0|0",
+      "goldenWildB": "1|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "0|0|0|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "1|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|1|0|0",
+      "goldenWildB": "0|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "0|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "0|0|1|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|1",
+      "goldenWildB": "0|0|0|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|0",
+      "goldenWildB": "0|0|1|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|0",
+      "goldenWildB": "0|0|1|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|0",
+      "goldenWildB": "0|0|0|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|1|0|0",
+      "goldenWildB": "0|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "0|0|1|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|0|0|0",
+      "goldenWildB": "1|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|1|0|0",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|1|0|0",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|1",
+      "goldenWildB": "0|0|0|1"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|0",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "1|0|0|0",
+      "goldenWildB": "0|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "0|0|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|0|0",
+      "goldenWildB": "1|1|0|0"
+    },
+    {
+      "reelsetIndex": "0",
+      "goldenWildA": "0|0|1|1",
+      "goldenWildB": "0|0|0|0"
+    }
+  ],
+  "perReelPaylinePatterns": {
+    "0": {
+      "awardTableWinPatterns": [
+        [
+          0,
+          0,
+          20
+        ],
+        [
+          1,
+          0,
+          20
+        ],
+        [
+          2,
+          0,
+          20
+        ],
+        [
+          3,
+          0,
+          30
+        ],
+        [
+          4,
+          0,
+          50
+        ],
+        [
+          5,
+          0,
+          50
+        ],
+        [
+          6,
+          0,
+          50
+        ],
+        [
+          7,
+          0,
+          50
+        ],
+        [
+          8,
+          0,
+          50
+        ],
+        [
+          9,
+          0,
+          50
+        ],
+        [
+          10,
+          0,
+          50
+        ],
+        [
+          11,
+          0,
+          50
+        ],
+        [
+          12,
+          0,
+          100
+        ],
+        [
+          13,
+          0,
+          100
+        ],
+        [
+          14,
+          0,
+          100
+        ],
+        [
+          15,
+          0,
+          100
+        ],
+        [
+          16,
+          0,
+          100
+        ],
+        [
+          17,
+          0,
+          200
+        ],
+        [
+          18,
+          0,
+          250
+        ],
+        [
+          19,
+          0,
+          250
+        ],
+        [
+          20,
+          0,
+          300
+        ],
+        [
+          21,
+          0,
+          500
+        ],
+        [
+          22,
+          0,
+          500
+        ],
+        [
+          23,
+          0,
+          500
+        ],
+        [
+          26,
+          0,
+          1000
+        ],
+        [
+          27,
+          0,
+          1200
+        ],
+        [
+          30,
+          0,
+          2500
+        ]
+      ],
+      "positionPatterns": [
+        "0|1",
+        "0|11",
+        "0|11|12",
+        "0|11|12|13",
+        "0|1|2",
+        "0|1|2|3",
+        "0|1|2|3|4",
+        "0|1|3|4|7",
+        "0|1|3|7",
+        "0|1|7",
+        "0|2|6",
+        "0|4|11|12|13",
+        "0|6",
+        "0|6|12",
+        "0|6|7",
+        "0|6|7|8",
+        "0|6|8|12",
+        "10|11",
+        "10|11|12",
+        "10|11|12|13",
+        "1|10",
+        "1|2|10",
+        "1|2|3|10",
+        "1|2|3|10|14",
+        "1|2|3|5",
+        "1|2|3|5|9",
+        "1|2|5",
+        "1|3|5|12",
+        "1|3|5|7",
+        "1|5",
+        "1|5|12",
+        "1|5|7",
+        "2|5|6",
+        "2|5|6|8",
+        "2|5|6|8|9",
+        "2|6|10",
+        "2|6|8|10",
+        "3|4|5|6|12",
+        "3|5|6|12",
+        "5|11",
+        "5|11|12",
+        "5|11|12|13",
+        "5|6",
+        "5|6|12",
+        "5|6|7",
+        "5|6|7|8",
+        "5|6|7|8|9",
+        "5|7|11",
+        "5|7|11|13",
+        "6|10",
+        "6|10|12",
+        "6|7|10",
+        "6|7|8|10",
+        "6|8|10|12",
+        "7|10|11",
+        "7|10|11|13"
+      ],
+      "maxPaylines": 17
+    }
+  },
+  "positionLengths": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "sourceRequests": 0,
+  "nativeWrites": 0,
+  "historicalCredit": 0
+}
