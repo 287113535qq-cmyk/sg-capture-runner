@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {pathToFileURL} from 'node:url';
 import {withGithubHttpDiagnostic,githubReadDiagnostic} from '../github-read-diagnostic.mjs';
+import {authenticatedRead} from '../github-boundary.mjs';
 
 export const repositories=['zyzuoyang/sg-capture-runner','287113535qq-cmyk/sg-capture-runner'];
 export const target={run:37241550681,commit:'7c293bc500f1a0c25b775c46198a45ce644f4253'};
@@ -20,19 +21,25 @@ export function queries(){return [
  ];}
 export async function checkGithubReads({token,fetchRead=fetch,now=Date.now}){
  assert(typeof token==='string'&&token.length>0,'GITHUB_AUTH_REQUIRED');
- const report={schema:'sg-ag-github-read-check-v1',targetRun:target.run+':1',targetCommit:target.commit,
-  observedAt:Math.floor(now()/1000),readAttempts:0,rows:[],sourceRequests:0,nativeWrites:0,dispatches:0,retries:0};
+ const report={schema:'sg-ag-github-read-check-v2',targetRun:target.run+':1',targetCommit:target.commit,
+  observedAt:Math.floor(now()/1000),completedFreshChecks:0,readAttempts:0,rows:[],sourceRequests:0,nativeWrites:0,dispatches:0,retries:0};
+ let round=0;const responseRows=new Map();
+ const read=authenticatedRead(token,{fetchRead:async(url,options)=>{
+  report.readAttempts++;const q=queries().find(q=>'https://api.github.com/'+q.path===url);assert(q,'GITHUB_READ_CHECK_SCOPE');
+  const response=await fetchRead(url,options);
+  const diagnostic=githubReadDiagnostic(withGithubHttpDiagnostic(new Error('GITHUB_RUN_READ_FAILED'),q.path,response));
+  const row={...diagnostic,round,conditionalHeaderSent:typeof options.headers['If-None-Match']==='string',
+   etagAvailable:typeof response.headers?.get('etag')==='string',accepted:false};
+  responseRows.set(q.path,row);report.rows.push(row);return response;
+ }});
+ // A second complete check starts only after the first succeeded. Every URL
+ // still reaches GitHub; a 304 is accepted by the actual admission reader only
+ // with its exact matching prior ETag. No failed or unknown read is retried.
+ for(round=1;round<=2;round++){
  for(let offset=0;offset<queries().length;offset+=5){
   const wave=queries().slice(offset,offset+5);
   const results=await Promise.allSettled(wave.map(async q=>{
-   report.readAttempts++;
-   const response=await fetchRead('https://api.github.com/'+q.path,{method:'GET',
-    headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json'},
-    redirect:'error',signal:AbortSignal.timeout(15000)});
-   const diagnostic=githubReadDiagnostic(withGithubHttpDiagnostic(new Error('GITHUB_RUN_READ_FAILED'),q.path,response));
-   const row={...diagnostic};
-   if(!response.ok){row.accepted=false;report.rows.push(row);throw new Error('GITHUB_RUN_READ_FAILED');}
-   const value=await response.json();
+   const value=await read(q.path),row=responseRows.get(q.path);assert(row?.round===round,'GITHUB_READ_CHECK_RESPONSE');
    if(q.kind==='list'){
     row.reportedTotal=Number.isSafeInteger(value.total_count)?value.total_count:null;
     row.returnedRows=Array.isArray(value.workflow_runs)?value.workflow_runs.length:null;
@@ -46,10 +53,12 @@ export async function checkGithubReads({token,fetchRead=fetch,now=Date.now}){
     row.completed=value.status==='completed';
    }
    row.accepted=q.kind==='run'?row.identityMatches&&row.completed:row.complete;
-   report.rows.push(row);assert(row.accepted,'GITHUB_READ_CHECK_INCOMPLETE');
+   assert(row.accepted,'GITHUB_READ_CHECK_INCOMPLETE');
   }));
   const failed=results.find(r=>r.status==='rejected');
   if(failed){report.outcome='stopped';report.code=failed.reason?.message==='GITHUB_RUN_READ_FAILED'?'GITHUB_RUN_READ_FAILED':failed.reason?.message==='GITHUB_READ_CHECK_INCOMPLETE'?'GITHUB_READ_CHECK_INCOMPLETE':'GITHUB_READ_OUTCOME_UNKNOWN';return report;}
+ }
+ report.completedFreshChecks=round;
  }
  report.outcome='complete';report.code='GITHUB_READ_CHECK_COMPLETE';return report;
 }
