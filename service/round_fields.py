@@ -378,6 +378,9 @@ def derive(raw):
     from deepseamagic_base_fields import SOURCE as DEEPSEAMAGIC_SOURCE, settled as deepseamagic_settled, mapping_hash as deepseamagic_mapping
     if raw.get('sourceKey') == DEEPSEAMAGIC_SOURCE:
         return deepseamagic_settled(raw, deepseamagic_mapping())
+    from eurekablast_base_fields import SOURCE as EUREKABLAST_SOURCE, settled as eurekablast_settled, mapping_hash as eurekablast_mapping
+    if raw.get('sourceKey') == EUREKABLAST_SOURCE:
+        return eurekablast_settled(raw, eurekablast_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
