@@ -64,3 +64,5 @@ import './ag-rolling/sg-hercules-wiring.test.mjs';
 import './ag-rolling/sg-github-read-check.test.mjs';
 
 import './ag-rolling/sg-github-conditional.test.mjs';
+
+import './ag-rolling/sg-github-inventory.test.mjs';

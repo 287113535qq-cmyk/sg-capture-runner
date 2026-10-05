@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import {original} from './expired-run-review.mjs';
 import {withGithubHttpDiagnostic,withGithubListDiagnostic} from './github-read-diagnostic.mjs';
 import {conditionalGithubRead} from './github-conditional-read.mjs';
+import {completeActiveInventoryRead} from './github-active-inventory.mjs';
 const repos=[original.repository,'287113535qq-cmyk/sg-capture-runner'];
 export function githubBoundary({read,run,commit,now=Date.now,workflowPath='.github/workflows/trial-300k.yml'}){
   assert(['.github/workflows/trial-300k.yml','.github/workflows/demo-maintenance.yml'].includes(workflowPath),'CURRENT_WORKFLOW_CHANGED');
@@ -44,4 +45,4 @@ export function githubBoundary({read,run,commit,now=Date.now,workflowPath='.gith
     assert(now()>=original.expiresAt+300000 && now()-start<=30000,'GITHUB_EVIDENCE_STALE');
   };
 }
-export function authenticatedRead(token,options){return conditionalGithubRead(token,options);}
+export function authenticatedRead(token,options){return completeActiveInventoryRead(conditionalGithubRead(token,options),options);}

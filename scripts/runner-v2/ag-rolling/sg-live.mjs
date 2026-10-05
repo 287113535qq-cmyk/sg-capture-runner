@@ -124,7 +124,7 @@ try{
   log(JSON.stringify(await joinCohort({profile,store,transport,boundary,run,coordinatorRun,commit,
    checkPermit:()=>sourcePermit({profile,store,run:coordinatorRun,commit})})));
  }else if(mode==='admit'){
-  const gh=authenticatedRead(process.env.GH_TOKEN),boundary=maintenanceBoundary({read:gh,store,
+  const gh=authenticatedRead(process.env.GH_TOKEN,{onInventoryRecheck:evidence=>log(JSON.stringify(evidence))}),boundary=maintenanceBoundary({read:gh,store,
    oldProfile:read('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/trial-300k.yml'});
   const result=await activateQueue({profile,store,transport,boundary,commit,run,
    readLinux:id=>gh(`repos/287113535qq-cmyk/sg-capture-runner/actions/runs/${id}`),

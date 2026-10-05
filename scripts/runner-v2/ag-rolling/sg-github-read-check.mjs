@@ -22,15 +22,21 @@ export function queries(){return [
 export async function checkGithubReads({token,fetchRead=fetch,now=Date.now}){
  assert(typeof token==='string'&&token.length>0,'GITHUB_AUTH_REQUIRED');
  const report={schema:'sg-ag-github-read-check-v2',targetRun:target.run+':1',targetCommit:target.commit,
-  observedAt:Math.floor(now()/1000),completedFreshChecks:0,readAttempts:0,rows:[],sourceRequests:0,nativeWrites:0,dispatches:0,retries:0};
+  observedAt:Math.floor(now()/1000),completedFreshChecks:0,readAttempts:0,rows:[],inventoryRechecks:[],sourceRequests:0,nativeWrites:0,dispatches:0,retries:0};
  let round=0;const responseRows=new Map();
- const read=authenticatedRead(token,{fetchRead:async(url,options)=>{
-  report.readAttempts++;const q=queries().find(q=>'https://api.github.com/'+q.path===url);assert(q,'GITHUB_READ_CHECK_SCOPE');
+ const read=authenticatedRead(token,{onInventoryRecheck:evidence=>{
+  report.inventoryRechecks.push({...evidence,round});
+  const base=`repos/${evidence.repository}/actions/runs?status=${evidence.status}&per_page=100`;
+  const first=responseRows.get(base);first.initialReportedTotal=evidence.initialReportedTotal;first.initialReturnedRows=evidence.initialReturnedRows;first.resolvedByPagination=true;
+  for(const page of [1,2])responseRows.get(base+'&page='+page).accepted=true;
+ },fetchRead:async(url,options)=>{
+  report.readAttempts++;const relative=url.slice('https://api.github.com/'.length),page=/&page=([12])$/.exec(relative);
+  const base=page?relative.slice(0,-7):relative,q=queries().find(q=>q.path===base);assert(q&&(!page||q.kind==='list'),'GITHUB_READ_CHECK_SCOPE');
   const response=await fetchRead(url,options);
-  const diagnostic=githubReadDiagnostic(withGithubHttpDiagnostic(new Error('GITHUB_RUN_READ_FAILED'),q.path,response));
+  const diagnostic=githubReadDiagnostic(withGithubHttpDiagnostic(new Error('GITHUB_RUN_READ_FAILED'),relative,response));
   const row={...diagnostic,round,conditionalHeaderSent:typeof options.headers['If-None-Match']==='string',
    etagAvailable:typeof response.headers?.get('etag')==='string',accepted:false};
-  responseRows.set(q.path,row);report.rows.push(row);return response;
+  responseRows.set(relative,row);report.rows.push(row);return response;
  }});
  // A second complete check starts only after the first succeeded. Every URL
  // still reaches GitHub; a 304 is accepted by the actual admission reader only
