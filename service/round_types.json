@@ -5002,6 +5002,25 @@
         "fullBaseRounds": 993,
         "fullFreeRounds": 0
       }
+    },
+    "kingofbabylonactionspins-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "kingbabylon-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32780,
+        "runtimeGameId": 33002,
+        "wmsGameId": 20402,
+        "ordinaryContractHash": "393da0b3cf8f9655fee1cfc44f05689cd159b1b1e44299a84ccc1fea50b27947",
+        "historyFileSha256": "f426e928533c68599233273d5acb1e197101bf64895b56eae785f56ecc8be7fe",
+        "fullBaseRounds": 977,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-hulahula-base.mjs": "8d05327086584f1c85414f09a04c65637856a39b662977c9ad3d4fa3773fae92",
     "scripts/runner-v2/ag-rolling/sg-hulahula-source.mjs": "5d9f5621f66dde4a2a4306c67ffd44c6a6f18b0f1c33d7de941cf1fa61d4f7fc",
     "scripts/runner-v2/ag-rolling/sg-hulahula-codec.mjs": "b1c425c130bff1423b100d4549d50f60c1c6899c20fe180278678cbe7cd34822",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/hulahula_base_fields.py": "6a2cf407a91dd5b164ba36292a579db7d5f129c2a1434cf8edd448967dd51e89",
     "config/ag-rolling-hulahula-base-contract.json": "ed73689fcfc485293fc911ed305927e00741c6cf1dc74b959298d70da4f47e4d",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b168adfcbb10d73ecebc470124ba41477040bbcf9a80d642f242f8d5f780417f"
+  "ruleHash": "0638def291d3deb1d29e8ae564a9ae7ca3b9009f00ae8b0e9f114641e3dc7098"
 }

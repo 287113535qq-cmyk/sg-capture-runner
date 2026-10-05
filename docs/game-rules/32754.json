@@ -97,17 +97,17 @@
     "scripts/runner-v2/ag-rolling/sg-arthur-base.mjs": "12a9013d0e8dc83c948a4ec67916a35c1d16e243670f14ee11805a1c603ab7d4",
     "scripts/runner-v2/ag-rolling/sg-arthur-source.mjs": "9b277d086f9ece5ee7fd8971f4c33436b3e7a7a31bf1fb6c90bca75175ffe414",
     "scripts/runner-v2/ag-rolling/sg-arthur-codec.mjs": "8c023208116360af642e3ccf5807b9ce8940c2508a8ce68e996ecf6e0b9cd520",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/arthur_base_fields.py": "a0bea7fb9dfb5463f04e8a98b6d2d5abc563abe0c516187f0327aa51fab186ea",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "scripts/runner-v2/ag-rolling/sg-arthur-feature.mjs": "667096b44eba2953ebfdd98a0eb844fc024aa386a3fcdd317d207e6ee94ce1ac",
     "scripts/runner-v2/ag-rolling/sg-arthur-feature-codec.mjs": "09851d99afd110f74e80e84b6de3fdaff19c4e482356ad10dc700fad639516e0",
     "scripts/runner-v2/ag-rolling/sg-arthur-feature-source.mjs": "b717c508164617383fc30c7ee1d9c9d0c4bf24d2a68ccc12521b0d9d3a636926",
     "service/arthur_feature_fields.py": "43c9c1a3b0b28df485b9fd0a86d2acc0fea29e092015cddf5e4df26eb9a99164",
     "config/ag-rolling-arthur-feature-contracts.json": "529bf077ecf162e9f905844c1875cd724ac78a556b4e2f4ff8e90911587d14ee",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -119,5 +119,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a7a5182a34a3b3e0c656aa6f390719f8f790d5fcb4e39a8c654103934cd428d1"
+  "ruleHash": "eb02de11a1d137209ec0b222a8fef5007ed4fd8c52ff7d76871f21768c8496e1"
 }

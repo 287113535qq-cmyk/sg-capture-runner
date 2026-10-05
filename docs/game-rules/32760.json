@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b6d13df7149d981cbee6158c0276c6192da42b1c6edc200d50248e9598b44be3"
+  "ruleHash": "a9962bc53f7125849c752f692145772e685990b971565fe82c7e558392c41a13"
 }

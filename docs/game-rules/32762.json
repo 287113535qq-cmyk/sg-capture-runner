@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs": "ed501a2b04bc0d929964e8bec97802f7a296b38889df5f4ec3a4a2079c3dc8b4",
     "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs": "940e7e4d37cbbdec25b6cea5513643aeb10f153e44cd291df57cbc08a133254f",
     "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs": "588dcac812ab3e40565b9a4844e70abacd980939d6d6778622d85232f83d52f7",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
     "service/desertcats_base_fields.py": "9caa82edd904940e77dcd952958c0eb8f8d701ca676ca75527a47d15c414d98d",
     "config/ag-rolling-desertcats-base-contract.json": "86b32bd9dae1cd96380d2a1bc581839f34950da5201de5f512ef65e92d49c06d",
-    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
-    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
-    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
-    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
+    "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
+    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
+    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b7e4007782c8a85a045f4ad8405650f99eeb7b40a64985aec90cef5e71183db7"
+  "ruleHash": "033e69eb980107e52a0418e5fbf5a64211d55fb535e53f5acc10e0c20caf3b35"
 }

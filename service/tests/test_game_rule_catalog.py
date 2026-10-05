@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_kingbabylon_card_binds_own_paylines_golden_states_and_special_boundary(self):
+        card=self.cards[32780];rule=card['roundRule']
+        self.assertEqual(rule['family'],'kingbabylon-base-wms-v1');self.assertEqual(card['runtimeGameId'],33002);self.assertEqual(card['parameters']['wmsGameId'],20402)
+        for s in ('977普通完整','1954历史请求','15局Action Spins','8条免费链'):self.assertIn(s,rule['bounds'])
+        self.assertIn('29种',rule['continue']);self.assertIn('1272',rule['fields']['PaylineWin']);self.assertIn('27种',rule['fields']['PaylineWin']);self.assertIn('不按goldenWild名字另加奖',rule['continue'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total200',rule['start']);self.assertEqual(card['typeMappings']['kingofbabylonactionspins-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_jinsedragon_card_binds_own_ways_orb_payout_and_unknown_features(self):
         card=self.cards[32779];rule=card['roundRule']
         self.assertEqual(rule['family'],'jinsedragon-base-wms-v1');self.assertEqual(card['runtimeGameId'],33001);self.assertEqual(card['parameters']['wmsGameId'],20401)
