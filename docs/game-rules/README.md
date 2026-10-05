@@ -124,7 +124,7 @@
 | [32762](32762.json) | Desert Cats | implemented-subset | 0 |
 | [32763](32763.json) | Dr. Jekyll Goes Wild | implemented-subset | 0 |
 | [32764](32764.json) | Dragon Spin | implemented-subset | 0 |
-| [32765](32765.json) | Drop and Lock Deep Sea Magic | not-documented | 待确认 |
+| [32765](32765.json) | Drop and Lock Deep Sea Magic | implemented-subset | 0 |
 | [32766](32766.json) | Eureka Blast Superlock | not-documented | 待确认 |
 | [32767](32767.json) | Fire Queen | not-documented | 待确认 |
 | [32768](32768.json) | Frozen Inferno | not-documented | 待确认 |
