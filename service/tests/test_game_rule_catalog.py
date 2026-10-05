@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_goldenchief_card_binds_own_line_wild_upgrade_joint_and_stops_wheel(self):
+        card=self.cards[32771];rule=card['roundRule']
+        self.assertEqual(rule['family'],'goldenchief-base-wms-v1');self.assertEqual(card['runtimeGameId'],32993);self.assertEqual(card['parameters']['wmsGameId'],20125)
+        self.assertIn('987',rule['bounds']);self.assertIn('1974历史请求',rule['bounds']);self.assertIn('13个特殊',rule['bounds'])
+        self.assertIn('2232',rule['fields']['PaylineWin']);self.assertIn('146种',rule['fields']['PaylineWin']);self.assertIn('21种',rule['fields']['PaylineCountInfo / WildExpansion / SymbolUpgrade'])
+        self.assertIn('只有Header/Balances',rule['complete']);self.assertIn('Stake total100',rule['start']);self.assertEqual(card['typeMappings']['goldenchief-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_giantsgold_card_binds_own_two_spins_clump_wild_and_stake(self):
         card=self.cards[32770];rule=card['roundRule']
         self.assertEqual(rule['family'],'giantsgold-base-wms-v1')

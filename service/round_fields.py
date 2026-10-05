@@ -393,6 +393,9 @@ def derive(raw):
     from giantsgold_base_fields import SOURCE as GIANTSGOLD_SOURCE, settled as giantsgold_settled, mapping_hash as giantsgold_mapping
     if raw.get('sourceKey') == GIANTSGOLD_SOURCE:
         return giantsgold_settled(raw, giantsgold_mapping())
+    from goldenchief_base_fields import SOURCE as GOLDENCHIEF_SOURCE, settled as goldenchief_settled, mapping_hash as goldenchief_mapping
+    if raw.get('sourceKey') == GOLDENCHIEF_SOURCE:
+        return goldenchief_settled(raw, goldenchief_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
