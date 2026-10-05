@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-heidibier-base.mjs": "119e6a8c49baa5523512cd240885d0d8cbbf878765ee558494809607b5714597",
     "scripts/runner-v2/ag-rolling/sg-heidibier-source.mjs": "025bae43d5ea731a21831ed0b67ca00aaacf515b69f05ad2af91405924ba7d44",
     "scripts/runner-v2/ag-rolling/sg-heidibier-codec.mjs": "9305c594b0da91cff75f2a80288e9137ef7932eeff7f8b77a4dfa43fd32fb459",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
     "service/heidibier_base_fields.py": "1f9417a99de7616b8023eba95b2fb59cfb9312c2c17e418775dadda822bb3cb6",
     "config/ag-rolling-heidibier-base-contract.json": "d858687b2eb6a4338a174321de15d44fa0b3c23884b3aed8fb4f3b908f64d950",
-    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
-    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
-    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
-    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
+    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
+    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
+    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
+    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "08c8b08ac207202adc719c26f76454848a47e073c279f7aa5439692c7ff4f9ec"
+  "ruleHash": "cf50d8d0fd4c9f0493419ec079c10a5fce4ae41b7772bef5ac2af32231fab468"
 }
