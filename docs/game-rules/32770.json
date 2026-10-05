@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs": "5d506c934b97d5980a94346a8d6b34c56a2ed0c43f0109d1eb747e291d201dc8",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs": "c9c52de067df4fc5fb24db818cadc776eefe0e32cd9c9ccaa23cb72797ae3d92",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs": "8e9a34f4ff0f33c79811cacfbeaf41496ef3feb14e6f2e8ed3057ed7c8c4c4db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
     "service/giantsgold_base_fields.py": "bdff2b2c5bb25a8f6c13a94c3bb1e8fc8f23ca40fd47b0eca678fff3fe48aa26",
     "config/ag-rolling-giantsgold-base-contract.json": "3abc93115680f7ee2cd8ca09d740956af23d0a7876225f1e48d33bb4194692ab",
-    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
-    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
-    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
-    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
+    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
+    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
+    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
+    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8d12dd3e8644d775142493d742b67cb3bd531d8d771e39930d613eaed06a9053"
+  "ruleHash": "ba0ff163b35b40e80fb95a4d5a9d3e5063e604c3e698698c0dacbef4d61ac68e"
 }

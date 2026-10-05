@@ -132,7 +132,7 @@
 | [32770](32770.json) | Giant's Gold | implemented-subset | 0 |
 | [32771](32771.json) | Golden Chief | implemented-subset | 0 |
 | [32772](32772.json) | Heidi's Bier Haus | implemented-subset | 0 |
-| [32773](32773.json) | Hercules High & Mighty | not-documented | 待确认 |
+| [32773](32773.json) | Hercules High & Mighty | implemented-subset | 0 |
 | [32774](32774.json) | Himalayas - Roof of the World | not-documented | 待确认 |
 | [32775](32775.json) | Hula Hula Nights | not-documented | 待确认 |
 | [32776](32776.json) | Invaders of Planet Moolah | not-documented | 待确认 |

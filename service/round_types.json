@@ -4869,6 +4869,25 @@
         "fullBaseRounds": 986,
         "fullFreeRounds": 0
       }
+    },
+    "herculeshighandmighty-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "hercules-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32773,
+        "runtimeGameId": 32995,
+        "wmsGameId": 20102,
+        "ordinaryContractHash": "626ec80c9d20de647da4d1ab6c34fe1f021a85f44bf155deb99e3d2b3a21e25c",
+        "historyFileSha256": "60f773e6d3dd129236a46bed1f3f37f1d3488af4f4fd473cf8ea867fc6a931da",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

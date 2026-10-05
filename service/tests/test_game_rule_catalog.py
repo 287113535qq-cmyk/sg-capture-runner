@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_hercules_card_binds_own_line_reelset_wild_joint_and_stops_unknown(self):
+        card=self.cards[32773];rule=card['roundRule']
+        self.assertEqual(rule['family'],'hercules-base-wms-v1');self.assertEqual(card['runtimeGameId'],32995);self.assertEqual(card['parameters']['wmsGameId'],20102)
+        self.assertIn('1000普通',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('没有特殊覆盖',rule['bounds'])
+        self.assertIn('3817',rule['fields']['PaylineWin']);self.assertIn('232种',rule['fields']['PaylineWin']);self.assertIn('55种',rule['fields']['WildPositions / BGInfo.wildBonus'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total100',rule['start']);self.assertEqual(card['typeMappings']['herculeshighandmighty-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_heidibier_card_binds_own_myst_wild_rd_joint_and_stops_free(self):
         card=self.cards[32772];rule=card['roundRule']
         self.assertEqual(rule['family'],'heidibier-base-wms-v1');self.assertEqual(card['runtimeGameId'],32994);self.assertEqual(card['parameters']['wmsGameId'],20157)
