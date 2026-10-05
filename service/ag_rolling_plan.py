@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1', 'fudaole-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -338,6 +338,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == '5e2cf33aae6853112804beb03b6880318f59b4d4b473e789a98a4d71517720b1'
                 and wired.get('schema') == 'sg-ag-wms-frozeninferno-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == 'e8b217951aec1000081e405a066cbcb21a8387361b5de5b31457bbf9231cb316'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'fudaole-base-wms-v1':
+        from fudaole_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32769 and plan['runtimeGameId'] == 32991 and plan['runtimeSlug'] == 'fudaole'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 200 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20135 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 992 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 8
+                and proof.get('unhandledHistoricalVariants') == {'FUDAOLE_FEATURE_NOT_ADAPTED':8}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 992
+                and digest(proof['acceptedRawHashes']) == 'e4c2043acdc32d5be713b27a219f44e3ed5082ef120b925be347109f0e5e3958'
+                and digest(proof['rejectedHistoricalPrefixes']) == 'd0a78daa632762a111eecd99ffd34189d264f6b1240fdb8eecb30a9a5d29ef54'
+                and wired.get('schema') == 'sg-ag-wms-fudaole-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == '609954af45d08075c44296ae139e56abf02acf5557e8d1d177dbf8da9cdf85a7'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

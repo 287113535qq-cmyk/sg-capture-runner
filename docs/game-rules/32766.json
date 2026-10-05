@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs": "b67ca396c902cdf3c8fe73aaf790f4819174f1cd8870ffc668498fa05840f05b",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs": "3eecf9b0ad9a3ec85fed735d724e64350b7df6f9a75ea224cecb6ed02875aba1",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs": "b210e9200d6e2192e94825d94418d09a531683a52a3fb5bbd1e9386d46dbf5dc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
     "service/eurekablast_base_fields.py": "b30cbf8eafb0e9d8263eddd6894ef979915acf2ba5e2dd966673a977a44e7355",
     "config/ag-rolling-eurekablast-base-contract.json": "6146afe2625d5cfe623b693744a23a53ed78e9b3e92913fb8315087ff73616b2",
-    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
-    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
-    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
-    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
+    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
+    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
+    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
+    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8b4711282d1d316e0699c8da196afc083e1ec5e7d3e5213d2bc3c838bcc9006e"
+  "ruleHash": "11b4f5e84d8f9a01f3ff7ab106f28c316c0ce85d73bf44674dcd848c03a48557"
 }

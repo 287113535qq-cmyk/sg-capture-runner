@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32769:
+        native.update({'family':'fudaole-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32991与自己的WMS Header20135分别固定；Header→WagerInfo totalStake200/featureBet0→AccountData/CurrencyMultiplier1；响应totalStake200/waysCount243；Header没有readyForEndGame。',
+            'continue':'普通reelset0/5stops，没有spinIndex；最多3个连续winIndex的AnywayWin，scatterWinCount0/freeSpinN/bonusAwardedN；GameResult严格MysteryRepSymbol/ReelResults/GameWinInfo/GameRtpInfo。40种自己的MysteryRepSymbol联合形状只核验，25个普通局含nudging wild，不能据名字猜特殊或再次加奖。',
+            'complete':'普通后唯一Header-only EndGame，响应Header/空AccountData/Balances，无GameResult且现金保持。AnywayWin和=totalWayWin=totalSpinWin=Logic totalWin=GameWinInfo base/wager累计；现金=start-200+奖。',
+            'bounds':'完整file SHA核验；前1000中992普通完整/1984历史请求，8个特殊触发首响应拒绝。actual codec→独立PY IPC→record/verify一致；1992自身source payload语义核验，原frontend constructor/XML serializer未执行。6个FreeGame、1个PickGame、1个RedEnvelope后旧EndGame不是已覆盖的自然特殊terminal；历史不抵目标；Init仅synthetic能力shape，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-fudaole-base.mjs','scripts/runner-v2/ag-rolling/sg-fudaole-source.mjs','scripts/runner-v2/ag-rolling/sg-fudaole-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/fudaole_base_fields.py','config/ag-rolling-fudaole-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'AnywayWin':'370个自己普通AnywayWin，123种award/ways/winVal tuple、259种3..11或13位置文本、唯一位置0..14；最多3个winIndex0..2连续。winVal含ways，只加一次。新tuple/位置停止。',
+                'MysteryRepSymbol / Feature':'40种自己的isSymPresent/replacementSymbolIndex/isNudgingWild/可选nudgingWildPositions/isRedEnvlpJkpt字段联合形状；普通isRedEnvlpJkptN。FreeGame/PickGame/RedEnvelope触发停止，无FREE/END许可或信用。',
+                'GameWinInfo / WagerInfo':'下注200；totalBaseGameWin=totalWagerWin=Logic奖，totalFreeSpinsWin/totalPickJkptWin0/isMaxWinN/maxWinValue25000000只上限；GameRtpInfo targetedRtpValue96.06。WagerInfo featureBet0，不借其它款SpinInfo或Stake字段。'}})
     elif game_id == 32768:
         native.update({'family':'frozeninferno-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32990与自己的WMS Header20090分别固定；Header→AccountData/CurrencyMultiplier1→SpinInfo perLine125/total5000/mode0/isReset0/modeChange0；响应stake5000/stakePerLine125/paylineCount40；Header没有readyForEndGame。',
@@ -491,7 +501,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -596,6 +606,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'fudaole-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own AnywayWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注200；自己的普通后唯一EndGame含空AccountData、现金保持；MysteryRepSymbol只验形状，8个FreeGame/PickGame/RedEnvelope停止。'}
         if plan and plan.get('adapter') == 'frozeninferno-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own Payline sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

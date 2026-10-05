@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_fudaole_card_binds_own_wager_ways_mystery_and_stops_features(self):
+        card=self.cards[32769];rule=card['roundRule']
+        self.assertEqual(rule['family'],'fudaole-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32991);self.assertEqual(card['parameters']['wmsGameId'],20135)
+        self.assertIn('992',rule['bounds']);self.assertIn('1984历史请求',rule['bounds']);self.assertIn('8个特殊',rule['bounds'])
+        self.assertIn('370',rule['fields']['AnywayWin']);self.assertIn('259种',rule['fields']['AnywayWin'])
+        self.assertIn('40种',rule['fields']['MysteryRepSymbol / Feature']);self.assertIn('空AccountData',rule['complete']);self.assertIn('WagerInfo',rule['start'])
+        self.assertEqual(card['typeMappings']['fudaole-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_frozeninferno_card_binds_own_spin_info_wild_and_stops_free(self):
         card=self.cards[32768];rule=card['roundRule']
         self.assertEqual(rule['family'],'frozeninferno-base-wms-v1')
