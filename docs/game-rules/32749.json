@@ -83,13 +83,13 @@
     "scripts/runner-v2/ag-rolling/sg-five-treasures.mjs": "307deb8b0cbc53384de3e97f309db039b4c90987f2681fc02ca308f1f092b4f8",
     "scripts/runner-v2/ag-rolling/sg-five-source.mjs": "6f8f05c504dbc36fa9af4588c81b4ab6319d2a0ab362f8eb1ecd5bad47700bca",
     "scripts/runner-v2/ag-rolling/sg-five-codec.mjs": "4615a246d584a2cb1678939155ab7e56719b4d9a0125ecc09f28f3d2c9f56c67",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "137e629788f9ff917740902d9707c84173b471687ee1944eeec5eb236472df9e",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
     "scripts/runner-v2/ag-rolling/sg-protocol-session.mjs": "0fc585d2937441410517584a8516d32b0375b8043b4277737716757135b90215",
     "service/five_treasures_fields.py": "d0ec8c8f58ddcbfe4fe34ad44f69140752c46eb7f0b286a3647feeb9db5426c9",
-    "service/ag_rolling_plan.py": "17d9c34903e320dcaf1dc8dc7906cd8f6daf6f20b86f024a0ac448c50b76459e",
-    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
-    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
-    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
+    "service/ag_rolling_plan.py": "aca3639018f2fc0f88af338f0252c88a0dbf58f2da41e20b3f3d37daa943b0bc",
+    "scripts/runner-v2/record_fields.py": "6d56ea1d339c2a86ee3c60f62a5b68d50447885f8a1b7ce11e0ac5098fa52217",
+    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
+    "service/game_rule_catalog.py": "91974b0fd761f0bd7c709329e48032cc2c897b4df3584dc103812f4f77f03afb"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -101,5 +101,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "d467b13f8786e49421d2d6b32cb230df268f4500decd8af5fcb183409e7c9bb9"
+  "ruleHash": "10166312c97648e340ab58ce48caa0ce922a01eafc4bd34f581c4077aa89a0e0"
 }

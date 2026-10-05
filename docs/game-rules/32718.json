@@ -153,15 +153,15 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "ac84ce81692c155623cf70a7e7aaf912bd9342b8af2d3dd9cc1a1b45dcea8018",
-    "scripts/runner-v2/record_fields.py": "056fb7bd7b375ae9d2cd002b4dc7af7ba1afce87b89302711daf71dab9817844",
+    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
+    "scripts/runner-v2/record_fields.py": "6d56ea1d339c2a86ee3c60f62a5b68d50447885f8a1b7ce11e0ac5098fa52217",
     "service/morepuff_fields.py": "5daa6e78402db09326710e1abfa2560e8fc8e5ba5dec2ffaed6a6c8b638292d1",
     "scripts/trial/morepuff-protocol.mjs": "cd9baab5dc7ce8a7484a91f253d8a3eadfc655e6899d1a2bb61e79745b484b5f",
     "collector/sg.morepuff.ts": "d30882d2952b36ec5b9a4bedf6055934679d90f2d1c4a5a75217bcba20811648",
     "service/morepuff_megahat_review.py": "163cba04ae5598931914750dd5ec6afc97f9aa13f5be307b285bfccc86ae7378",
     "scripts/trial/morepuff-megahat-review.mjs": "2709cbda6ebe4a6c613d3dab1afb2707980e5b5fc5f8377c3ca94f1e93a14451",
     "collector/sg.morepuff-megahat.ts": "145184c91f927a5944452dfdc66dab02c13d6dc6a1b64e1fc1f2b6ac3d947a4b",
-    "service/game_rule_catalog.py": "17f70c8946b8a8659236bfa89c5db62cfa7646222fc4f197992c1ed7012f6067"
+    "service/game_rule_catalog.py": "91974b0fd761f0bd7c709329e48032cc2c897b4df3584dc103812f4f77f03afb"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -207,5 +207,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9701d174de783439f58137ca7ed0a0084696fa79ebcf5577e8d672b636cf7f21"
+  "ruleHash": "9652543eb0bdecbebf1b37ad801955ff56c27a476beaed9f79470ce2cdfc5388"
 }
