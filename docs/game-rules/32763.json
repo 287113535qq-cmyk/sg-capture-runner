@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-jekyll-base.mjs": "e4005552d03b3aa6abea9259059c71ca3623b5b76e27ab02bd901acc4224a105",
     "scripts/runner-v2/ag-rolling/sg-jekyll-source.mjs": "0ab39a8e0f78866e640b2ed4b60ef850155c45d35e299faed741cc9b7afec1cc",
     "scripts/runner-v2/ag-rolling/sg-jekyll-codec.mjs": "f419f1748c16fd5a21e5fe37d8268ffb35b09f42435e534e9e7bc7d78429f9db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "2c7e55ac08e53142ebe73ccb7d9b0a322dfda6d5338c09c24213a22f67e590bd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6bae196040a5095f4d81ebf040ed8527fe77d9c697aedb4eaeebed5a8e1e4396",
     "service/jekyll_base_fields.py": "c641bd47e0213c5a9693a08511c6891441803d8b9e925d3cdaf9d8b72eddeb12",
     "config/ag-rolling-jekyll-base-contract.json": "f9cf9021d8555e679a0d72cffa217468c4d0812c260d912a154f2f8f50d64241",
-    "service/ag_rolling_plan.py": "1b04e1d52306288b54825b9c50fe183eb607fa4424a0f80a6e197916e04ab07f",
-    "scripts/runner-v2/record_fields.py": "2028a93cdde242c6903c4a071c69349907520ed73ba7d6eb6030cdb269738b2b",
-    "service/round_fields.py": "bc0165292ed2b0813cc87d159fe231833c710f5beb772d1b413782065d7721f6",
-    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
+    "service/ag_rolling_plan.py": "853bd09a9231e06edb9782ade068f270f6f5ec599ef88a54ee4ebf0991aef9c7",
+    "scripts/runner-v2/record_fields.py": "59d675ae31b09f21a853a1e930634a3eef942213e90f09436c029858f42308c4",
+    "service/round_fields.py": "838c5f0a583478e7d1a33fe020bf047b1ef3211bceed0eb416bd7159e05238a4",
+    "service/game_rule_catalog.py": "7a29481085622c287fc63e9effc242e2708aad499e9240ea23f1c693a32e8439"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "05893c046e74a3c96f1f05e82f878ce989ff80b0e5d41ca13ecd693bd9c9a909"
+  "ruleHash": "187f5f25a14bb44626cfd5d334f013c063a8369633143ecc4272bf105b9b6b85"
 }

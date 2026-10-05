@@ -381,6 +381,9 @@ def derive(raw):
     from eurekablast_base_fields import SOURCE as EUREKABLAST_SOURCE, settled as eurekablast_settled, mapping_hash as eurekablast_mapping
     if raw.get('sourceKey') == EUREKABLAST_SOURCE:
         return eurekablast_settled(raw, eurekablast_mapping())
+    from firequeen_base_fields import SOURCE as FIREQUEEN_SOURCE, settled as firequeen_settled, mapping_hash as firequeen_mapping
+    if raw.get('sourceKey') == FIREQUEEN_SOURCE:
+        return firequeen_settled(raw, firequeen_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())
