@@ -79,7 +79,7 @@
     "service/moolah_base_fields.py": "2986c991d0689f0edee9634da5cd9c1914cf4701c59b9e321893664a06ac9b57",
     "config/ag-rolling-moolah-base-contract.json": "e5041258b6918febe80a764df0ee447d84e30dfc6407d86eaa0718d0f5ed5535",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0301d4e7239f76c1312fcb5a7ffff95a98bc246fa0a4904c3994c8876b7f8926"
+  "ruleHash": "94fe8c15baa09e1eaba436ba8b0c66909a972d2f4528177001a6cd197f605828"
 }

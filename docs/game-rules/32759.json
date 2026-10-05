@@ -78,7 +78,7 @@
     "service/crystalforest_base_fields.py": "d9f2491cd5105ecc0a3dfb0815558832730a7b22ee1f0ed1bf35f8eeb3868e97",
     "config/ag-rolling-crystalforest-base-contract.json": "bb355196c19afec64a510f2dcb5a39ad20039da0ef00962dd67e286baa4575d9",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -92,5 +92,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e1a9d1cb42116ad273ec1078ee3531d6e5c47cd987c9b144934e04cf47f2cbfb"
+  "ruleHash": "303ea843cfe3f3af8e8e50331687e4a3ef405a64c92e3d2e42f9091117aacde7"
 }

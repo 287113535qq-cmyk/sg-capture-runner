@@ -2,6 +2,10 @@ name: SG ordinary round-one capture
 on:
   workflow_dispatch:
     inputs:
+      business_game_ids:
+        description: Reviewed accepted games to finalize into their own simulate collection
+        type: string
+        default: "32442"
       ag_coordinator_run:
         description: 'Exact primary admission permit run for the registered companion'
         type: string
@@ -62,18 +66,57 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [ag-rolling, ag-rolling-companion, ag-rolling-preparation-close, formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [ag-rolling-business-delivery, ag-rolling, ag-rolling-companion, ag-rolling-preparation-close, formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
   contents: read
   actions: write
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && inputs.role == 'demo-fresh-short' && 'sg-demo-fresh-capture' || (github.event_name == 'schedule' || inputs.role == 'capture') && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && 'sg-round-one-capture-v2' || 'sg-real-single-game-trial' }}
+  group: ${{ inputs.role == 'ag-rolling-business-delivery' && 'sg-business-delivery' || github.event_name == 'workflow_dispatch' && inputs.role == 'demo-fresh-short' && 'sg-demo-fresh-capture' || (github.event_name == 'schedule' || inputs.role == 'capture') && (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'round-one' && 'sg-round-one-capture-v2' || 'sg-real-single-game-trial' }}
   cancel-in-progress: false
 env:
   SG_TRIAL_PLAN: ${{ (inputs.allocation || vars.SG_TRIAL_ALLOCATION || 'legacy-fixed') == 'dynamic' && 'config/trial-pool.json' || 'config/trial-300k.json' }}
 jobs:
+  ag-rolling-business-delivery:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling-business-delivery' && github.repository == 'zyzuoyang/sg-capture-runner' && github.ref == 'refs/heads/sg-business-delivery-20261005'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_BUSINESS_MONGO_PASSWORD: ${{ secrets.SG_BUSINESS_MONGO_PASSWORD }}
+      SG_BUSINESS_GAME_IDS: ${{ inputs.business_game_ids }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Configure pinned read-only configuration transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Configure separate hash-only configuration identity
+        run: node scripts/link/setup-business-readonly-ssh.mjs
+        env:
+          SG_BUSINESS_SSH_PRIVATE_KEY: ${{ secrets.SG_BUSINESS_SSH_PRIVATE_KEY }}
+      - name: Install locked Mongo and protocol dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Validate existing rows and accepted records, then finalize and fully reread simulate
+        run: node scripts/runner-v2/ag-rolling/sg-business-job.mjs
+      - name: Save delivery counts and hashes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sg-business-${{ github.run_id }}
+          path: business-evidence/result.json
+          if-no-files-found: error
+          retention-days: 7
   ag-rolling-preparation-close:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling-preparation-close' && github.repository == 'zyzuoyang/sg-capture-runner'
     runs-on: ubuntu-latest

@@ -79,7 +79,7 @@
     "service/jinjimegaways_base_fields.py": "8b8c48bae27bc33a2476e3a7d04d41ec61a15f84990acbb8047c8517dd678de3",
     "config/ag-rolling-jinjimegaways-base-contract.json": "6eda9116425934f6453befbe472c52fc36c8fa5aa288aa3962c7bd8a4be551c9",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "316aad9157f851f59a79f44d10cf0dc85fab94655c38bc7d9478e56cf159a456"
+  "ruleHash": "bc2d87f1b8b2b6f59c97eabc7dc37cea57f89744a132abf535eff5b45573e866"
 }

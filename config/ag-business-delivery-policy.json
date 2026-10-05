@@ -1,0 +1,240 @@
+{
+  "schema": "sg-business-delivery-policy-v1",
+  "captureWrites": 0,
+  "sourceAllowance": 0,
+  "sourceTargetUnchanged": 300000,
+  "preserveAllExistingIds": true,
+  "completeProofs": {
+    "32529": {
+      "receiptHash": "dca5b84d722d276d74cfc0eb2568166ea5913d4210f7e294cac5cb3093745515",
+      "recordsHash": "023ee2c1ede700348434b908a27cc90b6711d724a7f42f4ba04982adf9901b2e",
+      "sourceGame": {
+        "gameId": "32529",
+        "dbName": "sg_32529",
+        "campaignId": "sg_32529-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32529"
+      }
+    },
+    "32615": {
+      "receiptHash": "8974363df067da2f509e50ca38d28ff72123567c48a3c3929938838822a9990c",
+      "recordsHash": "114e5ff9803b8dbfcb7b9c39865ef79021b46f21905bbf143b27023915765bae",
+      "sourceGame": {
+        "gameId": "32615",
+        "dbName": "sg_32615",
+        "campaignId": "sg_32615-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32615"
+      }
+    },
+    "32635": {
+      "receiptHash": "407e513149cd3819433027a9ed33bf2ae006839858fbc87e5a581695420f81ce",
+      "recordsHash": "fb658770fb3171e467b25013a5affcfa3734a442bfb3fb5086d04b8784672f9d",
+      "sourceGame": {
+        "gameId": "32635",
+        "dbName": "sg_32635",
+        "campaignId": "sg_32635-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32635"
+      }
+    },
+    "32632": {
+      "receiptHash": "a9469ad400016326c826f32e3189169b71c806572ff0c0f90bd0f0061f24ffb2",
+      "recordsHash": "9a5daa2f2224583fe4e852ed045db60cf6e8ddbf058bd692fb9771f55f815e48",
+      "sourceGame": {
+        "gameId": "32632",
+        "dbName": "sg_32632",
+        "campaignId": "sg_32632-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32632"
+      }
+    },
+    "32530": {
+      "receiptHash": "8df7cf20037994413a432a05edbe8a69d680579c76ae8a95d92e7722276d688d",
+      "recordsHash": "253607dda00257552e825f47eed13b5c0073da88cf39280b69b3ee1e3bcc9521",
+      "sourceGame": {
+        "gameId": "32530",
+        "dbName": "sg_32530",
+        "campaignId": "sg_32530-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32530"
+      }
+    },
+    "32547": {
+      "receiptHash": "7bad6525fbc07040382f4e8fc766c7eb0b0abe1c3c33faddd43109d9ec24011a",
+      "recordsHash": "7d0b62e8328473e5c1440e5f8cc7456346564c8c435893ae0cc9c8d1ba520f6f",
+      "sourceGame": {
+        "gameId": "32547",
+        "dbName": "sg_32547",
+        "campaignId": "sg_32547-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32547"
+      }
+    },
+    "32441": {
+      "receiptHash": "3942ed9fef483ebd871db7d62685a1a242f798d0d1008f486a50b46bf73e90fc",
+      "recordsHash": "975e5c0efcfcc8b2733af387cd1d70dab0e48ac6ba6cea54a145780ac8dbee1d",
+      "sourceGame": {
+        "gameId": "32441",
+        "dbName": "sg_32441",
+        "campaignId": "sg_32441-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32441"
+      }
+    },
+    "32634": {
+      "receiptHash": "f87d252d446198ba2c3a8c694adb9af26b1b5a3c157170778044b37eeb265164",
+      "recordsHash": "15193b08a9954f3ae499ca423d77849368968e945a13c6bf631c4240ed20c242",
+      "sourceGame": {
+        "gameId": "32634",
+        "dbName": "sg_32634",
+        "campaignId": "sg_32634-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32634"
+      }
+    },
+    "32514": {
+      "receiptHash": "b281b3630eddb23ac8b9f90f77eaa38e97d5f7b87ce050853b9f17c85e242a8a",
+      "recordsHash": "0c1eea6790cd1316036168a1eb18c46481e68a1b4b992cf2cf74156e39683480",
+      "sourceGame": {
+        "gameId": "32514",
+        "dbName": "sg_32514",
+        "campaignId": "sg_32514-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32514"
+      }
+    },
+    "32637": {
+      "receiptHash": "5b7a32e471f1ecec0f2b2c6fb003983ceb840c223ea5640abf032b992de9d79d",
+      "recordsHash": "c0ab5f76ce3bddbb88471e941cd5f485ac7adf3416e069571a8f80d3fff819e4",
+      "sourceGame": {
+        "gameId": "32637",
+        "dbName": "sg_32637",
+        "campaignId": "sg_32637-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32637"
+      }
+    },
+    "32712": {
+      "receiptHash": "222029e9419edbd893ef14880dbda527ae82893bf5dbb8adebd1f6516224018c",
+      "recordsHash": "23102c0b0089ddd6f586f936ca413bc6cffc9abeab0def0bd62e82d11001c0cb",
+      "sourceGame": {
+        "gameId": "32712",
+        "dbName": "sg_32712",
+        "campaignId": "sg_32712-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32712"
+      }
+    },
+    "32614": {
+      "receiptHash": "e109e540506d9a057366513ff06929993d21a3f0d4379afb3a8f57e5c4e268f6",
+      "recordsHash": "aabae6bbaa6d0cc4622ad96623f8cccd176654d7e0065a07fa87edaac26bf853",
+      "sourceGame": {
+        "gameId": "32614",
+        "dbName": "sg_32614",
+        "campaignId": "sg_32614-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32614"
+      }
+    },
+    "32629": {
+      "receiptHash": "4dd6ddd0a684a651a1985739632da8f6c79da19c0b5fe6a316df578abe8c20f3",
+      "recordsHash": "0135c46dca0db35f8de4a68a4a494cbeb1399babae0f5c9e68c27c3075361f45",
+      "sourceGame": {
+        "gameId": "32629",
+        "dbName": "sg_32629",
+        "campaignId": "sg_32629-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32629"
+      }
+    },
+    "32644": {
+      "receiptHash": "47eebabb026ee40a92756ae3a82cdbcbc2cb8cf7b77c555c57069a621e018bd8",
+      "recordsHash": "ee5c530c820efcb92abfce29a7d18beea07cf431b8513f6f0ad115621fce0c02",
+      "sourceGame": {
+        "gameId": "32644",
+        "dbName": "sg_32644",
+        "campaignId": "sg_32644-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32644"
+      }
+    },
+    "32442": {
+      "receiptHash": "bc6c752e9c72c00a8b3261f16f4c597dd25ff7cc501ee8ed104c2a4ce990fb17",
+      "recordsHash": "ca8c891a9548f54b60b16ffca1f84ed205e619ed4b5cd6ff1933b011ace3595b",
+      "sourceGame": {
+        "gameId": "32442",
+        "dbName": "sg_32442",
+        "campaignId": "sg_32442-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32442"
+      }
+    },
+    "32545": {
+      "receiptHash": "731cd55cd4192042f5189dbbb2a087d60c3a093356cfa3d82546f57866345cef",
+      "recordsHash": "5599ebfc8b9b0f7c07baf805279ba8ed7e31a04153d09adc7f928ff41c4b1fdd",
+      "sourceGame": {
+        "gameId": "32545",
+        "dbName": "sg_32545",
+        "campaignId": "sg_32545-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32545"
+      }
+    },
+    "32631": {
+      "receiptHash": "e7ef1c66d042c39258a2d23e1be2e7d97552d2fd60a09aa618271a3f95f3b42d",
+      "recordsHash": "60019f52b417b6d2ec66b1e8ab3392ae42155d9d37c404a69f963c26c6c5c16d",
+      "sourceGame": {
+        "gameId": "32631",
+        "dbName": "sg_32631",
+        "campaignId": "sg_32631-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32631"
+      }
+    },
+    "32486": {
+      "receiptHash": "a5e75dd678e0270ecc2bec11992bd569553347e8af5fede159a658f3e8ecee9a",
+      "recordsHash": "99573a038455ef38d375c5c4da52d43319b6b892b7499a17eeee7a0addc0392c",
+      "sourceGame": {
+        "gameId": "32486",
+        "dbName": "sg_32486",
+        "campaignId": "sg_32486-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32486"
+      }
+    },
+    "32443": {
+      "receiptHash": "d673b0dd5086c075f6304fedb7d938c30184d2c468c5c60d438fe01f54941f4f",
+      "recordsHash": "68ca6a9cf30af2a417980eb64d5a81ba17b54b54d0df63cea7567aa59830f51b",
+      "sourceGame": {
+        "gameId": "32443",
+        "dbName": "sg_32443",
+        "campaignId": "sg_32443-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32443"
+      }
+    },
+    "32617": {
+      "receiptHash": "6c7944833117d26a4e9a50b96a0ba143f874c3412d809a03e6b735f0c2c0eac6",
+      "recordsHash": "44d1b33abed46c163cf29af8bce4e168e0e5762ad26d0992dbb3478c4d5e6759",
+      "sourceGame": {
+        "gameId": "32617",
+        "dbName": "sg_32617",
+        "campaignId": "sg_32617-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32617"
+      }
+    },
+    "32616": {
+      "receiptHash": "a39eb9e47067c7ac949444a3029d83748639254682ea191d14f968c74840d627",
+      "recordsHash": "8e3ca60713a8a427fd0578b55b01c117899670894ed0e9ff978067b8d60824b7",
+      "sourceGame": {
+        "gameId": "32616",
+        "dbName": "sg_32616",
+        "campaignId": "sg_32616-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32616"
+      }
+    }
+  }
+}

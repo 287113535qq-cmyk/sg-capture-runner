@@ -79,7 +79,7 @@
     "service/frozeninferno_base_fields.py": "2ffd55e2b5a0176af3415a870bdda263f8490b36c0497fb3770eb35220efc8f7",
     "config/ag-rolling-frozeninferno-base-contract.json": "497ad2f0d3bd337958d24eeb217aaf5a3ff47f68212df4a38c566e8b6bf053c6",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "cff407c449f1047ff24024591d4393cd4e5e67af7f4e669a909fa32b86c20988",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "89a526113fc7e5ec87287b8c5f3b796d96c29e4992dd698a7051bf0f605c2d1d"
+  "ruleHash": "897d76950f4d210f3994a8c1b046dffce8d956e2095f94f07d292b90ac3ac7b9"
 }
