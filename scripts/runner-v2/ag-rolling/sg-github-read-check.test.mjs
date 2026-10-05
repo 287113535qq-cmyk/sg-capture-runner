@@ -1,14 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {checkGithubReads,queries} from './sg-github-read-check.mjs';
-function response(q,status=200){return {ok:status===200,status,headers:new Headers({'x-ratelimit-limit':'1000','x-ratelimit-remaining':'700','x-ratelimit-resource':'core','authorization':'private'}),
- async text(){throw Error('BODY_READ_FORBIDDEN')},async json(){return q.kind==='list'?{total_count:0,workflow_runs:[]}:q.kind==='jobs'?{total_count:43,jobs:Array(43).fill({})}:{id:q.run,run_attempt:1,head_sha:q.commit,repository:{full_name:q.repository},status:'completed'};}};}
-test('fixed job-token diagnosis checks both repositories and all target identities once, exposing bounded evidence only',async()=>{
+function response(q,status=200){return {ok:status===200,status,headers:new Headers({etag:'"0123456789abcdef0123456789abcdef"','x-ratelimit-limit':'1000','x-ratelimit-remaining':'700','x-ratelimit-resource':'core','authorization':'private'}),
+ async text(){throw Error('BODY_READ_FORBIDDEN')},async json(){assert.equal(status,200);return q.kind==='list'?{total_count:0,workflow_runs:[]}:q.kind==='jobs'?{total_count:43,jobs:Array(43).fill({})}:{id:q.run,run_attempt:1,head_sha:q.commit,repository:{full_name:q.repository},status:'completed'};}};}
+test('fixed job-token diagnosis repeats both full fresh checks through the actual conditional admission reader, exposing bounded evidence only',async()=>{
  const seen=[];const result=await checkGithubReads({token:'secret',fetchRead:async(url,options)=>{
   assert.equal(options.method,'GET');assert.equal(options.redirect,'error');assert.equal(options.headers.Authorization,'Bearer secret');
-  const q=queries().find(q=>'https://api.github.com/'+q.path===url);assert(q);seen.push(q.path);return response(q);
- }});assert.equal(result.outcome,'complete');assert.equal(seen.length,20);assert.equal(new Set(seen).size,20);
- assert.equal(result.readAttempts,20);assert.equal(result.sourceRequests+result.nativeWrites+result.dispatches+result.retries,0);
+  const q=queries().find(q=>'https://api.github.com/'+q.path===url);assert(q);seen.push(q.path);return response(q,options.headers['If-None-Match']?304:200);
+ }});assert.equal(result.outcome,'complete');assert.equal(seen.length,40);assert.equal(new Set(seen).size,20);
+ assert.equal(result.readAttempts,40);assert.equal(result.completedFreshChecks,2);assert.equal(result.rows.filter(r=>r.httpStatus===304&&r.accepted&&r.conditionalHeaderSent).length,20);
+ assert.equal(result.sourceRequests+result.nativeWrites+result.dispatches+result.retries,0);
  const text=JSON.stringify(result);for(const value of ['secret','private','authorization','responseBody'])assert(!text.includes(value));
 });
 for(const status of [401,403,429])test(`HTTP ${status} records the real endpoint and quota, drains its wave and stops without body reads or retry`,async()=>{

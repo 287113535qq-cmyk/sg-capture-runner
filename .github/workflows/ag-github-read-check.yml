@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: '24'
-      - name: Read fixed admission interfaces once with the actual job token
+      - name: Validate two fresh admission reads with the actual job token
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/runner-v2/ag-rolling/sg-github-read-check.mjs
