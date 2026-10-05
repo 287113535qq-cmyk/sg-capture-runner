@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-base.mjs": "48c610aaf5520e650e0cc235187f9f3762b8b7229157e037bd9f43309f0313fa",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-source.mjs": "d269eb2b884baf7370ce90bdd1ac291845cc87097d0f8dd7e0407221a6a12a91",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-codec.mjs": "d61d55e0db045f6c0913f67e52fdec759ca259884ec7c2833040e2101792a19f",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "052e4055ca19697a7b0dcc04c7d0588a46adc70f6ba1654728e10dae90ee23e8",
     "service/frozeninferno_base_fields.py": "2ffd55e2b5a0176af3415a870bdda263f8490b36c0497fb3770eb35220efc8f7",
     "config/ag-rolling-frozeninferno-base-contract.json": "497ad2f0d3bd337958d24eeb217aaf5a3ff47f68212df4a38c566e8b6bf053c6",
-    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
-    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
-    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
-    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
+    "service/ag_rolling_plan.py": "83530599a79b871b4d1f446f80bf176eabeb71100dcc90b26a11acbe5a271442",
+    "scripts/runner-v2/record_fields.py": "83aa7ec2d041b53bfb659b97aa81f592ff49ce98605eb3a774c5a5fa95a11082",
+    "service/round_fields.py": "efb3c12c25109a3fc3996d8cc7db95f50cbab2425b8662bc0cea9e1893bc6ad1",
+    "service/game_rule_catalog.py": "5c658660ad0fa696f8ff7f1edff564163f6c64a259dd35190321881141ef01e8"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a58f6cd970608ec5ee9be4215e20d8ecff4d85cb7696f539384c02412d346e95"
+  "ruleHash": "4293ffc62bbb80fb177d394224b602dd5477ca0c2c915bfed398c86d0b89b45b"
 }
