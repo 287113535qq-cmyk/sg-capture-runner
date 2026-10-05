@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "giantsgold-base-ag-rolling-wms-v1",
+  "planHash": "f70fb45f6c1c483b670b193f471771d03eaed7e0012ceb310a8c75e1ca69cb0b",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32770",
+    "runtimeSlug": "giantsgold_prt",
+    "buy": 0,
+    "betRaw": 50,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20129
+  },
+  "roundRule": {
+    "family": "giantsgold-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32992与自己的WMS Header20129分别固定；Header→Stake total50/paylineCount20→AccountData/CurrencyMultiplier1；响应stake50/stakePerLine2/paylineCount20，不能改下注40；Header没有readyForEndGame。",
+    "continue": "GameResult严格ReelResults/BGInfo，ReelResults ordered ClumpPlaceholderInfo/PsudoSuperWildStack/两ReelSpin；numSpins2，spinIndex0/reelset0与spinIndex1/reelset1都是普通，freeN/bonusN/scatter0。75种自己的Clump/Wild联合形状只核验，83普通局wild非空，不能猜特殊或再加奖。",
+    "complete": "普通完整两spin之后唯一Header-only EndGame，响应Header/空AccountData/Balances，无GameResult且现金保持；每spin Payline和=spinWins，两spin和=Logic totalWin=BG累计；现金=start-50+奖。每spin各自去重线号，同线可在两个spin再次出现。",
+    "bounds": "完整file SHA核验；前1000全普通完整/2000历史请求，没有特殊或免费覆盖。actual codec→独立PY IPC→record/verify一致；2000自身source payload语义核验，原frontend constructor/XML serializer未执行。历史不抵目标；Init仅synthetic能力shape，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/giantsgold_base_fields.py",
+      "config/ag-rolling-giantsgold-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "PaylineWin / ReelSpin": "664个自己Payline，27种award/table/winVal tuple、15种5位位置文本，唯一位置0..59。分spin固定奖项及位置集合；max各4/12，Logic累计max13，线号0..19。每spin奖只加一次，新tuple/位置/索引/reelset停止。",
+      "ClumpPlaceholderInfo / PsudoSuperWildStack": "75种自己的四个small/big Odd/Even字段与reelsToTurnWild完整联合形状；wild非空也是普通，不能再加奖或按名字推断免费。未知联合或Feature/FS/Scatter/extra/MaxWin/recovery停止。",
+      "BGInfo / Stake": "BG totalWagerWin=bgWinnings=两spin奖；baseGameSpinsRemaining/isMaxWin0；Stake总下注50/属性paylineCount20，没有PaylineCount节点或WagerInfo。"
+    }
+  },
+  "typeMappings": {
+    "giantsgold-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "giantsgold-base-ag-rolling-wms-v1": "70f08070d44f146e677215017bb2d18f296b71dab2f13216151ec5ad200273d7"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + both own ordinary spin awards",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注50；两次ordinary spin之后唯一EndGame含空AccountData且现金保持；Clump/Wild只验联合形状，不再次加奖。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
+    "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs": "5d506c934b97d5980a94346a8d6b34c56a2ed0c43f0109d1eb747e291d201dc8",
+    "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs": "c9c52de067df4fc5fb24db818cadc776eefe0e32cd9c9ccaa23cb72797ae3d92",
+    "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs": "8e9a34f4ff0f33c79811cacfbeaf41496ef3feb14e6f2e8ed3057ed7c8c4c4db",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6a166b926ecfe5fcb0833498b94f8546ce83be0509cc4c5491b409c09f127bf5",
+    "service/giantsgold_base_fields.py": "bdff2b2c5bb25a8f6c13a94c3bb1e8fc8f23ca40fd47b0eca678fff3fe48aa26",
+    "config/ag-rolling-giantsgold-base-contract.json": "3abc93115680f7ee2cd8ca09d740956af23d0a7876225f1e48d33bb4194692ab",
+    "service/ag_rolling_plan.py": "bd1012928964a3c56af1cba438aad0a6da49076e4b96c350c91213656fc23031",
+    "scripts/runner-v2/record_fields.py": "5f4d8d8a1bf82f2d6e83a6afb0b39d0c3583f8ef2df658d710f804f5a2e487be",
+    "service/round_fields.py": "d8647673e15c7bd7afc33f450c38c95da62105fcef301972ba3426bdc9da173f",
+    "service/game_rule_catalog.py": "3ebc65f0b826fb0bc9e7a82909a9a5743aaf53857beb0877a391546c7aa48a64"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "54127383fa6ec93b27535eee227629b97315615456dae983c399e575790e33ee"
+  "ruleHash": "08f6db6ce6b301bd4c780f9ae846bec246543530fcb141b37dcd913a73ea0bf1"
 }

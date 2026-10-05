@@ -390,6 +390,9 @@ def derive(raw):
     from fudaole_base_fields import SOURCE as FUDAOLE_SOURCE, settled as fudaole_settled, mapping_hash as fudaole_mapping
     if raw.get('sourceKey') == FUDAOLE_SOURCE:
         return fudaole_settled(raw, fudaole_mapping())
+    from giantsgold_base_fields import SOURCE as GIANTSGOLD_SOURCE, settled as giantsgold_settled, mapping_hash as giantsgold_mapping
+    if raw.get('sourceKey') == GIANTSGOLD_SOURCE:
+        return giantsgold_settled(raw, giantsgold_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

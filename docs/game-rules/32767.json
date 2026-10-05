@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs": "b596d1d05af6b391e41c35e26aa38992c27cf83f8789ac527e35ace608cdd1a0",
     "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs": "29807fd4b744ef0e8f0766131f3126312eb72b4e4105931bdc40247f960aba95",
     "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs": "f27fcba5f6fbdf30145bd8187f57644b05494e8fde66864a792f5f75df9f765a",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "6a166b926ecfe5fcb0833498b94f8546ce83be0509cc4c5491b409c09f127bf5",
     "service/firequeen_base_fields.py": "40ce02086c446ec98ba163126414c3a5a423ff90c311faa7a81f7e3ff709207e",
     "config/ag-rolling-firequeen-base-contract.json": "0775d3117c97e54ee39dd252a1b1e9181909e78155f93be838d903a7c0db79d2",
-    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
-    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
-    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
-    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
+    "service/ag_rolling_plan.py": "bd1012928964a3c56af1cba438aad0a6da49076e4b96c350c91213656fc23031",
+    "scripts/runner-v2/record_fields.py": "5f4d8d8a1bf82f2d6e83a6afb0b39d0c3583f8ef2df658d710f804f5a2e487be",
+    "service/round_fields.py": "d8647673e15c7bd7afc33f450c38c95da62105fcef301972ba3426bdc9da173f",
+    "service/game_rule_catalog.py": "3ebc65f0b826fb0bc9e7a82909a9a5743aaf53857beb0877a391546c7aa48a64"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9ba911b18f7955760360cc8d7e83f7edd13b0912565ab1dd2e6aff7c934ef7ae"
+  "ruleHash": "f6cedd4a9395b2e82481a485c58054fc342efe33a6c653cc928396bd4e75434b"
 }

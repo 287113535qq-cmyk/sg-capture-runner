@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32770:
+        native.update({'family':'giantsgold-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32992与自己的WMS Header20129分别固定；Header→Stake total50/paylineCount20→AccountData/CurrencyMultiplier1；响应stake50/stakePerLine2/paylineCount20，不能改下注40；Header没有readyForEndGame。',
+            'continue':'GameResult严格ReelResults/BGInfo，ReelResults ordered ClumpPlaceholderInfo/PsudoSuperWildStack/两ReelSpin；numSpins2，spinIndex0/reelset0与spinIndex1/reelset1都是普通，freeN/bonusN/scatter0。75种自己的Clump/Wild联合形状只核验，83普通局wild非空，不能猜特殊或再加奖。',
+            'complete':'普通完整两spin之后唯一Header-only EndGame，响应Header/空AccountData/Balances，无GameResult且现金保持；每spin Payline和=spinWins，两spin和=Logic totalWin=BG累计；现金=start-50+奖。每spin各自去重线号，同线可在两个spin再次出现。',
+            'bounds':'完整file SHA核验；前1000全普通完整/2000历史请求，没有特殊或免费覆盖。actual codec→独立PY IPC→record/verify一致；2000自身source payload语义核验，原frontend constructor/XML serializer未执行。历史不抵目标；Init仅synthetic能力shape，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs','scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs','scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/giantsgold_base_fields.py','config/ag-rolling-giantsgold-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin / ReelSpin':'664个自己Payline，27种award/table/winVal tuple、15种5位位置文本，唯一位置0..59。分spin固定奖项及位置集合；max各4/12，Logic累计max13，线号0..19。每spin奖只加一次，新tuple/位置/索引/reelset停止。',
+                'ClumpPlaceholderInfo / PsudoSuperWildStack':'75种自己的四个small/big Odd/Even字段与reelsToTurnWild完整联合形状；wild非空也是普通，不能再加奖或按名字推断免费。未知联合或Feature/FS/Scatter/extra/MaxWin/recovery停止。',
+                'BGInfo / Stake':'BG totalWagerWin=bgWinnings=两spin奖；baseGameSpinsRemaining/isMaxWin0；Stake总下注50/属性paylineCount20，没有PaylineCount节点或WagerInfo。'}})
     elif game_id == 32769:
         native.update({'family':'fudaole-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32991与自己的WMS Header20135分别固定；Header→WagerInfo totalStake200/featureBet0→AccountData/CurrencyMultiplier1；响应totalStake200/waysCount243；Header没有readyForEndGame。',
@@ -501,7 +511,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -606,6 +616,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'giantsgold-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + both own ordinary spin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注50；两次ordinary spin之后唯一EndGame含空AccountData且现金保持；Clump/Wild只验联合形状，不再次加奖。'}
         if plan and plan.get('adapter') == 'fudaole-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own AnywayWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

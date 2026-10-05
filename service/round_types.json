@@ -4812,6 +4812,25 @@
         "fullBaseRounds": 992,
         "fullFreeRounds": 0
       }
+    },
+    "giantsgold-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "giantsgold-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 50,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32770,
+        "runtimeGameId": 32992,
+        "wmsGameId": 20129,
+        "ordinaryContractHash": "af9c7a53979982876cdb28c145eaf178cb27e7ef796542520a5dede77ff6a62f",
+        "historyFileSha256": "36c01e39cee7b97c7fa1e1c49902d2d56211fe92954e68619af9ee586d71af26",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
