@@ -1,0 +1,23 @@
+{
+  "schema": "sg-business-validation-recovery-policy-v1",
+  "games": {
+    "32442": {
+      "schema": "sg-business-validation-recovery-v1",
+      "gameId": "32442",
+      "previousRun": 37328221893,
+      "previousJob": 111824318758,
+      "previousCommit": "c403eb90ce2ff709c7a6abaca3ff3da1be3931d4",
+      "previousOwner": "37328221893:1:business",
+      "proofHash": "bc6c752e9c72c00a8b3261f16f4c597dd25ff7cc501ee8ed104c2a4ce990fb17",
+      "claimId": "game:32442:bc6c752e9c72c00a8b3261f16f4c597dd25ff7cc501ee8ed104c2a4ce990fb17",
+      "claimHash": "2e7a39f0d830dcfcf60140ffd5d03eb3079e45f0548b7f7ff3da3267a457567b",
+      "backupKey": "game:32442:bc6c752e9c72c00a8b3261f16f4c597dd25ff7cc501ee8ed104c2a4ce990fb17:backup:100",
+      "originalCount": 100,
+      "originalHash": "216b71953c6755f8d1345b39e2a8eb7bdf9b80541cf3a121f9ee2e7f29007083",
+      "endedReadbackObservedAt": 1791213381,
+      "sourceAllowance": 0,
+      "allowExistingWriteIntents": false,
+      "allowExistingCampaignRows": false
+    }
+  }
+}

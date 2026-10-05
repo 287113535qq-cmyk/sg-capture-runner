@@ -14,6 +14,8 @@ import {assertCompleteBinding,deliverPage,verifyLegacyPage,digest,missingDocumen
 import {taskKey} from './sg-task-store.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 import {requireBusinessLinux} from './sg-business-linux.mjs';
+import {businessInventory,readBusinessNativePages} from './sg-business-native-reader.mjs';
+import {requireValidationEndedActor,verifyValidationRecoveryReadback} from './sg-business-validation-recovery.mjs';
 const require=createRequire(import.meta.url);
 const {MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
 require('../../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json',transpileOnly:true});
@@ -26,6 +28,8 @@ const plans=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json')).plans;
 const policy=JSON.parse(fs.readFileSync('config/ag-business-delivery-policy.json'));
 assert(ids.every(id=>bindings[id]&&policy.completeProofs[id]),'SG_BUSINESS_UNREVIEWED_GAME');
 const linuxProof=await requireBusinessLinux({id:process.env.SG_BUSINESS_LINUX_RUN,commit:process.env.GITHUB_SHA,token:process.env.GH_TOKEN});
+const recoveryPolicy=JSON.parse(fs.readFileSync('config/ag-business-validation-recovery.json')).games;
+const endedRecovery={};for(const id of ids)if(recoveryPolicy[id])endedRecovery[id]=await requireValidationEndedActor(recoveryPolicy[id],process.env.GH_TOKEN);
 const client=new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000});
 const parser=analyzer();const owner=process.env.GITHUB_RUN_ID+':'+process.env.GITHUB_RUN_ATTEMPT+':business';
 const report={schema:'sg-business-delivery-run-v1',run:owner,commit:process.env.GITHUB_SHA,linuxProof,games:[],sourceRequests:0,captureMetadataWrites:0};
@@ -38,15 +42,8 @@ async function verifyNative(records,plan){
  }
  await parser.verifyPage(plan,[...records].sort((a,b)=>a.sequence-b.sequence));
 }
-export async function eachNativePage(source,b,plan,visit){
- const hash=createHash('sha256');let count=0;
- for(let worker=0;worker<20;worker++){
-  const cursor=source.find({trialId:b.trialId,shardId:worker},{sort:{_id:1},batchSize:100,maxTimeMS:30000,allowDiskUse:true});let page=[],n=0;
-  for await(const r of cursor){assert(r.sequence>worker*15000&&r.sequence<=(worker+1)*15000,'SG_BUSINESS_WORKER_SELECTION');page.push(r);n++;
-   if(page.length===100){await verifyNative(page,plan);for(const row of page)hash.update(stable(row)+'\n');await visit(page,worker,n);count+=page.length;page=[];}}
-  assert(page.length===0&&n===15000,'SG_BUSINESS_SELECTED_COUNT');
- }
- assert(count===300000);return {count,recordsHash:hash.digest('hex')};
+export async function eachNativePage(source,b,plan,inventory,visit){
+ return readBusinessNativePages({source,binding:b,inventory,verify:records=>verifyNative(records,plan),visit});
 }
 async function currentRtp(b){
  const sha=execFileSync('ssh',['-T','-i',process.env.SG_BUSINESS_SSH_KEY_FILE,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+process.env.SG_SSH_HOSTS_FILE,'-o','ConnectTimeout=10','sgdelivery@'+process.env.SG_SSH_HOST,String(b.gameId)],{encoding:'utf8',timeout:20000}).trim();
@@ -64,6 +61,7 @@ async function endedWorkers(staging,b){
 try{
  await client.connect();const staging=client.db('sg_capture_staging_v1'),audit=staging.collection('business_delivery_v1'),source=staging.collection('official_rounds');
  for(const id of ids){
+  let phase='configuration-and-source-proof';
   try{
    const b=bindings[id],plan=plans[id];assert(plan.adapter==='native-nextgen-v1','SG_BUSINESS_ADAPTER_REVIEW_REQUIRED');await currentRtp(b);
    const campaignId=`sg_${id}-${b.queueId}`,key='rolling-merge:'+digest([b.queueId,id,campaignId]);
@@ -71,9 +69,22 @@ try{
    const proof=assertCompleteBinding(state,receipt,b);assert(digest(proof)===policy.completeProofs[id].receiptHash&&proof.recordsHash===policy.completeProofs[id].recordsHash,'SG_BUSINESS_PROOF_CHANGED');
    await endedWorkers(staging,b);
    assert(await source.countDocuments({trialId:b.trialId},{maxTimeMS:15000})===300000,'SG_BUSINESS_SOURCE_COUNT');
-   const pool=client.db(b.database).collection('simulate');const claimId='game:'+id+':'+digest(proof);
+   phase='business-claim-and-ended-validation-review';
+   const pool=client.db(b.database).collection('simulate'),originalClaimId='game:'+id+':'+digest(proof);
+   let claimId=originalClaimId,recoveryReadback;
+   const previousClaim=await audit.findOne({_id:originalClaimId});
+   if(previousClaim){
+    const spec=recoveryPolicy[id];assert(spec&&endedRecovery[id]?.allJobsEnded,'SG_BUSINESS_EXISTING_ACTOR_REVIEW_REQUIRED');
+    const ownAudit=await audit.find({_id:{$gte:originalClaimId,$lt:originalClaimId+'\uffff'}},{projection:{_id:1},hint:'_id_',maxTimeMS:15000}).limit(4).toArray();
+    const backup=await audit.findOne({_id:spec.backupKey});
+    const originals=(await pool.find({'data.captureCampaignId':{$ne:campaignId}},{sort:{_id:1},maxTimeMS:15000}).limit(101).toArray()).map(jsonDoc);
+    const campaignCount=await pool.countDocuments({'data.captureCampaignId':campaignId},{maxTimeMS:15000});
+    recoveryReadback=verifyValidationRecoveryReadback({spec,claim:previousClaim,backup,auditKeys:ownAudit.map(d=>d._id),originals,campaignCount,proofHash:digest(proof)});
+    claimId=originalClaimId+':recovery:'+owner;
+   }else assert(!recoveryPolicy[id],'SG_BUSINESS_RECOVERY_CLAIM_MISSING');
    assert(!await audit.findOne({_id:claimId}),'SG_BUSINESS_EXISTING_ACTOR_REVIEW_REQUIRED');
-   await audit.insertOne({_id:claimId,status:'validating',owner,proofHash:digest(proof),at:new Date().toISOString()});
+   await audit.insertOne({_id:claimId,status:'validating',owner,proofHash:digest(proof),at:new Date().toISOString(),...(recoveryReadback?{validationRecovery:recoveryReadback,previousClaimPreserved:true}:{} )});
+   phase='original-full-validation-and-backup';
    const baselineQuery={'data.captureCampaignId':{$ne:campaignId}},baselineCount=await pool.countDocuments(baselineQuery,{maxTimeMS:15000});
    const baseHash=createHash('sha256');let baseline=0,tagChanges=[];
    const cursor=pool.find(baselineQuery,{sort:{_id:1},batchSize:100,maxTimeMS:30000});let page=[];
@@ -84,11 +95,13 @@ try{
    }
    for await(const row of cursor){assert(row._id instanceof ObjectId,'SG_BUSINESS_LEGACY_ID');page.push(jsonDoc(row));baseline++;if(page.length===100){await baselinePage(page);page=[];}}
    if(page.length)await baselinePage(page);assert(baseline===baselineCount);const baselineHash=baseHash.digest('hex');
-   const verified=await eachNativePage(source,b,plan,async()=>{});assert(verified.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
+   phase='indexed-source-inventory';const inventory=await businessInventory(source,b);
+   phase='source-full-independent-validation';
+   const verified=await eachNativePage(source,b,plan,inventory,async()=>{});assert(verified.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
    await audit.insertOne({_id:claimId+':validated',owner,baselineCount,baselineHash,sourceCount:verified.count,sourceHash:verified.recordsHash,originalDataFullyValidated:true,immutable:true});
    await currentRtp(b);
    await endedWorkers(staging,b);
-   for(const d of tagChanges){
+   phase='original-rtp-cas-and-readback';for(const d of tagChanges){
     const actual=jsonDoc(await pool.findOne({_id:new ObjectId(d._id)}));assert(stable(actual)===stable(d),'SG_BUSINESS_BASELINE_CHANGED');
     await audit.insertOne({_id:claimId+':rtp-intent:'+d._id,owner,before:d,afterRtp:b.rtp,immutable:true});
     const res=await pool.updateOne({_id:new ObjectId(d._id),rtp:d.rtp},{$set:{rtp:b.rtp}});assert(res.matchedCount===1&&res.modifiedCount===1,'SG_BUSINESS_RTP_CAS');
@@ -98,11 +111,12 @@ try{
    let inserted=0;
    const sink={plan,read:async hex=>(await pool.find({_id:{$in:hex.map(x=>new ObjectId(x))}},{maxTimeMS:15000}).toArray()).map(jsonDoc),insert:async docs=>{await pool.insertMany(docs.map(dbDoc),{ordered:true});}};
    const batchAudit={begin:async(id,v)=>audit.insertOne({_id:claimId+':intent:'+id,owner,...v,immutable:true}),end:async(id,v)=>audit.insertOne({_id:claimId+':ack:'+id,owner,...v,immutable:true})};
-   const written=await eachNativePage(source,b,plan,async(records,worker,n)=>{const r=await deliverPage({records,binding:b,campaignId,parser,sink,audit:batchAudit,batchId:worker+':'+n});inserted+=r.inserted;if(n===15000)console.log(JSON.stringify({gameId:id,verifiedAndWritten:(worker+1)*15000,sourceRequests:0}));});
+   phase='business-page-intent-write-and-readback';
+   const written=await eachNativePage(source,b,plan,inventory,async(records,worker,n)=>{const r=await deliverPage({records,binding:b,campaignId,parser,sink,audit:batchAudit,batchId:worker+':'+n});inserted+=r.inserted;if(n===15000)console.log(JSON.stringify({gameId:id,verifiedAndWritten:(worker+1)*15000,sourceRequests:0}));});
    assert(written.recordsHash===proof.recordsHash);
    // Independent full reread in the same AG selection order precedes completion.
-   let targetCount=0;const targetHash=createHash('sha256');
-   await eachNativePage(source,b,plan,async records=>{const expected=records.map(r=>businessDocument(r,b,campaignId));const saved=await sink.read(expected.map(d=>d._id));assert(missingDocuments(expected,saved).length===0);const by=new Map(saved.map(d=>[d._id,d]));const ordered=expected.map(d=>by.get(d._id));verifyBusinessPage(records,ordered,b,campaignId);for(const d of ordered)targetHash.update(stable(d)+'\n');targetCount+=ordered.length;});
+   phase='full-source-target-and-original-readback';let targetCount=0;const targetHash=createHash('sha256');
+   await eachNativePage(source,b,plan,inventory,async records=>{const expected=records.map(r=>businessDocument(r,b,campaignId));const saved=await sink.read(expected.map(d=>d._id));assert(missingDocuments(expected,saved).length===0);const by=new Map(saved.map(d=>[d._id,d]));const ordered=expected.map(d=>by.get(d._id));verifyBusinessPage(records,ordered,b,campaignId);for(const d of ordered)targetHash.update(stable(d)+'\n');targetCount+=ordered.length;});
    const afterHash=createHash('sha256');let afterCount=0;
    for await(const row of pool.find(baselineQuery,{sort:{_id:1},batchSize:100,maxTimeMS:30000})){afterHash.update(stable(jsonDoc(row))+'\n');afterCount++;}
    assert(afterCount===baselineCount&&afterHash.digest('hex')===baselineHash&&targetCount===300000,'SG_BUSINESS_BASELINE_FULL_READBACK');
@@ -110,7 +124,7 @@ try{
    const actualReceipt=await staging.collection('capture_journal_v2').findOne({_id:receipt._id});assert(stable(actualReceipt)===stable(receipt),'SG_BUSINESS_IMMUTABLE_SOURCE_CHANGED');
    const done={gameId:id,database:b.database,businessCount:300000+baselineCount,campaignCount:300000,existingCount:baselineCount,retagged:tagChanges.length,inserted,sourceProofHash:digest(proof),sourceRecordsHash:proof.recordsHash,businessRecordsHash:targetHash.digest('hex'),baselineHash,fullReadback:true,independentlyVerified:true,sourceRequests:0};
    await audit.insertOne({_id:claimId+':complete',owner,value:done,immutable:true});assert(stable((await audit.findOne({_id:claimId+':complete'})).value)===stable(done));report.games.push({...done,status:'complete'});console.log(JSON.stringify({...done,status:'complete'}));
-  }catch(e){report.games.push({gameId:id,status:'stopped-review-required',reason:/^[A-Z_]+$/.test(e.message??'')?e.message:'BUSINESS_IO_OR_VALIDATION_STOP_NO_RETRY'});console.log(JSON.stringify(report.games.at(-1)));}
+  }catch(e){report.games.push({gameId:id,status:'stopped-review-required',phase,reason:/^[A-Z_]+$/.test(e.message??'')?e.message:'BUSINESS_IO_OR_VALIDATION_STOP_NO_RETRY',...(Number.isInteger(e.code)?{databaseErrorCode:e.code}:{})});console.log(JSON.stringify(report.games.at(-1)));}
  }
 }finally{parser.close();await client.close();fs.mkdirSync('business-evidence',{recursive:true});fs.writeFileSync('business-evidence/result.json',JSON.stringify(report,null,2)+'\n');}
 assert(report.games.every(g=>g.status==='complete'),'SG_BUSINESS_DELIVERY_INCOMPLETE_REVIEW_REQUIRED');
