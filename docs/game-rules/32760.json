@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
-    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
-    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
-    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
+    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
+    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
+    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
+    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0a1ff81576db6b67c4d96a59a77a3b1ee8057cee537a5c3de71b92351c53b7ad"
+  "ruleHash": "03e41dc020cdac5fff9ec736840eb03938918bd08e2f4689c5e1f2e29cd72bb4"
 }

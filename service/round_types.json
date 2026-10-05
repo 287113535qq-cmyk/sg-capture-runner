@@ -4793,6 +4793,25 @@
         "fullBaseRounds": 677,
         "fullFreeRounds": 0
       }
+    },
+    "fudaole-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "fudaole-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32769,
+        "runtimeGameId": 32991,
+        "wmsGameId": 20135,
+        "ordinaryContractHash": "889dfa755444e51012b03a9eb62ab5fe739d7016e4fb8bb4305f9fd45828f93f",
+        "historyFileSha256": "0766c27bdebc943823bcdb541d2778ac84f6adbe566aad397e9b501ea71d3dcd",
+        "fullBaseRounds": 992,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

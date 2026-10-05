@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "4253a1006405c9477c76d274a76da801be8230c257840c2f68b0860a3e8dff16",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-source.mjs": "249d96c10df5dc338ab39e83d94bc4ce8db301077c4cc3bbe2600b227cd80641",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-codec.mjs": "23bcd5780922341db22f8d14703438c0a0065d5a950c809413572f1d3dd2d5c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "35e19640c5b485403f174219ae532d68dc3e13ff6b6f34e48b3533537224fee9",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "30e031b36910b3ad0027d9eadf9c26f492ef43eacf73ded8a0ba81c60ca434c6",
     "service/dragonspin_base_fields.py": "51d3cb2955a5e4b4e99c46e9928050f3ab2765e499d927b935687a0dad97ddb2",
     "config/ag-rolling-dragonspin-base-contract.json": "d2a9a2b9d51dabe6abd7c1587051929dc86e2c854c80e0c34f9f0f626f35dce7",
-    "service/ag_rolling_plan.py": "c496cf12e3c579162463d31836eb018659899ec5163059504a2d6b1a2b2805ea",
-    "scripts/runner-v2/record_fields.py": "cd4d254b2040b5fa141602bd68f50aa143b4157900af03b9697fad819ca795ba",
-    "service/round_fields.py": "cc58437a220c606a77c8c8b27eedcdbb422b025c8160ac85908c857dcf7b4696",
-    "service/game_rule_catalog.py": "fc7cfe16aa3c71ec95a375cc69cc73af33b16a2c528e9414c1057543e9d68cdd"
+    "service/ag_rolling_plan.py": "f94ab28dd65979bf08fa0fe1da8e5727154bfc23ae143594cd4ed92ae9e2547b",
+    "scripts/runner-v2/record_fields.py": "b4bec9754c7652372110dcadc737b8caa58612ee1a57f57c8c1a107477248157",
+    "service/round_fields.py": "18ce5383ef9cd6e4c47c659d403cf90deba1bbc28da94118bcdad94811652907",
+    "service/game_rule_catalog.py": "f3df557bc2858d9552b4d7e9e34d957f12535cd4b6ac74e814be17f6a4880dff"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "885a7b68fce020096d3b8854b935f98105016996a36d070eb3076f86ff72a9ec"
+  "ruleHash": "0fcf90d876d8235f386be71cfbc342f0d6c3e324cf6cef98f34b5cdc4a5fbdb2"
 }

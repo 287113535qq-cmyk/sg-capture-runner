@@ -128,7 +128,7 @@
 | [32766](32766.json) | Eureka Blast Superlock | implemented-subset | 0 |
 | [32767](32767.json) | Fire Queen | implemented-subset | 0 |
 | [32768](32768.json) | Frozen Inferno | implemented-subset | 0 |
-| [32769](32769.json) | Fu Dao Le | not-documented | 待确认 |
+| [32769](32769.json) | Fu Dao Le | implemented-subset | 0 |
 | [32770](32770.json) | Giant's Gold | not-documented | 待确认 |
 | [32771](32771.json) | Golden Chief | not-documented | 待确认 |
 | [32772](32772.json) | Heidi's Bier Haus | not-documented | 待确认 |
