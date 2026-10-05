@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "4253a1006405c9477c76d274a76da801be8230c257840c2f68b0860a3e8dff16",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-source.mjs": "249d96c10df5dc338ab39e83d94bc4ce8db301077c4cc3bbe2600b227cd80641",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-codec.mjs": "23bcd5780922341db22f8d14703438c0a0065d5a950c809413572f1d3dd2d5c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/dragonspin_base_fields.py": "51d3cb2955a5e4b4e99c46e9928050f3ab2765e499d927b935687a0dad97ddb2",
     "config/ag-rolling-dragonspin-base-contract.json": "d2a9a2b9d51dabe6abd7c1587051929dc86e2c854c80e0c34f9f0f626f35dce7",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "9b181ba539f447bd41e6c66b744d47b849259c7e1f0afd99bdb65efe1c81ca72"
+  "ruleHash": "531b11801f40367100549c8bdd4490c275491179a5892ebbb53e626efa202a20"
 }

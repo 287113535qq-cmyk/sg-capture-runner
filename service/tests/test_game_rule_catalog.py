@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_heidibier_card_binds_own_myst_wild_rd_joint_and_stops_free(self):
+        card=self.cards[32772];rule=card['roundRule']
+        self.assertEqual(rule['family'],'heidibier-base-wms-v1');self.assertEqual(card['runtimeGameId'],32994);self.assertEqual(card['parameters']['wmsGameId'],20157)
+        self.assertIn('986',rule['bounds']);self.assertIn('1972历史请求',rule['bounds']);self.assertIn('14个特殊',rule['bounds'])
+        self.assertIn('1893',rule['fields']['PaylineWin']);self.assertIn('180种',rule['fields']['PaylineWin']);self.assertIn('129种',rule['fields']['MystInfo / WildInfo / BonusReplacementInfo'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total75',rule['start']);self.assertEqual(card['typeMappings']['heidibier-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_goldenchief_card_binds_own_line_wild_upgrade_joint_and_stops_wheel(self):
         card=self.cards[32771];rule=card['roundRule']
         self.assertEqual(rule['family'],'goldenchief-base-wms-v1');self.assertEqual(card['runtimeGameId'],32993);self.assertEqual(card['parameters']['wmsGameId'],20125)

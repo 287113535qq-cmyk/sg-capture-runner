@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-base.mjs": "48c610aaf5520e650e0cc235187f9f3762b8b7229157e037bd9f43309f0313fa",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-source.mjs": "d269eb2b884baf7370ce90bdd1ac291845cc87097d0f8dd7e0407221a6a12a91",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-codec.mjs": "d61d55e0db045f6c0913f67e52fdec759ca259884ec7c2833040e2101792a19f",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/frozeninferno_base_fields.py": "2ffd55e2b5a0176af3415a870bdda263f8490b36c0497fb3770eb35220efc8f7",
     "config/ag-rolling-frozeninferno-base-contract.json": "497ad2f0d3bd337958d24eeb217aaf5a3ff47f68212df4a38c566e8b6bf053c6",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b8a19caf15c3097b8052c92d4e063d7b48f33e95ea1c6c3805bed4acf6691bdc"
+  "ruleHash": "a94ba2b13545d23569b5f94a9000353c442d0b92839900f9caf3bf006657909e"
 }

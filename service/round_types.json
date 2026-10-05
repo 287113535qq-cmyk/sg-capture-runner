@@ -4850,6 +4850,25 @@
         "fullBaseRounds": 987,
         "fullFreeRounds": 0
       }
+    },
+    "heidibier-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "heidibier-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 75,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32772,
+        "runtimeGameId": 32994,
+        "wmsGameId": 20157,
+        "ordinaryContractHash": "0df6238f53bfc2bf7e567bbed695268070c3bc7a8d1a0737909fec802f6aedef",
+        "historyFileSha256": "999fc5100a124ee11f6f86712f8a36b88caae58d2d48ef4aced4fa2c19ff7253",
+        "fullBaseRounds": 986,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

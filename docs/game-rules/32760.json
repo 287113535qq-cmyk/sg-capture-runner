@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fd0a608a6b09df9d785b4d0817f939395aa979d2f37098e7f9ed0eaf770f74f7"
+  "ruleHash": "1e36a52f165566716a122de89e58a2939c960e9cb7eaa62566a81cc5f6c5ecf9"
 }
