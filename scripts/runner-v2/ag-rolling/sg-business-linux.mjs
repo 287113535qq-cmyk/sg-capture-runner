@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-export const BUSINESS_BRANCH='sg-business-delivery-20261005';
+export const BUSINESS_BRANCH='sg-business-native-32731-20261005';
 export const BUSINESS_LINUX_REPOSITORY='287113535qq-cmyk/sg-capture-runner';
 export function verifyBusinessLinuxEvidence({run,jobs,result},id,commit){
  assert(/^\d+$/.test(String(id))&&/^[a-f0-9]{40}$/.test(commit),'SG_BUSINESS_LINUX_INPUT');

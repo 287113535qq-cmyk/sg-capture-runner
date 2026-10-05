@@ -1,0 +1,65 @@
+{
+  "schema": "sg-business-additional-own-full-native-admission-v1",
+  "parent": "8fc2d751c6a567f3c61886e6bfc150296ec22f6a",
+  "businessBranch": "sg-business-native-32731-20261005",
+  "sourceAllowance": 0,
+  "captureWrites": 0,
+  "sourceTargetUnchanged": 300000,
+  "preserveAllExistingIds": true,
+  "previousCompleteProofGames": 21,
+  "newCompleteProofGames": 22,
+  "additionalGames": [
+    "32731"
+  ],
+  "games": [
+    {
+      "gameId": "32731",
+      "database": "sg_polterheist96",
+      "trialId": "sg_ag_r1_20261004_32731",
+      "runtimeGameId": 33131,
+      "fullNativeDocumentsRead": 300000,
+      "originalRowsFullyValidated": 150,
+      "originalRecordsHash": "d6fae41a35ffd2052c1773d8ed7ecdea814fc74e9765c4297056a456eac61dbd",
+      "sourceRecordsHash": "7b60e04a899e2a422de54341a13027e467406c95d0f383a14dea52b784b21346",
+      "immutableReceiptHash": "9e047aafc7e78e8ff61116b345e40b2f09b5568c4cb3fa0b52f40506752c307b",
+      "typeCounts": {
+        "none": 299147,
+        "freeGame": 853
+      },
+      "fullWorkerCounts": [
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000,
+        15000
+      ],
+      "inMemoryBusinessDocumentsIndependentlyVerified": 300000,
+      "fullAuditProofSha256": "e249147cdb4ff6bfc5607285ac64b5652790879c814199dcecd7346fe30d2328",
+      "actualClosedAuditReviewSha256": "87050d78535d21b1df65becfc44448495b8ab8a62fdb8764fdbd6819150a0072",
+      "originalFullValidationPassed": true,
+      "ownImmutableStateAndReceiptUnchanged": true
+    }
+  ],
+  "bindingsUnchangedSha256": "9ade7b86d5245303c275b448ace3bd72e1fc2e25347efb8fb4fb4c760e12247d",
+  "existingScopedBusinessCollections": 81,
+  "newBusinessScopesRequired": 0,
+  "newMongoOrSshAccountProvisionRequired": false,
+  "sourceNamespaceOrQuotaChanged": false,
+  "actualSimulateDeliveryComplete": false,
+  "limitation": "Own closed full source/type/in-memory and original validation support this separate one-game version. Actual delivery requires its own exact full Linux and the ended actor, immutable complete and complete target/original readbacks."
+}

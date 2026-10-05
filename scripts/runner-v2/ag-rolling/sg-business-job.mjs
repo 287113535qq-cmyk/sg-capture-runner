@@ -14,15 +14,16 @@ import {assertCompleteBinding,deliverPage,verifyLegacyPage,digest,missingDocumen
 import {taskKey} from './sg-task-store.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 import {requireBusinessLinux} from './sg-business-linux.mjs';
+import {assertPolterheistBusinessGameIds} from './sg-business-polterheist-scope.mjs';
 import {businessInventory,readBusinessNativePages} from './sg-business-native-reader.mjs';
 import {requireValidationEndedActor,verifyValidationRecoveryReadback} from './sg-business-validation-recovery.mjs';
 const require=createRequire(import.meta.url);
 const {MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
 require('../../../collector/node_modules/ts-node').register({project:'collector/tsconfig.json',transpileOnly:true});
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'&&process.env.RUNNER_ENVIRONMENT==='github-hosted'
- &&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&process.env.GITHUB_REF==='refs/heads/sg-business-delivery-20261005','SG_BUSINESS_REVIEWED_ACTOR');
+ &&process.env.GITHUB_REPOSITORY==='zyzuoyang/sg-capture-runner'&&process.env.GITHUB_REF==='refs/heads/sg-business-native-32731-20261005','SG_BUSINESS_REVIEWED_ACTOR');
 assert(process.env.SG_BUSINESS_MONGO_PASSWORD&&process.env.SG_BUSINESS_GAME_IDS,'SG_BUSINESS_CONFIGURATION');
-const ids=process.env.SG_BUSINESS_GAME_IDS.split(',');assert(ids.length<=21&&new Set(ids).size===ids.length&&ids.every(x=>/^32\d{3}$/.test(x)),'SG_BUSINESS_GAMES');
+const ids=process.env.SG_BUSINESS_GAME_IDS.split(',');assertPolterheistBusinessGameIds(ids);
 const bindings=JSON.parse(fs.readFileSync('config/ag-business-bindings.json')).bindings;
 const plans=JSON.parse(fs.readFileSync('config/ag-rolling-plans.json')).plans;
 const policy=JSON.parse(fs.readFileSync('config/ag-business-delivery-policy.json'));

@@ -235,6 +235,17 @@
         "baseline": 0,
         "mongoUri": "sg-native://primary/sg_32616"
       }
+    },
+    "32731": {
+      "receiptHash": "9e047aafc7e78e8ff61116b345e40b2f09b5568c4cb3fa0b52f40506752c307b",
+      "recordsHash": "7b60e04a899e2a422de54341a13027e467406c95d0f383a14dea52b784b21346",
+      "sourceGame": {
+        "gameId": "32731",
+        "dbName": "sg_32731",
+        "campaignId": "sg_32731-rolling-20261003225355-f0d07c84",
+        "baseline": 0,
+        "mongoUri": "sg-native://primary/sg_32731"
+      }
     }
   }
 }
