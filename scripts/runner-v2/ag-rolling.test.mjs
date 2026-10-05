@@ -44,3 +44,5 @@ import './ag-rolling/sg-jekyll-wiring.test.mjs';
 import './ag-rolling/sg-dragonspin-wiring.test.mjs';
 
 import './ag-rolling/sg-deepseamagic-wiring.test.mjs';
+
+import './ag-rolling/sg-eurekablast-wiring.test.mjs';

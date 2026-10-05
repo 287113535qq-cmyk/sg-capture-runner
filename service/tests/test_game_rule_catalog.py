@@ -164,6 +164,15 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_eurekablast_card_binds_own_reelset0or1_and_stops_dynamite(self):
+        card=self.cards[32766];rule=card['roundRule']
+        self.assertEqual(rule['family'],'eurekablast-base-wms-v1')
+        self.assertEqual(card['runtimeGameId'],32988);self.assertEqual(card['parameters']['wmsGameId'],20400)
+        self.assertIn('975',rule['bounds']);self.assertIn('1950历史请求',rule['bounds']);self.assertIn('25个Dynamite/FS',rule['bounds'])
+        self.assertIn('859',rule['fields']['PaylineWin']);self.assertIn('77种',rule['fields']['PaylineWin'])
+        self.assertIn('22个Dynamite',rule['fields']['DynamiteFeature / FSInfo']);self.assertIn('空AccountData',rule['complete']);self.assertIn('reelset1不是免费',rule['continue'])
+        self.assertEqual(card['typeMappings']['eurekablast-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_deepseamagic_card_binds_own_optional_bonus_values_and_ready(self):
         card=self.cards[32765];rule=card['roundRule']
         self.assertEqual(rule['family'],'deepseamagic-base-wms-v1')

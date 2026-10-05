@@ -4736,6 +4736,25 @@
         "fullBaseRounds": 991,
         "fullFreeRounds": 0
       }
+    },
+    "eurekablast-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "eurekablast-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 50,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32766,
+        "runtimeGameId": 32988,
+        "wmsGameId": 20400,
+        "ordinaryContractHash": "8b0659fbf0f4667a30825933e3d32b6ed7236aeb4200c971a8776ff93689c312",
+        "historyFileSha256": "1e8f86433bb359a6faa9988ca38696e3add4dd12da6705c4f3081571df54ec05",
+        "fullBaseRounds": 975,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

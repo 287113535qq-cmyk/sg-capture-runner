@@ -153,12 +153,12 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "b52d1a79b764ae43d49a64a65e6c63500124da2dc1303c3f2030b0874de5a636",
-    "service/round_fields.py": "eeeb3b49f2d04f6f1efe50fc8be035b23b13c1c2ea16613b898d63e3f4217f8e",
-    "scripts/runner-v2/record_fields.py": "f15a4fc8f84a0fae42b5bd041cafe7a5e43ddaefcccd1b3794bc33138d5c0a56",
+    "service/round_fields.py": "bc0165292ed2b0813cc87d159fe231833c710f5beb772d1b413782065d7721f6",
+    "scripts/runner-v2/record_fields.py": "2028a93cdde242c6903c4a071c69349907520ed73ba7d6eb6030cdb269738b2b",
     "service/quarterback_fields.py": "9d13b6cb745854d7795fb83c15dc28951c14a50808d82668e6317db71ed22d54",
     "scripts/trial/quarterback-protocol.mjs": "6f31a4fc9510013f97d114060905586079c87cc5f972d6aba7ef3d488676cc64",
     "collector/sg.quarterback.ts": "d0adf1af448549c586e1692b83ad93ca2050086ced42ef4b0cd802cdfcfb181f",
-    "service/game_rule_catalog.py": "9916dd4ecca6e6bb87908e35de509aa812c2b8064e116aff9fbee14f4a94a52a"
+    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
   },
   "reviewDocuments": [
     "docs/quarterback-observation-20260929.md",
@@ -218,5 +218,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "100c216e5b1c2b188b88918b4096ceaad42c656e9977504a835a7a457d18738c"
+  "ruleHash": "2c7ab0fc2b61e8b456ebd9ccc18f0d82998fd3f642178c16834aa7cd1bb45f3c"
 }

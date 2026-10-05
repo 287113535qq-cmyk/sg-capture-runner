@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "eurekablast-base-ag-rolling-wms-v1",
+  "planHash": "7b17abe5f16e7aa640338a56ccdcae92e0df0b53203b3f98b985baffd08da797",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32766",
+    "runtimeSlug": "eurekareelsblastsuperlock",
+    "buy": 0,
+    "betRaw": 50,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20400
+  },
+  "roundRule": {
+    "family": "eurekablast-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32988与自己的WMS Header20400分别固定；AccountData/CurrencyMultiplier1→Header→Stake.total50，无PaylineCount/isBigBet；响应stake50/stakePerLine1/paylineCount50。",
+    "continue": "普通spin0/reelset0或1/5stops、最多23个唯一Payline线0..49，winCountSC0/freeSpinN/bonusAwardedN、自己的readyY；GameResult严格ReelResults/BGInfo。DynamiteFeature/FSInfo/Scatter/未知形状立即停止；reelset1不是免费。",
+    "complete": "普通readyY后唯一Header-only EndGame，自己的readyN/空AccountData/Balances，无GameResult且现金保持。Payline和=spinWins=Logic totalWin=BG累计；现金=start-50+奖。",
+    "bounds": "自身完整file SHA核验，前1000中975普通完整/1950历史请求；25个Dynamite/FS首响应拒绝。actual codec→独立PY IPC→record/verify一致；1975自身source payload语义核验，不声称原frontend constructor/XML serializer执行。历史不抵目标；Init仅synthetic能力形状，realInit/native scope/livecanary/当前队列准入0；unknown一次封存/no retry。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/eurekablast_base_fields.py",
+      "config/ag-rolling-eurekablast-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "PaylineWin": "859个自身普通Payline，27种award/table/winVal tuple、77种3..5位置文本、唯一位置0..14；最多23线，index0..49唯一。新tuple/位置停止。",
+      "DynamiteFeature / FSInfo": "22个Dynamite首triggered1/ended0与3个免费首total12或15/counter0均未适配。旧Dynamite early-End不是terminal；普通adapter没有续帧许可或信用。",
+      "BGInfo / Stake": "下注50；BG totalWagerWin/bgWinnings=Payline奖和、baseGameSpinsRemaining0/isMaxWin0；没有isBigBet字段，foreign字段拒绝。"
+    }
+  },
+  "typeMappings": {
+    "eurekablast-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "eurekablast-base-ag-rolling-wms-v1": "07ad158852a3127fe6d0e4a704ad4733eff1b6729df8333c6b354e1db9c662aa"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + own Payline sum",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注50；自己的readyY→readyN唯一EndGame/空AccountData，Payline奖和与现金一致；普通reelset0或1、Dynamite/FS停止。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "9916dd4ecca6e6bb87908e35de509aa812c2b8064e116aff9fbee14f4a94a52a"
+    "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs": "b67ca396c902cdf3c8fe73aaf790f4819174f1cd8870ffc668498fa05840f05b",
+    "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs": "3eecf9b0ad9a3ec85fed735d724e64350b7df6f9a75ea224cecb6ed02875aba1",
+    "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs": "b210e9200d6e2192e94825d94418d09a531683a52a3fb5bbd1e9386d46dbf5dc",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "2c7e55ac08e53142ebe73ccb7d9b0a322dfda6d5338c09c24213a22f67e590bd",
+    "service/eurekablast_base_fields.py": "b30cbf8eafb0e9d8263eddd6894ef979915acf2ba5e2dd966673a977a44e7355",
+    "config/ag-rolling-eurekablast-base-contract.json": "6146afe2625d5cfe623b693744a23a53ed78e9b3e92913fb8315087ff73616b2",
+    "service/ag_rolling_plan.py": "1b04e1d52306288b54825b9c50fe183eb607fa4424a0f80a6e197916e04ab07f",
+    "scripts/runner-v2/record_fields.py": "2028a93cdde242c6903c4a071c69349907520ed73ba7d6eb6030cdb269738b2b",
+    "service/round_fields.py": "bc0165292ed2b0813cc87d159fe231833c710f5beb772d1b413782065d7721f6",
+    "service/game_rule_catalog.py": "e7c0e9f0560a53156c01fa6eb6bf60de3f2faf88c7aec7a25abe827e4291267d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "cad97c7772e34ee252a994cdcdf15064a13fc5107c4da3121139e827f63dc851"
+  "ruleHash": "961eb44808c478ba45afb21bd8cfc9c6edaebf219487b5f36c5fbf33ff87d7aa"
 }
