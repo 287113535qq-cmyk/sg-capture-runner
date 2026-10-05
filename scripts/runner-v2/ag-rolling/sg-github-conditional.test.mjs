@@ -15,6 +15,14 @@ test('callers cannot mutate the cached source representation or later 304 result
  let n=0;const read=authenticatedRead('private',{fetchRead:async()=>response(++n===1?200:304,{workflow_runs:[{id:1}]})});
  const first=await read(path);first.workflow_runs[0].id=999;const second=await read(path);assert.equal(second.workflow_runs[0].id,1);second.workflow_runs.length=0;assert.equal((await read(path)).workflow_runs.length,1);
 });
+test('GitHub 200 weak tags and 304 strong tags compare only their exact opaque value under RFC 9110',async()=>{
+ for(const [initial,later] of [['W/'+etag,etag],[etag,'W/'+etag]]){
+  let n=0;const read=authenticatedRead('private',{fetchRead:async()=>response(++n===1?200:304,{owner:'same'},n===1?initial:later)});
+  assert.deepEqual(await read(path),{owner:'same'});assert.deepEqual(await read(path),{owner:'same'});assert.equal(n,2);
+ }
+ let n=0;const read=authenticatedRead('private',{fetchRead:async()=>response(++n===1?200:304,{},n===1?'W/'+etag:'W/'+other)});await read(path);
+ await assert.rejects(read(path),/GITHUB_RUN_READ_FAILED/);assert.equal(n,2);
+});
 test('a changed 200 response replaces the ETag and identity; no old state is treated as current',async()=>{
  const calls=[];const read=authenticatedRead('private',{fetchRead:async(url,o)=>{calls.push(o.headers);return response(calls.length===3?304:200,{owner:calls.length===1?'old':'new'},calls.length===1?etag:other);}});
  assert.equal((await read(path)).owner,'old');assert.equal((await read(path)).owner,'new');assert.equal((await read(path)).owner,'new');assert.equal(calls[2]['If-None-Match'],other);

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {withGithubHttpDiagnostic} from './github-read-diagnostic.mjs';
 const tag=value=>typeof value==='string'&&/^(?:W\/)?"[a-fA-F0-9]{16,128}"$/.test(value);
+const opaque=value=>value.replace(/^W\//,'');
 const eligible=path=>/^repos\/(zyzuoyang|287113535qq-cmyk)\/sg-capture-runner\/actions\/runs(?:\?status=(?:in_progress|queued|pending|waiting|requested)&per_page=100|\/[0-9]{1,20}(?:\/jobs\?filter=all&per_page=100)?)$/.test(path);
 // One authenticated GET per validation. A matching server 304 is fresh
 // evidence for that exact URL and ETag, never an offline fallback.
@@ -17,7 +18,9 @@ export function conditionalGithubRead(token,{fetchRead=fetch,maxEntries=64}={}){
   try{response=await fetchRead('https://api.github.com/'+path,{method:'GET',headers,redirect:'error',signal:AbortSignal.timeout(15000)});}
   catch(error){cache.delete(path);throw error;}
   const etag=response.headers?.get('etag');
-  if(response.status===304&&previous&&tag(etag)&&etag===previous.etag)return structuredClone(previous.value);
+  // If-None-Match uses RFC 9110 weak comparison: GitHub sends W/ on its
+  // initial 200 and omits W/ on 304. The quoted opaque tag must still match.
+  if(response.status===304&&previous&&tag(etag)&&opaque(etag)===opaque(previous.etag))return structuredClone(previous.value);
   try{assert(response.ok,'GITHUB_RUN_READ_FAILED');}
   catch(error){cache.delete(path);throw withGithubHttpDiagnostic(error,path,response);}
   cache.delete(path);const value=await response.json();
