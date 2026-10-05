@@ -4926,6 +4926,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "invadersfromplanetmoolah_prt-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "moolah-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 25,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32776,
+        "runtimeGameId": 32998,
+        "wmsGameId": 20145,
+        "ordinaryContractHash": "178e546251c86db19467128df923f622cc038a9bb2dcb06f43f9584ac463b638",
+        "historyFileSha256": "337dc9dd4746430dffd38aef46f64c54db65844c7ca21efcbe7cb2ea9215d7f4",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }

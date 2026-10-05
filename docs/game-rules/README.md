@@ -135,7 +135,7 @@
 | [32773](32773.json) | Hercules High & Mighty | implemented-subset | 0 |
 | [32774](32774.json) | Himalayas - Roof of the World | implemented-subset | 0 |
 | [32775](32775.json) | Hula Hula Nights | implemented-subset | 0 |
-| [32776](32776.json) | Invaders of Planet Moolah | not-documented | 待确认 |
+| [32776](32776.json) | Invaders of Planet Moolah | implemented-subset | 0 |
 | [32777](32777.json) | Jin Ji Bao Xi Endless Treasure Megaways | not-documented | 待确认 |
 | [32778](32778.json) | Jin Ji Bao Xi Endless Treasures | not-documented | 待确认 |
 | [32779](32779.json) | Jinse Dao Dragon | not-documented | 待确认 |

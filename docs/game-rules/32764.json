@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "4253a1006405c9477c76d274a76da801be8230c257840c2f68b0860a3e8dff16",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-source.mjs": "249d96c10df5dc338ab39e83d94bc4ce8db301077c4cc3bbe2600b227cd80641",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-codec.mjs": "23bcd5780922341db22f8d14703438c0a0065d5a950c809413572f1d3dd2d5c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
     "service/dragonspin_base_fields.py": "51d3cb2955a5e4b4e99c46e9928050f3ab2765e499d927b935687a0dad97ddb2",
     "config/ag-rolling-dragonspin-base-contract.json": "d2a9a2b9d51dabe6abd7c1587051929dc86e2c854c80e0c34f9f0f626f35dce7",
-    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
-    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
-    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
-    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
+    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
+    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
+    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
+    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5d2765ead2a71fa7f51fd4c481030b4a1271528f0af1f80af86b2e0eea35e8c4"
+  "ruleHash": "df9bc1c55a705cabe72abdcd2c492347b63463f49cadd153a652f4dbf4437258"
 }

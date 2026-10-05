@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-goldenchief-base.mjs": "f0cb447e36318efbb0e168bc5232d703025890871f7fb8dc149e94ead42451ec",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-source.mjs": "3f3d9a5515b2d8be22796c7184220ab6c4b819730de9a6bf5dfc4fe573865f87",
     "scripts/runner-v2/ag-rolling/sg-goldenchief-codec.mjs": "fe1e47fa76c1ed5c04e182da740941a8b6631a5dae93eb162533ab113aa906fa",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
     "service/goldenchief_base_fields.py": "0d7c679ebfcd83cb765cfad552f6d92d54767583944b3f7ff04148fc51b8f806",
     "config/ag-rolling-goldenchief-base-contract.json": "bf7fa10c806272525415acf04124870776ebf8d84401b0a77457e22dfc25c4d9",
-    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
-    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
-    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
-    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
+    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
+    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
+    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
+    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a1eab492f09ec7151d1d6ea97ad3dbd232858749edde51666022591fc32a944f"
+  "ruleHash": "b479d27dafbaa454b7e624cdb11a5945e5d842cb96165f96edf122da94d43891"
 }

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs": "5d506c934b97d5980a94346a8d6b34c56a2ed0c43f0109d1eb747e291d201dc8",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs": "c9c52de067df4fc5fb24db818cadc776eefe0e32cd9c9ccaa23cb72797ae3d92",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs": "8e9a34f4ff0f33c79811cacfbeaf41496ef3feb14e6f2e8ed3057ed7c8c4c4db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
     "service/giantsgold_base_fields.py": "bdff2b2c5bb25a8f6c13a94c3bb1e8fc8f23ca40fd47b0eca678fff3fe48aa26",
     "config/ag-rolling-giantsgold-base-contract.json": "3abc93115680f7ee2cd8ca09d740956af23d0a7876225f1e48d33bb4194692ab",
-    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
-    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
-    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
-    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
+    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
+    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
+    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
+    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0b064c75320c3a918edee7a21f8cddd5f6b25ce129ffa123807a877fa1d35a2c"
+  "ruleHash": "c25b3a553ab6246e9fb65e6dc6828d096a01db0f11cd896bbb82469aa33d7a48"
 }

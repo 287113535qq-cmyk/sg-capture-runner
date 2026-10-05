@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-base.mjs": "48c610aaf5520e650e0cc235187f9f3762b8b7229157e037bd9f43309f0313fa",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-source.mjs": "d269eb2b884baf7370ce90bdd1ac291845cc87097d0f8dd7e0407221a6a12a91",
     "scripts/runner-v2/ag-rolling/sg-frozeninferno-codec.mjs": "d61d55e0db045f6c0913f67e52fdec759ca259884ec7c2833040e2101792a19f",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "afe11cb7f18c252af22d141ad56ec95a796f86f398839abc0aa43f10a8a63345",
     "service/frozeninferno_base_fields.py": "2ffd55e2b5a0176af3415a870bdda263f8490b36c0497fb3770eb35220efc8f7",
     "config/ag-rolling-frozeninferno-base-contract.json": "497ad2f0d3bd337958d24eeb217aaf5a3ff47f68212df4a38c566e8b6bf053c6",
-    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
-    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
-    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
-    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
+    "service/ag_rolling_plan.py": "5309e86fe91ab233262b8ada2c7733f132c575d518f6b14d306dad87b0ec81ec",
+    "scripts/runner-v2/record_fields.py": "cdafd133ecc907bb8c5cf69c9c73ab92d0b5fc415407c8e161403caa4f8d7a6e",
+    "service/round_fields.py": "df49ef6d227a55cf22b998a272bcfdbfc12dcdb4c126652b1255f4e0d0ff22dd",
+    "service/game_rule_catalog.py": "021a4501d71bf1856f507971c6a37efba462ef6ffef18878fc7b2dfc233cf910"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "34260a2b60b96e4db25d9223fa7c9df0202680d15d7d45b325783e3c7ce254ed"
+  "ruleHash": "a58f6cd970608ec5ee9be4215e20d8ecff4d85cb7696f539384c02412d346e95"
 }

@@ -164,6 +164,13 @@ class GameRuleCatalogTests(unittest.TestCase):
         self.assertIn('没有readyForEndGame',rule['continue'])
         self.assertEqual(card['typeMappings']['crystalforest-base-ag-rolling-wms-v1']['freeTypes'],{})
 
+    def test_moolah_card_binds_cascade_chains_and_separate_line_identity(self):
+        card=self.cards[32776];rule=card['roundRule']
+        self.assertEqual(rule['family'],'moolah-base-wms-v1');self.assertEqual(card['runtimeGameId'],32998);self.assertEqual(card['parameters']['wmsGameId'],20145)
+        self.assertIn('前1000普通',rule['bounds']);self.assertIn('2000历史请求',rule['bounds']);self.assertIn('没有特殊覆盖',rule['bounds'])
+        self.assertIn('781',rule['fields']['PaylineWin']);self.assertIn('9局跨级联',rule['fields']['PaylineWin']);self.assertIn('283',rule['fields']['Cascade'])
+        self.assertIn('空AccountData',rule['complete']);self.assertIn('Stake total25',rule['start']);self.assertEqual(card['typeMappings']['invadersfromplanetmoolah_prt-base-ag-rolling-wms-v1']['freeTypes'],{})
+
     def test_hulahula_card_binds_own_stacked_symbol_and_stops_unknown(self):
         card=self.cards[32775];rule=card['roundRule']
         self.assertEqual(rule['family'],'hulahula-base-wms-v1');self.assertEqual(card['runtimeGameId'],32997);self.assertEqual(card['parameters']['wmsGameId'],20188)
