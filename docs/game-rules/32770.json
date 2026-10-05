@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-giantsgold-base.mjs": "5d506c934b97d5980a94346a8d6b34c56a2ed0c43f0109d1eb747e291d201dc8",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-source.mjs": "c9c52de067df4fc5fb24db818cadc776eefe0e32cd9c9ccaa23cb72797ae3d92",
     "scripts/runner-v2/ag-rolling/sg-giantsgold-codec.mjs": "8e9a34f4ff0f33c79811cacfbeaf41496ef3feb14e6f2e8ed3057ed7c8c4c4db",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
     "service/giantsgold_base_fields.py": "bdff2b2c5bb25a8f6c13a94c3bb1e8fc8f23ca40fd47b0eca678fff3fe48aa26",
     "config/ag-rolling-giantsgold-base-contract.json": "3abc93115680f7ee2cd8ca09d740956af23d0a7876225f1e48d33bb4194692ab",
-    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
-    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
-    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c6eb61295260f0682847e73b5e52517f0dac49d6041df8e385936ab58adadda8"
+  "ruleHash": "41bcab94f3167beb2827c970377f6dcb71be3660e3575f201597c226f417a31c"
 }

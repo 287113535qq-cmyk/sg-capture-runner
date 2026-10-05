@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-deepseamagic-base.mjs": "a30c748257a8d8871175533eb8a9a23377a3eeff23d4341bb06928b07a587984",
     "scripts/runner-v2/ag-rolling/sg-deepseamagic-source.mjs": "ba79faf363271101a7f0f151d58174542bb57682470c417f6af5655e000c771e",
     "scripts/runner-v2/ag-rolling/sg-deepseamagic-codec.mjs": "a9e602b7afd13511508394dd3916e100b1d0fbf161726fd8739d0dd265e3aac6",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
     "service/deepseamagic_base_fields.py": "39b54f2958d405737ea878aeed4a7f33a8cbbd5e3b849e899cc23681042b16aa",
     "config/ag-rolling-deepseamagic-base-contract.json": "f16bb95f82f9aee9803c89644ecf22ba28ccaf2ff855b2696aabc62f635f22e5",
-    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
-    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
-    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "30de16b93727a8142c3eae8233b719e56382a8b8f145890e0c212600b53b7811"
+  "ruleHash": "dc6f99abd991d9d2b8c549bbf86d92a09fa655ceba7f7db43f22559e2d6ffd14"
 }

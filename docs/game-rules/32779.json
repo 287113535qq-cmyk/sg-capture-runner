@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "jinsedaodragon-base-ag-rolling-wms-v1",
+  "planHash": "634be8a09a1fb1d9addecc299a968de46dda362f516abccdabfdf7880eac8ec3",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32779",
+    "runtimeSlug": "jinsedaodragon",
+    "buy": 0,
+    "betRaw": 100,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20401
+  },
+  "roundRule": {
+    "family": "jinsedragon-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime33001与自己的WMS Header20401分别固定；AccountData/CurrencyMultiplier1→Header→Stake total100；响应stake100/stakePerLine100/paylineCount1。",
+    "continue": "单spin0/reelset0、5个ReelStops、freeN/bonusN/scatter0。991种自己的expReelTriggerType/reelHeights/有序Orbs完整joint双实现pin；只按自己的完整形状，不猜高度或标签的奖励。",
+    "complete": "普通readyY后唯一Header-only EndGame，响应readyN/Header/空AccountData/Balances，无GameResult且现金保持。AnywayWin和=totalSpinWin；再加winning=y且isJackpot=n的Orb amount一次=Logic totalWin=BG累计，cash=start-100+奖。",
+    "bounds": "完整file SHA核验；前1000中993普通完整/1986历史请求，5条免费链、1条中奖Orb Jackpot、1条Wheel Jackpot仍拒绝。actual codec→独立PY IPC→record/verify及1993次自身source payload语义一致，原frontend constructor/XML serializer未执行。未知特殊须自己的exact frontend和完整自然证据；旧half不续/重放/回计；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-jinsedragon-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-jinsedragon-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-jinsedragon-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/jinsedragon_base_fields.py",
+      "config/ag-rolling-jinsedragon-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "AnywayWin": "296项自己的奖，37种award/ways/winVal tuple，83种2..6位置文本、unique0..39，每spin最多2项，winIndex连续0..n-1。winVal已经含ways，只加一次。",
+      "Orbs": "8898项自己的有序Orb，991个BG/Orb joint，12种award/amount tuple，position连续0..n-1。35普通局有winning=y的奖；10普通局非中奖isJackpot=y只作形状、金额不入奖。中奖Jackpot和Wheel/FS未知特殊均拒绝。",
+      "BGInfo": "8种自己的expReelTriggerType/reelHeights组合；totalWagerWin=bgWinnings=Logic奖，remaining/isMaxWin0。height/trigger不额外加奖；未知joint/position/order/count/MaxWin/recovery/foreign BG停止。"
+    }
+  },
+  "typeMappings": {
+    "jinsedaodragon-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "jinsedaodragon-base-ag-rolling-wms-v1": "9eaf4300012f6c60230496da5c8cc45369e7fc8c6924a2973caab2bd2fe8ab85"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + own AnywayWin sum + winning nonjackpot Orb sum",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注100；own BG/Orbs joint；只计中奖Orb一次；readyY后唯一EndGame/readyN/空AccountData现金保持；未知特殊停止。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "scripts/runner-v2/ag-rolling/sg-jinsedragon-base.mjs": "f61865aa95c374de05e346f1d14e89f3e5e14704446429f458aabb39de046897",
+    "scripts/runner-v2/ag-rolling/sg-jinsedragon-source.mjs": "4dd3b1c635fa16d15904103dd661916fe69402a040ea83eb9ea20a7a31fe6c8f",
+    "scripts/runner-v2/ag-rolling/sg-jinsedragon-codec.mjs": "8a4c2f1905393bf242e1a672de51383f2a8cea02b8c891bffa34f74b4b85cf3a",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
+    "service/jinsedragon_base_fields.py": "ad7c4d22b5472016b37f7791a221ebceec3fa4c098aa31b3bbf2d0539f9eef22",
+    "config/ag-rolling-jinsedragon-base-contract.json": "86953622c91b84899b9771157744033a6118ab2dd46d201ee45cf1305bdeb99b",
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "98535516d78b24a6a3ac8e4947f31795ca3957f5a75d38f5b6d048d68e93fe39"
+  "ruleHash": "ccc70e58e89540a257f257e173cd070b621b95651b4e111a47783786be8f1dfe"
 }

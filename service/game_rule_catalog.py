@@ -154,6 +154,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32779:
+        native.update({'family':'jinsedragon-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime33001与自己的WMS Header20401分别固定；AccountData/CurrencyMultiplier1→Header→Stake total100；响应stake100/stakePerLine100/paylineCount1。',
+            'continue':'单spin0/reelset0、5个ReelStops、freeN/bonusN/scatter0。991种自己的expReelTriggerType/reelHeights/有序Orbs完整joint双实现pin；只按自己的完整形状，不猜高度或标签的奖励。',
+            'complete':'普通readyY后唯一Header-only EndGame，响应readyN/Header/空AccountData/Balances，无GameResult且现金保持。AnywayWin和=totalSpinWin；再加winning=y且isJackpot=n的Orb amount一次=Logic totalWin=BG累计，cash=start-100+奖。',
+            'bounds':'完整file SHA核验；前1000中993普通完整/1986历史请求，5条免费链、1条中奖Orb Jackpot、1条Wheel Jackpot仍拒绝。actual codec→独立PY IPC→record/verify及1993次自身source payload语义一致，原frontend constructor/XML serializer未执行。未知特殊须自己的exact frontend和完整自然证据；旧half不续/重放/回计；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-jinsedragon-base.mjs','scripts/runner-v2/ag-rolling/sg-jinsedragon-source.mjs','scripts/runner-v2/ag-rolling/sg-jinsedragon-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/jinsedragon_base_fields.py','config/ag-rolling-jinsedragon-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'AnywayWin':'296项自己的奖，37种award/ways/winVal tuple，83种2..6位置文本、unique0..39，每spin最多2项，winIndex连续0..n-1。winVal已经含ways，只加一次。',
+                'Orbs':'8898项自己的有序Orb，991个BG/Orb joint，12种award/amount tuple，position连续0..n-1。35普通局有winning=y的奖；10普通局非中奖isJackpot=y只作形状、金额不入奖。中奖Jackpot和Wheel/FS未知特殊均拒绝。',
+                'BGInfo':'8种自己的expReelTriggerType/reelHeights组合；totalWagerWin=bgWinnings=Logic奖，remaining/isMaxWin0。height/trigger不额外加奖；未知joint/position/order/count/MaxWin/recovery/foreign BG停止。'}})
     elif game_id == 32778:
         native.update({'family':'jinjitreasure-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime33000与自己的WMS Header20322分别固定；Header→Stake total16/gameMode0→PaylineCount1→AccountData/CurrencyMultiplier1。响应只有stake16/totalWin/betID，无stakePerLine/paylineCount；Header没有ready。',
@@ -592,7 +602,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774','32775','32776','32777','32778'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771','32772','32773','32774','32775','32776','32777','32778','32779'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -697,6 +707,9 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'jinsedragon-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own AnywayWin sum + winning nonjackpot Orb sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw','required':'下注100；own BG/Orbs joint；只计中奖Orb一次；readyY后唯一EndGame/readyN/空AccountData现金保持；未知特殊停止。'}
         if plan and plan.get('adapter') == 'jinjitreasure-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own AnywayWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

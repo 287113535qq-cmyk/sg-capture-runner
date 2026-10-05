@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-himalayas-base.mjs": "cbe7b8e0a88b68183305f23a094f9f76c240a66f1ea93b58fa87d9d018edd960",
     "scripts/runner-v2/ag-rolling/sg-himalayas-source.mjs": "6631ea7fc0dcce01c950fbb39622719d6c62b3a2d009d00e1b93c72194cf5d0a",
     "scripts/runner-v2/ag-rolling/sg-himalayas-codec.mjs": "23f292e3aafc1eae7058ed9b0eb4587064c59c2a53f374816966b0f8a2c1c413",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
     "service/himalayas_base_fields.py": "5b1e4bfc792032adff5e99977d816f9451d1fa706a5256a31d6147845baa80be",
     "config/ag-rolling-himalayas-base-contract.json": "0fb36ac8b4f1c2fae19d320bbf49fc6def22e64baabe0a722589344e24d24578",
-    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
-    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
-    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0cfbf790c713099d010730d89c68beee41709adff1137249e97972d31ff9ec2c"
+  "ruleHash": "4b889003e4e76c5df3815ae25d79a2ee21d0c8a00e3e1b67fc12be7ad11644f2"
 }

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-eurekablast-base.mjs": "b67ca396c902cdf3c8fe73aaf790f4819174f1cd8870ffc668498fa05840f05b",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-source.mjs": "3eecf9b0ad9a3ec85fed735d724e64350b7df6f9a75ea224cecb6ed02875aba1",
     "scripts/runner-v2/ag-rolling/sg-eurekablast-codec.mjs": "b210e9200d6e2192e94825d94418d09a531683a52a3fb5bbd1e9386d46dbf5dc",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "51418755f27b6d5eabe02978073f86f100438f23a13d2c301d3810e27d01dc61",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "cd92639819bd940ebf88acf8d202e2b4a95902e15987aa13aaa30020a9d5b32e",
     "service/eurekablast_base_fields.py": "b30cbf8eafb0e9d8263eddd6894ef979915acf2ba5e2dd966673a977a44e7355",
     "config/ag-rolling-eurekablast-base-contract.json": "6146afe2625d5cfe623b693744a23a53ed78e9b3e92913fb8315087ff73616b2",
-    "service/ag_rolling_plan.py": "50e87e4abfff279d00e6bdcc7026c51fb8d30d3775f04605f116c7d9428d4559",
-    "scripts/runner-v2/record_fields.py": "e6a2bf1c67f22b6820ec4666dd5477366a89d9d1c32ebba5bfef8341fb982545",
-    "service/round_fields.py": "1c56db7aaf5a9d06b96b362762c7900fa73a1bba6dd8bcd3e6b842d00eb6ce7e",
-    "service/game_rule_catalog.py": "3c07d4df42af60537a28e25dcb4e6b7aabfecaa99f1d583f6f5c2a5d257e5677"
+    "service/ag_rolling_plan.py": "ce719922bf75589b20fdab69c6fff877fe65ca35793e865758690eee49683d74",
+    "scripts/runner-v2/record_fields.py": "416e317e920422670a22c2f5f887a956f914e222fd86dd84926dc2ba0cacc5c6",
+    "service/round_fields.py": "e8d446e07dfa5fb4a766fb7de4063af7fdd7495314af8caab1c208531e3bcfd0",
+    "service/game_rule_catalog.py": "aa65d4384851410e336fd2968b27fc090e5687ba2954e3f47a211bf4924d5fca"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "44f9dfc742067a75562422f5d4499a39d51da14b6f3a528219f54f84c63aae5b"
+  "ruleHash": "a1dce74de6332f6178c6e1a67886dc36d3e328f5d19df51b0530a54fee049a65"
 }

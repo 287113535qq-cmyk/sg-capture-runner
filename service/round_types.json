@@ -4983,6 +4983,25 @@
         "fullBaseRounds": 997,
         "fullFreeRounds": 0
       }
+    },
+    "jinsedaodragon-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "jinsedragon-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32779,
+        "runtimeGameId": 33001,
+        "wmsGameId": 20401,
+        "ordinaryContractHash": "5544bd8d6b4e4f715a0e50387d344b5c7c05c50368dfe37a325ba29e7b993561",
+        "historyFileSha256": "5d3f8f5479ec8716e91a70b114c5ab47a79d760895e1b444cbee05e23ad10996",
+        "fullBaseRounds": 993,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
