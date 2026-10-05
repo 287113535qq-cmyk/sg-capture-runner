@@ -54,3 +54,5 @@ import './ag-rolling/sg-frozeninferno-wiring.test.mjs';
 import './ag-rolling/sg-fudaole-wiring.test.mjs';
 
 import './ag-rolling/sg-giantsgold-wiring.test.mjs';
+
+import './ag-rolling/sg-goldenchief-wiring.test.mjs';

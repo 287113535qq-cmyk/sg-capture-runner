@@ -153,6 +153,16 @@ def contract(game_id):
                       'ReelResults / PaylineWin':'单spin索引0/reelset0，5个ReelStops；winCountSC0/freeSpinN/bonusAwardedN；至多10个唯一线索引0..19、22种自身awardIndex、awardTableIndex0；奖额和与spinWins/Logic totalWin一致。',
                       'SymbolGrids / BGInfo':'自身3×5格、符号0..10；BG累计与普通Logic奖额相等，isMaxWin0；grid仅显示状态，不另加奖。',
                       'Wheel / FS / Excalibur / Wild':'14特殊raw完整保留，任何此节点立即拒绝，不借其他WMS游戏规则、不给End/续局/credit许可。'}})
+    elif game_id == 32771:
+        native.update({'family':'goldenchief-base-wms-v1','messages':['Init','Logic','EndGame'],
+            'start':'目录runtime32993与自己的WMS Header20125分别固定；Header→AccountData/CurrencyMultiplier1→Stake total100/isBigBet0；响应stake100/stakePerLine5/active paylineCount20或100，不能乘线数改下注；Header没有readyForEndGame。',
+            'continue':'普通spin0/reelset0/5stops，freeSpinN/bonusAwardedN/scatter0；GameResult有序ReelResults/BGInfo/PaylineCountInfo，再有自己的WildExpansion或SymbolUpgrade/WildExpansion。21种active线数/WildExpansion/SymbolUpgrade联合形状只核验；87普通100线含wild、2个含upgrade，不能据名字猜免费或再加奖。',
+            'complete':'普通后唯一Header-only EndGame，响应只有Header/Balances，无AccountData/GameResult且现金保持。Payline和=spinWins=Logic totalWin=BG wager/bg累计；现金=start-100+奖。',
+            'bounds':'完整file SHA核验；前1000中987普通完整/1974历史请求，13个特殊触发首响应拒绝。actual codec→独立PY IPC→record/verify一致；1987自身source payload语义核验，原frontend constructor/XML serializer未执行。3个BonusWheel/GambleInfo、10个BonusWheel/TotemBonus后旧EndGame不能给新的特殊terminal许可；历史不抵目标；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。',
+            'files':['scripts/runner-v2/ag-rolling/sg-goldenchief-base.mjs','scripts/runner-v2/ag-rolling/sg-goldenchief-source.mjs','scripts/runner-v2/ag-rolling/sg-goldenchief-codec.mjs','scripts/runner-v2/ag-rolling/sg-task-runtime.mjs','service/goldenchief_base_fields.py','config/ag-rolling-goldenchief-base-contract.json','service/ag_rolling_plan.py','scripts/runner-v2/record_fields.py','service/round_fields.py'],
+            'fields':{'PaylineWin':'2232个自己普通PaylineWin，24种award/table/winVal tuple、146种3..5位置文本、unique0..19；20/100线分别最多12/100奖项且每spin线号去重，小于自己的active线数；自己的两个线数档分别pin奖项21/22与位置47/143。只加一次。',
+                'PaylineCountInfo / WildExpansion / SymbolUpgrade':'normal20/bonus100/active20或100，21种自己的wild原位置/reels与可选upgrade replacement/positions联合形状。未知新组合停止。',
+                'BGInfo / BonusWheel':'totalWagerWin=bgWinnings=Logic奖，baseGameSpinsRemaining/isBigBet/isMaxWin/chiefWin0。BonusWheel/GambleInfo/TotemBonus首响应仍拒绝，不放FREE/END或信用。'}})
     elif game_id == 32770:
         native.update({'family':'giantsgold-base-wms-v1','messages':['Init','Logic','EndGame'],
             'start':'目录runtime32992与自己的WMS Header20129分别固定；Header→Stake total50/paylineCount20→AccountData/CurrencyMultiplier1；响应stake50/stakePerLine2/paylineCount20，不能改下注40；Header没有readyForEndGame。',
@@ -511,7 +521,7 @@ def cards(root=ROOT):
     book = json.loads((root / 'config/trial-300k.json').read_text(encoding='utf-8'))
     plans[str(book['gameId'])] = book
     rolling = json.loads((root / 'config/ag-rolling-plans.json').read_text(encoding='utf-8'))['plans']
-    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770'):
+    for key in ('32749','32750','32751','32752','32753','32754','32755','32756','32757','32758','32759','32760','32761','32762','32763','32764','32765','32766','32767','32768','32769','32770','32771'):
         # These specific WMS adapters have their own documented boundary.
         # A card grants no source permission or live admission.
         if key in rolling:
@@ -616,6 +626,10 @@ def cards(root=ROOT):
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
                 'required':'下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。'}
+        if plan and plan.get('adapter') == 'goldenchief-base-wms-v1':
+            card['parameters'].update(wmsGameId=plan['wmsGameId'])
+            card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + own PaylineWin sum','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',
+                'required':'下注100；自己的普通后唯一EndGame只有Header/Balances、现金保持；21种线数/wild/upgrade仅形状，13个BonusWheel特殊停止。'}
         if plan and plan.get('adapter') == 'giantsgold-base-wms-v1':
             card['parameters'].update(wmsGameId=plan['wmsGameId'])
             card['settlement']={'stakeRaw':'startBalanceRaw - final CASH_BALANCE + both own ordinary spin awards','bet':'stakeRaw / 100','mul':'Logic totalWin / stakeRaw',

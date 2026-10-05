@@ -4831,6 +4831,25 @@
         "fullBaseRounds": 1000,
         "fullFreeRounds": 0
       }
+    },
+    "goldenchief-base-ag-rolling-wms-v1": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "goldenchief-base-wms-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32771,
+        "runtimeGameId": 32993,
+        "wmsGameId": 20125,
+        "ordinaryContractHash": "79ba71f861171df9bc8d1332bb5af6e44fad90627c040a087cf5b2b5d9c604f1",
+        "historyFileSha256": "9b5bef745d8ba77af2bfe53e1ab7e964f8284216c0e92302588f8e017c5c1019",
+        "fullBaseRounds": 987,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
