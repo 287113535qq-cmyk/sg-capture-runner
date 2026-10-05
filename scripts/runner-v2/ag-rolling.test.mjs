@@ -12,6 +12,7 @@ import './ag-rolling/sg-admission-audit.test.mjs';
 import './ag-rolling/sg-preparing-recovery.test.mjs';
 import './ag-rolling/sg-federation.test.mjs';
 import './ag-rolling/sg-preparation-close.test.mjs';
+import './ag-rolling/sg-window-close.test.mjs';
 import './ag-rolling/sg-federated-boundary.test.mjs';
 import './ag-rolling/sg-federated-resume.test.mjs';
 import './ag-rolling/sg-explicit-continuation.test.mjs';

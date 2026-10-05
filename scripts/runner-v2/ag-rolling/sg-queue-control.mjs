@@ -36,7 +36,7 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
   assert(workflow?.status==='completed'&&workflow.head_sha===prior.commit,'SG_QUEUE_PREVIOUS_SOURCE_ACTIVE');
   ended={status:workflow.status,sourceJobsEnded:true,run:prior.run,queueId:prior.queueId,proofHash:resume.endedProofHash};
   previous=await readPrevious(resume.previousActivation);
-  await verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs});
+  await verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs,readRecoveryProfile:readPrevious});
   if(profile.preparationRecovery){
    assert(typeof readEndedJobs==='function','SG_PREPARING_ENDED_JOBS_REQUIRED');
    recovery=await verifyPreparingRecovery({profile,target:await readPrevious(profile.preparationRecovery.targetActivation),

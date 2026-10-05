@@ -62,7 +62,7 @@ on:
         description: 'Capture, audit, status, or isolated 20-runner readiness check (no SG/SSH)'
         default: capture
         type: choice
-        options: [ag-rolling, ag-rolling-companion, ag-rolling-preparation-close, formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
+        options: [ag-rolling, ag-rolling-companion, ag-rolling-preparation-close, ag-rolling-window-close, formal-count, demo-rollover, demo-fresh-short, demo-retire, demon-pair-recover, demon-pair-validate, demon-pair-formal, pair-residual-short, demon-nested-rebind-recover, demon-nested-rebind-validate, demon-nested-rebind-formal, demon-nested-recover, demon-nested-validate, demon-nested-formal, demon-zero-recover, demon-zero-validate, demon-zero-formal, fresh-short, demon-one-recover, demon-one-validate, demon-one-formal, demon-queue-recover, demon-queue-validate, demon-queue-formal, demon-two-recover, demon-two-validate, demon-two-formal, demon-three-recover, demon-three-validate, demon-three-formal, capture, pending-first-short, audit, status, runner-check, mongo-only-check, github-migrate, github-recover, github-activate, github-validate, github-promote, optimization-short, optimization-validate, optimization-formal, incident-recover, incident-validate, incident-formal, protocol-recover, protocol-validate, protocol-formal, session-recover, session-validate, session-formal, terminal-recover, terminal-validate, terminal-formal, foam-session-recover, foam-session-validate, foam-session-formal, pick-bonus-recover, pick-bonus-validate, pick-bonus-formal, pick-claim-recover, pick-claim-validate, pick-claim-formal, pick-session-recover, pick-session-validate, pick-session-formal, demon-rebind-recover, demon-rebind-validate, demon-rebind-formal, demon-session-recover, demon-session-validate, demon-session-formal, demon-feature-session-recover, demon-feature-session-validate, demon-feature-session-formal, demon-pending-session-recover, demon-pending-session-validate, demon-pending-session-formal]
   schedule:
     - cron: '*/20 * * * *'
 permissions:
@@ -101,6 +101,33 @@ jobs:
           PUPPETEER_SKIP_DOWNLOAD: 'true'
       - name: Seal the exact ended zero-source preparation without capture or task writes
         run: node scripts/runner-v2/ag-rolling/sg-live.mjs preparation-close
+  ag-rolling-window-close:
+    if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling-window-close' && github.repository == 'zyzuoyang/sg-capture-runner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
+      SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Configure restricted database transport
+        run: node scripts/link/setup-ssh.mjs
+        env:
+          SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
+          SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Install locked admission module dependencies
+        working-directory: collector
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+      - name: Reconcile and seal the exact ended capture window with no source requests
+        run: node scripts/runner-v2/ag-rolling/sg-window-close-job.mjs
   ag-rolling-join:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling-companion' && github.repository == '287113535qq-cmyk/sg-capture-runner'
     runs-on: ubuntu-latest

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
+import {verifyRecoveryEnding} from './sg-window-recovery-binding.mjs';
 const hash=v=>createHash('sha256').update(stable(v)).digest('hex');
 export const cohortRepos=Object.freeze({primary:'zyzuoyang/sg-capture-runner',secondary:'287113535qq-cmyk/sg-capture-runner'});
 export function inspectFederation(profile){
@@ -71,7 +72,7 @@ export function inspectFederationRevision({previous,profile}){
 }
 // Independent GH readback is required in addition to the sealed native end
 // receipt. Neither a completed primary nor a copied participant ends a lane.
-export async function verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs}){
+export async function verifyEndedFederation({previous,prior,receipt,store,readEnded,readEndedJobs,readRecoveryProfile}){
  if(!previous.federation)return null;
  inspectFederation(previous);
  assert(typeof readEnded==='function'&&typeof readEndedJobs==='function','SG_AG_FEDERATED_ENDED_READERS_REQUIRED');
@@ -84,6 +85,10 @@ export async function verifyEndedFederation({previous,prior,receipt,store,readEn
  const participant=(await store.get('journal',participantKey(previous)))?.value;
  inspectParticipant({profile:previous,receipt:participant,coordinatorRun:prior.run,commit:prior.commit});
  assert(receipt.participant&&hash(participant)===hash(receipt.participant),'SG_AG_ENDED_PARTICIPANT_CHANGED');
+ if(receipt.closure){
+  const closure=await verifyRecoveryEnding({previous,prior,receipt,participant,store,readEnded,readEndedJobs,readRecoveryProfile});
+  return {primaryRun:prior.run,secondaryRun:participant.run,federationHash:hash(previous.federation),closure,sourceRequests:0};
+ }
  for(const [cohort,run] of [['primary',prior.run],['secondary',participant.run]]){
   const repository=cohortRepos[cohort],id=run.split(':')[0];
   const workflow=await readEnded(id,repository);
