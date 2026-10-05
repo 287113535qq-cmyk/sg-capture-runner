@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-firequeen-base.mjs": "b596d1d05af6b391e41c35e26aa38992c27cf83f8789ac527e35ace608cdd1a0",
     "scripts/runner-v2/ag-rolling/sg-firequeen-source.mjs": "29807fd4b744ef0e8f0766131f3126312eb72b4e4105931bdc40247f960aba95",
     "scripts/runner-v2/ag-rolling/sg-firequeen-codec.mjs": "f27fcba5f6fbdf30145bd8187f57644b05494e8fde66864a792f5f75df9f765a",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/firequeen_base_fields.py": "40ce02086c446ec98ba163126414c3a5a423ff90c311faa7a81f7e3ff709207e",
     "config/ag-rolling-firequeen-base-contract.json": "0775d3117c97e54ee39dd252a1b1e9181909e78155f93be838d903a7c0db79d2",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "84e52c456dc783850bbd8a1f23eadab7232088eadc6f22964e0272a8b9243715"
+  "ruleHash": "f181c68f18557747fb74fac1a161052b1416c9bec0aa8cabeae0234be95c5310"
 }

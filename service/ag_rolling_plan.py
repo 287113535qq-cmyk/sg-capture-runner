@@ -21,7 +21,7 @@ def validate_rolling_plan(plan):
     require(plan.get('schema')=='sg-work-pool-v1' and plan.get('configured') is True and plan.get('phase')==1
             and plan.get('buy')==0 and plan.get('mode')=='demo' and plan.get('target')==300000
             and plan.get('database')=='sg_capture_staging_v1' and plan.get('productionGamePoolWrites') is False
-            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1', 'fudaole-base-wms-v1', 'giantsgold-base-wms-v1', 'goldenchief-base-wms-v1')
+            and plan.get('adapter') in ('native-nextgen-v1', 'five-treasures-wms-v1', 'fortunes-megaways-wms-v1', 'acorn-base-wms-v1', 'eighty-fortunes-wms-v1', 'actionbank-base-wms-v1', 'blazing-x-wms-v1', 'arthur-base-wms-v1', 'celestial-base-wms-v1', 'cheshire-base-wms-v1', 'cooljewels-base-wms-v1', 'crystalforest-base-wms-v1', 'dancingdrums-base-wms-v1', 'drumsexplosion-base-wms-v1', 'desertcats-base-wms-v1', 'jekyll-base-wms-v1', 'dragonspin-base-wms-v1', 'deepseamagic-base-wms-v1', 'eurekablast-base-wms-v1', 'firequeen-base-wms-v1', 'frozeninferno-base-wms-v1', 'fudaole-base-wms-v1', 'giantsgold-base-wms-v1', 'goldenchief-base-wms-v1', 'heidibier-base-wms-v1')
             and re.fullmatch(r'sg_ag_r1_[0-9]{8}_[0-9]{5}',plan.get('trialId','')) is not None
             and 'countAllocation' not in plan and 'demoGeneration' not in plan,
             'ROLLING_PLAN_SCOPE')
@@ -401,6 +401,27 @@ def validate_rolling_plan(plan):
                 and digest(proof['rejectedHistoricalPrefixes']) == 'a389ca5bb3978c81a104b096dbd25f3e6c866b14fd8d0e068b25ac958cb05352'
                 and wired.get('schema') == 'sg-ag-wms-goldenchief-codec-replay-v1'
                 and wired.get('evidenceHash') == digest(unsigned) == 'cfb27dcf552e5f6421dac8cbfb8ec1fc2a17d0fd51c82f147bfcbbe302f480af'
+                and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
+                and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
+                'ROLLING_WMS_PLAN_SCOPE')
+    if plan['adapter'] == 'heidibier-base-wms-v1':
+        from heidibier_base_fields import SOURCE, TYPE_PROFILE, mapping_hash
+        wired = proof.get('wiringEvidence', {})
+        unsigned = {k:v for k,v in wired.items() if k != 'evidenceHash'}
+        require(plan['gameId'] == 32772 and plan['runtimeGameId'] == 32994 and plan['runtimeSlug'] == 'heidisbierhaus'
+                and plan['sourceKey'] == SOURCE and plan['betRaw'] == 75 and plan['maxSteps'] == 2
+                and plan.get('wmsGameId') == 20157 and 'requestParams' not in plan and 'wmsChoiceCount' not in plan
+                and proof.get('sampledRounds') == 1000 and proof.get('acceptedBaseRounds') == 986 and proof.get('acceptedFreeRounds') == 0
+                and proof.get('rejectedFeatureRounds') == len(proof.get('rejectedHistoricalPrefixes', [])) == 14
+                and proof.get('unhandledHistoricalVariants') == {'HEIDIBIER_FEATURE_NOT_ADAPTED':14}
+                and proof['historyFileSha256'] == TYPE_PROFILE['evidence']['historyFileSha256']
+                and proof.get('typeMappingHash') == mapping_hash() and proof.get('independentJsPythonFields') is True
+                and proof.get('actualRecordAndVerifyIpc') is True
+                and len(proof.get('acceptedRawHashes', [])) == len(set(proof.get('acceptedRawHashes', []))) == 986
+                and digest(proof['acceptedRawHashes']) == '4cc50f76a59495d6b91d7ffeeb9bf31bc73a69c945240e4e2cb6b136f7834954'
+                and digest(proof['rejectedHistoricalPrefixes']) == 'c0d5b3a90044077bb6fdba8b9a9b8aa61f6d1475a634f5e432b1757eb71d2767'
+                and wired.get('schema') == 'sg-ag-wms-heidibier-codec-replay-v1'
+                and wired.get('evidenceHash') == digest(unsigned) == 'e340886f22c1f9247371717f8259d25e5722da03a6838ac8ada6181cd86775c0'
                 and wired.get('actualRecordAndVerifyIpc') is True and wired.get('independentJsPythonFields') is True
                 and wired.get('sourceRequests') == wired.get('mongoWrites') == wired.get('failedOrHistoricalRoundsCredited') == 0,
                 'ROLLING_WMS_PLAN_SCOPE')

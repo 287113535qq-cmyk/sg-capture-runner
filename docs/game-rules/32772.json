@@ -6,21 +6,82 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "heidibier-base-ag-rolling-wms-v1",
+  "planHash": "c2b1bbd65547b02f0f3ba94e26ffcc3ceb872df934103e18fb54624a29f23820",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261005_32772",
+    "runtimeSlug": "heidisbierhaus",
+    "buy": 0,
+    "betRaw": 75,
+    "requestParams": null,
+    "maxSteps": 2,
+    "wmsGameId": 20157
+  },
+  "roundRule": {
+    "family": "heidibier-base-wms-v1",
+    "messages": [
+      "Init",
+      "Logic",
+      "EndGame"
+    ],
+    "start": "目录runtime32994与自己的WMS Header20157分别固定；AccountData/CurrencyMultiplier1→Header→Stake total75；响应stake75/stakePerLine1/paylineCount50，不能乘线数改下注；Header没有readyForEndGame。",
+    "continue": "普通spin0/reelset0/6stops，freeSpinN/bonusAwardedN/scatter0；有序ReelResults/MystInfo/WildInfo，可选BonusReplacementInfo，再BaseGameInfo。129种Myst/Wild/六reel RD联合形状只核验，未知新组合停止，不据名称猜免费或再加奖。",
+    "complete": "普通后唯一Header-only EndGame，响应Header/空AccountData/Balances，无GameResult且现金保持。Payline和=spinWins=Logic totalWin=BaseGameInfo totalWagerWin；现金=start-75+奖。",
+    "bounds": "完整file SHA核验；前1000中986普通完整/1972历史请求，14个特殊触发首响应拒绝。actual codec→独立PY IPC→record/verify一致；1986自身source payload语义核验，原frontend constructor/XML serializer未执行。14个FSInfo、其中3个WheelInfo后旧EndGame不能给新的特殊terminal许可；历史不抵目标；Init仅synthetic，realInit/native scope/livecanary/当前queue准入0；unknown一次封存/no retry。",
+    "files": [
+      "scripts/runner-v2/ag-rolling/sg-heidibier-base.mjs",
+      "scripts/runner-v2/ag-rolling/sg-heidibier-source.mjs",
+      "scripts/runner-v2/ag-rolling/sg-heidibier-codec.mjs",
+      "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs",
+      "service/heidibier_base_fields.py",
+      "config/ag-rolling-heidibier-base-contract.json",
+      "service/ag_rolling_plan.py",
+      "scripts/runner-v2/record_fields.py",
+      "service/round_fields.py"
+    ],
+    "fields": {
+      "PaylineWin": "1893个自己普通PaylineWin，35种award/table/winVal tuple、180种3..6位置文本、unique0..35；最多50奖项且每spin线号去重，小于50。只加一次。",
+      "MystInfo / WildInfo / BonusReplacementInfo": "129种自己的Myst index/Wild Indices/可选六reel RD SS与DS有序联合形状。266普通含replacement；未知新组合停止。",
+      "BaseGameInfo / FSInfo": "自己的普通totalWagerWin=Logic奖，isMaxWinN/maxWinValue25000000只是上限，普通没有bgWinnings。FSInfo/WheelInfo首响应仍拒绝，不放FREE/END或信用。"
+    }
+  },
+  "typeMappings": {
+    "heidibier-base-ag-rolling-wms-v1": {
+      "protocol": "wms",
+      "modeSelectorKeys": null,
+      "modes": null,
+      "freeSelector": null,
+      "freeTypes": {},
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "heidibier-base-ag-rolling-wms-v1": "a75231539f8f48154d50ee40e9cea67acfe3ddd8dc6241a2840367e7f186bcaf"
+  },
+  "configuredNaturalBonusCodes": [],
+  "configuredOutcomeCategoryCount": 0,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + own PaylineWin sum",
+    "bet": "stakeRaw / 100",
+    "mul": "Logic totalWin / stakeRaw",
+    "required": "下注75；自己的普通后唯一EndGame含空AccountData、现金保持；129种Myst/Wild/RD仅形状，14个FSInfo特殊停止。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "scripts/runner-v2/ag-rolling/sg-heidibier-base.mjs": "119e6a8c49baa5523512cd240885d0d8cbbf878765ee558494809607b5714597",
+    "scripts/runner-v2/ag-rolling/sg-heidibier-source.mjs": "025bae43d5ea731a21831ed0b67ca00aaacf515b69f05ad2af91405924ba7d44",
+    "scripts/runner-v2/ag-rolling/sg-heidibier-codec.mjs": "9305c594b0da91cff75f2a80288e9137ef7932eeff7f8b77a4dfa43fd32fb459",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
+    "service/heidibier_base_fields.py": "1f9417a99de7616b8023eba95b2fb59cfb9312c2c17e418775dadda822bb3cb6",
+    "config/ag-rolling-heidibier-base-contract.json": "d858687b2eb6a4338a174321de15d44fa0b3c23884b3aed8fb4f3b908f64d950",
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -32,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "b724296be18ee5165cad2deeee1a6ae17591dd0588139f168391c3313d15d437"
+  "ruleHash": "2d15c40e8152a65caf212fe5ebaebe8ccff5f6061480c2ee96a1a7c8ffdcd9e3"
 }

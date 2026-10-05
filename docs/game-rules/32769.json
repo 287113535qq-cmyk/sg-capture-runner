@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-fudaole-base.mjs": "35990bb1ff199615dfe7ea639c0940c48ababd53b9b672c91b02030e8d8f9f09",
     "scripts/runner-v2/ag-rolling/sg-fudaole-source.mjs": "df2b4861303578c859a602081206ce3b0e328bb425443d4c8adeb890b4590fe6",
     "scripts/runner-v2/ag-rolling/sg-fudaole-codec.mjs": "872368c292a8ec8ac35d348db3303a72c0f76a0f19753ce37df852a2ba6e35f0",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/fudaole_base_fields.py": "e401053937e0e53b333172a5c18b2b279c6855499d0a3baf5e7ded881debbed0",
     "config/ag-rolling-fudaole-base-contract.json": "7ca91f5df3c139d7a90821c929ee540396fc6ee85c44981cabecf176be2f9bdd",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "26423a0818c61c6880ff26df08022c4a47c239d59828b1d1523888c017f00f5c"
+  "ruleHash": "7817966cc63d902c022918343be038dfcca5d9ce458d061adbe4d413e446e167"
 }

@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-desertcats-base.mjs": "ed501a2b04bc0d929964e8bec97802f7a296b38889df5f4ec3a4a2079c3dc8b4",
     "scripts/runner-v2/ag-rolling/sg-desertcats-source.mjs": "940e7e4d37cbbdec25b6cea5513643aeb10f153e44cd291df57cbc08a133254f",
     "scripts/runner-v2/ag-rolling/sg-desertcats-codec.mjs": "588dcac812ab3e40565b9a4844e70abacd980939d6d6778622d85232f83d52f7",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "c3c1624231d4a9001f0cbdf86bfd4546c3a7579803bb5c08e7c89db16238f365",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9ad6a83ce58b24fd777a94257544e59e6e9e206af2461a2338da9a8529a10a62",
     "service/desertcats_base_fields.py": "9caa82edd904940e77dcd952958c0eb8f8d701ca676ca75527a47d15c414d98d",
     "config/ag-rolling-desertcats-base-contract.json": "86b32bd9dae1cd96380d2a1bc581839f34950da5201de5f512ef65e92d49c06d",
-    "service/ag_rolling_plan.py": "c277c5edb5f638e9e3deaed8037d9e49330eb63341d18b76c4d2311388cfd51c",
-    "scripts/runner-v2/record_fields.py": "e2599692efccedf9004da45327304ced12d0278ccd24e49067aba7484cd0da59",
-    "service/round_fields.py": "8d5c764b238d92897c9c01190c16a74898e85f0b3557c8ffcfb082e5bb457354",
-    "service/game_rule_catalog.py": "0431b4b1bfb00e008f6374e50ad49cae435f6fd1f5b945dd2f2916efabd80332"
+    "service/ag_rolling_plan.py": "067f89ce5c9c168427928e93963cfe786b9e5522f25e4de075aa0c3f126703da",
+    "scripts/runner-v2/record_fields.py": "7f52a9e04abed55157ea9e4b8a3bef2cd3d08e93de69bd7dc35ceadd9d20f8f0",
+    "service/round_fields.py": "da2024285ad7a80de6293ac5f229ddd91842905c5a573c68b7b5c1b584c56756",
+    "service/game_rule_catalog.py": "249086762a9ed946c5663ecf2367a6c6efaa411e96d4c29558d67e5efea3c32d"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "cb41936479dc8f520465285e3343f0bfdb5fe162a0fe77aec1370585cdbb61a0"
+  "ruleHash": "3eb34e8099b47f41967d38da37a59c9da7c388c49c83220c42409f231307f035"
 }
