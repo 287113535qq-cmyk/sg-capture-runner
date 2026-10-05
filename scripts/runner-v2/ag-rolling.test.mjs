@@ -68,3 +68,5 @@ import './ag-rolling/sg-github-conditional.test.mjs';
 import './ag-rolling/sg-github-inventory.test.mjs';
 
 import './ag-rolling/sg-himalayas-wiring.test.mjs';
+
+import './ag-rolling/sg-hulahula-wiring.test.mjs';

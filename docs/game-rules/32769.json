@@ -75,13 +75,13 @@
     "scripts/runner-v2/ag-rolling/sg-fudaole-base.mjs": "35990bb1ff199615dfe7ea639c0940c48ababd53b9b672c91b02030e8d8f9f09",
     "scripts/runner-v2/ag-rolling/sg-fudaole-source.mjs": "df2b4861303578c859a602081206ce3b0e328bb425443d4c8adeb890b4590fe6",
     "scripts/runner-v2/ag-rolling/sg-fudaole-codec.mjs": "872368c292a8ec8ac35d348db3303a72c0f76a0f19753ce37df852a2ba6e35f0",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "9fafc3d3e749c331a5c5dda8bde3dcc7ccbbca2ef291dc49fe573e850adbe37d",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "5bd15c17127e628c3e2534398e42c21096ed3fc6995d5b8b96fd7f44bd83aefd",
     "service/fudaole_base_fields.py": "e401053937e0e53b333172a5c18b2b279c6855499d0a3baf5e7ded881debbed0",
     "config/ag-rolling-fudaole-base-contract.json": "7ca91f5df3c139d7a90821c929ee540396fc6ee85c44981cabecf176be2f9bdd",
-    "service/ag_rolling_plan.py": "daafb836f0111f766b45488eb2086c4e825b5c66bcf749acb33ba5d626cabd18",
-    "scripts/runner-v2/record_fields.py": "729c3b5727da7eb7d8860a4a15660eeacf3df3f4bf5b9519ab2f1dd96bf7cc9a",
-    "service/round_fields.py": "f83128d373cdca960a5f9ec93073920bab237239fd0c8172fcc7a8e9eb1ec60c",
-    "service/game_rule_catalog.py": "77a61b07d77911b6f6f640e6323762ac766f6ba417e384733df1dcfc2e39f780"
+    "service/ag_rolling_plan.py": "ac7de29e0457a8437443388a9b8367f875511446c4e75832344eeeffada4de98",
+    "scripts/runner-v2/record_fields.py": "0e21678e3f4626106da3b55a82b081c59da1467f1c11cac21f4efded4f9963d3",
+    "service/round_fields.py": "8f119d8b1503efb1300e629d9bd6fa6ccb703f927656500f150a43479e6b7451",
+    "service/game_rule_catalog.py": "22ce2e70c1331399ba818539d3f322572c74b63356cf256e4f52160c50a75dae"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2764708c21002e4acda2584161ca37a99e3e83b3c209f9e8b50c89644b9d84b0"
+  "ruleHash": "1ccabeddb4e0192dba8eda96b4c65fea7fea86222a0969ea3b2b240d0548825d"
 }
