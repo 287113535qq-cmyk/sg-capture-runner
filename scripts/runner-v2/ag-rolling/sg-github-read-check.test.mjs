@@ -26,3 +26,16 @@ test('malformed or capped inventories stay rejected instead of turning missing r
  const result=await checkGithubReads({token:'secret',fetchRead:async url=>{const q=queries().find(q=>'https://api.github.com/'+q.path===url);const r=response(q);r.json=async()=>({total_count:100,workflow_runs:[]});return r;}});
  assert.equal(result.code,'GITHUB_READ_CHECK_INCOMPLETE');assert.equal(result.readAttempts,5);assert(result.rows.every(r=>r.complete===false));
 });
+
+test('actual diagnostic reader records a contradictory list and both complete pagination views without losing its initial counts',async()=>{
+ let contradicted=false;const result=await checkGithubReads({token:'secret',fetchRead:async url=>{
+  const relative=url.slice('https://api.github.com/'.length),base=relative.replace(/&page=[12]$/,'');
+  const q=queries().find(q=>q.path===base);const r=response(q);
+  if(q.kind==='list'&&q.repository==='287113535qq-cmyk/sg-capture-runner'&&q.status==='in_progress'&&!contradicted){
+   contradicted=true;r.json=async()=>({total_count:1,workflow_runs:[]});
+  }return r;
+ }});assert.equal(result.outcome,'complete');assert.equal(result.completedFreshChecks,2);assert.equal(result.readAttempts,42);
+ assert.equal(result.inventoryRechecks.length,1);const original=result.rows.find(r=>r.resolvedByPagination);
+ assert.equal(original.initialReportedTotal,1);assert.equal(original.initialReturnedRows,0);assert(original.complete);
+ assert.equal(result.rows.filter(r=>r.endpoint.page&&r.accepted).length,2);
+});

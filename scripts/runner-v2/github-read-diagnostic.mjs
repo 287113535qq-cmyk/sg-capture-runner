@@ -8,8 +8,8 @@ function endpoint(path){
   const prefix=`repos/${repository}/actions/runs`;
   if(!path.startsWith(prefix))continue;
   const suffix=path.slice(prefix.length);
-  const list=/^\?status=([a-z_]+)&per_page=100$/.exec(suffix);
-  if(list&&statuses.includes(list[1]))return {repository,kind:'active-run-list',status:list[1]};
+  const list=/^\?status=([a-z_]+)&per_page=100(?:&page=([12]))?$/.exec(suffix);
+  if(list&&statuses.includes(list[1]))return {repository,kind:'active-run-list',status:list[1],...(list[2]?{page:Number(list[2])}:{})};
   const run=/^\/([0-9]{1,20})$/.exec(suffix);
   if(run)return {repository,kind:'run',runId:run[1]};
   const jobs=/^\/([0-9]{1,20})\/jobs\?filter=all&per_page=100$/.exec(suffix);
