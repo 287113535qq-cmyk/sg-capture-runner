@@ -198,6 +198,7 @@ jobs:
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
       SG_AG_LANE: ${{ matrix.lane }}
+      SG_BUSINESS_MONGO_PASSWORD: ${{ matrix.lane == 20 && secrets.SG_BUSINESS_MONGO_PASSWORD || '' }}
       SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -218,7 +219,26 @@ jobs:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
       - name: Run original AG rolling lane with independent SG sessions
+        # The immutable full-control profile and its own 14+9 proof are checked
+        # before enabling the existing hash-only writer identity.
+        if: matrix.lane != 20
         run: node scripts/runner-v2/ag-rolling/sg-job.mjs
+      - name: Configure existing hash-only writer for the shared primary controller
+        if: matrix.lane == 20
+        run: node scripts/link/setup-business-readonly-ssh.mjs
+        env:
+          SG_BUSINESS_SSH_PRIVATE_KEY: ${{ secrets.SG_BUSINESS_SSH_PRIVATE_KEY }}
+      - name: Run primary lane twenty and original AG final-business controller
+        if: matrix.lane == 20
+        run: node scripts/runner-v2/ag-rolling/sg-job.mjs
+      - name: Save controller counts and state hashes
+        if: always() && matrix.lane == 20
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sg-ag-control-${{ github.run_id }}
+          path: business-evidence/
+          if-no-files-found: warn
+          retention-days: 7
   ag-rolling-companion-capture:
     needs: ag-rolling-join
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling-companion' && github.repository == '287113535qq-cmyk/sg-capture-runner'
@@ -260,8 +280,9 @@ jobs:
     needs: [ag-rolling-admit, ag-rolling-capture]
     if: always() && github.event_name == 'workflow_dispatch' && inputs.role == 'ag-rolling' && needs.ag-rolling-admit.result == 'success' && github.repository == 'zyzuoyang/sg-capture-runner'
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 350
     env:
+      SG_BUSINESS_MONGO_PASSWORD: ${{ secrets.SG_BUSINESS_MONGO_PASSWORD }}
       GH_TOKEN: ${{ github.token }}
       SG_SSH_HOST: ${{ secrets.SG_LINK_SSH_HOST }}
       SG_AG_QUEUE_PROFILE: ${{ inputs.ag_queue_profile }}
@@ -282,8 +303,22 @@ jobs:
         env:
           SG_SSH_PRIVATE_KEY: ${{ secrets.SG_LINK_SSH_PRIVATE_KEY }}
           SG_SSH_KNOWN_HOSTS: ${{ secrets.SG_LINK_SSH_KNOWN_HOSTS }}
+      - name: Configure existing hash-only writer for final reconciliation
+        run: node scripts/link/setup-business-readonly-ssh.mjs
+        env:
+          SG_BUSINESS_SSH_PRIVATE_KEY: ${{ secrets.SG_BUSINESS_SSH_PRIVATE_KEY }}
       - name: Reconcile ended AG lanes without source requests
+        # No new job or private parent is introduced. The original finalizer
+        # uses the same separately scoped writer as the live controller.
         run: node scripts/runner-v2/ag-rolling/sg-live.mjs reconcile
+      - name: Save final reconciliation counts and state hashes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sg-ag-final-control-${{ github.run_id }}
+          path: business-evidence/
+          if-no-files-found: warn
+          retention-days: 7
   demo-rollover:
     if: github.event_name == 'workflow_dispatch' && inputs.role == 'demo-rollover'
     runs-on: ubuntu-latest

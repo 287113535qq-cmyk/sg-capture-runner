@@ -6,7 +6,7 @@ import {verifyPreparingRecovery} from './sg-preparing-recovery.mjs';
 import {preparingGuard} from './sg-admission-audit.mjs';
 import {inspectParticipant,participantKey,cohortRepos,verifyEndedFederation} from './sg-federation.mjs';
 // Queue-wide writes happen once at admission/finalization, never per round.
-export async function activateQueue({profile,store,transport,boundary,checkBaselines,checkNewGame,readPrevious,readLinux,readEnded,readEndedJobs,prepareResume,commit,run,now=Date.now}){
+export async function activateQueue({profile,store,transport,boundary,checkBaselines,checkNewGame,readPrevious,readLinux,readEnded,readEndedJobs,prepareResume,prepareFullResume,commit,run,now=Date.now}){
  assert(!profile.operation,'SG_AG_CONTROL_PROFILE_HAS_NO_SOURCE');
  assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_QUEUE_RUN');
  await boundary();
@@ -45,6 +45,7 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
  }
  assert(!profile.preparationRecovery||recovery,'SG_PREPARING_RECOVERY_REQUIRES_RESUME');
  const revision=inspectQueueRevision({profile,previous,prior});
+ if(profile.fullAgControl&&revision.existing.length)assert(typeof prepareFullResume==='function','SG_AG_FULL_RESUME_PORT_REQUIRED');
  // A missing old canary is corruption, never authorization to provision a
  // fresh game. Check the whole old inventory before any activation write.
  for(const game of revision.existing)await readTasks({store,game,queueId:profile.payload.queueId});
@@ -70,10 +71,11 @@ export async function activateQueue({profile,store,transport,boundary,checkBasel
  await store.create('journal',activationKey,{schema:'sg-ag-rolling-activation-v1',queueId,activation:profile.activation,
   profileHash:queueHash(profile),commit,run,sourceRequests:0},{immutable:true});
  const preparing=preparingGuard({store,boundary,run,queueId,activation:profile.activation,commit,now});
+ if(profile.fullAgControl&&revision.existing.length)await prepareFullResume({profile,previous,prior,ended,guard:preparing});
  for(const game of profile.payload.games){
   if(revision.existing.some(g=>g.gameId===game.gameId)){
    await readTasks({store,game,queueId});
-   await prepareResume({game,queueId,ended,previous,guard:preparing});
+   if(!profile.fullAgControl)await prepareResume({game,queueId,ended,previous,guard:preparing});
   }else{
    await checkNewGame({game,queueId,guard:preparing});
    await prepareTasks({store,transport,game,queueId,guard:preparing});

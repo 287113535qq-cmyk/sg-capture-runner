@@ -16,7 +16,7 @@ async function independentlyVerify(verify,records){
 // I/O adapter streams full content readback instead of server-side gameplay
 // processing. A game can merge while other games continue in other lanes.
 export async function mergeGameWithVerifiedPrefixes({store,transport,game,queueId,plan,guard,verifyRecords,inspectBaseline,
- now=Date.now,owner,cleanup=false,recoverMerging,verifiedPrefixes}){
+ now=Date.now,owner,cleanup=false,recoverMerging,verifiedPrefixes,onSelected}){
  const mergeKey='rolling-merge:'+queueHash([queueId,game.gameId,game.campaignId]);
  const completed=(await store.get('state',mergeKey))?.value;
  if(completed?.status==='complete'){
@@ -110,6 +110,7 @@ export async function mergeGameWithVerifiedPrefixes({store,transport,game,queueI
  assert(queueHash((await store.get('journal',mergeKey+':complete'))?.value)===queueHash(result),'SG_MERGE_RECEIPT_READBACK');
  const before=await store.get('state',mergeKey);assert(before?.value.owner===owner&&before.value.status==='merging','SG_MERGE_FENCE');
  assert(await store.cas('state',mergeKey,before,{...before.value,status:'complete',result}),'SG_MERGE_FENCE');
+ if(onSelected)await onSelected(structuredClone(selected),structuredClone(result));
  if(cleanup)await cleanupMerged({store,transport,game,queueId,plan,selected,result,guard});
  return result;
 }

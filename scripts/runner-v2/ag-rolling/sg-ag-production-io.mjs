@@ -6,7 +6,7 @@ import {queueHash} from './sg-queue-profile.mjs';
 import {quotas} from './ag-core.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 import {inspectStaging,resetEndedTask} from './sg-resume.mjs';
-import {mergeGameWithVerifiedPrefixes} from './sg-ag-native-merge.mjs';
+import {mergeGameWithVerifiedPrefixes,cleanupMerged} from './sg-ag-native-merge.mjs';
 import {auditCompletedNativePrefixes} from './sg-ag-completed-prefix.mjs';
 import {deliverOrdinaryBusiness,verifyOrdinaryNativePage,mongoOnce} from './sg-ag-ordinary-business.mjs';
 import {assertCompleteBinding,digest,verifyLegacyPage,missingDocuments} from './sg-business-delivery.mjs';
@@ -17,8 +17,8 @@ import {createHash} from 'node:crypto';
 // RunnerState/gateway perform the original SG scoped metadata I/O. Business
 // Mongo uses its original account independently; it never gains metadata CAS.
 // The protected entry owns admission, SSH memory agents and evidence endpoints.
-export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,now=Date.now}){
- const queueId=profile.payload.queueId,owner=actorRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map();
+export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,evidenceMode='private-full-ack',sourceJobsEnded=()=>false,now=Date.now}){
+ const queueId=profile.payload.queueId,owner=actorRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map(),selectedRefs=new Map();
  assert(/^\d+:1$/.test(actorRun)&&/^[a-f0-9]{40}$/.test(actorCommit),'SG_AG_ACTUAL_CONTROL_ACTOR');
  assert(Object.values(cohortRepos).includes(repository)&&/^\d+:1$/.test(cohortRun),'SG_AG_PRODUCTION_IDENTITY');
  for(const method of ['guard','assertCapturedEnding','assertResumeBoundary','dispatchRemaining','finishCohort','originalCount','originalDocuments'])assert(typeof admission?.[method]==='function','SG_AG_PRODUCTION_ADMISSION_REQUIRED:'+method);
@@ -29,7 +29,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
   if(g)assert(profile.payload.games.some(x=>x.gameId===g.gameId&&x.campaignId===g.campaignId&&x.dbName===g.dbName&&x.baseline===g.baseline),'SG_AG_PRODUCTION_GAME_SCOPE');
   await admission.guard(phase,g);await store.writable();
   const source=(await store.get('state','rolling-source'))?.value;
-  if(source?.status==='running')await sourcePermit({profile,store,run:coordinatorRun,commit,repository:cohortRepos.primary,coordinatorRun});
+  if(source?.status==='running')await sourcePermit({profile,store,run:coordinatorRun,commit,repository:cohortRepos.primary,coordinatorRun,sourceJobsEnded:sourceJobsEnded()});
   else await admission.assertCapturedEnding({source,profile,cohortRun,coordinatorRun,commit});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(x=>x?.value.active===false),'SG_AG_GLOBAL_HOLD');
   const hello=await transport.request('hello');assert(hello.group==='primary'&&hello.database==='sg_capture_staging_v1'&&hello.gatewaySha256===profile.nativeGatewayHash&&hello.accessManifestHash===profile.nativeManifestHash&&hello.rollingNamespace==='primary','SG_AG_PRODUCTION_NATIVE_BYTES');
@@ -57,12 +57,12 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
   verifyPrefix:readNativePrefix,
   async ensureNative(g,{selected,total,proofs}){
    await guard('native-selection',g);await workers(g);
-   const result=await mergeGameWithVerifiedPrefixes({store,transport,game:g,queueId,plan:plans[g.gameId],owner,cleanup:false,verifiedPrefixes:proofs,guard:()=>guard('native-selection-page',g),verifyRecords:records=>verifyOrdinaryNativePage({records,plan:plans[g.gameId],parser}),inspectBaseline:async()=>({verified:true,count:0})});
+   const result=await mergeGameWithVerifiedPrefixes({store,transport,game:g,queueId,plan:plans[g.gameId],owner,cleanup:false,verifiedPrefixes:proofs,guard:()=>guard('native-selection-page',g),verifyRecords:records=>verifyOrdinaryNativePage({records,plan:plans[g.gameId],parser}),inspectBaseline:async()=>({verified:true,count:0}),onSelected:refs=>selectedRefs.set(g.gameId,refs)});
    assert(result.fullReadback&&result.independentlyVerified&&result.count===total&&stable(result.selected)===stable(selected),'SG_AG_PRODUCTION_NATIVE_SELECTION');return result;
   },
   async inspectPriorOperation(g){const {state,receipt}=await nativeDocuments(g);if(state?.value.status==='merging')return {canStartOnce:false};const p=receipt?.value;if(!p)return {canStartOnce:true};const key=businessKey(g,p),audit=businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1');return {canStartOnce:!await mongoOnce(()=>audit.findOne({_id:key}))};},
   async deliverBusiness(g,native){const docs=await nativeDocuments(g),p=assertCompleteBinding(docs.state,docs.receipt,bindings[g.gameId]);assert(stable(p)===stable(native),'SG_AG_PRODUCTION_NATIVE_CHANGED');
-   const receipt=await deliverOrdinaryBusiness({client:businessClient,ObjectId,parser,binding:bindings[g.gameId],plan:plans[g.gameId],nativeState:docs.state,nativeReceipt:docs.receipt,expectedProof:p,expectedOriginalCount:await admission.originalCount(g),owner,guard:phase=>guard(phase,g),currentRtp,assertWorkers:()=>workers(g),evidence:privateEvidence});done.set(g.gameId,receipt);return receipt;},
+   const receipt=await deliverOrdinaryBusiness({client:businessClient,ObjectId,parser,binding:bindings[g.gameId],plan:plans[g.gameId],nativeState:docs.state,nativeReceipt:docs.receipt,expectedProof:p,expectedOriginalCount:await admission.originalCount(g),owner,guard:phase=>guard(phase,g),currentRtp,assertWorkers:()=>workers(g),evidence:privateEvidence,evidenceMode});done.set(g.gameId,receipt);return receipt;},
   async inspectBusiness(g){
    await guard('final-business-snapshot',g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),campaign=g.campaignId,originalCount=await admission.originalCount(g),campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':campaign},{maxTimeMS:15000})),all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
    assert(all===originalCount+campaignCount,'SG_AG_PRODUCTION_BUSINESS_COUNT');
@@ -81,7 +81,19 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
    return {captureBaseline:0,campaignCount,fullReadback:true,originalUnchanged:true,invalid:0};
   },
   async readBusinessReceipt(g){const docs=await nativeDocuments(g);if(!docs.receipt)return null;const complete=await mongoOnce(()=>businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1').findOne({_id:businessKey(g,docs.receipt.value)+':complete'}));return complete?.value;},
-  async finishGame(g,receipt){await guard('final-business-receipt-seal',g);const key='rolling-final-business:'+queueHash([queueId,g.gameId,g.campaignId]);await store.create('journal',key,{receipt,originalEvidencePreserved:true},{immutable:true});assert(stable((await store.get('journal',key))?.value)===stable({receipt,originalEvidencePreserved:true}),'SG_AG_PRODUCTION_FINAL_RECEIPT_READBACK');return {fullReadback:true,originalEvidencePreserved:true};},
+  async finishGame(g,receipt){await guard('final-business-receipt-seal',g);const key='rolling-final-business:'+queueHash([queueId,g.gameId,g.campaignId]);await store.create('journal',key,{receipt,originalEvidencePreserved:true},{immutable:true});assert(stable((await store.get('journal',key))?.value)===stable({receipt,originalEvidencePreserved:true}),'SG_AG_PRODUCTION_FINAL_RECEIPT_READBACK');
+   const refs=selectedRefs.get(g.gameId),cleanupKey='rolling-final-cleanup:'+queueHash([queueId,g.gameId,g.campaignId]);
+   const cleanupBefore=await store.get('journal',cleanupKey),cleanupAck=await store.get('journal',cleanupKey+':complete');
+   if(cleanupBefore){assert(cleanupAck?.value.intentHash===queueHash(cleanupBefore.value),'SG_AG_CLEANUP_EXISTING_INTENT_NO_REPLAY');return {fullReadback:true,originalEvidencePreserved:true};}
+   if(refs){const docs=await nativeDocuments(g),native=assertCompleteBinding(docs.state,docs.receipt,bindings[g.gameId]);
+    assert(receipt.sourceProofHash===digest(native)&&receipt.campaignCount===native.count&&receipt.fullReadback&&receipt.independentlyVerified&&receipt.originalUnchanged,'SG_AG_CLEANUP_FINAL_BUSINESS_REQUIRED');
+    const intent={owner,queueId,gameId:g.gameId,nativeProofHash:queueHash(native),businessProofHash:queueHash(receipt),selectedHash:queueHash(refs),selectedCount:refs.length};
+    await store.create('journal',cleanupKey,intent,{immutable:true});assert(stable((await store.get('journal',cleanupKey))?.value)===stable(intent),'SG_AG_CLEANUP_INTENT_FULL_READBACK');
+    await cleanupMerged({store,transport,game:g,queueId,plan:plans[g.gameId],selected:refs,result:native,guard:()=>guard('final-business-cleanup',g)});selectedRefs.delete(g.gameId);
+    const ack={intentHash:queueHash(intent),sourceRequests:0};await store.create('journal',cleanupKey+':complete',ack,{immutable:true});assert(stable((await store.get('journal',cleanupKey+':complete'))?.value)===stable(ack),'SG_AG_CLEANUP_ACK_FULL_READBACK');
+   }else{const docs=await nativeDocuments(g);assert(!docs.state?.value.owner?.endsWith(':strict-ag-control'),'SG_AG_CLEANUP_SELECTED_INVENTORY_REQUIRED');
+   }
+   return {fullReadback:true,originalEvidencePreserved:true};},
   async sealSettlement(g,value){await guard('settle-ended-intent',g);const key='rolling-node-settlement:'+queueHash([queueId,g.gameId,value]);await store.create('journal',key,value,{immutable:true});assert(stable((await store.get('journal',key))?.value)===stable(value),'SG_AG_PRODUCTION_SETTLEMENT_INTENT');return {key,fullReadback:true};},
   async ackSettlement(g,intent,value){await store.create('journal',intent.key+':complete',{value},{immutable:true});assert(stable((await store.get('journal',intent.key+':complete'))?.value)===stable({value}),'SG_AG_PRODUCTION_SETTLEMENT_ACK');},
   assertResumeBoundary:()=>admission.assertResumeBoundary(),

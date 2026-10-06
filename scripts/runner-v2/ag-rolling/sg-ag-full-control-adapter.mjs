@@ -50,7 +50,9 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
   deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:()=> 'SG_AG_OWN_GAME_REVIEW_REQUIRED',console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
   async liveLeases(database){let count=0;for(const r of await taskRows(database.game)){const [kind,index]=r.value._id.split(':');count+=await live(database.game,kind,Number(index));}return count;},
   async validateRows(database,g,index){await io.guard('full-prefix-validation',g);const row=(await taskRows(g)).find(r=>r.value._id==='worker:'+index).value;assert(!['running','pending'].includes(row.status),'SG_AG_CONTROL_ACTIVE_PREFIX');
-   const proof=await io.verifyPrefix(g,index,row),quota=quotas(g.baseline)[index-1];assert(proof?.fullReadback&&proof.independentlyVerified&&proof.queueId===queueId&&proof.gameId===g.gameId&&proof.campaignId===g.campaignId&&proof.taskId===row._id&&proof.acceptedUnknownRequests===0&&Number.isSafeInteger(proof.count)&&proof.count>=0&&proof.count<=quota+7,'SG_AG_CONTROL_PREFIX_PROOF');
+   assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');
+   let proof;try{proof=await io.verifyPrefix(g,index,row);}catch(error){if(error.outcomeUnknown===true){g.sgOutcomeUnknownRetained=true;persist('own-control-state',state);}throw error;}
+   const quota=quotas(g.baseline)[index-1];assert(proof?.fullReadback&&proof.independentlyVerified&&proof.queueId===queueId&&proof.gameId===g.gameId&&proof.campaignId===g.campaignId&&proof.taskId===row._id&&proof.acceptedUnknownRequests===0&&Number.isSafeInteger(proof.count)&&proof.count>=0&&proof.count<=quota+7,'SG_AG_CONTROL_PREFIX_PROOF');
    if(row.status==='success')assert(row.proof?.fullReadback&&row.proof.independentlyVerified&&row.proof.recordsHash===proof.recordsHash&&row.proof.count===proof.count,'SG_AG_CONTROL_SUCCESS_PROOF_CHANGED');
    prefixProofs.set(g.gameId+':'+index,structuredClone(proof));return proof.count;
   },

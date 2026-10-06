@@ -39,9 +39,11 @@ export async function verifyOrdinaryNativePage({records,plan,parser}){
  assert(verified?.verified===true&&verified.count===records.length,'SG_AG_BUSINESS_INDEPENDENT_FULL_PAGE');
  return verified;
 }
-export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,plan,nativeState,nativeReceipt,expectedProof,expectedOriginalCount,owner,guard,currentRtp,assertWorkers,evidence}){
+export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,plan,nativeState,nativeReceipt,expectedProof,expectedOriginalCount,owner,guard,currentRtp,assertWorkers,evidence,evidenceMode='private-full-ack'}){
  assert(plan.adapter==='native-nextgen-v1'&&String(plan.gameId)===String(b.gameId)&&b.queueId===expectedProof.queueId,'SG_BUSINESS_ADAPTER_REVIEW_REQUIRED');
- assert([100,150].includes(expectedOriginalCount)&&typeof owner==='string'&&typeof evidence?.writeAndReadback==='function'&&typeof evidence?.appendAndReadback==='function','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
+ assert(Number.isSafeInteger(expectedOriginalCount)&&expectedOriginalCount>=0&&typeof owner==='string','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
+ assert(['private-full-ack','existing-immutable-audit'].includes(evidenceMode),'SG_AG_BUSINESS_EVIDENCE_MODE');
+ if(evidenceMode==='private-full-ack')assert(typeof evidence?.writeAndReadback==='function'&&typeof evidence?.appendAndReadback==='function','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
  await guard('business-admission');await currentRtp(b);await assertWorkers();
  const proof=assertCompleteBinding(nativeState,nativeReceipt,b);
  assert(stable(proof)===stable(expectedProof),'SG_BUSINESS_PROOF_CHANGED');
@@ -83,7 +85,7 @@ export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,
  const batchAudit={begin:(id,value)=>seal(claimId+':intent:'+id,value),end:(id,value)=>seal(claimId+':ack:'+id,value)};let inserted=0;
  const written=await eachNativePage(async(records,worker,n)=>{const result=await deliverPage({records,binding:b,campaignId,parser,sink,audit:batchAudit,batchId:worker+':'+n});inserted+=result.inserted;
   const full={owner,claimId,phase:'delivered-page',worker,end:n,source:records,target:result.documents};
-  const ack=await evidence.appendAndReadback(full);assert(ack?.fullReadback&&ack.durable&&ack.privateOnly&&ack.valueHash===digest(full),'SG_AG_BUSINESS_PAGE_PRIVATE_FULL_ACK');
+  if(evidenceMode==='private-full-ack'){const ack=await evidence.appendAndReadback(full);assert(ack?.fullReadback&&ack.durable&&ack.privateOnly&&ack.valueHash===digest(full),'SG_AG_BUSINESS_PAGE_PRIVATE_FULL_ACK');}
  });
  assert(written.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
  let targetCount=0;const targetHash=createHash('sha256');
@@ -100,7 +102,9 @@ export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,
  assert(stable(await mongoOnce(()=>staging.collection('capture_journal_v2').findOne({_id:nativeReceipt._id})))===stable(nativeReceipt),'SG_BUSINESS_IMMUTABLE_SOURCE_CHANGED');
  const done={schema:'sg-ag-final-business-complete-v1',gameId:String(b.gameId),queueId:b.queueId,database:b.database,businessCount:300000+baseline,campaignCount:300000,originalCount:baseline,captureBaseline:0,retagged:tagChanges.length,inserted,sourceProofHash:digest(proof),sourceRecordsHash:proof.recordsHash,businessRecordsHash:targetHash.digest('hex'),originalBeforeHash,baselineHash,fullReadback:true,independentlyVerified:true,originalUnchanged:true,sourceRequests:0};
  await seal(claimId+':complete',{value:done});
- const ack=await evidence.writeAndReadback({owner,claimId,complete:done,originalsBefore:originals.map(jsonDoc),originalsAfter:after.map(jsonDoc),sourceReceipt:nativeReceipt,inventory});
- assert(ack?.fullReadback===true&&ack.durable===true&&ack.privateOnly===true&&ack.valueHash===digest(done),'SG_AG_BUSINESS_PRIVATE_EVIDENCE_ACK');
+ if(evidenceMode==='private-full-ack'){
+  const ack=await evidence.writeAndReadback({owner,claimId,complete:done,originalsBefore:originals.map(jsonDoc),originalsAfter:after.map(jsonDoc),sourceReceipt:nativeReceipt,inventory});
+  assert(ack?.fullReadback===true&&ack.durable===true&&ack.privateOnly===true&&ack.valueHash===digest(done),'SG_AG_BUSINESS_PRIVATE_EVIDENCE_ACK');
+ }
  return done;
 }

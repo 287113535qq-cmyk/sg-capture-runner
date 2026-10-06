@@ -24,6 +24,8 @@ import {cohortRepos,cohortView,joinCohort,participantKey,inspectParticipant,ende
 import {companionBoundary} from './sg-federated-boundary.mjs';
 import {closePreparation} from './sg-preparation-close.mjs';
 import {protocolStopReport} from './sg-fault-code.mjs';
+import {openExistingWorkflowControl} from './sg-ag-existing-workflow.mjs';
+import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
@@ -42,7 +44,7 @@ assert(mode!=='join'||process.env.GITHUB_JOB==='ag-rolling-join'&&view.cohort===
 let coordinatorRun=view.cohort==='primary'?run:process.env.SG_AG_COORDINATOR_RUN;
 assert(/^\d+:1$/.test(coordinatorRun??''),'SG_AG_COORDINATOR_RUN');
 assert(/^\d+:1$/.test(run)&&/^[a-f0-9]{40}$/.test(commit),'SG_AG_RUN_IDENTITY');
-const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)?LANE_BUDGET_MS:mode==='admit'?120*60000:40*60000);
+const transport=serializeTransport(connectGateway()),gate=new ResourceGate(),deadline=Date.now()+(['lane','controller'].includes(mode)||mode==='reconcile'&&profile.fullAgControl?LANE_BUDGET_MS:mode==='admit'?120*60000:40*60000);
 const store=new RunnerState({transport,gate,deadline}),stop=new AbortController();
 let sourceDeadline=deadline;
 if(['lane','controller'].includes(mode)){
@@ -52,9 +54,13 @@ if(['lane','controller'].includes(mode)){
  const hello=await transport.request('hello');assert(hello.group===view.cohort&&hello.gatewaySha256===profile.nativeGatewayHash
   &&hello.accessManifestHash===profile.nativeManifestHash&&(!profile.federation||hello.rollingNamespace==='primary'),'SG_AG_COHORT_NATIVE_CHANGED');
 }
-let localLaneEnded=false;
+let localLaneEnded=false,localSourceClose=null,fullControl;
 if(mode==='controller')process.on('message',message=>{
- if(message?.type==='lane-source-ended'&&message.lane===20)localLaneEnded=true;
+ if(message?.type==='lane-source-ended'&&message.lane===20&&message.run===run
+  &&message.sourceClosed===true&&(message.pid===null||Number.isSafeInteger(message.pid)&&message.pid>0)
+  &&(Number.isInteger(message.code)||message.code===null)&&(typeof message.signal==='string'||message.signal===null)){
+   localLaneEnded=true;localSourceClose=structuredClone(message);
+  }
 });
 let mergeParser,mergeTail=Promise.resolve(),recoverMerging,auditReaders=[];
 process.on('SIGTERM',()=>stop.abort());process.on('SIGINT',()=>stop.abort());
@@ -111,6 +117,26 @@ async function merge(game){
  if(result.status!=='active')log(JSON.stringify({gameId:game.gameId,phase:result.status??'complete',count:result.count??0,
   reason:result.reason??null}));return result;
 }
+async function prepareResumeGame({game,queueId,ended,previous,guard}){
+ const permit=(await store.get('journal','rolling-activation:'+profile.resume.previousActivation+':complete'))?.value;
+ assert(queueHash(previous)===permit.profileHash&&previous.payload.queueId===queueId
+  &&previous.payload.games.some(g=>queueHash(g)===queueHash(game)),'SG_AG_RESUME_GAME_CHANGED');
+ const plan=registry.plans[game.gameId];
+ const baseline=await inspectFormalBaseline({profile,game,plan,store,transport,ended,guard});
+ if(baseline.status==='complete')return;
+ const oldEntry=previous.manifest.find(g=>g.gameId===game.gameId),entry=profile.manifest.find(g=>g.gameId===game.gameId);
+ assert(oldEntry&&entry,'SG_AG_RESUME_MANIFEST_REQUIRED');
+ const revalidateSuccess=oldEntry.planHash!==entry.planHash||oldEntry.adapterProofHash!==entry.adapterProofHash;
+ if(!auditReaders.length)auditReaders=Array.from({length:4},()=>{
+  const reader=readOnlyAuditTransport(serializeTransport(connectGateway({compression:true}))),parser=analyzer();
+  const readStore=new RunnerState({transport:reader,gate,deadline});
+  const scopedStore={get:readStore.get.bind(readStore),getMany:readStore.getMany.bind(readStore),create:store.create.bind(store),cas:store.cas.bind(store)};
+  return {reader,parser,store:scopedStore};
+ });
+ await auditTasks([...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])],{
+  contexts:auditReaders,audit:async([kind,index],context)=>resetEndedTask({store:context.store,transport:context.reader,
+   game,queueId,kind,index,guard,ended,revalidateSuccess,verifyRecords:rows=>context.parser.verifyPage(plan,[...rows].sort((a,b)=>a.sequence-b.sequence))})});
+}
 try{
  if(mode==='preparation-close'){
   const gh=authenticatedRead(process.env.GH_TOKEN),boundary=maintenanceBoundary({read:gh,store,oldProfile:read('config/demo-pilot-beaver-20260930.json'),run,commit,workflowPath:'.github/workflows/trial-300k.yml'});
@@ -132,27 +158,8 @@ try{
    readEndedJobs:(id,repository=cohortRepos.primary)=>gh(`repos/${repository}/actions/runs/${id}/jobs?filter=all&per_page=100`),
    readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
    checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
-   prepareResume:async({game,queueId,ended,previous,guard})=>{
-    const permit=(await store.get('journal','rolling-activation:'+profile.resume.previousActivation+':complete'))?.value;
-    assert(queueHash(previous)===permit.profileHash&&previous.payload.queueId===queueId
-     &&previous.payload.games.some(g=>queueHash(g)===queueHash(game)),'SG_AG_RESUME_GAME_CHANGED');
-    const plan=registry.plans[game.gameId];
-    const baseline=await inspectFormalBaseline({profile,game,plan,store,transport,ended,guard});
-    if(baseline.status==='complete')return; // Its immutable proof survives staging cleanup.
-    const oldEntry=previous.manifest.find(g=>g.gameId===game.gameId),entry=profile.manifest.find(g=>g.gameId===game.gameId);
-    assert(oldEntry&&entry,'SG_AG_RESUME_MANIFEST_REQUIRED');
-    const revalidateSuccess=oldEntry.planHash!==entry.planHash||oldEntry.adapterProofHash!==entry.adapterProofHash;
-    if(!auditReaders.length)auditReaders=Array.from({length:4},()=>{
-     const reader=readOnlyAuditTransport(serializeTransport(connectGateway({compression:true}))),parser=analyzer();
-     const readStore=new RunnerState({transport:reader,gate,deadline});
-     const scopedStore={get:readStore.get.bind(readStore),getMany:readStore.getMany.bind(readStore),
-      create:store.create.bind(store),cas:store.cas.bind(store)};
-     return {reader,parser,store:scopedStore};
-    });
-    await auditTasks([...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])],{
-     contexts:auditReaders,audit:async([kind,index],context)=>resetEndedTask({store:context.store,transport:context.reader,
-      game,queueId,kind,index,guard,ended,revalidateSuccess,verifyRecords:rows=>context.parser.verifyPage(plan,[...rows].sort((a,b)=>a.sequence-b.sequence))})});
-   },
+   prepareResume:prepareResumeGame,
+   prepareFullResume:context=>prepareExistingAgResume({...context,store,prepareGame:prepareResumeGame}),
    checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
     const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');
@@ -177,8 +184,11 @@ try{
   process.exitCode=healthy?0:2;
  }else if(mode==='controller'){
   const gh=authenticatedRead(process.env.GH_TOKEN),completed=new Set();
+  if(profile.fullAgControl)fullControl=await openExistingWorkflowControl({profile,store,transport,guard:globalGuard,githubRead:gh,
+   coordinatorRun:run,commit,sourceClose:()=>localSourceClose,sourceJobsEnded:()=>sourceJobsEnded});
   while(!stop.signal.aborted&&Date.now()<sourceDeadline){
-   for(const game of profile.payload.games){if(completed.has(game.gameId))continue;
+   if(fullControl){for(const result of await fullControl.reconcile())if(result.status==='complete')completed.add(result.gameId);}
+   else for(const game of profile.payload.games){if(completed.has(game.gameId))continue;
     try{const result=await merge(game);if(result.count===300000)completed.add(game.gameId);}
     catch(error){if(error.outcomeUnknown===true||transport.status().poison||stop.signal.aborted)throw error;
      const code=error.code??error.message;log(JSON.stringify({gameId:game.gameId,status:'retained',
@@ -207,13 +217,15 @@ try{
    }
   }
   sourceJobsEnded=true;
+  if(profile.fullAgControl)fullControl=await openExistingWorkflowControl({profile,store,transport,guard:globalGuard,githubRead:gh,
+   coordinatorRun:run,commit,sourceClose:()=>localSourceClose,sourceJobsEnded:()=>sourceJobsEnded});
   recoverMerging=async previous=>{
    assert(previous.owner===run+':ag-rolling-capture:controller','SG_MERGE_RECOVERY_OWNER');
    const actor=jobs.jobs.filter(j=>j.name==='AG rolling lane 20');
    assert(actor.length===1&&actor[0].status==='completed','SG_MERGE_CONTROLLER_ACTIVE');
    return {actorEnded:true,owner:previous.owner,run,commit,jobId:actor[0].id,sourceRequests:0};
   };
-  const results=[];for(const game of profile.payload.games){
+  const results=fullControl?await fullControl.reconcile():[];if(!fullControl)for(const game of profile.payload.games){
    try{results.push(await merge(game));}catch(error){
     if(error.outcomeUnknown===true||transport.status().poison)throw error;
     const code=error.code??error.message;
@@ -239,6 +251,6 @@ try{
    lastQueueId:profile.payload.queueId,endedProofHash:queueHash(result)}),'SG_AG_SOURCE_FENCE');log(JSON.stringify(result));
  }
 }catch(error){log(JSON.stringify(protocolStopReport(error)));process.exitCode=2;}
-finally{await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
+finally{await fullControl?.close();await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
  log(JSON.stringify({kind:'sg-ag-admission-read-performance',reader:index+1,...context.reader.metrics()}));context.parser.close();context.reader.close();}
  log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}
