@@ -5,15 +5,28 @@ import {spawn} from 'node:child_process';
 import fs from 'node:fs';
 import {createRequire} from 'node:module';
 import {runRollingJob} from './sg-job.mjs';
+import {LANE_BUDGET_MS} from './ag-core.mjs';
 function fixture(){
  const children=[];
  const spawnProcess=(exe,args,options)=>{
-  const child=new EventEmitter();Object.assign(child,{exe,args,options,connected:args[1]==='controller',signals:[],messages:[]});
+  const child=new EventEmitter();Object.assign(child,{pid:1000+children.length,exe,args,options,connected:args[1]==='controller',signals:[],messages:[]});
   child.kill=signal=>{child.signals.push(signal);child.connected=false;child.emit('close',null,signal);};
   child.send=(message,callback)=>{child.messages.push(message);callback?.();};
   children.push(child);return child;
  };
  return {children,spawnProcess};
+}
+function fakeClock(){
+ let now=0;const active=new Set();
+ return {
+  setTimer(fn,ms){const token={at:now+ms,fn};active.add(token);return token;},
+  clearTimer(token){active.delete(token);},
+  advance(ms){const end=now+ms;let next;
+   while((next=[...active].filter(t=>t.at<=end).sort((a,b)=>a.at-b.at)[0])){now=next.at;active.delete(next);next.fn();}
+   now=end;
+  },
+  pending:()=>active.size
+ };
 }
 const environment={SG_TRIAL_DEMO_CONFIG:'offline-placeholder',SG_AG_LANE:'20',GH_TOKEN:'offline-gh-placeholder'};
 test('every AG workflow entry point installs locked module dependencies and has no extra concurrent controller job',()=>{
@@ -74,8 +87,98 @@ test('a real exited source remains active until its inherited output pipe closes
 test('spawn errors without a PID wait for close and cannot announce an ended source',async()=>{
  const f=fixture();let finished=false;
  const done=runRollingJob({lane:3,environment,spawnProcess:f.spawnProcess}).then(code=>{finished=true;return code;});
- f.children[0].emit('error',Error('synthetic-spawn-error'));await new Promise(r=>setImmediate(r));assert.equal(finished,false);
+ f.children[0].pid=undefined;f.children[0].emit('error',Error('synthetic-spawn-error'));await new Promise(r=>setImmediate(r));assert.equal(finished,false);
+ assert.deepEqual(f.children[0].signals,[]);
  f.children[0].emit('close',null,null);assert.equal(await done,2);
+});
+
+test('fixed AG process budget terminates both hung children and escalates after exactly five seconds',async()=>{
+ const f=fixture(),clock=fakeClock();let finished=false;
+ const done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,...clock,log:()=>{}}).then(code=>{finished=true;return code;});
+ assert.equal(LANE_BUDGET_MS,340*60000);
+ for(const child of f.children)child.kill=signal=>{child.signals.push(signal);return true;};
+ clock.advance(LANE_BUDGET_MS-1);assert.ok(f.children.every(c=>c.signals.length===0));
+ clock.advance(1);assert.ok(f.children.every(c=>c.signals.join(',')==='SIGTERM'));
+ clock.advance(4999);assert.equal(finished,false);assert.deepEqual(f.children[0].messages,[]);
+ clock.advance(1);assert.ok(f.children.every(c=>c.signals.join(',')==='SIGTERM,SIGKILL'));
+ assert.equal(finished,false,'a successful kill call is not proof of close');
+ for(const child of f.children)child.emit('close',null,'SIGKILL');
+ assert.equal(await done,2);assert.equal(clock.pending(),0);
+});
+
+test('a completed lane cannot restart the fixed budget for its still-running controller',async()=>{
+ const f=fixture(),clock=fakeClock(),done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,...clock,log:()=>{}});
+ const [controller,source]=f.children;
+ clock.advance(LANE_BUDGET_MS-10);source.emit('close',0,null);await new Promise(r=>setImmediate(r));
+ assert.equal(controller.messages.length,1);clock.advance(10);
+ assert.equal(await done,2);assert.deepEqual(source.signals,[]);assert.deepEqual(controller.signals,['SIGTERM']);assert.equal(clock.pending(),0);
+});
+
+test('cancellation racing the budget sends one TERM and keeps the first five-second escalation',async()=>{
+ const f=fixture(),clock=fakeClock(),stop=new AbortController();
+ const done=runRollingJob({lane:3,environment,spawnProcess:f.spawnProcess,signal:stop.signal,...clock});
+ const source=f.children[0];source.kill=signal=>{source.signals.push(signal);return true;};
+ clock.advance(LANE_BUDGET_MS-1);stop.abort();clock.advance(1);assert.deepEqual(source.signals,['SIGTERM']);
+ clock.advance(4999);assert.deepEqual(source.signals,['SIGTERM','SIGKILL']);
+ source.emit('close',0,null);assert.equal(await done,2,'even a graceful close after cancellation remains a failed job');
+ assert.equal(clock.pending(),0);
+});
+
+test('kill errors and missing close fail boundedly without sending a fabricated source-ending message',async()=>{
+ const f=fixture(),clock=fakeClock(),reports=[];
+ const done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,...clock,log:r=>reports.push(JSON.parse(r))});
+ const [controller,source]=f.children;
+ for(const child of f.children)child.kill=signal=>{child.signals.push(signal);child.emit('error',Error('synthetic-kill-error'));throw Error('synthetic-kill-throw');};
+ const rejected=assert.rejects(done,error=>error.message==='SG_AG_JOB_CLOSE_UNKNOWN_RETAINED'&&error.outcomeUnknown===true&&error.sourceClosed===false);
+ clock.advance(LANE_BUDGET_MS);clock.advance(5000);assert.deepEqual(controller.messages,[]);assert.deepEqual(reports,[]);
+ clock.advance(5000);await rejected;assert.equal(clock.pending(),0);
+ assert.deepEqual(source.signals,['SIGTERM','SIGKILL']);assert.deepEqual(controller.messages,[]);
+});
+
+test('failed kill return and an exit event alone never become a closed source',async()=>{
+ const f=fixture(),clock=fakeClock(),stop=new AbortController();
+ const done=runRollingJob({lane:3,environment,spawnProcess:f.spawnProcess,signal:stop.signal,...clock});
+ const source=f.children[0];source.kill=signal=>{source.signals.push(signal);return false;};
+ source.emit('exit',0,null);stop.abort();
+ const rejected=assert.rejects(done,/SG_AG_JOB_CLOSE_UNKNOWN_RETAINED/);
+ clock.advance(10000);await rejected;assert.equal(clock.pending(),0);
+});
+
+test('controller error terminates only that controller and leaves healthy source available to final reconciliation',async()=>{
+ const f=fixture(),clock=fakeClock(),done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,...clock,log:()=>{}});
+ const [controller,source]=f.children;controller.emit('error',Error('synthetic-controller-error'));
+ await new Promise(r=>setImmediate(r));assert.deepEqual(source.signals,[]);assert.deepEqual(controller.signals,['SIGTERM']);
+ source.emit('close',0,null);assert.equal(await done,0);assert.equal(clock.pending(),0);
+});
+
+test('normal close clears the process watchdog before its later deadline',async()=>{
+ const f=fixture(),clock=fakeClock(),done=runRollingJob({lane:3,environment,spawnProcess:f.spawnProcess,...clock});
+ f.children[0].emit('close',0,null);assert.equal(await done,0);assert.equal(clock.pending(),0);
+ clock.advance(LANE_BUDGET_MS+10000);assert.deepEqual(f.children[0].signals,[]);
+});
+
+test('the independent watchdog ends an actual unresponsive subprocess',async t=>{
+ const clock=fakeClock();let child;
+ const done=runRollingJob({lane:3,environment,...clock,spawnProcess:exe=>{
+  child=spawn(exe,['-e',"process.stdout.write('ready\\n');setInterval(()=>{},1000)"],{stdio:['ignore','pipe','pipe']});return child;
+ }});
+ t.after(()=>{if(child.exitCode===null)child.kill('SIGKILL');});
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);});
+ clock.advance(LANE_BUDGET_MS);assert.equal(await done,2);assert.equal(clock.pending(),0);
+ assert.notEqual(child.signalCode,null);
+});
+
+test('a real child with failed kill remains unknown until host cleanup, without delaying owner failure',async t=>{
+ const clock=fakeClock();let child,actualKill;
+ const done=runRollingJob({lane:3,environment,...clock,spawnProcess:exe=>{
+  child=spawn(exe,['-e',"process.stdout.write('ready\\n');setInterval(()=>{},1000)"],{stdio:['ignore','pipe','pipe']});
+  actualKill=child.kill.bind(child);child.kill=()=>{throw Error('synthetic-OS-kill-refusal');};return child;
+ }});
+ t.after(async()=>{if(child.exitCode===null){const closed=new Promise(resolve=>child.once('close',resolve));actualKill('SIGKILL');await closed;}});
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);});
+ const rejected=assert.rejects(done,error=>error.outcomeUnknown===true&&error.sourceClosed===false);
+ clock.advance(LANE_BUDGET_MS+10000);await rejected;
+ assert.equal(child.exitCode,null);assert.equal(child.signalCode,null);assert.equal(clock.pending(),0);
 });
 test('business credentials stay in the controller and never enter a source child',async()=>{
  const f=fixture(),done=runRollingJob({lane:20,environment:{...environment,SG_BUSINESS_MONGO_PASSWORD:'synthetic-only',SG_BUSINESS_SSH_KEY_FILE:'synthetic-only'},spawnProcess:f.spawnProcess,log:()=>{}});

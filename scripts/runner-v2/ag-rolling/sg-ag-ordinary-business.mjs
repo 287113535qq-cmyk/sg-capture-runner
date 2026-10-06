@@ -15,7 +15,12 @@ import {createNativePageVerificationCache} from './sg-native-page-verification-c
 // All actual database calls retain the existing Mongo collection interfaces.
 export async function mongoOnce(operation){
  try{return await operation();}catch(error){
-  if(!/^SG_[A-Z_]+$/.test(error.message??''))error.outcomeUnknown=true;
+  // RunnerState rejects this exact local guard error before a write starts.
+  // The page wrapper also includes that guard; do not turn a known deadline
+  // into a fabricated native unknown. Existing unknowns (including a driver
+  // failure with the same text) are never cleared or reclassified here.
+  const guardDeadline=error.code==='RESOURCE_WAIT_DEADLINE'&&error.message==='RESOURCE_WAIT_DEADLINE';
+  if(!guardDeadline&&!/^SG_[A-Z_]+$/.test(error.message??''))error.outcomeUnknown=true;
   throw error;
  }
 }

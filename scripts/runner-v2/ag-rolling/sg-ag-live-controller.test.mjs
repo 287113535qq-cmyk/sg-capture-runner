@@ -11,8 +11,8 @@ import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 
-function fixture(){
- const queueId='own-queue',commit='a'.repeat(40),runs={primary:'123:1',secondary:'456:1'},games=['32441','32442'].map(id=>({gameId:id,dbName:'sg_'+id,campaignId:'sg_'+id+'-'+queueId,baseline:0}));
+function fixture(ids=['32441','32442']){
+ const queueId='own-queue',commit='a'.repeat(40),runs={primary:'123:1',secondary:'456:1'},games=ids.map(id=>({gameId:id,dbName:'sg_'+id,campaignId:'sg_'+id+'-'+queueId,baseline:0}));
  const profile={activation:'b'.repeat(64),nativeGatewayHash:'c'.repeat(64),nativeManifestHash:'d'.repeat(64),payload:{queueId,games},manifest:[],federation:{schema:'sg-ag-two-cohort-v1',namespace:'primary',lanesPerCohort:20,totalLanes:40,assignments:games.map((g,i)=>({gameId:g.gameId,cohort:i?'secondary':'primary'}))}};
  const docs=new Map(),changes=[],contexts=[],jobs={primary:[],secondary:[]};
  for(const [cohort,game] of [['primary',games[0]],['secondary',games[1]]]){
@@ -43,13 +43,21 @@ test('existing primary controller invokes AG separately for each true cohort and
  assert.equal(f.task('primary',1).status,'failed');assert.equal(f.task('secondary',1).status,'failed');assert.equal(f.task('primary',2).status,'pending');
 });
 
-function resumeFixture(){
- const f=fixture(),receipt={schema:'sg-ag-rolling-window-ended-v1',run:f.runs.primary,sourceRequests:0};
+function resumeFixture(ids){
+ const f=fixture(ids),receipt={schema:'sg-ag-rolling-window-ended-v1',run:f.runs.primary,sourceRequests:0};
  const ended={status:'completed',sourceJobsEnded:true,queueId:f.profile.payload.queueId,run:f.runs.primary,proofHash:queueHash(receipt)};
  const profile={...f.profile,activation:'e'.repeat(64),fullAgControl:{},resume:{previousActivation:f.profile.activation,previousRun:f.runs.primary,endedProofHash:ended.proofHash}};
  f.docs.set('journal/rolling-ended:'+ended.queueId+':'+ended.run,{value:receipt});
  const prepared=[];
  return {...f,ended,profile,previous:f.profile,prepared,args:{profile,previous:f.profile,prior:{run:f.runs.primary,commit:f.commit},ended,store:f.store,guard:async()=>{},prepareGame:async({game})=>prepared.push(game.gameId)}};
+}
+function savedResumeState(f,changes,cohort='secondary'){
+ const oldRun=f.runs[cohort],index=cohort==='primary'?0:1,key='rolling-ag-control:'+queueHash([f.ended.queueId,oldRun,f.commit]);
+ const state={version:1,queueId:f.ended.queueId,runId:Number(oldRun.split(':')[0]),phase:'paused',games:[{...f.games[index],phase:'blocked',...changes}]};
+ const saved={cohortRun:oldRun,commit:f.commit,state,sequence:3,journal:key+':3'};
+ f.docs.set('state/'+key,{version:2,value:structuredClone(saved)});
+ f.docs.set('journal/'+saved.journal,{version:0,value:{file:'own-control-state',value:structuredClone(state),cohortRun:oldRun,commit:f.commit}});
+ return {key,state: f.docs.get('state/'+key),journal:f.docs.get('journal/'+saved.journal)};
 }
 test('existing admit uses the original AG resume for both own cohorts and hands off to the existing permit without source requests',async()=>{
  const f=resumeFixture(),result=await prepareExistingAgResume(f.args);
@@ -58,10 +66,87 @@ test('existing admit uses the original AG resume for both own cohorts and hands 
  await assert.rejects(prepareExistingAgResume(f.args),/EXISTING_HANDOFF_NO_REPLAY/);
 });
 test('saved blocked or unknown games are retained across the actual admission resume',async()=>{
- for(const unknown of [false,true]){const f=resumeFixture(),game={...f.games[1],phase:unknown?'merging':'blocked',...(unknown?{sgOutcomeUnknownRetained:true}:{})};
-  f.docs.set('state/rolling-ag-control:'+queueHash([f.ended.queueId,f.runs.secondary,f.commit]),{value:{cohortRun:f.runs.secondary,commit:f.commit,state:{version:1,queueId:f.ended.queueId,runId:456,games:[game]}}});
+ for(const unknown of [false,true]){const f=resumeFixture();savedResumeState(f,{phase:unknown?'merging':'blocked',...(unknown?{sgOutcomeUnknownRetained:true}:{})});
   const result=await prepareExistingAgResume(f.args);assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
  }
+});
+
+const insufficient='有效 289001 条，低于 300000；保留数据等待续跑或协议诊断';
+const initialBudget={schema:'sg-ag-game-budget-v1',startedAt:1000,deadlineAt:1801000};
+const exhaustedBudget={...initialBudget,exhaustedAt:1801000,stoppedPhase:'accepted-prefix-page',stoppedGamePhase:'ready'};
+
+test('the exact original AG insufficient quota state resumes through the original full prepareGame and dispatches remaining work',async()=>{
+ for(const budget of [undefined,initialBudget]){
+  const f=resumeFixture(),saved=savedResumeState(f,{reason:insufficient,...(budget?{sgGameBudget:budget}:{})});
+  const before=structuredClone(saved.state);f.args.canResumeQuotaGame=game=>game.gameId==='32442';
+  const result=await prepareExistingAgResume(f.args);
+  assert.deepEqual(f.prepared,['32441','32442']);assert.deepEqual(result[1].remaining,['32442']);
+  assert.deepEqual(saved.state,before,'the previous immutable evidence is retained; only the new AG resume view is ready');
+ }
+});
+
+test('only an exact expired read-only game budget can resume in a new verified window',async()=>{
+ const f=resumeFixture();savedResumeState(f,{reason:'SG_AG_GAME_BUDGET_EXHAUSTED',sgGameBudget:exhaustedBudget});
+ f.args.canResumeQuotaGame=()=>true;const result=await prepareExistingAgResume(f.args);
+ assert.deepEqual(f.prepared,['32441','32442']);assert.deepEqual(result[1].remaining,['32442']);
+});
+
+test('unknown operations, malformed quota reasons and noninitial budgets never unlock blocked games',async()=>{
+ const changes=[{reason:'SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY'},
+  {reason:'有效 300000 条，低于 300000；保留数据等待续跑或协议诊断'},
+  {reason:'有效 0289001 条，低于 300000；保留数据等待续跑或协议诊断'},
+  {reason:insufficient+' '},{acceptedTotal:300000},{acceptedTotal:0},
+  {sgOutcomeUnknownRetained:true},{sgOutcomeUnknownRetained:false},{sgExistingOperationRetained:true},{sgExistingOperationRetained:false},
+  {phase:'merging'},{phase:'merged'},{sgGameBudget:{...initialBudget,unknown:true}},
+  {sgGameBudget:{...initialBudget,deadlineAt:1801001}},{sgGameBudget:exhaustedBudget}];
+ for(const change of changes){
+  const f=resumeFixture();savedResumeState(f,{reason:insufficient,...change});f.args.canResumeQuotaGame=()=>true;
+  const result=await prepareExistingAgResume(f.args);assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
+ }
+});
+
+test('write-phase budget stops, missing clock proof and unknown outcome remain isolated',async()=>{
+ for(const change of [{stoppedGamePhase:'merging'},{stoppedGamePhase:'merged'},{exhaustedAt:1800999},
+  {deadlineAt:1801001},{startedAt:-1},{schema:'other'},{extra:true},{stoppedPhase:''},{stoppedGamePhase:undefined}]){
+  const f=resumeFixture();savedResumeState(f,{reason:'SG_AG_GAME_BUDGET_EXHAUSTED',sgGameBudget:{...exhaustedBudget,...change}});
+  f.args.canResumeQuotaGame=()=>true;const result=await prepareExistingAgResume(f.args);
+  assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
+ }
+ for(const retained of [{sgOutcomeUnknownRetained:true},{sgExistingOperationRetained:true},{acceptedTotal:300000}]){
+  const f=resumeFixture();savedResumeState(f,{reason:'SG_AG_GAME_BUDGET_EXHAUSTED',sgGameBudget:exhaustedBudget,...retained});
+  f.args.canResumeQuotaGame=()=>true;const result=await prepareExistingAgResume(f.args);
+  assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
+ }
+});
+
+test('quota restoration requires an explicit supported adapter and always excludes the retained money anomaly',async()=>{
+ for(const mode of ['absent','unsupported','money-anomaly']){
+  const f=resumeFixture(mode==='money-anomaly'?['32441','32629']:undefined);savedResumeState(f,{reason:insufficient});
+  if(mode!=='absent')f.args.canResumeQuotaGame=()=>mode==='money-anomaly';
+  const result=await prepareExistingAgResume(f.args);assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
+ }
+});
+
+test('both complete saved journal chains are checked before any task preparation or handoff',async()=>{
+ const corruptions=[({state})=>{state.value.sequence=0;},({state})=>{state.value.sequence=4;},
+  ({state})=>{state.value.journal='foreign:3';},({journal})=>{journal.value.file='own-exception-state';},
+  ({journal})=>{journal.value.cohortRun='999:1';},({journal})=>{journal.value.extra=true;},
+  ({state})=>{state.value.state.games[0].reason='tampered';},
+  ({state,journal})=>{state.value.state.games[0].dbName='foreign';journal.value.value=structuredClone(state.value.state);}];
+ for(const corrupt of corruptions){
+  const f=resumeFixture(),saved=savedResumeState(f,{reason:insufficient});corrupt(saved);f.args.canResumeQuotaGame=()=>true;
+  await assert.rejects(prepareExistingAgResume(f.args),/SG_AG_RESUME_(?:OWN_SAVED_STATE|SAVED_POINTER|SAVED_FULL_JOURNAL)/);
+  assert.deepEqual(f.prepared,[]);assert(![...f.docs.keys()].some(k=>k.startsWith('journal/rolling-ag-resume:')));
+ }
+ const f=resumeFixture(),saved=savedResumeState(f,{reason:insufficient});f.docs.delete('journal/'+saved.state.value.journal);
+ await assert.rejects(prepareExistingAgResume(f.args),/SG_AG_RESUME_SAVED_FULL_JOURNAL/);assert.deepEqual(f.prepared,[]);
+});
+
+test('a restored quota still cannot hand off when original prefix or baseline validation rejects it',async()=>{
+ const f=resumeFixture();savedResumeState(f,{reason:insufficient},'primary');f.args.canResumeQuotaGame=()=>true;
+ f.args.prepareGame=async()=>{throw Error('synthetic-existing-prefix-or-baseline-rejected');};
+ await assert.rejects(prepareExistingAgResume(f.args),/existing-prefix-or-baseline-rejected/);
+ assert(![...f.docs.keys()].some(k=>k.startsWith('journal/rolling-ag-resume:')));
 });
 test('a live lease or a changed immutable ending prevents resume before task recovery and source handoff',async()=>{
  for(const live of [false,true]){const f=resumeFixture();

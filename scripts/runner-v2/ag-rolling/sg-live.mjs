@@ -26,7 +26,8 @@ import {closePreparation} from './sg-preparation-close.mjs';
 import {protocolStopReport} from './sg-fault-code.mjs';
 import {openExistingWorkflowControl} from './sg-ag-existing-workflow.mjs';
 import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
-import {waitForEndedLeases} from './sg-ended-leases.mjs';
+import {finalizeEndedSource} from './sg-source-finalizer.mjs';
+import {closeSealedSource} from './sg-sealed-cleanup.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
@@ -55,7 +56,7 @@ if(['lane','controller'].includes(mode)){
  const hello=await transport.request('hello');assert(hello.group===view.cohort&&hello.gatewaySha256===profile.nativeGatewayHash
   &&hello.accessManifestHash===profile.nativeManifestHash&&(!profile.federation||hello.rollingNamespace==='primary'),'SG_AG_COHORT_NATIVE_CHANGED');
 }
-let localLaneEnded=false,localSourceClose=null,fullControl;
+let localLaneEnded=false,localSourceClose=null,fullControl,sourceSealed=false;
 if(mode==='controller')process.on('message',message=>{
  if(message?.type==='lane-source-ended'&&message.lane===20&&message.run===run
   &&message.sourceClosed===true&&(message.pid===null||Number.isSafeInteger(message.pid)&&message.pid>0)
@@ -160,7 +161,8 @@ try{
    readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
    checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
    prepareResume:prepareResumeGame,
-   prepareFullResume:context=>prepareExistingAgResume({...context,store,prepareGame:prepareResumeGame}),
+   prepareFullResume:context=>prepareExistingAgResume({...context,store,prepareGame:prepareResumeGame,
+    canResumeQuotaGame:game=>registry.plans[game.gameId]?.adapter==='native-nextgen-v1'}),
    checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
     const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');
@@ -218,35 +220,53 @@ try{
    }
   }
   sourceJobsEnded=true;
-  await waitForEndedLeases({profile,store,sourceJobsEnded,deadline,guard:globalGuard});
-  if(profile.fullAgControl)fullControl=await openExistingWorkflowControl({profile,store,transport,guard:globalGuard,githubRead:gh,
-   coordinatorRun:run,commit,sourceClose:()=>localSourceClose,sourceJobsEnded:()=>sourceJobsEnded});
-  recoverMerging=async previous=>{
-   assert(previous.owner===run+':ag-rolling-capture:controller','SG_MERGE_RECOVERY_OWNER');
-   const actor=jobs.jobs.filter(j=>j.name==='AG rolling lane 20');
-   assert(actor.length===1&&actor[0].status==='completed','SG_MERGE_CONTROLLER_ACTIVE');
-   return {actorEnded:true,owner:previous.owner,run,commit,jobId:actor[0].id,sourceRequests:0};
-  };
-  const results=fullControl?await fullControl.reconcile():[];if(!fullControl)for(const game of profile.payload.games){
-   try{results.push(await merge(game));}catch(error){
-    if(error.outcomeUnknown===true||transport.status().poison)throw error;
-    const code=error.code??error.message;
-    const failure={gameId:game.gameId,status:'blocked',reason:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_MERGE_REVIEW_REQUIRED'};
-    results.push(failure);log(JSON.stringify(failure));
+  const confirmSourceEnded=async()=>{
+   const participant=profile.federation?(await store.get('journal',participantKey(profile)))?.value:undefined;
+   if(profile.federation)inspectParticipant({profile,receipt:participant,coordinatorRun:run,commit});
+   for(const [cohort,cohortRun] of [['primary',run],...(participant?[['secondary',participant.run]]:[])]){
+    const repo=cohortRepos[cohort],id=Number(cohortRun.split(':')[0]);
+    const actor=await gh(`repos/${repo}/actions/runs/${id}`);
+    assert(actor.id===id&&actor.run_attempt===1&&actor.head_sha===commit&&actor.head_branch==='main'
+     &&actor.repository?.full_name===repo&&actor.event==='workflow_dispatch'&&actor.path==='.github/workflows/trial-300k.yml'
+     &&['in_progress','completed'].includes(actor.status),'SG_AG_ENDED_COHORT_IDENTITY');
+    const freshJobs=await gh(`repos/${repo}/actions/runs/${id}/jobs?filter=all&per_page=100`);
+    assert(endedCohortJobs(freshJobs)&&freshJobs.jobs.every(j=>j.run_id===id),'SG_AG_SOURCE_JOBS_ACTIVE');
+    const name=cohort==='primary'?'ag-rolling-admit':'ag-rolling-join';
+    assert(freshJobs.jobs.filter(j=>j.name===name&&j.status==='completed'&&j.conclusion==='success').length===1,'SG_AG_ENDED_ADMISSION_FAILED');
    }
-  }
-  const before=await store.get('state','rolling-source');
-  assert(before.value.owner===run&&before.value.status==='running','SG_AG_SOURCE_FENCE');
-  const result={schema:'sg-ag-rolling-window-ended-v1',queueId:profile.payload.queueId,run,commit,
-   activation:profile.activation,profileHash:queueHash(profile),
-   complete:results.filter(r=>r.count===300000).length,retained:results.filter(r=>r.count!==300000).length,
-   games:results.map(r=>({gameId:r.gameId,status:r.status??'complete',count:r.count??0})),sourceRequests:0,
-   ...(profile.federation?{federationHash:queueHash(profile.federation),participant:(await store.get('journal',participantKey(profile))).value}:{} )};
-  await store.create('journal','rolling-ended:'+profile.payload.queueId+':'+run,result,{immutable:true});
-  assert(await store.cas('state','rolling-source',before,{owner:null,queueId:null,status:'idle',lastRun:run,
-   lastQueueId:profile.payload.queueId,endedProofHash:queueHash(result)}),'SG_AG_SOURCE_FENCE');log(JSON.stringify(result));
+   return {sourceJobsEnded:true,...(participant?{participant}:{})};
+  };
+  const result=await finalizeEndedSource({profile,store,transport,run,commit,sourceJobsEnded,deadline,
+   // Ending metadata rechecks holds and source identity, bypassing the live
+   // controller's one-second cache after any retained business failure.
+   guard:async()=>{sourceCheck.at=-Infinity;await globalGuard();},confirmSourceEnded,
+   reconcile:async()=>{
+    if(profile.fullAgControl)fullControl=await openExistingWorkflowControl({profile,store,transport,guard:globalGuard,githubRead:gh,
+     coordinatorRun:run,commit,sourceClose:()=>localSourceClose,sourceJobsEnded:()=>sourceJobsEnded});
+    recoverMerging=async previous=>{
+     assert(previous.owner===run+':ag-rolling-capture:controller','SG_MERGE_RECOVERY_OWNER');
+     const actor=jobs.jobs.filter(j=>j.name==='AG rolling lane 20');
+     assert(actor.length===1&&actor[0].status==='completed','SG_MERGE_CONTROLLER_ACTIVE');
+     return {actorEnded:true,owner:previous.owner,run,commit,jobId:actor[0].id,sourceRequests:0};
+    };
+    if(fullControl)return fullControl.reconcile();
+    const results=[];for(const game of profile.payload.games){
+     try{results.push(await merge(game));}catch(error){
+      if(error.outcomeUnknown===true||transport.status().poison)throw error;
+      const code=error.code??error.message;
+      const failure={gameId:game.gameId,status:'blocked',reason:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_MERGE_REVIEW_REQUIRED'};
+      results.push(failure);log(JSON.stringify(failure));
+     }
+    }return results;
+   }});
+  sourceSealed=true;log(JSON.stringify(result));
  }
 }catch(error){log(JSON.stringify(protocolStopReport(error)));process.exitCode=2;}
-finally{await fullControl?.close();await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
+finally{try{await closeSealedSource({sourceSealed:sourceSealed&&process.exitCode!==2,close:()=>fullControl?.close(),
+ writeSync:line=>fs.writeSync(1,line),closeTransport:()=>transport.close(),exit:code=>process.exit(code)});}catch(error){
+ // A business client close fault cannot undo the separately verified source
+ // ending. Keep the finalizer successful so its proof remains resumable.
+ log(JSON.stringify({...protocolStopReport(error),sourceSealed}));if(!sourceSealed)process.exitCode=2;
+ }await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
  log(JSON.stringify({kind:'sg-ag-admission-read-performance',reader:index+1,...context.reader.metrics()}));context.parser.close();context.reader.close();}
  log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}

@@ -1,11 +1,25 @@
 import assert from 'node:assert/strict';
 
+// Provenance stays process-local and cannot be supplied by a driver message,
+// callback or journal. Only a failure caught around an actual driver method
+// can be separated from an unknown native metadata outcome by the finalizer.
+const businessDriverFailures=new WeakSet();
+export const isBusinessDriverFailure=error=>!!error&&typeof error==='object'&&businessDriverFailures.has(error);
+
 // Driver retryReads/retryWrites stay false. A failed driver operation also
 // poisons this admitted client, so a later controller pass cannot repeat it.
 export function protectMongoOnce(client){
  let stopped=false;
  const wrappers=new WeakMap();
- const stop=error=>{stopped=true;error.outcomeUnknown=true;throw error;};
+ const stop=error=>{stopped=true;
+  // A nested protected call may already carry an unknown native/guard error.
+  // Never relabel that error as safe-to-isolate business client failure.
+  if(error&&typeof error==='object'){
+   if(error.outcomeUnknown!==true)businessDriverFailures.add(error);
+   error.outcomeUnknown=true;
+  }
+  throw error;
+ };
  const allowed=()=>assert(!stopped,'SG_AG_MONGO_UNKNOWN_NO_REPLAY');
  function wrap(object){
   if(wrappers.has(object))return wrappers.get(object);

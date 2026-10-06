@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
-import {waitForEndedLeases} from './sg-ended-leases.mjs';
+import {waitForEndedLeases,ENDED_LEASE_WAIT_MS} from './sg-ended-leases.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 
 function fixture({games=6}={}){
@@ -64,14 +64,34 @@ test('truncated, unknown, misordered and invalid lease readback fail closed with
  await assert.rejects(()=>waitForEndedLeases(f.args),/unknown lease read/);assert.equal(calls,1);
 });
 
-test('finalizer wiring waits before opening either controller path and retains one reconciliation and the ending fence',()=>{
+test('finalizer wiring delegates both controller paths to one source-ending lifecycle',()=>{
  const text=fs.readFileSync(new URL('./sg-live.mjs',import.meta.url),'utf8');
  const finalizer=text.slice(text.indexOf('  sourceJobsEnded=true;'));
- const waiting=finalizer.indexOf('await waitForEndedLeases('),opening=finalizer.indexOf('await openExistingWorkflowControl(');
- const reconcile=finalizer.indexOf('await fullControl.reconcile()'),legacy=finalizer.indexOf('await merge(game)');
- const ending=finalizer.indexOf("await store.create('journal','rolling-ended:'"),fence=finalizer.indexOf("await store.cas('state','rolling-source'");
- assert(waiting>=0&&waiting<opening&&opening<reconcile&&waiting<legacy&&ending>reconcile&&fence>ending);
- assert.equal(finalizer.match(/await waitForEndedLeases\(/g).length,1);
- assert.equal(finalizer.match(/await fullControl\.reconcile\(\)/g).length,1);
+ const lifecycle=finalizer.indexOf('await finalizeEndedSource('),callback=finalizer.indexOf('reconcile:async()=>'),opening=finalizer.indexOf('await openExistingWorkflowControl(');
+ const reconcile=finalizer.indexOf('return fullControl.reconcile()'),legacy=finalizer.indexOf('await merge(game)');
+ assert(lifecycle>=0&&callback>lifecycle&&opening>callback&&reconcile>opening&&legacy>callback);
+ assert.equal(finalizer.match(/await finalizeEndedSource\(/g).length,1);
+ assert.equal(finalizer.match(/return fullControl\.reconcile\(\)/g).length,1);
  assert.equal(finalizer.match(/await merge\(game\)/g).length,1);
+ assert(finalizer.includes('freshJobs.jobs.every(j=>j.run_id===id)'));
+});
+
+test('normal capture TTL expires within ten minutes and no lease can occupy more than twelve minutes',async()=>{
+ const f=fixture({games:1});f.args.deadline=10000000;f.leases.set(f.key(0,'worker',20),{expiresAt:601000});
+ await waitForEndedLeases(f.args);
+ assert.equal(f.events.filter(e=>e[0]==='sleep').reduce((sum,e)=>sum+e[1],0),600000);
+ const late=fixture({games:1});late.args.deadline=10000000;
+ late.leases.set(late.key(0,'worker',20),{expiresAt:1000+ENDED_LEASE_WAIT_MS});
+ await assert.rejects(waitForEndedLeases(late.args),/SOURCE_LEASES_ACTIVE/);
+ assert.equal(late.events.filter(e=>e[0]==='sleep').reduce((sum,e)=>sum+e[1],0),ENDED_LEASE_WAIT_MS);
+ const anomalous=fixture({games:1});anomalous.args.deadline=10000000;
+ anomalous.leases.set(anomalous.key(0,'worker',20),{expiresAt:1001+ENDED_LEASE_WAIT_MS});
+ await assert.rejects(waitForEndedLeases(anomalous.args),/SOURCE_LEASE_EXPIRY_OUT_OF_BOUND/);
+ assert(!anomalous.events.some(e=>e[0]==='sleep'));
+});
+
+test('fresh final ending checks never poll or clear a lease that reappears',async()=>{
+ const f=fixture({games:1});f.leases.set(f.key(0,'worker',1),{expiresAt:11000});
+ await assert.rejects(waitForEndedLeases({...f.args,waitForExpiry:false}),/SOURCE_LEASES_ACTIVE/);
+ assert(!f.events.some(e=>e[0]==='sleep'));assert.equal(f.leases.size,1);
 });

@@ -15,6 +15,7 @@ import {mongoOnce} from './sg-ag-ordinary-business.mjs';
 import {createLiveAgController} from './sg-ag-live-controller.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
+import {createGameBudget} from './sg-ag-game-budget.mjs';
 
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 export function inspectExistingWorkflowPolicy(profile){
@@ -50,10 +51,12 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
  assert(process.env.SG_BUSINESS_MONGO_PASSWORD&&process.env.SG_BUSINESS_SSH_KEY_FILE&&process.env.SG_SSH_HOSTS_FILE,'SG_AG_EXISTING_WRITER_CONFIGURATION');
  const bindings=read('config/ag-business-bindings.json').bindings,plans=read('config/ag-rolling-plans.json').plans;
  const require=createRequire(import.meta.url),{MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
- const once=protectMongoOnce(new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000})),client=once.client;
+ const once=protectMongoOnce(new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,waitQueueTimeoutMS:10000,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000})),client=once.client;
+ let parser;
+ try{
  await mongoOnce(()=>client.connect());
  assertOrdinaryPrivileges(await mongoOnce(()=>client.db('admin').command({connectionStatus:1,showPrivileges:true})),{profile,plans,binding:bindings[profile.payload.games[0].gameId]});
- const parser=analyzer(),originals=new Map();let canonicalAt=-Infinity;
+ parser=analyzer();const originals=new Map();let canonicalAt=-Infinity;
  const directory=path.resolve('business-evidence');fs.mkdirSync(directory,{recursive:true,mode:0o700});
  function persist(file,value){
   const safe=file.replaceAll(/[^A-Za-z0-9_-]/g,'_'),filename=path.join(directory,safe+'.json');
@@ -125,9 +128,11 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
     pending.shift();
    }}catch(error){poisoned=true;error.outcomeUnknown=true;throw error;}
   }
+  const privateControlPersist=(file,value)=>{const saved=persist(cohortRun+'-'+file,value);pending.push({file,value:structuredClone(value)});return saved;};
+  const gameBudget=createGameBudget({state,persist:privateControlPersist,flush:flushControl});
   return {
   transport,parser,businessClient:client,ObjectId,bindings,plans,githubRead,evidenceMode:policy.evidenceMode,sourceJobsEnded,
-  actorRun:coordinatorRun,actorCommit:commit,privateControlPersist:(file,value)=>{const saved=persist(cohortRun+'-'+file,value);pending.push({file,value:structuredClone(value)});return saved;},
+  actorRun:coordinatorRun,actorCommit:commit,privateControlPersist,
   flushControl,loadState:async()=>{const saved=await store.get('state',key);if(saved){
    const value=saved.value;assert(value.cohortRun===cohortRun&&value.commit===commit&&Number.isSafeInteger(value.sequence)&&value.sequence>0
     &&value.journal===key+':'+value.sequence,'SG_AG_CONTROL_SAVED_POINTER');
@@ -151,12 +156,19 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
    game.phase='complete';
   }},
   currentRtp:async b=>{const sha=execFileSync('ssh',['-T','-i',process.env.SG_BUSINESS_SSH_KEY_FILE,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+process.env.SG_SSH_HOSTS_FILE,'-o','ConnectTimeout=10','sgdelivery@'+process.env.SG_SSH_HOST,String(b.gameId)],{encoding:'utf8',timeout:20000}).trim();assert(sha===b.rtpFileSha256,'SG_BUSINESS_CURRENT_RTP_CHANGED');},
-  admission:{guard:async(...args)=>{await flushControl();await ordinaryGuard(...args);},assertCapturedEnding:async()=>{throw Error('SG_AG_SOURCE_PERMIT_REQUIRED');},
+  admission:{guard:async(phase,g)=>{await flushControl();await gameBudget.check(phase,g);await ordinaryGuard(phase,g);await gameBudget.check(phase,g);},assertCapturedEnding:async()=>{throw Error('SG_AG_SOURCE_PERMIT_REQUIRED');},
    originalCount:async g=>(await baseline(g)).count,originalDocuments:async g=>structuredClone((await baseline(g)).documents),
    // Resume is wired into the existing admit job, after its full ending and
    // immutable revision checks. A live source controller cannot start it.
    assertResumeBoundary:async()=>{throw Error('SG_AG_LIVE_SOURCE_CANNOT_RESUME');},dispatchRemaining:async()=>{throw Error('SG_AG_LIVE_SOURCE_CANNOT_DISPATCH');},
    finishCohort:async()=>{await flushControl();return persist(cohortRun+'-cohort-final',{state,originalAccountsAndProofsPreserved:true});}}
  };}});
- return {...control,async close(){parser.close();await client.close();}};
+ return {...control,async close(){try{parser.close();}finally{await client.close();}}};
+ }catch(error){
+  // Before a handle is returned, the caller cannot release these resources.
+  // Preserve the original failure (and its driver provenance) on cleanup errors.
+  try{parser?.close();}catch{}
+  try{await client.close();}catch{}
+  throw error;
+ }
 }

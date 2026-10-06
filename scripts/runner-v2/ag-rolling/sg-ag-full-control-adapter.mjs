@@ -44,6 +44,13 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
  };}};}
  const client={db:name=>db(games.get(name)),close:()=>io.close()};
  function persist(file,value){const result=io.persist(file,structuredClone(value));assert(!result?.then&&result?.fullReadback===true,'SG_AG_CONTROL_SYNC_DURABLE_STATE');}
+ async function requireFreshOperation(g){
+  if((await io.inspectPriorOperation(g))?.canStartOnce===true)return;
+  // Check before the first expensive prefix audit as well as just before
+  // writing. A durable old intent cannot be resolved by rescanning its rows.
+  g.phase='blocked';g.reason='SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY';g.sgExistingOperationRetained=true;persist('own-control-state',state);
+  throw Error(g.reason);
+ }
  const gh={async get(url){await io.guard('github-read');if(url.endsWith('/jobs')){
    const v=await io.readJobs(cohortRun,commit);assert(v.run===cohortRun&&v.commit===commit&&v.at<=now()&&now()-v.at<=60000&&v.total_count===v.jobs.length&&v.jobs.length<100,'SG_AG_CONTROL_JOB_INVENTORY');
    const lanes=v.jobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));assert(lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20,'SG_AG_CONTROL_JOB_LANES');
@@ -56,19 +63,13 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
    const leases=await store.getMany('state',keys);assert(leases.length===keys.length,'SG_AG_CONTROL_LEASE_INVENTORY');return leases.filter(r=>r?.value.expiresAt>now()).length;},
   async validateRows(database,g,index){await io.guard('full-prefix-validation',g);const row=(await taskRows(g)).find(r=>r.value._id==='worker:'+index).value;assert(!['running','pending'].includes(row.status),'SG_AG_CONTROL_ACTIVE_PREFIX');
    assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');
+   if(index===1)await requireFreshOperation(g);
    let proof;try{proof=await io.verifyPrefix(g,index,row);}catch(error){if(error.outcomeUnknown===true){g.sgOutcomeUnknownRetained=true;persist('own-control-state',state);}throw error;}
    const quota=quotas(g.baseline)[index-1];assert(proof?.fullReadback&&proof.independentlyVerified&&proof.queueId===queueId&&proof.gameId===g.gameId&&proof.campaignId===g.campaignId&&proof.taskId===row._id&&proof.acceptedUnknownRequests===0&&Number.isSafeInteger(proof.count)&&proof.count>=0&&proof.count<=quota+7,'SG_AG_CONTROL_PREFIX_PROOF');
    if(row.status==='success')assert(row.proof?.fullReadback&&row.proof.independentlyVerified&&row.proof.recordsHash===proof.recordsHash&&row.proof.count===proof.count,'SG_AG_CONTROL_SUCCESS_PROOF_CHANGED');
    prefixProofs.set(g.gameId+':'+index,structuredClone(proof));return proof.count;
   },
-  async mergeSelectedRows(database,g,selected,total){assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');await io.guard('per-game-final-delivery',g);const prior=await io.inspectPriorOperation(g);
-   if(prior?.canStartOnce!==true){
-    // An existing intent needs evidence-based recovery, never another insert.
-    // Isolate it once; rescanning all 300000 rows every controller tick cannot
-    // resolve that intent and only delays other independently eligible games.
-    g.phase='blocked';g.reason='SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY';g.sgExistingOperationRetained=true;persist('own-control-state',state);
-    throw Error(g.reason);
-   }
+  async mergeSelectedRows(database,g,selected,total){assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');await io.guard('per-game-final-delivery',g);await requireFreshOperation(g);
    const proofs=Array.from({length:20},(_,i)=>prefixProofs.get(g.gameId+':'+(i+1)));assert(proofs.every(Boolean),'SG_AG_CONTROL_FULL_INVENTORY');
    // Native full proof is an intermediate SG storage format. It cannot set the
    // AG game complete; the same per-game control call must reach simulate.

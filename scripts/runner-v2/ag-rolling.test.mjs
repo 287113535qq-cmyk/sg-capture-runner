@@ -90,3 +90,7 @@ import './ag-rolling/sg-ag-live-controller.test.mjs';
 import './ag-rolling/sg-resume-reuse.test.mjs';
 import './ag-rolling/sg-native-page-verification-cache.test.mjs';
 import './ag-rolling/sg-ended-leases.test.mjs';
+import './ag-rolling/sg-ag-game-budget.test.mjs';
+import './ag-rolling/sg-source-finalizer.test.mjs';
+import './ag-rolling/sg-ag-once-mongo.test.mjs';
+import './ag-rolling/sg-sealed-cleanup.test.mjs';
