@@ -80,3 +80,11 @@ import './ag-rolling/sg-jinjitreasure-wiring.test.mjs';
 import './ag-rolling/sg-jinsedragon-wiring.test.mjs';
 
 import './ag-rolling/sg-kingbabylon-wiring.test.mjs';
+
+import './ag-historical-starmania-document.test.mjs';
+import './ag-historical-starmania-core.test.mjs';
+import './ag-historical-starmania-actor.test.mjs';
+import './ag-historical-starmania-private-pipe.test.mjs';
+import './ag-historical-starmania-evidence.test.mjs';
+import './ag-historical-starmania-linux.test.mjs';
+import './ag-historical-starmania-ended-federation.test.mjs';

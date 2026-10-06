@@ -1,0 +1,12 @@
+{
+  "schema": "sg-historical-starmania-execution-v1",
+  "enabled": false,
+  "gameIds": [
+    "32737"
+  ],
+  "branch": "sg-business-historical-32737-20261006",
+  "manifestSha256": "ab41fca9e5cda4025cac3dac7efc995419c4ab0d37a3a27b450b028673d8cedf",
+  "minimumPermissionApproved": false,
+  "linuxPermissionGranted": false,
+  "limitation": "Own actual Linux14/sealed9, recovered native ending, minimum Mongo/RTP grant, public SSH readback and an approved private evidence provider are required. No provision, write or dispatch is authorized by this file."
+}

@@ -1,0 +1,48 @@
+name: Historical Starmania guarded delivery
+on:
+  workflow_dispatch:
+    inputs:
+      game_id:
+        type: choice
+        options: ['32737']
+        default: '32737'
+      business_linux_run:
+        type: string
+        required: true
+permissions: {}
+concurrency:
+  group: sg-business-delivery
+  cancel-in-progress: false
+jobs:
+  ag-rolling-business-delivery:
+    if: github.event_name == 'workflow_dispatch' && github.repository == 'zyzuoyang/sg-capture-runner' && github.ref == 'refs/heads/sg-business-historical-32737-20261006' && inputs.game_id == '32737'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      SG_BUSINESS_GAME_IDS: '32737'
+      SG_HISTORICAL_PRIVATE_EVIDENCE_FD: '3'
+      SG_BUSINESS_LINUX_RUN: ${{ inputs.business_linux_run }}
+      PYTHON: python3
+    steps:
+      - name: Fetch the exact public source without a checkout token
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_SHA" =~ ^[a-f0-9]{40}$ ]]
+          archive="$RUNNER_TEMP/sg-historical-source.tar.gz"
+          curl --fail --location --retry 0 --proto '=https' "https://codeload.github.com/zyzuoyang/sg-capture-runner/tar.gz/$GITHUB_SHA" --output "$archive"
+          tar -xzf "$archive" --strip-components=1 -C "$GITHUB_WORKSPACE"
+      - name: Require the reviewed Node major and Python without credential-bearing setup actions
+        run: |
+          node -e "if (Number(process.versions.node.split('.')[0]) !== 22) process.exit(2)"
+          python3 --version
+      - run: npm ci --ignore-scripts --no-audit --no-fund --prefix collector
+      - name: Check disabled configuration, own scope and public SSH bindings before credentials
+        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-preauth.mjs
+      # No secret is placed in an Actions input, environment, run script, argv or key file.
+      # A separately reviewed runner-side provider must supply the private stdin pipe.
+      # Standard workflow execution has no such provider and stops before Linux, SSH or Mongo.
+      - name: Execute only with the approved private stdin provider
+        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-job.mjs
+      # The private provider must also implement independently reviewed evidence delivery.
+      # No artifact action or runtime token environment is used as a substitute.
