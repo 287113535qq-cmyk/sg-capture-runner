@@ -79,7 +79,7 @@
     "service/jinsedragon_base_fields.py": "ad7c4d22b5472016b37f7791a221ebceec3fa4c098aa31b3bbf2d0539f9eef22",
     "config/ag-rolling-jinsedragon-base-contract.json": "86953622c91b84899b9771157744033a6118ab2dd46d201ee45cf1305bdeb99b",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "86fecc19000fe84a018ea04375d1139a5e76b4d3761fa9cbf1cccf9bf84a8498"
+  "ruleHash": "27fe1631b5d88659baf4f0fc33e332c11dc4d296d0d7427e6e1c30613a528798"
 }

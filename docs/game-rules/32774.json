@@ -79,7 +79,7 @@
     "service/himalayas_base_fields.py": "5b1e4bfc792032adff5e99977d816f9451d1fa706a5256a31d6147845baa80be",
     "config/ag-rolling-himalayas-base-contract.json": "0fb36ac8b4f1c2fae19d320bbf49fc6def22e64baabe0a722589344e24d24578",
     "service/ag_rolling_plan.py": "308b1c7a0404ea91e929a7a4b7cb9001e9b6f885ea27661f9d0b540f7891e835",
-    "scripts/runner-v2/record_fields.py": "fd512def40bce668cdc02e1fcafc6ef0c5159b7c527d898760b7da9c35397ac2",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/round_fields.py": "b277f050edf3c4dc09adecee9f2f2a861044c15ca87cf2b0bf9ba197aaebe1a3",
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "16e286c8dc1f5e6b7c19a9e1c7905914c3cfed8304c7a00b24de5de343fa20ff"
+  "ruleHash": "2ad087fd9d9d2c7519f4170dac89d2f5481a1cd985647514686a771347efb62a"
 }
