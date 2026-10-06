@@ -15,7 +15,8 @@ export async function verifyPreparingRecovery({profile,target,store,readEnded,re
   &&run.repository?.full_name==='zyzuoyang/sg-capture-runner'&&run.path==='.github/workflows/trial-300k.yml'
   &&run.event==='workflow_dispatch'&&run.conclusion!=='success','SG_PREPARING_ACTOR_NOT_ENDED');
  assert(jobs?.total_count===jobs.jobs?.length&&jobs.total_count>0&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed')
-  &&jobs.jobs.filter(j=>j.conclusion!=='skipped').length===1&&jobs.jobs.some(j=>j.name==='ag-rolling-admit'&&j.conclusion==='failure'),
+  &&jobs.jobs.filter(j=>j.conclusion!=='skipped').length===1&&jobs.jobs.some(j=>j.name==='ag-rolling-admit'
+   &&(j.conclusion==='failure'||j.conclusion==='cancelled'&&run.conclusion==='cancelled')),
   'SG_PREPARING_SOURCE_JOB_STARTED');
  const source=await store.get('state','rolling-source');
  assert(source?.value.status==='preparing'&&source.value.owner===r.targetRun&&source.value.commit===r.targetCommit

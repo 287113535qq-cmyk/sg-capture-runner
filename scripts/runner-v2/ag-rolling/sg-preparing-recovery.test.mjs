@@ -37,3 +37,11 @@ test('source permit, changed native owner, live lease, altered namespace or norm
   const s=setup();change(s);await assert.rejects(verifyPreparingRecovery(s.args),/PERMIT_EXISTS|NATIVE_CHANGED|LIVE_LEASE|BINDING/);assert.equal(s.state.writes,0);
  }
 });
+test('an explicitly cancelled zero-source admission retains the same strict no-permit and no-source boundaries',async()=>{
+ const s=setup();s.workflow.conclusion='cancelled';s.jobs.jobs[0].conclusion='cancelled';
+ const proof=await verifyPreparingRecovery(s.args);assert.equal(proof.receipt.sourceJobsStarted,0);assert.equal(s.state.writes,0);
+ for(const change of [x=>x.state.permit={value:{}},x=>x.state.live=true,x=>x.jobs.jobs[1].conclusion='cancelled',x=>x.workflow.status='in_progress',x=>x.workflow.conclusion='failure']){
+  const x=setup();x.workflow.conclusion='cancelled';x.jobs.jobs[0].conclusion='cancelled';change(x);
+  await assert.rejects(verifyPreparingRecovery(x.args));assert.equal(x.state.writes,0);
+ }
+});
