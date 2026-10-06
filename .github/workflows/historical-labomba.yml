@@ -39,9 +39,9 @@ jobs:
       - name: Check disabled configuration, own scope and public SSH bindings before credentials
         run: node scripts/runner-v2/ag-rolling/sg-historical-labomba-preauth.mjs
       # No secret is placed in an Actions input, environment, run script, argv or key file.
-      # A separately reviewed runner-side provider must supply the private stdin pipe.
-      # Standard workflow execution has no such provider and stops before Linux, SSH or Mongo.
-      - name: Execute only with the approved private stdin provider
-        run: node scripts/runner-v2/ag-rolling/sg-historical-labomba-job.mjs
-      # The private provider must also implement independently reviewed evidence delivery.
-      # No artifact action or runtime token environment is used as a substitute.
+      # The approved provider endpoint, TLS pin and signing public key must come from
+      # protected readback. They are absent from this disabled preparation version.
+      # Live annotation timing and the provider's actual admission/sink remain unverified.
+      - name: Receive credentials and return evidence through the approved private provider
+        run: node scripts/runner-v2/ag-rolling/sg-historical-provider-runtime.mjs
+      # No artifact action or runtime-token environment substitutes for private evidence ACK.

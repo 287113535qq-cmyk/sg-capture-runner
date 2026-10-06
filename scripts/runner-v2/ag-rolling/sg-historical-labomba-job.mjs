@@ -94,5 +94,9 @@ try{
  report.result=await deliverOwnHistoricalGame({manifest,owner,native,target,audit,verifyNative,independentConvert,
   verifyOriginals:documents=>verifyLegacyPage({documents,plan:manifest.plan,binding:manifest.binding,parser}),guard,currentRtp,emit:value=>console.log(JSON.stringify(value))});report.complete=true;
 }catch(error){report.reason=/^[A-Z_]+$/.test(error.message??'')?error.message:'HISTORICAL_IO_OR_VALIDATION_STOP_NO_RETRY';process.exitCode=2;}
-finally{parser.close();fail();py.stdin.end();py.kill();transport.close();await client.close();fs.mkdirSync('business-evidence',{recursive:true});fs.writeFileSync('business-evidence/result.json',JSON.stringify(report,null,2)+'\n',{flag:'wx'});}
+finally{parser.close();fail();py.stdin.end();py.kill();transport.close();await client.close();
+ const evidence=Buffer.from(JSON.stringify(report,null,2)+'\n');
+ try{if(process.env.SG_HISTORICAL_PRIVATE_EVIDENCE_FD==='3')fs.writeFileSync(3,evidence);
+  else{fs.mkdirSync('business-evidence',{recursive:true});fs.writeFileSync('business-evidence/result.json',evidence,{flag:'wx'});}}
+ finally{evidence.fill(0);}}
 });

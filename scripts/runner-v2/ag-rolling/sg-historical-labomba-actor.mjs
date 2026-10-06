@@ -55,6 +55,10 @@ export function assertOwnHistoricalGrant(grant,execution,env){
   &&linux.sealedReceipts?.length===9&&new Set(linux.sealedReceipts.map(r=>r.mailbox)).size===9
   &&linux.sealedReceipts.every(r=>r.received===true&&r.commit===env.GITHUB_SHA&&r.run===linux.run
    &&/^[a-f0-9]{64}$/.test(r.receiptHash??'')),'HISTORICAL_OWN_SEALED_LINUX_GRANT_REQUIRED');
+ if(execution.privateProvider){const p=execution.privateProvider;
+  assert(p.enabled===true&&stable(v.privateProvider)===stable({schema:p.schema,endpoint:p.endpoint,tlsSpkiSha256:p.tlsSpkiSha256,
+   signingPublicKeySha256:p.signingPublicKeySha256,privateCredentials:true,privateEvidence:true,gameId:32723,run:env.GITHUB_RUN_ID+':1',commit:env.GITHUB_SHA,attempt:1}),
+   'HISTORICAL_PROTECTED_PRIVATE_PROVIDER_GRANT_REQUIRED');}
  return v;
 }
 export function assertOwnHistoricalPrivileges(status,permission){
