@@ -1,10 +1,11 @@
 import test from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {createLiveAgController} from './sg-ag-live-controller.mjs';
 import {cohortRepos,participantKey} from './sg-federation.mjs';
 import {taskKey} from './sg-task-store.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
-import {inspectExistingWorkflowPolicy} from './sg-ag-existing-workflow.mjs';
+import {inspectExistingWorkflowPolicy,inspectExistingGameBinding} from './sg-ag-existing-workflow.mjs';
 import {deliverOrdinaryBusiness} from './sg-ag-ordinary-business.mjs';
 import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
@@ -95,4 +96,17 @@ test('existing workflow mode requires its own complete Linux evidence binding an
 });
 test('existing ordinary audit path preserves actual original counts 20, 99, 100 and 150 without requiring a new private parent',async()=>{
  for(const count of [20,99,100,150]){let reached=false;await assert.rejects(deliverOrdinaryBusiness({plan:{adapter:'native-nextgen-v1',gameId:'32441'},binding:{gameId:32441,queueId:'queue'},expectedProof:{queueId:'queue'},expectedOriginalCount:count,owner:'123:1:business',evidenceMode:'existing-immutable-audit',guard:async()=>{reached=true;throw Error('own original admission stops before IO');}}),/own original admission/);assert(reached);}
+});
+
+test('all actual 81 game bindings retain the native alias and their own runtime business database',()=>{
+ const read=name=>JSON.parse(fs.readFileSync(new URL('../../../config/'+name,import.meta.url),'utf8'));
+ const profile=read('ag-rolling-queue-554533d7f75bedde74e5d9544dfb93188dfb7ad6ece00ae72da0fc051eb4dd31.json');
+ const bindings=read('ag-business-bindings.json').bindings,plans=read('ag-rolling-plans.json').plans;
+ assert.equal(profile.payload.games.length,81);
+ for(const game of profile.payload.games){const binding=bindings[game.gameId],plan=plans[game.gameId];
+  assert.equal(inspectExistingGameBinding({binding,game,profile,plan}),binding);
+  assert.notEqual(binding.database,game.dbName);
+  for(const changed of [{...binding,database:game.dbName},{...binding,gameId:99999},{...binding,trialId:'foreign'},{...binding,runtimeGameId:-1}])
+   assert.throws(()=>inspectExistingGameBinding({binding:changed,game,profile,plan}),/OWN_BINDING/);
+ }
 });

@@ -32,6 +32,13 @@ export function inspectExistingWorkflowPolicy(profile){
    &&/^[a-f0-9]{64}$/.test(v.auditDocumentHash)&&/^[a-f0-9]{64}$/.test(v.nativeReceiptHash)),'SG_AG_EXISTING_COMPLETED_PROOFS');
  return policy;
 }
+export function inspectExistingGameBinding({binding:b,game:g,profile,plan}){
+ assert(b&&plan&&String(b.gameId)===g.gameId&&String(plan.gameId)===g.gameId
+  &&b.queueId===profile.payload.queueId&&g.dbName==='sg_'+g.gameId
+  &&b.database==='sg_'+plan.runtimeSlug&&b.runtimeSlug===plan.runtimeSlug
+  &&b.runtimeGameId===plan.runtimeGameId&&b.trialId===plan.trialId,'SG_AG_EXISTING_OWN_BINDING');
+ return b;
+}
 export async function openExistingWorkflowControl({profile,store,transport,guard,githubRead,coordinatorRun,commit,sourceClose,sourceJobsEnded=()=>false}){
  const policy=inspectExistingWorkflowPolicy(profile);
  assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'&&process.env.RUNNER_ENVIRONMENT==='github-hosted'
@@ -57,7 +64,7 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
  }
  const baseline=async g=>{
   if(!originals.has(g.gameId)){
-   const b=bindings[g.gameId];assert(b&&b.queueId===profile.payload.queueId&&b.database===g.dbName,'SG_AG_EXISTING_OWN_BINDING');
+   const b=inspectExistingGameBinding({binding:bindings[g.gameId],game:g,profile,plan:plans[g.gameId]});
    const pool=client.db(b.database).collection('simulate'),query={'data.captureCampaignId':{$ne:g.campaignId}};
    const count=await mongoOnce(()=>pool.countDocuments(query,{maxTimeMS:15000}));
    const documents=(await mongoOnce(()=>pool.find(query,{sort:{_id:1},maxTimeMS:30000}).limit(count+1).toArray())).map(d=>({...d,_id:String(d._id)}));
