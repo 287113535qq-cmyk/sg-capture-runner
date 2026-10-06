@@ -89,3 +89,5 @@ import './ag-historical-starmania-evidence.test.mjs';
 import './ag-historical-starmania-linux.test.mjs';
 import './ag-historical-starmania-ended-federation.test.mjs';
 import './ag-historical-starmania-provider.test.mjs';
+
+import './ag-historical-starmania-provider-sender.test.mjs';
