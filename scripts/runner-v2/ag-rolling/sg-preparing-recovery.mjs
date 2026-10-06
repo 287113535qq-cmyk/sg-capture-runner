@@ -14,8 +14,15 @@ export async function verifyPreparingRecovery({profile,target,store,readEnded,re
  assert(run?.id===Number(r.targetRun.split(':')[0])&&run.run_attempt===1&&run.status==='completed'&&run.head_sha===r.targetCommit
   &&run.repository?.full_name==='zyzuoyang/sg-capture-runner'&&run.path==='.github/workflows/trial-300k.yml'
   &&run.event==='workflow_dispatch'&&run.conclusion!=='success','SG_PREPARING_ACTOR_NOT_ENDED');
+ // GitHub materializes two unstarted dependants when cancelling admission.
+ // A literal unexpanded matrix plus null runner identity and empty steps is
+ // not a source lane. Never extend this exception to a numbered/started lane.
+ const unstartedCancellation=j=>run.conclusion==='cancelled'&&j.conclusion==='cancelled'
+  &&['AG rolling lane ${{ matrix.lane }}','ag-rolling-finalize'].includes(j.name)
+  &&j.run_id===run.id&&j.head_sha===r.targetCommit&&j.runner_id===null&&j.runner_name===null
+  &&j.runner_group_id===null&&Array.isArray(j.steps)&&j.steps.length===0;
  assert(jobs?.total_count===jobs.jobs?.length&&jobs.total_count>0&&jobs.total_count<100&&jobs.jobs.every(j=>j.status==='completed')
-  &&jobs.jobs.filter(j=>j.conclusion!=='skipped').length===1&&jobs.jobs.some(j=>j.name==='ag-rolling-admit'
+  &&jobs.jobs.filter(j=>j.conclusion!=='skipped'&&!unstartedCancellation(j)).length===1&&jobs.jobs.some(j=>j.name==='ag-rolling-admit'
    &&(j.conclusion==='failure'||j.conclusion==='cancelled'&&run.conclusion==='cancelled')),
   'SG_PREPARING_SOURCE_JOB_STARTED');
  const source=await store.get('state','rolling-source');

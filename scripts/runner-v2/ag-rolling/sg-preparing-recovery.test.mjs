@@ -45,3 +45,11 @@ test('an explicitly cancelled zero-source admission retains the same strict no-p
   await assert.rejects(verifyPreparingRecovery(x.args));assert.equal(x.state.writes,0);
  }
 });
+test('only exact unstarted cancelled matrix/finalizer placeholders can accompany a cancelled admission',async()=>{
+ function cancelled(){const s=setup();s.workflow.conclusion='cancelled';s.jobs.jobs[0].conclusion='cancelled';
+  s.jobs.jobs.push(...['AG rolling lane ${{ matrix.lane }}','ag-rolling-finalize'].map((name,i)=>({id:3+i,name,status:'completed',conclusion:'cancelled',run_id:s.workflow.id,head_sha:s.workflow.head_sha,runner_id:null,runner_name:null,runner_group_id:null,steps:[]})));s.jobs.total_count=s.jobs.jobs.length;return s;}
+ const s=cancelled();assert.equal((await verifyPreparingRecovery(s.args)).receipt.sourceJobsStarted,0);
+ for(const change of [j=>j.runner_id=1,j=>delete j.runner_id,j=>j.runner_name='runner',j=>j.runner_group_id=1,j=>j.steps=[{name:'capture'}],j=>j.name='AG rolling lane 1',j=>j.run_id=124,j=>j.head_sha='f'.repeat(40)]){
+  const s=cancelled();change(s.jobs.jobs[2]);await assert.rejects(verifyPreparingRecovery(s.args),/SOURCE_JOB_STARTED/);assert.equal(s.state.writes,0);
+ }
+});
