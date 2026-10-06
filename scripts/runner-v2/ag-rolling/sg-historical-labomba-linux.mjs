@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
+import {historicalChildEnvironment} from './sg-historical-private-pipe.mjs';
 export const BUSINESS_BRANCH='sg-business-historical-32723-20261005';
 export const BUSINESS_LINUX_REPOSITORY='287113535qq-cmyk/sg-capture-runner';
 export function verifyBusinessLinuxEvidence({run,jobs,result},id,commit){
@@ -34,6 +35,6 @@ export async function requireBusinessLinux({id,commit,token,fetchImpl=fetch}){
  const location=new URL(redirect.headers.get('location'));assert(location.protocol==='https:'&&!location.username&&!location.password,'SG_BUSINESS_LINUX_LOG_LOCATION');
  const archive=await fetchImpl(location,{redirect:'error',signal:AbortSignal.timeout(60000)});assert(archive.status===200,'SG_BUSINESS_LINUX_LOG_STOP_NO_RETRY');
  const bytes=Buffer.from(await archive.arrayBuffer());assert(bytes.length>0&&bytes.length<=32*1024*1024,'SG_BUSINESS_LINUX_LOG_SIZE');
- const parsed=JSON.parse(execFileSync(process.env.PYTHON??'python3',['scripts/runner-v2/business_linux_logs.py'],{input:bytes,encoding:'utf8',timeout:15000,maxBuffer:1024*1024}));
+ const parsed=JSON.parse(execFileSync(process.env.PYTHON??'python3',['scripts/runner-v2/business_linux_logs.py'],{input:bytes,env:historicalChildEnvironment(process.env),encoding:'utf8',timeout:15000,maxBuffer:1024*1024}));
  return verifyBusinessLinuxEvidence({run,jobs,result:parsed},id,commit);
 }

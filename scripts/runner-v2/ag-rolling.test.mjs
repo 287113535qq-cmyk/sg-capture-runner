@@ -87,3 +87,4 @@ import './ag-historical-labomba-actor.test.mjs';
 import './ag-historical-ended-federation.test.mjs';
 import './ag-historical-private-pipe.test.mjs';
 import './ag-historical-provider.test.mjs';
+import './ag-historical-provider-sender.test.mjs';
