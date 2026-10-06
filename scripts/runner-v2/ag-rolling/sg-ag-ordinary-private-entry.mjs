@@ -15,7 +15,7 @@ import {openOrdinaryPrivateEvidence} from './sg-ag-ordinary-private-evidence.mjs
 export const ordinaryPrivateEntryStatus=Object.freeze({schema:'sg-ag-ordinary-private-entry-status-v1',actualPortsConstructedOnlyAfterPrivateAdmission:true,
  enabled:false,productionLauncherBound:false,ownExactLinuxVerified:false,productionWalkthroughCompleted:false,newContinuationAllowed:false,sourceAllowance:0});
 export const requiredOrdinaryRuntimeFiles=Object.freeze([
- ...['sg-ag-ordinary-private-entry','sg-ag-ordinary-admission','sg-ag-ordinary-gateway','sg-ag-ordinary-linux','sg-ag-ordinary-memory-ssh','sg-ag-ordinary-private-pipes','sg-ag-ordinary-private-evidence',
+ ...['sg-ag-ordinary-inherited-launcher','sg-ag-ordinary-private-entry','sg-ag-ordinary-admission','sg-ag-ordinary-gateway','sg-ag-ordinary-linux','sg-ag-ordinary-memory-ssh','sg-ag-ordinary-private-pipes','sg-ag-ordinary-private-evidence',
   'sg-ag-strict-entry','ag-original-full-control','sg-ag-full-control-adapter','sg-ag-production-io','sg-ag-native-merge','sg-ag-ordinary-business','sg-ag-completed-prefix','sg-ag-private-control',
   'sg-business-document','sg-business-delivery','sg-business-native-reader','sg-existing-business'].map(n=>'scripts/runner-v2/ag-rolling/'+n+'.mjs'),
  'scripts/runner-v2/record_fields.py','service/business_fields.py','service/existing_business_fields.py','config/ag-business-bindings.json','config/ag-business-delivery-policy.json',

@@ -85,3 +85,4 @@ import './ag-rolling/sg-kingbabylon-wiring.test.mjs';
 import './ag-rolling/sg-ag-full-control.test.mjs';
 import './ag-rolling/sg-ag-production-io.test.mjs';
 import './ag-rolling/sg-ag-ordinary-private-entry.test.mjs';
+import './ag-rolling/sg-ag-ordinary-inherited-launcher.test.mjs';
