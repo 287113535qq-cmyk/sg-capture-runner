@@ -296,6 +296,20 @@ def execute(request):
         assert plan['sourceKey'] == PYRAMIDS_SOURCE
         from pyramids_flow_review import review_pyramids_flow
         return review_pyramids_flow(plan, request['raw'])
+    if request.get('op') == 'existing_business':
+        from existing_business_fields import inspect_existing_nextgen
+        documents = request['documents']
+        assert isinstance(documents, list) and 1 <= len(documents) <= 100
+        assert len({d['_id'] for d in documents}) == len(documents)
+        return [inspect_existing_nextgen(d, plan, request['binding']) for d in documents]
+    if request.get('op') == 'business_documents':
+        from business_fields import business_document
+        records = request['records']
+        assert isinstance(records, list) and 1 <= len(records) <= 100
+        assert len({r['_id'] for r in records}) == len(records)
+        for record in records:
+            assert execute({'op': 'verify', 'plan': plan, 'raw': record['raw'], 'record': record}) == {'verified': True}
+        return [business_document(r, request['binding'], request['campaignId']) for r in records]
     if request.get('op') == 'verify_batch':
         records = request.get('records')
         assert isinstance(records, list) and 1 <= len(records) <= 100

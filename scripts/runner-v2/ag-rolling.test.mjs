@@ -81,3 +81,6 @@ import './ag-rolling/sg-jinjitreasure-wiring.test.mjs';
 import './ag-rolling/sg-jinsedragon-wiring.test.mjs';
 
 import './ag-rolling/sg-kingbabylon-wiring.test.mjs';
+
+import './ag-rolling/sg-ag-full-control.test.mjs';
+import './ag-rolling/sg-ag-production-io.test.mjs';
