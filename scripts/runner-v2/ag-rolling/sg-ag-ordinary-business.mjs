@@ -8,6 +8,7 @@ import {terminalFields} from './sg-automatic-terminal.mjs';
 import {businessDocument,verifyBusinessPage} from './sg-business-document.mjs';
 import {assertCompleteBinding,deliverPage,verifyLegacyPage,digest,missingDocuments} from './sg-business-delivery.mjs';
 import {businessInventory,readBusinessNativePages} from './sg-business-native-reader.mjs';
+import {createNativePageVerificationCache} from './sg-native-page-verification-cache.mjs';
 
 // This module receives the admitted per-game clients and memory credentials.
 // Importing it performs no authentication, source request or business write.
@@ -67,7 +68,8 @@ export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,
  if(page.length)await baselinePage(page);
  const originalBeforeHash=beforeHash.digest('hex'),baselineHash=baseHash.digest('hex');
  await guard('indexed-source-inventory');const inventory=await mongoOnce(()=>businessInventory(source,b));
- const eachNativePage=visit=>mongoOnce(()=>readBusinessNativePages({source,binding:b,inventory,verify:async records=>{await guard('source-full-independent-validation');return verifyOrdinaryNativePage({records,plan,parser});},visit}));
+ const pageVerification=createNativePageVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
+ const eachNativePage=visit=>mongoOnce(()=>readBusinessNativePages({source,binding:b,inventory,verify:async records=>{await guard('source-full-independent-validation');return pageVerification.verify(plan,records);},visit}));
  const verified=await eachNativePage(async()=>{});assert(verified.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
  await seal(claimId+':validated',{baselineCount:baseline,baselineHash,originalBeforeHash,sourceCount:verified.count,sourceHash:verified.recordsHash,originalDataFullyValidated:true});
  await currentRtp(b);await assertWorkers();
@@ -89,11 +91,12 @@ export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,
  });
  assert(written.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
  let targetCount=0;const targetHash=createHash('sha256');
- await eachNativePage(async records=>{
+ const readback=await eachNativePage(async records=>{
   const expected=records.map(r=>businessDocument(r,b,campaignId)),saved=await sink.read(expected.map(d=>d._id));assert(missingDocuments(expected,saved).length===0,'SG_AG_BUSINESS_TARGET_MISSING');
   const by=new Map(saved.map(d=>[d._id,d])),ordered=expected.map(d=>by.get(d._id));verifyBusinessPage(records,ordered,b,campaignId);
   for(const d of ordered)targetHash.update(stable(d)+'\n');targetCount+=ordered.length;
  });
+ assert(readback.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
  const afterHash=createHash('sha256'),after=await mongoOnce(()=>pool.find(baselineQuery,{sort:{_id:1},batchSize:100,maxTimeMS:30000}).limit(expectedOriginalCount+1).toArray());
  for(const d of after)afterHash.update(stable(jsonDoc(d))+'\n');
  assert(after.length===baseline&&afterHash.digest('hex')===baselineHash&&targetCount===300000,'SG_BUSINESS_BASELINE_FULL_READBACK');

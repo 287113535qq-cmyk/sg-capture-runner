@@ -17,7 +17,7 @@ export const ordinaryPrivateEntryStatus=Object.freeze({schema:'sg-ag-ordinary-pr
 export const requiredOrdinaryRuntimeFiles=Object.freeze([
  ...['sg-ag-ordinary-inherited-launcher','sg-ag-ordinary-private-entry','sg-ag-ordinary-admission','sg-ag-ordinary-gateway','sg-ag-ordinary-linux','sg-ag-ordinary-memory-ssh','sg-ag-ordinary-private-pipes','sg-ag-ordinary-private-evidence',
   'sg-ag-strict-entry','ag-original-full-control','sg-ag-full-control-adapter','sg-ag-production-io','sg-ag-native-merge','sg-ag-ordinary-business','sg-ag-completed-prefix','sg-ag-private-control',
-  'sg-business-document','sg-business-delivery','sg-business-native-reader','sg-existing-business'].map(n=>'scripts/runner-v2/ag-rolling/'+n+'.mjs'),
+  'sg-business-document','sg-business-delivery','sg-business-native-reader','sg-native-page-verification-cache','sg-existing-business'].map(n=>'scripts/runner-v2/ag-rolling/'+n+'.mjs'),
  'scripts/runner-v2/record_fields.py','service/business_fields.py','service/existing_business_fields.py','config/ag-business-bindings.json','config/ag-business-delivery-policy.json',
  'scripts/runner-v2/state-store.mjs','scripts/runner-v2/resource-gate.mjs','scripts/runner-v2/analyzer.mjs','scripts/runner-v2/demo-run-fence.mjs','scripts/runner-v2/github-boundary.mjs']);
 export function verifyOrdinaryRuntimeFiles(descriptor,{root=process.cwd(),readBytes=p=>fs.readFileSync(p)}={}){

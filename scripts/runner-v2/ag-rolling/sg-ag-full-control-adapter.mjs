@@ -11,7 +11,7 @@ import {stagingLeaseKey} from './sg-staging-store.mjs';
 export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,store,io,now=Date.now}){
  assert(state?.version===1&&state.queueId===queueId&&/^\d+:1$/.test(cohortRun)&&/^[a-f0-9]{40}$/.test(commit),'SG_AG_CONTROL_IDENTITY');
  assert(state.runId===Number(cohortRun.split(':')[0]),'SG_AG_CONTROL_RUN');
- for(const name of ['guard','readJobs','readRun','persist','verifyPrefix','ensureNative','deliverBusiness','inspectBusiness','readBusinessReceipt','inspectPriorOperation','finishGame','close','assertResumeBoundary','resetEndedTask','dispatchRemaining','finishCohort','sealSettlement','ackSettlement'])assert(typeof io?.[name]==='function','SG_AG_CONTROL_IO_REQUIRED:'+name);
+ for(const name of ['guard','readJobs','readRun','persist','verifyPrefix','ensureNative','deliverBusiness','countBusiness','inspectBusiness','readBusinessReceipt','inspectPriorOperation','finishGame','close','assertResumeBoundary','resetEndedTask','dispatchRemaining','finishCohort','sealSettlement','ackSettlement'])assert(typeof io?.[name]==='function','SG_AG_CONTROL_IO_REQUIRED:'+name);
  const games=new Map(state.games.map(g=>[g.dbName,g]));assert(games.size===state.games.length&&new Set(state.games.map(g=>g.gameId)).size===state.games.length,'SG_AG_CONTROL_GAMES');
  const prefixProofs=new Map(),businessReceipts=new Map();
  function own(g){assert(games.get(g.dbName)===g&&g.campaignId&&Number.isSafeInteger(g.baseline)&&g.baseline>=0&&g.baseline<300000,'SG_AG_CONTROL_GAME');return g;}
@@ -23,7 +23,11 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
  function db(g){own(g);return {game:g,collection(name){assert(['capture_queue','capture_locks','simulate'].includes(name),'SG_AG_CONTROL_COLLECTION');return {
   find(query){assert(name==='capture_queue'&&(Object.keys(query).length===0||query.queueId===queueId&&query.campaignId===g.campaignId),'SG_AG_CONTROL_QUERY');return {toArray:async()=>(await taskRows(g)).map(r=>({...structuredClone(r.value),...(r.value.owner?{owner:projectOwner(r.value.owner)}:{})}))};},
   async countDocuments(query){if(name==='capture_locks'){const m=new RegExp('^gh_'+g.campaignId+'_(canary|worker)_([1-9]|1[0-9]|20)$').exec(query._id);assert(m&&query.expiresAt.$gt instanceof Date,'SG_AG_CONTROL_LEASE_QUERY');return live(g,m[1],Number(m[2]));}
-   assert(name==='simulate'&&(query['data.captureCampaignId']?.$ne===g.campaignId||query['data.captureCampaignId']===g.campaignId),'SG_AG_CONTROL_BASELINE_QUERY');await io.guard('baseline',g);const v=await io.inspectBusiness(g);assert(v.fullReadback&&v.originalUnchanged,'SG_AG_CONTROL_BUSINESS_BASELINE');return query['data.captureCampaignId']===g.campaignId?v.campaignCount:v.captureBaseline;
+   assert(name==='simulate'&&(query['data.captureCampaignId']?.$ne===g.campaignId||query['data.captureCampaignId']===g.campaignId),'SG_AG_CONTROL_BASELINE_QUERY');await io.guard('baseline',g);
+   // AG countDocuments is a fresh count, not another full source/target audit.
+   // Original rows are verified by delivery and inspectTarget below; a count
+   // alone can never authorize cleanup or mark the game complete.
+   const v=await io.countBusiness(g);assert(Number.isSafeInteger(v.captureBaseline)&&v.captureBaseline>=0&&Number.isSafeInteger(v.campaignCount)&&v.campaignCount>=0,'SG_AG_CONTROL_BUSINESS_COUNT');return query['data.captureCampaignId']===g.campaignId?v.campaignCount:v.captureBaseline;
   },
   async updateOne(query,update){assert(name==='capture_queue'&&query.queueId===queueId&&query.campaignId===g.campaignId,'SG_AG_CONTROL_SETTLE_QUERY');await io.guard('settle-ended-node',g);
    const key=taskKey(queueId,g,query._id),before=await store.get('state',key),row=before?.value;assert(row&&row.status===query.status&&(!query.owner||projectOwner(row.owner)===query.owner),'SG_AG_CONTROL_SETTLE_CHANGED');
@@ -47,8 +51,9 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
   }const v=await io.readRun(cohortRun,commit);assert(v.run===cohortRun&&v.commit===commit&&now()-v.at<=60000&&v.at<=now(),'SG_AG_CONTROL_RUN_READBACK');return {data:v};
  }};
  const runtime=createOriginalAgFullControl({fs:{existsSync:()=>false},credentialPath:'private-memory-credentials',read:()=>({}),mongo:async()=>client,load:()=>state,statePath:'own-control-state',save:persist,path:{join:(...p)=>p.join('/')},directory:'private-control-evidence',repository:'own-reviewed-cohort',secret:'own-cohort-lifecycle',githubClient:()=>gh,
-  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:()=> 'SG_AG_OWN_GAME_REVIEW_REQUIRED',console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
-  async liveLeases(database){let count=0;for(const r of await taskRows(database.game)){const [kind,index]=r.value._id.split(':');count+=await live(database.game,kind,Number(index));}return count;},
+  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:error=>{const code=error.code??error.message;return /^SG_[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_OWN_GAME_REVIEW_REQUIRED';},console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
+  async liveLeases(database){const rows=await taskRows(database.game),keys=rows.map(r=>{const [kind,index]=r.value._id.split(':');return stagingLeaseKey(queueId,database.game,kind,Number(index));});
+   const leases=await store.getMany('state',keys);assert(leases.length===keys.length,'SG_AG_CONTROL_LEASE_INVENTORY');return leases.filter(r=>r?.value.expiresAt>now()).length;},
   async validateRows(database,g,index){await io.guard('full-prefix-validation',g);const row=(await taskRows(g)).find(r=>r.value._id==='worker:'+index).value;assert(!['running','pending'].includes(row.status),'SG_AG_CONTROL_ACTIVE_PREFIX');
    assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');
    let proof;try{proof=await io.verifyPrefix(g,index,row);}catch(error){if(error.outcomeUnknown===true){g.sgOutcomeUnknownRetained=true;persist('own-control-state',state);}throw error;}
@@ -56,7 +61,15 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
    if(row.status==='success')assert(row.proof?.fullReadback&&row.proof.independentlyVerified&&row.proof.recordsHash===proof.recordsHash&&row.proof.count===proof.count,'SG_AG_CONTROL_SUCCESS_PROOF_CHANGED');
    prefixProofs.set(g.gameId+':'+index,structuredClone(proof));return proof.count;
   },
-  async mergeSelectedRows(database,g,selected,total){assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');await io.guard('per-game-final-delivery',g);const prior=await io.inspectPriorOperation(g);assert(prior?.canStartOnce===true,'SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY');const proofs=Array.from({length:20},(_,i)=>prefixProofs.get(g.gameId+':'+(i+1)));assert(proofs.every(Boolean),'SG_AG_CONTROL_FULL_INVENTORY');
+  async mergeSelectedRows(database,g,selected,total){assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');await io.guard('per-game-final-delivery',g);const prior=await io.inspectPriorOperation(g);
+   if(prior?.canStartOnce!==true){
+    // An existing intent needs evidence-based recovery, never another insert.
+    // Isolate it once; rescanning all 300000 rows every controller tick cannot
+    // resolve that intent and only delays other independently eligible games.
+    g.phase='blocked';g.reason='SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY';g.sgExistingOperationRetained=true;persist('own-control-state',state);
+    throw Error(g.reason);
+   }
+   const proofs=Array.from({length:20},(_,i)=>prefixProofs.get(g.gameId+':'+(i+1)));assert(proofs.every(Boolean),'SG_AG_CONTROL_FULL_INVENTORY');
    // Native full proof is an intermediate SG storage format. It cannot set the
    // AG game complete; the same per-game control call must reach simulate.
    try{const native=await io.ensureNative(g,{selected,total,proofs});assert(native?.fullReadback&&native.independentlyVerified&&native.count===total&&stable(native.selected)===stable(selected),'SG_AG_CONTROL_NATIVE_PROOF');

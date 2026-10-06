@@ -63,6 +63,15 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
   async inspectPriorOperation(g){const {state,receipt}=await nativeDocuments(g);if(state?.value.status==='merging')return {canStartOnce:false};const p=receipt?.value;if(!p)return {canStartOnce:true};const key=businessKey(g,p),audit=businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1');return {canStartOnce:!await mongoOnce(()=>audit.findOne({_id:key}))};},
   async deliverBusiness(g,native){const docs=await nativeDocuments(g),p=assertCompleteBinding(docs.state,docs.receipt,bindings[g.gameId]);assert(stable(p)===stable(native),'SG_AG_PRODUCTION_NATIVE_CHANGED');
    const receipt=await deliverOrdinaryBusiness({client:businessClient,ObjectId,parser,binding:bindings[g.gameId],plan:plans[g.gameId],nativeState:docs.state,nativeReceipt:docs.receipt,expectedProof:p,expectedOriginalCount:await admission.originalCount(g),owner,guard:phase=>guard(phase,g),currentRtp,assertWorkers:()=>workers(g),evidence:privateEvidence,evidenceMode});done.set(g.gameId,receipt);return receipt;},
+  async countBusiness(g){
+   await guard('business-count',g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),originalCount=await admission.originalCount(g);
+   const campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':g.campaignId},{maxTimeMS:15000}));
+   const all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
+   assert(all===originalCount+campaignCount,'SG_AG_PRODUCTION_BUSINESS_COUNT');
+   // SG's 300000 new records and pre-existing 100/150 rows are separate. The
+   // original AG capture baseline is zero; this does not attest their content.
+   return {captureBaseline:0,campaignCount};
+  },
   async inspectBusiness(g){
    await guard('final-business-snapshot',g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),campaign=g.campaignId,originalCount=await admission.originalCount(g),campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':campaign},{maxTimeMS:15000})),all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
    assert(all===originalCount+campaignCount,'SG_AG_PRODUCTION_BUSINESS_COUNT');

@@ -26,6 +26,7 @@ import {closePreparation} from './sg-preparation-close.mjs';
 import {protocolStopReport} from './sg-fault-code.mjs';
 import {openExistingWorkflowControl} from './sg-ag-existing-workflow.mjs';
 import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
+import {waitForEndedLeases} from './sg-ended-leases.mjs';
 
 assert(process.env.GITHUB_ACTIONS==='true'&&process.env.RUNNER_OS==='Linux'
  &&process.env.RUNNER_ENVIRONMENT==='github-hosted'&&Object.values(cohortRepos).includes(process.env.GITHUB_REPOSITORY),
@@ -217,6 +218,7 @@ try{
    }
   }
   sourceJobsEnded=true;
+  await waitForEndedLeases({profile,store,sourceJobsEnded,deadline,guard:globalGuard});
   if(profile.fullAgControl)fullControl=await openExistingWorkflowControl({profile,store,transport,guard:globalGuard,githubRead:gh,
    coordinatorRun:run,commit,sourceClose:()=>localSourceClose,sourceJobsEnded:()=>sourceJobsEnded});
   recoverMerging=async previous=>{
@@ -232,12 +234,6 @@ try{
     const failure={gameId:game.gameId,status:'blocked',reason:/^[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_MERGE_REVIEW_REQUIRED'};
     results.push(failure);log(JSON.stringify(failure));
    }
-  }
-  const keys=profile.payload.games.flatMap(game=>[...[1,2].map(i=>stagingLeaseKey(profile.payload.queueId,game,'canary',i)),
-   ...Array.from({length:20},(_,i)=>stagingLeaseKey(profile.payload.queueId,game,'worker',i+1))]);
-  for(;;){let live=0;for(let i=0;i<keys.length;i+=100){const rows=await store.getMany('state',keys.slice(i,i+100));
-    live+=rows.filter(r=>r?.value.expiresAt>Date.now()).length;}
-   if(live===0)break;assert(Date.now()<deadline,'SG_AG_SOURCE_LEASES_ACTIVE');await new Promise(r=>setTimeout(r,10000));
   }
   const before=await store.get('state','rolling-source');
   assert(before.value.owner===run&&before.value.status==='running','SG_AG_SOURCE_FENCE');

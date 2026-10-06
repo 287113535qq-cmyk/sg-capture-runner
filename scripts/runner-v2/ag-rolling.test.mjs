@@ -87,3 +87,6 @@ import './ag-rolling/sg-ag-production-io.test.mjs';
 import './ag-rolling/sg-ag-ordinary-private-entry.test.mjs';
 import './ag-rolling/sg-ag-ordinary-inherited-launcher.test.mjs';
 import './ag-rolling/sg-ag-live-controller.test.mjs';
+import './ag-rolling/sg-resume-reuse.test.mjs';
+import './ag-rolling/sg-native-page-verification-cache.test.mjs';
+import './ag-rolling/sg-ended-leases.test.mjs';
