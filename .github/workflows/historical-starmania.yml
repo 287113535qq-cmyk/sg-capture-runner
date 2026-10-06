@@ -38,11 +38,11 @@ jobs:
           python3 --version
       - run: npm ci --ignore-scripts --no-audit --no-fund --prefix collector
       - name: Check disabled configuration, own scope and public SSH bindings before credentials
-        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-preauth.mjs
+        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-provider-runtime.mjs --preauth
       # No secret is placed in an Actions input, environment, run script, argv or key file.
-      # A separately reviewed runner-side provider must supply the private stdin pipe.
-      # Standard workflow execution has no such provider and stops before Linux, SSH or Mongo.
-      - name: Execute only with the approved private stdin provider
-        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-job.mjs
+      # The independently approved provider and actual anonymous actor pipes are required.
+      # Configuration remains disabled; no actual provider or durable sink is deployed.
+      - name: Receive the approved encrypted private envelope and return encrypted full evidence
+        run: node scripts/runner-v2/ag-rolling/sg-historical-starmania-provider-runtime.mjs
       # The private provider must also implement independently reviewed evidence delivery.
       # No artifact action or runtime token environment is used as a substitute.

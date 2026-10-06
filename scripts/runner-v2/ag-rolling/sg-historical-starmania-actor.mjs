@@ -53,6 +53,16 @@ export function assertOwnHistoricalGrant(grant,execution,env){
  assert(v.privateEvidence?.mode==='inherited-fd3'&&v.privateEvidence.gameId===32737
   &&v.privateEvidence.run===env.GITHUB_RUN_ID+':1'&&v.privateEvidence.commit===env.GITHUB_SHA
   &&v.privateEvidence.privateOnly===true,'HISTORICAL_PROTECTED_PRIVATE_EVIDENCE_REQUIRED');
+ if(execution.privateProvider!==undefined){
+  const p=execution.privateProvider;
+  assert(p.schema==='sg-historical-private-provider-v1'&&p.enabled===true
+   &&p.endpoint==='https://52.87.94.113/sg-historical-32737'
+   &&/^[a-f0-9]{64}$/.test(p.tlsSpkiSha256??'')&&/^[a-f0-9]{64}$/.test(p.signingPublicKeySha256??'')
+   &&stable(v.privateProvider)===stable({schema:p.schema,endpoint:p.endpoint,tlsSpkiSha256:p.tlsSpkiSha256,
+    signingPublicKeySha256:p.signingPublicKeySha256,privateCredentials:true,privateEvidence:true,
+    gameId:32737,run:env.GITHUB_RUN_ID+':1',commit:env.GITHUB_SHA,attempt:1}),
+   'HISTORICAL_PROTECTED_OWN_PROVIDER_REQUIRED');
+ }
  assert(execution.ssh?.host==='52.87.94.113'&&v.ssh?.nativeAccount==='sgcapture'&&v.ssh.historicalAccount==='sghistorical32737'
   &&v.ssh.resourceOnly===true&&v.ssh.rtpHashOnly===true
   &&v.ssh.hostKeyFingerprint===execution.ssh.hostKeyFingerprint&&v.ssh.knownHostsSha256===execution.ssh.knownHostsSha256
