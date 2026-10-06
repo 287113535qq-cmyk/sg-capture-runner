@@ -1,4 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import fsp from 'node:fs/promises';import path from 'node:path';import os from 'node:os';
+import {EventEmitter} from 'node:events';
+import {historicalLauncherConfiguration,assertHistoricalLauncherBinding,historicalInheritedPipeAdmission,launchHistoricalPrivateRuntime} from './ag-rolling/sg-historical-private-launcher.mjs';
 import http from 'node:http';import {PassThrough} from 'node:stream';import {spawn} from 'node:child_process';import {generateKeyPairSync,createHash,randomBytes} from 'node:crypto';
 import {stable} from './mongo-writer.mjs';import {digest} from './ag-rolling/sg-business-delivery.mjs';
 import {MINIMUM_PRIVILEGES,HISTORICAL_BRANCH,HISTORICAL_USER} from './ag-rolling/sg-historical-labomba-actor.mjs';
@@ -17,12 +19,14 @@ function fixture(){
   fixedPrivateIoService:{schema:'sg-historical-fixed-private-io-service-v1',enabled:true,context},privateEvidenceSink:binding,
   permission:{username:HISTORICAL_USER,sshAccount:'sghistorical32723',grantKey:'primary/historical-delivery-permission:32723:'+manifestSha},
   ssh:{host:'52.87.94.113',hostKeyFingerprint:'SHA256:synthetic-host',knownHostsSha256:'d'.repeat(64),nativeIdentityFingerprint:'SHA256:synthetic-native',historicalIdentityFingerprint:'SHA256:synthetic-own'}};
+ execution.privateInheritedLauncher={schema:'sg-historical-private-inherited-launcher-v1',enabled:true,context:structuredClone(context),sender:{ownerUid:1000,entrySha256:hash(fs.readFileSync('scripts/runner-v2/ag-rolling/sg-historical-provider-sender.mjs'))},'fixed-io':{ownerUid:1000,entrySha256:hash(fs.readFileSync('scripts/runner-v2/ag-rolling/sg-historical-provider-fixed-io.mjs'))}};
  const canonical=MINIMUM_PRIVILEGES.map(v=>({resource:v.resource,actions:[...v.actions].sort()})).sort((a,b)=>stable(a).localeCompare(stable(b)));
  const ending={syntheticImmutable:true},endingHash=digest(ending);execution.window={run:'37314031299:1',queueId:'rolling-20261003225355-f0d07c84',endedProofHash:endingHash,profile:profileName,permitKey:'rolling-activation:5fb60599fd6bd3d2ff78b3fbce044a665edaeb5009fb9a6c30179bf5b323944b:complete'};
  const grant={_id:execution.permission.grantKey,value:{schema:'sg-historical-labomba-permission-v1',gameId:32723,username:HISTORICAL_USER,minimumPermissionApproved:true,immutable:true,branch:HISTORICAL_BRANCH,manifestSha256:manifestSha,privilegesHash:digest(canonical),sshAccount:'sghistorical32723',rtpFileSha256:'9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b',
   ssh:{...execution.ssh,nativeAccount:'sgcapture',historicalAccount:'sghistorical32723',resourceOnly:true,rtpHashOnly:true},
   linux:{run:99124,commit:context.commit,joinedCommands:14,sealedReceipts:Array.from({length:9},(_,i)=>({mailbox:'synthetic:'+i,run:99124,commit:context.commit,received:true,receiptHash:String(i).repeat(64)}))},
   privateProvider:{schema:config.schema,endpoint:config.endpoint,tlsSpkiSha256:config.tlsSpkiSha256,signingPublicKeySha256:config.signingPublicKeySha256,privateCredentials:true,privateEvidence:true,gameId:32723,run:context.run,commit:context.commit,attempt:1},
+  privateInheritedLauncher:{...structuredClone(execution.privateInheritedLauncher),privateStdinOnly:true,inheritedPipeOnly:true},
   privateEvidenceSink:{...binding,gameId:32723,run:context.run,commit:context.commit,encryptedOnly:true},fixedPrivateIoService:{...execution.fixedPrivateIoService,endpoint:config.endpoint,tlsSpkiSha256:config.tlsSpkiSha256,privateInheritedPipes:true}}};
  const key='-----BEGIN OPENSSH PRIVATE KEY-----\n'+Buffer.from('synthetic-memory-key').toString('base64')+'\n-----END OPENSSH PRIVATE KEY-----\n';
  const credentials={schema:'sg-historical-private-pipe-v1',gameId:32723,run:context.run,commit:context.commit,password:'synthetic-private-password',ghToken:'synthetic-private-token',nativeSshPrivateKey:key,historicalSshPrivateKey:key};
@@ -45,9 +49,9 @@ const receipt=f=>{const b=report(f);return {schema:'sg-historical-private-eviden
 async function disk(f,override={}){
  const dir=await fsp.mkdtemp(path.join(os.tmpdir(),'sg-synthetic-encrypted-evidence-'));
  const actual=name=>path.join(dir,path.posix.basename(name));
- const fakeStat=(s,directory)=>({isDirectory:()=>directory,isSymbolicLink:()=>false,isFile:()=>!directory,uid:1000,mode:directory?0o700:0o600,size:s?.size});
+ const fakeStat=(s,directory)=>({isDirectory:()=>directory,isSymbolicLink:()=>false,isFile:()=>!directory,uid:1000,mode:directory?0o700:0o600,dev:1,ino:directory?999:998,size:s?.size});
  const io={lstat:async()=>fakeStat(null,true),realpath:async()=>f.execution.privateEvidenceSink.directory,open:async(name,flags,mode)=>{
-  if(name===f.execution.privateEvidenceSink.directory)return {sync:async()=>{},close:async()=>{}};
+  if(name===f.execution.privateEvidenceSink.directory)return {fd:777,stat:async()=>fakeStat(null,true),sync:async()=>{},close:async()=>{}};
   const h=await fsp.open(actual(name),flags,mode);return {writeFile:b=>h.writeFile(b),sync:()=>h.sync(),close:()=>h.close(),readFile:()=>h.readFile(),stat:async()=>fakeStat(await h.stat(),false)};
  },...override};
  return {dir,io,actual,dispose:async()=>{for(const n of await fsp.readdir(dir))await fsp.unlink(path.join(dir,n));await fsp.rmdir(dir);}};
@@ -79,27 +83,27 @@ test('unknown actual adapter read or changed protected readback is consumed once
  const snapshot=await b.readProtectedAdmission();snapshot.grant=structuredClone(snapshot.grant);await assert.rejects(b.verifyNativeEnding({protectedRead:snapshot}));g.recipient.close();
 });
 test('actual Node encrypted file write/fsync and independently opened full readback return the complete private bytes',async()=>{
- const f=fixture(),d=await disk(f);try{const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux'}),b=report(f),r=receipt(f);
-  await sink.writePrivate(b,r);const names=await fsp.readdir(d.dir);assert.equal(names.length,1);const packed=await fsp.readFile(path.join(d.dir,names[0]));assert(!packed.includes(Buffer.from('never-on-disk-in-plaintext')));assert(!packed.includes(Buffer.from('sg-historical-labomba-run-v1')));
+ const f=fixture(),d=await disk(f);try{const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux',geteuid:()=>1000}),b=report(f),r=receipt(f);
+  await sink.prepare();await sink.writePrivate(b,r);const names=await fsp.readdir(d.dir);assert.equal(names.length,1);const packed=await fsp.readFile(path.join(d.dir,names[0]));assert(!packed.includes(Buffer.from('never-on-disk-in-plaintext')));assert(!packed.includes(Buffer.from('sg-historical-labomba-run-v1')));
   const full=await sink.readPrivate(r);assert(full.equals(b));full.fill(0);await assert.rejects(sink.readPrivate(r));await assert.rejects(sink.writePrivate(b,r));b.fill(0);
  }finally{await d.dispose();f.recipient.close();}
 });
 test('existing ciphertext, failed fsync and changed full ciphertext retain evidence and prohibit a second sink write',async()=>{
  for(const mode of ['existing','fsync','changed']){const f=fixture(),d=await disk(f);try{
   const original=d.io.open;let writes=0;d.io.open=async(...argv)=>{const h=await original(...argv);if(argv[0]!==f.execution.privateEvidenceSink.directory){const write=h.writeFile;h.writeFile=async b=>{writes++;return write(b);};if(mode==='fsync')h.sync=async()=>{throw Error('synthetic-secret-unknown');};}return h;};
-  const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux'}),b=report(f),r=receipt(f),file=path.join(d.dir,r.challengeHash+'.encrypted-evidence.json');
-  if(mode==='existing')await fsp.writeFile(file,'already-present');
+  const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux',geteuid:()=>1000}),b=report(f),r=receipt(f),file=path.join(d.dir,r.challengeHash+'.encrypted-evidence.json');
+  await sink.prepare();if(mode==='existing')await fsp.writeFile(file,'already-present');
   if(mode==='changed'){await sink.writePrivate(b,r);const v=JSON.parse(await fsp.readFile(file));v.tag='A'.repeat(22);await fsp.writeFile(file,JSON.stringify(v));await assert.rejects(sink.readPrivate(r));}
   else await assert.rejects(sink.writePrivate(b,r));await assert.rejects(sink.writePrivate(b,r));assert.equal(writes,mode==='existing'?0:1);assert.equal((await fsp.readdir(d.dir)).length,1);b.fill(0);
  }finally{await d.dispose();f.recipient.close();}}
 });
 test('private durable sink rejects self-configured approval, key mismatch and unsafe directory before creating any file',async()=>{
  const f=fixture();assert.throws(()=>historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:{value:{}},key:f.evidenceKey}));assert.throws(()=>historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:randomBytes(32)},{platform:'linux'}));
- const d=await disk(f,{lstat:async()=>({isDirectory:()=>true,isSymbolicLink:()=>true,uid:1000,mode:0o777})});try{const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux'});await assert.rejects(sink.writePrivate(report(f),receipt(f)));assert.equal((await fsp.readdir(d.dir)).length,0);}finally{await d.dispose();f.recipient.close();}
+ const d=await disk(f,{lstat:async()=>({isDirectory:()=>true,isSymbolicLink:()=>true,uid:1000,mode:0o777})});try{const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux',geteuid:()=>1000});await assert.rejects(sink.prepare());assert.equal((await fsp.readdir(d.dir)).length,0);}finally{await d.dispose();f.recipient.close();}
 });
 test('production sender orchestrates real crypto through original-adapter fixtures and an actual encrypted full file readback',async()=>{
  const f=fixture(),d=await disk(f);try{
-  const sender=await prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux'})});
+  const sender=await prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>1000})});
   assert.equal(f.credentials.password,undefined);assert(f.evidenceKey.every(b=>b===0));const auth=f.recipient.acceptCredentials(sender.credentialPacket);assert.equal(auth.password,'synthetic-private-password');
   const b=report(f),packet=f.recipient.evidence(b),ack=await sender.acceptEvidence(packet);assert.equal(f.recipient.acceptReceipt(ack).evidenceSha256,hash(b));await assert.rejects(sender.acceptEvidence(packet));sender.close();b.fill(0);
  }finally{await d.dispose();f.recipient.close();}
@@ -107,7 +111,7 @@ test('production sender orchestrates real crypto through original-adapter fixtur
 async function post(port,route,value){const bytes=Buffer.from(JSON.stringify(value));return new Promise((resolve,reject)=>{const r=http.request({hostname:'127.0.0.1',port,path:route,method:'POST',agent:false,headers:{'content-type':'application/json','content-length':bytes.length}},res=>{const chunks=[];res.on('data',b=>chunks.push(b));res.on('end',()=>resolve({status:res.statusCode,value:JSON.parse(Buffer.concat(chunks))}));});r.on('error',reject);r.end(bytes);});}
 test('actual Node fixed HTTP handler relays only one encrypted credential/evidence pair, and rejects replay',async()=>{
  const f=fixture(),d=await disk(f);let sender;const handler=historicalFixedPrivateIoHandler({context:f.context,config:f.config,exchangePrivate:async frame=>{
-  if(frame.phase==='credentials'){sender=await prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux'})});return sender.credentialPacket;}return sender.acceptEvidence(frame.packet);
+  if(frame.phase==='credentials'){sender=await prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>1000})});return sender.credentialPacket;}return sender.acceptEvidence(frame.packet);
  }});const server=http.createServer(handler);await new Promise(r=>server.listen(0,'127.0.0.1',r));try{
   const port=server.address().port,first=await post(port,'/sg-historical-32723/credentials',f.recipient.challenge);assert.equal(first.status,200);assert(!JSON.stringify(first).includes('synthetic-private-password'));f.recipient.acceptCredentials(first.value);
   const second=await post(port,'/sg-historical-32723/evidence',f.recipient.evidence(report(f)));assert.equal(second.status,200);assert.equal(f.recipient.acceptReceipt(second.value).fullReadback,true);
@@ -132,8 +136,8 @@ test('actual Mongo connector uses only the own minimum user and closes once on e
 test('the full sender runtime exchanges exactly two private frames and returns one durable encrypted ACK',async()=>{
  const f=fixture(),d=await disk(f),input=new PassThrough(),toSender=new PassThrough(),toRelay=new PassThrough(),frames=historicalPrivateFrameExchange({input:toRelay,output:toSender});
  const bootstrap={schema:'sg-historical-private-sender-bootstrap-v1',credentials:structuredClone(f.credentials),signingPrivateKey:f.signing.privateKey.export({format:'pem',type:'pkcs8'}),evidenceKey:f.evidenceKey.toString('base64url')};let publicFrames='';toRelay.on('data',b=>publicFrames+=b);toSender.on('data',b=>publicFrames+=b);
- const run=runHistoricalPrivateSender({execution:f.execution,input,privateInput:toSender,privateOutput:toRelay,manifestBytes:f.manifestBytes},{openMongo:async()=>f.client,
-  adapters:a=>historicalProductionReadAdapters({...a,readConfig:f.readConfig},f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux'})});run.catch(()=>{});input.end(JSON.stringify(bootstrap));
+ const run=runHistoricalPrivateSender({execution:f.execution,input,privateInput:toSender,privateOutput:toRelay,manifestBytes:f.manifestBytes},{verifyInheritedPipes:()=>true,openMongo:async()=>f.client,
+  adapters:a=>historicalProductionReadAdapters({...a,readConfig:f.readConfig},f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>1000})});run.catch(()=>{});input.end(JSON.stringify(bootstrap));
  try{
   // Wait only for bootstrap setup in this local test; the external private pipes buffer the first frame.
   await new Promise(r=>setImmediate(r));const first={schema:'sg-historical-fixed-private-exchange-v1',phase:'credentials',context:f.context,challengeHash:historicalChallengeHash(f.recipient.challenge),packet:f.recipient.challenge};
@@ -145,7 +149,7 @@ test('the full sender runtime exchanges exactly two private frames and returns o
 test('missing live annotation or unavailable approved private directory stops sender before returning credentials',async()=>{
  for(const mode of ['annotation','directory']){const f=fixture(),d=await disk(f,mode==='directory'?{lstat:async()=>{throw Error('synthetic-private-unknown');}}:{});try{
   if(mode==='annotation'){const read=f.deps.readGithub;f.deps.readGithub=p=>p.includes('/annotations?')?Promise.resolve([]):read(p);}
-  await assert.rejects(prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux'})}));
+  await assert.rejects(prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>1000})}));
   assert.equal(f.credentials.password,undefined);assert(f.evidenceKey.every(v=>v===0));assert.equal((await fsp.readdir(d.dir)).length,0);
   if(mode==='annotation')assert.equal(f.calls.length,0);
  }finally{await d.dispose();f.recipient.close();}}
@@ -154,4 +158,97 @@ test('native finite readback keeps the original 30 second limit and the recovere
  for(const mode of ['stale','no-closure','foreign-pair']){const f=fixture();let now=Date.now();const verify=async()=>{if(mode==='stale')now+=30001;return {primaryRun:'37314031299:1',secondaryRun:mode==='foreign-pair'?'99124:1':'37321135064:1',federationHash:digest(f.profile.federation),sourceRequests:0,closure:mode==='no-closure'?null:{syntheticOnly:true}};};
   await assert.rejects(verifyHistoricalNativeEnding({execution:f.execution,store:historicalNativeReadStore(f.client),readConfig:f.readConfig,readGithub:f.readGithub,now:()=>now,verifyFederation:verify}));f.recipient.close();
  }
+});
+function pipes(f){
+ const records=new Map([[0,{ino:101,flags:'00'}],[3,{ino:103,flags:'00'}],[4,{ino:104,flags:'01'}]]),calls=[];
+ const io={fstatSync:fd=>{calls.push(['stat',fd]);return fd===90?{isFile:()=>true}:{isFIFO:()=>true,uid:1000,mode:0o600,dev:1,ino:records.get(fd).ino};},
+  readlinkSync:name=>{calls.push(['link',name]);return 'pipe:['+records.get(Number(name.split('/').at(-1))).ino+']';},
+  readFileSync:name=>{calls.push(['read',name]);if(name===90)return fs.readFileSync('scripts/runner-v2/ag-rolling/sg-historical-provider-'+f.role+'.mjs');
+   const record=records.get(Number(name.split('/').at(-1)));return 'flags:\t'+record.flags+'\nino:\t'+record.ino+'\n';},openSync:()=>90,closeSync:fd=>calls.push(['close',fd])};
+ return {io,records,calls};
+}
+test('private launcher admits distinct anonymous directional pipes and exact own entry bytes using OS metadata only',()=>{
+ for(const role of ['sender','fixed-io']){const f=fixture();f.role=role;const p=pipes(f);
+  const entry=historicalInheritedPipeAdmission({execution:f.execution,role},{fs:p.io,platform:'linux',geteuid:()=>1000});assert(entry.endsWith('sg-historical-provider-'+role+'.mjs'));
+  assert.equal(p.calls.filter(c=>c[0]==='read').length,4);assert(p.calls.filter(c=>c[0]==='read').every(c=>c[1]===90||String(c[1]).startsWith('/proc/self/fdinfo/')));assert.equal(p.calls.filter(c=>c[0]==='close').length,1);f.recipient.close();
+ }
+});
+test('wrong UID, disk or named input, duplicate pipes and wrong direction stop private launcher before spawn or stdin',()=>{
+ for(const mode of ['uid','file','named','duplicate','direction','mode','unknown','entry']){const f=fixture();f.role='sender';const p=pipes(f);let uid=1000;
+  if(mode==='uid')uid=0;if(mode==='file')p.io.fstatSync=()=>({isFIFO:()=>false});if(mode==='named')p.io.readlinkSync=()=>'/tmp/private-fifo';
+  if(mode==='duplicate')p.records.get(3).ino=101;if(mode==='direction')p.records.get(4).flags='02';if(mode==='mode'){const stat=p.io.fstatSync;p.io.fstatSync=fd=>({...stat(fd),mode:0o644});}
+  if(mode==='unknown')p.io.readFileSync=()=>{throw Error('synthetic-private-unknown');};if(mode==='entry')f.execution.privateInheritedLauncher.sender.entrySha256='f'.repeat(64);
+  assert.throws(()=>historicalInheritedPipeAdmission({execution:f.execution,role:'sender'},{fs:p.io,platform:'linux',geteuid:()=>uid}),e=>e.message==='HISTORICAL_PRIVATE_LAUNCHER_STOP_NO_RETRY');f.recipient.close();
+ }
+});
+test('launcher approval is independently protected and rejects foreign context or self-configured role and UID',()=>{
+ for(const mode of ['absent','role','uid','context','extra']){const f=fixture();
+  if(mode==='absent')delete f.grant.value.privateInheritedLauncher;if(mode==='role')f.execution.privateInheritedLauncher.sender.entrySha256='b'.repeat(64);
+  if(mode==='uid')f.execution.privateInheritedLauncher.sender.ownerUid=1001;if(mode==='context')f.execution.privateInheritedLauncher.context.run='99125:1';if(mode==='extra')f.execution.privateInheritedLauncher.extra=true;
+  assert.throws(()=>assertHistoricalLauncherBinding(f.execution,f.context,f.grant));f.recipient.close();
+ }
+ const f=fixture();assert.equal(assertHistoricalLauncherBinding(f.execution,f.context,f.grant).schema,'sg-historical-private-inherited-launcher-v1');f.recipient.close();
+});
+test('launcher spawns once with only public environment and inherited stdin/FD3/FD4 while suppressing child console',async()=>{
+ const f=fixture();let spawns=0;const child=new EventEmitter();child.exitCode=null;child.kill=()=>{throw Error('unexpected kill');};
+ const result=launchHistoricalPrivateRuntime({execution:f.execution,role:'sender',environment:{PATH:'public-path',HOME:'public-home',ACTIONS_RUNTIME_TOKEN:'synthetic-unforwarded-token',SSH_AUTH_SOCK:'synthetic-foreign-agent'}},
+  {admit:()=>'/approved/public/sender.mjs',spawn:(command,argv,options)=>{spawns++;assert.equal(command,process.execPath);assert.deepEqual(argv,['/approved/public/sender.mjs']);assert.deepEqual(options.stdio,[0,'ignore','ignore',3,4]);
+   assert.deepEqual(options.env,{PATH:'public-path',HOME:'public-home'});assert.equal(options.windowsHide,true);setImmediate(()=>{child.exitCode=0;child.emit('close',0,null);});return child;}});
+ assert.equal(await result,true);assert.equal(spawns,1);f.recipient.close();
+});
+test('unknown launch and failed child stop once without a second process or private error output',async()=>{
+ for(const mode of ['spawn','child']){const f=fixture();let spawns=0;await assert.rejects(launchHistoricalPrivateRuntime({execution:f.execution,role:'sender',environment:{}},{admit:()=>'/approved/public/sender.mjs',spawn:()=>{
+  spawns++;if(mode==='spawn')throw Error('synthetic-private-error');const child=new EventEmitter();child.exitCode=null;child.kill=()=>{};setImmediate(()=>{child.exitCode=2;child.emit('close',2,null);});return child;
+ }}),e=>e.message==='HISTORICAL_PRIVATE_LAUNCHER_STOP_NO_RETRY');assert.equal(spawns,1);f.recipient.close();}
+});
+test('launcher keeps the original 330 minute maximum and terminates its own timed out child without restarting',async()=>{
+ const f=fixture();let spawns=0,kills=0;const child=new EventEmitter();child.exitCode=null;child.kill=signal=>{kills++;assert.equal(signal,'SIGTERM');setImmediate(()=>{child.exitCode=null;child.emit('close',null,'SIGTERM');});return true;};
+ await assert.rejects(launchHistoricalPrivateRuntime({execution:f.execution,role:'fixed-io',environment:{}},{admit:()=>'/approved/public/fixed-io.mjs',spawn:()=>{spawns++;return child;},setTimer:(callback,ms)=>{assert.equal(ms,330*60000);return setTimeout(callback,0);}}));
+ assert.equal(spawns,1);assert.equal(kills,1);f.recipient.close();
+});
+test('private launcher and sender reject inherited secrets or unread pipe admission before consuming bootstrap',async()=>{
+ const f=fixture();let admitted=0,spawns=0;await assert.rejects(launchHistoricalPrivateRuntime({execution:f.execution,role:'sender',environment:{GH_TOKEN:'synthetic-private-token'}},{admit:()=>{admitted++;},spawn:()=>{spawns++;}}));assert.equal(admitted,0);assert.equal(spawns,0);
+ const input=new PassThrough();let opened=0;await assert.rejects(runHistoricalPrivateSender({execution:f.execution,input,manifestBytes:f.manifestBytes},{verifyInheritedPipes:()=>{throw Error('synthetic-unknown-descriptor');},openMongo:async()=>{opened++;}}));
+ assert.equal(input.listenerCount('data'),0);assert.equal(opened,0);input.destroy();f.recipient.close();
+});
+test('actual disabled launcher entries for both roles leave private stdin unread and never create children',async()=>{
+ for(const role of ['sender','fixed-io']){const child=spawn(process.execPath,['scripts/runner-v2/ag-rolling/sg-historical-private-launcher.mjs',role],{stdio:['pipe','pipe','pipe']});let output='';child.stdout.on('data',b=>output+=b);child.stderr.on('data',b=>output+=b);
+  child.stdin.end('synthetic-unread-private-bootstrap');const code=await new Promise(r=>child.on('close',r));assert.equal(code,2);assert.equal(output.trim(),'HISTORICAL_PRIVATE_LAUNCHER_DISABLED_NO_INPUT_OR_NETWORK');}
+});
+test('effective UID mismatch or failed directory metadata prevents all sink I/O and credential release',async()=>{
+ const f=fixture(),d=await disk(f);let stats=0;const old=d.io.lstat;d.io.lstat=async(...a)=>{stats++;return old(...a);};try{
+  await assert.rejects(prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>0})}));
+  assert.equal(stats,0);assert.equal((await fsp.readdir(d.dir)).length,0);assert.equal(f.credentials.password,undefined);assert(f.evidenceKey.every(v=>v===0));
+ }finally{await d.dispose();f.recipient.close();}
+});
+test('opened directory owner, mode and inode must match the checked path before fsync or private credentials',async()=>{
+ for(const mode of ['owner','mode','inode']){const f=fixture(),d=await disk(f);let synced=0,closed=0;const open=d.io.open;d.io.open=async(...a)=>{const h=await open(...a);if(a[0]===f.execution.privateEvidenceSink.directory){const stat=h.stat;h.stat=async()=>({...await stat(),...(mode==='owner'?{uid:0}:mode==='mode'?{mode:0o777}:{ino:888})});h.sync=async()=>{synced++;};h.close=async()=>{closed++;};}return h;};try{
+  await assert.rejects(prepareHistoricalPrivateSender(args(f),{adapters:a=>historicalProductionReadAdapters(a,f.deps),sink:a=>historicalEncryptedDurableSink(a,{fs:d.io,platform:'linux',geteuid:()=>1000})}));assert.equal(synced,0);assert.equal(closed,1);assert.equal((await fsp.readdir(d.dir)).length,0);
+ }finally{await d.dispose();f.recipient.close();}}
+});
+test('sink requires completed directory preparation and changed directory identity cannot write or read again',async()=>{
+ for(const mode of ['unprepared','before-write','before-read']){const f=fixture(),d=await disk(f);const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux',geteuid:()=>1000}),b=report(f),r=receipt(f);try{
+  if(mode!=='unprepared')await sink.prepare();if(mode==='before-read')await sink.writePrivate(b,r);
+  if(mode!=='unprepared'){const stat=d.io.lstat;d.io.lstat=async()=>({...await stat(),ino:888});}
+  await assert.rejects(mode==='before-read'?sink.readPrivate(r):sink.writePrivate(b,r));await assert.rejects(sink.prepare());await assert.rejects(sink.writePrivate(b,r));assert.equal((await fsp.readdir(d.dir)).length,mode==='before-read'?1:0);
+ }finally{sink.close();b.fill(0);await d.dispose();f.recipient.close();}}
+});
+test('ciphertext is created and independently reopened through the verified directory descriptor with file then directory fsync',async()=>{
+ const f=fixture(),d=await disk(f),events=[],open=d.io.open;d.io.open=async(...a)=>{const h=await open(...a),directory=a[0]===f.execution.privateEvidenceSink.directory;events.push(['open',a[0]]);const sync=h.sync,close=h.close;
+  h.sync=async()=>{events.push([directory?'directory-sync':'file-sync']);return sync();};h.close=async()=>{events.push([directory?'directory-close':'file-close']);return close();};return h;};
+ const sink=historicalEncryptedDurableSink({binding:f.execution.privateEvidenceSink,context:f.context,grant:f.grant,key:f.evidenceKey},{fs:d.io,platform:'linux',geteuid:()=>1000}),b=report(f),r=receipt(f);try{
+  await sink.prepare();await sink.writePrivate(b,r);const full=await sink.readPrivate(r);assert(full.equals(b));full.fill(0);const files=events.filter(e=>e[0]==='open'&&e[1]!==f.execution.privateEvidenceSink.directory);assert.equal(files.length,2);assert(files.every(e=>e[1]==='/proc/self/fd/777/'+r.challengeHash+'.encrypted-evidence.json'));
+  const fileSync=events.findIndex(e=>e[0]==='file-sync'),directorySync=events.findIndex((e,i)=>i>fileSync&&e[0]==='directory-sync');assert(fileSync>0&&directorySync>fileSync);assert(events.slice(fileSync+1,directorySync).some(e=>e[0]==='file-close'));
+ }finally{sink.close();b.fill(0);await d.dispose();f.recipient.close();}
+});
+test('foreign public launcher identity or malformed attempt and manifest cannot reach any inherited descriptor',()=>{
+ for(const [key,value] of [['gameId',32731],['repository','foreign/sg-capture-runner'],['workflow','.github/workflows/trial-300k.yml'],['run','99123:2'],['linuxRun','0'],['commit','malformed'],['manifestSha256','b'.repeat(64)]]){
+  const f=fixture();f.execution.privateInheritedLauncher.context[key]=value;f.execution.fixedPrivateIoService.context=structuredClone(f.execution.privateInheritedLauncher.context);let stats=0;
+  assert.throws(()=>historicalInheritedPipeAdmission({execution:f.execution,role:'sender'},{fs:{fstatSync:()=>{stats++;}},platform:'linux',geteuid:()=>1000}));assert.equal(stats,0);f.recipient.close();
+ }
+});
+test('a child error consumes the launch, waits for its actual close and sends only one termination signal',async()=>{
+ const f=fixture();let killed=0,closed=false,spawns=0;const child=new EventEmitter();child.exitCode=null;child.pid=777;child.kill=()=>{killed++;setTimeout(()=>{closed=true;child.emit('close',null,'SIGTERM');},10);return true;};
+ await assert.rejects(launchHistoricalPrivateRuntime({execution:f.execution,role:'sender',environment:{}},{admit:()=>'/approved/public/sender.mjs',spawn:()=>{spawns++;setImmediate(()=>child.emit('error',Error('synthetic-private-error')));return child;}}),e=>e.message==='HISTORICAL_PRIVATE_LAUNCHER_STOP_NO_RETRY');
+ assert.equal(closed,true);assert.equal(killed,1);assert.equal(spawns,1);f.recipient.close();
 });

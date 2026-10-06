@@ -4,6 +4,7 @@ import {X509Certificate,createPublicKey,createHash,verify} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
 import {assertHistoricalProviderConfiguration,assertHistoricalProviderChallenge,historicalChallengeHash} from './sg-historical-provider-channel.mjs';
 import {assertOwnHistoricalGrant} from './sg-historical-labomba-actor.mjs';
+import {assertHistoricalLauncherBinding,historicalInheritedPipeAdmission} from './sg-historical-private-launcher.mjs';
 const fail=()=>Error('HISTORICAL_FIXED_PRIVATE_IO_STOP_NO_RETRY');
 const exact=(v,keys)=>assert(v&&Object.keys(v).sort().join(',')===[...keys].sort().join(','));
 function packet(v,phase,hash){exact(v,['phase','challengeHash','iv','tag','ciphertext']);assert(v.phase===phase&&v.challengeHash===hash);
@@ -36,6 +37,7 @@ export function historicalFixedPrivateIoHandler({context,config,exchangePrivate,
  };
 }
 export function createHistoricalFixedPrivateServer({context,execution,grant,tlsPrivateKey,tlsCertificate,exchangePrivate,now=Date.now},dependencies={}){
+ assertHistoricalLauncherBinding(execution,context,grant);
  const config=assertHistoricalProviderConfiguration(execution.privateProvider),service=execution.fixedPrivateIoService;
  assert(service?.schema==='sg-historical-fixed-private-io-service-v1'&&service.enabled===true&&stable(service.context)===stable(context)
   &&stable(grant?.value?.fixedPrivateIoService)===stable({...service,endpoint:config.endpoint,tlsSpkiSha256:config.tlsSpkiSha256,privateInheritedPipes:true}),'HISTORICAL_PROTECTED_FIXED_IO_REQUIRED');
@@ -62,6 +64,7 @@ export function historicalPrivateFrameExchange({input,output}){
 export async function runHistoricalFixedPrivateServer({execution,input=process.stdin,privateInput,privateOutput},dependencies={}){
  const {historicalSenderPreauth,openHistoricalSenderMongo}=await import('./sg-historical-provider-sender.mjs');historicalSenderPreauth(execution);
  const {rejectHistoricalCredentialEnvironment}=await import('./sg-historical-private-pipe.mjs');rejectHistoricalCredentialEnvironment(process.env);
+ (dependencies.verifyInheritedPipes??historicalInheritedPipeAdmission)({execution,role:'fixed-io'});
  let client,relay,server,bootstrap,bytes;const chunks=[];let timer;
  try{
   bytes=await Promise.race([new Promise((resolve,reject)=>{let size=0;input.on('data',b=>{size+=b.length;if(size>196608){input.destroy();reject(fail());return;}chunks.push(b);});input.once('error',reject);input.once('end',()=>resolve(Buffer.concat(chunks)));}),new Promise((_resolve,reject)=>{timer=setTimeout(()=>{input.destroy();reject(fail());},60000);})]);

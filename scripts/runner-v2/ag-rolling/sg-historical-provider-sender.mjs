@@ -7,11 +7,12 @@ import {assertHistoricalProviderConfiguration,assertHistoricalProviderChallenge,
 import {attestHistoricalHostedChallenge} from './sg-historical-provider-attestation.mjs';
 import {historicalProductionReadAdapters} from './sg-historical-provider-adapters.mjs';
 import {historicalEncryptedDurableSink} from './sg-historical-provider-sink.mjs';
+import {historicalLauncherConfiguration,assertHistoricalLauncherBinding,historicalInheritedPipeAdmission} from './sg-historical-private-launcher.mjs';
 const read=name=>{assert(name==='ag-historical-labomba-execution.json'||name==='demo-pilot-beaver-20260930.json'||/^ag-rolling-queue-[a-f0-9]{64}\.json$/.test(name));return JSON.parse(fs.readFileSync('config/'+name));};
 export function historicalSenderPreauth(execution=read('ag-historical-labomba-execution.json')){
  assert(execution.enabled===true&&execution.minimumPermissionApproved===true&&execution.linuxPermissionGranted===true
   &&execution.fixedPrivateIoService?.enabled===true&&execution.privateEvidenceSink?.enabled===true,'HISTORICAL_PRIVATE_SENDER_DISABLED');
- assertHistoricalProviderConfiguration(execution.privateProvider);return execution;
+ assertHistoricalProviderConfiguration(execution.privateProvider);historicalLauncherConfiguration(execution);return execution;
 }
 export async function openHistoricalSenderMongo({password,execution},dependencies={}){
  const require=createRequire(import.meta.url),MongoClient=dependencies.MongoClient??require('../../../collector/node_modules/mongodb').MongoClient;
@@ -30,6 +31,7 @@ export async function prepareHistoricalPrivateSender({challenge,execution,manife
   const adapters=(dependencies.adapters??historicalProductionReadAdapters)({context,execution,manifestSha256,client,token:credentials.ghToken,readConfig});
   const readProtectedAdmission=async()=>{protectedSnapshot=await adapters.readProtectedAdmission();return protectedSnapshot;};
   const attestation=await attestHistoricalHostedChallenge({challenge,context,execution,...adapters,readProtectedAdmission});
+  assertHistoricalLauncherBinding(execution,context,protectedSnapshot.grant);
   assert(stable(protectedSnapshot.grant.value.fixedPrivateIoService)===stable({...execution.fixedPrivateIoService,endpoint:execution.privateProvider.endpoint,
    tlsSpkiSha256:execution.privateProvider.tlsSpkiSha256,privateInheritedPipes:true}),'HISTORICAL_PROTECTED_FIXED_IO_REQUIRED');
   sink=(dependencies.sink??historicalEncryptedDurableSink)({binding:execution.privateEvidenceSink,context,grant:protectedSnapshot.grant,key:evidenceKey});
@@ -65,6 +67,7 @@ export function historicalSenderFrameReader(input,context){
 async function writeFrame(output,frame){const bytes=Buffer.from(JSON.stringify(frame)+'\n');assert(bytes.length<=6*1024*1024);try{await new Promise((resolve,reject)=>output.write(bytes,e=>e?reject(e):resolve()));}finally{bytes.fill(0);}}
 export async function runHistoricalPrivateSender({execution=historicalSenderPreauth(),input=process.stdin,privateInput,privateOutput,manifestBytes=fs.readFileSync('config/ag-historical-labomba-manifest.json')}={},dependencies={}){
  historicalSenderPreauth(execution);rejectHistoricalCredentialEnvironment(process.env);
+ (dependencies.verifyInheritedPipes??historicalInheritedPipeAdmission)({execution,role:'sender'});
  const context=execution.fixedPrivateIoService.context;let auth,client,provider,frames;
  try{
   auth=await readHistoricalSenderBootstrap({input,context});client=await(dependencies.openMongo??openHistoricalSenderMongo)({password:auth.credentials.password,execution});
