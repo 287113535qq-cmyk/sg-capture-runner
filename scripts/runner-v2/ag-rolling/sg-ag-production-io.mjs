@@ -17,8 +17,9 @@ import {createHash} from 'node:crypto';
 // RunnerState/gateway perform the original SG scoped metadata I/O. Business
 // Mongo uses its original account independently; it never gains metadata CAS.
 // The protected entry owns admission, SSH memory agents and evidence endpoints.
-export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,now=Date.now}){
- const queueId=profile.payload.queueId,owner=cohortRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map();
+export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,now=Date.now}){
+ const queueId=profile.payload.queueId,owner=actorRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map();
+ assert(/^\d+:1$/.test(actorRun)&&/^[a-f0-9]{40}$/.test(actorCommit),'SG_AG_ACTUAL_CONTROL_ACTOR');
  assert(Object.values(cohortRepos).includes(repository)&&/^\d+:1$/.test(cohortRun),'SG_AG_PRODUCTION_IDENTITY');
  for(const method of ['guard','assertCapturedEnding','assertResumeBoundary','dispatchRemaining','finishCohort','originalCount','originalDocuments'])assert(typeof admission?.[method]==='function','SG_AG_PRODUCTION_ADMISSION_REQUIRED:'+method);
  assert(typeof githubRead==='function'&&typeof privateControlPersist==='function'&&typeof currentRtp==='function','SG_AG_PRODUCTION_PRIVATE_PORTS');
@@ -31,7 +32,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,re
   if(source?.status==='running')await sourcePermit({profile,store,run:coordinatorRun,commit,repository:cohortRepos.primary,coordinatorRun});
   else await admission.assertCapturedEnding({source,profile,cohortRun,coordinatorRun,commit});
   const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(x=>x?.value.active===false),'SG_AG_GLOBAL_HOLD');
-  const hello=await transport.request('hello');assert(hello.database==='sg_capture_staging_v1'&&hello.gatewaySha256===profile.nativeGatewayHash&&hello.accessManifestHash===profile.nativeManifestHash&&hello.rollingNamespace==='primary','SG_AG_PRODUCTION_NATIVE_BYTES');
+  const hello=await transport.request('hello');assert(hello.group==='primary'&&hello.database==='sg_capture_staging_v1'&&hello.gatewaySha256===profile.nativeGatewayHash&&hello.accessManifestHash===profile.nativeManifestHash&&hello.rollingNamespace==='primary','SG_AG_PRODUCTION_NATIVE_BYTES');
   if(profile.federation){const participant=(await store.get('journal',participantKey(profile)))?.value;inspectParticipant({profile,receipt:participant,coordinatorRun,commit});}
  }
  async function nativeDocuments(g){return {state:await store.get('state',gameKey(g)),receipt:await store.get('journal',gameKey(g)+':complete')};}
