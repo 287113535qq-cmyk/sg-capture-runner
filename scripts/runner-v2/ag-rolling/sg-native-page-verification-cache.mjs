@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
 
 // Reuse only successful independent verification of the complete plan and page
-// content during one delivery. Every caller still reads its own full DB page.
+// content during one game operation. Every caller still reads its full DB page.
 // Keep only SHA-256 fingerprints and receipts, never raw records or a durable
 // cache. Changed XML, amounts, metadata, ordering or plan all require a recheck.
 export function createNativePageVerificationCache({verify,maxPages=4096}){
@@ -25,5 +25,21 @@ export function createNativePageVerificationCache({verify,maxPages=4096}){
    return structuredClone(complete);
   },
   status:()=>({pages:pages.size,hits,checks,maxPages}),
+ };
+}
+
+// A controller owns at most one game's bounded cache. Switching games,
+// completing, blocking or closing drops the previous fingerprints entirely.
+export function createGameNativePageVerificationCache({verify,maxPages=4096}){
+ assert(typeof verify==='function','SG_NATIVE_VERIFICATION_CACHE');
+ let gameKey=null,current=null;
+ return {
+  verify(key,plan,records){
+   assert(typeof key==='string'&&key.length>0,'SG_NATIVE_VERIFICATION_GAME');
+   if(gameKey!==key){gameKey=key;current=createNativePageVerificationCache({verify,maxPages});}
+   return current.verify(plan,records);
+  },
+  release(key){if(key===undefined||key===gameKey){gameKey=null;current=null;}},
+  status:()=>({gameKey,...(current?.status()??{pages:0,hits:0,checks:0,maxPages})}),
  };
 }

@@ -45,7 +45,7 @@ export async function verifyOrdinaryNativePage({records,plan,parser}){
  assert(verified?.verified===true&&verified.count===records.length,'SG_AG_BUSINESS_INDEPENDENT_FULL_PAGE');
  return verified;
 }
-export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,plan,nativeState,nativeReceipt,expectedProof,expectedOriginalCount,owner,guard,currentRtp,assertWorkers,evidence,evidenceMode='private-full-ack'}){
+export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,plan,nativeState,nativeReceipt,expectedProof,expectedOriginalCount,owner,guard,currentRtp,assertWorkers,evidence,evidenceMode='private-full-ack',nativePageVerification}){
  assert(plan.adapter==='native-nextgen-v1'&&String(plan.gameId)===String(b.gameId)&&b.queueId===expectedProof.queueId,'SG_BUSINESS_ADAPTER_REVIEW_REQUIRED');
  assert(Number.isSafeInteger(expectedOriginalCount)&&expectedOriginalCount>=0&&typeof owner==='string','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
  assert(['private-full-ack','existing-immutable-audit'].includes(evidenceMode),'SG_AG_BUSINESS_EVIDENCE_MODE');
@@ -73,7 +73,8 @@ export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,
  if(page.length)await baselinePage(page);
  const originalBeforeHash=beforeHash.digest('hex'),baselineHash=baseHash.digest('hex');
  await guard('indexed-source-inventory');const inventory=await mongoOnce(()=>businessInventory(source,b));
- const pageVerification=createNativePageVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
+ const pageVerification=nativePageVerification??createNativePageVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
+ assert(typeof pageVerification.verify==='function','SG_NATIVE_VERIFICATION_CACHE');
  const eachNativePage=visit=>mongoOnce(()=>readBusinessNativePages({source,binding:b,inventory,verify:async records=>{await guard('source-full-independent-validation');return pageVerification.verify(plan,records);},visit}));
  const verified=await eachNativePage(async()=>{});assert(verified.recordsHash===proof.recordsHash,'SG_BUSINESS_FULL_SOURCE_HASH');
  await seal(claimId+':validated',{baselineCount:baseline,baselineHash,originalBeforeHash,sourceCount:verified.count,sourceHash:verified.recordsHash,originalDataFullyValidated:true});

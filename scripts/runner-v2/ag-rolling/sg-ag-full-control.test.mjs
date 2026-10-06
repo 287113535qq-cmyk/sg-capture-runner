@@ -5,6 +5,8 @@ import {stagingLeaseKey} from './sg-staging-store.mjs';
 import {analyzer} from '../analyzer.mjs';
 import {deliverPage} from './sg-business-delivery.mjs';
 import {businessDocument} from './sg-business-document.mjs';
+import {queueHash} from './sg-queue-profile.mjs';
+import {COMPLETED_NATIVE_PROOF} from './sg-ag-completed-prefix.mjs';
 const commit='a'.repeat(40),queueId='queue',cohortRun='123:1';
 function fixture(options={}){
  const games=['32442','32529'].map(id=>({gameId:id,dbName:'sg_'+id,campaignId:'sg_'+id+'-'+queueId,baseline:0,phase:'ready'}));const state={version:1,queueId,runId:123,phase:'running',games};
@@ -28,6 +30,31 @@ function fixture(options={}){
  return {api,state,games,docs,store,io,events,counts,jobs,edit,receipts,get closed(){return closed;},get finalized(){return finalized;}};
 }
 test('original AG controller reaches final business within its own per-game merge call while all other lanes remain live',async()=>{const f=fixture();await f.api.reconcile();assert(f.games.every(g=>g.phase==='complete'));for(const g of f.games){const sequence=f.events.filter(e=>e.gameId===g.gameId&&['native','business','finalize'].includes(e.type)).map(e=>e.type);assert.deepEqual(sequence,['native','business','finalize']);}assert.equal(f.state.phase,'running');assert.equal(f.finalized,0);});
+
+function completedFixture(change){
+ const f=fixture(),ordinary=f.io.verifyPrefix,native={count:300000,selected:Array(20).fill(15000),recordsHash:'d'.repeat(64),fullReadback:true,independentlyVerified:true};
+ f.io.verifyPrefix=async(g,index)=>{const p=await ordinary(g,index);if(g.gameId!=='32442')return p;
+  const row=(await f.store.get('state',taskKey(queueId,g,'worker:'+index))).value;
+  const proof={...p,proofKind:COMPLETED_NATIVE_PROOF,recordsHash:'e'.repeat(64),recordsOrder:'record-id-ascending',taskHash:queueHash(row),
+   originalTaskProofHash:queueHash(row.proof),originalPrefixRecordsHash:row.proof.recordsHash,originalPrefixHashRecomputed:false,
+   selectedNativeCount:15000,retainedExcessCount:0,nativeSelectedCount:300000,nativeRecordsHash:native.recordsHash,nativeReceiptHash:queueHash(native)};
+  change?.(proof,index);return proof;
+ };
+ const ensure=f.io.ensureNative;f.io.ensureNative=async(g,s)=>{const result=await ensure(g,s);return g.gameId==='32442'?native:result;};return f;
+}
+test('completed native selection reaches final business with a distinct fresh hash and immutable historical task binding',async()=>{
+ const f=completedFixture();await f.api.reconcile();assert(f.games.every(g=>g.phase==='complete'));
+ const proofs=f.events.find(e=>e.type==='native'&&e.gameId==='32442').selection.proofs;
+ assert(proofs.every(p=>p.recordsHash!==p.originalPrefixRecordsHash&&p.originalPrefixHashRecomputed===false));
+});
+test('completed native proof cannot bypass historical identity, quotas, whole receipt or honest hash provenance',async()=>{
+ for(const change of [p=>p.taskHash='f'.repeat(64),p=>p.originalTaskProofHash='f'.repeat(64),p=>p.originalPrefixRecordsHash='f'.repeat(64),
+  p=>p.originalPrefixHashRecomputed=true,p=>p.selectedNativeCount=14999,p=>p.nativeSelectedCount=299999,
+  p=>p.nativeReceiptHash='f'.repeat(64),p=>p.nativeRecordsHash='f'.repeat(64),p=>delete p.proofKind]){
+  const f=completedFixture(change);await f.api.reconcile();assert.notEqual(f.games[0].phase,'complete');assert.equal(f.games[1].phase,'complete');
+  assert(!f.events.some(e=>e.type==='business'&&e.gameId==='32442'));
+ }
+});
 test('AG count operations do not repeat the final full audit, and fresh counts still gate cleanup',async()=>{
  for(const changed of [false,true]){const f=fixture(),count=f.io.countBusiness.bind(f.io);let reads=0;
   f.io.countBusiness=async g=>{const result=await count(g);if(g.gameId==='32442'&&++reads===2&&changed)result.campaignCount--;return result;};

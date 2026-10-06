@@ -4,6 +4,15 @@ import {workerSummary,quotas} from './ag-core.mjs';
 import {stable} from '../mongo-writer.mjs';
 import {taskKey} from './sg-task-store.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
+import {COMPLETED_NATIVE_PROOF} from './sg-ag-completed-prefix.mjs';
+import {queueHash} from './sg-queue-profile.mjs';
+
+export function safeControlError(error){
+ // Node AssertionError.code is ERR_ASSERTION; the explicit SG assertion
+ // message carries the useful reason without disclosing records or secrets.
+ for(const value of [error?.code,error?.message])if(/^SG_[A-Z_]{1,100}$/.test(value??''))return value;
+ return 'SG_AG_OWN_GAME_REVIEW_REQUIRED';
+}
 
 // This is an I/O adapter for the unedited AG controller declarations, not a new
 // scheduling loop. No CLI, credentials, network client or production grant is
@@ -58,7 +67,7 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
   }const v=await io.readRun(cohortRun,commit);assert(v.run===cohortRun&&v.commit===commit&&now()-v.at<=60000&&v.at<=now(),'SG_AG_CONTROL_RUN_READBACK');return {data:v};
  }};
  const runtime=createOriginalAgFullControl({fs:{existsSync:()=>false},credentialPath:'private-memory-credentials',read:()=>({}),mongo:async()=>client,load:()=>state,statePath:'own-control-state',save:persist,path:{join:(...p)=>p.join('/')},directory:'private-control-evidence',repository:'own-reviewed-cohort',secret:'own-cohort-lifecycle',githubClient:()=>gh,
-  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:error=>{const code=error.code??error.message;return /^SG_[A-Z_]{1,100}$/.test(code??'')?code:'SG_AG_OWN_GAME_REVIEW_REQUIRED';},console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
+  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:safeControlError,console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
   async liveLeases(database){const rows=await taskRows(database.game),keys=rows.map(r=>{const [kind,index]=r.value._id.split(':');return stagingLeaseKey(queueId,database.game,kind,Number(index));});
    const leases=await store.getMany('state',keys);assert(leases.length===keys.length,'SG_AG_CONTROL_LEASE_INVENTORY');return leases.filter(r=>r?.value.expiresAt>now()).length;},
   async validateRows(database,g,index){await io.guard('full-prefix-validation',g);const row=(await taskRows(g)).find(r=>r.value._id==='worker:'+index).value;assert(!['running','pending'].includes(row.status),'SG_AG_CONTROL_ACTIVE_PREFIX');
@@ -66,7 +75,16 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
    if(index===1)await requireFreshOperation(g);
    let proof;try{proof=await io.verifyPrefix(g,index,row);}catch(error){if(error.outcomeUnknown===true){g.sgOutcomeUnknownRetained=true;persist('own-control-state',state);}throw error;}
    const quota=quotas(g.baseline)[index-1];assert(proof?.fullReadback&&proof.independentlyVerified&&proof.queueId===queueId&&proof.gameId===g.gameId&&proof.campaignId===g.campaignId&&proof.taskId===row._id&&proof.acceptedUnknownRequests===0&&Number.isSafeInteger(proof.count)&&proof.count>=0&&proof.count<=quota+7,'SG_AG_CONTROL_PREFIX_PROOF');
-   if(row.status==='success')assert(row.proof?.fullReadback&&row.proof.independentlyVerified&&row.proof.recordsHash===proof.recordsHash&&row.proof.count===proof.count,'SG_AG_CONTROL_SUCCESS_PROOF_CHANGED');
+   if(proof.proofKind===COMPLETED_NATIVE_PROOF){
+    // The deleted insertion-order hash remains provenance. A completed
+    // native selection is freshly checked against its immutable receipt.
+    assert(row.status==='success'&&proof.taskHash===queueHash(row)&&proof.originalTaskProofHash===queueHash(row.proof)
+     &&proof.originalPrefixRecordsHash===row.proof.recordsHash&&proof.originalPrefixHashRecomputed===false
+     &&proof.count===row.proof.count&&proof.selectedNativeCount===quota&&proof.retainedExcessCount===proof.count-quota
+     &&proof.nativeSelectedCount===300000&&proof.recordsOrder==='record-id-ascending'
+     &&[proof.recordsHash,proof.nativeRecordsHash,proof.nativeReceiptHash].every(h=>/^[a-f0-9]{64}$/.test(h??'')),
+     'SG_AG_CONTROL_COMPLETED_NATIVE_PROOF_CHANGED');
+   }else if(row.status==='success')assert(row.proof?.fullReadback&&row.proof.independentlyVerified&&row.proof.recordsHash===proof.recordsHash&&row.proof.count===proof.count,'SG_AG_CONTROL_SUCCESS_PROOF_CHANGED');
    prefixProofs.set(g.gameId+':'+index,structuredClone(proof));return proof.count;
   },
   async mergeSelectedRows(database,g,selected,total){assert(!g.sgOutcomeUnknownRetained,'SG_AG_CONTROL_UNKNOWN_RETAINED_NO_REPLAY');await io.guard('per-game-final-delivery',g);await requireFreshOperation(g);
@@ -74,6 +92,9 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
    // Native full proof is an intermediate SG storage format. It cannot set the
    // AG game complete; the same per-game control call must reach simulate.
    try{const native=await io.ensureNative(g,{selected,total,proofs});assert(native?.fullReadback&&native.independentlyVerified&&native.count===total&&stable(native.selected)===stable(selected),'SG_AG_CONTROL_NATIVE_PROOF');
+    if(proofs.some(p=>p.proofKind===COMPLETED_NATIVE_PROOF))assert(proofs.every(p=>p.proofKind===COMPLETED_NATIVE_PROOF
+     &&p.nativeReceiptHash===queueHash(native)&&p.nativeRecordsHash===native.recordsHash&&p.nativeSelectedCount===native.count),
+     'SG_AG_CONTROL_COMPLETED_NATIVE_RECEIPT_CHANGED');
     const receipt=await io.deliverBusiness(g,native);assert(receipt?.gameId===g.gameId&&receipt.queueId===queueId&&receipt.fullReadback&&receipt.independentlyVerified&&receipt.campaignCount===total-g.baseline&&receipt.originalUnchanged&&receipt.businessCount===receipt.originalCount+receipt.campaignCount,'SG_AG_CONTROL_FINAL_BUSINESS_PROOF');businessReceipts.set(g.gameId,structuredClone(receipt));
    }catch(error){if(error.outcomeUnknown===true){g.sgOutcomeUnknownRetained=true;persist('own-control-state',state);}throw error;}
   },

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createNativePageVerificationCache} from './sg-native-page-verification-cache.mjs';
+import {createNativePageVerificationCache,createGameNativePageVerificationCache} from './sg-native-page-verification-cache.mjs';
+import {readBusinessNativePages} from './sg-business-native-reader.mjs';
 
 const plan=()=>({gameId:123,trialId:'synthetic',adapter:'native-nextgen-v1',buy:0});
 const page=()=>Array.from({length:100},(_,i)=>({_id:String(i),sequence:i+1,contentHash:'a'.repeat(64),
@@ -52,4 +53,30 @@ test('receipt mutation cannot alter cached success and LRU storage stays bounded
  await cache.verify(plan(),third);assert.equal(cache.status().pages,2);
  await cache.verify(plan(),other);assert.equal(cache.status().checks,4);
  assert.throws(()=>createNativePageVerificationCache({verify:complete,maxPages:4097}),/CACHE/);
+});
+
+test('five complete indexed source passes still perform every database page read while reusing successful parser work',async()=>{
+ const binding={gameId:'123',trialId:'synthetic'},inventory=Array.from({length:20},(_,w)=>Array.from({length:15000},(_,i)=>({
+  _id:String(w*15000+i+1).padStart(64,'0'),trialId:'synthetic',gameId:123,shardId:w,sequence:w*15000+i+1,contentHash:'a'.repeat(64)})));
+ const by=new Map(inventory.flat().map(r=>[r._id,r]));let reads=0,checks=0,visits=0;
+ const source={find(query){return {toArray:async()=>{reads++;return query._id.$in.map(id=>({...by.get(id)}));}};}};
+ const cache=createGameNativePageVerificationCache({verify:async(p,rows)=>{checks++;return complete(p,rows);}}),hashes=[];
+ for(let pass=0;pass<5;pass++)hashes.push((await readBusinessNativePages({source,binding,inventory,
+  verify:rows=>cache.verify('game-123',plan(),rows),visit:async()=>{visits++;}})).recordsHash);
+ assert.equal(reads,15000);assert.equal(visits,15000);assert.equal(checks,3000);assert.equal(new Set(hashes).size,1);
+ assert.deepEqual(cache.status(),{gameKey:'game-123',pages:3000,hits:12000,checks:3000,maxPages:4096});
+ // A later database read returns changed bytes under the same identity/hash.
+ by.get(inventory[0][0]._id).extra='changed';
+ const changed=await readBusinessNativePages({source,binding,inventory,verify:rows=>cache.verify('game-123',plan(),rows),visit:async()=>{}});
+ assert.equal(reads,18000);assert.equal(checks,3001);assert.notEqual(changed.recordsHash,hashes[0]);
+});
+
+test('shared verification cache discards the previous game and releases on completion or block',async()=>{
+ let checks=0;const cache=createGameNativePageVerificationCache({verify:async(p,rows)=>{checks++;return complete(p,rows);}});
+ await cache.verify('first',plan(),page());await cache.verify('first',plan(),page());assert.equal(checks,1);
+ await cache.verify('second',plan(),page());assert.equal(checks,2);assert.equal(cache.status().pages,1);
+ await cache.verify('first',plan(),page());assert.equal(checks,3);
+ await cache.verify('first',{...plan(),version:2},page());assert.equal(checks,4);
+ cache.release('second');assert.equal(cache.status().pages,2);cache.release('first');assert.equal(cache.status().pages,0);
+ await cache.verify('first',plan(),page());assert.equal(checks,5);cache.release();assert.equal(cache.status().gameKey,null);
 });
