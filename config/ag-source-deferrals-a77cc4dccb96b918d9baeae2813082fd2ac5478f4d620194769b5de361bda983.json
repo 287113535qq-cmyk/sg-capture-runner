@@ -1,0 +1,121 @@
+{
+  "schema": "sg-ag-source-deferral-evidence-v1",
+  "previousActivation": "fce7aff6357cda285316b7b54bbd645a349746b8264b04bf1001e72682b2711a",
+  "previousRun": "37580011942:1",
+  "endedProofHash": "d19d2fe74ad538835ce82c28af63be520628689a9f92798748aa3d25237373ba",
+  "sourceJobsEnded": true,
+  "games": [
+    {
+      "gameId": "32477",
+      "planHash": "fe8d7e89f290ecea18081b5d189fdf63ce4829cb552db7dc6b8985c3270060ab",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32502",
+      "planHash": "2fb576fd38b7bee5b7f17e637cee158685a00f6754cd70b49e967d68a796d927",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32504",
+      "planHash": "03404953b69a2f818d7b2687d39096be829df3fd6a40ec97df5636727ef0eb82",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32532",
+      "planHash": "c2eb5b66340267545b8956620464e8c12ec70c4df43c5af4e39ab575d28ab2dc",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32544",
+      "planHash": "75b455b0e2b6e0cb69363e90d4a20a2e3430f5ff8f9174c59d9dc03cc735f87e",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32590",
+      "planHash": "8db47fc352f560a7cd2aecaf7f85939d01e6c340d404e0eeec8d7a398f8e9fec",
+      "reason": "OWN_UNSETTLED_NATIVE_MERGE"
+    },
+    {
+      "gameId": "32621",
+      "planHash": "c155623cfabb5cbf881c0958f69fe443d5b1f9db8571597411175f9834bef11a",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32641",
+      "planHash": "207ee0ad756d54e35381b84a4d5f5ccf5353c140ec5ce51624b63eb2bab0451f",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32681",
+      "planHash": "9781b7c9c34740919d0bac1680a95931f464719f7041e425aa21f3ed39fbdbc2",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32687",
+      "planHash": "a4dfca6fc416c8ec562e8bb53359abaff3f004d9d1b41105d433134d960ccbf2",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32691",
+      "planHash": "47a3c8dc116539aa6e9bd57746c49956631628dac53ab1238be79201b85e7101",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32722",
+      "planHash": "85d3a5add2e9158f15285663e0986ec6b2f729eee28951d0c28db9fc1cfc5649",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32725",
+      "planHash": "091bcd5598bf938d415db31a1134357e4a66fb85573e89bb5aa8cbf38fbd924b",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32728",
+      "planHash": "9873cc1012163e59b1bc7360bbc9013f551a80992a4623aa5ab48dedca9f15b1",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32732",
+      "planHash": "44dab99646c5849c2dedcd577ce3849299138ad4a2103b8d6e35ef020259be14",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32733",
+      "planHash": "2ea2565a265f673690b735226ef5c1c0a6f7371c5f827e88acc47dc3e8251523",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32735",
+      "planHash": "763f77688668131d824f8dbc37d2fe97ce601753f31ff002622a715a9d23c83f",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32743",
+      "planHash": "13a1da225a25b734f18580c72e6746ae0cb2c8ce5080b79126c4978b2dc76ad5",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32839",
+      "planHash": "ec411e018c86d3be5284115768c58b3a6aa737bdb22f8b24722872bf4f600dc9",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    }
+  ],
+  "origins": [
+    {
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\source-next-generation-v2\\input-1791380996762122000\\native-private.json",
+      "sha256": "91ae17ca03bbe330fb0385e9f38a2140bed264734ea42fdbd66905241f40809d"
+    },
+    {
+      "file": "work/resume-after-optimization/own-fault-history-inventory-1791372958675481400.json",
+      "sha256": "509a1dceaa9ca52edee82550a6e4cdf179742fd5f859a6853ecefe55c924edab"
+    },
+    {
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\source-next-generation-v2\\input-1791380996762122000\\ended-review.json",
+      "sha256": "65a2a1273a2bf0d14504d2dcb6963f79f6be224bc98fac45da351ac62be96ee4"
+    }
+  ],
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "completedCredit": 0
+}
