@@ -3,15 +3,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
-import {isRecoveryReceiptReference,inspectRecoveryReceiptEvidence,readReviewedRecoveryReceipt,recoveryNativeHash,recoveryProposalHash} from './sg-business-recovery-receipt.mjs';
+import {isRecoveryReceiptReference,inspectRecoveryReceiptEvidence,readReviewedRecoveryReceipt,recoveryNativeHash,recoveryProposalHash,recoveryContinuationHash} from './sg-business-recovery-receipt.mjs';
 import {inspectExistingWorkflowPolicy} from './sg-ag-existing-workflow.mjs';
 const h=v=>createHash('sha256').update(stable(v)).digest('hex');
-function fixture(){
+function fixture(continuation=false){
  const native=JSON.parse(fs.readFileSync(new URL('./fixtures/recovery-32547-native.json',import.meta.url)));
- const oldRoot='game:32547:'+recoveryNativeHash,root=oldRoot+':recovery:'+recoveryProposalHash;
- const oldOwner='independent-current-32547-1-2',owner='independent-recovery-32547-3-4';
+ const oldRoot='game:32547:'+recoveryNativeHash,root=oldRoot+(continuation?':recovery-continuation:'+recoveryContinuationHash:':recovery:'+recoveryProposalHash);
+ const predecessor=continuation?JSON.parse(fs.readFileSync(new URL('./fixtures/recovery-32547-closed-predecessor.json',import.meta.url))):null;
+ const claim=continuation?root+':claim':oldRoot+':recovery-claim';
+ const oldOwner=predecessor?.oldRoot.owner??'independent-current-32547-1-2',owner='independent-recovery-32547-3-4';
  const docs=new Map(),oldHashes=[],newHashes=[];
- const old=(key)=>{const d={_id:key,owner:oldOwner,immutable:true};docs.set(key,d);oldHashes.push([key,h(d)]);};
+ const old=(key)=>{const d=key===oldRoot&&predecessor?structuredClone(predecessor.oldRoot):{_id:key,owner:oldOwner,immutable:true};docs.set(key,d);oldHashes.push([key,h(d)]);};
  old(oldRoot);old(oldRoot+':validated');old(oldRoot+':backup:100');
  for(let i=0;i<100;i++){const id=i.toString(16).padStart(24,'0');old(oldRoot+':rtp-intent:'+id);old(oldRoot+':rtp-complete:'+id);}
  for(let w=0;w<=11;w++)for(let end=100;end<=(w===11?100:15000);end+=100){
@@ -19,22 +21,30 @@ function fixture(){
  }
  const add=(key,value={})=>{const d={_id:key,schema:'sg-current-recovery-audit-v1',owner,immutable:true,
   oldOwner,oldClaimKey:oldRoot,oldRootHash:h(docs.get(oldRoot)),proposalHash:recoveryProposalHash,value};docs.set(key,d);newHashes.push([key,h(d)]);};
- add(oldRoot+':recovery-claim');add(root+':validated');add(root+':resolution:11:100');
+ add(claim);add(root+':validated');add(root+':resolution:11:100');
  for(let w=11;w<20;w++)for(let end=w===11?200:100;end<=15000;end+=100){add(root+':intent:'+w+':'+end);add(root+':ack:'+w+':'+end);}
  const done={schema:'sg-ag-final-business-recovery-complete-v1',gameId:'32547',database:'sg_fixture',queueId:native.queueId,
   recoveryOwner:owner,oldOwner,sourceProofHash:recoveryNativeHash,sourceRecordsHash:native.recordsHash,
-  recoveryClaimKey:oldRoot+':recovery-claim',recoveryRootKey:root,proposalHash:recoveryProposalHash,oldRootHash:h(docs.get(oldRoot)),
+  recoveryClaimKey:claim,recoveryRootKey:root,proposalHash:recoveryProposalHash,oldRootHash:h(docs.get(oldRoot)),
   oldResultFileSha256:'a23acb908bf7d5a492e4a981b03442596e8f09fdf675d92f63a7c5f44b8300d2',
   reviewEvidenceHash:'49a7aff0287676646807f7790a85e4fb5eb6d1b49d3eb997ec622bff2825223e',
   campaignCount:300000,businessCount:300100,originalCount:100,newInserted:134900,retainedTargetCount:165100,sourcePasses:3,
   fullReadback:true,independentlyVerified:true,originalUnchanged:true,targetReadbackFull:true,oldOutcomeUnknownRetained:true,sourceRequests:0,nativeWrites:0,
   oldAuditHash:h(oldHashes.sort((a,b)=>a[0].localeCompare(b[0]))),newAuditHash:h(newHashes.sort((a,b)=>a[0].localeCompare(b[0])))};
+ const priorHashes=predecessor?.priorAudits.map(d=>[d._id,h(d)]);
+ if(continuation){
+  for(const d of predecessor.priorAudits)docs.set(d._id,structuredClone(d));
+  Object.assign(done,{continuationEvidenceHash:recoveryContinuationHash,priorRecoveryOwner:predecessor.priorAudits[0].owner,
+   priorRecoveryAuditHash:h(priorHashes),failedRecoveryAuditRetained:true,priorRecoveryTargetWrites:0,
+   priorRecoveryOutcomeFileSha256:'af43738e5a7fa985af6663bfd91f313d83a50edfeeeff5c3e9b432ddf9879ecb'});
+ }
  add(root+':complete',{done});
  const evidence={schema:'sg-ag-recovery-receipt-evidence-v1',gameId:'32547',kind:'recovery-chained',complete:true,
   oldOutcomeUnknownRetained:true,mayReplayOldIntent:false,independentPostExitVerified:true,
   independentPostExitFileSha256:'a'.repeat(64),supervisedOutcomeFileSha256:'b'.repeat(64),
   auditCompleteKey:root+':complete',auditDocumentHash:h(docs.get(root+':complete')),nativeReceiptHash:recoveryNativeHash,
-  receipt:done,oldAuditHashes:oldHashes,newAuditHashes:newHashes};
+  receipt:done,oldAuditHashes:oldHashes,newAuditHashes:newHashes,
+  ...(continuation?{priorAuditHashes:priorHashes,failedRecoveryAuditRetained:true,continuationEvidenceHash:recoveryContinuationHash}:{})};
  let reads=0,guards=0;
  const options={binding:{gameId:32547,database:'sg_fixture',queueId:native.queueId,trialId:native.trialId},game:{gameId:'32547',campaignId:native.campaignId},native,
   readExact:async keys=>{reads++;assert(keys.length<=100);return keys.map(k=>structuredClone(docs.get(k)??null));},guard:async()=>{guards++;}};
@@ -76,5 +86,36 @@ test('reader rejects reordered responses and drains no writes when its guard sto
 test('completion changed after chain traversal cannot settle the game',async()=>{
  const f=fixture(),read=f.options.readExact;
  f.options.readExact=async keys=>{if(keys.length===2&&keys[0]===f.root+':complete')f.docs.get(keys[0]).value.done.fullReadback=false;return read(keys);};
+ await assert.rejects(readReviewedRecoveryReceipt(f.options),/FINAL_RACE/);
+});
+
+test('continuation reads all6208 documents and retains both real failed-predecessor records',async()=>{
+ const f=fixture(true),before=h([...f.docs]);const result=await readReviewedRecoveryReceipt(f.options);
+ assert.equal(f.docs.size,6208);assert(result.complete);assert(result.receipt.failedRecoveryAuditRetained);
+ assert.equal(f.stats().reads,67);assert.equal(f.stats().guards,134);assert.equal(h([...f.docs]),before);
+ assert.equal(f.docs.has(f.oldRoot+':recovery:'+recoveryProposalHash+':complete'),false);
+});
+
+test('continuation missing or changed predecessor evidence and namespace downgrade fail before I/O',()=>{
+ for(const change of [f=>{f.evidence.priorAuditHashes.pop();},f=>{f.evidence.priorAuditHashes[0][1]='a'.repeat(64);},
+  f=>{f.evidence.receipt.priorRecoveryTargetWrites=1;},f=>{f.evidence.receipt.priorRecoveryOwner='foreign';},
+  f=>{f.evidence.receipt.priorRecoveryOutcomeFileSha256='a'.repeat(64);},f=>{f.evidence.failedRecoveryAuditRetained=false;},
+  f=>{f.evidence.receipt.recoveryClaimKey=f.oldRoot+':recovery-claim';}]){
+  const f=fixture(true);change(f);f.bind();assert.throws(()=>inspectRecoveryReceiptEvidence(f.options),/SG_AG_RECOVERY_/);assert.equal(f.stats().reads,0);
+ }
+ const f=fixture(true);f.options.proof.auditCompleteKey=f.oldRoot+':recovery-continuation:'+'a'.repeat(64)+':complete';
+ assert(!isRecoveryReceiptReference('32547',f.options.proof));
+});
+
+test('deleted or modified predecessor audits and an unexpected predecessor completion are rejected',async()=>{
+ for(const change of [f=>{f.docs.delete(f.evidence.priorAuditHashes[0][0]);},f=>{f.docs.get(f.evidence.priorAuditHashes[1][0]).value.fullReadback=false;},
+  f=>{const k=f.oldRoot+':recovery:'+recoveryProposalHash+':complete';f.docs.set(k,{_id:k});}]){
+  const f=fixture(true);change(f);await assert.rejects(readReviewedRecoveryReceipt(f.options),/SG_AG_RECOVERY_/);
+ }
+});
+
+test('failed predecessor becoming complete during traversal is caught by the final reread',async()=>{
+ const f=fixture(true),read=f.options.readExact;
+ f.options.readExact=async keys=>{if(keys.length===3&&keys[0]===f.root+':complete'){const k=keys[2];f.docs.set(k,{_id:k});}return read(keys);};
  await assert.rejects(readReviewedRecoveryReceipt(f.options),/FINAL_RACE/);
 });
