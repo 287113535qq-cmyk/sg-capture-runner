@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {inspectSourceDeferrals} from './sg-source-deferrals.mjs';
 import {createOriginalAgFullControl} from './ag-original-full-control.mjs';
 import {cohortRepos,cohortView,participantKey,inspectParticipant} from './sg-federation.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
@@ -37,7 +38,7 @@ export async function prepareExistingAgResume({profile,previous,prior,ended,stor
   &&previous.payload.queueId===profile.payload.queueId,'SG_AG_RESUME_VERIFIED_CURRENT_ENDING');
  const queueId=profile.payload.queueId,participant=(await store.get('journal',participantKey(previous)))?.value;
  if(previous.federation)inspectParticipant({profile:previous,receipt:participant,coordinatorRun:prior.run,commit:prior.commit});
- const handoffs=[],cohorts=[];
+ const handoffs=[],cohorts=[],sourceDeferred=inspectSourceDeferrals(profile);
  // Validate both complete saved values before the first task mutation or
  // handoff. A mutable phase/reason alone is never authority to resume work.
  for(const [repository,oldRun] of [[cohortRepos.primary,prior.run],...(participant?[[cohortRepos.secondary,participant.run]]:[])]){
@@ -69,6 +70,7 @@ export async function prepareExistingAgResume({profile,previous,prior,ended,stor
    // manifest hashes. Original resume still runs the complete prefix/baseline
    // verification before admission may grant any source permit.
    if(old&&readOnlyBlockedGame(old)&&await canResumeQuotaGame(g)===true)game.phase='ready';
+   if(sourceDeferred.has(game.gameId)){game.phase='blocked';game.reason='SG_OWN_FEATURE_REPAIR_REQUIRED';}
    state.games.push(game);
   }
   // Unknown operations and independently blocked games remain isolated. They

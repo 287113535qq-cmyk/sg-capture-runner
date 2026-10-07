@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {inspectSourceDeferrals} from './sg-source-deferrals.mjs';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
 import {validateSgPayload} from './sg-contract.mjs';
@@ -26,6 +27,7 @@ export function queueProfile({name,profile,authorization,plans,readBytes}){
    'SG_AG_QUEUE_RUNTIME_CHANGED');
  }
  validateSgPayload(profile.payload,profile.manifest);
+ inspectSourceDeferrals(profile,readBytes);
  if(profile.federation)inspectFederation(profile);
  if(profile.operation){
   if(profile.operation==='close-ended-window')inspectWindowRecovery(profile);

@@ -195,3 +195,19 @@ test('all actual 81 game bindings retain the native alias and their own runtime 
    assert.throws(()=>inspectExistingGameBinding({binding:changed,game,profile,plan}),/OWN_BINDING/);
  }
 });
+
+
+test('reviewed deferrals skip original resume preparation and retain all prior task states',async()=>{
+ for(const phase of ['ready','blocked']){
+  const f=resumeFixture();savedResumeState(f,{phase,...(phase==='blocked'?{reason:insufficient}:{})});
+  f.profile.manifest=f.games.map(g=>({...g,planHash:'a'.repeat(64)}));
+  f.profile.sourceDeferrals={schema:'sg-ag-source-deferrals-v1',previousActivation:f.profile.resume.previousActivation,
+   previousRun:f.profile.resume.previousRun,evidenceFile:'config/ag-source-deferrals-'+'b'.repeat(64)+'.json',evidenceSha256:'b'.repeat(64),
+   games:[{gameId:'32442',planHash:'a'.repeat(64),reason:'OWN_UNRESOLVED_FEATURE_FAULT'}]};
+  f.args.canResumeQuotaGame=()=>true;
+  const tasks=structuredClone([...f.docs].filter(([k])=>k.startsWith('state/rolling-task:')));
+  const result=await prepareExistingAgResume(f.args);
+  assert.deepEqual(f.prepared,['32441']);assert.deepEqual(result[1].remaining,[]);
+  assert.deepEqual([...f.docs].filter(([k])=>k.startsWith('state/rolling-task:')),tasks);
+ }
+});

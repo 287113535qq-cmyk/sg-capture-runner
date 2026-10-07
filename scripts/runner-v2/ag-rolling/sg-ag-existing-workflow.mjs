@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {inspectSourceDeferrals} from './sg-source-deferrals.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -141,7 +142,8 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
    const loaded=await loadExistingControlState({store,key,cohortRun,commit});
    sequence=loaded.sequence;return loaded.state;
   },
-  acceptCompletedGames:async saved=>{for(const game of saved.games){
+  acceptCompletedGames:async saved=>{const sourceDeferred=inspectSourceDeferrals(profile);for(const game of saved.games){
+   if(sourceDeferred.has(game.gameId)){game.phase='blocked';game.reason='SG_OWN_FEATURE_REPAIR_REQUIRED';continue;}
    if(game.gameId==='32629'){game.phase='blocked';game.reason='SG_EXISTING_INDEPENDENT_MONEY_ANOMALY_RETAINED';continue;}
    if(plans[game.gameId].adapter!=='native-nextgen-v1'){game.phase='blocked';game.reason='SG_OWN_BUSINESS_ADAPTER_REVIEW_REQUIRED';continue;}
    const proof=policy.completedBusinessReceipts[game.gameId];if(!proof)continue;

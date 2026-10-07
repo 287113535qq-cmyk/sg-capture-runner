@@ -1,3 +1,4 @@
+import {sourceEligibleView} from './sg-source-deferrals.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {connectGateway} from '../transport.mjs';
@@ -176,14 +177,16 @@ try{
    }});log(JSON.stringify(result));
  }else if(mode==='lane'){
   const base=JSON.parse(process.env.SG_TRIAL_DEMO_CONFIG??'{}'),lane=Number(process.env.SG_AG_LANE);
-  const healthy=await runSgLane({payload:view.payload,manifest:view.manifest,lane,
+  const laneView=sourceEligibleView(profile,view);
+  log(JSON.stringify({phase:'source-eligible-games',eligible:laneView.payload.games.map(g=>g.gameId),deferred:laneView.deferred}));
+  const healthy=laneView.payload.games.length?await runSgLane({payload:laneView.payload,manifest:laneView.manifest,lane,
    runId:process.env.GITHUB_RUN_ID+'-'+process.env.GITHUB_RUN_ATTEMPT,store,deadline:sourceDeadline,signal:stop.signal,log,
    guard:()=>globalGuard(),createTask:async context=>{
     const row=(await store.get('state',taskKey(context.queueId,context.game,`${context.kind}:${context.index}`)))?.value;
     assert(row?.owner===context.owner&&row.status==='running','SG_AG_TASK_OWNER');
     return createTaskRuntime({...context,store,transport,resume:row.resume,
      plan:registry.plans[context.game.gameId],base,guard:taskGuard(context)});
-   }});
+   }}):true;
   process.exitCode=healthy?0:2;
  }else if(mode==='controller'){
   const gh=authenticatedRead(process.env.GH_TOKEN),completed=new Set();
