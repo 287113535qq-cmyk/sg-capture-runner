@@ -168,7 +168,10 @@ try{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
     const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');
     const campaign=(await store.get('state','campaign'))?.value;
-    for(const game of profile.payload.games){
+    // Deferred games grant no source or merge admission; retain their entire
+    // unresolved native state while checking every eligible game's baseline.
+    const eligible=sourceEligibleView(profile,{payload:profile.payload,manifest:profile.manifest});
+    for(const game of eligible.payload.games){
      assert(campaign?.games.find(g=>g.game_id===Number(game.gameId))?.status!=='complete','SG_AG_ALREADY_COMPLETE');
      await inspectFormalBaseline({profile,game,plan:registry.plans[game.gameId],store,transport,ended,
       guard:async()=>{await store.writable();const fresh=await transport.request('global_holds');

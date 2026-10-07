@@ -16,7 +16,7 @@ export function inspectSourceDeferrals(profile,readBytes){
   const entry=profile.manifest.find(g=>g.gameId===row.gameId);
   assert(Object.keys(row).sort().join(',')==='gameId,planHash,reason'&&/^32\d{3}$/.test(row.gameId)
    &&hex(row.planHash)&&entry?.planHash===row.planHash&&profile.payload.games.some(g=>g.gameId===row.gameId)
-   &&row.reason==='OWN_UNRESOLVED_FEATURE_FAULT'&&!ids.has(row.gameId)
+   &&['OWN_UNRESOLVED_FEATURE_FAULT','OWN_UNSETTLED_NATIVE_MERGE'].includes(row.reason)&&!ids.has(row.gameId)
    &&!profile.fullAgControl?.completedBusinessReceipts?.[row.gameId],'SG_SOURCE_DEFERRAL_GAME');ids.add(row.gameId);
  }
  if(readBytes){const bytes=readBytes(d.evidenceFile);assert(Buffer.isBuffer(bytes)&&bytes.length>0&&bytes.length<=1024*1024

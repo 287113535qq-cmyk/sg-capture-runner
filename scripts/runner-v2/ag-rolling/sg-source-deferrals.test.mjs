@@ -26,3 +26,11 @@ test('duplicate policy entries and mismatched prior generation fail closed',()=>
 test('tampered evidence bytes fail before source selection',()=>{const f=fixture();assert.throws(()=>inspectSourceDeferrals(f.profile,()=>Buffer.from('{}')),/EVIDENCE_HASH/);});
 test('unended evidence or fabricated completion credit is never admitted',()=>{for(const patch of [{sourceJobsEnded:false},{completedCredit:1},{endedProofHash:'e'.repeat(64)}]){const f=fixture();const bytes=Buffer.from(JSON.stringify({...f.e,...patch})),sha=createHash('sha256').update(bytes).digest('hex');Object.assign(f.profile.sourceDeferrals,{evidenceFile:`config/ag-source-deferrals-${sha}.json`,evidenceSha256:sha});assert.throws(()=>inspectSourceDeferrals(f.profile,()=>bytes),/DEFERRAL_EVIDENCE/);}});
 test('an entirely deferred cohort returns no source tasks without changing the inventory',()=>{const f=fixture();f.view={payload:{...f.profile.payload,games:[f.profile.payload.games[0]]},manifest:[f.profile.manifest[0]]};const v=sourceEligibleView(f.profile,f.view);assert.equal(v.payload.games.length,0);assert.equal(f.profile.payload.games.length,2);});
+
+
+test('a separately evidenced unsettled merge is removed from admission baselines and lane work without a completion claim',()=>{
+ const f=fixture();f.profile.sourceDeferrals.games[0].reason='OWN_UNSETTLED_NATIVE_MERGE';
+ const before=structuredClone(f.profile),view=sourceEligibleView(f.profile,{payload:f.profile.payload,manifest:f.profile.manifest});
+ assert.deepEqual(view.payload.games.map(g=>g.gameId),['32741']);assert.deepEqual(f.profile,before);
+ assert.equal(f.profile.fullAgControl.completedBusinessReceipts['32502'],undefined);
+});
