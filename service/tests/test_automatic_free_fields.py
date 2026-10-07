@@ -104,4 +104,19 @@ class AutomaticFreeTests(unittest.TestCase):
             a.next_request(change(copy.deepcopy(r),1,'NFG=1','NFG=101'))
         unmarked=copy.deepcopy(r);unmarked.pop('automaticFreeContract')
         with self.assertRaisesRegex(FieldError,'UNKNOWN_TRIAL_FEATURE'):a.next_request(unmarked)
+    def test_huff_own_trigger_mixed_free_frames_and_terminal_remain_strict(self):
+        p=REGISTRY['plans']['32715'];a=NativeNextgenFields(p)
+        def make(mid='1|2|'):
+            r=sample(p)
+            for i,fid in enumerate(['2|',mid,'0|']):change(r,i,'FID=1|',f'FID={fid}')
+            return r
+        for fid in ['0|','0|1|','0|2|','1|2|','2|']:
+            r=make(fid);self.assertIsNone(a.next_request(r));self.assertEqual(a.settled(r)['bonus'],1)
+            partial={**r,'steps':r['steps'][:2]};self.assertEqual(a.next_request(partial),{'MSGID':'FREE_GAME'})
+            with self.assertRaisesRegex(FieldError,'INCOMPLETE'):a.settled(partial)
+        for fid in ['1|','3|','2|&CFG=1','2|&NFR_2=1','2|&FS_2=0']:
+            with self.assertRaisesRegex(FieldError,'FEATURE'):a.next_request(change(make(),0,'FID=2|',f'FID={fid}'))
+        for fid in ['2|','1|2|']:
+            with self.assertRaisesRegex(FieldError,'TERMINAL'):a.settled(change(make(),2,'FID=0|',f'FID={fid}'))
+        with self.assertRaisesRegex(FieldError,'MONEY'):a.next_request(change(make(),1,'B=820','B=821'))
 if __name__=='__main__':unittest.main()

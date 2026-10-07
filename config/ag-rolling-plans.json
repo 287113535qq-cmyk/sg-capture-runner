@@ -1911,7 +1911,9 @@
         "BPR": "10",
         "GN": "huffnevenmorepuff96",
         "RB": "5"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
     },
     "32716": {
       "schema": "sg-work-pool-v1",
@@ -10797,7 +10799,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32715,
       "runtimeGameId": 33115,
-      "planHash": "9a2b3af9ce8758584b95eec847a09fecac3f4af9f8bb3104f7206d4cdaa88ae3",
+      "planHash": "d21391e0c19ab2d83991874c01013f705a6a0f761fa84c97a9a47edea832b1dc",
       "historyFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 1,
@@ -10906,7 +10908,20 @@
         "UNKNOWN_TRIAL_FEATURE": 2
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "9a2b3af9ce8758584b95eec847a09fecac3f4af9f8bb3104f7206d4cdaa88ae3",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0",
+        "nativeFaultPrefixes": 2,
+        "nativeEvidenceHash": "3c5ef7c8cd6ff52dccba45e6b73c1e5874519c9eea5a20ffac0307595ebd09f1",
+        "historicalFullRounds": 3,
+        "historicalEvidenceHash": "668ea0dee247ed1c7b845940f2e89e8834a5754bbf1a23bafd667fcce728d3bf",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32716": {
       "schema": "sg-ag-rolling-offline-adapter-v1",

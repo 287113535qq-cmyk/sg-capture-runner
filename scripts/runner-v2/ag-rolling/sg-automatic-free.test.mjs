@@ -17,6 +17,24 @@ function sample(p=plan){
 }
 function change(r,i,old,value){const s=r.steps[i];s.responsePayload=s.responsePayload.replace(old,value);
  s.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+s.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';return r;}
+test('Huff Even More Puff keeps its own reviewed FID2 trigger, mixed free frames and ordinary terminal',async()=>{
+ const p=registry.plans['32715'];
+ const make=(mid='1|2|')=>{const r=sample(p);['2|',mid,'0|'].forEach((fid,i)=>change(r,i,'FID=1|',`FID=${fid}`));return r;};
+ for(const fid of ['0|','0|1|','0|2|','1|2|','2|']){
+  const r=make(fid);assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,2)}),{MSGID:'FREE_GAME'});
+  assert.equal(automaticFreeNext(p,r),null);assert.equal(automaticFreeFields(p,r,hash).bonus,1);
+  assert.throws(()=>automaticFreeFields(p,{...r,steps:r.steps.slice(0,2)},hash),/INCOMPLETE/);
+ }
+ for(const fid of ['1|','3|','2|&CFG=1','2|&NFR_2=1','2|&FS_2=0'])
+  assert.throws(()=>automaticFreeNext(p,change(make(),0,'FID=2|',`FID=${fid}`)),/FEATURE/);
+ for(const fid of ['2|','1|2|'])assert.throws(()=>automaticFreeFields(p,change(make(),2,'FID=0|',`FID=${fid}`),hash),/TERMINAL/);
+ assert.throws(()=>automaticFreeNext(p,change(make(),1,'B=820','B=821')),/MONEY/);
+ const codec=await nextgenCodec({plan:p,session:{pid},sequence:()=>1,worker:0,batchId:1});
+ try{const result=await codec.prepare(make(),{attempt:'offline-huff-synthetic',sessionHash:hash});
+  assert.equal(result.independentlyVerified,true);assert.equal(result.record.normalized.bonus,1);
+  assert.equal(result.record.normalized.bet,2);assert.equal(result.endBalanceRaw,850);
+ }finally{codec.close();}
+});
 test('reviewed automatic feature IDs continue only FREE_GAME and settle exact original paid cost at zero remaining',()=>{
  for(const p of ['32486','32500','32501','32741'].map(id=>registry.plans[id])){
   const r=sample(p);assert.deepEqual(automaticFreeNext(p,{...r,steps:[]}),{MSGID:'BET'});

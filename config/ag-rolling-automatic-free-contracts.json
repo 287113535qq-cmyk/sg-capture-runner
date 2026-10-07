@@ -1055,6 +1055,59 @@
       "nativeObservedAt": 1791362539.460107,
       "sourceRequests": 0,
       "mongoWrites": 0
+    },
+    "huffnevenmorepuff96-ag-rolling-nextgen-v1": {
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "betRaw": 200,
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "balanceContract": null,
+      "allowedFids": {
+        "BET": [
+          "0|",
+          "2|"
+        ],
+        "FREE_GAME": [
+          "0|",
+          "0|1|",
+          "0|2|",
+          "1|2|",
+          "2|"
+        ]
+      },
+      "allowTerminalFeatureId": true,
+      "terminalFids": [
+        "0|"
+      ],
+      "nativeFaultRawHashes": [
+        "d601952b8fe129855556deae4cee822b014e55c563f8c86badede0e04c5e243b",
+        "bf9618bde1a50043373cd3952f1d3ea10a53f5edef774b06acf3f14438c44f8f"
+      ],
+      "nativeClosedHashes": [
+        "2901bf6321ab957a488333a10f259b0654d2a1ae8e0e058c3cb600e8f8d49345",
+        "f7c5ae21481a294c7a4471b64adc83c72fd0045e793b6ce06e24ded850c9deea"
+      ],
+      "historicalFullRawHashes": [
+        "e9f26da84e33ed25a118c457bd752a5b0a7b6d6f55ad353fbcd18e3324ca714f",
+        "e2c046f995b19d59b7b47e6b0be4c16f0d59cedae9fade82235a9c779dce3b60",
+        "6a86da1c68f75bc0e5aa0489ae08becf96e9790e72265477cc16ab6d831fd07c"
+      ],
+      "historyFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
+      "historicalCoveredFids": [
+        "0|",
+        "0|1|",
+        "0|2|",
+        "1|2|",
+        "2|"
+      ],
+      "nativeObservedAt": 1791373192.5522006,
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   }
 }

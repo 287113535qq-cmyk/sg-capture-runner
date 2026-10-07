@@ -23,8 +23,12 @@
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/huff-even-more-puff-automatic-repair-20261007.json"
+  ],
+  "analysisDocumentHashes": {
+    "docs/huff-even-more-puff-automatic-repair-20261007.json": "a24fd1d4d8730e6e85ae760931170c154cd5155acbb5754ea782cfdea5e5aa88"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5f60e7396f336860c4d1e39bca38f73f35b97dd019d2e7ecd3db400ad6136f14"
+  "ruleHash": "770f787c679acfb9bc2e32572834e692a9cc9f8fb5ab7616ae6263cf70d35e91"
 }

@@ -1,0 +1,29 @@
+{
+  "schema": "sg-huff-even-more-puff-automatic-offline-replay-v1",
+  "at": 1791373918.2763348,
+  "gameId": "32715",
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "historyFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
+  "closedJournalEvidenceSha256": "0ea9beb74db79436fa9f8044e022ba7a99a36f7dc04dd5543f6a13b2c2d9bceb",
+  "oldPlanHash": "9a2b3af9ce8758584b95eec847a09fecac3f4af9f8bb3104f7206d4cdaa88ae3",
+  "candidatePlanHash": "d21391e0c19ab2d83991874c01013f705a6a0f761fa84c97a9a47edea832b1dc",
+  "contractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0",
+  "fullHistoryFileRowsInspected": 100,
+  "planCompatibleHistoryRowsReplayed": 100,
+  "oldRequestRowsRetained": [],
+  "realFeatureRoundsReplayed": 3,
+  "realFeatureFrames": 37,
+  "ownFaultPrefixesReplayed": 2,
+  "independentJsPythonOperations": 338,
+  "failedPrefixesCredited": 0,
+  "productionApplied": false,
+  "newLinuxRequired": true,
+  "finalFullReadbackStillRequired": true,
+  "negativeRegressionTests": {
+    "nodeAutomaticFree": 11,
+    "pythonAutomaticFree": 10,
+    "includesActualCodecAndPython": true
+  },
+  "liveActivation": "deferred-to-reviewed-generation-after-own-Linux-proof"
+}
