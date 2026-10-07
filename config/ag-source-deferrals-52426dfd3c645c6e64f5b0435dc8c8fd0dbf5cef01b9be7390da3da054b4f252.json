@@ -1,0 +1,276 @@
+{
+  "schema": "sg-ag-source-deferral-evidence-v1",
+  "previousActivation": "fbb7edb7051ee389f54dd24f1e7a0fb4d1e5c1f50da0761498160c0858832d38",
+  "previousRun": "37644127749:1",
+  "endedProofHash": "df0608fe4347a14b534ad1f61e40c326f1ec5ebaee8dbf217ed197d5b8106c4b",
+  "sourceJobsEnded": true,
+  "games": [
+    {
+      "gameId": "32476",
+      "planHash": "cf8b69d19146673faa8e3c15f053eeb59b57ae17225a04828fe8455d6e8c085b",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32477",
+      "planHash": "fe8d7e89f290ecea18081b5d189fdf63ce4829cb552db7dc6b8985c3270060ab",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32489",
+      "planHash": "eda8a0813f1a6eebc3417ab2a0b43212a48f94912fc21d5ec36e29ac440a31ef",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32497",
+      "planHash": "fccb3630f169f7241d3518cc1dee70d75533e12f5c5f3fd5cd7ef2ac32a17055",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32500",
+      "planHash": "2add233dc6c946d343ae3cdd20514ddf5d606c4f3476bb5a3714b7a5dbedde9b",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32501",
+      "planHash": "396ce9cd92b74f8c06b5386c00c809b384f82e1f39a043103bd653107fe3a199",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32502",
+      "planHash": "2fb576fd38b7bee5b7f17e637cee158685a00f6754cd70b49e967d68a796d927",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32503",
+      "planHash": "2f43bb9fbe2539de03654522aa0b35d7e7e1db610f4348009f076b51a26ef68c",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32504",
+      "planHash": "03404953b69a2f818d7b2687d39096be829df3fd6a40ec97df5636727ef0eb82",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32532",
+      "planHash": "c2eb5b66340267545b8956620464e8c12ec70c4df43c5af4e39ab575d28ab2dc",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32536",
+      "planHash": "97f240aaf1332a6f0b1f67d6dc2dca467318556e1c19403f61b3a7c5d971eb17",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32544",
+      "planHash": "75b455b0e2b6e0cb69363e90d4a20a2e3430f5ff8f9174c59d9dc03cc735f87e",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32548",
+      "planHash": "be6a95c3740d9dff7ea13a62934b809af4295e818d1f244ff3c52de106d9ae49",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32550",
+      "planHash": "0eeaba683104cfd915748c9cc84d9cf77b3562e487b652a2647f29545c9e7bfd",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32590",
+      "planHash": "8db47fc352f560a7cd2aecaf7f85939d01e6c340d404e0eeec8d7a398f8e9fec",
+      "reason": "OWN_UNSETTLED_NATIVE_MERGE"
+    },
+    {
+      "gameId": "32618",
+      "planHash": "ca289f5d8bc4e68a92dbeac2b2c58f5efb4c9d5de55ac93369301950d7799fec",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32620",
+      "planHash": "345db564d2cc35c51faa97e409ee3253497f4cad73f7490301ddebf648aac9f7",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32621",
+      "planHash": "c155623cfabb5cbf881c0958f69fe443d5b1f9db8571597411175f9834bef11a",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32626",
+      "planHash": "7110509a900644152d4406a6d7b07ba4e71e43b9a0dbedc31310a1042d90698c",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32641",
+      "planHash": "207ee0ad756d54e35381b84a4d5f5ccf5353c140ec5ce51624b63eb2bab0451f",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32681",
+      "planHash": "9781b7c9c34740919d0bac1680a95931f464719f7041e425aa21f3ed39fbdbc2",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32686",
+      "planHash": "91fab9c3ff04c95df82ff26cea63b3e3ce1a01a08a374d61fcbfccf7194a8056",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32687",
+      "planHash": "a4dfca6fc416c8ec562e8bb53359abaff3f004d9d1b41105d433134d960ccbf2",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32689",
+      "planHash": "cec84cdea524e954542f67db8aa22dcffcfb7d476fa9641f4768375c5a7d8876",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32691",
+      "planHash": "47a3c8dc116539aa6e9bd57746c49956631628dac53ab1238be79201b85e7101",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32705",
+      "planHash": "aef12f7ca36742f7ff596faa6df262cd9fb490f0c2ae51b1bb48751728534d01",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32706",
+      "planHash": "3daf232278c927b736e7d553c828acf19f4ab76c78029f44f29ad9bacebd1b09",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32707",
+      "planHash": "8506cf5a95c39f64eef1bbbfca56b521f13ccb3480e86db137880ed34a3a9926",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32709",
+      "planHash": "e65c53bfd48405640cf8595fec66d796c1ffa3c01413ea9a11200f1703d3f65a",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32713",
+      "planHash": "ab2c796d48f6b6b2b4fd8bea64cab4596b54a67983c8c23ad558598a214e08ad",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32715",
+      "planHash": "fadf8de57fe00d437af273296f536c3b2d90698b778b3702c10efb740ff99ac5",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32716",
+      "planHash": "a0c4594f409c4a7069e097e4c25ef19ab39e9776a28372b8a08a95bb81fa3151",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32722",
+      "planHash": "85d3a5add2e9158f15285663e0986ec6b2f729eee28951d0c28db9fc1cfc5649",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32724",
+      "planHash": "9eaf83291a9d27d97395b3fd32742e9b5618523bb6a025741b331e6ddb2a155d",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32725",
+      "planHash": "091bcd5598bf938d415db31a1134357e4a66fb85573e89bb5aa8cbf38fbd924b",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32727",
+      "planHash": "8305353d9fe14709d9c60abb700ece83e75c6cbea8fc41a10cee2492950f6aa0",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32728",
+      "planHash": "9873cc1012163e59b1bc7360bbc9013f551a80992a4623aa5ab48dedca9f15b1",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32729",
+      "planHash": "bdc126d0e2d4281b01bd7d02d200acb909fce0f1614c07d4b2356ea5eee7c1ed",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32732",
+      "planHash": "44dab99646c5849c2dedcd577ce3849299138ad4a2103b8d6e35ef020259be14",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32733",
+      "planHash": "2ea2565a265f673690b735226ef5c1c0a6f7371c5f827e88acc47dc3e8251523",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32734",
+      "planHash": "a5fbd0d4d531068a0652cb442b4b2d65f9dde64f3ba827c275ba92e803cf5c14",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32735",
+      "planHash": "763f77688668131d824f8dbc37d2fe97ce601753f31ff002622a715a9d23c83f",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32738",
+      "planHash": "aa55ab08663a45e76484b51d2fa98b1dfb02fc68850e618e2eea01d61a31cff8",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32740",
+      "planHash": "8f4c6dd70ccc7db389ce10c3220a6c40927b4de8395de7907b0a26369a72b1a2",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32741",
+      "planHash": "001b9bf63219b6c1487f712a26b0cbd6fb82b9b5d3e7b854cbcbfdc55dcc2823",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32742",
+      "planHash": "7cec65ac85865ee99d7685385ef1dc6d9990c58eba370955a4df4dfa1a0c83e6",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32743",
+      "planHash": "13a1da225a25b734f18580c72e6746ae0cb2c8ce5080b79126c4978b2dc76ad5",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32744",
+      "planHash": "ba505732a5acd9c2fd1a0b6bf6379987e4c723b550f4f4cd7f1d8b4fce75867c",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32832",
+      "planHash": "a79758d5f9d660da3c485a2cbf9e973bd00f0002ffccb4b1aba9b1d9ec4f195a",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    },
+    {
+      "gameId": "32839",
+      "planHash": "ec411e018c86d3be5284115768c58b3a6aa737bdb22f8b24722872bf4f600dc9",
+      "reason": "OWN_UNRESOLVED_FEATURE_FAULT"
+    }
+  ],
+  "origins": [
+    {
+      "file": "work/source-next-generation-v4/current-closed-faults-1791408778484-summary.json",
+      "sha256": "5ac740670fe021e8d676d5a9deb88c6bdf1fe80119f263f1d21cba28c28ccbd6"
+    },
+    {
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\source-next-generation-v4\\input-1791411380504432900\\native-private.json",
+      "sha256": "e04a787c48b4750f7ac15d8aef25a4a95c73c66410215dd3ba82d478d50c7bb6"
+    },
+    {
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\source-next-generation-v4\\input-1791411380504432900\\ended-review.json",
+      "sha256": "3a0ce1ef2b0fd5b2c94501a708a7bca56de1ece07bbefa83e631a049f0a3de69"
+    }
+  ],
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "completedCredit": 0
+}
