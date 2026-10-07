@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
-import {closeSealedSource,SEALED_CLEANUP_MS} from './sg-sealed-cleanup.mjs';
+import {closeSealedSource,SEALED_CLEANUP_MS,UNSEALED_CLEANUP_MS} from './sg-sealed-cleanup.mjs';
 
 function fixture(sourceSealed=true){
  const events=[];let timer,resolve,reject;
@@ -13,8 +13,26 @@ function fixture(sourceSealed=true){
 }
 
 test('unsealed failure or live source never arms a success exit even when close stalls',async()=>{
- const f=fixture(false),pending=closeSealedSource(f.args);f.fire();assert.deepEqual(f.events,['close']);
- f.reject(Error('close failed'));await assert.rejects(pending,/close failed/);assert.deepEqual(f.events,['close']);
+ const f=fixture(false),pending=closeSealedSource(f.args);f.fire();
+ assert.deepEqual(f.events.slice(0,2),[['timer',UNSEALED_CLEANUP_MS],'close']);
+ assert.deepEqual(f.events[2],['sync-log',{code:'SG_AG_UNSEALED_CLEANUP_TIMEOUT',sourceSealed:false,businessCloseCompleted:false,outcomeUnknown:true,stateRetained:true,sourceRequests:0}]);
+ assert.deepEqual(f.events.slice(3),['transport-close',['exit',2]]);
+ f.reject(Error('close failed'));await assert.rejects(pending,/close failed/);assert.deepEqual(f.events.at(-1),['clear',7]);
+});
+
+test('unsealed successful and failed cleanup both cancel their finite watchdog',async()=>{
+ for(const failed of [false,true]){const f=fixture(false),pending=closeSealedSource(f.args);
+  if(failed)f.reject(Error('failed'));else f.resolve();
+  if(failed)await assert.rejects(pending,/failed/);else await pending;
+  assert.deepEqual(f.events,[['timer',UNSEALED_CLEANUP_MS],'close',['clear',7]]);
+ }
+});
+
+test('unsealed close exits failed even when diagnostic or transport close throws',async()=>{
+ for(const broken of ['writeSync','closeTransport']){const f=fixture(false);f.args[broken]=()=>{throw Error('cleanup fault');};
+  const pending=closeSealedSource(f.args);assert.throws(()=>f.fire(),/cleanup fault/);
+  assert.deepEqual(f.events.at(-1),['exit',2]);f.resolve();await pending;
+ }
 });
 
 test('sealed source close gets ninety seconds, synchronously records incomplete cleanup and closes native before exiting',async()=>{

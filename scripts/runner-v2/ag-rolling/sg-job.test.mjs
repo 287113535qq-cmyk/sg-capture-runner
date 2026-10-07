@@ -53,15 +53,17 @@ test('ordinary lanes use one child and forward the source result',async()=>{
  f.children[0].emit('close',2,null);assert.equal(await done,2);
 });
 test('lane 20 shares its host with a zero-source controller and waits beyond its own source completion',async()=>{
- const f=fixture();let ended=false;
- const done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,log:()=>{}}).then(code=>{ended=true;return code;});
+ const f=fixture(),reports=[];let ended=false;
+ const done=runRollingJob({lane:20,environment,spawnProcess:f.spawnProcess,log:line=>reports.push(JSON.parse(line))}).then(code=>{ended=true;return code;});
  const [controller,source]=f.children;
  assert.equal(f.children.length,2);assert.equal(controller.options.env.SG_AG_CONTROLLER_LANE,'20');
  assert.equal(controller.options.env.SG_TRIAL_DEMO_CONFIG,undefined);assert.equal(controller.options.env.SG_AG_LANE,undefined);
  assert.deepEqual(controller.options.stdio,['inherit','inherit','inherit','ipc']);
  source.emit('exit',0,null);await new Promise(r=>setImmediate(r));
+ assert.deepEqual(reports,[],'an exit without closed inherited pipes is not a closure receipt');
  assert.deepEqual(controller.messages,[]);assert.equal(ended,false);
  source.emit('close',0,null);await new Promise(r=>setImmediate(r));
+ assert.deepEqual(reports,[{phase:'source-process-ended',lane:20,code:0,signal:null,sourceClosed:true,pid:source.pid}]);
  assert.equal(controller.messages.length,1);assert.equal(controller.messages[0].type,'lane-source-ended');assert.equal(controller.messages[0].sourceClosed,true);assert.equal(ended,false);
  assert.deepEqual(controller.signals,[],'controller remains available for the other 19 lanes');
  controller.emit('close',0,null);assert.equal(await done,0);

@@ -69,6 +69,7 @@ export async function runRollingJob({lane,environment,spawnProcess=spawn,signal,
   source=start('lane',sourceEnv);
   if(signal?.aborted)cancel();
   const result=await waitFor(source.ended);
+  log(JSON.stringify({phase:'source-process-ended',lane,...result}));
   // Lane 20 may finish before the other lanes. Keep its zero-source
   // controller alive until those lanes finish or the AG deadline expires.
   if(controller?.child.connected)controller.child.send({type:'lane-source-ended',lane:20,run:environment.GITHUB_RUN_ID+':'+environment.GITHUB_RUN_ATTEMPT,...result},()=>{});
