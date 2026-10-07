@@ -7,6 +7,7 @@ import {deliverPage} from './sg-business-delivery.mjs';
 import {businessDocument} from './sg-business-document.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 import {COMPLETED_NATIVE_PROOF} from './sg-ag-completed-prefix.mjs';
+import {readControlAppendCursor} from './sg-ag-control-journal-cursor.mjs';
 const commit='a'.repeat(40),queueId='queue',cohortRun='123:1';
 function fixture(options={}){
  const games=['32442','32529'].map(id=>({gameId:id,dbName:'sg_'+id,campaignId:'sg_'+id+'-'+queueId,baseline:0,phase:'ready'}));const state={version:1,queueId,runId:123,phase:'running',games};
@@ -30,6 +31,35 @@ function fixture(options={}){
  return {api,state,games,docs,store,io,events,counts,jobs,edit,receipts,get closed(){return closed;},get finalized(){return finalized;}};
 }
 test('original AG controller reaches final business within its own per-game merge call while all other lanes remain live',async()=>{const f=fixture();await f.api.reconcile();assert(f.games.every(g=>g.phase==='complete'));for(const g of f.games){const sequence=f.events.filter(e=>e.gameId===g.gameId&&['native','business','finalize'].includes(e.type)).map(e=>e.type);assert.deepEqual(sequence,['native','business','finalize']);}assert.equal(f.state.phase,'running');assert.equal(f.finalized,0);});
+
+test('ready-game exception durably isolates its state before the suffix and does not retry on another pass',async()=>{
+ const f=fixture({badPrefix:'32442'});await f.api.reconcile();
+ const index=f.events.findIndex(e=>e.type==='exception'),saved=f.events[index-1];
+ assert.equal(saved.type,'persist');assert.equal(saved.file,'own-control-state');
+ const game=saved.value.games.find(g=>g.gameId==='32442');
+ assert.equal(game.phase,'blocked');assert.equal(game.reason,f.events[index].error);
+ assert.equal(f.games[1].phase,'complete');await f.api.reconcile();
+ assert.equal(f.events.filter(e=>e.type==='validate'&&e.gameId==='32442').length,1);
+});
+
+test('newly failed state and trailing exception satisfy the existing strict restart cursor without weakening it',async()=>{
+ const f=fixture({badPrefix:'32442'});f.games[1].phase='blocked';f.games[1].reason='SG_OWN_FEATURE_REPAIR_REQUIRED';
+ const key='rolling-ag-control:'+queueHash([queueId,cohortRun,commit]),journals=new Map();let saved,sequence=0;
+ const journal=(file,value)=>{const id=key+':'+(++sequence);journals.set(id,{_id:'primary/'+id,version:0,value:{file,value:structuredClone(value),cohortRun,commit}});return id;};
+ f.io.persist=(file,value)=>{const id=journal(file,value);if(file==='own-control-state')saved={_id:'primary/'+key,version:sequence,value:{state:structuredClone(value),cohortRun,commit,sequence,journal:id}};return {fullReadback:true};};
+ f.io.recordException=row=>journal('own-exception-state',row);
+ await f.api.reconcile();const before=structuredClone([...journals]);
+ const store={get:async(c,k)=>structuredClone(c==='state'?saved:journals.get(k)??null),getMany:async(c,keys)=>keys.map(k=>structuredClone(journals.get(k)??null))};
+ const result=await readControlAppendCursor({store,key,saved,cohortRun,commit,maxTail:4});
+ assert.equal(result.retainedExceptionCount,1);assert.equal(result.sequence,sequence);assert.deepEqual([...journals],before);
+});
+
+test('exception persistence uncertainty produces no orphan exception and stops before the next game',async()=>{
+ const f=fixture({badPrefix:'32442'});f.io.persist=()=>{throw Object.assign(Error('retained-state-write-unknown'),{outcomeUnknown:true});};
+ await assert.rejects(f.api.reconcile(),/retained-state-write-unknown/);
+ assert(!f.events.some(e=>e.type==='exception'||e.type==='business'));
+ assert.equal(f.games[1].phase,'ready');
+});
 
 function completedFixture(change){
  const f=fixture(),ordinary=f.io.verifyPrefix,native={count:300000,selected:Array(20).fill(15000),recordsHash:'d'.repeat(64),fullReadback:true,independentlyVerified:true};
@@ -61,16 +91,16 @@ test('AG count operations do not repeat the final full audit, and fresh counts s
   await f.api.reconcile();
   for(const g of f.games)assert.equal(f.events.filter(e=>e.gameId===g.gameId&&e.type==='full-target-audit').length,1);
   assert.equal(f.events.filter(e=>e.gameId==='32442'&&e.type==='count').length,2);
-  assert.equal(f.games[0].phase,changed?'merging':'complete');assert.equal(f.games[1].phase,'complete');
+  assert.equal(f.games[0].phase,changed?'blocked':'complete');assert.equal(f.games[1].phase,'complete');
   assert.equal(f.events.some(e=>e.gameId==='32442'&&e.type==='finalize'),!changed);
  }
 });
-test('full target validation remains mandatory even when both AG counts match',async()=>{const f=fixture();f.io.inspectBusiness=async g=>({captureBaseline:0,campaignCount:300000,fullReadback:g.gameId!=='32442',originalUnchanged:true,invalid:0});await f.api.reconcile();assert.equal(f.games[0].phase,'merging');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.gameId==='32442'&&e.type==='finalize'));});
+test('full target validation remains mandatory even when both AG counts match',async()=>{const f=fixture();f.io.inspectBusiness=async g=>({captureBaseline:0,campaignCount:300000,fullReadback:g.gameId!=='32442',originalUnchanged:true,invalid:0});await f.api.reconcile();assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[0].sgFailedGamePhase,'merging');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.gameId==='32442'&&e.type==='finalize'));});
 test('a live canary lease in the batched inventory blocks merge and a short reply fails closed',async()=>{
  for(const short of [false,true]){const f=fixture(),getMany=f.store.getMany.bind(f.store);let leasePages=0;
   if(!short)f.docs.set('state/'+stagingLeaseKey(queueId,f.games[0],'canary',2),{value:{expiresAt:Date.now()+60000}});
   f.store.getMany=async(c,keys)=>{const result=await getMany(c,keys);if(keys[0]===stagingLeaseKey(queueId,f.games[0],'canary',1)){leasePages++;if(short)result.pop();}return result;};
-  await f.api.reconcile();assert.equal(leasePages,1);assert.equal(f.games[0].phase,'ready');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.gameId==='32442'&&e.type==='native'));
+  await f.api.reconcile();assert.equal(leasePages,1);assert.equal(f.games[0].phase,short?'blocked':'ready');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.gameId==='32442'&&e.type==='native'));
  }
 });
 test('failed terminal worker with independently validated full quota follows original AG selection without rewriting status success',async()=>{const f=fixture();f.edit(0,1,{status:'failed'});await f.api.reconcile();assert.equal(f.games[0].phase,'complete');assert.equal((await f.store.get('state',taskKey(queueId,f.games[0],'worker:1'))).value.status,'failed');assert.deepEqual(f.events.find(e=>e.type==='native').selection.selected,Array(20).fill(15000));});
@@ -80,10 +110,10 @@ test('normal-success ended lane keeps its not-started share pending and other ga
 test('abnormal ended lane marks its pending share blocked without resetting other tasks',async()=>{const f=fixture();f.edit(0,20,{status:'pending',owner:undefined});f.jobs[19]={...f.jobs[19],status:'completed',conclusion:'failure'};f.counts.get('32442')[19]=0;await f.api.reconcile();assert.equal((await f.store.get('state',taskKey(queueId,f.games[0],'worker:20'))).value.status,'blocked');assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[1].phase,'complete');});
 test('foreign source owner and own live lease cannot be settled',async()=>{for(const withLease of [false,true]){const f=fixture();f.edit(0,1,{status:'running',owner:withLease?'123-1:1:worker:1':'foreign:1:worker:1'});f.jobs[0]={...f.jobs[0],status:'completed',conclusion:'failure'};if(withLease)f.docs.set('state/'+stagingLeaseKey(queueId,f.games[0],'worker',1),{value:{expiresAt:Date.now()+60000}});await f.api.reconcile();assert.equal(f.games[0].phase,'ready');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.type==='settle-intent'));}});
 test('live shared-controller lane20 cannot be inferred ended from terminal task counts',async()=>{const f=fixture();f.edit(0,20,{status:'running'});await f.api.reconcile();assert.equal(f.games[0].phase,'ready');assert(!f.events.some(e=>e.type==='settle-intent'));assert.equal(f.games[1].phase,'complete');});
-test('own validation/protected admission exception retains its game and permits independently qualified next game',async()=>{for(const option of ['badPrefix','gateFails']){const f=fixture({[option]:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'ready');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.type==='business'&&e.gameId==='32442'));}});
-test('unknown selected-prefix data cannot get native or business credit',async()=>{const f=fixture({prefixUnknown:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'ready');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.type==='native'&&e.gameId==='32442'));});
+test('own validation/protected admission exception retains its game and permits independently qualified next game',async()=>{for(const option of ['badPrefix','gateFails']){const f=fixture({[option]:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.type==='business'&&e.gameId==='32442'));}});
+test('unknown selected-prefix data cannot get native or business credit',async()=>{const f=fixture({prefixUnknown:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[1].phase,'complete');assert(!f.events.some(e=>e.type==='native'&&e.gameId==='32442'));});
 test('an unknown full-prefix read is sealed and is never issued again on the next controller pass',async()=>{const f=fixture({unknownPrefix:'32442'});await f.api.reconcile();await f.api.reconcile();assert.equal(f.games[0].sgOutcomeUnknownRetained,true);assert.equal(f.events.filter(e=>e.type==='validate'&&e.gameId==='32442').length,1);assert.equal(f.games[1].phase,'complete');});
-test('unknown business ACK stays merging, is never replayed on the next reconcile, and does not stop the other game',async()=>{const f=fixture({unknownBusiness:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'merging');assert.equal(f.games[0].sgOutcomeUnknownRetained,true);assert.equal(f.games[1].phase,'complete');await f.api.reconcile();assert.equal(f.events.filter(e=>e.type==='business'&&e.gameId==='32442').length,1);assert(!f.events.some(e=>e.type==='finalize'&&e.gameId==='32442'));});
+test('unknown business ACK retains its merging phase and is isolated, is never replayed on the next reconcile, and does not stop the other game',async()=>{const f=fixture({unknownBusiness:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[0].sgFailedGamePhase,'merging');assert.equal(f.games[0].sgOutcomeUnknownRetained,true);assert.equal(f.games[1].phase,'complete');await f.api.reconcile();assert.equal(f.events.filter(e=>e.type==='business'&&e.gameId==='32442').length,1);assert(!f.events.some(e=>e.type==='finalize'&&e.gameId==='32442'));});
 test('existing durable delivery intent is isolated once without rescanning or blocking the next game',async()=>{const f=fixture({existingIntent:'32442'});await f.api.reconcile();assert.equal(f.games[0].phase,'blocked');assert.equal(f.games[0].sgExistingOperationRetained,true);assert.equal(f.games[1].phase,'complete');const scans=f.events.filter(e=>e.type==='validate'&&e.gameId==='32442').length;await f.api.reconcile();assert.equal(scans,0);assert.equal(f.events.filter(e=>e.type==='validate'&&e.gameId==='32442').length,scans);assert(!f.events.some(e=>e.type==='business'&&e.gameId==='32442'));assert(f.events.some(e=>e.type==='exception'&&e.error==='SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY'));});
 test('an intent appearing during prefix validation is checked again before any final write',async()=>{
  const f=fixture();let checks=0;
@@ -97,7 +127,7 @@ test('original complete and blocked games are skipped and exceptions leave an en
 test('resume waits for current actual ending and full boundary, preserves successes, and selects only original ready games',async()=>{const f=fixture({workflowEnded:true,resumeEnded:true});f.games[1].phase='blocked';f.edit(0,1,{status:'failed'});await f.api.resume();assert.equal(f.events.filter(e=>e.type==='reset').length,1);assert.equal((await f.store.get('state',taskKey(queueId,f.games[0],'worker:2'))).value.status,'success');assert.deepEqual(f.events.find(e=>e.type==='dispatch').games,['32442']);});
 test('live workflow or missing global ending blocks resume; per-game merge never requires that ending',async()=>{for(const options of [{resumeEnded:true},{workflowEnded:true}]){const f=fixture(options);await assert.rejects(f.api.resume());assert(!f.events.some(e=>e.type==='dispatch'||e.type==='reset'));}});
 test('resume cannot replay an unknown source prefix or dispatch after its failed validation',async()=>{const f=fixture({workflowEnded:true,resumeEnded:true});f.edit(0,1,{status:'failed',unknownRequests:1});await assert.rejects(f.api.resume(),/unknown-source/);assert(!f.events.some(e=>e.type==='dispatch'));});
-test('missing private durable state ACK prevents final target writes',async()=>{const f=fixture({badDurability:true});await f.api.reconcile();assert(!f.events.some(e=>e.type==='native'||e.type==='business'));assert(f.events.some(e=>e.type==='exception'));});
+test('missing private durable state ACK prevents final target writes',async()=>{const f=fixture({badDurability:true});await assert.rejects(f.api.reconcile(),/SYNC_DURABLE_STATE/);assert(!f.events.some(e=>e.type==='native'||e.type==='business'||e.type==='exception'));});
 test('portable controller preserves the four original declarations and all twelve reference hashes',()=>{
  const root=path.resolve('.'),receipt=JSON.parse(fs.readFileSync(root+'/scripts/ag-reference/source.json')),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
  for(const f of receipt.files)assert.equal(sha(fs.readFileSync(root+'/scripts/ag-reference/'+f.path)),f.sha256);

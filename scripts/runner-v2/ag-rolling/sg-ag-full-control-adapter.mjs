@@ -53,6 +53,22 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
  };}};}
  const client={db:name=>db(games.get(name)),close:()=>io.close()};
  function persist(file,value){const result=io.persist(file,structuredClone(value));assert(!result?.then&&result?.fullReadback===true,'SG_AG_CONTROL_SYNC_DURABLE_STATE');}
+ function retainException(row){
+  assert(row&&Object.keys(row).sort().join(',')==='error,gameId'&&/^SG_[A-Z0-9_]+$/.test(row.error),
+   'SG_AG_CONTROL_EXCEPTION_IDENTITY');
+  const game=state.games.find(g=>g.gameId===row.gameId);
+  assert(game&&['ready','blocked','merging','merged'].includes(game.phase),'SG_AG_CONTROL_EXCEPTION_GAME');
+  // AG's catch reports the fault without saving a failed state. The SG
+  // journal requires that state before the exception suffix. Persist it
+  // through the existing ordered I/O queue, retaining every unknown/write
+  // marker. A failed state ACK stops this pass before another game or suffix.
+  if(['merging','merged'].includes(game.phase)){
+   game.sgFailedGamePhase=game.phase;game.sgOutcomeUnknownRetained=true;
+  }
+  game.phase='blocked';game.reason=row.error;
+  persist('own-control-state',state);
+  io.recordException?.(row);
+ }
  async function requireFreshOperation(g){
   if((await io.inspectPriorOperation(g))?.canStartOnce===true)return;
   // Check before the first expensive prefix audit as well as just before
@@ -67,7 +83,7 @@ export function createSgAgFullControlAdapter({state,cohortRun,commit,queueId,sto
   }const v=await io.readRun(cohortRun,commit);assert(v.run===cohortRun&&v.commit===commit&&now()-v.at<=60000&&v.at<=now(),'SG_AG_CONTROL_RUN_READBACK');return {data:v};
  }};
  const runtime=createOriginalAgFullControl({fs:{existsSync:()=>false},credentialPath:'private-memory-credentials',read:()=>({}),mongo:async()=>client,load:()=>state,statePath:'own-control-state',save:persist,path:{join:(...p)=>p.join('/')},directory:'private-control-evidence',repository:'own-reviewed-cohort',secret:'own-cohort-lifecycle',githubClient:()=>gh,
-  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:safeControlError,console:{log:()=>{},error:v=>io.recordException?.(JSON.parse(v))},
+  deleteRepositorySecret:()=>io.finishCohort(state),safeMessage:safeControlError,console:{log:()=>{},error:v=>retainException(JSON.parse(v))},
   async liveLeases(database){const rows=await taskRows(database.game),keys=rows.map(r=>{const [kind,index]=r.value._id.split(':');return stagingLeaseKey(queueId,database.game,kind,Number(index));});
    const leases=await store.getMany('state',keys);assert(leases.length===keys.length,'SG_AG_CONTROL_LEASE_INVENTORY');return leases.filter(r=>r?.value.expiresAt>now()).length;},
   async validateRows(database,g,index){await io.guard('full-prefix-validation',g);const row=(await taskRows(g)).find(r=>r.value._id==='worker:'+index).value;assert(!['running','pending'].includes(row.status),'SG_AG_CONTROL_ACTIVE_PREFIX');

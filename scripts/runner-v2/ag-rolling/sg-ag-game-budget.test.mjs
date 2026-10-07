@@ -112,7 +112,7 @@ test('original AG catch isolates a slow game, preserves its durable intent, and 
 });
 
 test('a failed blocked-state flush never lets AG report completion or start the next game',async()=>{
- const f=controllerFixture({failBlockedFlush:true});await f.api.reconcile();
+ const f=controllerFixture({failBlockedFlush:true});await assert.rejects(f.api.reconcile(),/SG_AG_GAME_BUDGET_PERSIST_UNKNOWN/);
  assert(f.games.every(g=>g.phase!=='complete'));assert.equal(f.games[1].sgGameBudget,undefined);
  assert(!f.events.some(e=>e.type==='insert'));assert.equal(f.intents.size,1);
  assert(f.events.some(e=>e.type==='exception'&&e.error==='SG_AG_GAME_BUDGET_PERSIST_UNKNOWN'));
