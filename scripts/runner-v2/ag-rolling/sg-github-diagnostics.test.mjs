@@ -43,7 +43,10 @@ test('network rejection remains unknown, is never retried, and publishes no inve
  let calls=0;const failure=Error('raw '+secret);
  await withFetch(async()=>{calls++;throw failure;},async()=>{
   await assert.rejects(authenticatedRead(secret)(primary),error=>{
-   assert.equal(error,failure);assert.deepEqual(protocolStopReport(error),{outcome:'stopped',code:'SG_PROTOCOL_STOPPED'});return true;
+   assert.equal(error,failure);const report=protocolStopReport(error);
+   assert.equal(report.code,'SG_PROTOCOL_STOPPED');assert.equal(report.githubRead.phase,'fetch');
+   assert.equal(report.githubRead.ioCode,null);assert.equal(report.githubRead.retryScheduled,false);
+   assert(!('httpStatus' in report.githubRead));assert(!JSON.stringify(report).includes(secret));return true;
   });
  });assert.equal(calls,1);
 });

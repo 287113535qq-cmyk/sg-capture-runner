@@ -48,3 +48,23 @@ export function withGithubListDiagnostic(error,path,result){
  return error;
 }
 export function githubReadDiagnostic(error){return diagnostics.get(error);}
+
+// Only a fixed vocabulary is exposed. Neither exception text nor nested
+// causes, request headers, response bodies or stack traces can enter logs.
+export const transientGithubIoCodes=Object.freeze(['ECONNRESET','ETIMEDOUT','EAI_AGAIN',
+ 'UND_ERR_CONNECT_TIMEOUT','UND_ERR_SOCKET','UND_ERR_HEADERS_TIMEOUT','UND_ERR_BODY_TIMEOUT']);
+export function githubIoCode(error){
+ try{return [error?.code,error?.cause?.code].find(code=>transientGithubIoCodes.includes(code))??null;}
+ catch{return null;}
+}
+export function withGithubIoDiagnostic(error,path,{phase,attempt,elapsedMs,retryScheduled}){
+ try{
+  const names=['Error','TypeError','SyntaxError','AbortError','TimeoutError'];
+  diagnostics.set(error,Object.freeze({schema:'github-read-io-diagnostic-v1',method:'GET',
+   endpoint:Object.freeze(endpoint(path)),phase:phase==='body'?'body':'fetch',
+   errorType:names.includes(error?.name)?error.name:'unclassified',ioCode:githubIoCode(error),
+   attempt:attempt===2?2:1,elapsedMs:Number.isFinite(elapsedMs)?Math.max(0,Math.floor(elapsedMs)):null,
+   retryScheduled:retryScheduled===true}));
+ }catch{/* Keep the original failure even for a malformed exception. */}
+ return error;
+}

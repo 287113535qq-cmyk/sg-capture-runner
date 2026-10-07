@@ -17,6 +17,7 @@ import {createTaskRuntime} from './sg-task-runtime.mjs';
 import {runSgLane} from './sg-lane.mjs';
 import {mergeGame} from './sg-merge.mjs';
 import {resetEndedTask} from './sg-resume.mjs';
+import {diagnoseResumeTask} from './sg-resume-diagnostic.mjs';
 import {inspectFormalBaseline} from './sg-formal-baseline.mjs';
 import {inspectNewGame} from './sg-new-game.mjs';
 import {LANE_BUDGET_MS} from './ag-core.mjs';
@@ -137,8 +138,8 @@ async function prepareResumeGame({game,queueId,ended,previous,guard}){
   return {reader,parser,store:scopedStore};
  });
  await auditTasks([...[1,2].map(i=>['canary',i]),...Array.from({length:20},(_,i)=>['worker',i+1])],{
-  contexts:auditReaders,audit:async([kind,index],context)=>resetEndedTask({store:context.store,transport:context.reader,
-   game,queueId,kind,index,guard,ended,revalidateSuccess,verifyRecords:rows=>context.parser.verifyPage(plan,[...rows].sort((a,b)=>a.sequence-b.sequence))})});
+  contexts:auditReaders,audit:async([kind,index],context)=>diagnoseResumeTask({game,kind,index},()=>resetEndedTask({store:context.store,transport:context.reader,
+   game,queueId,kind,index,guard,ended,revalidateSuccess,verifyRecords:rows=>context.parser.verifyPage(plan,[...rows].sort((a,b)=>a.sequence-b.sequence))}))});
 }
 try{
  if(mode==='preparation-close'){
