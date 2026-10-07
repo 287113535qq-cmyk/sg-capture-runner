@@ -160,7 +160,7 @@
     "scripts/trial/demon-protocol.mjs": "70908cc91a049a1e22aa5a21df1bfc9e44e239d1841b50df8747fd9b9ff26b70",
     "scripts/trial/demon-nested-protocol.mjs": "20dacbaa01a8d162ffc754f85d72e2f69b76e754f434d0c97a3b650739dccbe2",
     "collector/sg.demon.ts": "74aef5076b4defa4cd6286ad1890e184820dd3b8262763b2930266a815866e25",
-    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
+    "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [
     "docs/demon-pair-recovery-20260929.md",
@@ -219,5 +219,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "5ce78bb9ede295b6601f9b733f94e0fe5610c854cc20f2cf8996e8e86792b33b"
+  "ruleHash": "1fa5d4cf53c62c81d06c97880856ac8bee318f9a4abdbc322a910c53ff99c505"
 }

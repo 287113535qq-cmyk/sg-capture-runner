@@ -1,4 +1,4 @@
-import {OWN_TERMINAL,ownTerminalNext,ownTerminalFields} from './sg-own-terminal.mjs';
+import {OWN_TERMINAL,OWN_GEOMETRY,ownTerminalNext,ownTerminalFields} from './sg-own-terminal.mjs';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import {createRequire} from 'node:module';
@@ -49,7 +49,7 @@ export async function nextgenCodec({plan,session,sequence,worker,batchId,createA
    roundFieldsVersion:'sg-round-fields-v1',startBalanceRaw:balance,steps:[],
    ...(plan.balanceContract===BALANCE_CONTRACT?{balanceContract:BALANCE_CONTRACT}:{}),
    ...(plan.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?{automaticFreeContract:AUTOMATIC_FREE_CONTRACT}:{}),
-   ...(plan.ownTerminalContract===OWN_TERMINAL?{ownTerminalContract:OWN_TERMINAL}:{}),
+   ...([OWN_TERMINAL,OWN_GEOMETRY].includes(plan.ownTerminalContract)?{ownTerminalContract:plan.ownTerminalContract}:{}),
    ...(plan.automaticTerminalContract===AUTOMATIC_TERMINAL?{automaticTerminalContract:AUTOMATIC_TERMINAL}:{}),
    ...(plan.explicitProbeContract===EXPLICIT_PROBE?{explicitProbeContract:EXPLICIT_PROBE}:{}),
    ...(plan.explicitContinuationContract!==undefined?{explicitContinuationContract:plan.explicitContinuationContract}:{}),

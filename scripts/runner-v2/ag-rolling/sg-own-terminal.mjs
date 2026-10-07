@@ -11,7 +11,26 @@ const policies=contract.sources;
 const money=x=>{const v=integer(x);assert(Number.isSafeInteger(v)&&v>=0,'TERMINAL_MONEY');return v;};
 const same=(a,b)=>queueHash(a)===queueHash(b);
 const gsd=s=>{const pairs=s.split('#').map(t=>t.split('~'));assert(pairs.every(t=>t.length===2)&&new Set(pairs.map(t=>t[0])).size===pairs.length,'TERMINAL_GSD');return Object.fromEntries(pairs);};
-export function verifyTerminal(plan,raw){
+
+export const OWN_GEOMETRY='nextgen-own-terminal-geometry-v4';
+const geometryPolicy=JSON.parse(fs.readFileSync(new URL('../../../config/ag-rolling-terminal-geometry-contract.json',import.meta.url)));
+export function geometryPrevious(plan){
+ const previous={...plan,ownTerminalContract:OWN_TERMINAL,ownTerminalContractHash:queueHash(policies['32708'])};
+ assert(plan.gameId===32708&&plan.sourceKey===geometryPolicy.sourceKey&&plan.ownTerminalContract===OWN_GEOMETRY
+  &&plan.ownTerminalContractHash===queueHash(geometryPolicy)&&geometryPolicy.contract===OWN_GEOMETRY
+  &&geometryPolicy.schema==='sg-own-terminal-geometry-contract-v4'&&geometryPolicy.gameId===32708
+  &&queueHash(previous)===geometryPolicy.previousPlanHash&&geometryPolicy.gridSize===7
+  &&JSON.stringify(geometryPolicy.terminalSizes)==='[2,3]'&&geometryPolicy.newNaturalCases===1
+  &&geometryPolicy.linuxTests===43&&geometryPolicy.independentOperations===557&&geometryPolicy.ordinaryRows===200
+  &&geometryPolicy.sourceRequests===0&&geometryPolicy.mongoWrites===0&&geometryPolicy.failedRoundsCredited===0,
+  'OWN_GEOMETRY_PLAN_BINDING');
+ ownTerminalPrevious(previous);return previous;
+}
+function reviewedGeometry(value){const m=/^([0-6]);([0-6])\|([23])$/.exec(value??'');
+ return !!m&&Number(m[1])+Number(m[3])<=7&&Number(m[2])+Number(m[3])<=7;}
+export function verifyTerminal(plan,raw){return verifyTerminalVersion(plan,raw,false);}
+
+function verifyTerminalVersion(plan,raw,geometry){
  const p=policies[String(plan.gameId)];assert(p&&queueHash(plan)===p.planHash&&raw.sourceKey===p.sourceKey,'TERMINAL_PLAN');
  assert(raw.steps.length>1&&raw.steps.length<=plan.maxSteps,'TERMINAL_STEPS');
  const previous=automaticFreePrefix(plan,{...raw,steps:raw.steps.slice(0,-1)});
@@ -41,7 +60,7 @@ export function verifyTerminal(plan,raw){
  assert(total>=previous.win&&balance===held+total&&money(v.AB)===balance&&money(st.responseBalance)===balance,'TERMINAL_BALANCE');
  if(plan.gameId===32708){
   assert(money(v.FGTW)===money(prev.FGTW)+money(v.CW),'TERMINAL_FREE_TOTAL');
-  const g=gsd(v.GSD);assert(g.CPDO==='-1'&&g.AGS==='7'&&g.MZ.endsWith('|2')&&!['SNFG','STFG','SCFGG'].some(k=>k in g),'TERMINAL_NESTED_PENDING');
+  const g=gsd(v.GSD);assert(g.CPDO==='-1'&&g.AGS==='7'&&(geometry?reviewedGeometry(g.MZ):g.MZ.endsWith('|2'))&&!['SNFG','STFG','SCFGG'].some(k=>k in g),'TERMINAL_NESTED_PENDING');
  }else{
   const a=gsd(prev.GSD),b=gsd(v.GSD),direct=raw.steps.length===2&&prev.MSGID==='BET';
   assert(b.CFNFG==='0'&&b.WHEELSPIN==='1'&&b.WHSLICE==='MINI|'&&['0|','7|'].includes(b.WHSTOP)&&b.CFTFG==='1'&&b.CFCFGG==='1','TERMINAL_WHEEL_STATE');
@@ -54,6 +73,7 @@ export function verifyTerminal(plan,raw){
 }
 
 export function ownTerminalPrevious(plan){
+ if(plan.ownTerminalContract===OWN_GEOMETRY)return ownTerminalPrevious(geometryPrevious(plan));
  const {ownTerminalContract,ownTerminalContractHash,...previous}=plan,p=policies[String(plan.gameId)];
  assert(p&&[32708,32715].includes(plan.gameId)&&ownTerminalContract===OWN_TERMINAL&&ownTerminalContractHash===queueHash(p)
   &&contract.schema==='sg-ag-own-terminal-contract-v3'&&contract.contract===OWN_TERMINAL
@@ -65,16 +85,17 @@ export function ownTerminalPrevious(plan){
 }
 export function ownTerminalBinding(plan,raw){
  const previous=ownTerminalPrevious(plan);
- assert(raw?.ownTerminalContract===OWN_TERMINAL&&raw.automaticFreeContract===previous.automaticFreeContract
+ assert(raw?.ownTerminalContract===plan.ownTerminalContract&&raw.automaticFreeContract===previous.automaticFreeContract
   &&raw.sourceKey===plan.sourceKey&&raw.fixtureOnly===false&&raw.protocol==='nextgen'
   &&raw.roundFieldsVersion==='sg-round-fields-v1'&&raw.balanceContract===undefined,'OWN_TERMINAL_RAW_BINDING');
  return previous;
 }
 export function ownTerminalPrefix(plan,raw){
+ if(plan.ownTerminalContract===OWN_GEOMETRY&&raw?.ownTerminalContract!==OWN_GEOMETRY)return ownTerminalPrefix(geometryPrevious(plan),raw);
  const previous=ownTerminalBinding(plan,raw);assert(Array.isArray(raw.steps)&&raw.steps.length<=previous.maxSteps,'OWN_TERMINAL_STEPS');
  const last=raw.steps.at(-1),v=last?params(last.responsePayload):{};
  if(last?.msgId==='FREE_GAME'&&v.NFG==='0'&&v.FID===policies[String(plan.gameId)].terminalFid){
-  const m=verifyTerminal(previous,raw);return {count:raw.steps.length,remaining:0,start:m.startBalanceRaw,stake:m.betRaw,win:m.totalWinRaw,balance:m.endBalanceRaw};
+  const m=verifyTerminalVersion(previous,raw,plan.ownTerminalContract===OWN_GEOMETRY);return {count:raw.steps.length,remaining:0,start:m.startBalanceRaw,stake:m.betRaw,win:m.totalWinRaw,balance:m.endBalanceRaw};
  }
  return automaticFreePrefix(previous,raw);
 }
@@ -86,6 +107,22 @@ export function ownTerminalFields(plan,raw,mappingHash){const s=ownTerminalPrefi
  money:{startBalanceRaw:s.start,endBalanceRaw:s.balance,totalWinRaw:s.win,betRaw:s.stake}};
 }
 export function ownTerminalProof(plan,proof){
+ if(plan.ownTerminalContract===OWN_GEOMETRY){
+  const previousPlan=geometryPrevious(plan),{planHash,geometryEvidence,...rest}=proof??{},previousProof={...rest,planHash:queueHash(previousPlan)};
+  assert(planHash===queueHash(plan)&&queueHash(previousProof)===geometryPolicy.previousProofHash
+   &&geometryEvidence?.schema==='sg-own-terminal-geometry-proof-v4'
+   &&geometryEvidence.previousPlanHash===queueHash(previousPlan)&&geometryEvidence.previousProofHash===queueHash(previousProof)
+   &&geometryEvidence.contractHash===queueHash(geometryPolicy)&&geometryEvidence.naturalEvidenceSha256===geometryPolicy.naturalEvidenceSha256
+   &&geometryEvidence.clientSha256===geometryPolicy.clientSha256&&geometryEvidence.offlineLinuxProofSha256===geometryPolicy.offlineLinuxProofSha256
+   &&geometryEvidence.sourceRequests===0&&geometryEvidence.mongoWrites===0&&geometryEvidence.failedRoundsCredited===0,'OWN_GEOMETRY_PROOF');
+  const c=geometryEvidence.codecEvidence;
+  assert(c?.schema==='sg-own-geometry-codec-evidence-v4'&&c.evidenceHash===queueHash(Object.fromEntries(Object.entries(c).filter(([k])=>k!=='evidenceHash')))
+   &&c.actualCodecPythonRecordVerify===true&&c.strictOldMarkerRetained===true&&c.sourceRequests===0&&c.databaseWrites===0
+   &&c.results?.length===2&&c.results.every((r,i)=>r.gameId===['32708','32715'][i]&&r.records===[101,100][i]
+    &&r.ordinaryOldRecords===100&&r.routes===[209,134][i]&&/^[a-f0-9]{64}$/.test(r.recordsHash??'')),'OWN_GEOMETRY_CODEC_PROOF');
+  ownTerminalProof(previousPlan,previousProof);return {previousPlan,previousProof};
+ }
+
  const previous=ownTerminalPrevious(plan),p=policies[String(plan.gameId)],e=proof?.ownTerminalEvidence,w=e?.wiringEvidence;
  const {planHash,ownTerminalEvidence,...fields}=proof??{},oldProof={...fields,planHash:queueHash(previous)};
  assert(planHash===queueHash(plan)&&queueHash(oldProof)===p.previousProofHash

@@ -410,7 +410,7 @@
     "scripts/runner-v2/round-analysis-journal.mjs": "ce4ea10e8b77ebf1bbb9d02f6685e383bd157abd0bc80524ef166d5a7a0fec65",
     "scripts/runner-v2/pyramids-action-analysis.mjs": "cc2c2e2e3e7397eaffc6a67e5d375842b6b740bedb5d77ac958f1f7f31119b36",
     "scripts/runner-v2/pyramids-action-repair-profile.mjs": "7756a9b9bd5cbc61f822c5c1680ab73d75a507dd068357bc7bd858f932501037",
-    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
+    "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -452,5 +452,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "2661f5b0af312b2146775a9321a618c9bb3385702f2a42a93ff830487f0fadf5"
+  "ruleHash": "a35962f25b39fe4c208870201bfa6fa8a1645542be02e50602899d43045db7e4"
 }

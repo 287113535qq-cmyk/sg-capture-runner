@@ -161,7 +161,7 @@
     "scripts/trial/inca-free-review.mjs": "f51436a1f3503607d52ec78b3ac5530cae00bcd097823d21ff197ae731412bed",
     "scripts/trial/inca-protocol.mjs": "45ad77ce8d5466a635ef4fdd1d58935fb14004682b67b67cceefdc88fecc4916",
     "collector/sg.inca.ts": "a573f1119a62dbf2e686b9cad3ab3c91f82edc5600ba78c2779cc153f44a795b",
-    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
+    "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -187,5 +187,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "cb1dd723567bfc71bee3eab2f44cd73fbd0ccce7303bfee3076c1f7faecde5ff"
+  "ruleHash": "79cc0a172ed3305c372f4d7966581032549863d0a19c04e9318ce3684b940b06"
 }

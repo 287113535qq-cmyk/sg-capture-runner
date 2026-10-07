@@ -133,7 +133,7 @@
     "service/free_game_counters.py": "e450aa898f6fefb138a3f2d6d286187eb0c7ee27eba9a885d040a1046f5ea53b",
     "scripts/trial/free-game-counters.mjs": "11fe2277b7f5200b2f1895b5477391050b3a2377bdec77d7128454348229f5af",
     "collector/free-game-counters.cjs": "af96c0e48145633b4e602038dab6290745a7aabf04ef0b8864e51e21f4aff6c4",
-    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
+    "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -157,5 +157,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "e71d81c700008d2104af005ec53905e98e8055b1e79f368fa6fb93249806ddbb"
+  "ruleHash": "57426b870ce19fc107cb73c3dfacae3094da89578df6c8a19636b5d8aab989e2"
 }

@@ -620,7 +620,7 @@ def cards(root=ROOT):
     if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
         plans['32595']=rolling['32595']
     for key in ('32708','32715'):
-        if rolling.get(key,{}).get('ownTerminalContract')=='nextgen-own-terminal-evidence-v3':
+        if rolling.get(key,{}).get('ownTerminalContract') in ['nextgen-own-terminal-evidence-v3','nextgen-own-terminal-geometry-v4']:
             plans[key]=rolling[key]
     if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
         plans['32474']=rolling['32474']
@@ -646,6 +646,12 @@ def cards(root=ROOT):
                 'complete':('32708：FID2|、NFG0、parent total3，前一帧2|0|，FGTW增量严格一致且没有嵌套剩余免费。' if gid==32708 else '32715：FID2|、NFG0、total1，MINI wheel stop仅0|/7|；直接BET或已完成免费后转盘，FEAT_WIN/WHJPM/FGTW与实际奖额严格相等。'),
                 'bounds':'隔离候选，未获得新线上采集许可。4/5个自身完整终局及各100条历史通过真实 codec/Python IPC/record/verify；历史原记录不重写，旧 marker 仍拒绝新增终局。未知玩法、未完续接和金额异常停止，不默认 bonus0；不代表全部特殊玩法覆盖。',
                 'files':rule['files']+['scripts/runner-v2/ag-rolling/sg-own-terminal.mjs','service/own_terminal_fields.py','config/ag-rolling-own-terminal-contracts.json']}
+        if gid==32708 and plan and plan.get('ownTerminalContract')=='nextgen-own-terminal-geometry-v4':
+            rule={**rule,'family':'nextgen-own-terminal-geometry-v4',
+                'continue':'新 v4 marker 独立绑定前一 v3 计划与完整证明；旧 v3 和未标记记录继续原校验，不改历史数据。',
+                'complete':'FID2|、NFG0、TFG=CFGG=3；前帧2|0|且FGTW按CW相等递增；CPDO=-1、AGS=7、没有SNFG/STFG/SCFGG。MZ是区域坐标与尺寸：仅已证实2/3，坐标为整数且完整落在7x7内。金额、XML、会话逐帧双逻辑校验。',
+                'bounds':'离线候选，尚未激活。自身客户端字段解析与1个新MZ3完整终局、旧终局及普通历史回归；其他尺寸和未完玩法仍拒绝。未知状态不放宽、不默认bonus0，不能重播旧失败请求。',
+                'files':rule['files']+['scripts/runner-v2/ag-rolling/sg-own-terminal.mjs','service/own_terminal_fields.py','config/ag-rolling-terminal-geometry-contract.json']}
         if gid==32754 and plan and plan.get('arthurFeatureContract')=='wms-arthur-free-wild-evidence-v2':
             rule={**rule,'family':'wms-arthur-free-wild-evidence-v2',
                 'continue':'新匿名 v2 marker：自身 Wheel index5/1/6/3→免费8/10/12/5；Header-only Logic，编号逐帧推进，extra仅3/5且总数≤20。47自身Token joint转移及倍率1/3/5独立核验；未知状态停止。Wild只自身5种15格overlay，不另计奖。',
