@@ -17,6 +17,7 @@ import {queueHash} from './sg-queue-profile.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 import {createGameBudget} from './sg-ag-game-budget.mjs';
 import {loadExistingControlState} from './sg-ag-control-journal-cursor.mjs';
+import {isRecoveryReceiptReference,readReviewedRecoveryReceipt} from './sg-business-recovery-receipt.mjs';
 
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 export function inspectExistingWorkflowPolicy(profile){
@@ -27,7 +28,7 @@ export function inspectExistingWorkflowPolicy(profile){
   &&/^config\/ag-full-control-linux-[a-f0-9]{64}\.json$/.test(policy.linuxEvidenceFile??'')
   &&/^[a-f0-9]{64}$/.test(policy.linuxEvidenceSha256??''),'SG_AG_EXISTING_WORKFLOW_POLICY');
  assert(policy.completedBusinessReceipts&&typeof policy.completedBusinessReceipts==='object'
-  &&Object.entries(policy.completedBusinessReceipts).every(([id,v])=>/^32\d{3}$/.test(id)
+  &&Object.entries(policy.completedBusinessReceipts).every(([id,v])=>isRecoveryReceiptReference(id,v)||/^32\d{3}$/.test(id)
    &&Object.keys(v).sort().join(',')==='auditCompleteKey,auditDocumentHash,nativeReceiptHash'
    &&typeof v.auditCompleteKey==='string'&&v.auditCompleteKey.startsWith('game:'+id+':'+v.nativeReceiptHash)
    &&(/:complete$/.test(v.auditCompleteKey))
@@ -148,6 +149,22 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
    const native=(await store.get('journal',nativeKey+':complete'))?.value,stateRow=(await store.get('state',nativeKey))?.value;
    assert(native&&queueHash(native)===proof.nativeReceiptHash&&stable(stateRow?.result)===stable(native)&&stateRow.status==='complete'
     &&native.count===300000&&native.fullReadback&&native.independentlyVerified,'SG_AG_EXISTING_COMPLETED_NATIVE_PROOF');
+   if(proof.kind==='recovery-chained'){
+    const recoveryDeadline=Date.now()+90000;
+    const accepted=await readReviewedRecoveryReceipt({proof,bytes:fs.readFileSync(proof.evidenceFile),
+     binding:bindings[game.gameId],game,native,guard:()=>{
+      once.assertUsable();assert(Date.now()<recoveryDeadline,'SG_AG_RECOVERY_READ_DEADLINE');
+     },
+     readExact:async keys=>{
+      const rows=await mongoOnce(()=>client.db('sg_capture_staging_v1').collection('business_delivery_v1')
+       .find({_id:{$in:keys}},{hint:'_id_',maxTimeMS:15000}).limit(keys.length+1).toArray());
+      assert(rows.length<=keys.length&&new Set(rows.map(r=>r._id)).size===rows.length
+       &&rows.every(r=>keys.includes(r._id)),'SG_AG_RECOVERY_EXACT_QUERY');
+      const by=new Map(rows.map(r=>[r._id,r]));return keys.map(k=>by.get(k)??null);
+     }});
+    assert(accepted.complete===true&&accepted.oldOutcomeUnknownRetained===true&&accepted.mayReplayOldIntent===false,
+     'SG_AG_RECOVERY_ACCEPTED');game.phase='complete';continue;
+   }
    const complete=await mongoOnce(()=>client.db('sg_capture_staging_v1').collection('business_delivery_v1').findOne({_id:proof.auditCompleteKey}));
    assert(complete?.immutable===true&&queueHash(complete)===proof.auditDocumentHash,'SG_AG_EXISTING_COMPLETED_BUSINESS_WHOLE');
    const value=complete.value??complete;
