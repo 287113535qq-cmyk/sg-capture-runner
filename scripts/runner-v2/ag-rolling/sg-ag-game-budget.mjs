@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 
-export const SG_AG_GAME_BUDGET_MS=30*60*1000;
+export const SG_AG_LEGACY_GAME_BUDGET_MS=30*60*1000;
+export const SG_AG_GAME_BUDGET_MS=120*60*1000;
+// A new window may need three full 300k passes. Never extend an already
+// persisted deadline or reinterpret the strict legacy 30-minute evidence.
+export function validGameBudgetClock(budget){
+ const duration=budget?.schema==='sg-ag-game-budget-v1'?SG_AG_LEGACY_GAME_BUDGET_MS
+  :budget?.schema==='sg-ag-game-budget-v2'?SG_AG_GAME_BUDGET_MS:null;
+ return duration!==null&&Number.isSafeInteger(budget.startedAt)&&budget.startedAt>=0
+  &&Number.isSafeInteger(budget.deadlineAt)&&budget.deadlineAt-budget.startedAt===duration;
+}
 const exhausted=()=>Object.assign(new Error('SG_AG_GAME_BUDGET_EXHAUSTED'),{code:'SG_AG_GAME_BUDGET_EXHAUSTED'});
 
 // A cooperative per-game deadline, checked only between awaited operations.
@@ -33,13 +42,11 @@ export function createGameBudget({state,persist,flush,now=Date.now}){
   if(!g.sgGameBudget){
    if(phase!=='full-prefix-validation')return;
    const startedAt=now();assert(Number.isSafeInteger(startedAt)&&startedAt>=0,'SG_AG_GAME_BUDGET_CLOCK');
-   g.sgGameBudget={schema:'sg-ag-game-budget-v1',startedAt,deadlineAt:startedAt+SG_AG_GAME_BUDGET_MS};
+   g.sgGameBudget={schema:'sg-ag-game-budget-v2',startedAt,deadlineAt:startedAt+SG_AG_GAME_BUDGET_MS};
    await save();
   }
   const budget=g.sgGameBudget,at=now();
-  assert(budget.schema==='sg-ag-game-budget-v1'&&Number.isSafeInteger(budget.startedAt)&&budget.startedAt>=0
-   &&Number.isSafeInteger(budget.deadlineAt)&&budget.deadlineAt-budget.startedAt===SG_AG_GAME_BUDGET_MS
-   &&Number.isSafeInteger(at)&&at>=budget.startedAt,'SG_AG_GAME_BUDGET_STATE');
+  assert(validGameBudgetClock(budget)&&Number.isSafeInteger(at)&&at>=budget.startedAt,'SG_AG_GAME_BUDGET_STATE');
   if(at<budget.deadlineAt)return;
   const stoppedGamePhase=g.phase;
   g.phase='blocked';g.reason='SG_AG_GAME_BUDGET_EXHAUSTED';

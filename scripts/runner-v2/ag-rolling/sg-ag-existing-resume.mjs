@@ -5,12 +5,7 @@ import {cohortRepos,cohortView,participantKey,inspectParticipant} from './sg-fed
 import {queueHash} from './sg-queue-profile.mjs';
 import {readTasks} from './sg-queue-control.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
-import {SG_AG_GAME_BUDGET_MS} from './sg-ag-game-budget.mjs';
-
-function validBudgetClock(budget){
- return budget?.schema==='sg-ag-game-budget-v1'&&Number.isSafeInteger(budget.startedAt)&&budget.startedAt>=0
-  &&Number.isSafeInteger(budget.deadlineAt)&&budget.deadlineAt-budget.startedAt===SG_AG_GAME_BUDGET_MS;
-}
+import {validGameBudgetClock as validBudgetClock} from './sg-ag-game-budget.mjs';
 function readOnlyBlockedGame(game){
  if(game.phase!=='blocked'||game.gameId==='32629'||Object.hasOwn(game,'acceptedTotal')
   ||Object.hasOwn(game,'sgOutcomeUnknownRetained')||Object.hasOwn(game,'sgExistingOperationRetained'))return false;

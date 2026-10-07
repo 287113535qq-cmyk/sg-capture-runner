@@ -91,6 +91,19 @@ test('only an exact expired read-only game budget can resume in a new verified w
  assert.deepEqual(f.prepared,['32441','32442']);assert.deepEqual(result[1].remaining,['32442']);
 });
 
+test('v2 read-only exhausted clock resumes with old evidence unchanged and mixed-version deadlines never qualify',async()=>{
+ const modern={...exhaustedBudget,schema:'sg-ag-game-budget-v2',deadlineAt:7201000,exhaustedAt:7201000};
+ for(const change of [{},{deadlineAt:1801000},{schema:'sg-ag-game-budget-v1'},
+  {stoppedGamePhase:'merging'},{stoppedGamePhase:'merged'},{exhaustedAt:7200999},{extra:true}]){
+  const f=resumeFixture(),budget={...modern,...change};
+  const saved=savedResumeState(f,{reason:'SG_AG_GAME_BUDGET_EXHAUSTED',sgGameBudget:budget});
+  const before=structuredClone(saved.state);f.args.canResumeQuotaGame=()=>true;
+  const result=await prepareExistingAgResume(f.args);
+  assert.deepEqual(result[1].remaining,Object.keys(change).length?[]:['32442']);
+  assert.deepEqual(saved.state,before,'old durable budget and original phase are never rewritten');
+ }
+});
+
 test('unknown operations, malformed quota reasons and noninitial budgets never unlock blocked games',async()=>{
  const changes=[{reason:'SG_AG_CONTROL_EXISTING_OPERATION_NO_REPLAY'},
   {reason:'有效 300000 条，低于 300000；保留数据等待续跑或协议诊断'},

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createGameBudget,SG_AG_GAME_BUDGET_MS} from './sg-ag-game-budget.mjs';
+import {createGameBudget,SG_AG_GAME_BUDGET_MS,SG_AG_LEGACY_GAME_BUDGET_MS,validGameBudgetClock} from './sg-ag-game-budget.mjs';
 import {createSgAgFullControlAdapter} from './sg-ag-full-control-adapter.mjs';
 import {taskKey} from './sg-task-store.mjs';
 
@@ -11,7 +11,7 @@ function budgetFixture(options={}){
  return {state,saved,budget,setTime:at=>clock=at};
 }
 
-test('only the first eligible prefix starts a durable 30 minute budget and subsequent phases cannot renew it',async()=>{
+test('only the first eligible prefix starts a durable 120 minute budget and subsequent phases cannot renew it',async()=>{
  const f=budgetFixture(),g=f.state.games[0];
  await f.budget.check('github-read');await f.budget.check('settle-ended-node',g);await f.budget.check('baseline',g);
  assert.equal(g.sgGameBudget,undefined);assert.equal(f.saved.length,0);
@@ -23,6 +23,38 @@ test('only the first eligible prefix starts a durable 30 minute budget and subse
  assert.equal(g.phase,'blocked');assert.equal(f.saved.at(-1).games[0].phase,'blocked');assert.equal(f.saved.length,2);
  await assert.rejects(f.budget.check('full-prefix-validation',g),{code:'SG_AG_GAME_BUDGET_EXHAUSTED'});
  assert.equal(f.saved.length,2);assert.equal(g.sgGameBudget.deadlineAt,deadline);
+});
+
+test('new clocks accommodate healthy work beyond 30 minutes while old deadlines remain exact and expire unchanged',async()=>{
+ const modern=budgetFixture(),g=modern.state.games[0];
+ await modern.budget.check('full-prefix-validation',g);
+ assert.equal(g.sgGameBudget.schema,'sg-ag-game-budget-v2');
+ assert.equal(SG_AG_GAME_BUDGET_MS,120*60*1000);
+ modern.setTime(1000+SG_AG_LEGACY_GAME_BUDGET_MS+1);
+ await modern.budget.check('accepted-prefix-page',g);
+ assert.equal(modern.saved.length,1);assert.equal(g.phase,'ready');
+ const old=budgetFixture(),legacy=old.state.games[0];
+ legacy.sgGameBudget={schema:'sg-ag-game-budget-v1',startedAt:1000,deadlineAt:1000+SG_AG_LEGACY_GAME_BUDGET_MS};
+ const before=structuredClone(legacy.sgGameBudget);
+ old.setTime(before.deadlineAt-1);await old.budget.check('full-prefix-validation',legacy);
+ assert.deepEqual(legacy.sgGameBudget,before);assert.equal(old.saved.length,0);
+ old.setTime(before.deadlineAt);
+ await assert.rejects(old.budget.check('accepted-prefix-page',legacy),{code:'SG_AG_GAME_BUDGET_EXHAUSTED'});
+ for(const key of ['schema','startedAt','deadlineAt'])assert.equal(legacy.sgGameBudget[key],before[key]);
+});
+
+test('clock version cannot disguise an extension, shortening, unknown schema, or malformed timestamp',async()=>{
+ for(const [schema,duration] of [['sg-ag-game-budget-v1',SG_AG_LEGACY_GAME_BUDGET_MS],['sg-ag-game-budget-v2',SG_AG_GAME_BUDGET_MS]]){
+  const good={schema,startedAt:1000,deadlineAt:1000+duration};assert.equal(validGameBudgetClock(good),true);
+  for(const change of [{deadlineAt:good.deadlineAt+1},{deadlineAt:good.deadlineAt-1},
+   {schema:schema.endsWith('v1')?'sg-ag-game-budget-v2':'sg-ag-game-budget-v1'},
+   {schema:'sg-ag-game-budget-v3'},{startedAt:-1},{startedAt:0.5},{deadlineAt:Infinity}]){
+   const f=budgetFixture(),g=f.state.games[0];g.sgGameBudget={...good,...change};
+   assert.equal(validGameBudgetClock(g.sgGameBudget),false);
+   await assert.rejects(f.budget.check('accepted-prefix-page',g),/SG_AG_GAME_BUDGET_STATE/);
+   assert.equal(f.saved.length,0);assert.equal(g.phase,'ready');
+  }
+ }
 });
 
 test('restored state keeps its deadline, completed cleanup does not restart it, and foreign games are refused',async()=>{
@@ -46,7 +78,7 @@ test('the durable exhausted marker distinguishes a read-only ready phase from me
   const f=budgetFixture(),g=f.state.games[0];await f.budget.check('full-prefix-validation',g);
   g.phase=stoppedGamePhase;f.setTime(g.sgGameBudget.deadlineAt);
   await assert.rejects(f.budget.check('source-full-independent-validation',g),{code:'SG_AG_GAME_BUDGET_EXHAUSTED'});
-  assert.equal(g.phase,'blocked');assert.equal(g.sgGameBudget.schema,'sg-ag-game-budget-v1');
+  assert.equal(g.phase,'blocked');assert.equal(g.sgGameBudget.schema,'sg-ag-game-budget-v2');
   assert.equal(g.sgGameBudget.stoppedGamePhase,stoppedGamePhase);
   assert.equal(f.saved.at(-1).games[0].sgGameBudget.stoppedGamePhase,stoppedGamePhase);
   assert.equal(g.sgGameBudget.stoppedPhase,'source-full-independent-validation');
