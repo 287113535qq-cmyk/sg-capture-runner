@@ -97,3 +97,6 @@ import './ag-rolling/sg-ag-once-mongo.test.mjs';
 import './ag-rolling/sg-sealed-cleanup.test.mjs';
 import './ag-rolling/sg-ag-control-journal-cursor.test.mjs';
 import './ag-rolling/sg-resume-parallel.test.mjs';
+
+import './ag-rolling/sg-own-terminal.test.mjs';
+import './ag-rolling/sg-own-terminal-proof.test.mjs';

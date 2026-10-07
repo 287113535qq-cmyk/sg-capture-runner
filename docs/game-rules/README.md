@@ -68,13 +68,13 @@
 | [32705](32705.json) | Dancing Drums Link Fortune | not-documented | 待确认 |
 | [32706](32706.json) | Dancing Drums Link High Limit | not-documented | 待确认 |
 | [32707](32707.json) | Dancing Drums Prosperity | not-documented | 待确认 |
-| [32708](32708.json) | Direct Hit featuring Money Zone | not-documented | 待确认 |
+| [32708](32708.json) | Direct Hit featuring Money Zone | implemented-subset | 1 |
 | [32709](32709.json) | Duo Fu Duo Cai Grand Dragons | not-documented | 待确认 |
 | [32711](32711.json) | Hoppily Ever After | implemented-subset | 1 |
 | [32712](32712.json) | Hot Hot Blazing Lock | not-documented | 待确认 |
 | [32713](32713.json) | Huff N Even More Puff High Limit | not-documented | 待确认 |
 | [32714](32714.json) | Huff N Puff Money Mansion High Limit | implemented-subset | 4 |
-| [32715](32715.json) | Huff N' Even More Puff | not-documented | 待确认 |
+| [32715](32715.json) | Huff N' Even More Puff | implemented-subset | 1 |
 | [32716](32716.json) | Huff N’ Even More Puff Grand | not-documented | 待确认 |
 | [32717](32717.json) | Huff N' Lots of Goals! | implemented-subset | 1 |
 | [32718](32718.json) | Huff N' More Puff High Limit | implemented-subset | 3 |

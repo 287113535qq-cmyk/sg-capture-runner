@@ -92,11 +92,11 @@
   },
   "codeSources": {
     "scripts/runner-v2/ag-rolling/sg-zero-abpm.mjs": "49f3baaa9efb189e0ec56eb90027c86e80b4b44b927f56aabb9a914452efe352",
-    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "3c42d9376f0b02135b771586421b19f69cfc83a05a191df4848a3366f9dfb8ff",
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "8c20773bdc8e6fb617a41e9452da2f35abbdebb743d17de627460395f62f88cd",
     "service/zero_abpm_fields.py": "67746813a37b43a99a5b765d09285c0538df46cdd0ef6f3c7be5d71e98be2ebf",
-    "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
+    "service/native_nextgen_fields.py": "05fbcbf18cf5c136a03f7f417dbd699f30b96efb580f591b6638377238021311",
     "config/ag-rolling-zero-abpm-contracts.json": "44f87b093e52d0b6d0ab232419733c7a958a36c6a53de0c18c0521813116307f",
-    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
+    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -108,5 +108,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "fa8b89b0b48e8d3e0cb43693e50bc7fc829011b754e2e13d1e1dc160c8271aae"
+  "ruleHash": "7954e4b97c272b3cf81bc4a45cd6b4e9a6a7439ef32d359973fe7e127f8fddec"
 }

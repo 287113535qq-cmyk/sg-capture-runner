@@ -104,11 +104,11 @@
     "scripts/runner-v2/ag-rolling/sg-dragon-end.mjs": "42c92831518c365990b15c543db909ce90aae5f8c31ecd597ee8c83cb321ef65",
     "service/dragon_end_fields.py": "c3cde517964162f7cf46faff5bd29c8efb2408ffd775e6a94bfdd64469575493",
     "config/ag-rolling-dragon-end-contracts.json": "afe0fb6a5c21aa1fb77218f973217d60ddc06e5e3993e833671147603670429a",
-    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "3c42d9376f0b02135b771586421b19f69cfc83a05a191df4848a3366f9dfb8ff",
-    "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "8c20773bdc8e6fb617a41e9452da2f35abbdebb743d17de627460395f62f88cd",
+    "service/native_nextgen_fields.py": "05fbcbf18cf5c136a03f7f417dbd699f30b96efb580f591b6638377238021311",
     "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
-    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "99f6da11ec0150637452892763fe03a38dde8f40fe75087918de911eec570d6e",
-    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
+    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "f3962913364386f37e463ce537fe1492fcb2d247100c597d688853a4ca4828ce",
+    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -120,5 +120,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8de8bdacdd8da021052d010d22fa1019a3fc4da33113c793715f7c9826f41b32"
+  "ruleHash": "27ed1c64d40d7dbe3bb4a37d2d19bb445fb555aafa1b6662cdd3d64ae128583c"
 }

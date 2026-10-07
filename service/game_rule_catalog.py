@@ -619,6 +619,9 @@ def cards(root=ROOT):
             plans[key]=rolling[key]  # A documented offline boundary grants no source permission.
     if rolling.get('32595',{}).get('automaticTerminalContract')=='nextgen-moneyraid-terminal-evidence-v2':
         plans['32595']=rolling['32595']
+    for key in ('32708','32715'):
+        if rolling.get(key,{}).get('ownTerminalContract')=='nextgen-own-terminal-evidence-v3':
+            plans[key]=rolling[key]
     if rolling.get('32474',{}).get('carnivalPickContract')=='nextgen-carnival-pick-evidence-v3':
         plans['32474']=rolling['32474']
     if rolling.get('32497',{}).get('dragonEndContract')=='nextgen-dragon-end-evidence-v3':
@@ -637,6 +640,12 @@ def cards(root=ROOT):
     output = {}
     for game in sorted(games, key=lambda x: x['gameId']):
         gid = game['gameId']; plan = plans.get(str(gid)); rule = contract(gid) if plan else None
+        if gid in (32708,32715) and plan and plan.get('ownTerminalContract')=='nextgen-own-terminal-evidence-v3':
+            rule={**rule,'family':'nextgen-own-terminal-evidence-v3',
+                'continue':'仅新 v3 marker 使用自身终局证据；其余前缀沿原 automatic-free 续接规则。逐帧请求、会话、金额和 XML 独立双逻辑校验。',
+                'complete':('32708：FID2|、NFG0、parent total3，前一帧2|0|，FGTW增量严格一致且没有嵌套剩余免费。' if gid==32708 else '32715：FID2|、NFG0、total1，MINI wheel stop仅0|/7|；直接BET或已完成免费后转盘，FEAT_WIN/WHJPM/FGTW与实际奖额严格相等。'),
+                'bounds':'隔离候选，未获得新线上采集许可。4/5个自身完整终局及各100条历史通过真实 codec/Python IPC/record/verify；历史原记录不重写，旧 marker 仍拒绝新增终局。未知玩法、未完续接和金额异常停止，不默认 bonus0；不代表全部特殊玩法覆盖。',
+                'files':rule['files']+['scripts/runner-v2/ag-rolling/sg-own-terminal.mjs','service/own_terminal_fields.py','config/ag-rolling-own-terminal-contracts.json']}
         if gid==32754 and plan and plan.get('arthurFeatureContract')=='wms-arthur-free-wild-evidence-v2':
             rule={**rule,'family':'wms-arthur-free-wild-evidence-v2',
                 'continue':'新匿名 v2 marker：自身 Wheel index5/1/6/3→免费8/10/12/5；Header-only Logic，编号逐帧推进，extra仅3/5且总数≤20。47自身Token joint转移及倍率1/3/5独立核验；未知状态停止。Wild只自身5种15格overlay，不另计奖。',

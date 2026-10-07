@@ -429,6 +429,14 @@ def derive(raw):
     from fortunes_megaways_fields import SOURCE as FORTUNES_SOURCE, settled as fortunes_settled, mapping_hash as fortunes_mapping
     if raw.get('sourceKey') == FORTUNES_SOURCE:
         return fortunes_settled(raw, fortunes_mapping())
+    if raw.get('ownTerminalContract') is not None:
+        from own_terminal_fields import settled as own_terminal_settled
+        import json
+        from pathlib import Path
+        registry=json.loads((Path(__file__).resolve().parents[1]/'config/ag-rolling-plans.json').read_text(encoding='utf8'))
+        plans=[p for p in registry['plans'].values() if p.get('sourceKey')==raw.get('sourceKey')]
+        check(len(plans)==1,'OWN_TERMINAL_REGISTERED_SOURCE')
+        return own_terminal_settled(raw,plans[0])
     if raw.get('automaticTerminalContract') is not None:
         from automatic_terminal_fields import settled as terminal_settled
         return terminal_settled(raw)

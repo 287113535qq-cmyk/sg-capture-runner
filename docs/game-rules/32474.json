@@ -99,11 +99,11 @@
     "config/ag-rolling-carnival-pick-contracts.json": "392a006a74aabb22cb56938271d8b3c1447e63a8dd34db5d70872d29fa2953df",
     "scripts/runner-v2/ag-rolling/sg-explicit-continuation.mjs": "30f6bd44b70b15a9c88f480705a14297b3da7d1fc0f8617140aca058dd76693b",
     "service/explicit_request_continuation.py": "6af1239368822dae6bf03490ea8f8a3ffeb9e46e67401fdfddcbaab15ef377df",
-    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "3c42d9376f0b02135b771586421b19f69cfc83a05a191df4848a3366f9dfb8ff",
-    "service/native_nextgen_fields.py": "bad512da05606ae9f643aa9a16b9e4cfb1d5f23aaee622f7ddf0bdd3284b9765",
+    "scripts/runner-v2/ag-rolling/sg-nextgen-codec.mjs": "8c20773bdc8e6fb617a41e9452da2f35abbdebb743d17de627460395f62f88cd",
+    "service/native_nextgen_fields.py": "05fbcbf18cf5c136a03f7f417dbd699f30b96efb580f591b6638377238021311",
     "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
-    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "99f6da11ec0150637452892763fe03a38dde8f40fe75087918de911eec570d6e",
-    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
+    "scripts/runner-v2/ag-rolling/sg-resume-manifest.mjs": "f3962913364386f37e463ce537fe1492fcb2d247100c597d688853a4ca4828ce",
+    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [],
@@ -115,5 +115,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "c732011cf99268186be0b32e97c64837cf87165d15ba4ce229cfb8d3c72dc37d"
+  "ruleHash": "9d99cdcf633780da4b134c3b4256c5f41ea038419c48a3612231c669e80eb422"
 }

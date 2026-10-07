@@ -1,3 +1,4 @@
+import {ownTerminalFields} from './sg-own-terminal.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {stable} from '../mongo-writer.mjs';
@@ -38,7 +39,7 @@ export function immutableBusinessAudit({audit,owner,guard}){
 export async function verifyOrdinaryNativePage({records,plan,parser}){
  for(const record of records){
   const f=record.normalized;
-  const js=record.raw.automaticTerminalContract!==undefined?terminalFields(plan,record.raw,f.typeMappingHash):record.raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeFields(plan,record.raw,f.typeMappingHash):record.raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,record.raw,f.typeMappingHash):captureCollector('nextgen').prepareNextgenRound(record.raw,{buy:f.buy,bonus:f.bonus,typeMappingHash:f.typeMappingHash});
+  const js=record.raw.ownTerminalContract!==undefined?ownTerminalFields(plan,record.raw,f.typeMappingHash):record.raw.automaticTerminalContract!==undefined?terminalFields(plan,record.raw,f.typeMappingHash):record.raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeFields(plan,record.raw,f.typeMappingHash):record.raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,record.raw,f.typeMappingHash):captureCollector('nextgen').prepareNextgenRound(record.raw,{buy:f.buy,bonus:f.bonus,typeMappingHash:f.typeMappingHash});
   assert(stable(js)===stable(f),'SG_BUSINESS_NATIVE_JS_FIELDS');
  }
  const verified=await parser.verifyPage(plan,[...records].sort((a,b)=>a.sequence-b.sequence));

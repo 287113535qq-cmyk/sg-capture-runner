@@ -6,21 +6,100 @@
   "scope": "round-one-ordinary-buy0",
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
-  "ruleAvailability": "not-documented",
-  "sourceKey": null,
-  "planHash": null,
-  "parameters": null,
-  "roundRule": null,
-  "typeMappings": {},
-  "mappingHashes": {},
-  "configuredNaturalBonusCodes": null,
-  "configuredOutcomeCategoryCount": null,
+  "ruleAvailability": "implemented-subset",
+  "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+  "planHash": "32117cf6bf14419ea59629d628259ec65e547089cf9e0f981627d90c5d35e575",
+  "parameters": {
+    "trialId": "sg_ag_r1_20261004_32708",
+    "runtimeSlug": "directhitmoneyzone",
+    "buy": 0,
+    "betRaw": 100,
+    "requestParams": {
+      "AP": "false",
+      "BPR": "5",
+      "GN": "directhitmoneyzone",
+      "RB": "7"
+    },
+    "maxSteps": 100
+  },
+  "roundRule": {
+    "family": "nextgen-own-terminal-evidence-v3",
+    "messages": [
+      "BET",
+      "FREE_GAME"
+    ],
+    "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
+    "continue": "仅新 v3 marker 使用自身终局证据；其余前缀沿原 automatic-free 续接规则。逐帧请求、会话、金额和 XML 独立双逻辑校验。",
+    "complete": "32708：FID2|、NFG0、parent total3，前一帧2|0|，FGTW增量严格一致且没有嵌套剩余免费。",
+    "bounds": "隔离候选，未获得新线上采集许可。4/5个自身完整终局及各100条历史通过真实 codec/Python IPC/record/verify；历史原记录不重写，旧 marker 仍拒绝新增终局。未知玩法、未完续接和金额异常停止，不默认 bonus0；不代表全部特殊玩法覆盖。",
+    "files": [
+      "service/native_nextgen_fields.py",
+      "service/round_fields.py",
+      "scripts/runner-v2/record_fields.py",
+      "scripts/runner-v2/ag-rolling/sg-own-terminal.mjs",
+      "service/own_terminal_fields.py",
+      "config/ag-rolling-own-terminal-contracts.json"
+    ],
+    "fields": {
+      "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
+      "PID": "一大局内必须为同一会话；档案不保存或展示实际值。",
+      "NFG": "当前适配器用于决定免费续局；正数继续 FREE_GAME。实际缺失与显式 0 分开统计。",
+      "IFG": "免费响应要求 IFG=1；不是单独的大局完成标记。",
+      "FID": "玩法标记，含义按本游戏适配器解释，不能跨游戏套用。",
+      "B / AB": "终帧两个余额必须一致。",
+      "TW": "大局总赢奖；与初始余额、最终余额共同核对实际下注。",
+      "SUCCESS / PAYLOAD": "XML 必须成功且 PAYLOAD 与保存的响应全文一致。"
+    }
+  },
+  "typeMappings": {
+    "directhitmoneyzone-ag-rolling-nextgen-v1": {
+      "protocol": "nextgen",
+      "modeSelectorKeys": [
+        "GSD",
+        "ABPM"
+      ],
+      "modes": [
+        {
+          "buy": 0,
+          "kind": "base",
+          "selectors": {
+            "GSD": null,
+            "ABPM": null
+          }
+        }
+      ],
+      "freeSelector": "implicit-single-free-game",
+      "freeTypes": {
+        "native-free-game": 1
+      },
+      "featureSelector": null,
+      "featureTypes": null
+    }
+  },
+  "mappingHashes": {
+    "directhitmoneyzone-ag-rolling-nextgen-v1": "67652946ed431fd244bc15b454a14ab90b523b9f54bb4fde37923872f5482f55"
+  },
+  "configuredNaturalBonusCodes": [
+    1
+  ],
+  "configuredOutcomeCategoryCount": 1,
   "allSpecialStageTypesTotal": null,
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
-  "settlement": null,
+  "settlement": {
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
+    "bet": "stakeRaw / 100",
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
+  },
   "codeSources": {
-    "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
+    "service/native_nextgen_fields.py": "05fbcbf18cf5c136a03f7f417dbd699f30b96efb580f591b6638377238021311",
+    "service/round_fields.py": "006a4b12a377de0214e9a4c1ef76a9a8fd0cca1d7ac25de8250540f64a963d09",
+    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
+    "scripts/runner-v2/ag-rolling/sg-own-terminal.mjs": "4268557b6afe92538d4462432d298c57297332ec78f03ca4896634229dfc88e6",
+    "service/own_terminal_fields.py": "1b6367aa1f623ad1fc09419e621618dea25c96c3fda7a83deeb5158caf4fb22c",
+    "config/ag-rolling-own-terminal-contracts.json": "b3103e7910b9165ec24ab560767a354ba42735034d069874b82fbbf0f641fc15",
+    "service/game_rule_catalog.py": "6ecae8064bc9c5f9c3edc28f0995a6586d77d1344f3096263982f5fdac63a58a"
   },
   "reviewDocuments": [],
   "analysisDocuments": [
@@ -36,5 +115,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "40978e423b9d6961aadb7f43b33336a9fa24b85af7f4fd2297b3068525570073"
+  "ruleHash": "c87da380d9a50c65d04bb876edf228fdee8ec15675a113d41be62c75c8942144"
 }

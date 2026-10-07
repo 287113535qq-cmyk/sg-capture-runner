@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {queueHash} from './sg-queue-profile.mjs';
+import {ownTerminalProof} from './sg-own-terminal.mjs';
 import {AUTOMATIC_TERMINAL,terminalBinding} from './sg-automatic-terminal.mjs';
 import {EXPLICIT_DRAGON,dragonBinding} from './sg-explicit-dragon.mjs';
 import {EXPLICIT_CONTINUATION,continuationBinding} from './sg-explicit-continuation.mjs';
@@ -20,6 +21,17 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.ownTerminalContract!==undefined){
+   const {previousPlan,previousProof}=ownTerminalProof(plan,proof);
+   if(oldPlan.automaticFreeContract===undefined){
+    const intermediate={plans:{[id]:previousPlan},proofs:{[id]:previousProof}};
+    const first=rebaseResumeManifest({previous:{manifest:[entry]},previousPlans,plans:intermediate,completedGameIds})[0];
+    return rebaseResumeManifest({previous:{manifest:[first]},previousPlans:intermediate,plans,completedGameIds})[0];
+   }
+   assert(oldPlan.ownTerminalContract===undefined&&queueHash(oldPlan)===queueHash(previousPlan)
+    &&queueHash(oldProof)===queueHash(previousProof),'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.arthurFeatureContract!==undefined){
    const e=proof.arthurFeatureEvidence;
    assert(id==='32754'&&oldPlan.arthurFeatureContract===undefined&&plan.arthurFeatureContract===ARTHUR_FEATURE

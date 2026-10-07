@@ -38,6 +38,10 @@ class NativeNextgenFields:
         return remaining
 
     def settled(self, raw):
+        if self.plan.get('ownTerminalContract') is not None or raw.get('ownTerminalContract') is not None:
+            from own_terminal_fields import previous_plan,settled
+            if raw.get('ownTerminalContract') is None:return NativeNextgenFields(previous_plan(self.plan)).settled(raw)
+            return settled(raw,self.plan)
         if self.plan.get('dragonFreeContract') is not None or raw.get('dragonFreeContract') is not None:
             from dragon_first_free_fields import binding,previous
             if raw.get('dragonFreeContract') is not None:
@@ -104,6 +108,10 @@ class NativeNextgenFields:
         return fields
 
     def next_request(self, raw):
+        if self.plan.get('ownTerminalContract') is not None or raw.get('ownTerminalContract') is not None:
+            from own_terminal_fields import previous_plan,next_request
+            if raw.get('ownTerminalContract') is None:return NativeNextgenFields(previous_plan(self.plan)).next_request(raw)
+            return next_request(raw,self.plan)
         if self.plan.get('dragonFreeContract') is not None or raw.get('dragonFreeContract') is not None:
             from dragon_first_free_fields import binding,previous
             if raw.get('dragonFreeContract') is not None:binding(self.plan,raw)

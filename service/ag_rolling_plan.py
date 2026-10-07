@@ -739,6 +739,9 @@ def validate_rolling_plan(plan):
     if plan.get('carnivalPickContract') is not None:
         from carnival_pick_fields import validate_proof
         validate_proof(plan,proof)
+    if plan.get('ownTerminalContract') is not None:
+        from own_terminal_fields import validate_proof
+        validate_proof(plan,proof)
     if plan.get('automaticTerminalContract') is not None:
         from automatic_terminal_fields import CONTRACT,binding,policy
         p=policy();e=proof.get('automaticTerminalEvidence',{});wire=e.get('wiringEvidence',{})

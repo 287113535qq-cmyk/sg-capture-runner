@@ -1784,7 +1784,9 @@
         "RB": "7"
       },
       "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
-      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef",
+      "ownTerminalContract": "nextgen-own-terminal-evidence-v3",
+      "ownTerminalContractHash": "385c098912ff3b21d48c52c283e995c1a14d6a648120e224a3effa8cb1e24adc"
     },
     "32709": {
       "schema": "sg-work-pool-v1",
@@ -1915,7 +1917,9 @@
         "RB": "5"
       },
       "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
-      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0",
+      "ownTerminalContract": "nextgen-own-terminal-evidence-v3",
+      "ownTerminalContractHash": "3838e08206ce9a6e36196e7b8ada8cac49b196a88d10052cc8ca1601559c2f40"
     },
     "32716": {
       "schema": "sg-work-pool-v1",
@@ -10340,7 +10344,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32708,
       "runtimeGameId": 33108,
-      "planHash": "b86bc289c0910d84ec18a8289dbcc005f9a0fcae33a1312a6993987822267a6c",
+      "planHash": "32117cf6bf14419ea59629d628259ec65e547089cf9e0f981627d90c5d35e575",
       "historyFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
       "acceptedBaseRounds": 55,
       "acceptedFreeRounds": 43,
@@ -10462,6 +10466,37 @@
         "sourceRequests": 0,
         "mongoWrites": 0,
         "failedRoundsCredited": 0
+      },
+      "ownTerminalEvidence": {
+        "schema": "sg-ag-own-terminal-repair-evidence-v3",
+        "previousPlanHash": "b86bc289c0910d84ec18a8289dbcc005f9a0fcae33a1312a6993987822267a6c",
+        "previousProofHash": "aaf1d7c862d3e7211fd8bf2007e223e31cab120a2bc700022a241bd77957dd27",
+        "contractHash": "385c098912ff3b21d48c52c283e995c1a14d6a648120e224a3effa8cb1e24adc",
+        "ownClosedNaturalRounds": 4,
+        "nativeEvidenceHash": "1708231e1c4e2cf08e74eb4ac89139d0499ad5ba37e16ecdee14b171c962667b",
+        "ordinaryHistoryFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
+        "ordinaryRows": 100,
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0,
+        "wiringEvidence": {
+          "schema": "sg-own-terminal-codec-game-v3",
+          "gameId": "32708",
+          "actualCodecPythonRecordAndVerify": true,
+          "ownClosedNaturalRounds": 4,
+          "ordinaryRows": 100,
+          "actualOwnAndOrdinaryCodecRequests": 254,
+          "totalNewMarkedRecords": 104,
+          "fullRecordsHash": "a7e801a74affb8f913e5a668959c1fd3f7e36a3f4275d3978a801dbf6ce3fa01",
+          "oldMarkerTerminalRejected": 4,
+          "oldRawHashesUnchanged": true,
+          "historyFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
+          "sourceRequests": 0,
+          "mongoWrites": 0,
+          "failedRoundsCredited": 0,
+          "evidenceHash": "122f452432acb761669739947163ba4f6e72e3bb2227300e1c0e15a4fe4522a4"
+        }
       }
     },
     "32709": {
@@ -10814,7 +10849,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32715,
       "runtimeGameId": 33115,
-      "planHash": "d21391e0c19ab2d83991874c01013f705a6a0f761fa84c97a9a47edea832b1dc",
+      "planHash": "fadf8de57fe00d437af273296f536c3b2d90698b778b3702c10efb740ff99ac5",
       "historyFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
       "acceptedBaseRounds": 97,
       "acceptedFreeRounds": 1,
@@ -10936,6 +10971,37 @@
         "sourceRequests": 0,
         "mongoWrites": 0,
         "failedRoundsCredited": 0
+      },
+      "ownTerminalEvidence": {
+        "schema": "sg-ag-own-terminal-repair-evidence-v3",
+        "previousPlanHash": "d21391e0c19ab2d83991874c01013f705a6a0f761fa84c97a9a47edea832b1dc",
+        "previousProofHash": "f7586dc24a1ed5f85785f4bb9b40a5919f521e21f7ce91527c51ffbd035aaed0",
+        "contractHash": "3838e08206ce9a6e36196e7b8ada8cac49b196a88d10052cc8ca1601559c2f40",
+        "ownClosedNaturalRounds": 5,
+        "nativeEvidenceHash": "230a776d5bfc9d6eaeb5b70219ecf0113920d651435d636c49961214dbea7556",
+        "ordinaryHistoryFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
+        "ordinaryRows": 100,
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0,
+        "wiringEvidence": {
+          "schema": "sg-own-terminal-codec-game-v3",
+          "gameId": "32715",
+          "actualCodecPythonRecordAndVerify": true,
+          "ownClosedNaturalRounds": 5,
+          "ordinaryRows": 100,
+          "actualOwnAndOrdinaryCodecRequests": 151,
+          "totalNewMarkedRecords": 105,
+          "fullRecordsHash": "3539c8063e3a75cb5352f2303db0e03eccc24251db0823da71f1af3da6d952f6",
+          "oldMarkerTerminalRejected": 5,
+          "oldRawHashesUnchanged": true,
+          "historyFileSha256": "c46c565e1812a962574207724d5880882813ea65f686b67528f67ec933b580cb",
+          "sourceRequests": 0,
+          "mongoWrites": 0,
+          "failedRoundsCredited": 0,
+          "evidenceHash": "f6fc0f3f53e08f25918a6968e5b8364b53f869c0fce2148bdf48f725a61af180"
+        }
       }
     },
     "32716": {

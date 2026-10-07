@@ -1,0 +1,1758 @@
+[
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32708",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32708,
+      "runtimeGameId": 33108,
+      "name": "Direct Hit featuring Money Zone",
+      "runtimeSlug": "directhitmoneyzone",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "directhitmoneyzone",
+        "RB": "7"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 92700,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:53:08.161Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=92610&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=10&WC=1|0|1|&WS=0;10;-1;4;6;6;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=RCPI~4;3|1#MZ~3;3|2#RCPZ~2#BCPZ~-1#CSF~1;2|2;2|2;1|3;2|3;1#TG~R#ICSD~1;4;3;4;2;5;1|4;6;2;5;1;3;3|6;2;2;4;5;6;6|6;2;2;1;2;1;4|1;3;6;0;5;1;1|1;3;5;5;2;4;2|4;3;4;2;4;3;2#RTW~10#CPDO~R|B#AGS~7#CPW~4;3#RSD~4;3;4&VA=1|4|6|6|1|1|4|4|6|2|2|3|3|3|3|2|2|2|6|5|4|4|5|4|1|0|5|2|2|1|5|2|5|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=92610&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=10&WC=1|0|1|&WS=0;10;-1;4;6;6;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=RCPI~4;3|1#MZ~3;3|2#RCPZ~2#BCPZ~-1#CSF~1;2|2;2|2;1|3;2|3;1#TG~R#ICSD~1;4;3;4;2;5;1|4;6;2;5;1;3;3|6;2;2;4;5;6;6|6;2;2;1;2;1;4|1;3;6;0;5;1;1|1;3;5;5;2;4;2|4;3;4;2;4;3;2#RTW~10#CPDO~R|B#AGS~7#CPW~4;3#RSD~4;3;4&VA=1|4|6|6|1|1|4|4|6|2|2|3|3|3|3|2|2|2|6|5|4|4|5|4|1|0|5|2|2|1|5|2|5|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 364
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.234Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=92640&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=40&WC=3|0|1|&WS=0;20;-1;-1;-1;3;1;3;-1;C|1;5;-1;4;4;6;12;-1;-1;C|2;5;-1;-1;-1;-1;24;14;-1;C|&WM=1|1|1|&CW=30&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=30&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~3;0|3#BCPI~3;1|1#RCPZ~-1#CSDN~-1|4|2;4|6;1|-1|-1|-1#BCPZ~2#CSF~1;2|2;2|3;2|3;1|3;0|4;4|4;3|4;2|4;0|5;3|5;2|5;1|5;0#TG~R;B#CSD~1;4;3;4;2;5;1|4;4;6;5;1;3;3|4;2;6;4;5;6;6|1;6;6;1;2;1;4|1;3;6;0;5;1;1|1;3;5;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~40#AGS~7#CPW~3;1|5;1#RSD~3;1;6|5;1;3&VA=1|4|4|1|1|1|4|4|4|2|0|3|0|3|3|6|6|6|6|5|4|4|5|4|1|0|5|2|2|1|5|2|5|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=92640&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=40&WC=3|0|1|&WS=0;20;-1;-1;-1;3;1;3;-1;C|1;5;-1;4;4;6;12;-1;-1;C|2;5;-1;-1;-1;-1;24;14;-1;C|&WM=1|1|1|&CW=30&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=30&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~3;0|3#BCPI~3;1|1#RCPZ~-1#CSDN~-1|4|2;4|6;1|-1|-1|-1#BCPZ~2#CSF~1;2|2;2|3;2|3;1|3;0|4;4|4;3|4;2|4;0|5;3|5;2|5;1|5;0#TG~R;B#CSD~1;4;3;4;2;5;1|4;4;6;5;1;3;3|4;2;6;4;5;6;6|1;6;6;1;2;1;4|1;3;6;0;5;1;1|1;3;5;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~40#AGS~7#CPW~3;1|5;1#RSD~3;1;6|5;1;3&VA=1|4|4|1|1|1|4|4|4|2|0|3|0|3|3|6|6|6|6|5|4|4|5|4|1|0|5|2|2|1|5|2|5|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 365
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.415Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=92665&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=65&WC=2|0|1|&WS=0;5;2;6;3;-1;-1;-1;-1;C|1;20;-1;-1;-1;40;120;-1;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=55&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;4|1#MZ~4;3|2#RCPZ~2#CSDN~-1|5|4|4;5;3|5;3;1;2|5;1;3;6|-1#BCPZ~-1#CSF~0;1|1;2|1;1|2;1|2;0|3;5|3;3|4;6|4;5|4;4|4;3#TG~R;B;R#CSD~1;4;3;4;2;5;1|5;4;4;5;1;3;3|4;4;2;4;5;6;6|3;5;4;1;2;1;4|2;1;3;5;3;1;1|6;3;1;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~65#AGS~7#CPW~4;3|4;4#RSD~4;3;5|4;4;3&VA=1|5|4|3|2|6|4|4|4|4|5|1|3|3|3|4|2|4|3|1|4|4|5|4|1|0|5|2|2|1|5|2|0|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=92665&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=65&WC=2|0|1|&WS=0;5;2;6;3;-1;-1;-1;-1;C|1;20;-1;-1;-1;40;120;-1;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=55&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;4|1#MZ~4;3|2#RCPZ~2#CSDN~-1|5|4|4;5;3|5;3;1;2|5;1;3;6|-1#BCPZ~-1#CSF~0;1|1;2|1;1|2;1|2;0|3;5|3;3|4;6|4;5|4;4|4;3#TG~R;B;R#CSD~1;4;3;4;2;5;1|5;4;4;5;1;3;3|4;4;2;4;5;6;6|3;5;4;1;2;1;4|2;1;3;5;3;1;1|6;3;1;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~65#AGS~7#CPW~4;3|4;4#RSD~4;3;5|4;4;3&VA=1|5|4|3|2|6|4|4|4|4|5|1|3|3|3|4|2|4|3|1|4|4|5|4|1|0|5|2|2|1|5|2|0|2|4|5|3|6|1|1|4|3|1|3|6|4|1|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 366
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.550Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=92665&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=65&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~3;5|2#RCPZ~-1#CSDN~5|5;4|4;1|6;2|5;1;6;3|-1|-1#BCPZ~-1#TG~R;B;R#CSD~5;1;3;4;2;5;1|4;5;5;5;1;3;3|1;4;2;4;5;6;6|2;6;3;5;4;2;4|3;6;1;5;2;1;3|6;3;1;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~65#AGS~7&VA=5|4|1|2|3|6|4|1|5|4|6|6|3|3|3|5|2|3|1|1|4|4|5|4|5|5|5|2|2|1|5|4|2|2|4|5|3|6|2|1|4|3|1|3|6|4|3|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=92665&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=65&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~3;5|2#RCPZ~-1#CSDN~5|5;4|4;1|6;2|5;1;6;3|-1|-1#BCPZ~-1#TG~R;B;R#CSD~5;1;3;4;2;5;1|4;5;5;5;1;3;3|1;4;2;4;5;6;6|2;6;3;5;4;2;4|3;6;1;5;2;1;3|6;3;1;5;2;4;2|4;3;4;2;4;3;2#CPDO~B|R#RTW~65#AGS~7&VA=5|4|1|2|3|6|4|1|5|4|6|6|3|3|3|5|2|3|1|1|4|4|5|4|5|5|5|2|2|1|5|4|2|2|4|5|3|6|2|1|4|3|1|3|6|4|3|2|2|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 27,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 367
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.637Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=93365&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=765&WC=1|0|1|&WS=0;700;-1;-1;22;28;48;-1;-1;C|&WM=1|&CW=700&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=700&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;4|2#RCPZ~2#BCPZ~-1#CSF~2;4|2;2|2;1|3;4|3;3|3;2|4;5|4;4#ICSD~2;2;5;3;6;3;6|2;4;4;2;5;6;1|4;3;3;5;3;5;5|2;5;3;3;0;1;5|6;2;6;4;3;0;1|6;5;2;6;4;2;3|5;2;3;4;5;2;6#SCFGG~1#CWP~700#RTW~700#CPDO~-1#AGS~7#SNFG~2#CPW~3;4|4;5#RSD~3;4;4|4;5;2&VA=2|2|4|2|6|6|5|2|4|3|5|2|5|2|5|4|3|3|6|2|3|3|2|5|3|4|6|4|6|5|3|0|3|4|5|3|6|5|1|0|2|2|6|1|5|5|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=93365&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=765&WC=1|0|1|&WS=0;700;-1;-1;22;28;48;-1;-1;C|&WM=1|&CW=700&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=700&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;4|2#RCPZ~2#BCPZ~-1#CSF~2;4|2;2|2;1|3;4|3;3|3;2|4;5|4;4#ICSD~2;2;5;3;6;3;6|2;4;4;2;5;6;1|4;3;3;5;3;5;5|2;5;3;3;0;1;5|6;2;6;4;3;0;1|6;5;2;6;4;2;3|5;2;3;4;5;2;6#SCFGG~1#CWP~700#RTW~700#CPDO~-1#AGS~7#SNFG~2#CPW~3;4|4;5#RSD~3;4;4|4;5;2&VA=2|2|4|2|6|6|5|2|4|3|5|2|5|2|5|4|3|3|6|2|3|3|2|5|3|4|6|4|6|5|3|0|3|4|5|3|6|5|1|0|2|2|6|1|5|5|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 368
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.695Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=93385&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=785&WC=3|0|1|&WS=0;5;-1;6;14;-1;-1;-1;-1;C|1;10;-1;-1;-1;-1;2;6;3;C|2;5;-1;16;112;80;-1;-1;-1;C|&WM=1|1|1|&CW=20&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=720&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~5;0|2#RCPZ~2#CSDN~-1|-1|4;4;5|2;5;5|2;4|-1|-1#BCPZ~-1#CSF~1;4|1;2|1;1|2;6|2;5|2;4|2;3|2;2|2;1|3;6|3;4|4;1|5;2|5;1|6;1|6;0#CSD~2;2;5;3;6;3;6|2;4;4;2;5;6;1|5;4;4;4;5;5;5|5;5;2;2;5;1;5|4;2;6;2;6;4;1|6;5;2;6;4;2;3|5;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~720#AGS~7#SNFG~2#CPW~6;0|5;1#RSD~6;0;5|5;1;5&VA=2|2|5|5|4|6|0|2|4|4|5|2|0|2|5|4|4|2|6|2|3|3|2|4|2|2|6|4|6|5|5|5|6|4|5|3|6|5|1|4|2|2|6|1|5|5|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=93385&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=785&WC=3|0|1|&WS=0;5;-1;6;14;-1;-1;-1;-1;C|1;10;-1;-1;-1;-1;2;6;3;C|2;5;-1;16;112;80;-1;-1;-1;C|&WM=1|1|1|&CW=20&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=720&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~5;0|2#RCPZ~2#CSDN~-1|-1|4;4;5|2;5;5|2;4|-1|-1#BCPZ~-1#CSF~1;4|1;2|1;1|2;6|2;5|2;4|2;3|2;2|2;1|3;6|3;4|4;1|5;2|5;1|6;1|6;0#CSD~2;2;5;3;6;3;6|2;4;4;2;5;6;1|5;4;4;4;5;5;5|5;5;2;2;5;1;5|4;2;6;2;6;4;1|6;5;2;6;4;2;3|5;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~720#AGS~7#SNFG~2#CPW~6;0|5;1#RSD~6;0;5|5;1;5&VA=2|2|5|5|4|6|0|2|4|4|5|2|0|2|5|4|4|2|6|2|3|3|2|4|2|2|6|4|6|5|5|5|6|4|5|3|6|5|1|4|2|2|6|1|5|5|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 369
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.764Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94185&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1585&WC=1|0|1|&WS=0;800;3;26;14;-1;-1;-1;-1;C|&WM=1|&CW=800&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=1520&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|1;2;5|2;6;5;4;2;5|6;1|5|3;5|2;2#BCPZ~-1#CSF~0;1|0;0|1;4|1;3|1;1|2;3|2;2|2;1#CSD~2;2;5;3;6;3;6|5;2;1;2;2;6;1|5;2;4;5;6;2;5|1;6;5;5;2;2;1|5;4;6;2;6;4;1|5;3;6;6;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1520#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;4|2;3;5&VA=2|5|5|1|5|5|2|2|2|2|6|4|3|2|5|1|0|5|6|6|3|3|2|0|5|2|6|4|6|2|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94185&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1585&WC=1|0|1|&WS=0;800;3;26;14;-1;-1;-1;-1;C|&WM=1|&CW=800&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=1520&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|1;2;5|2;6;5;4;2;5|6;1|5|3;5|2;2#BCPZ~-1#CSF~0;1|0;0|1;4|1;3|1;1|2;3|2;2|2;1#CSD~2;2;5;3;6;3;6|5;2;1;2;2;6;1|5;2;4;5;6;2;5|1;6;5;5;2;2;1|5;4;6;2;6;4;1|5;3;6;6;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1520#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;4|2;3;5&VA=2|5|5|1|5|5|2|2|2|2|6|4|3|2|5|1|0|5|6|6|3|3|2|0|5|2|6|4|6|2|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 370
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.831Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94195&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1595&WC=2|0|1|&WS=0;5;-1;-1;-1;2;7;12;-1;C|1;5;-1;8;12;12;-1;-1;-1;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=1530&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;0|2#RCPZ~2#CSDN~3;2|2;1;6|5;4;2|-1|-1|-1|-1#BCPZ~-1#CSF~1;3|2;3|2;2|3;3|3;2|3;1|4;2|4;1|4;0|5;3|5;2#CSD~2;3;5;3;6;3;6|6;1;2;5;1;6;1|2;4;5;5;6;2;5|1;6;5;5;2;2;1|5;4;6;2;6;4;1|5;3;6;6;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1530#AGS~7#SNFG~2#CPW~4;0|4;1#RSD~4;0;5|4;1;4&VA=2|6|2|1|0|5|2|3|1|4|6|0|3|2|5|2|5|5|6|6|3|3|5|5|5|2|6|4|6|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94195&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1595&WC=2|0|1|&WS=0;5;-1;-1;-1;2;7;12;-1;C|1;5;-1;8;12;12;-1;-1;-1;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=1530&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;0|2#RCPZ~2#CSDN~3;2|2;1;6|5;4;2|-1|-1|-1|-1#BCPZ~-1#CSF~1;3|2;3|2;2|3;3|3;2|3;1|4;2|4;1|4;0|5;3|5;2#CSD~2;3;5;3;6;3;6|6;1;2;5;1;6;1|2;4;5;5;6;2;5|1;6;5;5;2;2;1|5;4;6;2;6;4;1|5;3;6;6;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1530#AGS~7#SNFG~2#CPW~4;0|4;1#RSD~4;0;5|4;1;4&VA=2|6|2|1|0|5|2|3|1|4|6|0|3|2|5|2|5|5|6|6|3|3|5|5|5|2|6|4|6|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 19,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 371
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:08.946Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1600&WC=1|0|1|&WS=0;5;24;14;-1;-1;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=1535&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;2|2#RCPZ~2#CSDN~-1|4|5;5|5;4;3|1;4;2|1;3|-1#BCPZ~-1#CSF~0;4|0;3|1;3|1;2|1;1#CSD~2;3;5;3;6;3;6|4;6;1;2;1;6;1|5;5;2;4;6;2;5|3;4;5;1;2;2;1|2;4;1;2;6;4;1|3;1;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1535#AGS~7#SNFG~2#CPW~1;2|0;3|1;3#RSD~1;2;1|0;3;3|1;3;2&VA=2|4|5|3|2|3|2|3|6|5|4|4|1|2|5|0|2|5|1|5|3|0|0|4|1|2|3|4|6|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1600&WC=1|0|1|&WS=0;5;24;14;-1;-1;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=1535&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;2|2#RCPZ~2#CSDN~-1|4|5;5|5;4;3|1;4;2|1;3|-1#BCPZ~-1#CSF~0;4|0;3|1;3|1;2|1;1#CSD~2;3;5;3;6;3;6|4;6;1;2;1;6;1|5;5;2;4;6;2;5|3;4;5;1;2;2;1|2;4;1;2;6;4;1|3;1;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1535#AGS~7#SNFG~2#CPW~1;2|0;3|1;3#RSD~1;2;1|0;3;3|1;3;2&VA=2|4|5|3|2|3|2|3|6|5|4|4|1|2|5|0|2|5|1|5|3|0|0|4|1|2|3|4|6|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 372
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.037Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94220&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1620&WC=1|0|1|&WS=0;20;-1;-1;-1;12;6;2;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=1555&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;1|2#RCPZ~2#CSDN~5;3|1;2;5|-1|-1|-1|-1|-1#BCPZ~-1#CSF~3;3|3;2|4;2|4;1|5;1#CSD~3;5;2;3;5;3;6|5;2;1;4;1;6;1|5;5;2;4;6;2;5|3;4;5;1;2;2;1|2;4;1;2;6;4;1|3;1;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1555#AGS~7#SNFG~2#CPW~4;1|3;2#RSD~4;1;4|3;2;5&VA=3|5|5|3|2|3|2|5|2|5|4|0|1|2|2|1|2|0|1|5|3|3|4|4|1|2|3|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94220&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1620&WC=1|0|1|&WS=0;20;-1;-1;-1;12;6;2;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=1555&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;1|2#RCPZ~2#CSDN~5;3|1;2;5|-1|-1|-1|-1|-1#BCPZ~-1#CSF~3;3|3;2|4;2|4;1|5;1#CSD~3;5;2;3;5;3;6|5;2;1;4;1;6;1|5;5;2;4;6;2;5|3;4;5;1;2;2;1|2;4;1;2;6;4;1|3;1;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1555#AGS~7#SNFG~2#CPW~4;1|3;2#RSD~4;1;4|3;2;5&VA=3|5|5|3|2|3|2|5|2|5|4|0|1|2|2|1|2|0|1|5|3|3|4|4|1|2|3|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 29,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 373
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.099Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94225&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1625&WC=1|0|1|&WS=0;5;-1;8;8;8;12;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=1560&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;1|3#RCPZ~2#CSDN~-1|-1|-1|1;5|6;4|5|-1#BCPZ~-1#CSF~1;3|2;3|3;3|4;3|4;2#CSD~3;5;2;3;5;3;6|5;2;1;4;1;6;1|5;5;2;4;6;2;5|5;1;3;4;2;2;1|4;6;2;2;6;4;1|5;3;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1560#AGS~7#SNFG~2#CPW~4;2|4;3#RSD~4;2;2|4;3;2&VA=3|5|5|5|4|5|2|5|2|5|1|6|3|2|2|1|2|3|0|5|3|3|4|4|4|0|3|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94225&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1625&WC=1|0|1|&WS=0;5;-1;8;8;8;12;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=1560&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;1|3#RCPZ~2#CSDN~-1|-1|-1|1;5|6;4|5|-1#BCPZ~-1#CSF~1;3|2;3|3;3|4;3|4;2#CSD~3;5;2;3;5;3;6|5;2;1;4;1;6;1|5;5;2;4;6;2;5|5;1;3;4;2;2;1|4;6;2;2;6;4;1|5;3;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1560#AGS~7#SNFG~2#CPW~4;2|4;3#RSD~4;2;2|4;3;2&VA=3|5|5|5|4|5|2|5|2|5|1|6|3|2|2|1|2|3|0|5|3|3|4|4|4|0|3|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 374
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.190Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94235&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1635&WC=2|0|1|&WS=0;5;2;2;6;2;2;-1;-1;C|1;5;-1;-1;-1;-1;12;24;8;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=1570&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;2|2#RCPZ~2#CSDN~-1|6|3|4|5;1|-1|-1#BCPZ~-1#CSF~0;1|1;1|2;2|2;1|3;1|4;3|4;2|4;1|5;4|5;3|6;3#CSD~3;5;2;3;5;3;6|6;5;2;1;1;6;1|3;5;5;2;6;2;5|4;5;1;3;2;2;1|1;5;4;6;6;4;1|5;3;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1570#AGS~7#SNFG~2#CPW~4;3|5;3#RSD~4;3;6|5;3;3&VA=3|6|3|4|1|5|2|5|5|5|5|5|3|2|2|2|5|1|4|5|3|3|1|2|3|0|0|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94235&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1635&WC=2|0|1|&WS=0;5;2;2;6;2;2;-1;-1;C|1;5;-1;-1;-1;-1;12;24;8;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=1570&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;2|2#RCPZ~2#CSDN~-1|6|3|4|5;1|-1|-1#BCPZ~-1#CSF~0;1|1;1|2;2|2;1|3;1|4;3|4;2|4;1|5;4|5;3|6;3#CSD~3;5;2;3;5;3;6|6;5;2;1;1;6;1|3;5;5;2;6;2;5|4;5;1;3;2;2;1|1;5;4;6;6;4;1|5;3;5;3;4;2;3|2;2;3;4;5;2;6#SCFGG~1#CPDO~-1#RTW~1570#AGS~7#SNFG~2#CPW~4;3|5;3#RSD~4;3;6|5;3;3&VA=3|6|3|4|1|5|2|5|5|5|5|5|3|2|2|2|5|1|4|5|3|3|1|2|3|0|0|4|5|1|6|2|6|4|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 375
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.283Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94265&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1665&WC=2|0|1|&WS=0;20;-1;-1;-1;12;28;-1;-1;C|1;10;-1;-1;40;56;16;-1;-1;C|&WM=1|1|&CW=30&NFG=1&FGT=1&TFG=9&CFGG=8&FGTW=1600&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~6|2|5;1|6|1;5;6|1;3|4#BCPZ~-1#CSF~2;5|2;3|3;5|3;4|3;3|3;2|4;4|4;3|4;2#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|1;5;3;2;6;2;5|6;4;1;3;2;2;1|6;5;1;1;6;4;1|3;1;5;3;5;2;3|4;2;2;3;5;2;6#SCFGG~1#CPDO~-1#RTW~1600#AGS~7#SNFG~2#CPW~3;3|4;4#RSD~3;3;3|4;4;6&VA=6|2|1|6|6|3|4|3|6|5|4|5|1|2|2|2|3|1|1|5|2|3|1|2|0|1|3|3|5|1|6|2|0|5|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94265&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1665&WC=2|0|1|&WS=0;20;-1;-1;-1;12;28;-1;-1;C|1;10;-1;-1;40;56;16;-1;-1;C|&WM=1|1|&CW=30&NFG=1&FGT=1&TFG=9&CFGG=8&FGTW=1600&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~6|2|5;1|6|1;5;6|1;3|4#BCPZ~-1#CSF~2;5|2;3|3;5|3;4|3;3|3;2|4;4|4;3|4;2#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|1;5;3;2;6;2;5|6;4;1;3;2;2;1|6;5;1;1;6;4;1|3;1;5;3;5;2;3|4;2;2;3;5;2;6#SCFGG~1#CPDO~-1#RTW~1600#AGS~7#SNFG~2#CPW~3;3|4;4#RSD~3;3;3|4;4;6&VA=6|2|1|6|6|3|4|3|6|5|4|5|1|2|2|2|3|1|1|5|2|3|1|2|0|1|3|3|5|1|6|2|0|5|5|3|6|2|2|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 29,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 376
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.384Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94965&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2365&WC=1|0|1|&WS=0;700;-1;-1;-1;10;30;8;8;C|&WM=1|&CW=700&NFG=1&FGT=1&TFG=10&CFGG=9&FGTW=2300&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~-1|-1|5;5|3;1;3;2|3;3;1|-1|-1#BCPZ~-1#CSF~3;3|3;1|4;4|4;3|4;2|4;1|5;3|6;3#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|5;5;1;5;3;6;5|2;3;1;3;6;4;1|1;3;3;6;5;4;1|3;1;5;3;5;2;3|4;2;2;3;5;2;6#SCFGG~1#CPDO~-1#RTW~2300#AGS~7#SNFG~2#CPW~4;3|4;4#RSD~4;3;6|4;4;5&VA=6|2|5|2|1|3|4|3|6|5|3|3|1|2|2|2|1|1|3|5|2|3|1|5|3|0|3|3|5|1|3|6|0|5|5|3|6|6|4|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94965&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2365&WC=1|0|1|&WS=0;700;-1;-1;-1;10;30;8;8;C|&WM=1|&CW=700&NFG=1&FGT=1&TFG=10&CFGG=9&FGTW=2300&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~-1|-1|5;5|3;1;3;2|3;3;1|-1|-1#BCPZ~-1#CSF~3;3|3;1|4;4|4;3|4;2|4;1|5;3|6;3#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|5;5;1;5;3;6;5|2;3;1;3;6;4;1|1;3;3;6;5;4;1|3;1;5;3;5;2;3|4;2;2;3;5;2;6#SCFGG~1#CPDO~-1#RTW~2300#AGS~7#SNFG~2#CPW~4;3|4;4#RSD~4;3;6|4;4;5&VA=6|2|5|2|1|3|4|3|6|5|3|3|1|2|2|2|1|1|3|5|2|3|1|5|3|0|3|3|5|1|3|6|0|5|5|3|6|6|4|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 377
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.473Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=94995&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2395&WC=2|0|0|&WS=0;10;4;4;12;4;-1;-1;-1;C|1;20;-1;24;12;8;-1;-1;-1;C|&WM=1|1|&CW=30&NFG=2&TFG=3&CFGG=1&FGTW=2330&IFG=1&FID=2|0|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|-1|6;4|4;4;6;1|3|2#BCPZ~-1#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|5;5;1;5;3;6;5|4;6;2;1;6;4;1|1;6;4;4;1;4;1|3;3;1;5;5;2;3|2;4;2;2;5;2;6#SCFGG~1#CC~10#CPDO~-1#RTW~2300#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;1|2;3;5&VA=6|2|5|4|1|3|2|3|6|5|6|6|3|4|2|2|0|2|4|1|2|3|1|0|1|4|5|2|5|1|3|6|1|5|5|3|6|6|4|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=94995&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2395&WC=2|0|0|&WS=0;10;4;4;12;4;-1;-1;-1;C|1;20;-1;24;12;8;-1;-1;-1;C|&WM=1|1|&CW=30&NFG=2&TFG=3&CFGG=1&FGTW=2330&IFG=1&FID=2|0|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|-1|6;4|4;4;6;1|3|2#BCPZ~-1#CSD~6;3;2;3;5;3;6|2;6;2;1;1;6;1|5;5;1;5;3;6;5|4;6;2;1;6;4;1|1;6;4;4;1;4;1|3;3;1;5;5;2;3|2;4;2;2;5;2;6#SCFGG~1#CC~10#CPDO~-1#RTW~2300#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;1|2;3;5&VA=6|2|5|4|1|3|2|3|6|5|6|6|3|4|2|2|0|2|4|1|2|3|1|0|1|4|5|2|5|1|3|6|1|5|5|3|6|6|4|4|2|2|6|1|5|1|1|3|6|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 378
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.546Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95020&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2420&WC=2|0|1|&WS=0;20;-1;-1;-1;40;56;32;-1;C|1;5;-1;-1;16;16;24;8;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=2355&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;3|2#RCPZ~2#BCPZ~-1#CSF~2;4|3;5|3;4|3;3|4;5|4;4|4;3|5;5|5;3#ICSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|3;3;3;2;5;6;4|3;1;4;1;5;1;6|6;1;6;0;0;1;6|3;5;6;5;3;1;4|1;2;2;2;6;6;1#SCFGG~2#CWP~25#RTW~25#CPDO~-1#AGS~7#SNFG~1#CPW~4;3|4;4#RSD~4;3;3|4;4;2&VA=4|6|3|3|6|3|1|5|2|3|1|1|5|2|1|2|3|4|6|6|2|2|6|2|1|0|5|2|4|4|5|5|0|3|6|1|5|6|1|1|1|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95020&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2420&WC=2|0|1|&WS=0;20;-1;-1;-1;40;56;32;-1;C|1;5;-1;-1;16;16;24;8;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=2355&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;3|2#RCPZ~2#BCPZ~-1#CSF~2;4|3;5|3;4|3;3|4;5|4;4|4;3|5;5|5;3#ICSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|3;3;3;2;5;6;4|3;1;4;1;5;1;6|6;1;6;0;0;1;6|3;5;6;5;3;1;4|1;2;2;2;6;6;1#SCFGG~2#CWP~25#RTW~25#CPDO~-1#AGS~7#SNFG~1#CPW~4;3|4;4#RSD~4;3;3|4;4;2&VA=4|6|3|3|6|3|1|5|2|3|1|1|5|2|1|2|3|4|6|6|2|2|6|2|1|0|5|2|4|4|5|5|0|3|6|1|5|6|1|1|1|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 379
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.624Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95030&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2430&WC=1|0|1|&WS=0;10;-1;-1;30;10;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=2365&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;3|2#RCPZ~2#CSDN~-1|-1|5|5;3;5|5;6;4|4;4|-1#BCPZ~-1#CSF~2;4|2;3|2;2|2;1|3;3|3;1#CSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|5;3;3;3;2;6;4|5;3;5;3;1;4;6|4;6;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~35#AGS~7#SNFG~1#CPW~3;3|2;4#RSD~3;3;3|2;4;2&VA=4|6|5|5|4|4|1|5|2|3|3|6|4|2|1|2|3|5|5|3|2|2|6|3|0|6|5|2|4|4|0|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95030&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2430&WC=1|0|1|&WS=0;10;-1;-1;30;10;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=2365&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;3|2#RCPZ~2#CSDN~-1|-1|5|5;3;5|5;6;4|4;4|-1#BCPZ~-1#CSF~2;4|2;3|2;2|2;1|3;3|3;1#CSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|5;3;3;3;2;6;4|5;3;5;3;1;4;6|4;6;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~35#AGS~7#SNFG~1#CPW~3;3|2;4#RSD~3;3;3|2;4;2&VA=4|6|5|5|4|4|1|5|2|3|3|6|4|2|1|2|3|5|5|3|2|2|6|3|0|6|5|2|4|4|0|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 380
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.717Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95230&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2630&WC=1|0|1|&WS=0;200;-1;11;14;2;2;-1;-1;C|&WM=1|&CW=200&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=2565&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~-1|-1|6;6;5;5|6;4|-1|-1|-1#BCPZ~-1#CSF~1;3|1;1|1;0|2;3|2;2|2;1|3;1|4;1#CSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|5;5;6;6;5;6;4|4;6;5;5;1;4;6|4;6;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~235#AGS~7#SNFG~1#CPW~1;1|2;1#RSD~1;1;2|2;1;5&VA=4|6|5|4|4|4|1|5|0|0|6|6|4|2|1|2|6|5|5|3|2|2|6|6|5|6|5|2|4|4|5|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95230&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2630&WC=1|0|1|&WS=0;200;-1;11;14;2;2;-1;-1;C|&WM=1|&CW=200&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=2565&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~-1|-1|6;6;5;5|6;4|-1|-1|-1#BCPZ~-1#CSF~1;3|1;1|1;0|2;3|2;2|2;1|3;1|4;1#CSD~4;5;1;2;4;1;1|6;2;2;6;4;5;6|5;5;6;6;5;6;4|4;6;5;5;1;4;6|4;6;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~235#AGS~7#SNFG~1#CPW~1;1|2;1#RSD~1;1;2|2;1;5&VA=4|6|5|4|4|4|1|5|0|0|6|6|4|2|1|2|6|5|5|3|2|2|6|6|5|6|5|2|4|4|5|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 381
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.810Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95360&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2760&WC=4|0|1|&WS=0;50;-1;-1;4;14;2;3;-1;C|1;50;-1;-1;30;12;4;-1;-1;C|2;10;8;12;4;12;-1;-1;-1;C|3;20;-1;-1;4;28;16;-1;-1;C|&WM=1|1|1|1|&CW=130&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=2695&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;2|2#RCPZ~2#CSDN~-1|2;1;1|2;5;6|2|1|-1|-1#BCPZ~-1#CSF~0;3|1;3|1;2|2;4|2;3|2;2|2;1|3;4|3;3|3;2|3;1|4;4|4;2|4;1|5;1|5;0#CSD~4;5;1;2;4;1;1|1;1;2;2;4;5;6|6;5;2;5;5;6;4|2;4;5;5;1;4;6|1;4;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~365#AGS~7#SNFG~1#CPW~2;2|3;2|3;3#RSD~2;2;2|3;2;5|3;3;5&VA=4|1|6|2|1|4|1|5|1|5|4|4|4|2|1|2|0|0|5|3|2|2|2|5|0|6|5|2|4|4|5|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95360&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2760&WC=4|0|1|&WS=0;50;-1;-1;4;14;2;3;-1;C|1;50;-1;-1;30;12;4;-1;-1;C|2;10;8;12;4;12;-1;-1;-1;C|3;20;-1;-1;4;28;16;-1;-1;C|&WM=1|1|1|1|&CW=130&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=2695&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;2|2#RCPZ~2#CSDN~-1|2;1;1|2;5;6|2|1|-1|-1#BCPZ~-1#CSF~0;3|1;3|1;2|2;4|2;3|2;2|2;1|3;4|3;3|3;2|3;1|4;4|4;2|4;1|5;1|5;0#CSD~4;5;1;2;4;1;1|1;1;2;2;4;5;6|6;5;2;5;5;6;4|2;4;5;5;1;4;6|1;4;5;6;1;6;6|4;4;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~365#AGS~7#SNFG~1#CPW~2;2|3;2|3;3#RSD~2;2;2|3;2;5|3;3;5&VA=4|1|6|2|1|4|1|5|1|5|4|4|4|2|1|2|0|0|5|3|2|2|2|5|0|6|5|2|4|4|5|1|1|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 382
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.890Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95445&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2845&WC=4|0|1|&WS=0;5;-1;-1;-1;6;3;2;-1;C|1;20;8;14;8;-1;-1;-1;-1;C|2;10;-1;8;12;24;-1;-1;-1;C|3;50;-1;-1;-1;64;112;16;48;C|&WM=1|1|1|1|&CW=85&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=2780&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;1|4#RCPZ~2#CSDN~1|6;2|1;2;4;6|2;6;6;2|5;6;6|6;2|-1#BCPZ~-1#CSF~0;3|1;3|1;2|1;1|2;3|2;2|3;6|3;4|3;3|3;2|3;1|4;6|4;5|4;4|4;1|4;0|5;4|5;1|6;5|6;4#CSD~1;4;5;1;4;1;1|2;6;1;1;4;5;6|6;4;2;1;6;6;4|2;6;6;2;2;4;6|6;6;5;1;6;6;6|2;6;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~450#AGS~7#SNFG~1#CPW~1;1|1;3|2;3#RSD~1;1;6|1;3;1|2;3;1&VA=1|2|6|2|6|2|1|4|0|4|6|6|6|2|5|1|2|6|5|3|2|1|0|0|2|1|5|2|4|4|6|2|6|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95445&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2845&WC=4|0|1|&WS=0;5;-1;-1;-1;6;3;2;-1;C|1;20;8;14;8;-1;-1;-1;-1;C|2;10;-1;8;12;24;-1;-1;-1;C|3;50;-1;-1;-1;64;112;16;48;C|&WM=1|1|1|1|&CW=85&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=2780&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;1|4#RCPZ~2#CSDN~1|6;2|1;2;4;6|2;6;6;2|5;6;6|6;2|-1#BCPZ~-1#CSF~0;3|1;3|1;2|1;1|2;3|2;2|3;6|3;4|3;3|3;2|3;1|4;6|4;5|4;4|4;1|4;0|5;4|5;1|6;5|6;4#CSD~1;4;5;1;4;1;1|2;6;1;1;4;5;6|6;4;2;1;6;6;4|2;6;6;2;2;4;6|6;6;5;1;6;6;6|2;6;3;5;6;3;4|1;2;2;2;6;6;1#SCFGG~2#CPDO~-1#RTW~450#AGS~7#SNFG~1#CPW~1;1|1;3|2;3#RSD~1;1;6|1;3;1|2;3;1&VA=1|2|6|2|6|2|1|4|0|4|6|6|6|2|5|1|2|6|5|3|2|1|0|0|2|1|5|2|4|4|6|2|6|6|6|1|5|6|4|6|3|6|1|6|4|6|6|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 383
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:09.967Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95450&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2850&WC=1|0|1|&WS=0;5;16;16;24;16;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=2785&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;2|3#RCPZ~2#CSDN~1|5;4;5|2;3|4;5;4;2;5|3;4;3;1;5|1;3|5;5#BCPZ~-1#CSF~0;4|1;4|2;4|2;3|3;4#CSD~1;1;4;5;4;1;1|5;4;5;2;4;5;6|3;2;6;4;6;6;4|5;2;4;5;4;2;4|5;1;3;4;3;5;1|3;1;2;3;5;3;4|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~455#AGS~7#SNFG~1#CPW~0;2|1;4|2;4#RSD~0;2;4|1;4;4|2;4;6&VA=1|5|3|5|5|3|5|1|4|2|2|1|1|5|0|5|6|4|3|2|1|5|2|4|5|4|3|2|4|0|0|4|3|5|2|1|5|6|2|5|3|2|1|6|4|4|1|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95450&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2850&WC=1|0|1|&WS=0;5;16;16;24;16;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=2785&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;2|3#RCPZ~2#CSDN~1|5;4;5|2;3|4;5;4;2;5|3;4;3;1;5|1;3|5;5#BCPZ~-1#CSF~0;4|1;4|2;4|2;3|3;4#CSD~1;1;4;5;4;1;1|5;4;5;2;4;5;6|3;2;6;4;6;6;4|5;2;4;5;4;2;4|5;1;3;4;3;5;1|3;1;2;3;5;3;4|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~455#AGS~7#SNFG~1#CPW~0;2|1;4|2;4#RSD~0;2;4|1;4;4|2;4;6&VA=1|5|3|5|5|3|5|1|4|2|2|1|1|5|0|5|6|4|3|2|1|5|2|4|5|4|3|2|4|0|0|4|3|5|2|1|5|6|2|5|3|2|1|6|4|4|1|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 27,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 384
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:10.067Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95475&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2875&WC=2|0|1|&WS=0;20;15;1;-1;-1;-1;-1;-1;C|1;5;-1;-1;64;96;64;64;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=2810&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;5|2#RCPZ~2#CSDN~1|1|1;5|6|-1|-1|-1#BCPZ~-1#CSF~0;3|0;2|0;1|0;0|1;0|2;6|3;6|3;5|4;6|5;6#CSD~1;1;1;0;5;1;1|1;5;4;5;2;5;6|5;1;3;2;6;6;4|6;5;2;4;5;2;4|5;1;3;4;3;5;1|3;1;2;3;5;3;4|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~480#AGS~7#SNFG~1#CPW~3;5|4;6#RSD~3;5;2|4;6;1&VA=1|1|5|6|5|3|5|1|5|1|5|1|1|5|1|4|3|2|3|2|1|0|5|2|4|4|3|2|5|2|6|5|3|5|2|1|5|6|0|5|3|2|1|6|4|4|0|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95475&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2875&WC=2|0|1|&WS=0;20;15;1;-1;-1;-1;-1;-1;C|1;5;-1;-1;64;96;64;64;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=2810&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;5|2#RCPZ~2#CSDN~1|1|1;5|6|-1|-1|-1#BCPZ~-1#CSF~0;3|0;2|0;1|0;0|1;0|2;6|3;6|3;5|4;6|5;6#CSD~1;1;1;0;5;1;1|1;5;4;5;2;5;6|5;1;3;2;6;6;4|6;5;2;4;5;2;4|5;1;3;4;3;5;1|3;1;2;3;5;3;4|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~480#AGS~7#SNFG~1#CPW~3;5|4;6#RSD~3;5;2|4;6;1&VA=1|1|5|6|5|3|5|1|5|1|5|1|1|5|1|4|3|2|3|2|1|0|5|2|4|4|3|2|5|2|6|5|3|5|2|1|5|6|0|5|3|2|1|6|4|4|0|4|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 385
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:10.170Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=1|0|1|&WS=0;10;-1;-1;-1;-1;56;24;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=2820&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;3|2#RCPZ~2#CSDN~3;1;1;4|2|4|3;5|1|2|-1#BCPZ~-1#CSF~4;5|4;4|4;3|5;4|5;3#CSD~4;1;1;3;5;1;1|2;5;4;5;2;5;6|4;5;1;3;2;6;6|5;3;6;5;2;4;5|1;5;1;3;4;3;5|2;3;1;2;3;5;3|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~490#AGS~7#SNFG~1#CPW~5;3|4;4#RSD~5;3;2|4;4;4&VA=4|2|4|5|1|2|5|1|5|5|3|5|3|5|1|4|1|6|1|1|1|3|5|3|5|3|0|2|5|2|2|2|0|3|2|1|5|6|4|3|5|2|1|6|6|5|5|3|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=1|0|1|&WS=0;10;-1;-1;-1;-1;56;24;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=2820&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;3|2#RCPZ~2#CSDN~3;1;1;4|2|4|3;5|1|2|-1#BCPZ~-1#CSF~4;5|4;4|4;3|5;4|5;3#CSD~4;1;1;3;5;1;1|2;5;4;5;2;5;6|4;5;1;3;2;6;6|5;3;6;5;2;4;5|1;5;1;3;4;3;5|2;3;1;2;3;5;3|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~490#AGS~7#SNFG~1#CPW~5;3|4;4#RSD~5;3;2|4;4;4&VA=4|2|4|5|1|2|5|1|5|5|3|5|3|5|1|4|1|6|1|1|1|3|5|3|5|3|0|2|5|2|2|2|0|3|2|1|5|6|4|3|5|2|1|6|6|5|5|3|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 28,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 386
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:10.261Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=2820&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~0;3|2#RCPZ~2#CSDN~-1|-1|-1|-1|3;5;1|5;3|-1#BCPZ~-1#CSD~4;1;1;3;5;1;1|2;5;4;5;2;5;6|4;5;1;3;2;6;6|5;3;6;5;2;4;5|1;5;3;1;5;1;5|3;5;2;3;1;5;3|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~490#AGS~7#SNFG~1#CPW~1;3|1;4#RSD~1;3;5|1;4;2&VA=4|2|4|5|1|3|5|1|5|5|3|5|5|5|1|4|1|6|3|2|1|3|0|3|5|1|3|2|5|0|2|2|5|1|2|1|5|6|4|1|5|2|1|6|6|5|5|3|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=2820&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~0;3|2#RCPZ~2#CSDN~-1|-1|-1|-1|3;5;1|5;3|-1#BCPZ~-1#CSD~4;1;1;3;5;1;1|2;5;4;5;2;5;6|4;5;1;3;2;6;6|5;3;6;5;2;4;5|1;5;3;1;5;1;5|3;5;2;3;1;5;3|5;5;1;2;2;2;1#SCFGG~2#CPDO~-1#RTW~490#AGS~7#SNFG~1#CPW~1;3|1;4#RSD~1;3;5|1;4;2&VA=4|2|4|5|1|3|5|1|5|5|3|5|5|5|1|4|1|6|3|2|1|3|0|3|5|1|3|2|5|0|2|2|5|1|2|1|5|6|4|1|5|2|1|6|6|5|5|3|1|&GA=0&AB=92600&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 92600,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 387
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:10.329Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-0&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=2820&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~0;2|2#RCPZ~2#BCPZ~-1#ICSD~3;2;0;0;1;5;2|3;2;6;6;4;5;3|6;4;1;5;1;5;5|3;4;3;6;5;4;2|6;1;6;6;3;5;5|2;4;6;1;2;2;1|3;5;4;2;1;3;3#CPDO~-1#AGS~7#CPW~0;2|0;3#RSD~0;2;5|0;3;5&VA=3|3|6|3|6|2|3|2|2|4|4|1|4|5|0|6|1|3|6|6|4|0|6|5|6|6|1|2|1|4|1|5|3|2|1|5|5|5|4|5|2|3|2|3|5|2|5|1|3|&GA=0&AB=95485&FRBAL=0&SID=offline-response-0&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95485&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2885&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=2820&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~0;2|2#RCPZ~2#BCPZ~-1#ICSD~3;2;0;0;1;5;2|3;2;6;6;4;5;3|6;4;1;5;1;5;5|3;4;3;6;5;4;2|6;1;6;6;3;5;5|2;4;6;1;2;2;1|3;5;4;2;1;3;3#CPDO~-1#AGS~7#CPW~0;2|0;3#RSD~0;2;5|0;3;5&VA=3|3|6|3|6|2|3|2|2|4|4|1|4|5|0|6|1|3|6|6|4|0|6|5|6|6|1|2|1|4|1|5|3|2|1|5|5|5|4|5|2|3|2|3|5|2|5|1|3|&GA=0&AB=95485&FRBAL=0&SID=offline-response-0&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 95485,
+          "rollingSource": {
+            "sessionHash": "29483cac1b605c3a82de73c0c0ccca944b2846a6714f83acaf86dc44fb357095",
+            "requestNo": 388
+          }
+        }
+      ]
+    },
+    "gameId": "32708",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32708",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32708,
+      "runtimeGameId": 33108,
+      "name": "Direct Hit featuring Money Zone",
+      "runtimeSlug": "directhitmoneyzone",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "directhitmoneyzone",
+        "RB": "7"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 91160,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:54:53.459Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=99880&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8820&WC=6|0|1|&WS=0;7500;-1;-1;30;18;28;6;28;C|1;10;-1;-1;-1;16;30;-1;-1;C|2;5;-1;-1;-1;28;28;-1;-1;C|3;5;-1;-1;-1;16;28;8;-1;C|4;500;-1;-1;96;48;28;16;-1;C|5;800;-1;-1;-1;80;124;32;-1;C|&WM=1|1|1|1|1|1|&CW=8820&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;3|1#MZ~2;2|3#RCPZ~2#BCPZ~-1#CSF~2;6|2;5|2;4|2;3|2;2|2;1|3;6|3;5|3;4|3;3|3;2|3;1|4;6|4;5|4;4|4;3|4;2|4;1|5;5|5;4|5;3|5;2|5;1|6;4|6;3|6;2#TG~R#ICSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|5;1;1;1;1;4;4|3;1;5;5;0;4;2|6;3;0;0;0;2;2|6;1;1;6;4;2;5|1;3;1;1;1;5;1#RTW~8820#CPDO~R|B#AGS~7#CPW~4;2|4;3|3;4|4;4#RSD~4;2;3|4;3;6|3;4;6|4;4;3&VA=5|2|5|3|6|6|1|2|3|1|1|3|1|3|5|4|1|5|0|1|1|4|3|1|5|0|6|1|2|5|1|0|0|4|1|2|5|4|4|2|2|5|1|2|4|2|2|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=99880&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8820&WC=6|0|1|&WS=0;7500;-1;-1;30;18;28;6;28;C|1;10;-1;-1;-1;16;30;-1;-1;C|2;5;-1;-1;-1;28;28;-1;-1;C|3;5;-1;-1;-1;16;28;8;-1;C|4;500;-1;-1;96;48;28;16;-1;C|5;800;-1;-1;-1;80;124;32;-1;C|&WM=1|1|1|1|1|1|&CW=8820&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;3|1#MZ~2;2|3#RCPZ~2#BCPZ~-1#CSF~2;6|2;5|2;4|2;3|2;2|2;1|3;6|3;5|3;4|3;3|3;2|3;1|4;6|4;5|4;4|4;3|4;2|4;1|5;5|5;4|5;3|5;2|5;1|6;4|6;3|6;2#TG~R#ICSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|5;1;1;1;1;4;4|3;1;5;5;0;4;2|6;3;0;0;0;2;2|6;1;1;6;4;2;5|1;3;1;1;1;5;1#RTW~8820#CPDO~R|B#AGS~7#CPW~4;2|4;3|3;4|4;4#RSD~4;2;3|4;3;6|3;4;6|4;4;3&VA=5|2|5|3|6|6|1|2|3|1|1|3|1|3|5|4|1|5|0|1|1|4|3|1|5|0|6|1|2|5|1|0|0|4|1|2|5|4|4|2|2|5|1|2|4|2|2|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 793
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.518Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99890&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8830&WC=2|0|1|&WS=0;5;-1;-1;2;3;6;-1;-1;C|1;5;-1;-1;-1;-1;4;15;-1;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=10&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;2|1#MZ~3;1|2#RCPZ~2#CSDN~-1|-1|2;5;6;6;5;6|5;1;5;1;5;5|5;2;1;2;5;3|6;4;4;4;4|2;1;5#BCPZ~-1#CSF~2;1|3;1|3;0|4;2|4;1|5;3|5;2|5;1|5;0#TG~R;R#CSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|6;5;6;6;5;2;5|5;5;1;5;1;5;3|3;5;2;1;2;5;6|4;4;4;4;6;6;5|5;1;2;1;3;5;1#CPDO~R|B#RTW~8830#AGS~7#CPW~4;2#RSD~4;2;2&VA=5|2|6|5|3|4|5|2|3|5|5|5|4|1|5|4|6|1|0|4|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99890&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8830&WC=2|0|1|&WS=0;5;-1;-1;2;3;6;-1;-1;C|1;5;-1;-1;-1;-1;4;15;-1;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=10&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;2|1#MZ~3;1|2#RCPZ~2#CSDN~-1|-1|2;5;6;6;5;6|5;1;5;1;5;5|5;2;1;2;5;3|6;4;4;4;4|2;1;5#BCPZ~-1#CSF~2;1|3;1|3;0|4;2|4;1|5;3|5;2|5;1|5;0#TG~R;R#CSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|6;5;6;6;5;2;5|5;5;1;5;1;5;3|3;5;2;1;2;5;6|4;4;4;4;6;6;5|5;1;2;1;3;5;1#CPDO~R|B#RTW~8830#AGS~7#CPW~4;2#RSD~4;2;2&VA=5|2|6|5|3|4|5|2|3|5|5|5|4|1|5|4|6|1|0|4|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 794
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.598Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=1|0|1|&WS=0;10;-1;1;1;1;3;1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=20&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~4;1|2#BCPI~5;2|1#RCPZ~-1#CSDN~-1|-1|2|4;2|2;2|4;1;5;2|-1#BCPZ~2#CSF~1;0|2;0|3;0|4;1|4;0|5;0#TG~R;R;B#CSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|2;6;6;6;5;2;5|2;4;1;5;1;5;3|2;2;3;1;2;5;6|2;5;1;4;6;6;5|5;1;2;1;3;5;1#CPDO~B|R#RTW~8840#AGS~7#CPW~5;2#RSD~5;2;1&VA=5|2|2|2|2|2|5|2|3|6|4|2|5|1|5|4|6|1|3|0|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=1|0|1|&WS=0;10;-1;1;1;1;3;1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=20&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~4;1|2#BCPI~5;2|1#RCPZ~-1#CSDN~-1|-1|2|4;2|2;2|4;1;5;2|-1#BCPZ~2#CSF~1;0|2;0|3;0|4;1|4;0|5;0#TG~R;R;B#CSD~5;2;5;4;2;2;1|2;3;4;3;5;5;2|2;6;6;6;5;2;5|2;4;1;5;1;5;3|2;2;3;1;2;5;6|2;5;1;4;6;6;5|5;1;2;1;3;5;1#CPDO~B|R#RTW~8840#AGS~7#CPW~5;2#RSD~5;2;1&VA=5|2|2|2|2|2|5|2|3|6|4|2|5|1|5|4|6|1|3|0|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 32,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 795
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.675Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~4;4|3#RCPZ~-1#CSDN~-1|4|6|2|4;5|6|-1#BCPZ~-1#TG~R;R;B#CSD~5;2;5;4;2;2;1|4;3;4;3;5;5;2|6;6;6;6;5;2;5|2;4;1;5;1;5;3|5;4;3;1;2;5;6|6;5;0;4;6;6;5|5;1;2;1;3;5;1#CPDO~R|B#RTW~8840#AGS~7&VA=5|4|6|2|5|6|5|2|3|6|4|4|5|1|5|4|6|1|3|0|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~4;4|3#RCPZ~-1#CSDN~-1|4|6|2|4;5|6|-1#BCPZ~-1#TG~R;R;B#CSD~5;2;5;4;2;2;1|4;3;4;3;5;5;2|6;6;6;6;5;2;5|2;4;1;5;1;5;3|5;4;3;1;2;5;6|6;5;0;4;6;6;5|5;1;2;1;3;5;1#CPDO~R|B#RTW~8840#AGS~7&VA=5|4|6|2|5|6|5|2|3|6|4|4|5|1|5|4|6|1|3|0|2|4|3|6|5|1|4|1|2|5|5|1|2|6|3|2|5|2|5|5|6|5|1|2|5|3|6|5|1|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 796
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.767Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=0&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~2;3|2#RCPZ~2#BCPZ~-1#ICSD~6;2;5;3;4;6;4|5;1;3;4;4;5;5|5;1;2;6;0;3;2|6;6;4;0;5;1;4|6;6;1;5;3;1;1|2;5;1;3;4;6;1|2;1;1;2;5;5;6#CPDO~-1#AGS~7#CPW~3;3|2;4#RSD~3;3;5|2;4;2&VA=6|5|5|6|6|2|2|2|1|1|6|6|5|1|5|3|2|4|1|1|1|3|4|6|0|5|3|2|4|4|0|5|3|4|5|6|5|3|1|1|6|5|4|5|2|4|1|1|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99900&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8840&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=0&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~2;3|2#RCPZ~2#BCPZ~-1#ICSD~6;2;5;3;4;6;4|5;1;3;4;4;5;5|5;1;2;6;0;3;2|6;6;4;0;5;1;4|6;6;1;5;3;1;1|2;5;1;3;4;6;1|2;1;1;2;5;5;6#CPDO~-1#AGS~7#CPW~3;3|2;4#RSD~3;3;5|2;4;2&VA=6|5|5|6|6|2|2|2|1|1|6|6|5|1|5|3|2|4|1|1|1|3|4|6|0|5|3|2|4|4|0|5|3|4|5|6|5|3|1|1|6|5|4|5|2|4|1|1|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 797
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.826Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99925&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8865&WC=2|0|1|&WS=0;20;-1;-1;-1;7;2;2;-1;C|1;5;32;112;48;-1;-1;-1;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=25&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=STFG~3#RCPI~0;0|0#MZ~1;1|2#RCPZ~2#BCPZ~-1#CSF~0;5|1;6|1;5|1;4|2;5|2;4|3;2|3;1|3;0|4;1|5;1#ICSD~4;6;1;3;4;5;2|2;0;0;6;5;5;5|5;2;5;2;5;5;6|1;1;1;2;1;3;5|2;1;5;4;2;4;1|3;1;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CWP~25#RTW~25#CPDO~-1#AGS~7#SNFG~1#CPW~1;1|1;2#RSD~1;1;1|1;2;5&VA=4|2|5|1|2|3|2|6|0|2|1|1|1|6|1|0|5|1|5|4|6|3|6|2|2|4|3|4|4|5|5|1|2|5|2|5|5|5|3|4|2|4|2|5|6|5|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99925&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=8865&WC=2|0|1|&WS=0;20;-1;-1;-1;7;2;2;-1;C|1;5;32;112;48;-1;-1;-1;-1;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=25&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=STFG~3#RCPI~0;0|0#MZ~1;1|2#RCPZ~2#BCPZ~-1#CSF~0;5|1;6|1;5|1;4|2;5|2;4|3;2|3;1|3;0|4;1|5;1#ICSD~4;6;1;3;4;5;2|2;0;0;6;5;5;5|5;2;5;2;5;5;6|1;1;1;2;1;3;5|2;1;5;4;2;4;1|3;1;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CWP~25#RTW~25#CPDO~-1#AGS~7#SNFG~1#CPW~1;1|1;2#RSD~1;1;1|1;2;5&VA=4|2|5|1|2|3|2|6|0|2|1|1|1|6|1|0|5|1|5|4|6|3|6|2|2|4|3|4|4|5|5|1|2|5|2|5|5|5|3|4|2|4|2|5|6|5|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 19,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 798
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.890Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=2|0|1|&WS=0;1000;-1;56;40;56;16;-1;-1;C|1;5;-1;48;16;112;-1;-1;-1;C|&WM=1|1|&CW=1005&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=1030&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~6|6;2;3|6;5|3;3;3|5|3|-1#BCPZ~-1#CSF~1;5|1;4|1;3|2;5|2;4|2;3|3;6|3;5|3;4|3;3|4;4#CSD~6;4;6;1;3;4;2|3;2;6;2;0;0;6|5;6;5;2;5;2;6|3;3;3;2;1;3;5|5;2;5;4;2;4;1|3;3;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CPDO~-1#RTW~1030#AGS~7#SNFG~1#CPW~3;4|3;5#RSD~3;4;1|3;5;3&VA=6|3|5|3|5|3|2|4|2|6|3|2|3|6|6|6|5|3|5|4|6|1|2|2|2|4|3|4|3|0|5|0|2|5|2|4|0|2|0|4|2|4|2|6|6|5|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=2|0|1|&WS=0;1000;-1;56;40;56;16;-1;-1;C|1;5;-1;48;16;112;-1;-1;-1;C|&WM=1|1|&CW=1005&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=1030&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~6|6;2;3|6;5|3;3;3|5|3|-1#BCPZ~-1#CSF~1;5|1;4|1;3|2;5|2;4|2;3|3;6|3;5|3;4|3;3|4;4#CSD~6;4;6;1;3;4;2|3;2;6;2;0;0;6|5;6;5;2;5;2;6|3;3;3;2;1;3;5|5;2;5;4;2;4;1|3;3;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CPDO~-1#RTW~1030#AGS~7#SNFG~1#CPW~3;4|3;5#RSD~3;4;1|3;5;3&VA=6|3|5|3|5|3|2|4|2|6|3|2|3|6|6|6|5|3|5|4|6|1|2|2|2|4|3|4|3|0|5|0|2|5|2|4|0|2|0|4|2|4|2|6|6|5|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 799
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:53.993Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=1030&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~4;1|3#RCPZ~2#CSDN~-1|2;3;1|6;1;6|5;6;4;2|4|-1|-1#BCPZ~-1#CSD~6;4;6;1;3;4;2|1;3;2;3;2;6;6|6;1;6;5;6;5;6|2;4;6;5;3;3;3|4;5;2;5;4;4;1|3;3;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CPDO~-1#RTW~1030#AGS~7#SNFG~1#CPW~4;3|6;3#RSD~4;3;5|6;3;4&VA=6|1|6|2|4|3|2|4|3|1|4|5|3|6|6|2|6|6|2|4|6|1|3|5|5|0|3|0|3|2|6|3|4|5|2|4|6|5|3|4|2|4|2|6|6|3|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=1030&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~4;1|3#RCPZ~2#CSDN~-1|2;3;1|6;1;6|5;6;4;2|4|-1|-1#BCPZ~-1#CSD~6;4;6;1;3;4;2|1;3;2;3;2;6;6|6;1;6;5;6;5;6|2;4;6;5;3;3;3|4;5;2;5;4;4;1|3;3;4;3;5;2;6|2;6;6;4;2;4;6#SCFGG~2#CPDO~-1#RTW~1030#AGS~7#SNFG~1#CPW~4;3|6;3#RSD~4;3;5|6;3;4&VA=6|1|6|2|4|3|2|4|3|1|4|5|3|6|6|2|6|6|2|4|6|1|3|5|5|0|3|0|3|2|6|3|4|5|2|4|6|5|3|4|2|4|2|6|6|3|1|6|6|&GA=0&AB=91060&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 24,
+          "httpStatus": 200,
+          "responseBalance": 91060,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 800
+          }
+        },
+        {
+          "ts": "2026-10-07T15:54:54.069Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-1&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=1030&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~4;1|2#RCPZ~2#BCPZ~-1#ICSD~4;1;2;6;3;6;4|3;1;1;2;1;1;4|5;4;3;3;2;5;4|2;1;4;2;3;5;2|3;2;0;4;6;1;3|1;0;2;3;5;3;4|6;5;1;4;5;3;4#CPDO~-1#AGS~7#CPW~5;1|4;2#RSD~5;1;6|4;2;5&VA=4|3|5|2|3|1|6|1|1|4|1|2|0|5|2|1|3|4|0|2|1|6|2|3|2|4|3|4|3|1|2|3|6|5|5|6|1|5|5|1|3|3|4|4|4|2|3|4|4|&GA=0&AB=100930&FRBAL=0&SID=offline-response-1&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=100930&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=9870&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=1030&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~4;1|2#RCPZ~2#BCPZ~-1#ICSD~4;1;2;6;3;6;4|3;1;1;2;1;1;4|5;4;3;3;2;5;4|2;1;4;2;3;5;2|3;2;0;4;6;1;3|1;0;2;3;5;3;4|6;5;1;4;5;3;4#CPDO~-1#AGS~7#CPW~5;1|4;2#RSD~5;1;6|4;2;5&VA=4|3|5|2|3|1|6|1|1|4|1|2|0|5|2|1|3|4|0|2|1|6|2|3|2|4|3|4|3|1|2|3|6|5|5|6|1|5|5|1|3|3|4|4|4|2|3|4|4|&GA=0&AB=100930&FRBAL=0&SID=offline-response-1&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 100930,
+          "rollingSource": {
+            "sessionHash": "5077f56796e6d9eb20126135810807cbb104b915b18df1df0312a47d09d46c1d",
+            "requestNo": 801
+          }
+        }
+      ]
+    },
+    "gameId": "32708",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32708",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32708,
+      "runtimeGameId": 33108,
+      "name": "Direct Hit featuring Money Zone",
+      "runtimeSlug": "directhitmoneyzone",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "directhitmoneyzone",
+        "RB": "7"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 101485,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:52:24.624Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=101410&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=25&WC=2|0|1|&WS=0;20;-1;-1;-1;60;16;16;-1;C|1;5;-1;-1;-1;-1;-1;40;56;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=MZ~3;4|2#RCPZ~-1#BCPZ~-1#CSF~3;5|3;4|3;3|3;2|4;4|5;5|5;4|5;3|6;5|6;4|6;3#ICSD~1;1;5;6;3;5;6|6;3;3;2;6;5;3|5;3;2;2;2;6;2|2;3;1;1;1;1;4|1;6;6;4;1;3;6|3;4;4;6;1;6;1|5;4;2;6;6;6;1#RTW~25#CPDO~R|B#AGS~7&VA=1|6|5|2|1|3|5|1|3|3|3|6|4|4|5|3|2|1|6|4|2|6|2|2|1|4|6|6|3|6|2|1|1|1|6|5|5|6|1|3|6|6|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=101410&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=25&WC=2|0|1|&WS=0;20;-1;-1;-1;60;16;16;-1;C|1;5;-1;-1;-1;-1;-1;40;56;C|&WM=1|1|&CW=25&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=MZ~3;4|2#RCPZ~-1#BCPZ~-1#CSF~3;5|3;4|3;3|3;2|4;4|5;5|5;4|5;3|6;5|6;4|6;3#ICSD~1;1;5;6;3;5;6|6;3;3;2;6;5;3|5;3;2;2;2;6;2|2;3;1;1;1;1;4|1;6;6;4;1;3;6|3;4;4;6;1;6;1|5;4;2;6;6;6;1#RTW~25#CPDO~R|B#AGS~7&VA=1|6|5|2|1|3|5|1|3|3|3|6|4|4|5|3|2|1|6|4|2|6|2|2|1|4|6|6|3|6|2|1|1|1|6|5|5|6|1|3|6|6|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 222
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:24.861Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101420&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=35&WC=1|0|1|&WS=0;10;-1;8;28;16;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=10&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~2;1|2#RCPZ~-1#CSDN~-1|-1|-1|6;4;6;3|4|6;4;1|1;5;4#BCPZ~-1#CSF~1;3|2;4|2;3|2;2|3;4#CSD~1;1;5;6;3;5;6|6;3;3;2;6;5;3|5;3;2;2;2;6;2|3;6;4;6;2;3;4|4;1;6;6;4;3;6|1;4;6;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~35#AGS~7&VA=1|6|5|3|4|1|4|1|3|3|6|1|4|5|5|3|2|4|6|6|1|6|2|2|6|6|3|5|3|6|2|2|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101420&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=35&WC=1|0|1|&WS=0;10;-1;8;28;16;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=10&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~2;1|2#RCPZ~-1#CSDN~-1|-1|-1|6;4;6;3|4|6;4;1|1;5;4#BCPZ~-1#CSF~1;3|2;4|2;3|2;2|3;4#CSD~1;1;5;6;3;5;6|6;3;3;2;6;5;3|5;3;2;2;2;6;2|3;6;4;6;2;3;4|4;1;6;6;4;3;6|1;4;6;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~35#AGS~7&VA=1|6|5|3|4|1|4|1|3|3|6|1|4|5|5|3|2|4|6|6|1|6|2|2|6|6|3|5|3|6|2|2|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 27,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 223
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.004Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101425&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=40&WC=1|0|1|&WS=0;5;-1;-1;-1;28;12;4;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=15&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~3;3|1#MZ~3;2|2#RCPZ~2#CSDN~-1|4|3;6;4|6|-1|-1|-1#BCPZ~-1#CSF~3;4|3;3|3;2|4;3|4;2|5;2#TG~R#CSD~1;1;5;6;3;5;6|4;6;3;3;6;5;3|4;6;3;5;3;6;2|6;3;6;4;6;3;4|4;1;6;6;4;3;6|1;4;6;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~40#AGS~7#CPW~3;3#RSD~3;3;4&VA=1|4|4|6|4|1|4|1|6|6|3|1|4|5|5|3|3|6|6|6|1|6|3|5|0|6|3|5|3|6|3|6|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101425&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=40&WC=1|0|1|&WS=0;5;-1;-1;-1;28;12;4;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=15&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~3;3|1#MZ~3;2|2#RCPZ~2#CSDN~-1|4|3;6;4|6|-1|-1|-1#BCPZ~-1#CSF~3;4|3;3|3;2|4;3|4;2|5;2#TG~R#CSD~1;1;5;6;3;5;6|4;6;3;3;6;5;3|4;6;3;5;3;6;2|6;3;6;4;6;3;4|4;1;6;6;4;3;6|1;4;6;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~40#AGS~7#CPW~3;3#RSD~3;3;4&VA=1|4|4|6|4|1|4|1|6|6|3|1|4|5|5|3|3|6|6|6|1|6|3|5|0|6|3|5|3|6|3|6|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 24,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 224
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.142Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=102295&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=910&WC=3|0|1|&WS=0;800;-1;12;4;7;12;8;-1;C|1;20;-1;-1;-1;-1;15;2;-1;C|2;50;-1;-1;-1;-1;28;52;16;C|&WM=1|1|1|&CW=870&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=885&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;3|1#MZ~2;2|3#RCPZ~2#CSDN~-1|-1|-1|3;3;3|1;1|3|-1#BCPZ~-1#CSF~1;3|1;2|2;2|3;2|3;1|3;0|4;4|4;3|4;2|4;1|4;0|5;5|5;4|5;3|5;2|5;1|6;4#TG~R;R#CSD~1;1;5;6;3;5;6|4;6;3;3;6;5;3|4;6;3;5;3;6;2|3;3;3;6;3;3;4|1;1;4;1;4;3;6|3;1;4;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~910#AGS~7#CPW~4;2|4;3|2;4#RSD~4;2;4|4;3;1|2;4;3&VA=1|4|4|3|1|3|4|1|6|6|3|1|1|5|5|3|3|3|0|4|1|6|3|5|6|0|3|5|3|6|0|3|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=102295&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=910&WC=3|0|1|&WS=0;800;-1;12;4;7;12;8;-1;C|1;20;-1;-1;-1;-1;15;2;-1;C|2;50;-1;-1;-1;-1;28;52;16;C|&WM=1|1|1|&CW=870&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=885&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~4;3|1#MZ~2;2|3#RCPZ~2#CSDN~-1|-1|-1|3;3;3|1;1|3|-1#BCPZ~-1#CSF~1;3|1;2|2;2|3;2|3;1|3;0|4;4|4;3|4;2|4;1|4;0|5;5|5;4|5;3|5;2|5;1|6;4#TG~R;R#CSD~1;1;5;6;3;5;6|4;6;3;3;6;5;3|4;6;3;5;3;6;2|3;3;3;6;3;3;4|1;1;4;1;4;3;6|3;1;4;3;4;4;1|4;5;1;5;4;2;1#CPDO~R|B#RTW~910#AGS~7#CPW~4;2|4;3|2;4#RSD~4;2;4|4;3;1|2;4;3&VA=1|4|4|3|1|3|4|1|6|6|3|1|1|5|5|3|3|3|0|4|1|6|3|5|6|0|3|5|3|6|0|3|4|4|4|5|5|6|3|3|4|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 24,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 225
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.229Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=102310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=925&WC=2|0|1|&WS=0;5;8;24;48;-1;-1;-1;-1;C|1;10;-1;-1;16;48;32;32;-1;C|&WM=1|1|&CW=15&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=900&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~2;2|2#RCPZ~-1#CSDN~-1|3;2|6|1;4;2|1;1;4;3;4|2;4;1;5;3|4#BCPZ~-1#CSF~0;3|1;4|1;3|2;5|2;4|3;5|3;4|4;5|5;5#TG~R;R#CSD~1;1;5;6;3;5;6|2;3;4;6;6;5;3|6;4;6;5;0;6;2|2;4;1;6;3;3;4|4;3;4;1;1;3;6|3;5;1;4;2;3;1|4;4;5;1;5;2;1#CPDO~B|R#RTW~925#AGS~7&VA=1|2|6|2|4|3|4|1|3|4|4|3|5|4|5|4|6|1|4|1|5|6|6|5|6|1|4|1|3|6|0|3|1|2|5|5|5|6|3|3|3|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=102310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=925&WC=2|0|1|&WS=0;5;8;24;48;-1;-1;-1;-1;C|1;10;-1;-1;16;48;32;32;-1;C|&WM=1|1|&CW=15&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=900&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~2;2|2#RCPZ~-1#CSDN~-1|3;2|6|1;4;2|1;1;4;3;4|2;4;1;5;3|4#BCPZ~-1#CSF~0;3|1;4|1;3|2;5|2;4|3;5|3;4|4;5|5;5#TG~R;R#CSD~1;1;5;6;3;5;6|2;3;4;6;6;5;3|6;4;6;5;0;6;2|2;4;1;6;3;3;4|4;3;4;1;1;3;6|3;5;1;4;2;3;1|4;4;5;1;5;2;1#CPDO~B|R#RTW~925#AGS~7&VA=1|2|6|2|4|3|4|1|3|4|4|3|5|4|5|4|6|1|4|1|5|6|6|5|6|1|4|1|3|6|0|3|1|2|5|5|5|6|3|3|3|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 226
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.388Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=102870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1485&WC=3|0|1|&WS=0;50;-1;1;7;7;-1;-1;-1;C|1;500;-1;-1;10;14;11;-1;-1;C|2;10;-1;2;2;6;4;-1;-1;C|&WM=1|1|1|&CW=560&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=1460&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~2;1|2#BCPI~3;2|1#RCPZ~-1#CSDN~2|3;6|2;6|6;6|4|2|-1#BCPZ~2#CSF~1;1|1;0|2;3|2;2|2;1|2;0|3;3|3;2|3;1|3;0|4;3|4;2|4;1|4;0#TG~R;R;B#CSD~2;1;1;5;3;5;6|6;3;2;3;4;5;3|6;2;6;4;6;5;2|6;6;2;4;1;6;4|4;4;3;4;1;1;6|2;3;5;1;4;2;1|4;4;5;1;5;2;1#CPDO~R|B#RTW~1485#AGS~7#CPW~2;1|3;1|3;2#RSD~2;1;2|3;1;6|3;2;2&VA=2|6|6|6|4|2|4|1|3|0|0|4|3|4|1|2|6|0|3|5|5|5|3|4|4|4|1|1|3|4|6|1|1|4|5|5|5|5|6|1|2|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=102870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1485&WC=3|0|1|&WS=0;50;-1;1;7;7;-1;-1;-1;C|1;500;-1;-1;10;14;11;-1;-1;C|2;10;-1;2;2;6;4;-1;-1;C|&WM=1|1|1|&CW=560&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=1460&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~2;1|2#BCPI~3;2|1#RCPZ~-1#CSDN~2|3;6|2;6|6;6|4|2|-1#BCPZ~2#CSF~1;1|1;0|2;3|2;2|2;1|2;0|3;3|3;2|3;1|3;0|4;3|4;2|4;1|4;0#TG~R;R;B#CSD~2;1;1;5;3;5;6|6;3;2;3;4;5;3|6;2;6;4;6;5;2|6;6;2;4;1;6;4|4;4;3;4;1;1;6|2;3;5;1;4;2;1|4;4;5;1;5;2;1#CPDO~R|B#RTW~1485#AGS~7#CPW~2;1|3;1|3;2#RSD~2;1;2|3;1;6|3;2;2&VA=2|6|6|6|4|2|4|1|3|0|0|4|3|4|1|2|6|0|3|5|5|5|3|4|4|4|1|1|3|4|6|1|1|4|5|5|5|5|6|1|2|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 34,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 227
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.458Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=102870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1485&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~3;0|2#RCPZ~-1#CSDN~-1|5;3|1;3;1;2|3;1;4;2|6;4;1;1|-1|-1#BCPZ~-1#TG~R;R;B#CSD~2;1;1;5;3;5;6|3;5;2;3;4;5;3|2;1;3;1;6;5;2|2;4;1;3;1;6;4|1;1;4;6;1;1;6|2;3;5;1;4;2;1|4;4;5;1;5;2;1#CPDO~B|R#RTW~1485#AGS~7&VA=2|3|2|2|1|2|4|1|5|1|4|1|3|4|1|2|3|1|4|5|5|5|3|1|3|6|1|1|3|4|6|1|1|4|5|5|5|5|6|1|2|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=102870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=1485&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~3;0|2#RCPZ~-1#CSDN~-1|5;3|1;3;1;2|3;1;4;2|6;4;1;1|-1|-1#BCPZ~-1#TG~R;R;B#CSD~2;1;1;5;3;5;6|3;5;2;3;4;5;3|2;1;3;1;6;5;2|2;4;1;3;1;6;4|1;1;4;6;1;1;6|2;3;5;1;4;2;1|4;4;5;1;5;2;1#CPDO~B|R#RTW~1485#AGS~7&VA=2|3|2|2|1|2|4|1|5|1|4|1|3|4|1|2|3|1|4|5|5|5|3|1|3|6|1|1|3|4|6|1|1|4|5|5|5|5|6|1|2|2|6|3|2|4|6|1|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 228
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.608Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=103870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2485&WC=1|0|1|&WS=0;1000;2;2;2;6;3;2;-1;C|&WM=1|&CW=1000&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=1000&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;1|2#RCPZ~2#BCPZ~-1#CSF~0;1|1;1|2;1|3;2|3;1|4;1|4;0|5;1#ICSD~4;1;2;6;2;2;2|2;1;3;4;3;2;3|5;1;3;3;5;4;1|2;1;0;5;1;5;4|1;0;6;4;1;4;6|5;1;4;3;1;4;2|1;3;3;6;5;1;2#SCFGG~1#CWP~1000#RTW~1000#CPDO~-1#AGS~7#SNFG~2#CPW~4;1|3;2#RSD~4;1;3|3;2;1&VA=4|2|5|2|1|5|1|1|1|1|1|0|1|3|2|3|3|0|6|4|3|6|4|3|5|4|3|6|2|3|5|1|1|1|5|2|2|4|5|4|4|1|2|3|1|4|6|2|2|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=103870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2485&WC=1|0|1|&WS=0;1000;2;2;2;6;3;2;-1;C|&WM=1|&CW=1000&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=1000&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~3;1|2#RCPZ~2#BCPZ~-1#CSF~0;1|1;1|2;1|3;2|3;1|4;1|4;0|5;1#ICSD~4;1;2;6;2;2;2|2;1;3;4;3;2;3|5;1;3;3;5;4;1|2;1;0;5;1;5;4|1;0;6;4;1;4;6|5;1;4;3;1;4;2|1;3;3;6;5;1;2#SCFGG~1#CWP~1000#RTW~1000#CPDO~-1#AGS~7#SNFG~2#CPW~4;1|3;2#RSD~4;1;3|3;2;1&VA=4|2|5|2|1|5|1|1|1|1|1|0|1|3|2|3|3|0|6|4|3|6|4|3|5|4|3|6|2|3|5|1|1|1|5|2|2|4|5|4|4|1|2|3|1|4|6|2|2|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 229
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.725Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=103870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2485&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=1000&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~3;4|2#RCPZ~2#CSDN~1|4|6|4;3|5;5|6|-1#BCPZ~-1#CSD~1;4;2;6;2;2;2|4;2;3;4;3;2;3|6;5;3;3;5;4;1|3;4;2;5;1;5;4|5;5;6;4;1;4;6|6;5;4;3;1;4;2|1;3;3;6;5;1;2#SCFGG~1#CPDO~-1#RTW~1000#AGS~7#SNFG~2#CPW~4;4|4;5#RSD~4;4;1|4;5;4&VA=1|4|6|3|5|6|1|4|2|5|4|5|5|3|2|3|3|2|6|4|3|6|4|3|5|4|3|6|2|3|5|1|0|1|5|2|2|4|5|0|4|1|2|3|1|4|6|2|2|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=103870&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=2485&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=1000&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~3;4|2#RCPZ~2#CSDN~1|4|6|4;3|5;5|6|-1#BCPZ~-1#CSD~1;4;2;6;2;2;2|4;2;3;4;3;2;3|6;5;3;3;5;4;1|3;4;2;5;1;5;4|5;5;6;4;1;4;6|6;5;4;3;1;4;2|1;3;3;6;5;1;2#SCFGG~1#CPDO~-1#RTW~1000#AGS~7#SNFG~2#CPW~4;4|4;5#RSD~4;4;1|4;5;4&VA=1|4|6|3|5|6|1|4|2|5|4|5|5|3|2|3|3|2|6|4|3|6|4|3|5|4|3|6|2|3|5|1|0|1|5|2|2|4|5|0|4|1|2|3|1|4|6|2|2|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 230
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.807Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=4|0|1|&WS=0;1000;-1;-1;24;14;28;8;-1;C|1;5;16;60;32;-1;-1;-1;-1;C|2;20;-1;-1;-1;-1;8;60;-1;C|3;10;-1;-1;-1;-1;8;8;56;C|&WM=1|1|1|1|&CW=1035&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=2035&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~4;2|2#RCPZ~2#BCPZ~-1#CSF~0;4|1;5|1;4|1;3|1;2|2;5|2;4|2;3|3;3|3;2|3;1|4;4|4;3|4;2|5;5|5;4|5;3|5;2|6;5|6;4|6;3#ICSD~5;5;2;3;4;6;2|2;1;4;4;4;4;6|6;6;5;2;2;4;2|5;2;2;2;5;3;3|1;1;2;0;2;3;5|1;4;1;0;1;1;2|4;5;5;3;3;3;1#SCFGG~2#CWP~1035#RTW~1035#CPDO~-1#AGS~7#SNFG~1#CPW~4;3|5;3#RSD~4;3;2|5;3;4&VA=5|2|6|5|1|1|4|5|1|6|2|1|4|5|2|4|5|2|2|1|5|3|4|2|2|0|0|3|4|4|2|5|2|1|3|6|4|4|3|3|1|3|2|6|2|3|5|2|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=4|0|1|&WS=0;1000;-1;-1;24;14;28;8;-1;C|1;5;16;60;32;-1;-1;-1;-1;C|2;20;-1;-1;-1;-1;8;60;-1;C|3;10;-1;-1;-1;-1;8;8;56;C|&WM=1|1|1|1|&CW=1035&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=2035&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~4;2|2#RCPZ~2#BCPZ~-1#CSF~0;4|1;5|1;4|1;3|1;2|2;5|2;4|2;3|3;3|3;2|3;1|4;4|4;3|4;2|5;5|5;4|5;3|5;2|6;5|6;4|6;3#ICSD~5;5;2;3;4;6;2|2;1;4;4;4;4;6|6;6;5;2;2;4;2|5;2;2;2;5;3;3|1;1;2;0;2;3;5|1;4;1;0;1;1;2|4;5;5;3;3;3;1#SCFGG~2#CWP~1035#RTW~1035#CPDO~-1#AGS~7#SNFG~1#CPW~4;3|5;3#RSD~4;3;2|5;3;4&VA=5|2|6|5|1|1|4|5|1|6|2|1|4|5|2|4|5|2|2|1|5|3|4|2|2|0|0|3|4|4|2|5|2|1|3|6|4|4|3|3|1|3|2|6|2|3|5|2|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 22,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 231
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:25.899Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=2035&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~2|1;2;6;1|2;4;3|6;1;1|6;6;1|4;6;2;5|4;5;4#BCPZ~-1#CSD~2;5;5;2;3;6;2|1;6;2;1;2;1;6|3;4;2;6;6;5;2|1;1;6;5;5;3;3|1;6;6;1;1;3;5|5;2;6;4;1;4;2|4;5;4;4;5;5;1#SCFGG~2#CPDO~-1#RTW~1035#AGS~7#SNFG~1#CPW~2;1|1;2#RSD~2;1;4|1;2;2&VA=2|1|3|1|1|5|4|5|6|0|1|6|2|5|5|0|2|6|6|6|4|2|1|6|5|1|4|4|3|2|6|5|1|1|5|6|1|5|3|3|4|5|2|6|2|3|5|2|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=0|0|0|&CW=0&NFG=1&TFG=3&CFGG=2&FGTW=2035&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~2|1;2;6;1|2;4;3|6;1;1|6;6;1|4;6;2;5|4;5;4#BCPZ~-1#CSD~2;5;5;2;3;6;2|1;6;2;1;2;1;6|3;4;2;6;6;5;2|1;1;6;5;5;3;3|1;6;6;1;1;3;5|5;2;6;4;1;4;2|4;5;4;4;5;5;1#SCFGG~2#CPDO~-1#RTW~1035#AGS~7#SNFG~1#CPW~2;1|1;2#RSD~2;1;4|1;2;2&VA=2|1|3|1|1|5|4|5|6|0|1|6|2|5|5|0|2|6|6|6|4|2|1|6|5|1|4|4|3|2|6|5|1|1|5|6|1|5|3|3|4|5|2|6|2|3|5|2|1|&GA=0&AB=101385&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 28,
+          "httpStatus": 200,
+          "responseBalance": 101385,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 232
+          }
+        },
+        {
+          "ts": "2026-10-07T15:52:26.041Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-2&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=2035&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~2;3|2#RCPZ~2#BCPZ~-1#ICSD~4;5;5;6;5;6;6|3;3;6;3;1;2;5|6;2;3;0;5;4;5|6;3;2;1;0;1;3|2;3;3;5;6;4;3|5;1;2;4;5;6;2|6;4;2;4;4;5;1#CPDO~-1#AGS~7#CPW~2;3|3;4#RSD~2;3;1|3;4;5&VA=4|3|6|6|2|5|6|5|3|2|3|3|1|4|5|6|3|2|3|2|2|6|3|0|1|5|4|4|5|1|5|0|6|5|4|6|2|4|1|4|6|5|6|5|5|3|3|2|1|&GA=0&AB=104905&FRBAL=0&SID=offline-response-2&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=104905&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3520&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=2035&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~2;3|2#RCPZ~2#BCPZ~-1#ICSD~4;5;5;6;5;6;6|3;3;6;3;1;2;5|6;2;3;0;5;4;5|6;3;2;1;0;1;3|2;3;3;5;6;4;3|5;1;2;4;5;6;2|6;4;2;4;4;5;1#CPDO~-1#AGS~7#CPW~2;3|3;4#RSD~2;3;1|3;4;5&VA=4|3|6|6|2|5|6|5|3|2|3|3|1|4|5|6|3|2|3|2|2|6|3|0|1|5|4|4|5|1|5|0|6|5|4|6|2|4|1|4|6|5|6|5|5|3|3|2|1|&GA=0&AB=104905&FRBAL=0&SID=offline-response-2&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 104905,
+          "rollingSource": {
+            "sessionHash": "118308cc4df5d4763212c5641c47186f27495d40a3e2080019a1656b1d437b96",
+            "requestNo": 233
+          }
+        }
+      ]
+    },
+    "gameId": "32708",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32708",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32708,
+      "runtimeGameId": 33108,
+      "name": "Direct Hit featuring Money Zone",
+      "runtimeSlug": "directhitmoneyzone",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "directhitmoneyzone",
+        "RB": "7"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 95030,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:53:40.996Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=94980&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=50&WC=1|0|1|&WS=0;50;-1;-1;3;2;2;3;2;C|&WM=1|&CW=50&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=MZ~3;3|2#RCPZ~-1#BCPZ~-1#CSF~2;1|2;0|3;1|4;1|5;1|5;0|6;1#ICSD~6;2;1;6;3;2;6|1;5;6;6;1;5;5|4;4;5;5;6;2;1|1;4;6;1;4;4;2|3;4;5;2;5;1;4|4;4;5;4;5;4;6|5;4;6;2;3;5;3#RTW~50#CPDO~R|B#AGS~7&VA=6|1|4|1|3|4|5|2|5|4|4|4|4|4|1|6|5|6|5|5|6|6|6|5|1|2|4|2|3|1|6|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=94980&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=50&WC=1|0|1|&WS=0;50;-1;-1;3;2;2;3;2;C|&WM=1|&CW=50&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=MZ~3;3|2#RCPZ~-1#BCPZ~-1#CSF~2;1|2;0|3;1|4;1|5;1|5;0|6;1#ICSD~6;2;1;6;3;2;6|1;5;6;6;1;5;5|4;4;5;5;6;2;1|1;4;6;1;4;4;2|3;4;5;2;5;1;4|4;4;5;4;5;4;6|5;4;6;2;3;5;3#RTW~50#CPDO~R|B#AGS~7&VA=6|1|4|1|3|4|5|2|5|4|4|4|4|4|1|6|5|6|5|5|6|6|6|5|1|2|4|2|3|1|6|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 45,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 504
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.104Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=270&WC=2|0|1|&WS=0;200;8;12;30;4;-1;-1;-1;C|1;20;-1;24;12;8;-1;-1;-1;C|&WM=1|1|&CW=220&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=220&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~2;2|1#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|6;2|2|6|4;3|1#BCPZ~-1#CSF~0;3|1;4|1;3|1;2|2;4|2;3|2;2|2;1|3;3|3;2#TG~R#CSD~6;2;1;6;3;2;6|1;5;6;6;1;5;5|2;6;5;5;6;2;1|2;1;6;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~B|R#RTW~270#AGS~7#CPW~2;2|1;3|2;3#RSD~2;2;5|1;3;6|2;3;5&VA=6|1|2|2|6|3|1|2|5|6|1|3|4|5|1|6|0|6|5|5|6|6|0|0|1|2|4|2|3|1|6|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95200&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=270&WC=2|0|1|&WS=0;200;8;12;30;4;-1;-1;-1;C|1;20;-1;24;12;8;-1;-1;-1;C|&WM=1|1|&CW=220&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=220&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~2;2|1#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|6;2|2|6|4;3|1#BCPZ~-1#CSF~0;3|1;4|1;3|1;2|2;4|2;3|2;2|2;1|3;3|3;2#TG~R#CSD~6;2;1;6;3;2;6|1;5;6;6;1;5;5|2;6;5;5;6;2;1|2;1;6;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~B|R#RTW~270#AGS~7#CPW~2;2|1;3|2;3#RSD~2;2;5|1;3;6|2;3;5&VA=6|1|2|2|6|3|1|2|5|6|1|3|4|5|1|6|0|6|5|5|6|6|0|0|1|2|4|2|3|1|6|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 505
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.179Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95210&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=280&WC=1|0|1|&WS=0;10;1;3;6;4;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=230&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~2;4|3#RCPZ~-1#CSDN~2|3;2;2|6;2;2;1|6;2|-1|-1|-1#BCPZ~-1#CSF~0;0|1;1|1;0|2;2|2;1|3;2#TG~R#CSD~2;6;2;1;3;2;6|2;2;3;1;5;5;5|1;2;2;6;2;2;1|2;6;2;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~280#AGS~7&VA=2|2|1|2|6|3|1|6|2|2|6|3|4|5|2|3|2|2|5|5|6|1|1|6|1|2|4|2|3|5|2|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95210&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=280&WC=1|0|1|&WS=0;10;1;3;6;4;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=230&IFG=1&FID=0|&MUL=1&SUB=0&GSD=MZ~2;4|3#RCPZ~-1#CSDN~2|3;2;2|6;2;2;1|6;2|-1|-1|-1#BCPZ~-1#CSF~0;0|1;1|1;0|2;2|2;1|3;2#TG~R#CSD~2;6;2;1;3;2;6|2;2;3;1;5;5;5|1;2;2;6;2;2;1|2;6;2;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~280#AGS~7&VA=2|2|1|2|6|3|1|6|2|2|6|3|4|5|2|3|2|2|5|5|6|1|1|6|1|2|4|2|3|5|2|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 506
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.247Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95230&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=300&WC=1|0|1|&WS=0;20;8;8;12;12;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=250&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~3;2|1#MZ~2;1|3#RCPZ~2#CSDN~1|4;5|2;3|6|-1|-1|-1#BCPZ~-1#CSF~0;3|1;3|2;3|2;2|3;3|3;2#TG~R;R#CSD~1;6;2;1;3;2;6|5;4;3;1;5;5;5|3;2;1;6;2;2;1|6;2;6;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~300#AGS~7#CPW~4;1|3;2|2;3#RSD~4;1;3|3;2;6|2;3;6&VA=1|5|3|6|6|3|1|6|4|2|2|0|4|5|2|3|1|0|5|5|6|1|1|0|1|2|4|2|3|5|2|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95230&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=300&WC=1|0|1|&WS=0;20;8;8;12;12;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=250&IFG=1&FID=0|&MUL=1&SUB=1&GSD=RCPI~3;2|1#MZ~2;1|3#RCPZ~2#CSDN~1|4;5|2;3|6|-1|-1|-1#BCPZ~-1#CSF~0;3|1;3|2;3|2;2|3;3|3;2#TG~R;R#CSD~1;6;2;1;3;2;6|5;4;3;1;5;5;5|3;2;1;6;2;2;1|6;2;6;1;4;4;2|6;3;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~300#AGS~7#CPW~4;1|3;2|2;3#RSD~4;1;3|3;2;6|2;3;6&VA=1|5|3|6|6|3|1|6|4|2|2|0|4|5|2|3|1|0|5|5|6|1|1|0|1|2|4|2|3|5|2|4|5|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 507
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.347Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95330&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=400&WC=1|0|1|&WS=0;100;-1;-1;56;24;24;-1;-1;C|&WM=1|&CW=100&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=350&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~3;4|2#BCPI~4;4|1#RCPZ~-1#CSDN~6|6|1;2|3;5|-1|-1|-1#BCPZ~2#CSF~2;5|2;4|2;3|3;4|3;3|4;4|4;3#TG~R;R;B#CSD~6;1;6;2;3;2;6|6;5;4;3;5;5;5|2;1;3;2;2;2;1|5;3;6;2;4;4;2|6;0;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~400#AGS~7#CPW~3;4|4;4#RSD~3;4;4|4;4;5&VA=6|6|2|5|6|3|1|1|5|1|3|0|4|5|6|4|3|6|5|5|6|2|3|2|2|2|4|2|3|5|2|0|0|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95330&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=400&WC=1|0|1|&WS=0;100;-1;-1;56;24;24;-1;-1;C|&WM=1|&CW=100&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=350&IFG=1&FID=0|&MUL=1&SUB=1&GSD=MZ~3;4|2#BCPI~4;4|1#RCPZ~-1#CSDN~6|6|1;2|3;5|-1|-1|-1#BCPZ~2#CSF~2;5|2;4|2;3|3;4|3;3|4;4|4;3#TG~R;R;B#CSD~6;1;6;2;3;2;6|6;5;4;3;5;5;5|2;1;3;2;2;2;1|5;3;6;2;4;4;2|6;0;5;2;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~R|B#RTW~400#AGS~7#CPW~3;4|4;4#RSD~3;4;4|4;4;5&VA=6|6|2|5|6|3|1|1|5|1|3|0|4|5|6|4|3|6|5|5|6|2|3|2|2|2|4|2|3|5|2|0|0|5|3|2|5|2|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 31,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 508
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.470Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95330&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=400&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~2;4|2#RCPZ~-1#CSDN~-1|-1|1;3;2|2;6|1;2|-1|-1#BCPZ~-1#TG~R;R;B#CSD~6;1;6;2;3;2;6|6;5;4;3;5;5;5|2;3;1;2;1;3;1|6;2;5;3;6;4;2|2;1;6;0;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~B|R#RTW~400#AGS~7&VA=6|6|2|6|2|3|1|1|5|3|2|1|4|5|6|4|1|5|6|5|6|2|3|2|3|0|4|2|3|5|1|6|5|5|3|2|5|3|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95330&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=400&WC=0|0|1|&CW=0&NFG=3&FGT=3&TFG=3&CFGG=0&FGTW=0&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=MZ~2;4|2#RCPZ~-1#CSDN~-1|-1|1;3;2|2;6|1;2|-1|-1#BCPZ~-1#TG~R;R;B#CSD~6;1;6;2;3;2;6|6;5;4;3;5;5;5|2;3;1;2;1;3;1|6;2;5;3;6;4;2|2;1;6;0;5;1;4|3;4;5;4;5;4;6|1;5;6;2;3;5;3#CPDO~B|R#RTW~400#AGS~7&VA=6|6|2|6|2|3|1|1|5|3|2|1|4|5|6|4|1|5|6|5|6|2|3|2|3|0|4|2|3|5|1|6|5|5|3|2|5|3|4|1|4|5|6|5|1|2|4|6|3|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 509
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.606Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=98345&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3415&WC=3|0|1|&WS=0;10;-1;-1;-1;-1;7;4;4;C|1;5;12;24;16;-1;-1;-1;-1;C|2;3000;16;112;92;52;16;-1;-1;C|&WM=1|1|1|&CW=3015&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=3015&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~1;4|3#RCPZ~2#BCPZ~-1#CSF~0;4|0;3|0;2|1;6|1;5|1;4|1;3|2;6|2;4|2;3|2;2|3;5|3;4|3;2|4;4|4;2|4;1|4;0|5;2|6;2#ICSD~4;3;5;5;4;2;3|4;1;3;5;0;4;0|3;6;4;4;0;1;4|4;3;4;3;4;4;1|2;2;2;6;4;1;2|6;5;2;5;5;1;2|6;3;2;1;3;4;1#SCFGG~1#CWP~3015#RTW~3015#CPDO~-1#AGS~7#SNFG~2#CPW~1;4|2;4|1;6#RSD~1;4;6|2;4;2|1;6;4&VA=4|4|3|4|2|6|6|3|1|6|3|2|5|3|5|3|4|4|2|2|2|5|5|4|3|6|5|1|4|0|0|4|4|5|3|2|4|1|4|1|1|4|3|0|4|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=98345&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3415&WC=3|0|1|&WS=0;10;-1;-1;-1;-1;7;4;4;C|1;5;12;24;16;-1;-1;-1;-1;C|2;3000;16;112;92;52;16;-1;-1;C|&WM=1|1|1|&CW=3015&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=3015&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=STFG~3#RCPI~0;0|0#MZ~1;4|3#RCPZ~2#BCPZ~-1#CSF~0;4|0;3|0;2|1;6|1;5|1;4|1;3|2;6|2;4|2;3|2;2|3;5|3;4|3;2|4;4|4;2|4;1|4;0|5;2|6;2#ICSD~4;3;5;5;4;2;3|4;1;3;5;0;4;0|3;6;4;4;0;1;4|4;3;4;3;4;4;1|2;2;2;6;4;1;2|6;5;2;5;5;1;2|6;3;2;1;3;4;1#SCFGG~1#CWP~3015#RTW~3015#CPDO~-1#AGS~7#SNFG~2#CPW~1;4|2;4|1;6#RSD~1;4;6|2;4;2|1;6;4&VA=4|4|3|4|2|6|6|3|1|6|3|2|5|3|5|3|4|4|2|2|2|5|5|4|3|6|5|1|4|0|0|4|4|5|3|2|4|1|4|1|1|4|3|0|4|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 510
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.731Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=98355&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3425&WC=1|0|1|&WS=0;10;-1;14;12;-1;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=3025&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|3#RCPZ~2#CSDN~3;1;5|2;1;2;3|2;1;6;5|4;1;2|2;3;6;2|1|3#BCPZ~-1#CSF~1;3|1;2|1;1|2;3|2;2#CSD~5;1;3;4;3;2;3|3;2;1;2;4;1;3|5;6;1;2;3;6;1|2;1;4;4;3;3;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3025#AGS~7#SNFG~2#CPW~1;2|2;2#RSD~1;2;1|2;2;1&VA=5|3|5|2|2|1|3|1|2|6|1|6|6|6|3|0|0|4|3|5|3|4|2|2|4|2|5|1|3|4|3|3|6|5|3|2|1|6|3|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=98355&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3425&WC=1|0|1|&WS=0;10;-1;14;12;-1;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=3025&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|3#RCPZ~2#CSDN~3;1;5|2;1;2;3|2;1;6;5|4;1;2|2;3;6;2|1|3#BCPZ~-1#CSF~1;3|1;2|1;1|2;3|2;2#CSD~5;1;3;4;3;2;3|3;2;1;2;4;1;3|5;6;1;2;3;6;1|2;1;4;4;3;3;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3025#AGS~7#SNFG~2#CPW~1;2|2;2#RSD~1;2;1|2;2;1&VA=5|3|5|2|2|1|3|1|2|6|1|6|6|6|3|0|0|4|3|5|3|4|2|2|4|2|5|1|3|4|3|3|6|5|3|2|1|6|3|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 24,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 511
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.798Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=98365&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3435&WC=1|0|1|&WS=0;10;-1;8;28;48;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=3035&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|2;3;5|1;2|-1|-1|-1|-1#BCPZ~-1#CSF~1;3|2;4|2;3|2;2|3;5|3;4#CSD~5;1;3;4;3;2;3|5;3;2;3;4;1;3|2;1;5;6;3;6;1|2;1;4;4;3;3;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3035#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;5|2;3;6&VA=5|5|2|2|2|1|3|1|3|1|1|6|6|6|3|2|0|4|3|5|3|4|3|0|4|2|5|1|3|4|3|3|6|5|3|2|1|6|3|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=98365&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3435&WC=1|0|1|&WS=0;10;-1;8;28;48;-1;-1;-1;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=3035&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|2;3;5|1;2|-1|-1|-1|-1#BCPZ~-1#CSF~1;3|2;4|2;3|2;2|3;5|3;4#CSD~5;1;3;4;3;2;3|5;3;2;3;4;1;3|2;1;5;6;3;6;1|2;1;4;4;3;3;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3035#AGS~7#SNFG~2#CPW~2;2|2;3#RSD~2;2;5|2;3;6&VA=5|5|2|2|2|1|3|1|3|1|1|6|6|6|3|2|0|4|3|5|3|4|3|0|4|2|5|1|3|4|3|3|6|5|3|2|1|6|3|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 512
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.874Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=98375&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3445&WC=2|0|1|&WS=0;5;1;3;2;2;-1;-1;-1;C|1;5;-1;-1;6;2;2;2;2;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=3045&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;1|2#RCPZ~2#CSDN~-1|5|6;2;1|6;4|-1|-1|-1#BCPZ~-1#CSF~0;0|1;1|1;0|2;2|2;1|3;1|4;1|5;1|6;1#CSD~5;1;3;4;3;2;3|5;5;3;2;4;1;3|1;2;6;2;1;6;1|4;6;2;1;4;4;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3045#AGS~7#SNFG~2#CPW~2;1|3;1#RSD~2;1;2|3;1;6&VA=5|5|1|4|2|1|3|1|5|0|0|6|6|6|3|3|6|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|6|4|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=98375&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3445&WC=2|0|1|&WS=0;5;1;3;2;2;-1;-1;-1;C|1;5;-1;-1;6;2;2;2;2;C|&WM=1|1|&CW=10&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=3045&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;1|2#RCPZ~2#CSDN~-1|5|6;2;1|6;4|-1|-1|-1#BCPZ~-1#CSF~0;0|1;1|1;0|2;2|2;1|3;1|4;1|5;1|6;1#CSD~5;1;3;4;3;2;3|5;5;3;2;4;1;3|1;2;6;2;1;6;1|4;6;2;1;4;4;1|2;6;3;2;6;1;2|1;6;5;5;5;1;2|3;6;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3045#AGS~7#SNFG~2#CPW~2;1|3;1#RSD~2;1;2|3;1;6&VA=5|5|1|4|2|1|3|1|5|0|0|6|6|6|3|3|6|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|6|4|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 513
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:41.945Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=98395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3465&WC=1|0|1|&WS=0;20;2;3;6;-1;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=3065&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~5|3;1|1;6|6|1|2|2#BCPZ~-1#CSF~0;1|1;1|1;0|2;2|2;1#CSD~5;1;3;4;3;2;3|1;3;3;2;4;1;3|6;1;1;2;1;6;1|6;4;2;1;4;4;1|1;2;3;2;6;1;2|2;1;5;5;5;1;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3065#AGS~7#SNFG~2#CPW~1;1|2;1#RSD~1;1;3|2;1;1&VA=5|1|6|6|1|2|2|1|0|0|4|2|1|3|3|3|1|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|6|4|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=98395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=3465&WC=1|0|1|&WS=0;20;2;3;6;-1;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=3065&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;1|2#RCPZ~2#CSDN~5|3;1|1;6|6|1|2|2#BCPZ~-1#CSF~0;1|1;1|1;0|2;2|2;1#CSD~5;1;3;4;3;2;3|1;3;3;2;4;1;3|6;1;1;2;1;6;1|6;4;2;1;4;4;1|1;2;3;2;6;1;2|2;1;5;5;5;1;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~3065#AGS~7#SNFG~2#CPW~1;1|2;1#RSD~1;1;3|2;1;1&VA=5|1|6|6|1|2|2|1|0|0|4|2|1|3|3|3|1|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|6|4|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 514
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.028Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4465&WC=1|0|1|&WS=0;1000;-1;32;112;96;32;32;-1;C|&WM=1|&CW=1000&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=4065&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~4|5;1|6;5|-1|-1|-1|-1#BCPZ~-1#CSF~1;5|2;6|2;5|2;4|3;6|3;5|4;5|5;5#CSD~4;5;3;4;3;2;3|1;5;3;2;4;1;3|5;6;6;2;1;6;1|6;4;2;1;4;4;1|1;2;3;2;6;1;2|2;1;5;5;5;1;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~4065#AGS~7#SNFG~2#CPW~2;5|3;5#RSD~2;5;6|3;5;4&VA=4|1|5|6|1|2|2|5|5|6|4|2|1|3|3|3|6|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|0|0|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4465&WC=1|0|1|&WS=0;1000;-1;32;112;96;32;32;-1;C|&WM=1|&CW=1000&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=4065&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~4|5;1|6;5|-1|-1|-1|-1#BCPZ~-1#CSF~1;5|2;6|2;5|2;4|3;6|3;5|4;5|5;5#CSD~4;5;3;4;3;2;3|1;5;3;2;4;1;3|5;6;6;2;1;6;1|6;4;2;1;4;4;1|1;2;3;2;6;1;2|2;1;5;5;5;1;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~4065#AGS~7#SNFG~2#CPW~2;5|3;5#RSD~2;5;6|3;5;4&VA=4|1|5|6|1|2|2|5|5|6|4|2|1|3|3|3|6|2|3|5|3|4|2|2|1|2|5|1|3|4|1|4|6|5|3|2|1|0|0|1|1|4|3|3|1|1|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 515
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.125Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4465&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=4065&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~1;4|2#RCPZ~2#CSDN~-1|1|1;3;5|1;5|3|6|-1#BCPZ~-1#CSD~4;5;3;4;3;2;3|1;1;5;3;2;4;3|5;3;1;5;6;6;2|5;1;6;4;2;1;4|3;1;2;3;2;6;2|6;2;1;5;5;5;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~4065#AGS~7#SNFG~2#CPW~1;4|2;4#RSD~1;4;2|2;4;6&VA=4|1|5|5|3|6|2|5|1|3|1|1|2|3|3|5|1|6|2|1|3|4|3|5|4|3|5|1|3|0|0|2|2|5|3|2|4|6|1|6|5|4|3|3|2|4|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99395&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4465&WC=0|0|0|&CW=0&NFG=2&TFG=3&CFGG=1&FGTW=4065&IFG=1&FID=2|0|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~1;4|2#RCPZ~2#CSDN~-1|1|1;3;5|1;5|3|6|-1#BCPZ~-1#CSD~4;5;3;4;3;2;3|1;1;5;3;2;4;3|5;3;1;5;6;6;2|5;1;6;4;2;1;4|3;1;2;3;2;6;2|6;2;1;5;5;5;2|2;3;3;1;3;4;1#SCFGG~1#CPDO~-1#RTW~4065#AGS~7#SNFG~2#CPW~1;4|2;4#RSD~1;4;2|2;4;6&VA=4|1|5|5|3|6|2|5|1|3|1|1|2|3|3|5|1|6|2|1|3|4|3|5|4|3|5|1|3|0|0|2|2|5|3|2|4|6|1|6|5|4|3|3|2|4|2|2|1|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 516
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.219Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99400&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4470&WC=1|0|1|&WS=0;5;2;14;10;-1;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=4070&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=STFG~3#RCPI~0;0|0#MZ~3;2|4#RCPZ~2#BCPZ~-1#CSF~0;1|1;3|1;2|1;1|2;3|2;1#ICSD~6;5;1;2;2;3;1|1;5;5;5;4;3;1|2;5;4;5;6;5;5|5;6;0;4;6;4;5|1;3;0;5;1;2;2|1;5;1;0;2;1;4|2;2;2;4;6;3;6#SCFGG~2#CWP~5#RTW~5#CPDO~-1#AGS~7#SNFG~1#CPW~3;2|4;2|5;3#RSD~3;2;5|4;2;1|5;3;5&VA=6|1|2|5|1|1|2|5|5|5|6|3|5|2|1|5|4|0|0|1|2|2|5|5|4|5|0|4|2|4|6|6|1|2|6|3|3|5|4|2|1|3|1|1|5|5|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99400&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4470&WC=1|0|1|&WS=0;5;2;14;10;-1;-1;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=4070&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=STFG~3#RCPI~0;0|0#MZ~3;2|4#RCPZ~2#BCPZ~-1#CSF~0;1|1;3|1;2|1;1|2;3|2;1#ICSD~6;5;1;2;2;3;1|1;5;5;5;4;3;1|2;5;4;5;6;5;5|5;6;0;4;6;4;5|1;3;0;5;1;2;2|1;5;1;0;2;1;4|2;2;2;4;6;3;6#SCFGG~2#CWP~5#RTW~5#CPDO~-1#AGS~7#SNFG~1#CPW~3;2|4;2|5;3#RSD~3;2;5|4;2;1|5;3;5&VA=6|1|2|5|1|1|2|5|5|5|6|3|5|2|1|5|4|0|0|1|2|2|5|5|4|5|0|4|2|4|6|6|1|2|6|3|3|5|4|2|1|3|1|1|5|5|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 517
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.385Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99415&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4485&WC=2|0|1|&WS=0;5;-1;-1;-1;4;28;8;-1;C|1;10;-1;-1;-1;32;112;24;-1;C|&WM=1|1|&CW=15&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=4085&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;4|2#RCPZ~2#CSDN~3|4;2;1|1;2|-1|-1|-1|-1#BCPZ~-1#CSF~3;5|3;2|4;6|4;5|4;4|4;3|4;2|5;4|5;3#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|5;6;0;4;6;4;5|1;3;0;5;1;2;2|1;5;1;0;2;1;4|2;2;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~20#AGS~7#SNFG~1#CPW~4;4|3;5#RSD~4;4;1|3;5;4&VA=3|1|2|5|1|1|2|6|2|1|6|3|5|2|1|4|2|0|0|1|2|2|1|4|4|5|0|4|2|4|6|6|0|2|6|3|3|5|0|2|1|3|1|1|5|5|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99415&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4485&WC=2|0|1|&WS=0;5;-1;-1;-1;4;28;8;-1;C|1;10;-1;-1;-1;32;112;24;-1;C|&WM=1|1|&CW=15&NFG=1&FGT=1&TFG=2&CFGG=1&FGTW=4085&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;4|2#RCPZ~2#CSDN~3|4;2;1|1;2|-1|-1|-1|-1#BCPZ~-1#CSF~3;5|3;2|4;6|4;5|4;4|4;3|4;2|5;4|5;3#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|5;6;0;4;6;4;5|1;3;0;5;1;2;2|1;5;1;0;2;1;4|2;2;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~20#AGS~7#SNFG~1#CPW~4;4|3;5#RSD~4;4;1|3;5;4&VA=3|1|2|5|1|1|2|6|2|1|6|3|5|2|1|4|2|0|0|1|2|2|1|4|4|5|0|4|2|4|6|6|0|2|6|3|3|5|0|2|1|3|1|1|5|5|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 32,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 518
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.456Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99425&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4495&WC=1|0|1|&WS=0;10;-1;-1;-1;-1;2;2;7;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=4095&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~-1|-1|-1|3;6|5;1;3;2;6|2;3|-1#BCPZ~-1#CSF~4;1|5;1|6;2|6;1|6;0#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|6;3;5;6;4;6;5|6;2;3;1;5;1;3|3;2;1;5;1;1;4|2;2;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~30#AGS~7#SNFG~1#CPW~3;3|3;4#RSD~3;3;6|3;4;4&VA=3|1|2|6|6|3|2|6|2|1|3|2|2|2|1|4|2|5|3|1|2|2|1|4|0|1|5|4|2|4|6|0|5|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99425&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4495&WC=1|0|1|&WS=0;10;-1;-1;-1;-1;2;2;7;C|&WM=1|&CW=10&NFG=1&FGT=1&TFG=3&CFGG=2&FGTW=4095&IFG=1&FID=0|2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#STFG~3#MZ~3;3|2#RCPZ~2#CSDN~-1|-1|-1|3;6|5;1;3;2;6|2;3|-1#BCPZ~-1#CSF~4;1|5;1|6;2|6;1|6;0#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|6;3;5;6;4;6;5|6;2;3;1;5;1;3|3;2;1;5;1;1;4|2;2;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~30#AGS~7#SNFG~1#CPW~3;3|3;4#RSD~3;3;6|3;4;4&VA=3|1|2|6|6|3|2|6|2|1|3|2|2|2|1|4|2|5|3|1|2|2|1|4|0|1|5|4|2|4|6|0|5|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 24,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 519
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.739Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99430&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4500&WC=1|0|1|&WS=0;5;-1;-1;-1;30;16;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=4100&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;1|3#RCPZ~2#CSDN~-1|-1|-1|-1|3|5|2;6;2#BCPZ~-1#CSF~3;4|3;3|3;2|3;1|4;4#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|6;3;5;0;0;6;5|3;6;3;1;5;1;3|5;3;1;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~35#AGS~7#SNFG~1#CPW~3;1|5;2#RSD~3;1;3|5;2;1&VA=3|1|2|6|3|5|2|6|2|1|0|6|3|6|1|4|2|5|3|0|2|2|1|4|0|1|5|4|2|4|6|0|5|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99430&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4500&WC=1|0|1|&WS=0;5;-1;-1;-1;30;16;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=4&CFGG=3&FGTW=4100&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;1|3#RCPZ~2#CSDN~-1|-1|-1|-1|3|5|2;6;2#BCPZ~-1#CSF~3;4|3;3|3;2|3;1|4;4#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|6;3;5;0;0;6;5|3;6;3;1;5;1;3|5;3;1;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~35#AGS~7#SNFG~1#CPW~3;1|5;2#RSD~3;1;3|5;2;1&VA=3|1|2|6|3|5|2|6|2|1|0|6|3|6|1|4|2|5|3|0|2|2|1|4|0|1|5|4|2|4|6|0|5|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 223,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 520
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.838Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99450&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4520&WC=1|0|1|&WS=0;20;14;12;-1;-1;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=4120&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;1|3#RCPZ~2#CSDN~-1|-1|-1|5;5;1;1|5|-1|-1#BCPZ~-1#CSF~0;3|0;2|0;1|1;3|1;2#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|5;3;6;3;1;1;3|5;3;0;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~55#AGS~7#SNFG~1#CPW~0;1|1;2|0;3#RSD~0;1;6|1;2;4|0;3;2&VA=3|1|2|1|5|5|2|0|2|1|1|3|3|6|1|0|2|5|6|0|2|0|1|4|5|3|5|4|2|4|6|6|1|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99450&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4520&WC=1|0|1|&WS=0;20;14;12;-1;-1;-1;-1;-1;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=5&CFGG=4&FGTW=4120&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~0;1|3#RCPZ~2#CSDN~-1|-1|-1|5;5;1;1|5|-1|-1#BCPZ~-1#CSF~0;3|0;2|0;1|1;3|1;2#CSD~3;6;1;2;2;3;1|1;2;4;1;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|5;3;6;3;1;1;3|5;3;0;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~55#AGS~7#SNFG~1#CPW~0;1|1;2|0;3#RSD~0;1;6|1;2;4|0;3;2&VA=3|1|2|1|5|5|2|0|2|1|1|3|3|6|1|0|2|5|6|0|2|0|1|4|5|3|5|4|2|4|6|6|1|1|6|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 521
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:42.930Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99470&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4540&WC=1|0|1|&WS=0;20;-1;-1;-1;-1;48;48;24;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=4140&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~5;3|2#RCPZ~2#CSDN~4;3;4|4;5|-1|-1|-1|-1|-1#BCPZ~-1#CSF~4;5|4;4|5;5|5;4|6;4|6;3#CSD~4;3;4;3;2;3;1|5;4;1;2;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|5;3;6;3;1;1;3|5;3;0;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~75#AGS~7#SNFG~1#CPW~6;3|6;4#RSD~6;3;4|6;4;6&VA=4|5|2|1|5|5|2|3|4|1|1|3|3|6|4|1|2|5|6|0|2|3|2|4|5|3|5|0|2|4|6|6|1|1|0|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99470&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4540&WC=1|0|1|&WS=0;20;-1;-1;-1;-1;48;48;24;C|&WM=1|&CW=20&NFG=1&FGT=1&TFG=6&CFGG=5&FGTW=4140&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~5;3|2#RCPZ~2#CSDN~4;3;4|4;5|-1|-1|-1|-1|-1#BCPZ~-1#CSF~4;5|4;4|5;5|5;4|6;4|6;3#CSD~4;3;4;3;2;3;1|5;4;1;2;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|5;3;6;3;1;1;3|5;3;0;5;1;1;4|2;6;2;4;6;3;6#SCFGG~2#CPDO~-1#RTW~75#AGS~7#SNFG~1#CPW~6;3|6;4#RSD~6;3;4|6;4;6&VA=4|5|2|1|5|5|2|3|4|1|1|3|3|6|4|1|2|5|6|0|2|3|2|4|5|3|5|0|2|4|6|6|1|1|0|3|3|5|6|1|1|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 28,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 522
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.015Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=99545&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4615&WC=3|0|1|&WS=0;20;-1;4;14;3;-1;-1;-1;C|1;5;-1;-1;12;12;4;4;-1;C|2;50;-1;-1;28;48;16;16;-1;C|&WM=1|1|1|&CW=75&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=4215&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|-1|-1|4;3|3;6|1;2#BCPZ~-1#CSF~1;2|2;4|2;3|2;2|2;1|3;5|3;4|3;3|3;2|3;1|3;0|4;4|4;2|5;4|5;2#CSD~4;3;4;3;2;3;1|5;4;1;2;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|3;4;5;3;6;3;3|6;3;5;3;0;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~150#AGS~7#SNFG~1#CPW~2;2|2;3#RSD~2;2;2|2;3;4&VA=4|5|2|1|3|6|2|3|4|1|1|4|3|1|4|1|0|5|5|5|2|3|2|0|5|3|3|6|2|4|6|6|6|0|2|3|3|5|6|3|5|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=99545&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=4615&WC=3|0|1|&WS=0;20;-1;4;14;3;-1;-1;-1;C|1;5;-1;-1;12;12;4;4;-1;C|2;50;-1;-1;28;48;16;16;-1;C|&WM=1|1|1|&CW=75&NFG=1&FGT=1&TFG=7&CFGG=6&FGTW=4215&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~1;2|2#RCPZ~2#CSDN~-1|-1|-1|-1|4;3|3;6|1;2#BCPZ~-1#CSF~1;2|2;4|2;3|2;2|2;1|3;5|3;4|3;3|3;2|3;1|3;0|4;4|4;2|5;4|5;2#CSD~4;3;4;3;2;3;1|5;4;1;2;4;3;1|2;1;2;4;6;5;5|1;1;5;5;6;6;5|3;4;5;3;6;3;3|6;3;5;3;0;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~150#AGS~7#SNFG~1#CPW~2;2|2;3#RSD~2;2;2|2;3;4&VA=4|5|2|1|3|6|2|3|4|1|1|4|3|1|4|1|0|5|5|5|2|3|2|0|5|3|3|6|2|4|6|6|6|0|2|3|3|5|6|3|5|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 31,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 523
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.124Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101045&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6115&WC=1|0|1|&WS=0;1500;-1;-1;12;4;124;24;-1;C|&WM=1|&CW=1500&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=5715&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;2|2#RCPZ~2#CSDN~-1|1|3;3;5;5|4;1;4;6;2;4|5;2|4;6|-1#BCPZ~-1#CSF~2;3|2;2|3;2|4;6|4;5|4;4|4;3|4;2|5;4|5;3#CSD~4;3;4;3;2;3;1|1;5;4;2;4;3;1|5;5;3;3;2;5;5|4;2;6;4;1;4;5|2;5;3;4;3;3;3|6;4;6;3;3;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~1650#AGS~7#SNFG~1#CPW~3;2|4;3#RSD~3;2;6|4;3;4&VA=4|1|5|4|2|6|2|3|5|5|2|5|4|1|4|4|3|0|3|6|2|3|2|3|4|0|3|6|2|4|2|1|3|3|2|3|3|5|4|3|5|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101045&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6115&WC=1|0|1|&WS=0;1500;-1;-1;12;4;124;24;-1;C|&WM=1|&CW=1500&NFG=1&FGT=1&TFG=8&CFGG=7&FGTW=5715&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~3;2|2#RCPZ~2#CSDN~-1|1|3;3;5;5|4;1;4;6;2;4|5;2|4;6|-1#BCPZ~-1#CSF~2;3|2;2|3;2|4;6|4;5|4;4|4;3|4;2|5;4|5;3#CSD~4;3;4;3;2;3;1|1;5;4;2;4;3;1|5;5;3;3;2;5;5|4;2;6;4;1;4;5|2;5;3;4;3;3;3|6;4;6;3;3;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~1650#AGS~7#SNFG~1#CPW~3;2|4;3#RSD~3;2;6|4;3;4&VA=4|1|5|4|2|6|2|3|5|5|2|5|4|1|4|4|3|0|3|6|2|3|2|3|4|0|3|6|2|4|2|1|3|3|2|3|3|5|4|3|5|3|1|1|5|5|3|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 30,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 524
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.204Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101705&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6775&WC=3|0|1|&WS=0;50;-1;-1;124;64;64;-1;-1;C|1;600;-1;16;56;40;24;8;-1;C|2;10;32;32;56;-1;-1;-1;-1;C|&WM=1|1|1|&CW=660&NFG=1&FGT=1&TFG=9&CFGG=8&FGTW=6375&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;3|3#RCPZ~2#CSDN~-1|-1|4;1|1|4;4;6;4;1|2;4|-1#BCPZ~-1#CSF~0;5|1;5|1;4|2;6|2;5|2;4|2;3|2;2|3;6|3;5|3;3|4;6|4;4|4;3|5;3#CSD~4;3;4;3;2;3;1|1;5;4;2;4;3;1|1;4;5;5;2;5;5|1;4;2;4;1;4;5|1;4;6;4;4;2;5|4;2;6;4;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~2310#AGS~7#SNFG~1#CPW~2;3|2;4|2;5#RSD~2;3;5|2;4;2|2;5;5&VA=4|1|1|1|1|4|2|3|5|4|4|4|2|1|4|4|5|2|6|6|2|3|2|0|4|4|4|6|2|4|0|1|4|6|2|3|3|0|4|2|5|3|1|1|5|5|5|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101705&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6775&WC=3|0|1|&WS=0;50;-1;-1;124;64;64;-1;-1;C|1;600;-1;16;56;40;24;8;-1;C|2;10;32;32;56;-1;-1;-1;-1;C|&WM=1|1|1|&CW=660&NFG=1&FGT=1&TFG=9&CFGG=8&FGTW=6375&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;3|3#RCPZ~2#CSDN~-1|-1|4;1|1|4;4;6;4;1|2;4|-1#BCPZ~-1#CSF~0;5|1;5|1;4|2;6|2;5|2;4|2;3|2;2|3;6|3;5|3;3|4;6|4;4|4;3|5;3#CSD~4;3;4;3;2;3;1|1;5;4;2;4;3;1|1;4;5;5;2;5;5|1;4;2;4;1;4;5|1;4;6;4;4;2;5|4;2;6;4;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~2310#AGS~7#SNFG~1#CPW~2;3|2;4|2;5#RSD~2;3;5|2;4;2|2;5;5&VA=4|1|1|1|1|4|2|3|5|4|4|4|2|1|4|4|5|2|6|6|2|3|2|0|4|4|4|6|2|4|0|1|4|6|2|3|3|0|4|2|5|3|1|1|5|5|5|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 525
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.296Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101710&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6780&WC=1|0|1|&WS=0;5;-1;-1;96;48;16;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=10&CFGG=9&FGTW=6380&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~1|1;2|6;4;1;1;6|6;3;4|4;6;2|4|-1#BCPZ~-1#CSF~2;6|2;5|3;5|3;4|4;4#CSD~1;4;3;4;3;2;1|2;1;1;5;4;2;1|6;1;1;4;6;1;4|4;3;6;1;4;2;1|2;6;4;1;4;6;2|4;4;2;6;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~2315#AGS~7#SNFG~1#CPW~2;5|3;5#RSD~2;5;1|3;5;2&VA=1|2|6|4|2|4|2|4|1|1|3|6|4|1|3|1|1|6|4|2|2|4|5|4|1|1|6|6|3|4|6|4|4|6|2|2|2|0|0|6|5|3|1|1|4|1|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101710&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6780&WC=1|0|1|&WS=0;5;-1;-1;96;48;16;-1;-1;C|&WM=1|&CW=5&NFG=1&FGT=1&TFG=10&CFGG=9&FGTW=6380&IFG=1&FID=0|2|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~2;4|2#RCPZ~2#CSDN~1|1;2|6;4;1;1;6|6;3;4|4;6;2|4|-1#BCPZ~-1#CSF~2;6|2;5|3;5|3;4|4;4#CSD~1;4;3;4;3;2;1|2;1;1;5;4;2;1|6;1;1;4;6;1;4|4;3;6;1;4;2;1|2;6;4;1;4;6;2|4;4;2;6;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CPDO~-1#RTW~2315#AGS~7#SNFG~1#CPW~2;5|3;5#RSD~2;5;1|3;5;2&VA=1|2|6|4|2|4|2|4|1|1|3|6|4|1|3|1|1|6|4|2|2|4|5|4|1|1|6|6|3|4|6|4|4|6|2|2|2|0|0|6|5|3|1|1|4|1|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 526
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.367Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101715&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6785&WC=1|0|0|&WS=0;5;-1;-1;-1;-1;12;24;8;C|&WM=1|&CW=5&NFG=1&TFG=3&CFGG=2&FGTW=6385&IFG=1&FID=2|0|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;2|2#RCPZ~2#CSDN~-1|-1|2;6|4;4|3|-1|-1#BCPZ~-1#CSD~1;4;3;4;3;2;1|2;1;1;5;4;2;1|6;2;6;1;1;4;6|4;4;4;3;6;1;1|3;2;6;4;1;6;2|4;4;2;6;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CC~10#CPDO~-1#RTW~2315#AGS~7#SNFG~1#CPW~4;3|5;3#RSD~4;3;4|5;3;6&VA=1|2|6|4|3|4|2|4|1|2|4|2|4|1|3|1|6|4|6|2|2|4|5|1|3|0|0|6|3|4|1|6|1|6|2|2|2|4|1|6|5|3|1|1|6|1|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101715&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6785&WC=1|0|0|&WS=0;5;-1;-1;-1;-1;12;24;8;C|&WM=1|&CW=5&NFG=1&TFG=3&CFGG=2&FGTW=6385&IFG=1&FID=2|0|&MUL=1&SUB=1&GSD=RCPI~0;0|0#STFG~3#MZ~4;2|2#RCPZ~2#CSDN~-1|-1|2;6|4;4|3|-1|-1#BCPZ~-1#CSD~1;4;3;4;3;2;1|2;1;1;5;4;2;1|6;2;6;1;1;4;6|4;4;4;3;6;1;1|3;2;6;4;1;6;2|4;4;2;6;6;5;4|2;1;2;6;2;3;6#SCFGG~2#CC~10#CPDO~-1#RTW~2315#AGS~7#SNFG~1#CPW~4;3|5;3#RSD~4;3;4|5;3;6&VA=1|2|6|4|3|4|2|4|1|2|4|2|4|1|3|1|6|4|6|2|2|4|5|1|3|0|0|6|3|4|1|6|1|6|2|2|2|4|1|6|5|3|1|1|6|1|2|4|6|&GA=0&AB=94930&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 28,
+          "httpStatus": 200,
+          "responseBalance": 94930,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 527
+          }
+        },
+        {
+          "ts": "2026-10-07T15:53:43.466Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "AP=false&BPR=5&GN=directhitmoneyzone&RB=7&PID=gdmgcmoffline-own-3&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=101715&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6785&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=6385&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~4;4|2#RCPZ~2#BCPZ~-1#ICSD~4;5;2;3;1;1;3|2;2;2;3;6;3;6|1;5;5;5;3;2;4|1;4;6;4;5;4;4|2;1;4;1;5;0;1|1;2;2;4;0;6;4|1;1;5;5;3;5;3#CPDO~-1#AGS~7#CPW~5;4|4;5#RSD~5;4;5|4;5;5&VA=4|2|1|1|2|1|1|5|2|5|4|1|2|1|2|2|5|6|4|2|5|3|3|5|4|1|4|5|1|6|3|5|5|0|3|1|3|2|4|0|6|5|3|6|4|4|1|4|3|&GA=0&AB=101715&FRBAL=0&SID=offline-response-3&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=101715&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.4-1.0.4-5&RID=0&NRID=0&BPR=5&RB=7&RS=0|0|0|0|0|0|0|&TW=6785&WC=0|0|0|&CW=0&NFG=0&TFG=3&CFGG=3&FGTW=6385&IFG=1&FID=2|&MUL=1&SUB=0&GSD=RCPI~0;0|0#MZ~4;4|2#RCPZ~2#BCPZ~-1#ICSD~4;5;2;3;1;1;3|2;2;2;3;6;3;6|1;5;5;5;3;2;4|1;4;6;4;5;4;4|2;1;4;1;5;0;1|1;2;2;4;0;6;4|1;1;5;5;3;5;3#CPDO~-1#AGS~7#CPW~5;4|4;5#RSD~5;4;5|4;5;5&VA=4|2|1|1|2|1|1|5|2|5|4|1|2|1|2|2|5|6|4|2|5|3|3|5|4|1|4|5|1|6|3|5|5|0|3|1|3|2|4|0|6|5|3|6|4|4|1|4|3|&GA=0&AB=101715&FRBAL=0&SID=offline-response-3&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 27,
+          "httpStatus": 200,
+          "responseBalance": 101715,
+          "rollingSource": {
+            "sessionHash": "bf0ce060881cbbd121025017c51802a7a15f46ffd2e5eff55177a188d6809696",
+            "requestNo": 528
+          }
+        }
+      ]
+    },
+    "gameId": "32708",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32715",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "name": "Huff N' Even More Puff",
+      "runtimeSlug": "huffnevenmorepuff96",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 77510,
+      "steps": [
+        {
+          "ts": "2026-10-07T16:01:40.961Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=1&BPR=10&RB=5&RS=103|15|115|5|100|&TW=0&WC=0|0|1|&WS=-2;0;2;-1;-1;-1;2;|&CW=0&NFG=6&FGT=6&TFG=6&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=BRS~103|15|115|5|100|#BMS~3#VA~15,1,1,5,15,15,13,1,5,15,15,3,1,5,15#HHPOS~0;4;5;9;10;14#BWC~0|0|1|#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=1&BPR=10&RB=5&RS=103|15|115|5|100|&TW=0&WC=0|0|1|&WS=-2;0;2;-1;-1;-1;2;|&CW=0&NFG=6&FGT=6&TFG=6&CFGG=0&FGTW=0&IFG=0&FID=0|&MUL=1&SUB=0&GSD=BRS~103|15|115|5|100|#BMS~3#VA~15,1,1,5,15,15,13,1,5,15,15,3,1,5,15#HHPOS~0;4;5;9;10;14#BWC~0|0|1|#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 649
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.016Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=47|93|87|32|43|&TW=0&WC=0|0|0|&CW=0&NFG=5&TFG=6&CFGG=1&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~1|0|0|0|1|1|0|0|0|1|1|0|0|0|1#CFCFGG~1#BMS~3#VA~15,3,5,2,6,15,4,1,4,6,8,4,1,3,4#FMS~4#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|0|0|1#CFNFG~5#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=47|93|87|32|43|&TW=0&WC=0|0|0|&CW=0&NFG=5&TFG=6&CFGG=1&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~1|0|0|0|1|1|0|0|0|1|1|0|0|0|1#CFCFGG~1#BMS~3#VA~15,3,5,2,6,15,4,1,4,6,8,4,1,3,4#FMS~4#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|0|0|1#CFNFG~5#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 650
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.079Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=65|22|8|23|75|&TW=0&WC=0|0|0|&CW=0&NFG=4&TFG=6&CFGG=2&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|0|0|1#CFCFGG~2#BMS~3#VA~4,3,4,5,7,4,6,4,2,3,7,2,15,8,3#FMS~4#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFNFG~4#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=65|22|8|23|75|&TW=0&WC=0|0|0|&CW=0&NFG=4&TFG=6&CFGG=2&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|0|0|1#CFCFGG~2#BMS~3#VA~4,3,4,5,7,4,6,4,2,3,7,2,15,8,3#FMS~4#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFNFG~4#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 26,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 651
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.139Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=40|48|64|25|8|&TW=0&WC=0|0|0|&CW=0&NFG=3&TFG=6&CFGG=3&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFCFGG~3#BMS~3#VA~5,4,7,8,4,5,4,7,8,7,8,3,5,1,3#FMS~1#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFNFG~3#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=40|48|64|25|8|&TW=0&WC=0|0|0|&CW=0&NFG=3&TFG=6&CFGG=3&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~6#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFCFGG~3#BMS~3#VA~5,4,7,8,4,5,4,7,8,7,8,3,5,1,3#FMS~1#BWC~0|0|1|#FRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFNFG~3#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 23,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 652
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.206Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=37|21|112|3|0|&TW=0&WC=0|0|0|&CW=0&NFG=3&FGT=1&TFG=7&CFGG=4&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~1#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFCFGG~4#BMS~3#VA~15,0,5,15,5,7,3,5,6,5,7,6,15,6,11#HHPOS~0;3;12#FMS~5#BWC~0|0|1|#FRAMES~3|0|0|1|1|2|0|0|0|1|1|0|2|0|1#CFNFG~3#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=37|21|112|3|0|&TW=0&WC=0|0|0|&CW=0&NFG=3&FGT=1&TFG=7&CFGG=4&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~1#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~2|0|0|0|1|2|0|0|0|1|1|0|1|0|1#CFCFGG~4#BMS~3#VA~15,0,5,15,5,7,3,5,6,5,7,6,15,6,11#HHPOS~0;3;12#FMS~5#BWC~0|0|1|#FRAMES~3|0|0|1|1|2|0|0|0|1|1|0|2|0|1#CFNFG~3#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 653
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.294Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=125|52|9|4|11|&TW=0&WC=0|0|0|&CW=0&NFG=2&TFG=7&CFGG=5&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|2|0|0|0|1|1|0|2|0|1#CFCFGG~5#BMS~3#VA~1,6,4,6,5,1,3,15,6,5,7,3,15,5,5#FMS~1#BWC~0|0|1|#FRAMES~3|0|0|1|1|2|0|1|0|1|1|0|3|0|1#CFNFG~2#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=125|52|9|4|11|&TW=0&WC=0|0|0|&CW=0&NFG=2&TFG=7&CFGG=5&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|2|0|0|0|1|1|0|2|0|1#CFCFGG~5#BMS~3#VA~1,6,4,6,5,1,3,15,6,5,7,3,15,5,5#FMS~1#BWC~0|0|1|#FRAMES~3|0|0|1|1|2|0|1|0|1|1|0|3|0|1#CFNFG~2#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 654
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.366Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=115|74|118|24|27|&TW=0&WC=0|0|0|&CW=0&NFG=1&TFG=7&CFGG=6&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|2|0|1|0|1|1|0|3|0|1#CFCFGG~6#BMS~3#VA~15,3,8,2,1,8,3,8,8,3,4,2,5,8,7#FMS~1#HHSHIFTPOS~0;5|#BWC~0|0|1|#FRAMES~3|0|0|1|1|3|0|1|0|1|1|0|3|0|1#CFNFG~1#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=77310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=1&BPR=10&RB=5&RS=115|74|118|24|27|&TW=0&WC=0|0|0|&CW=0&NFG=1&TFG=7&CFGG=6&FGTW=0&IFG=1&FID=0|&MUL=1&SUB=0&GSD=CFFGT~0#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|2|0|1|0|1|1|0|3|0|1#CFCFGG~6#BMS~3#VA~15,3,8,2,1,8,3,8,8,3,4,2,5,8,7#FMS~1#HHSHIFTPOS~0;5|#BWC~0|0|1|#FRAMES~3|0|0|1|1|3|0|1|0|1|1|0|3|0|1#CFNFG~1#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 27,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 655
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.434Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=80310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=0&BPR=10&RB=5&RS=99|24|84|29|75|&TW=3000&WC=0|0|0|&CW=3000&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=3000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=CFFGT~0#FRAMEWINS~5|0|0|1.5|0.5|5|0|0.75|0.75|0.5|0.5|0|-100|0|0.5#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|3|0|1|0|1|1|0|3|0|1#CFCFGG~7#BMS~3#BSPOS~2;10;14#VA~4,2,4,15,7,9,2,6,15,3,3,2,6,9,3#FMS~3#BWC~0|0|1|#FRAMES~3|0|0|2|1|3|0|1|1|1|1|0|3|0|1#FEAT_WIN~FG;3000|#CFNFG~0#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=80310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=1&NRID=0&BPR=10&RB=5&RS=99|24|84|29|75|&TW=3000&WC=0|0|0|&CW=3000&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=3000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=CFFGT~0#FRAMEWINS~5|0|0|1.5|0.5|5|0|0.75|0.75|0.5|0.5|0|-100|0|0.5#BRS~103|15|115|5|100|#CFTFG~7#PREVFRAMES~3|0|0|1|1|3|0|1|0|1|1|0|3|0|1#CFCFGG~7#BMS~3#BSPOS~2;10;14#VA~4,2,4,15,7,9,2,6,15,3,3,2,6,9,3#FMS~3#BWC~0|0|1|#FRAMES~3|0|0|2|1|3|0|1|1|1|1|0|3|0|1#FEAT_WIN~FG;3000|#CFNFG~0#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=77310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 29,
+          "httpStatus": 200,
+          "responseBalance": 77310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 656
+          }
+        },
+        {
+          "ts": "2026-10-07T16:01:41.493Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-4&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=84310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=7000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~103|15|115|5|100|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~3#BSPOS~2;10;14#VA~4,2,4,15,7,9,2,6,15,3,3,2,6,9,3#FMS~3#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~FG;3000|WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=84310&FRBAL=0&SID=offline-response-4&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=84310&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=7000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~103|15|115|5|100|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~3#BSPOS~2;10;14#VA~4,2,4,15,7,9,2,6,15,3,3,2,6,9,3#FMS~3#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~FG;3000|WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;2;-1;-1;-1;2;|&GA=0&AB=84310&FRBAL=0&SID=offline-response-4&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 84310,
+          "rollingSource": {
+            "sessionHash": "59b8d56c989372d8fae86525a5caebf356ffbd2a3a105e7e426375ac4792ade2",
+            "requestNo": 657
+          }
+        }
+      ]
+    },
+    "gameId": "32715",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32715",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "name": "Huff N' Even More Puff",
+      "runtimeSlug": "huffnevenmorepuff96",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 79710,
+      "steps": [
+        {
+          "ts": "2026-10-07T16:00:53.888Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-5&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=79510&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=59|75|65|24|35|&TW=0&WC=0|0|1|&WS=-2;0;1;1;0;-1;0;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~59|75|65|24|35|#BMS~4#BSPOS~2;4;5;6#VA~2,9,13,7,13,13,13,4,7,5,4,3,4,3,5#BWC~0|0|1|#BWS~-2;0;1;1;0;-1;0;|&GA=0&AB=79510&FRBAL=0&SID=offline-response-5&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=79510&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=59|75|65|24|35|&TW=0&WC=0|0|1|&WS=-2;0;1;1;0;-1;0;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~59|75|65|24|35|#BMS~4#BSPOS~2;4;5;6#VA~2,9,13,7,13,13,13,4,7,5,4,3,4,3,5#BWC~0|0|1|#BWS~-2;0;1;1;0;-1;0;|&GA=0&AB=79510&FRBAL=0&SID=offline-response-5&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 79510,
+          "rollingSource": {
+            "sessionHash": "a2dd76c6815c86ae094ad121de035abc631bce88e616364a3d2423b7c92aea54",
+            "requestNo": 463
+          }
+        },
+        {
+          "ts": "2026-10-07T16:00:53.940Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-5&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=83510&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~59|75|65|24|35|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~4#BSPOS~2;4;5;6#VA~2,9,13,7,13,13,13,4,7,5,4,3,4,3,5#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;1;1;0;-1;0;|&GA=0&AB=83510&FRBAL=0&SID=offline-response-5&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=83510&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~59|75|65|24|35|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~4#BSPOS~2;4;5;6#VA~2,9,13,7,13,13,13,4,7,5,4,3,4,3,5#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;1;1;0;-1;0;|&GA=0&AB=83510&FRBAL=0&SID=offline-response-5&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 83510,
+          "rollingSource": {
+            "sessionHash": "a2dd76c6815c86ae094ad121de035abc631bce88e616364a3d2423b7c92aea54",
+            "requestNo": 464
+          }
+        }
+      ]
+    },
+    "gameId": "32715",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32715",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "name": "Huff N' Even More Puff",
+      "runtimeSlug": "huffnevenmorepuff96",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 91830,
+      "steps": [
+        {
+          "ts": "2026-10-07T16:00:22.318Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-6&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=91690&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=25|74|8|53|52|&TW=60&WC=3|0|1|&WS=0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&WM=1|1|1|&CW=60&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~25|74|8|53|52|#BMS~1#BSPOS~5;9;11#VA~11,1,1,2,5,13,9,1,8,13,1,13,1,5,10#BWC~3|0|1|#BWS~0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&GA=0&AB=91630&FRBAL=0&SID=offline-response-6&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=91690&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=25|74|8|53|52|&TW=60&WC=3|0|1|&WS=0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&WM=1|1|1|&CW=60&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~25|74|8|53|52|#BMS~1#BSPOS~5;9;11#VA~11,1,1,2,5,13,9,1,8,13,1,13,1,5,10#BWC~3|0|1|#BWS~0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&GA=0&AB=91630&FRBAL=0&SID=offline-response-6&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 25,
+          "httpStatus": 200,
+          "responseBalance": 91630,
+          "rollingSource": {
+            "sessionHash": "00ac3547b3de80b72fc33567840f1340e45b07bdd356653106234b33feeb290e",
+            "requestNo": 348
+          }
+        },
+        {
+          "ts": "2026-10-07T16:00:22.397Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-6&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=95690&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4060&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~25|74|8|53|52|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~1#BSPOS~5;9;11#VA~11,1,1,2,5,13,9,1,8,13,1,13,1,5,10#BWC~3|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&GA=0&AB=95690&FRBAL=0&SID=offline-response-6&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=95690&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4060&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~7|#CFFGT~0#BRS~25|74|8|53|52|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~1#BSPOS~5;9;11#VA~11,1,1,2,5,13,9,1,8,13,1,13,1,5,10#BWC~3|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~0;20;2;0;0;-1;-1;|1;20;2;0;1;-1;-1;|2;20;2;0;2;-1;-1;|-2;0;1;2;-1;-1;1;|&GA=0&AB=95690&FRBAL=0&SID=offline-response-6&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 29,
+          "httpStatus": 200,
+          "responseBalance": 95690,
+          "rollingSource": {
+            "sessionHash": "00ac3547b3de80b72fc33567840f1340e45b07bdd356653106234b33feeb290e",
+            "requestNo": 349
+          }
+        }
+      ]
+    },
+    "gameId": "32715",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32715",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "name": "Huff N' Even More Puff",
+      "runtimeSlug": "huffnevenmorepuff96",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 107110,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:59:04.286Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-7&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=106910&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=84|64|109|0|34|&TW=0&WC=0|0|1|&WS=-2;0;2;1;-1;-1;1;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~84|64|109|0|34|#BMS~2#BSPOS~6;9;10#VA~1,1,8,4,1,11,13,15,4,13,13,4,15,4,5#BWC~0|0|1|#BWS~-2;0;2;1;-1;-1;1;|&GA=0&AB=106910&FRBAL=0&SID=offline-response-7&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=106910&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=84|64|109|0|34|&TW=0&WC=0|0|1|&WS=-2;0;2;1;-1;-1;1;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~84|64|109|0|34|#BMS~2#BSPOS~6;9;10#VA~1,1,8,4,1,11,13,15,4,13,13,4,15,4,5#BWC~0|0|1|#BWS~-2;0;2;1;-1;-1;1;|&GA=0&AB=106910&FRBAL=0&SID=offline-response-7&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 20,
+          "httpStatus": 200,
+          "responseBalance": 106910,
+          "rollingSource": {
+            "sessionHash": "527cb8947e99e23b3b03a2a69dc9bf7da7ad5f195bd20ac494341d5796920576",
+            "requestNo": 100
+          }
+        },
+        {
+          "ts": "2026-10-07T15:59:04.357Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-7&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=110910&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~0|#CFFGT~0#BRS~84|64|109|0|34|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~2#BSPOS~6;9;10#VA~1,1,8,4,1,11,13,15,4,13,13,4,15,4,5#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;2;1;-1;-1;1;|&GA=0&AB=110910&FRBAL=0&SID=offline-response-7&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=110910&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~0|#CFFGT~0#BRS~84|64|109|0|34|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~2#BSPOS~6;9;10#VA~1,1,8,4,1,11,13,15,4,13,13,4,15,4,5#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;2;1;-1;-1;1;|&GA=0&AB=110910&FRBAL=0&SID=offline-response-7&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 18,
+          "httpStatus": 200,
+          "responseBalance": 110910,
+          "rollingSource": {
+            "sessionHash": "527cb8947e99e23b3b03a2a69dc9bf7da7ad5f195bd20ac494341d5796920576",
+            "requestNo": 101
+          }
+        }
+      ]
+    },
+    "gameId": "32715",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  },
+  {
+    "plan": {
+      "schema": "sg-work-pool-v1",
+      "configured": true,
+      "trialId": "sg_ag_r1_20261004_32715",
+      "target": 300000,
+      "workers": 20,
+      "gameId": 32715,
+      "runtimeGameId": 33115,
+      "name": "Huff N' Even More Puff",
+      "runtimeSlug": "huffnevenmorepuff96",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 200,
+      "betPerLine": 5,
+      "lineBet": 5,
+      "maxSteps": 100,
+      "mongoBatchSize": 100,
+      "minRequestIntervalMs": 0,
+      "database": "sg_capture_staging_v1",
+      "collection": "official_rounds",
+      "productionGamePoolWrites": false,
+      "campaignId": "sg_ag_round_one_20261004",
+      "phase": 1,
+      "rollingPlan": "sg-ag-rolling-plan-v1",
+      "adapter": "native-nextgen-v1",
+      "requestParams": {
+        "BPR": "10",
+        "GN": "huffnevenmorepuff96",
+        "RB": "5"
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "8a8e446488bce556bba131013e4aa88e27583ca6ea611f1a153a3118bdc2f9d0"
+    },
+    "raw": {
+      "fixtureOnly": false,
+      "protocol": "nextgen",
+      "roundFieldsVersion": "sg-round-fields-v1",
+      "sourceKey": "huffnevenmorepuff96-ag-rolling-nextgen-v1",
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "startBalanceRaw": 93460,
+      "steps": [
+        {
+          "ts": "2026-10-07T15:58:47.447Z",
+          "methodName": "processGameMessage",
+          "msgId": "BET",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-8&MSGID=BET",
+          "responsePayload": "&MSGID=BET&B=93260&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=42|16|100|81|33|&TW=0&WC=0|0|1|&WS=-2;0;-1;0;1;-1;2;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~42|16|100|81|33|#BMS~2#BSPOS~1;7;14#VA~5,13,1,0,6,15,3,13,8,1,15,4,5,5,13#BWC~0|0|1|#BWS~-2;0;-1;0;1;-1;2;|&GA=0&AB=93260&FRBAL=0&SID=offline-response-8&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=BET&B=93260&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=42|16|100|81|33|&TW=0&WC=0|0|1|&WS=-2;0;-1;0;1;-1;2;|&CW=0&NFG=1&FGT=1&TFG=1&CFGG=0&FGTW=0&IFG=0&FID=2|&MUL=1&SUB=0&GSD=BRS~42|16|100|81|33|#BMS~2#BSPOS~1;7;14#VA~5,13,1,0,6,15,3,13,8,1,15,4,5,5,13#BWC~0|0|1|#BWS~-2;0;-1;0;1;-1;2;|&GA=0&AB=93260&FRBAL=0&SID=offline-response-8&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 93260,
+          "rollingSource": {
+            "sessionHash": "1516bb9ea8eded5a2bb9446037fa611660ab637256a84307c3d1e488fc8c6304",
+            "requestNo": 39
+          }
+        },
+        {
+          "ts": "2026-10-07T15:58:47.529Z",
+          "methodName": "processGameMessage",
+          "msgId": "FREE_GAME",
+          "requestPayload": "BPR=10&GN=huffnevenmorepuff96&RB=5&PID=gdmgcmoffline-own-8&MSGID=FREE_GAME",
+          "responsePayload": "&MSGID=FREE_GAME&B=97260&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~0|#CFFGT~0#BRS~42|16|100|81|33|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~2#BSPOS~1;7;14#VA~5,13,1,0,6,15,3,13,8,1,15,4,5,5,13#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;-1;0;1;-1;2;|&GA=0&AB=97260&FRBAL=0&SID=offline-response-8&",
+          "responseXml": "<?xml version=\"1.0\"?><GDMRESPONSE><OGS_RC>0</OGS_RC><SUCCESS>true</SUCCESS><PAYLOAD><![CDATA[&MSGID=FREE_GAME&B=97260&VER=4.1.4.2-4.1.4.2-4.1.4.2-1.0.2-1.0.2-3&RID=0&NRID=0&BPR=10&RB=5&RS=0|0|0|0|0|&TW=4000&WC=0|0|0|&CW=4000&NFG=0&TFG=1&CFGG=1&FGTW=4000&IFG=1&FID=2|&MUL=1&SUB=0&GSD=WHSTOP~0|#CFFGT~0#BRS~42|16|100|81|33|#CFTFG~1#WHEELSPIN~1#CFCFGG~1#BMS~2#BSPOS~1;7;14#VA~5,13,1,0,6,15,3,13,8,1,15,4,5,5,13#BWC~0|0|1|#WHSLICE~MINI|#FEAT_WIN~WHEEL;4000|#WHJPM~20#CFNFG~0#BWS~-2;0;-1;0;1;-1;2;|&GA=0&AB=97260&FRBAL=0&SID=offline-response-8&]]></PAYLOAD></GDMRESPONSE>",
+          "elapsedMs": 21,
+          "httpStatus": 200,
+          "responseBalance": 97260,
+          "rollingSource": {
+            "sessionHash": "1516bb9ea8eded5a2bb9446037fa611660ab637256a84307c3d1e488fc8c6304",
+            "requestNo": 40
+          }
+        }
+      ]
+    },
+    "gameId": "32715",
+    "fixtureTransform": "Only session identifiers replaced; original private evidence hashes remain in the reviewed contract."
+  }
+]
