@@ -4,6 +4,7 @@ import {sourcePermit,readTasks} from './sg-queue-control.mjs';
 import {participantKey,inspectParticipant} from './sg-federation.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 import {closureKey,inspectWindowRecovery,inspectEndedCaptureActors} from './sg-window-recovery-binding.mjs';
+import {BUSINESS_BRANCH} from './sg-ag-ordinary-linux.mjs';
 export async function checkWindowLeases({target,store,now=Date.now}){
  const keys=target.payload.games.flatMap(g=>[...['canary:1','canary:2'],...Array.from({length:20},(_,i)=>'worker:'+(i+1))]
   .map(t=>{const [kind,index]=t.split(':');return stagingLeaseKey(target.payload.queueId,g,kind,Number(index));}));
@@ -22,13 +23,26 @@ async function preservedProofs({target,r,store}){
    &&receipt.recordsHash===p.recordsHash,'SG_AG_WINDOW_OWN_COMPLETED_PROOF_CHANGED');
  }
 }
+async function sourceOnlySnapshot({target,r,store,guard}){
+ const completed=new Map(r.completedProofs.map(p=>[p.gameId,p])),rows=[];
+ for(const game of target.payload.games){
+  await guard();
+  const tasks=await readTasks({store,game,queueId:target.payload.queueId});
+  const key='rolling-merge:'+queueHash([target.payload.queueId,game.gameId,game.campaignId]);
+  const state=await store.get('state',key),receipt=await store.get('journal',key+':complete');
+  assert(state?.value.status!=='complete'||completed.has(game.gameId),'SG_AG_WINDOW_UNBOUND_COMPLETE_PROOF');
+  rows.push({gameId:game.gameId,tasks,state,receipt});
+ }
+ return queueHash(rows);
+}
 export async function closeEndedWindow({profile,target,store,transport,boundary,readEnded,readEndedJobs,readLinux,merge,run,commit,guard,now=Date.now}){
  const r=inspectWindowRecovery(profile,target),endKey=`rolling-ended:${target.payload.queueId}:${r.targetRun}`,key=closureKey(r);
+ const sourceOnly=r.schema==='sg-ag-ended-window-recovery-v2';
  assert(/^[0-9]+:1$/.test(run??'')&&run!==r.targetRun&&/^[a-f0-9]{40}$/.test(commit??'')&&commit!==r.targetCommit
-  &&typeof merge==='function'&&typeof guard==='function','SG_AG_WINDOW_ACTING_TARGET_IDENTITY');
+  &&(sourceOnly||typeof merge==='function')&&typeof guard==='function','SG_AG_WINDOW_ACTING_TARGET_IDENTITY');
  await boundary();const linux=await readLinux(profile.linuxRun),hello=await transport.request('hello');
  assert(linux?.id===Number(profile.linuxRun)&&linux.run_attempt===1&&linux.status==='completed'&&linux.conclusion==='success'
-  &&linux.head_branch==='main'&&linux.head_sha===profile.codeCommit&&linux.path==='.github/workflows/preflight.yml'
+  &&linux.head_branch===(sourceOnly?BUSINESS_BRANCH:'main')&&linux.head_sha===profile.codeCommit&&linux.path==='.github/workflows/preflight.yml'
   &&linux.repository?.full_name==='287113535qq-cmyk/sg-capture-runner','SG_AG_WINDOW_EXACT_LINUX_REQUIRED');
  assert(hello?.group==='primary'&&hello.database==='sg_capture_staging_v1'&&hello.rollingNamespace==='primary'
   &&hello.rollingJournalBatchEnabled===true&&hello.rollingCleanupEnabled===true
@@ -43,6 +57,7 @@ export async function closeEndedWindow({profile,target,store,transport,boundary,
  const actors=await inspectEndedCaptureActors({target,r,participant,readEnded,readEndedJobs});
  for(const game of target.payload.games)await readTasks({store,game,queueId:target.payload.queueId});
  await checkWindowLeases({target,store,now});await preservedProofs({target,r,store});await guard();
+ const sourceOnlyBefore=sourceOnly?await sourceOnlySnapshot({target,r,store,guard}):null;
  assert(queueHash((await store.get('state','rolling-source'))?.value)===r.nativeSourceHash,'SG_AG_WINDOW_SOURCE_CHANGED');
  const intent={schema:'sg-ag-window-close-intent-v1',operation:profile.operation,run,commit,profileHash:queueHash(profile),
   targetRun:r.targetRun,targetCommit:r.targetCommit,targetSourceHash:r.nativeSourceHash,permitHash:r.permitHash,
@@ -56,7 +71,15 @@ export async function closeEndedWindow({profile,target,store,transport,boundary,
   return {actorEnded:true,owner:previous.owner,run:r.targetRun,commit:r.targetCommit,jobId:rows[0].id,sourceRequests:0};
  };
  const results=[];
- for(const game of target.payload.games){await guard();
+ if(sourceOnly){
+  // Preserve verified native completions and every unfinished task exactly.
+  // No merge, task repair, gameplay, business write or control replay occurs.
+  for(const game of target.payload.games){
+   const proof=r.completedProofs.find(p=>p.gameId===game.gameId);
+   results.push({gameId:game.gameId,status:proof?'complete':'retained',count:proof?300000:0,
+    ...(!proof?{countKnown:false,reason:'SG_AG_FAILED_FINALIZER_RETAINED'}:{})});
+  }
+ }else for(const game of target.payload.games){await guard();
   try{const result=await merge(game,{recoverMerging,owner:run+':ag-rolling-window-close:controller'});
    assert(result?.gameId===game.gameId,'SG_AG_WINDOW_MERGE_GAME_CHANGED');results.push(result);
   }catch(error){if(error.outcomeUnknown===true||transport.status().poison)throw error;
@@ -64,14 +87,17 @@ export async function closeEndedWindow({profile,target,store,transport,boundary,
  }
  await boundary();await inspectEndedCaptureActors({target,r,participant,readEnded,readEndedJobs});
  await checkWindowLeases({target,store,now});await preservedProofs({target,r,store});await guard();
+ if(sourceOnly)assert(await sourceOnlySnapshot({target,r,store,guard})===sourceOnlyBefore,'SG_AG_WINDOW_RETAINED_METADATA_CHANGED');
  const before=await store.get('state','rolling-source');
  assert(queueHash(before?.value)===r.nativeSourceHash,'SG_AG_WINDOW_SOURCE_CHANGED');
  assert(r.completedProofs.every(p=>results.some(v=>v.gameId===p.gameId&&v.count===300000)),
   'SG_AG_WINDOW_COMPLETED_GAME_RETAINED_AS_UNKNOWN');
  const receipt={schema:'sg-ag-rolling-window-ended-v1',queueId:target.payload.queueId,run:r.targetRun,commit:r.targetCommit,
   activation:target.activation,profileHash:queueHash(target),complete:results.filter(v=>v.count===300000).length,
-  retained:results.filter(v=>v.count!==300000).length,games:results.map(v=>({gameId:v.gameId,status:v.status??'complete',count:v.count??0})),
-  sourceRequests:0,federationHash:queueHash(target.federation),participant,
+  retained:results.filter(v=>v.count!==300000).length,games:results.map(v=>({gameId:v.gameId,status:v.status??'complete',count:v.count??0,
+   ...(sourceOnly&&v.countKnown===false?{countKnown:false,reason:v.reason}:{})})),
+  sourceRequests:0,sourceJobsEnded:true,leasesGone:true,federationHash:queueHash(target.federation),participant,
+  ...(sourceOnly?{sourceOnly:true,retainedMetadataHash:sourceOnlyBefore,failedFinalizerJobHash:r.finalizerJobHash}:{}),
   closure:{schema:'sg-ag-window-closure-actor-v1',operation:profile.operation,run,commit,activation:profile.activation,
    profileHash:queueHash(profile),codeCommit:profile.codeCommit,linuxRun:profile.linuxRun,intentHash:queueHash(intent)}};
  await store.create('journal',endKey,receipt,{immutable:true});

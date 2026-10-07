@@ -14,9 +14,14 @@ export function assertWindowJobScope(env){
 }
 export function inspectWindowRecovery(profile,target){
  const r=profile.windowRecovery;
+ const sourceOnly=r?.schema==='sg-ag-ended-window-recovery-v2';
  assert(profile.operation==='close-ended-window'&&profile.sourceAllowance===0&&profile.federation
-  &&!profile.resume&&!profile.append&&!profile.preparationRecovery&&r?.schema==='sg-ag-ended-window-recovery-v1'
-  &&Object.keys(r).sort().join(',')==='completedProofs,finalizerJobId,nativeSourceHash,participantHash,permitHash,schema,targetActivation,targetCommit,targetProfileHash,targetRun'
+  &&!profile.resume&&!profile.append&&!profile.preparationRecovery
+  &&(sourceOnly||r?.schema==='sg-ag-ended-window-recovery-v1')
+  &&Object.keys(r).sort().join(',')===(sourceOnly
+   ?'completedProofs,finalizerJobHash,finalizerJobId,nativeSourceHash,participantHash,permitHash,schema,sourceOnly,targetActivation,targetCommit,targetProfileHash,targetRun'
+   :'completedProofs,finalizerJobId,nativeSourceHash,participantHash,permitHash,schema,targetActivation,targetCommit,targetProfileHash,targetRun')
+  &&(!sourceOnly||r.sourceOnly===true&&/^[a-f0-9]{64}$/.test(r.finalizerJobHash??''))
   &&/^[0-9]+:1$/.test(r.targetRun??'')&&/^[a-f0-9]{40}$/.test(r.targetCommit??'')
   &&['targetActivation','targetProfileHash','nativeSourceHash','permitHash','participantHash'].every(k=>/^[a-f0-9]{64}$/.test(r[k]??''))
   &&Number.isSafeInteger(r.finalizerJobId)&&r.finalizerJobId>0
@@ -39,6 +44,21 @@ export function inspectUnexecutedFinalizer(jobs,r){
   'SG_AG_WINDOW_FINALIZER_EXECUTED_OR_CHANGED');
  return rows[0];
 }
+// An executed failure is a different recovery case from an unstarted cancelled
+// job. Bind its entire terminal job document. This never labels it successful
+// and authorizes only source fencing, not replay of its control journal.
+export function inspectFailedFinalizer(jobs,r){
+ const rows=jobs.jobs.filter(j=>j.name==='ag-rolling-finalize'),job=rows[0];
+ assert(r.schema==='sg-ag-ended-window-recovery-v2'&&r.sourceOnly===true
+  &&rows.length===1&&job.id===r.finalizerJobId&&hash(job)===r.finalizerJobHash
+  &&job.status==='completed'&&job.conclusion==='failure'&&job.runner_id>0
+  &&Number.isFinite(Date.parse(job.started_at))&&Number.isFinite(Date.parse(job.completed_at))
+  &&Date.parse(job.completed_at)>=Date.parse(job.started_at)
+  &&Array.isArray(job.steps)&&job.steps.length>0&&job.steps.every(s=>s.status==='completed')
+  &&job.steps.filter(s=>s.name==='Reconcile ended AG lanes without source requests'&&s.conclusion==='failure').length===1,
+  'SG_AG_WINDOW_FAILED_FINALIZER_CHANGED');
+ return job;
+}
 export async function inspectEndedCaptureActors({target,r,participant,readEnded,readEndedJobs}){
  const out={};
  for(const [cohort,run] of [['primary',r.targetRun],['secondary',participant.run]]){
@@ -53,7 +73,10 @@ export async function inspectEndedCaptureActors({target,r,participant,readEnded,
    &&jobs.jobs.filter(j=>j.name===control&&j.conclusion==='success').length===1
    &&jobs.jobs.filter(j=>j.conclusion!=='skipped').every(j=>lane(j.name)||j.name===control||cohort==='primary'&&j.name==='ag-rolling-finalize'),
    'SG_AG_WINDOW_TARGET_CONTROL_CHANGED');
-  if(cohort==='primary')inspectUnexecutedFinalizer(jobs,r);
+  if(cohort==='primary'){
+   if(r.schema==='sg-ag-ended-window-recovery-v2')inspectFailedFinalizer(jobs,r);
+   else inspectUnexecutedFinalizer(jobs,r);
+  }
   out[cohort]={workflow,jobs};
  }
  assert(hash(participant)===r.participantHash&&participant.coordinatorRun===r.targetRun
@@ -71,6 +94,15 @@ export async function verifyRecoveryEnding({previous,prior,receipt,participant,s
  assert(hash(profile)===c.profileHash&&r.targetRun===prior.run&&r.targetCommit===prior.commit
   &&r.permitHash===hash(prior)&&c.codeCommit===profile.codeCommit&&c.linuxRun===profile.linuxRun,
   'SG_AG_WINDOW_CLOSURE_PROFILE_CHANGED');
+ if(r.schema==='sg-ag-ended-window-recovery-v2'){
+  const complete=new Set(r.completedProofs.map(p=>p.gameId));
+  const games=previous.payload.games.map(g=>({gameId:g.gameId,status:complete.has(g.gameId)?'complete':'retained',
+   count:complete.has(g.gameId)?300000:0,...(!complete.has(g.gameId)?{countKnown:false,reason:'SG_AG_FAILED_FINALIZER_RETAINED'}:{})}));
+  assert(receipt.sourceOnly===true&&receipt.sourceJobsEnded===true&&receipt.leasesGone===true
+   &&receipt.failedFinalizerJobHash===r.finalizerJobHash&&/^[a-f0-9]{64}$/.test(receipt.retainedMetadataHash??'')
+   &&receipt.complete===complete.size&&receipt.retained===previous.payload.games.length-complete.size
+   &&hash(receipt.games)===hash(games),'SG_AG_WINDOW_SOURCE_ONLY_RECEIPT_CHANGED');
+ }
  await inspectEndedCaptureActors({target:previous,r,participant,readEnded,readEndedJobs});
  const intent=(await store.get('journal',closureKey(r)))?.value,complete=(await store.get('journal',closureKey(r)+':complete'))?.value;
  assert(intent?.schema==='sg-ag-window-close-intent-v1'&&intent.run===c.run&&intent.commit===c.commit

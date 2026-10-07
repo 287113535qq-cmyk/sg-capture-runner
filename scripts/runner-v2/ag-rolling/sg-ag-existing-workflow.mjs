@@ -16,6 +16,7 @@ import {createLiveAgController} from './sg-ag-live-controller.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 import {createGameBudget} from './sg-ag-game-budget.mjs';
+import {loadExistingControlState} from './sg-ag-control-journal-cursor.mjs';
 
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 export function inspectExistingWorkflowPolicy(profile){
@@ -133,13 +134,12 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
   return {
   transport,parser,businessClient:client,ObjectId,bindings,plans,githubRead,evidenceMode:policy.evidenceMode,sourceJobsEnded,
   actorRun:coordinatorRun,actorCommit:commit,privateControlPersist,
-  flushControl,loadState:async()=>{const saved=await store.get('state',key);if(saved){
-   const value=saved.value;assert(value.cohortRun===cohortRun&&value.commit===commit&&Number.isSafeInteger(value.sequence)&&value.sequence>0
-    &&value.journal===key+':'+value.sequence,'SG_AG_CONTROL_SAVED_POINTER');
-   const journal=(await store.get('journal',value.journal))?.value;
-   assert(journal?.file==='own-control-state'&&journal.cohortRun===cohortRun&&journal.commit===commit&&stable(journal.value)===stable(value.state),'SG_AG_CONTROL_SAVED_FULL_JOURNAL');
-   sequence=value.sequence;
-  }return saved?.value.state;},
+  flushControl,loadState:async()=>{
+   // Exception journals share the append sequence but do not move the saved
+   // state pointer. Recover only a verified blocked-game exception suffix.
+   const loaded=await loadExistingControlState({store,key,cohortRun,commit});
+   sequence=loaded.sequence;return loaded.state;
+  },
   acceptCompletedGames:async saved=>{for(const game of saved.games){
    if(game.gameId==='32629'){game.phase='blocked';game.reason='SG_EXISTING_INDEPENDENT_MONEY_ANOMALY_RETAINED';continue;}
    if(plans[game.gameId].adapter!=='native-nextgen-v1'){game.phase='blocked';game.reason='SG_OWN_BUSINESS_ADAPTER_REVIEW_REQUIRED';continue;}

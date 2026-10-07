@@ -95,3 +95,4 @@ import './ag-rolling/sg-ag-game-budget.test.mjs';
 import './ag-rolling/sg-source-finalizer.test.mjs';
 import './ag-rolling/sg-ag-once-mongo.test.mjs';
 import './ag-rolling/sg-sealed-cleanup.test.mjs';
+import './ag-rolling/sg-ag-control-journal-cursor.test.mjs';

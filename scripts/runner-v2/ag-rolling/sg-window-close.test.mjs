@@ -52,6 +52,58 @@ function setup(){
   store,readEnded:args.readEnded,readEndedJobs:args.readEndedJobs,readRecoveryProfile:async()=>profile});
  return {args,docs,writes,source,permit,participant,proof,mergeKey,workflows,jobs,linux,seed,calls,verify};
 }
+function sourceOnlySetup(){
+ const s=setup(),job=s.jobs.get(101).jobs.at(-1);
+ Object.assign(job,{conclusion:'failure',runner_id:9,started_at:'2026-10-07T02:30:44Z',completed_at:'2026-10-07T02:40:23Z',
+  steps:[{name:'Reconcile ended AG lanes without source requests',status:'completed',conclusion:'failure'}]});
+ Object.assign(s.args.profile.windowRecovery,{schema:'sg-ag-ended-window-recovery-v2',sourceOnly:true,finalizerJobHash:queueHash(job)});
+ s.linux.head_branch='sg-ag-strict-control-20261006';
+ s.args.merge=()=>{throw Error('SOURCE_ONLY_MUST_NOT_MERGE');};
+ return s;
+}
+test('executed failed finalizer can be sealed by a distinct source-only actor without replaying tasks, merge or business',async()=>{
+ const s=sourceOnlySetup(),before=queueHash([...s.docs]);
+ const result=await closeEndedWindow(s.args);
+ assert.equal(result.complete,1);assert.equal(result.retained,1);assert.equal(s.calls.length,0);
+ assert.deepEqual(s.writes.map(v=>v[0]),['create','create','create','cas']);
+ const receipt=s.docs.get('journal/rolling-ended:queue:101:1').value;
+ assert.equal(receipt.sourceOnly,true);assert.equal(receipt.sourceJobsEnded,true);assert.equal(receipt.leasesGone,true);
+ assert.equal(receipt.games[1].countKnown,false);assert.equal(receipt.failedFinalizerJobHash,queueHash(s.jobs.get(101).jobs.at(-1)));
+ assert.equal((await s.verify()).closure.run,'103:1');assert.equal(s.jobs.get(101).jobs.at(-1).conclusion,'failure');
+ const savedSource=s.docs.get('state/rolling-source');s.docs.set('state/rolling-source',{_id:'primary/rolling-source',value:s.source,version:0});
+ for(const [,key] of s.writes.filter(v=>v[0]==='create'))s.docs.delete('journal/'+key);
+ assert.equal(queueHash([...s.docs]),before);assert.equal(savedSource.value.status,'idle');
+});
+for(const [name,change] of [
+ ['failed job document changed',s=>s.jobs.get(101).jobs.at(-1).runner_id++],
+ ['cancelled finalizer cannot borrow failure proof',s=>s.jobs.get(101).jobs.at(-1).conclusion='cancelled'],
+ ['unfinished finalizer step',s=>{const j=s.jobs.get(101).jobs.at(-1);j.steps[0].status='in_progress';s.args.profile.windowRecovery.finalizerJobHash=queueHash(j);}],
+ ['wrong failed step',s=>{const j=s.jobs.get(101).jobs.at(-1);j.steps[0].name='Setup';s.args.profile.windowRecovery.finalizerJobHash=queueHash(j);}],
+ ['missing failure hash',s=>delete s.args.profile.windowRecovery.finalizerJobHash],
+ ['sourceOnly false',s=>s.args.profile.windowRecovery.sourceOnly=false],
+ ['live expired-window lease',s=>s.seed('state',stagingLeaseKey('queue',s.args.target.payload.games[1],'worker',20),{expiresAt:1001})],
+ ['unregistered complete native',s=>{const g=s.args.target.payload.games[1];s.seed('state','rolling-merge:'+queueHash(['queue',g.gameId,g.campaignId]),{status:'complete',result:s.proof});}],
+ ['existing end receipt unknown',s=>s.seed('journal','rolling-ended:queue:101:1',{unknown:true})],
+ ['unknown extra recovery field',s=>s.args.profile.windowRecovery.skip=true]
+])test('source-only '+name+' prevents every write',async()=>{const s=sourceOnlySetup();change(s);await assert.rejects(closeEndedWindow(s.args));assert.deepEqual(s.writes,[]);});
+test('source-only preserves existing control journal and detects a task changing before ending',async()=>{
+ const s=sourceOnlySetup();s.seed('journal','rolling-ag-control:old:1',{file:'own-control-state',value:{retained:true}});
+ let n=0;s.args.boundary=async()=>{if(++n===3){const g=s.args.target.payload.games[1];s.docs.get('state/'+taskKey('queue',g,'worker:1')).value.owner='new-actor';}};
+ await assert.rejects(closeEndedWindow(s.args),/RETAINED_METADATA_CHANGED/);
+ assert.equal(s.docs.get('state/rolling-source').value.status,'running');assert.equal(s.writes.length,1);
+ assert.deepEqual(s.docs.get('journal/rolling-ag-control:old:1').value,{file:'own-control-state',value:{retained:true}});
+});
+for(const [name,change] of [
+ ['missing source-only marker',r=>delete r.sourceOnly],['unconfirmed source ending',r=>r.sourceJobsEnded=false],
+ ['unconfirmed leases',r=>r.leasesGone=false],['different failed job',r=>r.failedFinalizerJobHash='9'.repeat(64)],
+ ['missing retained metadata hash',r=>delete r.retainedMetadataHash],['wrong total',r=>r.complete++],
+ ['wrong retained total',r=>r.retained--],['invented game completion',r=>r.games[1]={gameId:r.games[1].gameId,status:'complete',count:300000}],
+ ['retained count claimed known',r=>delete r.games[1].countKnown],['game ordering changed',r=>r.games.reverse()]
+])test('ended proof reader rejects '+name+' even with a matching new audit hash',async()=>{
+ const s=sourceOnlySetup();await closeEndedWindow(s.args);const receipt=s.docs.get('journal/rolling-ended:queue:101:1').value;
+ change(receipt);s.docs.get('journal/rolling-window-close:'+s.args.target.activation+':101:1:complete').value.receiptHash=queueHash(receipt);
+ await assert.rejects(s.verify(),/SOURCE_ONLY_RECEIPT_CHANGED/);
+});
 test('distinct closure preserves the original namespace, all tasks and own completed proof, and independently verifies its real successful actor',async()=>{
  const s=setup(),before=queueHash([...s.docs].filter(([k])=>k.includes('rolling-task:')||k.includes('rolling-merge:')));
  const result=await closeEndedWindow(s.args);assert.equal(result.targetRun,'101:1');assert.equal(result.actingRun,'103:1');assert.equal(result.sourceRequests,0);
