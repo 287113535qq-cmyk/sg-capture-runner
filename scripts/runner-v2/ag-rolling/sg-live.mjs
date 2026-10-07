@@ -1,4 +1,5 @@
 import {sourceEligibleView} from './sg-source-deferrals.mjs';
+import {disconnectClosedController} from './sg-controller-ipc-close.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {connectGateway} from '../transport.mjs';
@@ -276,4 +277,4 @@ finally{try{await closeSealedSource({sourceSealed:sourceSealed&&process.exitCode
  log(JSON.stringify({...protocolStopReport(error),sourceSealed}));if(!sourceSealed)process.exitCode=2;
  }await mergeTail;mergeParser?.close();for(const [index,context] of auditReaders.entries()){
  log(JSON.stringify({kind:'sg-ag-admission-read-performance',reader:index+1,...context.reader.metrics()}));context.parser.close();context.reader.close();}
- log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();}
+ log(JSON.stringify({kind:'sg-ag-native-performance',...transport.metrics()}));transport.close();disconnectClosedController({mode});}

@@ -102,3 +102,4 @@ import './ag-rolling/sg-own-terminal.test.mjs';
 import './ag-rolling/sg-own-terminal-proof.test.mjs';
 
 import './ag-rolling/sg-own-geometry.test.mjs';
+import './ag-rolling/sg-controller-ipc-close.test.mjs';
