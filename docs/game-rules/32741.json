@@ -23,8 +23,12 @@
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/cashfalls-automatic-repair-20261007.md"
+  ],
+  "analysisDocumentHashes": {
+    "docs/cashfalls-automatic-repair-20261007.md": "378520d80bfe7a0f9b0d9e699ce86af989f29fe79ee34a15d78a78755a917540"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ae41ca933f42aaab0613bf6cc382b47b0a9f6f26361cd720a29cc015a6a328cd"
+  "ruleHash": "3bab8ec6c68916ea5fc38cce118b15000a59b0881ad7e1abd080811e6466d1d3"
 }
