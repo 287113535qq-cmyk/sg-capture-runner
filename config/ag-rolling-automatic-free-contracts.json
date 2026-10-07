@@ -1013,6 +1013,48 @@
       ],
       "sourceRequests": 0,
       "mongoWrites": 0
+    },
+    "uflcashfallschinastreet96-ag-rolling-nextgen-v1": {
+      "gameId": 32741,
+      "runtimeGameId": 33141,
+      "sourceKey": "uflcashfallschinastreet96-ag-rolling-nextgen-v1",
+      "betRaw": 100,
+      "requestParams": {
+        "BPR": "5",
+        "GN": "uflcashfallschinastreet96",
+        "RB": "5"
+      },
+      "balanceContract": null,
+      "allowedFids": {
+        "BET": [
+          "1|"
+        ],
+        "FREE_GAME": [
+          "1|"
+        ]
+      },
+      "allowTerminalFeatureId": true,
+      "terminalFids": [
+        "1|"
+      ],
+      "nativeFaultRawHashes": [
+        "8bb2a4e7b94206306fe7e75c8bfa4a9aa88f74a66281fa1856232251869a13b2",
+        "525441898934b916dbd6ff4cabf7e764fe95241dc15119c98daa4fdce44a538b"
+      ],
+      "nativeClosedHashes": [
+        "0b5477cf6ef08c1e51abd53e5890e9ec768c656419eda4de56e9b36d9cf4216b",
+        "fb2282b84b12635b225698ca20077ba94b6f267ec57c059fcb907086e01b135b"
+      ],
+      "historicalFullRawHashes": [
+        "759660e95669b8195fd58c4931c2d5929a988e0257b3a65e158d9db67fe07e97"
+      ],
+      "historyFileSha256": "a8eabffc604e267aef3b6d14eebd02e659f1e8c79efc821f677e3e92b365ef26",
+      "historicalCoveredFids": [
+        "1|"
+      ],
+      "nativeObservedAt": 1791362539.460107,
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   }
 }

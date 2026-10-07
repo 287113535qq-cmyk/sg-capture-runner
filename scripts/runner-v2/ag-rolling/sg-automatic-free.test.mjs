@@ -18,12 +18,22 @@ function sample(p=plan){
 function change(r,i,old,value){const s=r.steps[i];s.responsePayload=s.responsePayload.replace(old,value);
  s.responseXml='<GDMRESPONSE><SUCCESS>true</SUCCESS><PAYLOAD>'+s.responsePayload.replaceAll('&','&amp;')+'</PAYLOAD></GDMRESPONSE>';return r;}
 test('reviewed automatic feature IDs continue only FREE_GAME and settle exact original paid cost at zero remaining',()=>{
- for(const p of ['32486','32500','32501'].map(id=>registry.plans[id])){
+ for(const p of ['32486','32500','32501','32741'].map(id=>registry.plans[id])){
   const r=sample(p);assert.deepEqual(automaticFreeNext(p,{...r,steps:[]}),{MSGID:'BET'});
   for(const n of [1,2])assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,n)}),{MSGID:'FREE_GAME'});
   assert.equal(automaticFreeNext(p,r),null);const f=automaticFreeFields(p,r,hash);
   assert.equal(f.bonus,1);assert.equal(f.money.betRaw,p.betRaw);assert.equal(f.money.endBalanceRaw,1000-p.betRaw+50);
  }
+});
+test('Cash Falls China Street allows only its evidenced FID1 automatic continuation and terminal',()=>{
+ const p=registry.plans['32741'],r=sample(p);
+ assert.equal(p.automaticFreeContract,AUTOMATIC_FREE_CONTRACT);
+ assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,1)}),{MSGID:'FREE_GAME'});
+ assert.equal(automaticFreeFields(p,r,hash).bonus,1);
+ for(const i of [0,1,2])assert.throws(()=>automaticFreeNext(p,change(sample(p),i,'FID=1|','FID=2|')),/FEATURE/);
+ for(const suffix of ['&CFG=1','&NFR_1=1','&FS_1=0'])
+  assert.throws(()=>automaticFreeNext(p,change(sample(p),0,'FID=1|','FID=1|'+suffix)),/FEATURE/);
+ assert.throws(()=>automaticFreeFields(p,{...r,steps:r.steps.slice(0,1)},hash),/INCOMPLETE_ROUND/);
 });
 test('automatic review never authorizes explicit choice, unknown feature IDs, unfinished rounds or additional paid requests',()=>{
  for(const [from,to] of [['FID=1|','FID=2|'],['FID=1|','FID=1|&FS_1=0'],['FID=1|','FID=1|&NFR_1=1'],
