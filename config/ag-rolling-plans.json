@@ -1782,7 +1782,9 @@
         "BPR": "5",
         "GN": "directhitmoneyzone",
         "RB": "7"
-      }
+      },
+      "automaticFreeContract": "nextgen-automatic-nfg-free-v1",
+      "automaticFreeContractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef"
     },
     "32709": {
       "schema": "sg-work-pool-v1",
@@ -10338,7 +10340,7 @@
       "schema": "sg-ag-rolling-offline-adapter-v1",
       "gameId": 32708,
       "runtimeGameId": 33108,
-      "planHash": "de17098ca968150569d02dcbd8197fbd194d141ec8beff722cdbd0266cd4a352",
+      "planHash": "b86bc289c0910d84ec18a8289dbcc005f9a0fcae33a1312a6993987822267a6c",
       "historyFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
       "acceptedBaseRounds": 55,
       "acceptedFreeRounds": 43,
@@ -10447,7 +10449,20 @@
         "UNKNOWN_TRIAL_FEATURE": 2
       },
       "sourceRequests": 0,
-      "formalAdmission": "requires-two-AG-live-canaries"
+      "formalAdmission": "requires-two-AG-live-canaries",
+      "previousPlanHash": "de17098ca968150569d02dcbd8197fbd194d141ec8beff722cdbd0266cd4a352",
+      "automaticFreeRepair": {
+        "schema": "sg-ag-automatic-free-repair-evidence-v1",
+        "contractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef",
+        "nativeFaultPrefixes": 2,
+        "nativeEvidenceHash": "57838e68c9fe90b9d3baf2b575956e5baca3c799dac98189c4796cb37cad30df",
+        "historicalFullRounds": 45,
+        "historicalEvidenceHash": "f24511089edf5b70a875995251854c310ed2941464ed1da87205d28db3048786",
+        "independentJsPython": true,
+        "sourceRequests": 0,
+        "mongoWrites": 0,
+        "failedRoundsCredited": 0
+      }
     },
     "32709": {
       "schema": "sg-ag-rolling-offline-adapter-v1",

@@ -1108,6 +1108,105 @@
       "nativeObservedAt": 1791373192.5522006,
       "sourceRequests": 0,
       "mongoWrites": 0
+    },
+    "directhitmoneyzone-ag-rolling-nextgen-v1": {
+      "gameId": 32708,
+      "runtimeGameId": 33108,
+      "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
+      "betRaw": 100,
+      "requestParams": {
+        "AP": "false",
+        "BPR": "5",
+        "GN": "directhitmoneyzone",
+        "RB": "7"
+      },
+      "balanceContract": null,
+      "allowedFids": {
+        "BET": [
+          "0|"
+        ],
+        "FREE_GAME": [
+          "0|",
+          "0|1|",
+          "0|2|",
+          "1|0|",
+          "2|",
+          "2|0|"
+        ]
+      },
+      "allowTerminalFeatureId": true,
+      "terminalFids": [
+        "0|",
+        "1|0|",
+        "2|0|"
+      ],
+      "nativeFaultRawHashes": [
+        "dfcbac13cd97f95e976d6ed8d977e4451b2089231488bc883a50b2c4502726f6",
+        "b300837f2460ce072abf5af5bb7e6c2baaa7b92c2ea347906ea63e5f086b29a7"
+      ],
+      "nativeClosedHashes": [
+        "a7900cea96e2b7d65739d61968624db81916a111efbf0016c28265f8f980778e",
+        "b76c39d3c8c754effbb6472f877fa3dab426aada76dcb4fc9e19b36fbf08da68"
+      ],
+      "historicalFullRawHashes": [
+        "d828529714376f55c6095b2ca71f9adcc328894cce06823e00fdb9127264c7d6",
+        "eaf16ff703ce8351767bbcc5c98efb625e4ff0d398c650f88c476d6498c25879",
+        "5b0eaf73eb30bdf916dcabe431db78007290ed77b6cfc36431495aa80c79c462",
+        "e849626625f34e8ffd954c9f26affe995656220859192ad67262fcb7214de004",
+        "e0bfe051803db5160b37ae26f857c2e241452e58c7a11f21d379b8df6711aa67",
+        "6ed51daf644907cd68d20b732a9e5031f6125193dd451be87eb0e6bab2ae06cd",
+        "02e419816b7f8aeb9149785a09c7e4912d8417a4e0210da5abd571939aeed34d",
+        "f411807cdc2c084b5203b725ab6f650f776db192576e6f3e66c22ee2d27e31e4",
+        "75d0b6d74c7e62b00cb76995d262f1bb71473ab4fccd0f81e06fae61fd816511",
+        "0d31d39a51a106d2512f5836dfec621d8f94dc96adf87778b805ee5feca9fefe",
+        "19e261f0e2ed7837420dc9a973d62556860360e9c6b2f0fe2c6aa480c3fd4b32",
+        "d2acbf119d100c74d081bccea0baa82deb6def4b0ba15f6bef42132320af5cd9",
+        "697defb6e65af363979b1d1202c4076057d1520e419a6ed8cde6fbaf3ea25dda",
+        "c93065dda01fef16bcc1e275dc891ea9a71dbff0d51a066b1a4d99af756e0feb",
+        "0ecb6dce16b0cfcd0e70fe2f522b79d03e6a93392622ba6a20d8babc2d293f0d",
+        "0d167e3174a1be22d8db64762a154153c69a1bc926d61bf48da43af8b4124963",
+        "25b44c4b478b217654f0709476431ac933c17cdc9738d58f37ad598140cf1e3f",
+        "26c2202f4343a80f1c78704d759fdc3e98063eef13e37481dd8e0238951095eb",
+        "3a2bdf5b471e017f5af4bf7ace0279abbded462442440cc038ff551333a44efc",
+        "088f2caf61620a9e0518886dc1b7f1c232b19d30284c14483dc356cafbadba0b",
+        "077116f1efaab83d527a25f0190310d9bc29332f34c199b111d99a93f75a7ea8",
+        "58c63aa7457700d5834ee9c2ba2a77a1c89827f487d2ea1ddeb1c70429d6eca3",
+        "6eb1a61c0081bd4bf32eb99b99c0dc2ce349c1c92c50b323db6d2ed033f1b438",
+        "292d2540a1791de98577ec2d52c4c3f08639b156aa76ce84f8691fe4f732aabc",
+        "8b49ba746ff5c4775979350c119f3d9b1577d1623cb06cd871032b396bdca418",
+        "7113052676debd77820fe73db3b16fae791520cfb62582468fa45775c231c0fb",
+        "9f5a8cb952bc8792a29e00208198e079b2ea677464036428bd006111be0d87b2",
+        "6743695ef0b316c3101ef55a77f3789ca89885d0fcf506f0c7c1f71c48d3f7c8",
+        "50497fc7e797a2f08abef8e08d2bdf461974946a052406172921b1abe540e79b",
+        "07c840b87615c367c688cc41f77229c2dbd7684a4c920a9aeb172728786923ed",
+        "1ea532b29e79e2c00eed073a32aa5436b65db35e04db4b90827ad3e32e1bc920",
+        "ca530c553b6818cbdf60f8a42518cebc3db44c6ca6097c645b3386a911214f93",
+        "0d21f3bbf6fa4b346338a2c990692ff4d2c24a0b8622e351455968ddbf8cf218",
+        "6783c932e2e06ff063f3d90c254bda2302f7adb762dadf063d2e342b9a25c2e6",
+        "4e1b8574f6ca5a23b2277be5528e0c6ba60c5c48bd0e6658487a0496efa1c8c1",
+        "b38215138ac6504fe6383f45fe4efa29fc4ebda2ead5f8af37e7aba51c90da5b",
+        "d0355e19ea5ca23d7ebf5a390e1b2b36207061f4fb51f11d7c535f645e544e69",
+        "7009e6ed7e51394f1721512b57db6c93b6068d372fe76811c3bea51d6601d80b",
+        "6fbc7f8bbd5dc4a9e1c3b4117ad804b5bd6798ad4a74c4c58f498a75b7f0e071",
+        "97c04e4de2607583af5ad39ffe5a8e2f3e175be3dc49089cd6ed102f2378d74c",
+        "68c4c595bba1c715c93861a5b44b57cb2275a35fa7a6f450873a31527bf5492d",
+        "4d59fdc62c43e14382672d01b7880ff585a688032276f46c55763a31a93ed316",
+        "ee5d4e488cea9370d5e874b3abae03f57020a6a9e08c33d78714d36168e7e80c",
+        "c6f0e4247ca45d5a9d7a4d5f0377e4d57542301b2d00073afecba08f8f21d353",
+        "c91f8e4b2995b724d2a5fec162849c9d56fab65522a40d7dae974b07f47f2002"
+      ],
+      "historyFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
+      "historicalCoveredFids": [
+        "0|",
+        "0|1|",
+        "0|2|",
+        "1|0|",
+        "2|",
+        "2|0|"
+      ],
+      "nativeObservedAt": 1791374092.4236214,
+      "sourceRequests": 0,
+      "mongoWrites": 0
     }
   }
 }

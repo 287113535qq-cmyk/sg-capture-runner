@@ -1,0 +1,29 @@
+{
+  "schema": "sg-direct-hit-money-zone-automatic-offline-replay-v1",
+  "at": 1791374164.603893,
+  "gameId": "32708",
+  "sourceRequests": 0,
+  "databaseWrites": 0,
+  "historyFileSha256": "8b7b98d409258397db4749bc97c5ebb41e4cc94f5ca8e158c69226bbb79bfd2d",
+  "closedJournalEvidenceSha256": "3b1706c3fecddd6b3a87393bae4aa94525ab8663fc6e4207242dbfe2953b79d7",
+  "oldPlanHash": "de17098ca968150569d02dcbd8197fbd194d141ec8beff722cdbd0266cd4a352",
+  "candidatePlanHash": "b86bc289c0910d84ec18a8289dbcc005f9a0fcae33a1312a6993987822267a6c",
+  "contractHash": "06577b3892c8753abb213d9751d54da1cca7a844c5b6691504296b40421651ef",
+  "fullHistoryFileRowsInspected": 100,
+  "planCompatibleHistoryRowsReplayed": 100,
+  "oldRequestRowsRetained": [],
+  "realFeatureRoundsReplayed": 45,
+  "realFeatureFrames": 128,
+  "ownFaultPrefixesReplayed": 2,
+  "independentJsPythonOperations": 387,
+  "failedPrefixesCredited": 0,
+  "productionApplied": false,
+  "newLinuxRequired": true,
+  "finalFullReadbackStillRequired": true,
+  "negativeRegressionTests": {
+    "nodeAutomaticFree": 12,
+    "pythonAutomaticFree": 11,
+    "includesActualCodecAndPython": true
+  },
+  "liveActivation": "deferred-to-reviewed-generation-after-own-Linux-proof"
+}

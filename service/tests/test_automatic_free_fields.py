@@ -119,4 +119,21 @@ class AutomaticFreeTests(unittest.TestCase):
         for fid in ['2|','1|2|']:
             with self.assertRaisesRegex(FieldError,'TERMINAL'):a.settled(change(make(),2,'FID=0|',f'FID={fid}'))
         with self.assertRaisesRegex(FieldError,'MONEY'):a.next_request(change(make(),1,'B=820','B=821'))
+    def test_direct_hit_mid_free_evidence_does_not_admit_paid_feature_triggers_or_unknown_terminals(self):
+        p=REGISTRY['plans']['32708'];a=NativeNextgenFields(p)
+        def make(mid='2|0|',end='2|0|'):
+            r=sample(p)
+            for i,fid in enumerate(['0|',mid,end]):change(r,i,'FID=1|',f'FID={fid}')
+            return r
+        for mid in ['0|','0|1|','0|2|','1|0|','2|','2|0|']:
+            for end in ['0|','1|0|','2|0|']:
+                r=make(mid,end);self.assertIsNone(a.next_request(r));self.assertEqual(a.settled(r)['bonus'],1)
+                self.assertEqual(a.next_request({**r,'steps':r['steps'][:2]}),{'MSGID':'FREE_GAME'})
+        for fid in ['1|','2|','2|0|']:
+            with self.assertRaisesRegex(FieldError,'FEATURE'):a.next_request(change(make(),0,'FID=0|',f'FID={fid}'))
+        for fid in ['2|','0|1|','0|2|']:
+            with self.assertRaisesRegex(FieldError,'TERMINAL'):a.settled(make('2|0|',fid))
+        for suffix in ['&CFG=2','&NFR_2=1','&ABPM=1']:
+            with self.assertRaisesRegex(FieldError,'FEATURE'):a.next_request(change(make(),1,'FID=2|0|','FID=2|0|'+suffix))
+        with self.assertRaisesRegex(FieldError,'INCOMPLETE'):a.settled({**make(),'steps':make()['steps'][:2]})
 if __name__=='__main__':unittest.main()

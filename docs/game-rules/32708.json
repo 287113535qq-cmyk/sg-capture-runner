@@ -23,8 +23,12 @@
     "service/game_rule_catalog.py": "2de17ead87c511f4ec8e53be18d91a9cc5cc0db92191a283e3847ff385fd574b"
   },
   "reviewDocuments": [],
-  "analysisDocuments": [],
-  "analysisDocumentHashes": {},
+  "analysisDocuments": [
+    "docs/direct-hit-money-zone-automatic-repair-20261007.json"
+  ],
+  "analysisDocumentHashes": {
+    "docs/direct-hit-money-zone-automatic-repair-20261007.json": "d6a0687e8f97aba57ed8621f5ba1ef4c3568b57934c03b9ad999bdc7d2878300"
+  },
   "observations": {
     "status": "separate-audit-or-parked-evidence",
     "actualSpecialStageCount": null,
@@ -32,5 +36,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "81c7b8928e3c134ddc222d5c5a492135d772f1e29c1d94f5fa8edd66ea500a9b"
+  "ruleHash": "40978e423b9d6961aadb7f43b33336a9fa24b85af7f4fd2297b3068525570073"
 }

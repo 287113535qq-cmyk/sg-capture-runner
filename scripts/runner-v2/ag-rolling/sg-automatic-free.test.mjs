@@ -43,6 +43,23 @@ test('reviewed automatic feature IDs continue only FREE_GAME and settle exact or
   assert.equal(f.bonus,1);assert.equal(f.money.betRaw,p.betRaw);assert.equal(f.money.endBalanceRaw,1000-p.betRaw+50);
  }
 });
+test('Direct Hit Money Zone resumes reviewed mid-free features without accepting a new paid feature trigger',async()=>{
+ const p=registry.plans['32708'];
+ const make=(mid='2|0|',end='2|0|')=>{const r=sample(p);['0|',mid,end].forEach((fid,i)=>change(r,i,'FID=1|',`FID=${fid}`));return r;};
+ for(const mid of ['0|','0|1|','0|2|','1|0|','2|','2|0|'])for(const end of ['0|','1|0|','2|0|']){
+  const r=make(mid,end);assert.deepEqual(automaticFreeNext(p,{...r,steps:r.steps.slice(0,2)}),{MSGID:'FREE_GAME'});
+  assert.equal(automaticFreeNext(p,r),null);assert.equal(automaticFreeFields(p,r,hash).bonus,1);
+ }
+ for(const fid of ['1|','2|','2|0|'])assert.throws(()=>automaticFreeNext(p,change(make(),0,'FID=0|',`FID=${fid}`)),/FEATURE/);
+ for(const fid of ['2|','0|1|','0|2|'])assert.throws(()=>automaticFreeFields(p,make('2|0|',fid),hash),/TERMINAL/);
+ for(const suffix of ['&CFG=2','&NFR_2=1','&ABPM=1'])assert.throws(()=>automaticFreeNext(p,change(make(),1,'FID=2|0|','FID=2|0|'+suffix)),/FEATURE/);
+ assert.throws(()=>automaticFreeFields(p,{...make(),steps:make().steps.slice(0,2)},hash),/INCOMPLETE/);
+ const codec=await nextgenCodec({plan:p,session:{pid},sequence:()=>1,worker:0,batchId:1});
+ try{const result=await codec.prepare(make(),{attempt:'offline-direct-hit-synthetic',sessionHash:hash});
+  assert.equal(result.independentlyVerified,true);assert.equal(result.record.normalized.bonus,1);
+  assert.equal(result.record.normalized.bet,1);assert.equal(result.endBalanceRaw,950);
+ }finally{codec.close();}
+});
 test('Cash Falls China Street allows only its evidenced FID1 automatic continuation and terminal',()=>{
  const p=registry.plans['32741'],r=sample(p);
  assert.equal(p.automaticFreeContract,AUTOMATIC_FREE_CONTRACT);
