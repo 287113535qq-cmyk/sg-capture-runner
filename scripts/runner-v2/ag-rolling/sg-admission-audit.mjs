@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 // Independent read channels and parsers; all metadata writes keep the main
 // serialized connection. Drain issued audits before exposing any failure.
 export async function auditTasks(items,{contexts,audit}){
- assert(Array.isArray(items)&&Array.isArray(contexts)&&contexts.length>0&&contexts.length<=4&&typeof audit==='function','SG_ADMISSION_AUDIT_BOUND');
+ assert(Array.isArray(items)&&Array.isArray(contexts)&&contexts.length>0&&contexts.length<=8&&typeof audit==='function','SG_ADMISSION_AUDIT_BOUND');
  let cursor=0,failure;
  const results=await Promise.allSettled(contexts.map(async context=>{
   while(!failure&&cursor<items.length){const item=items[cursor++];

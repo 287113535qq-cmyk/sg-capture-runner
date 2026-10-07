@@ -129,7 +129,7 @@ async function prepareResumeGame({game,queueId,ended,previous,guard}){
  const oldEntry=previous.manifest.find(g=>g.gameId===game.gameId),entry=profile.manifest.find(g=>g.gameId===game.gameId);
  assert(oldEntry&&entry,'SG_AG_RESUME_MANIFEST_REQUIRED');
  const revalidateSuccess=oldEntry.planHash!==entry.planHash||oldEntry.adapterProofHash!==entry.adapterProofHash;
- if(!auditReaders.length)auditReaders=Array.from({length:4},()=>{
+ if(!auditReaders.length)auditReaders=Array.from({length:8},()=>{
   const reader=readOnlyAuditTransport(serializeTransport(connectGateway({compression:true}))),parser=analyzer();
   const readStore=new RunnerState({transport:reader,gate,deadline});
   const scopedStore={get:readStore.get.bind(readStore),getMany:readStore.getMany.bind(readStore),create:store.create.bind(store),cas:store.cas.bind(store)};

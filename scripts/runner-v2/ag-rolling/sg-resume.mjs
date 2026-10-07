@@ -7,6 +7,16 @@ import {stagingPrefix,stagingLeaseKey} from './sg-staging-store.mjs';
 import {sourceJournalKey} from './sg-source-journal.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 export const stageOwner=(proof,ordinal)=>proof?.segments?.find(s=>ordinal>=s.first&&ordinal<=s.last)?.owner;
+export async function verifyResumePage({verifyRecords,verifySources,records}){
+ // Parsing and immutable source-journal readback are independent. Both must
+ // finish before the next page or any resume receipt can be committed.
+ const results=await Promise.allSettled([
+  Promise.resolve().then(()=>verifyRecords(records)),Promise.resolve().then(verifySources),
+ ]);
+ const failure=results.find(r=>r.status==='rejected');if(failure)throw failure.reason;
+ const result=results[0].value;
+ assert(result?.verified===true&&result.count===records.length,'SG_RESUME_INDEPENDENT_VALIDATION');
+}
 export async function verifySavedSources({store,rows,game,queueId,kind,index}){
  // An accepted round must have every exact intent and response in native
  // storage. Unfinished/unknown requests outside these rounds are preserved;
@@ -54,9 +64,8 @@ export async function inspectStaging({store,transport,game,queueId,kind,index,gu
    else segments.push({first:ordinal,last:ordinal,owner:row.owner});
    return row;
   });
-  const result=await verifyRecords(rows.map(r=>r.record));
-  assert(result?.verified===true&&result.count===rows.length,'SG_RESUME_INDEPENDENT_VALIDATION');
-  await verifySavedSources({store,rows,game,queueId,kind,index});after=docs.at(-1)._id;
+  await verifyResumePage({verifyRecords,records:rows.map(r=>r.record),
+   verifySources:()=>verifySavedSources({store,rows,game,queueId,kind,index})});after=docs.at(-1)._id;
  }
  return {count,recordsHash:hash.digest('hex'),segments,fullReadback:true,independentlyVerified:true};
 }
