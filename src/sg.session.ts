@@ -6,8 +6,66 @@ import fs from 'fs';
 import path from 'path';
 import { XMLParser } from 'fast-xml-parser';
 import { AGGameConfig } from './ag.types';
+// SG transport evidence mapped into the unchanged original AG error policy.
+// This file never retries a request or changes AG scheduling/round handling.
+export type SGFaultCategory = 'recoverable-initialization' | 'protocol' | 'execution-unknown';
+export type SGRequestKind = 'initialization' | 'round-start' | 'round-follow-up';
+export interface SGRequestEvidence {
+    event: string;
+    requestKind: SGRequestKind;
+    gameplayRequestHasBeenSent: boolean;
+    httpStatus?: number;
+    ordinal: number;
+    responseSHA256?: string;
+}
 
-type WireStep = {msgId: string; requestPayload: string; responsePayload: string; responseBalance?: number; elapsedMs?: number};
+export class SGSourceFault extends Error {
+    readonly executionUncertain: boolean;
+    readonly retryAction: 'original-ag-new-session' | 'stop-preserve-evidence';
+    constructor(readonly category: SGFaultCategory, readonly evidence: Readonly<SGRequestEvidence>) {
+        // Original AG treats the exact AG integrity prefix as deterministic.
+        // Only an untouched Init session is allowed into its finite retry path.
+        const prefix = category === 'recoverable-initialization' ? 'SG initialization temporarily unavailable' : 'AG integrity: SG ' + category;
+        super(prefix + ' ' + JSON.stringify({ event: evidence.event, requestKind: evidence.requestKind,
+            httpStatus: evidence.httpStatus, ordinal: evidence.ordinal }));
+        this.name = 'SGSourceFault';
+        this.executionUncertain = category === 'execution-unknown';
+        this.retryAction = category === 'recoverable-initialization' ? 'original-ag-new-session' : 'stop-preserve-evidence';
+        this.evidence = Object.freeze({ ...evidence });
+    }
+}
+
+const transientInitStatuses = new Set([408, 425, 429, 500, 502, 503, 504]);
+function untouchedInit(evidence: SGRequestEvidence): boolean {
+    return evidence.event === 'Init' && evidence.requestKind === 'initialization'
+        && evidence.ordinal === 1 && evidence.gameplayRequestHasBeenSent === false;
+}
+
+export function httpSourceFault(evidence: SGRequestEvidence): SGSourceFault {
+    if (!Number.isInteger(evidence.httpStatus) || evidence.httpStatus! < 100 || evidence.httpStatus! > 599
+        || (evidence.httpStatus! >= 200 && evidence.httpStatus! < 300)) {
+        throw new Error('AG integrity: SG invalid HTTP fault evidence');
+    }
+    if (untouchedInit(evidence)) {
+        return new SGSourceFault(transientInitStatuses.has(evidence.httpStatus!) ? 'recoverable-initialization' : 'protocol', evidence);
+    }
+    // HTTP status/body alone cannot prove a wager, feature or EndGame was not
+    // applied. Keep the request outcome uncertain; never re-send this POST.
+    return new SGSourceFault('execution-unknown', evidence);
+}
+
+export function transportSourceFault(evidence: SGRequestEvidence): SGSourceFault {
+    return new SGSourceFault(untouchedInit(evidence) ? 'recoverable-initialization' : 'execution-unknown', evidence);
+}
+
+export function sourceFaultMetadata(fault: SGSourceFault) {
+    return { faultCategory: fault.category, requestKind: fault.evidence.requestKind,
+        executionUncertain: fault.executionUncertain, retryAction: fault.retryAction,
+        ...(fault.evidence.responseSHA256 ? { responseSHA256: fault.evidence.responseSHA256 } : {}) };
+}
+
+
+type WireStep = {msgId: string; requestPayload: string; responsePayload: string; responseBalance?: number; elapsedMs?: number; httpStatus?: number};
 type WireTransport = (event: string, payload: string) => Promise<WireStep>;
 const xml = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseAttributeValue:false,parseTagValue:false});
 const list = (v: any): any[] => v === undefined ? [] : Array.isArray(v) ? v : [v];
@@ -32,6 +90,7 @@ export class SGWmsSession {
     private journalPath: string | null = null;
     private ordinal = 0;
     private cookies = new Map<string,string>();
+    private gameplayRequestHasBeenSent = false;
     constructor(private readonly game: AGGameConfig, private readonly transport?: WireTransport, initialBalance?: number) {
         assert(game.provider === 'sg' && game.sg?.protocol === 'wms', 'AG integrity: SG protocol adapter unavailable');
         assert(game.sg.endpoint === 'https://gls.atc.casinarena.com/gls.rgsx', 'AG integrity: SG endpoint');
@@ -86,19 +145,32 @@ export class SGWmsSession {
     }
     private async exchange(event:string,parameters:Record<string,any>):Promise<WireStep> {
         assert(!this.closed,'AG integrity: SG session closed');const payload=this.payload(event,parameters);
-        if(this.transport)return this.transport(event,payload);
-        const ordinal=++this.ordinal;this.evidence({phase:'intent',ordinal,event,payload});
+        const ordinal=++this.ordinal;
+        const requestKind = event==='Init' ? 'initialization' : this.action==='SPIN' ? 'round-start' : 'round-follow-up';
+        if(event!=='Init')this.gameplayRequestHasBeenSent=true;
+        const context: SGRequestEvidence = {event,ordinal,requestKind,gameplayRequestHasBeenSent:this.gameplayRequestHasBeenSent};
+        if(this.transport) {
+            const step=await this.transport(event,payload);
+            if(step.httpStatus!==undefined && !(step.httpStatus>=200 && step.httpStatus<300)) {
+                const fault=httpSourceFault({...context,httpStatus:step.httpStatus,responseSHA256:crypto.createHash('sha256').update(step.responsePayload).digest('hex')});
+                this.close();throw fault;
+            }
+            return step;
+        }
+        this.evidence({phase:'intent',ordinal,event,payload});
         const start=Date.now();let response:Response,text:string;
         try {
             response=await fetch(this.game.sg.endpoint,{method:'POST',redirect:'error',signal:AbortSignal.timeout(30000),
                 headers:{'Content-Type':'text/xml; charset=utf-8',...(this.cookies.size?{Cookie:[...this.cookies].map(([k,v])=>k+'='+v).join('; ')}:{})},body:payload});
             text=await response.text();
         } catch {
-            this.evidence({phase:'unknown',ordinal,event});this.close();
-            throw new Error('AG integrity: SG source request outcome unknown; evidence retained');
+            const fault=transportSourceFault(context);
+            this.evidence({phase:'unknown',ordinal,event,...sourceFaultMetadata(fault)});this.close();
+            throw fault;
         }
-        this.evidence({phase:'response',ordinal,event,httpStatus:response.status,text});
-        assert(response.ok,'AG integrity: SG HTTP response rejected');
+        const fault=response.ok ? null : httpSourceFault({...context,httpStatus:response.status,responseSHA256:crypto.createHash('sha256').update(text).digest('hex')});
+        this.evidence({phase:'response',ordinal,event,httpStatus:response.status,text,...(fault ? sourceFaultMetadata(fault) : {})});
+        if(fault){this.close();throw fault;}
         for(const cookie of response.headers.getSetCookie?.() || []) {const pair=cookie.split(';')[0],at=pair.indexOf('=');if(at>0)this.cookies.set(pair.slice(0,at),pair.slice(at+1));}
         return {msgId:event,requestPayload:payload,responsePayload:text,elapsedMs:Date.now()-start};
     }
