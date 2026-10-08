@@ -1,0 +1,65 @@
+name: SG using original AG rolling capture
+run-name: AG rolling ${{ inputs.queue_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      queue_id:
+        description: Original AG controller queue ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sg-whole-ag-capture-global
+  cancel-in-progress: false
+
+jobs:
+  rolling:
+    if: github.repository == '287113535qq-cmyk/sg-capture-runner'
+    name: 濠婃艾濮╅柅姘朵壕 ${{ matrix.lane }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lane: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Verify evidence retention configuration
+        env:
+          SG_SOURCE_EVIDENCE_KEY: ${{ secrets.SG_SOURCE_EVIDENCE_KEY }}
+        run: node -e "if(!/^[a-f0-9]{64}$/.test(process.env.SG_SOURCE_EVIDENCE_KEY||''))process.exit(1)"
+      - name: Original AG rolling worker with SG data adapter
+        run: node -r ts-node/register scripts/rolling-worker.ts
+        env:
+          AG_ROLLING_PAYLOAD: ${{ secrets.AG_ROLLING_PAYLOAD }}
+          QUEUE_ID: ${{ inputs.queue_id }}
+          ROLLING_LANE: ${{ matrix.lane }}
+          AG_CAPTURE_PLATFORM: sg
+          AG_GAMES_MANIFEST: sg-games.yml
+          SG_AG_ALLOW_SOURCE: "1"
+          SG_EVIDENCE_DIR: ${{ runner.temp }}/sg-source-evidence
+      - name: Encrypt exact source evidence
+        if: always()
+        env:
+          SG_SOURCE_EVIDENCE_KEY: ${{ secrets.SG_SOURCE_EVIDENCE_KEY }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/sg-source-evidence"
+          tar -czf "$RUNNER_TEMP/source-evidence.tar.gz" -C "$RUNNER_TEMP/sg-source-evidence" .
+          node scripts/seal-source-evidence.mjs "$RUNNER_TEMP/source-evidence.tar.gz" "$RUNNER_TEMP/source-evidence.enc"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-evidence-${{ github.run_id }}-${{ matrix.lane }}
+          path: ${{ runner.temp }}/source-evidence.enc
+          if-no-files-found: error
+          retention-days: 30

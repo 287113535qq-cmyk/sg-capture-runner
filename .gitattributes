@@ -1,5 +1,0 @@
-# The AG source receipt hashes the original bytes, including its line endings.
-scripts/ag-reference/** -text
-scripts/runner-v2/ag-rolling/ag-core.* -text
-scripts/runner-v2/ag-rolling/ag-capture-runtime.* -text
-scripts/runner-v2/ag-rolling/ag-original.test.mjs -text

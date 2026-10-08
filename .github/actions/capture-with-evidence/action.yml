@@ -1,9 +1,0 @@
-name: Capture with independent encrypted evidence delivery
-description: Preserve the existing controller while asynchronously publishing confirmed evidence
-inputs:
-  mode:
-    description: Fixed capture allocation or the no-source read-only verification
-    required: true
-runs:
-  using: node24
-  main: run.mjs

@@ -1,9 +1,0 @@
-# Exact117 refusal with two original continuations
-
-The operator is limited to the explicit FREE_GAME / ERROR_INVALID_SESSION at batch2/worker1/sequence117 in36524060044:1. It binds the applied434 proof, failed run, unchanged246 complete records and the original902/1706 attempts. The rejected request must retain all original BET parameters and change only MSGID to FREE_GAME; duplicate request keys, changed values, mismatched rejection XML, unknown outcomes or other holds are rejected.
-
-After fresh idle/lease/resource checks and a full immutable private backup, only117 is archived as source-invalid-session/abandon_without_replay. Its original BET is never replayed. Earlier806/434 archives remain unchanged; new one-time grants preserve902/1706 identities and prefixes. The private pending-first plan and workflow resume matrix independently bind workers2/7. The20-worker new-capture stage can start only after both originals have completed and passed independent terminal and full Mongo checks.
-
-The finite allowance remains10 complete rounds per worker, including continuations, for200 new and expected446 total only after measurement. Acceptance requires unchanged246 older records, both original continuations, independent806/434/117 replacements after their respective archives, full Mongo equality and pending0. New genuine natural DemonFID1/bonus2 evidence must pass Python, independent Runner and money checks plus full Mongo readback; missing evidence does not permit unbounded sampling or formal promotion.
-
-All applied historical profiles are frozen. The434 profile test now verifies its original whole hash and rejects a new runtime paired with its old permit. Offline tests do not establish source results. Actual execution and private archive metadata will be recorded separately.

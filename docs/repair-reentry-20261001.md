@@ -1,9 +1,0 @@
-# 已关闭试点的修复重入
-
-三款修复已分别通过适配检查：32714 HardHat重触发、32636 size2免费、32718有限MegaHat单步出口。新控制链将已关闭试点恢复为可转换候选，再复用现有retire→rollover→fresh。准备步骤源请求0、新BET许可0；只有独立新profile和完整转换回执通过后，新会话才可进入每分片最多5、合计100的有限试点。不能沿用旧半局或已注销额度，不能据此授予正式300000权限。
-
-候选严格绑定旧代际、不可变关闭回执、repair记录、当前campaign/pool/batches、完整记录及独立mapping哈希。Mongo全文和Python审查必须全部通过；活租约、在途原文、缺回执、金额差异、混合导入模式、过期profile和旧代际重用拒绝。原池字段保存在不可变before记录中，只分离旧活动代际指针；旧batch、receipt、session、sequence、关闭结果和已应用profile保留。repair状态写入绑定returnedProofKey，最终next-game complete回执才允许源准入；中途失败不得仅按状态标签报告重入成功。
-
-真实旧现场在本机内存完成prepare→retire保全：32714为129完整/27已用/73注销；32636为33完整/34已用/66注销；32718为91完整/39已用/61注销。无线上写入或额外作废。合成端到端执行prepare→retire→rollover→fresh，14项Node检查通过；覆盖最终回执及repair CAS失败时禁止新源。Python独立限定三款路径、mapping、旧关闭/repair键、来源边界和原计数，三款正例及45个变异负例通过，另4项旧next-game profile检查通过。
-
-当前仅准备分支代码；无新重入profile文件、无新额度应用、无线上重入。主线32795健康运行，32799下一款入口已准备；业务转换需当前源运行到安全边界，不能为部署修复打断正常采集。固定dfbf890的Linux预检36757551045:1已成功；起止2026-09-30T18:17:49Z→2026-09-30T18:19:50Z，完整日志SHA d0e972f56cd2ce37ebb50d15ea6ae3b3b0a381d7f90dbf4f170ef343b1b94329。私有增量223file/525501bytes，两端逐文件readback通过，SHA fe7b93494a4ddb85776071aee5818ab68487d808773c3641d580578e5887127a；引用既有完整数据和原档案，不重传旧完整现场。

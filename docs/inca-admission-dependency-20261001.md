@@ -1,9 +1,0 @@
-# Inca 准入依赖修正
-
-第二账号无源维护36764136033成功，原67完整逐条Python与Mongo全文通过，其中7条旧积压已补写、1旧半局已作废。旧60Mongo、12旧batch和不可变代际证据保留。实际维护日志SHA3a09852517a26fc12c7fbe730fe5005b7d2c65364a50ae6fba1761d4b877fb0a。
-
-源运行36764738887:1在19:18:30Z的secondary-admit启动时因缺少collector/node_modules/fast-xml-parser失败。新job遗漏锁定依赖安装；维护与Linux预检均有此步骤，因此此前测试未覆盖这个入口差异。全部fresh-capture跳过，verify成功。鲜读仍67完整、空worker、原firstBatchId、runKey空；SG请求0。失败日志SHA81c0beedd49ee66430ada07d011dfc1027d7eba3d18ed3a78fd1da5b7803eeda。
-
-修正为准入job先npm ci --ignore-scripts。已应用demo-pilot-inca-20261001.json永久冻结，不能修改原hash或伪造旧commit。新增独立零源runtime修正证明，核固定失败运行及全部采集job跳过、原67完整、所有旧batch、空worker、未绑定runKey、原代际和到期时间，再写before/complete和CAS变更runtime commit。原100额度保留，新增许可0；不重新导入/退休/激活，不新建代际。
-
-四项专项及原三项零源重绑、四项secondary转换、四项并行边界通过；实际67条私有现场经正式函数及Python内存回放通过。任何已绑定运行、新worker/batch/record、过期、原文验证失败或部分写入都拒绝。新增入口检查固定安装步骤在模块加载前，避免同类遗漏。此报告记录准备阶段，修正版尚未线上应用或实采，不把合成免费终局称自然终局。
