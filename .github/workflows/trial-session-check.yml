@@ -30,6 +30,7 @@ jobs:
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
           GITHUB_TOKEN: ${{ github.token }}
+          SG_REVIEWED_RUNNER_ENVIRONMENT: ${{ runner.environment }}
         run: node scripts/trial/crystal-free-evidence/probe.mjs
       - name: Preserve only encrypted raw evidence and non-sensitive summary
         if: always()

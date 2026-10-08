@@ -69,13 +69,14 @@ export async function collect({base,journal,fetchSource,now=Date.now,maxStarts=5
  return summary;
 }
 export async function assertSingleGithubAttempt(env,fetchGithub=fetch){
- safe(env.GITHUB_ACTIONS==='true'&&env.RUNNER_OS==='Linux'&&env.RUNNER_ENVIRONMENT==='github-hosted'&&env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner'&&env.GITHUB_RUN_ATTEMPT==='1','REVIEWED_GITHUB_ONLY');
+ safe(env.GITHUB_ACTIONS==='true'&&env.RUNNER_OS==='Linux'&&env.SG_REVIEWED_RUNNER_ENVIRONMENT==='github-hosted'&&env.GITHUB_REPOSITORY==='287113535qq-cmyk/sg-capture-runner'&&env.GITHUB_RUN_ATTEMPT==='1','REVIEWED_GITHUB_ONLY');
  safe(env.GITHUB_WORKFLOW_REF===`${env.GITHUB_REPOSITORY}/.github/workflows/trial-session-check.yml@refs/heads/sg-crystal-free-evidence-20261008`,'OWN_DIAGNOSTIC_WORKFLOW');
  const url=`https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/workflows/trial-session-check.yml/runs?head_sha=${env.GITHUB_SHA}&per_page=100`;
  const r=await fetchGithub(url,{headers:{Authorization:`Bearer ${env.GITHUB_TOKEN}`,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(15000)});safe(r.ok,'GITHUB_READ_REQUIRED');
  const v=await r.json();safe(v.total_count===1&&v.workflow_runs.length===1&&String(v.workflow_runs[0].id)===env.GITHUB_RUN_ID&&v.workflow_runs[0].head_sha===env.GITHUB_SHA,'ONE_DIAGNOSTIC_RUN_ONLY');
 }
 async function main(){
+ console.log(JSON.stringify({stage:'before-request-identity',defaultRunnerEnvironmentPresent:typeof process.env.RUNNER_ENVIRONMENT==='string',reviewedRunnerEnvironment:process.env.SG_REVIEWED_RUNNER_ENVIRONMENT,ownWorkflow:process.env.GITHUB_WORKFLOW_REF==='287113535qq-cmyk/sg-capture-runner/.github/workflows/trial-session-check.yml@refs/heads/sg-crystal-free-evidence-20261008',attempt:process.env.GITHUB_RUN_ATTEMPT}));
  await assertSingleGithubAttempt(process.env);
  fs.mkdirSync('.local/crystal-free-evidence',{recursive:true});const out='.local/crystal-free-evidence',pub=fs.readFileSync(new URL('./evidence-public.pem',import.meta.url));
  safe(createHash('sha256').update(pub).digest('hex')==='47d7727f2e1134a14b6b94ae45793a45034c02df859eba9e1d6e4ebdb87fdfe1','EVIDENCE_KEY_PIN');
@@ -86,4 +87,4 @@ async function main(){
  summary.journalChainHash=journal.hash;summary.journalRecords=journal.sequence;
  fs.writeFileSync(out+'/summary.json',JSON.stringify(summary,null,2),{flag:'wx'});console.log(JSON.stringify(summary));
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(()=>{console.log(JSON.stringify({status:'pre-request-gate-or-evidence-failed',intent:INTENT}));process.exitCode=2;});
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(e=>{console.log(JSON.stringify({status:'pre-request-gate-or-evidence-failed',intent:INTENT,error:typeof e?.message==='string'&&/^[A-Z0-9_]{1,100}$/.test(e.message)?e.message:'SAFE_DIAGNOSTIC_UNAVAILABLE'}));process.exitCode=2;});
