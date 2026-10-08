@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {ownOrdinaryV2Proof} from './sg-own-wms-ordinary-wiring-v2.mjs';
 import {queueHash} from './sg-queue-profile.mjs';
 import {OWN_GEOMETRY,ownTerminalProof} from './sg-own-terminal.mjs';
 import {AUTOMATIC_TERMINAL,terminalBinding} from './sg-automatic-terminal.mjs';
@@ -21,6 +22,12 @@ export function rebaseResumeManifest({previous,previousPlans,plans,completedGame
   const planHash=queueHash(plan),proofHash=queueHash(proof);
   if(planHash===entry.planHash&&proofHash===entry.adapterProofHash)return structuredClone(entry);
   assert(!completed.has(id),'SG_RESUME_COMPLETED_ADAPTER_CHANGED');
+  if(plan.ordinarySemanticContract!==undefined){
+   const {previousPlan,previousProof}=ownOrdinaryV2Proof(plan,proof);
+   assert(queueHash(oldPlan)===queueHash(previousPlan)&&queueHash(oldProof)===queueHash(previousProof),
+    'SG_RESUME_ADAPTER_REPAIR_UNREVIEWED');
+   return {...entry,planHash,adapterProofHash:proofHash};
+  }
   if(plan.ownTerminalContract===OWN_GEOMETRY){
    const {previousPlan,previousProof}=ownTerminalProof(plan,proof);
    if(queueHash(oldPlan)!==queueHash(previousPlan)){

@@ -75,12 +75,12 @@
     "scripts/runner-v2/ag-rolling/sg-jinjitreasure-base.mjs": "120c3262c40e15ea08e5eee385100957fca6f22fb9ec4e6d74a4c176a22258b3",
     "scripts/runner-v2/ag-rolling/sg-jinjitreasure-source.mjs": "ca6a73a321f2204937c8ebb8fcb46fb965c14ff2d6a7c77325c7e96f58c5c5e1",
     "scripts/runner-v2/ag-rolling/sg-jinjitreasure-codec.mjs": "50878bff628f0f46872523d2b97e057b91a26e341e8d6152d2d303de83451722",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "2de4fb39ae46556c7ad496fd3e59a08c7dba10d3ed5bed3ccd1187f28ffef4a2",
     "service/jinjitreasure_base_fields.py": "79dd7f24d17c0f5d827b08ba769829544297e0775d2a88d5f8178c0b4263377f",
     "config/ag-rolling-jinjitreasure-base-contract.json": "61b0d88e9f4ebe8785ac404f37c579fca542326c31a977207a7d1d8fbc25a91a",
-    "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
-    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
-    "service/round_fields.py": "006a4b12a377de0214e9a4c1ef76a9a8fd0cca1d7ac25de8250540f64a963d09",
+    "service/ag_rolling_plan.py": "5da957c9592d327918a72ea46bbe0b56f3dd58c4e8356381e3f8ea9d42240774",
+    "scripts/runner-v2/record_fields.py": "9c1bace8188dc299561ce234abe6d8d6ed1cdd5418f594e8a7dbcb8ac61c53c2",
+    "service/round_fields.py": "945e1d6d2f89b5ae82a382d9c096a322063f5e51e106674990bdc839f5ea125f",
     "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "294d6f2700c760a3f8cf8435706e8f814b210d930da44af999e91254071be2ad"
+  "ruleHash": "8790431bd73a2fcfdce1fd12518c735b9b1e27829f9ba364514b81e0b2bec704"
 }

@@ -86,6 +86,9 @@ def execute(request):
             adapters[key]=FiveTreasuresFields(plan)
         if plan['sourceKey']==FORTUNES_SOURCE:
             adapters[key]=FortunesMegawaysFields(plan)
+        if plan.get('ordinarySemanticContract') is not None:
+            from own_wms_ordinary_wiring_v2 import OwnOrdinaryFields
+            adapters[key]=OwnOrdinaryFields(plan)
         if plan['sourceKey']==ACORN_SOURCE:
             adapters[key]=AcornBaseFields(plan)
         if plan['sourceKey']==ACTIONBANK_SOURCE:
@@ -266,6 +269,9 @@ def execute(request):
     if request.get('op') == 'actionbank_bootstrap':
         assert plan['sourceKey'] == ACTIONBANK_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
+    if request.get('op') == 'own_ordinary_bootstrap':
+        assert plan.get('ordinarySemanticContract') is not None
+        return adapter.bootstrap(request['step'], request['session'])
     if request.get('op') == 'acorn_bootstrap':
         assert plan['sourceKey'] == ACORN_SOURCE
         return adapter.bootstrap(request['step'], request['session'])
@@ -351,6 +357,9 @@ def execute(request):
             return {**result, 'status': 'review-required', 'reason': 'GAMEPLAY_CLASSIFIER_UNAVAILABLE'}
         assert all(classified[k] == record['normalized'][k] for k in ('bet', 'mul', 'buy'))
         return {**result, 'status': 'classified', 'classification': classified}
+    if plan.get('ordinarySemanticContract') is not None:
+        if op == 'next': return adapter.next_request(raw)
+        if op == 'intent': return adapter.validate_intent(raw,request['payload'])
     if plan['sourceKey'] in (PEARL_SOURCE, RHINO_SOURCE, VERYFRUITY_SOURCE, FIVE_SOURCE, FORTUNES_SOURCE, ACORN_SOURCE, EIGHTY_SOURCE, ACTIONBANK_SOURCE, BLAZING_SOURCE, ARTHUR_SOURCE, CELESTIAL_SOURCE, CHESHIRE_SOURCE, COOLJEWELS_SOURCE, CRYSTALFOREST_SOURCE, DANCINGDRUMS_SOURCE, DRUMSEXPLOSION_SOURCE, DESERTCATS_SOURCE, JEKYLL_SOURCE, DRAGONSPIN_SOURCE, DEEPSEAMAGIC_SOURCE, EUREKABLAST_SOURCE, FIREQUEEN_SOURCE, FROZENINFERNO_SOURCE, FUDAOLE_SOURCE, GIANTSGOLD_SOURCE, GOLDENCHIEF_SOURCE, HEIDIBIER_SOURCE, HERCULES_SOURCE, HIMALAYAS_SOURCE, HULAHULA_SOURCE, MOOLAH_SOURCE, JINJIMEGAWAYS_SOURCE, JINJITREASURE_SOURCE, JINSEDRAGON_SOURCE, KINGBABYLON_SOURCE):
         if op == 'next':
             return adapter.next_request(raw)

@@ -75,12 +75,12 @@
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-base.mjs": "c621bd5f3bda96ad64094972a7d3a6f01ceff01763a1bf93f954fa85fd703b6e",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-source.mjs": "901b9094cb0a6014ab0e02b2508a8a958ef45e455b869f08b3dac06c1d1511b6",
     "scripts/runner-v2/ag-rolling/sg-dancingdrums-codec.mjs": "62c35675db8a2e7eed1c073dba8937ea2a9529f2e1e673ebf8aa55a4cda9c6c9",
-    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
+    "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "2de4fb39ae46556c7ad496fd3e59a08c7dba10d3ed5bed3ccd1187f28ffef4a2",
     "service/dancingdrums_base_fields.py": "c8bae3bbfc2b25b371d79e11bb218f41ba9dfadb8ea2720eba1e921927353af3",
     "config/ag-rolling-dancingdrums-base-contract.json": "52bbc2d44592a5a0abd7dd1cc1fa571e229f9268db752f70c07ab963b82870a9",
-    "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
-    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
-    "service/round_fields.py": "006a4b12a377de0214e9a4c1ef76a9a8fd0cca1d7ac25de8250540f64a963d09",
+    "service/ag_rolling_plan.py": "5da957c9592d327918a72ea46bbe0b56f3dd58c4e8356381e3f8ea9d42240774",
+    "scripts/runner-v2/record_fields.py": "9c1bace8188dc299561ce234abe6d8d6ed1cdd5418f594e8a7dbcb8ac61c53c2",
+    "service/round_fields.py": "945e1d6d2f89b5ae82a382d9c096a322063f5e51e106674990bdc839f5ea125f",
     "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
@@ -97,5 +97,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "aac38620ea1a8a66a0ed332c300c8e3cc0cdc4d72cd275ef967db62bb9956063"
+  "ruleHash": "b8af2318d2f9cab62838c4245c41597a97a64ad1467891a9b4d32c4b82c7134a"
 }

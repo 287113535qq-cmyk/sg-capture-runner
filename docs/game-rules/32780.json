@@ -74,8 +74,8 @@
     "scripts/runner-v2/ag-rolling/sg-kingbabylon-codec.mjs": "c576a84ef73faa52067b19cf6269efedb5fe006653241395a804f7b40f40fc6d",
     "service/kingbabylon_base_fields.py": "d45beb348464ed697ca58378800ec83b5f0d1467b8ff7aacad28fbd9c1936116",
     "config/ag-rolling-kingbabylon-base-contract.json": "91e47942f39a63c94c6c4a667c89c2b4dfede60847969eb7d50a768047c22938",
-    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
-    "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
+    "scripts/runner-v2/record_fields.py": "9c1bace8188dc299561ce234abe6d8d6ed1cdd5418f594e8a7dbcb8ac61c53c2",
+    "service/ag_rolling_plan.py": "5da957c9592d327918a72ea46bbe0b56f3dd58c4e8356381e3f8ea9d42240774",
     "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
@@ -88,5 +88,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ba6f880c89f7d039f4d95ae180ae48e4814d568409bc720604d806d563d29231"
+  "ruleHash": "c98155dd18a6e550e87bfbd35b7f25e12920f1de1c3c4d1d11d3354760bd624e"
 }

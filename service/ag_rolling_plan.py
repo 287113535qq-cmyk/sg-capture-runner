@@ -9,6 +9,9 @@ def validate_rolling_plan(plan):
     registry=json.loads((root/'config/ag-rolling-plans.json').read_text(encoding='utf-8'))
     require(registry.get('schema')=='sg-ag-rolling-plan-registry-v1' and registry.get('sourceAllowance')==0,
             'ROLLING_PLAN_REGISTRY')
+    if 'ordinarySemanticContract' in plan:
+        from own_wms_ordinary_wiring_v2 import validate
+        return validate(plan,registry)
     key=str(plan.get('gameId'))
     require(plan==registry.get('plans',{}).get(key) and plan.get('rollingPlan')=='sg-ag-rolling-plan-v1',
             'ROLLING_PLAN_CHANGED')

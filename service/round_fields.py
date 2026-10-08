@@ -357,6 +357,9 @@ def derive(raw):
     from cooljewels_base_fields import SOURCE as COOLJEWELS_SOURCE, settled as cooljewels_settled, mapping_hash as cooljewels_mapping
     if raw.get('sourceKey') == COOLJEWELS_SOURCE:
         return cooljewels_settled(raw, cooljewels_mapping())
+    from crystalforest_ordinary_v2_fields import SOURCE as CRYSTALFOREST_V2_SOURCE, settled as crystalforest_v2_settled, mapping_hash as crystalforest_v2_mapping
+    if raw.get('sourceKey') == CRYSTALFOREST_V2_SOURCE:
+        return crystalforest_v2_settled(raw, crystalforest_v2_mapping())
     from crystalforest_base_fields import SOURCE as CRYSTALFOREST_SOURCE, settled as crystalforest_settled, mapping_hash as crystalforest_mapping
     if raw.get('sourceKey') == CRYSTALFOREST_SOURCE:
         return crystalforest_settled(raw, crystalforest_mapping())
@@ -423,6 +426,9 @@ def derive(raw):
     from kingbabylon_base_fields import SOURCE as KINGBABYLON_SOURCE, settled as kingbabylon_settled, mapping_hash as kingbabylon_mapping
     if raw.get('sourceKey') == KINGBABYLON_SOURCE:
         return kingbabylon_settled(raw, kingbabylon_mapping())
+    from acorn_ordinary_v2_fields import SOURCE as ACORN_V2_SOURCE, settled as acorn_v2_settled, mapping_hash as acorn_v2_mapping
+    if raw.get('sourceKey') == ACORN_V2_SOURCE:
+        return acorn_v2_settled(raw, acorn_v2_mapping())
     from acorn_base_fields import SOURCE as ACORN_SOURCE, settled as acorn_settled, mapping_hash as acorn_mapping
     if raw.get('sourceKey') == ACORN_SOURCE:
         return acorn_settled(raw, acorn_mapping())

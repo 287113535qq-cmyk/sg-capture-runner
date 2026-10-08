@@ -93,8 +93,8 @@
   },
   "codeSources": {
     "service/native_nextgen_fields.py": "05fbcbf18cf5c136a03f7f417dbd699f30b96efb580f591b6638377238021311",
-    "service/round_fields.py": "006a4b12a377de0214e9a4c1ef76a9a8fd0cca1d7ac25de8250540f64a963d09",
-    "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
+    "service/round_fields.py": "945e1d6d2f89b5ae82a382d9c096a322063f5e51e106674990bdc839f5ea125f",
+    "scripts/runner-v2/record_fields.py": "9c1bace8188dc299561ce234abe6d8d6ed1cdd5418f594e8a7dbcb8ac61c53c2",
     "scripts/runner-v2/ag-rolling/sg-own-terminal.mjs": "640ea90f6dff0ae9e39e5a00bd7a356a39093fdce6c5322768fc34996d26cc8d",
     "service/own_terminal_fields.py": "782951d1a0d7d893d94d5aa181807cddd84d167419aff2986cce127640c662a2",
     "config/ag-rolling-own-terminal-contracts.json": "b3103e7910b9165ec24ab560767a354ba42735034d069874b82fbbf0f641fc15",
@@ -114,5 +114,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "a5e9313681b5059d9318151a60862b159c987dcd05180094538b56d5e92ad3cb"
+  "ruleHash": "9f546a3a64aeb655bd5725964e79438f98d799e0f8841d3587b2418da982c1b7"
 }

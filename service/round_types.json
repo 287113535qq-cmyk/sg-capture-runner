@@ -5021,6 +5021,44 @@
         "fullBaseRounds": 977,
         "fullFreeRounds": 0
       }
+    },
+    "acornpixie-ordinary-ag-rolling-wms-v2": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "acorn-ordinary-wms-v2",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 100,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32752,
+        "runtimeGameId": 32974,
+        "wmsGameId": 20174,
+        "ordinaryContractHash": "9a9adb2e7ab6de59cd31318695391bbe8a11d132bc55c3aae8533bf508b40f82",
+        "historyFileSha256": "658e90cb8e1a967639e1342982579bc21670824ad8244918529fd40bd494d8d8",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
+    },
+    "crystalforest-ordinary-ag-rolling-wms-v2": {
+      "fixtureOnly": false,
+      "protocol": "wms",
+      "adapter": "crystalforest-ordinary-wms-v2",
+      "mode": "demo",
+      "buy": 0,
+      "betRaw": 25,
+      "baseBonus": 0,
+      "freeTypes": {},
+      "evidence": {
+        "captureGameId": 32759,
+        "runtimeGameId": 32981,
+        "wmsGameId": 20142,
+        "ordinaryContractHash": "9a9adb2e7ab6de59cd31318695391bbe8a11d132bc55c3aae8533bf508b40f82",
+        "historyFileSha256": "81f436a78b30dfc4fc23dab62d4365cc6a56fc4ce35ea7e20fcad79516522b16",
+        "fullBaseRounds": 1000,
+        "fullFreeRounds": 0
+      }
     }
   }
 }
