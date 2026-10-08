@@ -73,11 +73,11 @@
     "required": "固定实际100；普通单spin/payline奖额和及BG累计严格一致，EndGame确认现金保持；特殊形状拒绝。"
   },
   "codeSources": {
-    "scripts/runner-v2/ag-rolling/sg-acorn-base.mjs": "7650444d6b69ee19e86fd3ae001c17261a2824c39cc1e08c94e7e12384881f58",
+    "scripts/runner-v2/ag-rolling/sg-acorn-base.mjs": "1ef0da1cef3902fdc01746eb4b2f85597f3d218792c1713b617003fdd6391049",
     "scripts/runner-v2/ag-rolling/sg-acorn-source.mjs": "a14d68bde66aa05a0686531225a064694e2e084e6715677583b8e3b20f2d5c57",
     "scripts/runner-v2/ag-rolling/sg-acorn-codec.mjs": "8c10ec03041e8f8ebb07cbc7649d699ac350fa0c81e1557349950135f564ea73",
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
-    "service/acorn_base_fields.py": "e73a6b8f87f66396624b365106bd0fec1cab4fc7bba7ca42a857d4bc5cff3b64",
+    "service/acorn_base_fields.py": "49bab99e6a9009f811d11662a89532babf057ed8c1dcce6e0bcd8d292bdfc24a",
     "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
     "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
     "service/round_fields.py": "006a4b12a377de0214e9a4c1ef76a9a8fd0cca1d7ac25de8250540f64a963d09",
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "0a8a6fc1a45ec739d1d679c089382cd55b205cc0db53124fd7c65e920499c054"
+  "ruleHash": "d19b4c346fe3f258aff321a2b6996851a63cb3e24b1c460844f6ee0e001a0157"
 }

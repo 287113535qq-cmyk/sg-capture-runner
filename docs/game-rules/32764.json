@@ -72,11 +72,11 @@
     "required": "下注210；Payline计数/奖额/位置、BonusBet0与MSReplacement形状一致；自己的Header/Balances EndGame确认，特殊停止。"
   },
   "codeSources": {
-    "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "4253a1006405c9477c76d274a76da801be8230c257840c2f68b0860a3e8dff16",
+    "scripts/runner-v2/ag-rolling/sg-dragonspin-base.mjs": "01120120e605bfb210cba91cb6cdbef4192dab610618da05d5a8b6f9e6d4c2b3",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-source.mjs": "249d96c10df5dc338ab39e83d94bc4ce8db301077c4cc3bbe2600b227cd80641",
     "scripts/runner-v2/ag-rolling/sg-dragonspin-codec.mjs": "23bcd5780922341db22f8d14703438c0a0065d5a950c809413572f1d3dd2d5c9",
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
-    "service/dragonspin_base_fields.py": "51d3cb2955a5e4b4e99c46e9928050f3ab2765e499d927b935687a0dad97ddb2",
+    "service/dragonspin_base_fields.py": "4fc0a4580cb1a6c727c31ad6cfb259c49fb7b6e5b881f49fcd86894d21342e09",
     "config/ag-rolling-dragonspin-base-contract.json": "d2a9a2b9d51dabe6abd7c1587051929dc86e2c854c80e0c34f9f0f626f35dce7",
     "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
     "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "4147e510b9a463c792463e35e6314db59f239521a26010dc6e49e93366ffe618"
+  "ruleHash": "b68ead9c211da80f67360cd257026fda768a8d89cbb0816b747c203949ba71f6"
 }

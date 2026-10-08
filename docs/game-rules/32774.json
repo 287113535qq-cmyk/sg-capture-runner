@@ -72,11 +72,11 @@
     "required": "下注200；自己的普通后唯一EndGame含空AccountData、现金保持；42种reelset/clump/avalanche仅形状，未知特殊停止。"
   },
   "codeSources": {
-    "scripts/runner-v2/ag-rolling/sg-himalayas-base.mjs": "cbe7b8e0a88b68183305f23a094f9f76c240a66f1ea93b58fa87d9d018edd960",
+    "scripts/runner-v2/ag-rolling/sg-himalayas-base.mjs": "0075d47c36098bd799c9804aead185ba92590f7e9c5058a9d453d533c127b29f",
     "scripts/runner-v2/ag-rolling/sg-himalayas-source.mjs": "6631ea7fc0dcce01c950fbb39622719d6c62b3a2d009d00e1b93c72194cf5d0a",
     "scripts/runner-v2/ag-rolling/sg-himalayas-codec.mjs": "23f292e3aafc1eae7058ed9b0eb4587064c59c2a53f374816966b0f8a2c1c413",
     "scripts/runner-v2/ag-rolling/sg-task-runtime.mjs": "4b2131e4032b14cfd2011ed0cf961b2e5d5d042ae5f77f3489743a4e72d7915b",
-    "service/himalayas_base_fields.py": "5b1e4bfc792032adff5e99977d816f9451d1fa706a5256a31d6147845baa80be",
+    "service/himalayas_base_fields.py": "5c8cded7a365143f3ba9c5bb7ff1b378157d4fa565c9d21efae35256f7dc3f63",
     "config/ag-rolling-himalayas-base-contract.json": "0fb36ac8b4f1c2fae19d320bbf49fc6def22e64baabe0a722589344e24d24578",
     "service/ag_rolling_plan.py": "c0229397bfe2167742b145e8850bb36c770a5df28a1ae77fe841ca37c1ce9d0f",
     "scripts/runner-v2/record_fields.py": "abc70d6c28d2e289a06401c0be8817fbaccd7963b2cf14bbcbac477a8bdac5af",
@@ -93,5 +93,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "8413d87966c65c18c6a538cf3e2b28ed6ed617509d4e34c160a81781fbff6707"
+  "ruleHash": "01cb22499d412d406a0e323a567269364faa8b37f663da926bfe35e9624adc4f"
 }
