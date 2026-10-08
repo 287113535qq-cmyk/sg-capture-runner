@@ -8,10 +8,12 @@ export function analyzer({python='python3',env=process.env,auditWorkers=1}={}) {
   let auditParser;
   const child=spawn(python,['-B','scripts/runner-v2/record_fields.py'],{stdio:['pipe','pipe','pipe'],env});
   let pending=null,buffer=Buffer.alloc(0),closed=false;
+  let didClose=false,confirmClose,closing;
+  const actualClose=new Promise(resolve=>{confirmClose=resolve;});
   const reject=code=>{if(pending){clearTimeout(pending.timer);pending.reject(Object.assign(new Error(code),{code}));pending=null;}};
   child.stderr.on('data',()=>{});
   child.on('error',()=>{closed=true;reject('ANALYZER_UNAVAILABLE');});
-  child.on('close',()=>{closed=true;reject('ANALYZER_CLOSED');});
+  child.on('close',()=>{closed=true;didClose=true;confirmClose();reject('ANALYZER_CLOSED');});
   child.stdin.on('error',()=>{closed=true;reject('ANALYZER_CLOSED');});
   child.stdout.on('data',chunk=>{
     buffer=Buffer.concat([buffer,chunk]);
@@ -35,6 +37,23 @@ export function analyzer({python='python3',env=process.env,auditWorkers=1}={}) {
     auditParser??=analyzer({python,env,auditWorkers:1});
     return verifyAnalyzerPage({call:request=>verifyParallelEnvelope(api,auditParser,request)},plan,records);
   },
-  close(){closed=true;reject('ANALYZER_CLOSED');auditParser?.close();child.stdin.end();child.kill();}};
+  close(){closed=true;reject('ANALYZER_CLOSED');auditParser?.close();child.stdin.end();child.kill();},
+  closeAndWait({graceMs=5000,forceMs=5000}={}){
+    assert(Number.isSafeInteger(graceMs)&&graceMs>0&&graceMs<=5000
+      &&Number.isSafeInteger(forceMs)&&forceMs>0&&forceMs<=5000,'ANALYZER_CLOSE_BUDGET');
+    if(closing)return closing;
+    closing=(async()=>{
+      api.close();
+      const wait=async ms=>{let timer;try{return await Promise.race([
+        actualClose.then(()=>true),new Promise(resolve=>{timer=setTimeout(()=>resolve(false),ms);})
+      ]);}finally{clearTimeout(timer);}};
+      const own=(async()=>{if(!didClose&&!await wait(graceMs)){child.kill('SIGKILL');
+        assert(await wait(forceMs),'ANALYZER_EXIT_UNCONFIRMED');}
+        assert(didClose,'ANALYZER_EXIT_UNCONFIRMED');})();
+      const results=await Promise.allSettled([own,auditParser?.closeAndWait({graceMs,forceMs})]);
+      const failed=results.find(r=>r.status==='rejected');if(failed)throw failed.reason;
+      return {childClosed:true,auditChildClosed:true};
+    })();return closing;
+  }};
   return api;
 }

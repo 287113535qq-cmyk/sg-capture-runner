@@ -13,7 +13,7 @@ import {resetEndedTask} from './sg-resume.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 
-function fixture(ids=['32441','32442']){
+function fixture(ids=['32441','32442'],hooks={}){
  const queueId='own-queue',commit='a'.repeat(40),runs={primary:'123:1',secondary:'456:1'},games=ids.map(id=>({gameId:id,dbName:'sg_'+id,campaignId:'sg_'+id+'-'+queueId,baseline:0}));
  const profile={activation:'b'.repeat(64),nativeGatewayHash:'c'.repeat(64),nativeManifestHash:'d'.repeat(64),payload:{queueId,games},manifest:[],federation:{schema:'sg-ag-two-cohort-v1',namespace:'primary',lanesPerCohort:20,totalLanes:40,assignments:games.map((g,i)=>({gameId:g.gameId,cohort:i?'secondary':'primary'}))}};
  const docs=new Map(),changes=[],contexts=[],jobs={primary:[],secondary:[]};
@@ -34,7 +34,8 @@ function fixture(ids=['32441','32442']){
   contexts.push({repository,cohortRun,state});return {transport:{async request(op){if(op==='global_holds')return [{value:{active:false}},{value:{active:false}}];if(op==='hello')return {group:'primary',database:'sg_capture_staging_v1',rollingNamespace:'primary',gatewaySha256:profile.nativeGatewayHash,accessManifestHash:profile.nativeManifestHash};assert.fail(op);}},
    parser:{},businessClient:{},ObjectId:class{},bindings:{},plans:{},currentRtp:async()=>{},privateControlPersist:()=>({fullReadback:true}),
    githubRead:async p=>{const cohort=p.includes(cohortRepos.primary)?'primary':'secondary',id=Number(runs[cohort].split(':')[0]);return p.includes('/jobs?')?{total_count:20,jobs:structuredClone(jobs[cohort])}:{id,run_attempt:1,head_sha:commit,repository:{full_name:cohortRepos[cohort]},event:'workflow_dispatch',path:'.github/workflows/trial-300k.yml',status:'in_progress'};},
-   admission:{guard:async()=>{},assertCapturedEnding:async()=>{},assertResumeBoundary:async()=>{throw Error('no actual ending');},dispatchRemaining:async()=>{throw Error('no dispatch');},finishCohort:async()=>{},originalCount:async()=>0,originalDocuments:async()=>[]}}
+   closeWorkflow:()=>hooks.close?.(cohortRun),
+   admission:{guard:async(phase,g)=>hooks.guard?.(cohortRun,phase,g),assertCapturedEnding:async()=>{},assertResumeBoundary:async()=>{throw Error('no actual ending');},dispatchRemaining:async()=>{throw Error('no dispatch');},finishCohort:async()=>{},originalCount:async()=>0,originalDocuments:async()=>[]}}
  }});
  const task=(cohort,index)=>docs.get('state/'+taskKey(queueId,games[cohort==='primary'?0:1],'worker:'+index)).value;
  return {api,contexts,jobs,task,changes,profile,store,docs,games,setClosed:v=>{closed=v;},runs,commit};
@@ -43,6 +44,32 @@ test('existing primary controller invokes AG separately for each true cohort and
  const f=fixture();for(const cohort of ['primary','secondary']){const t=f.task(cohort,1);Object.assign(t,{status:'running',owner:f.runs[cohort].replace(':1','-1')+':1:worker:1'});f.jobs[cohort][0].status='completed';f.jobs[cohort][0].conclusion='failure';}
  await f.api.reconcile();assert.equal(f.contexts.length,2);assert.deepEqual(f.contexts.map(c=>[c.cohortRun,c.state.games.map(g=>g.gameId)]),[['123:1',['32441']],['456:1',['32442']]]);
  assert.equal(f.task('primary',1).status,'failed');assert.equal(f.task('secondary',1).status,'failed');assert.equal(f.task('primary',2).status,'pending');
+});
+
+test('a slow primary original AG loop does not block the secondary loop or duplicate actors on a second tick',{timeout:3000},async()=>{
+ let release,secondaryDone;const wait=new Promise(r=>{release=r;}),secondary=new Promise(r=>{secondaryDone=r;});
+ const f=fixture(undefined,{guard:async(run,phase)=>{
+  if(run==='123:1'&&phase==='settle-ended-node')await wait;
+  if(run==='456:1'&&phase==='settle-ended-node-cas')secondaryDone();
+ }});
+ for(const cohort of ['primary','secondary']){Object.assign(f.task(cohort,1),{status:'running',owner:f.runs[cohort].replace(':1','-1')+':1:worker:1'});f.jobs[cohort][0].status='completed';f.jobs[cohort][0].conclusion='failure';}
+ const first=f.api.reconcile(),second=f.api.reconcile();assert.equal(first,second);
+ try{await secondary;assert.equal(f.task('primary',1).status,'running');assert.equal(f.contexts.length,2);}
+ finally{release();await first;}
+ assert.equal(f.task('secondary',1).status,'failed');assert.equal(f.changes.length,2);
+});
+
+test('a failed cohort never closes or releases a peer still inside its original AG operation',{timeout:3000},async()=>{
+ let release,peerStarted;const wait=new Promise(r=>{release=r;}),peer=new Promise(r=>{peerStarted=r;});const closed=[];
+ const f=fixture(undefined,{guard:async(run,phase)=>{
+  if(phase!=='github-read')return;
+  if(run==='123:1')throw Object.assign(Error('SG_NATIVE_UNKNOWN'),{outcomeUnknown:true});
+  peerStarted();await wait;
+ },close:run=>closed.push(run)});
+ const outcome=f.api.reconcile().then(()=>null,e=>e);await peer;
+ const closing=f.api.close();await new Promise(r=>setImmediate(r));assert.deepEqual(closed,[]);
+ release();assert.equal((await outcome).message,'SG_NATIVE_UNKNOWN');await closing;
+ assert.deepEqual(closed.sort(),['123:1','456:1']);assert.throws(()=>f.api.reconcile(),/LIVE_CLOSED/);
 });
 
 function resumeFixture(ids){

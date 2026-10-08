@@ -20,5 +20,16 @@ for(const auditWorkers of [1,2])test(`real Python pipes (${auditWorkers}) verify
   const bad=structuredClone(records);bad[2].contentHash='0'.repeat(64);
   await assert.rejects(parser.verifyPage(plan,bad));
   assert.deepEqual(await parser.verifyPage(plan,records),{verified:true,count:3});
- }finally{parser.close();}
+ }finally{assert.deepEqual(await parser.closeAndWait(),{childClosed:true,auditChildClosed:true});}
+});
+
+test('two real parsers are independent and each reports actual close before its slot is reusable',async()=>{
+ const a=analyzer({python:process.env.PYTHON||'python3'}),b=analyzer({python:process.env.PYTHON||'python3'});
+ try{
+  const rejected=await Promise.allSettled([a.call({op:'unknown-own-operation'}),b.call({op:'unknown-own-operation'})]);
+  assert(rejected.every(r=>r.status==='rejected'));
+  assert.deepEqual(await a.closeAndWait(),{childClosed:true,auditChildClosed:true});
+  await assert.rejects(b.call({op:'unknown-own-operation'}),e=>e.code!=='ANALYZER_CLOSED');
+  const first=b.closeAndWait(),second=b.closeAndWait();assert.equal(first,second);await first;
+ }finally{await Promise.allSettled([a.closeAndWait(),b.closeAndWait()]);}
 });

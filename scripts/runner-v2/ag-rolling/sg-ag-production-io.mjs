@@ -18,14 +18,17 @@ import {createGameRecordVerificationCache} from './sg-native-record-verification
 // RunnerState/gateway perform the original SG scoped metadata I/O. Business
 // Mongo uses its original account independently; it never gains metadata CAS.
 // The protected entry owns admission, SSH memory agents and evidence endpoints.
-export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,evidenceMode='private-full-ack',sourceJobsEnded=()=>false,now=Date.now,nativeProgress=value=>console.log(JSON.stringify(value))}){
+export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,resourcesForGame,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,evidenceMode='private-full-ack',sourceJobsEnded=()=>false,now=Date.now,nativeProgress=value=>console.log(JSON.stringify(value))}){
  const queueId=profile.payload.queueId,owner=actorRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map(),selectedRefs=new Map();
  assert(/^\d+:1$/.test(actorRun)&&/^[a-f0-9]{40}$/.test(actorCommit),'SG_AG_ACTUAL_CONTROL_ACTOR');
  assert(Object.values(cohortRepos).includes(repository)&&/^\d+:1$/.test(cohortRun),'SG_AG_PRODUCTION_IDENTITY');
  for(const method of ['guard','assertCapturedEnding','assertResumeBoundary','dispatchRemaining','finishCohort','originalCount','originalDocuments'])assert(typeof admission?.[method]==='function','SG_AG_PRODUCTION_ADMISSION_REQUIRED:'+method);
  assert(typeof githubRead==='function'&&typeof privateControlPersist==='function'&&typeof currentRtp==='function','SG_AG_PRODUCTION_PRIVATE_PORTS');
  const gameKey=g=>'rolling-merge:'+queueHash([queueId,g.gameId,g.campaignId]);
- const nativeVerification=createGameRecordVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
+ const resources=async g=>resourcesForGame?resourcesForGame(g.gameId):{parser,businessClient};
+ const nativeVerification=createGameRecordVerificationCache({verify:async(plan,records)=>{
+  const {parser}=await resources({gameId:String(plan.gameId)});return verifyOrdinaryNativePage({records,plan,parser});
+ }});
  let observedGame=null,observedPhase='native-verification',freshRows=0,lastReported=0;
  assert(typeof nativeProgress==='function','SG_NATIVE_PROGRESS_PORT');
  const verifyNative=async(g,records)=>{
@@ -58,6 +61,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
   await guard('full-prefix-validation',g);const docs=await nativeDocuments(g);
   if(docs.state?.value.status==='complete'){
    if(!completedAudits.has(g.gameId)){
+    const {businessClient,parser}=await resources(g);
     const tasks=await workers(g),proofs=await auditCompletedNativePrefixes({source:businessClient.db('sg_capture_staging_v1').collection('official_rounds'),store,transport,game:g,queueId,plan:plans[g.gameId],binding:bindings[g.gameId],parser,tasks,state:docs.state,receipt:docs.receipt,guard:()=>guard('completed-native-full-prefix',g),verifyRecords:records=>verifyNative(g,records)});
     assert(stable((await nativeDocuments(g)).receipt)===stable(docs.receipt)&&stable(await workers(g))===stable(tasks),'SG_AG_PRODUCTION_PREFIX_CHANGED');completedAudits.set(g.gameId,proofs);
    }
@@ -77,11 +81,11 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
    const result=await mergeGameWithVerifiedPrefixes({store,transport,game:g,queueId,plan:plans[g.gameId],owner,cleanup:false,verifiedPrefixes:proofs,guard:()=>guard('native-selection-page',g),verifyRecords:records=>verifyNative(g,records),inspectBaseline:async()=>({verified:true,count:0}),onSelected:refs=>selectedRefs.set(g.gameId,refs)});
    assert(result.fullReadback&&result.independentlyVerified&&result.count===total&&stable(result.selected)===stable(selected),'SG_AG_PRODUCTION_NATIVE_SELECTION');return result;
   },
-  async inspectPriorOperation(g){const {state,receipt}=await nativeDocuments(g);if(state?.value.status==='merging')return {canStartOnce:false};const p=receipt?.value;if(!p)return {canStartOnce:true};const key=businessKey(g,p),audit=businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1');return {canStartOnce:!await mongoOnce(()=>audit.findOne({_id:key}))};},
-  async deliverBusiness(g,native){const docs=await nativeDocuments(g),p=assertCompleteBinding(docs.state,docs.receipt,bindings[g.gameId]);assert(stable(p)===stable(native),'SG_AG_PRODUCTION_NATIVE_CHANGED');
+  async inspectPriorOperation(g){const {state,receipt}=await nativeDocuments(g);if(state?.value.status==='merging')return {canStartOnce:false};const p=receipt?.value;if(!p)return {canStartOnce:true};const {businessClient}=await resources(g);const key=businessKey(g,p),audit=businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1');return {canStartOnce:!await mongoOnce(()=>audit.findOne({_id:key}))};},
+  async deliverBusiness(g,native){const {businessClient,parser}=await resources(g);const docs=await nativeDocuments(g),p=assertCompleteBinding(docs.state,docs.receipt,bindings[g.gameId]);assert(stable(p)===stable(native),'SG_AG_PRODUCTION_NATIVE_CHANGED');
    const receipt=await deliverOrdinaryBusiness({client:businessClient,ObjectId,parser,binding:bindings[g.gameId],plan:plans[g.gameId],nativeState:docs.state,nativeReceipt:docs.receipt,expectedProof:p,expectedOriginalCount:await admission.originalCount(g),owner,guard:phase=>guard(phase,g),currentRtp,assertWorkers:()=>workers(g),evidence:privateEvidence,evidenceMode,nativePageVerification:{verify:(plan,records)=>{assert(stable(plan)===stable(plans[g.gameId]),'SG_NATIVE_VERIFICATION_PLAN');return verifyNative(g,records);}}});done.set(g.gameId,receipt);return receipt;},
   async countBusiness(g){
-   await guard('business-count',g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),originalCount=await admission.originalCount(g);
+   await guard('business-count',g);const {businessClient}=await resources(g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),originalCount=await admission.originalCount(g);
    const campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':g.campaignId},{maxTimeMS:15000}));
    const all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
    assert(all===originalCount+campaignCount,'SG_AG_PRODUCTION_BUSINESS_COUNT');
@@ -90,7 +94,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
    return {captureBaseline:0,campaignCount};
   },
   async inspectBusiness(g){
-   await guard('final-business-snapshot',g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),campaign=g.campaignId,originalCount=await admission.originalCount(g),campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':campaign},{maxTimeMS:15000})),all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
+   await guard('final-business-snapshot',g);const {businessClient,parser}=await resources(g);const pool=businessClient.db(bindings[g.gameId].database).collection('simulate'),campaign=g.campaignId,originalCount=await admission.originalCount(g),campaignCount=await mongoOnce(()=>pool.countDocuments({'data.captureCampaignId':campaign},{maxTimeMS:15000})),all=await mongoOnce(()=>pool.countDocuments({},{maxTimeMS:15000}));
    assert(all===originalCount+campaignCount,'SG_AG_PRODUCTION_BUSINESS_COUNT');
    const final=done.get(g.gameId);assert(campaignCount===0||final?.fullReadback&&final.campaignCount===campaignCount,'SG_AG_PRODUCTION_NO_COMPLETE_WITHOUT_FULL_TARGET');
    const binding=bindings[g.gameId],plan=plans[g.gameId],jsonDoc=d=>({...d,_id:String(d._id)});
@@ -106,7 +110,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
    }
    return {captureBaseline:0,campaignCount,fullReadback:true,originalUnchanged:true,invalid:0};
   },
-  async readBusinessReceipt(g){const docs=await nativeDocuments(g);if(!docs.receipt)return null;const complete=await mongoOnce(()=>businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1').findOne({_id:businessKey(g,docs.receipt.value)+':complete'}));return complete?.value;},
+  async readBusinessReceipt(g){const docs=await nativeDocuments(g);if(!docs.receipt)return null;const {businessClient}=await resources(g);const complete=await mongoOnce(()=>businessClient.db('sg_capture_staging_v1').collection('business_delivery_v1').findOne({_id:businessKey(g,docs.receipt.value)+':complete'}));return complete?.value;},
   async finishGame(g,receipt){await guard('final-business-receipt-seal',g);const key='rolling-final-business:'+queueHash([queueId,g.gameId,g.campaignId]);await store.create('journal',key,{receipt,originalEvidencePreserved:true},{immutable:true});assert(stable((await store.get('journal',key))?.value)===stable({receipt,originalEvidencePreserved:true}),'SG_AG_PRODUCTION_FINAL_RECEIPT_READBACK');
    const refs=selectedRefs.get(g.gameId),cleanupKey='rolling-final-cleanup:'+queueHash([queueId,g.gameId,g.campaignId]);
    const cleanupBefore=await store.get('journal',cleanupKey),cleanupAck=await store.get('journal',cleanupKey+':complete');
@@ -123,7 +127,7 @@ export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,ac
   async sealSettlement(g,value){await guard('settle-ended-intent',g);const key='rolling-node-settlement:'+queueHash([queueId,g.gameId,value]);await store.create('journal',key,value,{immutable:true});assert(stable((await store.get('journal',key))?.value)===stable(value),'SG_AG_PRODUCTION_SETTLEMENT_INTENT');return {key,fullReadback:true};},
   async ackSettlement(g,intent,value){await store.create('journal',intent.key+':complete',{value},{immutable:true});assert(stable((await store.get('journal',intent.key+':complete'))?.value)===stable({value}),'SG_AG_PRODUCTION_SETTLEMENT_ACK');},
   assertResumeBoundary:()=>admission.assertResumeBoundary(),
-  async resetEndedTask(g,row){const ended=await admission.assertResumeBoundary();const [kind,index]=row._id.split(':');return resetEndedTask({store,transport,game:g,queueId,kind,index:Number(index),ended,guard:()=>guard('resume-prefix',g),verifyRecords:records=>verifyOrdinaryNativePage({records,plan:plans[g.gameId],parser})});},
+  async resetEndedTask(g,row){const ended=await admission.assertResumeBoundary();const {parser}=await resources(g);const [kind,index]=row._id.split(':');return resetEndedTask({store,transport,game:g,queueId,kind,index:Number(index),ended,guard:()=>guard('resume-prefix',g),verifyRecords:records=>verifyOrdinaryNativePage({records,plan:plans[g.gameId],parser})});},
   dispatchRemaining:(state,games)=>admission.dispatchRemaining(state,games),finishCohort:state=>admission.finishCohort(state),
   close:async()=>{nativeVerification.release();},recordException:row=>{nativeVerification.release();const result=privateControlPersist('own-exception-state',row);assert(!result?.then&&result?.fullReadback,'SG_AG_PRODUCTION_EXCEPTION_DURABLE_ACK');}
  };

@@ -4,7 +4,9 @@ import {inspectSourceDeferrals} from './sg-source-deferrals.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
-import {execFileSync} from 'node:child_process';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {createGameResources} from './sg-ag-game-resources.mjs';
 import {createHash} from 'node:crypto';
 import {analyzer} from '../analyzer.mjs';
 import {stable} from '../mongo-writer.mjs';
@@ -56,12 +58,30 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
  assert(process.env.SG_BUSINESS_MONGO_PASSWORD&&process.env.SG_BUSINESS_SSH_KEY_FILE&&process.env.SG_SSH_HOSTS_FILE,'SG_AG_EXISTING_WRITER_CONFIGURATION');
  const bindings=read('config/ag-business-bindings.json').bindings,plans=read('config/ag-rolling-plans.json').plans;
  const require=createRequire(import.meta.url),{MongoClient,ObjectId}=require('../../../collector/node_modules/mongodb');
- const once=protectMongoOnce(new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,waitQueueTimeoutMS:10000,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000})),client=once.client;
- let parser;
+ const resourceOwners=new Map();let canonicalAt=-Infinity;
+ const execFileAsync=promisify(execFile);
+ async function boundedClose(call){
+  let timer;try{return await Promise.race([Promise.resolve().then(call),new Promise((_,reject)=>{
+   timer=setTimeout(()=>reject(Error('SG_AG_CLIENT_EXIT_UNCONFIRMED')),65000);
+  })]);}finally{clearTimeout(timer);}
+ }
+ async function openGameResource(gameId){
+  const once=protectMongoOnce(new MongoClient('mongodb://52.87.94.113:27017',{auth:{username:'sg_simulate_delivery_v1',password:process.env.SG_BUSINESS_MONGO_PASSWORD},authSource:'admin',authMechanism:'SCRAM-SHA-1',retryReads:false,retryWrites:false,maxPoolSize:2,waitQueueTimeoutMS:10000,connectTimeoutMS:10000,serverSelectionTimeoutMS:10000,socketTimeoutMS:60000}));
+  const client=once.client;let parser,closing;
+  const close=()=>closing??=(async()=>{
+   const results=await Promise.allSettled([parser?.closeAndWait(),boundedClose(()=>client.close())]);
+   const failed=results.find(r=>r.status==='rejected');if(failed)throw failed.reason;
+  })();
+  try{
+   await mongoOnce(()=>client.connect());
+   assertOrdinaryPrivileges(await mongoOnce(()=>client.db('admin').command({connectionStatus:1,showPrivileges:true})),{profile,plans,binding:bindings[gameId]});
+   return {businessClient:client,get parser(){once.assertUsable();return parser??=analyzer();},assertUsable:once.assertUsable,close};
+  }catch(error){
+   try{await close();}catch(cause){throw Object.assign(new Error('SG_AG_RESOURCE_CLOSE_UNCONFIRMED',{cause}),{code:'SG_AG_RESOURCE_CLOSE_UNCONFIRMED',outcomeUnknown:true});}
+   throw error;
+  }
+ }
  try{
- await mongoOnce(()=>client.connect());
- assertOrdinaryPrivileges(await mongoOnce(()=>client.db('admin').command({connectionStatus:1,showPrivileges:true})),{profile,plans,binding:bindings[profile.payload.games[0].gameId]});
- parser=analyzer();const originals=new Map();let canonicalAt=-Infinity;
  const directory=path.resolve('business-evidence');fs.mkdirSync(directory,{recursive:true,mode:0o700});
  function persist(file,value){
   const safe=file.replaceAll(/[^A-Za-z0-9_-]/g,'_'),filename=path.join(directory,safe+'.json');
@@ -70,18 +90,8 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
   assert(fs.readFileSync(filename).equals(data),'SG_AG_EXISTING_CONTROL_FULL_READBACK');
   return {fullReadback:true};
  }
- const baseline=async g=>{
-  if(!originals.has(g.gameId)){
-   const b=inspectExistingGameBinding({binding:bindings[g.gameId],game:g,profile,plan:plans[g.gameId]});
-   const pool=client.db(b.database).collection('simulate'),query={'data.captureCampaignId':{$ne:g.campaignId}};
-   const count=await mongoOnce(()=>pool.countDocuments(query,{maxTimeMS:15000}));
-   const documents=(await mongoOnce(()=>pool.find(query,{sort:{_id:1},maxTimeMS:30000}).limit(count+1).toArray())).map(d=>({...d,_id:String(d._id)}));
-   assert(documents.length===count,'SG_AG_EXISTING_ORIGINAL_COUNT');originals.set(g.gameId,{count,documents});
-  }
-  return originals.get(g.gameId);
- };
  async function ordinaryGuard(phase,g){
-  once.assertUsable();await guard();
+  await guard();
   if(g&&!phase.startsWith('settle-ended'))assert(bindings[g.gameId]&&ordinaryBusinessAdapter(plans[g.gameId]),'SG_AG_EXISTING_OWN_ADAPTER_REQUIRED');
   if(Date.now()-canonicalAt<15000)return;
   const part=(await store.get('journal',participantKey(profile)))?.value;
@@ -119,6 +129,20 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
   assert(join[0].conclusion==='success','SG_AG_EXISTING_JOIN_FAILED');
   const lanes=jobs.jobs.filter(j=>/^AG rolling lane ([1-9]|1[0-9]|20)$/.test(j.name));return lanes.length===20&&new Set(lanes.map(j=>j.name)).size===20;
  },makeContext:async({repository,cohortRun,state})=>{
+  assert(!resourceOwners.has(cohortRun),'SG_AG_COHORT_RESOURCE_OWNER');
+  const resources=createGameResources({gameIds:state.games.map(g=>g.gameId),open:openGameResource});
+  resourceOwners.set(cohortRun,resources);const originals=new Map();
+ const baseline=async g=>{
+  if(!originals.has(g.gameId)){
+   const b=inspectExistingGameBinding({binding:bindings[g.gameId],game:g,profile,plan:plans[g.gameId]});
+   const {businessClient:client}=await resources.get(g.gameId);
+   const pool=client.db(b.database).collection('simulate'),query={'data.captureCampaignId':{$ne:g.campaignId}};
+   const count=await mongoOnce(()=>pool.countDocuments(query,{maxTimeMS:15000}));
+   const documents=(await mongoOnce(()=>pool.find(query,{sort:{_id:1},maxTimeMS:30000}).limit(count+1).toArray())).map(d=>({...d,_id:String(d._id)}));
+   assert(documents.length===count,'SG_AG_EXISTING_ORIGINAL_COUNT');originals.set(g.gameId,{count,documents});
+  }
+  return originals.get(g.gameId);
+ };
   const key='rolling-ag-control:'+queueHash([profile.payload.queueId,cohortRun,commit]),pending=[];let sequence=0,poisoned=false;
   async function flushControl(){
    assert(!poisoned,'SG_AG_CONTROL_UNKNOWN_ACK_NO_REPLAY');
@@ -136,7 +160,8 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
   const privateControlPersist=(file,value)=>{const saved=persist(cohortRun+'-'+file,value);pending.push({file,value:structuredClone(value)});return saved;};
   const gameBudget=createGameBudget({state,persist:privateControlPersist,flush:flushControl});
   return {
-  transport,parser,businessClient:client,ObjectId,bindings,plans,githubRead,evidenceMode:policy.evidenceMode,sourceJobsEnded,
+  transport,resourcesForGame:gameId=>resources.get(gameId),ObjectId,bindings,plans,githubRead,
+  closeWorkflow:()=>resources.close(),evidenceMode:policy.evidenceMode,sourceJobsEnded,
   actorRun:coordinatorRun,actorCommit:commit,privateControlPersist,
   flushControl,loadState:async()=>{
    // Exception journals share the append sequence but do not move the saved
@@ -149,6 +174,7 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
    if(game.gameId==='32629'){game.phase='blocked';game.reason='SG_EXISTING_INDEPENDENT_MONEY_ANOMALY_RETAINED';continue;}
    if(!ordinaryBusinessAdapter(plans[game.gameId])){game.phase='blocked';game.reason='SG_OWN_BUSINESS_ADAPTER_REVIEW_REQUIRED';continue;}
    const proof=policy.completedBusinessReceipts[game.gameId];if(!proof)continue;
+   const resource=await resources.get(game.gameId),client=resource.businessClient;
    const nativeKey='rolling-merge:'+queueHash([profile.payload.queueId,game.gameId,game.campaignId]);
    const native=(await store.get('journal',nativeKey+':complete'))?.value,stateRow=(await store.get('state',nativeKey))?.value;
    assert(native&&queueHash(native)===proof.nativeReceiptHash&&stable(stateRow?.result)===stable(native)&&stateRow.status==='complete'
@@ -157,7 +183,7 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
     const recoveryDeadline=Date.now()+90000;
     const accepted=await readReviewedRecoveryReceipt({proof,bytes:fs.readFileSync(proof.evidenceFile),
      binding:bindings[game.gameId],game,native,guard:()=>{
-      once.assertUsable();assert(Date.now()<recoveryDeadline,'SG_AG_RECOVERY_READ_DEADLINE');
+      resource.assertUsable();assert(Date.now()<recoveryDeadline,'SG_AG_RECOVERY_READ_DEADLINE');
      },
      readExact:async keys=>{
       const rows=await mongoOnce(()=>client.db('sg_capture_staging_v1').collection('business_delivery_v1')
@@ -176,20 +202,24 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
     &&value.sourceProofHash===proof.nativeReceiptHash,'SG_AG_EXISTING_COMPLETED_FINAL_PROOF');
    game.phase='complete';
   }},
-  currentRtp:async b=>{const sha=execFileSync('ssh',['-T','-i',process.env.SG_BUSINESS_SSH_KEY_FILE,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+process.env.SG_SSH_HOSTS_FILE,'-o','ConnectTimeout=10','sgdelivery@'+process.env.SG_SSH_HOST,String(b.gameId)],{encoding:'utf8',timeout:20000}).trim();assert(sha===b.rtpFileSha256,'SG_BUSINESS_CURRENT_RTP_CHANGED');},
-  admission:{guard:async(phase,g)=>{await flushControl();await gameBudget.check(phase,g);await ordinaryGuard(phase,g);await gameBudget.check(phase,g);},assertCapturedEnding:async()=>{throw Error('SG_AG_SOURCE_PERMIT_REQUIRED');},
+  currentRtp:async b=>{const {stdout}=await execFileAsync('ssh',['-T','-i',process.env.SG_BUSINESS_SSH_KEY_FILE,'-o','IdentityAgent=none','-o','IdentitiesOnly=yes','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','UserKnownHostsFile='+process.env.SG_SSH_HOSTS_FILE,'-o','ConnectTimeout=10','sgdelivery@'+process.env.SG_SSH_HOST,String(b.gameId)],{encoding:'utf8',timeout:20000,killSignal:'SIGKILL',windowsHide:true,maxBuffer:1024});assert(stdout.trim()===b.rtpFileSha256,'SG_BUSINESS_CURRENT_RTP_CHANGED');},
+  admission:{guard:async(phase,g)=>{await flushControl();await gameBudget.check(phase,g);if(g&&!phase.startsWith('settle-ended'))(await resources.get(g.gameId)).assertUsable();await ordinaryGuard(phase,g);await gameBudget.check(phase,g);},assertCapturedEnding:async()=>{throw Error('SG_AG_SOURCE_PERMIT_REQUIRED');},
    originalCount:async g=>(await baseline(g)).count,originalDocuments:async g=>structuredClone((await baseline(g)).documents),
    // Resume is wired into the existing admit job, after its full ending and
    // immutable revision checks. A live source controller cannot start it.
    assertResumeBoundary:async()=>{throw Error('SG_AG_LIVE_SOURCE_CANNOT_RESUME');},dispatchRemaining:async()=>{throw Error('SG_AG_LIVE_SOURCE_CANNOT_DISPATCH');},
    finishCohort:async()=>{await flushControl();return persist(cohortRun+'-cohort-final',{state,originalAccountsAndProofsPreserved:true});}}
  };}});
- return {...control,async close(){try{parser.close();}finally{await client.close();}}};
+ return {...control,async close(){
+  let controlError;try{await control.close();}catch(error){controlError=error;}
+  const results=await Promise.allSettled([...resourceOwners.values()].map(owner=>owner.close()));
+  if(controlError)throw controlError;
+  const failed=results.find(r=>r.status==='rejected');if(failed)throw failed.reason;
+ }};
  }catch(error){
-  // Before a handle is returned, the caller cannot release these resources.
-  // Preserve the original failure (and its driver provenance) on cleanup errors.
-  try{parser?.close();}catch{}
-  try{await client.close();}catch{}
+  // An entry failure closes every acquired owner, without discarding the
+  // original error or treating an unknown closure as a reusable slot.
+  await Promise.allSettled([...resourceOwners.values()].map(owner=>owner.close()));
   throw error;
  }
 }

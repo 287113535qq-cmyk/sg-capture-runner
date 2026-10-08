@@ -13,6 +13,8 @@ import {createPrivateControlWriter} from './sg-ag-private-control.mjs';
 import {createAdmittedStrictControl,strictEntryStatus} from './sg-ag-strict-entry.mjs';
 import {createProductionSgIo} from './sg-ag-production-io.mjs';
 import {cohortRepos} from './sg-federation.mjs';
+import {createGameResources} from './sg-ag-game-resources.mjs';
+import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 const sha=v=>crypto.createHash('sha256').update(stable(v)).digest('hex');
 function fixture({insufficient=false,unknown=false}={}){
  const queueId='queue',game={gameId:'32442',dbName:'sg_32442',campaignId:'sg_32442-queue',baseline:299980},plan={trialId:'synthetic-own-trial'},docs=new Map(),formal=new Map(),events=[];
@@ -51,4 +53,25 @@ test('completed-native production admission rejects a live or pending canary eve
    privateControlPersist:()=>({fullReadback:true}),currentRtp:async()=>{}});
   await assert.rejects(io.verifyPrefix(game,1,{}),/SG_AG_PRODUCTION_ACTIVE_WORKER/);assert.equal(businessReads,0);
  }
+});
+
+test('the actual production I/O selects only its game resource and a failed driver cannot poison the next game',async()=>{
+ const f=fixture(),first=f.game,second={...first,gameId:'32443',dbName:'sg_32443',campaignId:'sg_32443-queue'},
+  profile={payload:{queueId:f.args.queueId,games:[first,second]},nativeGatewayHash:'b'.repeat(64),nativeManifestHash:'c'.repeat(64)};
+ f.store.writable=async()=>{};f.docs.set('state/rolling-source',{value:{status:'ended'}});
+ const touched=[],closed=[],resources=createGameResources({gameIds:[first.gameId,second.gameId],open:async id=>{
+  const once=protectMongoOnce({db(name){touched.push([id,name]);return {collection(){return {async countDocuments(){
+   if(id===first.gameId)throw Error('own DB ACK lost');return 0;
+  }}}}}});return {businessClient:once.client,parser:{},assertUsable:once.assertUsable,close:async()=>closed.push(id)};
+ }});
+ const io=createProductionSgIo({profile,cohortRun:'123:1',coordinatorRun:'123:1',commit:'a'.repeat(40),repository:cohortRepos.primary,store:f.store,
+  resourcesForGame:id=>resources.get(id),ObjectId:class{},plans:{},bindings:{[first.gameId]:{database:'first'},[second.gameId]:{database:'second'}},
+  transport:{request:async op=>op==='global_holds'?[{value:{active:false}},{value:{active:false}}]:{group:'primary',database:'sg_capture_staging_v1',gatewaySha256:profile.nativeGatewayHash,accessManifestHash:profile.nativeManifestHash,rollingNamespace:'primary'}},
+  githubRead:async()=>{},admission:Object.fromEntries(['guard','assertCapturedEnding','assertResumeBoundary','dispatchRemaining','finishCohort','originalCount','originalDocuments'].map(k=>[k,async()=>0])),
+  privateControlPersist:()=>({fullReadback:true}),currentRtp:async()=>{}});
+ await assert.rejects(io.countBusiness(first),e=>e.outcomeUnknown===true);
+ assert.deepEqual(await io.countBusiness(second),{captureBaseline:0,campaignCount:0});assert.deepEqual(closed,[first.gameId]);
+ await assert.rejects(io.countBusiness(first),/UNKNOWN_NO_REPLAY/);
+ const before=touched.length;await assert.rejects(io.countBusiness({...second,gameId:'32999'}),/GAME_SCOPE/);assert.equal(touched.length,before);
+ await resources.close();
 });
