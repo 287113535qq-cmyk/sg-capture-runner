@@ -7,16 +7,15 @@
   "captureAuthorization": false,
   "liveQueueStatus": "read-from-Mongo-not-this-card",
   "ruleAvailability": "implemented-subset",
-  "sourceKey": "crystalforest-base-ag-rolling-wms-v1",
-  "planHash": "c28cf91528296fd7e0b7b56f3a21a3ce58b7d8fd2f68baa39c28adb4edbe0643",
+  "sourceKey": "crystalforest-ordinary-ag-rolling-wms-v2",
+  "planHash": "eb31a9cd5780edc6eb3a7e648c24dbeeb6049474708f1cc771bc8455076e971f",
   "parameters": {
     "trialId": "sg_ag_r1_20261005_32759",
     "runtimeSlug": "crystalforest",
     "buy": 0,
     "betRaw": 25,
     "requestParams": null,
-    "maxSteps": 2,
-    "wmsGameId": 20142
+    "maxSteps": 2
   },
   "roundRule": {
     "family": "crystalforest-base-wms-v1",
@@ -46,7 +45,7 @@
     }
   },
   "typeMappings": {
-    "crystalforest-base-ag-rolling-wms-v1": {
+    "crystalforest-ordinary-ag-rolling-wms-v2": {
       "protocol": "wms",
       "modeSelectorKeys": null,
       "modes": null,
@@ -57,7 +56,7 @@
     }
   },
   "mappingHashes": {
-    "crystalforest-base-ag-rolling-wms-v1": "b69b33c9bd0a85be1e5bc7623923f2367dcfa314b7a802ae351a47afbe1ea296"
+    "crystalforest-ordinary-ag-rolling-wms-v2": "2e234beef09168fc0c07b85aa8160bf18ec730925e98d644807b77acab758573"
   },
   "configuredNaturalBonusCodes": [],
   "configuredOutcomeCategoryCount": 0,
@@ -65,10 +64,10 @@
   "allSpecialStageTypesCovered": false,
   "categoryCountMeaning": "已配置的自然 bonus 分类数，含组合类别；不是独立小游戏总数或全部玩法证明。",
   "settlement": {
-    "stakeRaw": "startBalanceRaw - final CASH_BALANCE + sum of all Cascade.PaylineWin awards",
+    "stakeRaw": "startBalanceRaw - finalBalanceRaw + TW",
     "bet": "stakeRaw / 100",
-    "mul": "Logic totalWin / stakeRaw",
-    "required": "下注25/25线；逐级联奖额/赢线数/mask位集合一致，末零奖Cascade和唯一EndGame确认；未知Feature停止。"
+    "mul": "TW / stakeRaw",
+    "required": "stakeRaw 必须等于本计划 betRaw，buy=0；最终 B=AB。"
   },
   "codeSources": {
     "scripts/runner-v2/ag-rolling/sg-crystalforest-base.mjs": "6f4c406e3e3700ce2a406545dfd3b4749e73dfdd408936faa2001417214a02ba",
@@ -92,5 +91,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "7c7371e6c836776cc2cf9be2e468b347fe261880349382d1118ad610837bb762"
+  "ruleHash": "b90ba8791d0764c0f9687b9070747fedc0af21469af705693c8385b7fcb05948"
 }

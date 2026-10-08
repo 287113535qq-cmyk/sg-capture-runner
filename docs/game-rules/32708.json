@@ -8,7 +8,7 @@
   "liveQueueStatus": "read-from-Mongo-not-this-card",
   "ruleAvailability": "implemented-subset",
   "sourceKey": "directhitmoneyzone-ag-rolling-nextgen-v1",
-  "planHash": "a39fc2355cb34cfb7f3dcbfe969ace804cf54755944e2e774c9c41e236bbb55b",
+  "planHash": "32117cf6bf14419ea59629d628259ec65e547089cf9e0f981627d90c5d35e575",
   "parameters": {
     "trialId": "sg_ag_r1_20261004_32708",
     "runtimeSlug": "directhitmoneyzone",
@@ -23,22 +23,22 @@
     "maxSteps": 100
   },
   "roundRule": {
-    "family": "nextgen-own-terminal-geometry-v4",
+    "family": "nextgen-own-terminal-evidence-v3",
     "messages": [
       "BET",
       "FREE_GAME"
     ],
     "start": "首帧 BET，后续只能 FREE_GAME；一大局内会话不变。",
-    "continue": "新 v4 marker 独立绑定前一 v3 计划与完整证明；旧 v3 和未标记记录继续原校验，不改历史数据。",
-    "complete": "FID2|、NFG0、TFG=CFGG=3；前帧2|0|且FGTW按CW相等递增；CPDO=-1、AGS=7、没有SNFG/STFG/SCFGG。MZ是区域坐标与尺寸：仅已证实2/3，坐标为整数且完整落在7x7内。金额、XML、会话逐帧双逻辑校验。",
-    "bounds": "离线候选，尚未激活。自身客户端字段解析与1个新MZ3完整终局、旧终局及普通历史回归；其他尺寸和未完玩法仍拒绝。未知状态不放宽、不默认bonus0，不能重播旧失败请求。",
+    "continue": "仅新 v3 marker 使用自身终局证据；其余前缀沿原 automatic-free 续接规则。逐帧请求、会话、金额和 XML 独立双逻辑校验。",
+    "complete": "32708：FID2|、NFG0、parent total3，前一帧2|0|，FGTW增量严格一致且没有嵌套剩余免费。",
+    "bounds": "隔离候选，未获得新线上采集许可。4/5个自身完整终局及各100条历史通过真实 codec/Python IPC/record/verify；历史原记录不重写，旧 marker 仍拒绝新增终局。未知玩法、未完续接和金额异常停止，不默认 bonus0；不代表全部特殊玩法覆盖。",
     "files": [
       "service/native_nextgen_fields.py",
       "service/round_fields.py",
       "scripts/runner-v2/record_fields.py",
       "scripts/runner-v2/ag-rolling/sg-own-terminal.mjs",
       "service/own_terminal_fields.py",
-      "config/ag-rolling-terminal-geometry-contract.json"
+      "config/ag-rolling-own-terminal-contracts.json"
     ],
     "fields": {
       "MSGID": "请求/响应消息类型必须一致；一大局只有一次 BET。",
@@ -98,7 +98,7 @@
     "scripts/runner-v2/record_fields.py": "9c1bace8188dc299561ce234abe6d8d6ed1cdd5418f594e8a7dbcb8ac61c53c2",
     "scripts/runner-v2/ag-rolling/sg-own-terminal.mjs": "640ea90f6dff0ae9e39e5a00bd7a356a39093fdce6c5322768fc34996d26cc8d",
     "service/own_terminal_fields.py": "782951d1a0d7d893d94d5aa181807cddd84d167419aff2986cce127640c662a2",
-    "config/ag-rolling-terminal-geometry-contract.json": "3c724224ee5bb8e5aa68473c00aeacd1e2f304e5fc86f84fffb8ae9494338d3d",
+    "config/ag-rolling-own-terminal-contracts.json": "b3103e7910b9165ec24ab560767a354ba42735034d069874b82fbbf0f641fc15",
     "service/game_rule_catalog.py": "ab0aa32d1e978c4e17526079e456db786ba0a241caaaac767722f9a40b87e2cd"
   },
   "reviewDocuments": [],
@@ -115,5 +115,5 @@
     "retroactiveScanPerformed": false
   },
   "privacy": "不保存 PID、会话、Cookie、令牌、启动URL或原始协议；原始证据留在私有日志。",
-  "ruleHash": "ff3338b8a5ac5e41e73337100071f451135182501542745858134d91a3293696"
+  "ruleHash": "30f3b72fb7b93663fda1c203e6da93e46e3e6e75f1fc944cde2ff5a87637df17"
 }
