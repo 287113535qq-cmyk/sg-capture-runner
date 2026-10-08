@@ -1,3 +1,4 @@
+import {assertBusinessGameScope} from './sg-own-wms-business.mjs';
 import assert from 'node:assert/strict';
 import {stable} from '../mongo-writer.mjs';
 import {maintenanceBoundary} from '../demo-run-fence.mjs';
@@ -7,11 +8,12 @@ import {cohortRepos,participantKey,inspectParticipant,verifyEndedFederation} fro
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 export function assertOrdinaryPrivileges(status,{profile,plans,binding}){
  const auth=status?.authInfo;assert(stable(auth?.authenticatedUsers)===stable([{user:'sg_simulate_delivery_v1',db:'admin'}]),'SG_AG_ORIGINAL_WRITER_AUTH');
+ const gameCount=assertBusinessGameScope(profile.payload.games,plans);
  const expected=profile.payload.games.map(g=>({resource:{db:'sg_'+plans[g.gameId].runtimeSlug,collection:'simulate'},actions:['find','insert','update']}));
- assert(expected.length===81&&new Set(expected.map(v=>v.resource.db)).size===81&&expected.some(v=>v.resource.db===binding.database),'SG_AG_ORIGINAL_81_SIMULATE_SCOPE');
+ assert(expected.length===gameCount&&new Set(expected.map(v=>v.resource.db)).size===gameCount&&expected.some(v=>v.resource.db===binding.database),'SG_AG_ORIGINAL_81_SIMULATE_SCOPE');
  for(const [collection,actions] of Object.entries({capture_state_v2:['find'],capture_journal_v2:['find'],official_rounds:['find'],business_delivery_v1:['find','insert']}))expected.push({resource:{db:'sg_capture_staging_v1',collection},actions});
  const canonical=rows=>rows.map(v=>{assert(Object.keys(v).sort().join(',')==='actions,resource'&&Object.keys(v.resource).sort().join(',')==='collection,db','SG_AG_BROAD_PRIVILEGE_DENIED');return {...v,actions:[...v.actions].sort()};}).sort((a,b)=>stable(a.resource).localeCompare(stable(b.resource)));
- assert(Array.isArray(auth.authenticatedUserPrivileges)&&auth.authenticatedUserPrivileges.length===85&&stable(canonical(auth.authenticatedUserPrivileges))===stable(canonical(expected)),'SG_AG_EXACT_ORIGINAL_85_PRIVILEGES');return true;
+ assert(Array.isArray(auth.authenticatedUserPrivileges)&&auth.authenticatedUserPrivileges.length===gameCount+4&&stable(canonical(auth.authenticatedUserPrivileges))===stable(canonical(expected)),'SG_AG_EXACT_ORIGINAL_85_PRIVILEGES');return true;
 }
 export function assertOrdinaryProtectedGrant(document,descriptor,identity){
  const value=document?.value,expected=descriptor.expectedGrant;

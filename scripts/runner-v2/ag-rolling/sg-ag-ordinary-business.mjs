@@ -1,3 +1,4 @@
+import {ordinaryBusinessAdapter,ownWmsBusinessPlan,assertOwnWmsBinding,verifyOwnWmsBusinessPage} from './sg-own-wms-business.mjs';
 import {ownTerminalFields} from './sg-own-terminal.mjs';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -37,6 +38,7 @@ export function immutableBusinessAudit({audit,owner,guard}){
  };
 }
 export async function verifyOrdinaryNativePage({records,plan,parser}){
+ if(ownWmsBusinessPlan(plan))return verifyOwnWmsBusinessPage({records,plan,parser});
  for(const record of records){
   const f=record.normalized;
   const js=record.raw.ownTerminalContract!==undefined?ownTerminalFields(plan,record.raw,f.typeMappingHash):record.raw.automaticTerminalContract!==undefined?terminalFields(plan,record.raw,f.typeMappingHash):record.raw.automaticFreeContract===AUTOMATIC_FREE_CONTRACT?automaticFreeFields(plan,record.raw,f.typeMappingHash):record.raw.balanceContract===BALANCE_CONTRACT?heldBalanceFields(plan,record.raw,f.typeMappingHash):captureCollector('nextgen').prepareNextgenRound(record.raw,{buy:f.buy,bonus:f.bonus,typeMappingHash:f.typeMappingHash});
@@ -47,10 +49,11 @@ export async function verifyOrdinaryNativePage({records,plan,parser}){
  return verified;
 }
 export async function deliverOrdinaryBusiness({client,ObjectId,parser,binding:b,plan,nativeState,nativeReceipt,expectedProof,expectedOriginalCount,owner,guard,currentRtp,assertWorkers,evidence,evidenceMode='private-full-ack',nativePageVerification}){
- assert(plan.adapter==='native-nextgen-v1'&&String(plan.gameId)===String(b.gameId)&&b.queueId===expectedProof.queueId,'SG_BUSINESS_ADAPTER_REVIEW_REQUIRED');
+ assert(ordinaryBusinessAdapter(plan)&&String(plan.gameId)===String(b.gameId)&&b.queueId===expectedProof.queueId,'SG_BUSINESS_ADAPTER_REVIEW_REQUIRED');
  assert(Number.isSafeInteger(expectedOriginalCount)&&expectedOriginalCount>=0&&typeof owner==='string','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
  assert(['private-full-ack','existing-immutable-audit'].includes(evidenceMode),'SG_AG_BUSINESS_EVIDENCE_MODE');
  if(evidenceMode==='private-full-ack')assert(typeof evidence?.writeAndReadback==='function'&&typeof evidence?.appendAndReadback==='function','SG_AG_BUSINESS_OWN_ADMISSION_REQUIRED');
+ if(ownWmsBusinessPlan(plan)){assertOwnWmsBinding(plan,b);assert(expectedOriginalCount===0,'SG_WMS_EXISTING_TARGET_REQUIRES_OWN_REVIEW');}
  await guard('business-admission');await currentRtp(b);await assertWorkers();
  const proof=assertCompleteBinding(nativeState,nativeReceipt,b);
  assert(stable(proof)===stable(expectedProof),'SG_BUSINESS_PROOF_CHANGED');

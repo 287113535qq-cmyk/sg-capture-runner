@@ -1,3 +1,4 @@
+import {ordinaryBusinessAdapter,ownWmsBusinessPlan,assertOwnWmsBinding} from './sg-own-wms-business.mjs';
 import assert from 'node:assert/strict';
 import {inspectSourceDeferrals} from './sg-source-deferrals.mjs';
 import fs from 'node:fs';
@@ -41,6 +42,7 @@ export function inspectExistingGameBinding({binding:b,game:g,profile,plan}){
   &&b.queueId===profile.payload.queueId&&g.dbName==='sg_'+g.gameId
   &&b.database==='sg_'+plan.runtimeSlug&&b.runtimeSlug===plan.runtimeSlug
   &&b.runtimeGameId===plan.runtimeGameId&&b.trialId===plan.trialId,'SG_AG_EXISTING_OWN_BINDING');
+ if(ownWmsBusinessPlan(plan))assertOwnWmsBinding(plan,b);
  return b;
 }
 export async function openExistingWorkflowControl({profile,store,transport,guard,githubRead,coordinatorRun,commit,sourceClose,sourceJobsEnded=()=>false}){
@@ -80,7 +82,7 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
  };
  async function ordinaryGuard(phase,g){
   once.assertUsable();await guard();
-  if(g&&!phase.startsWith('settle-ended'))assert(bindings[g.gameId]&&plans[g.gameId].adapter==='native-nextgen-v1','SG_AG_EXISTING_OWN_ADAPTER_REQUIRED');
+  if(g&&!phase.startsWith('settle-ended'))assert(bindings[g.gameId]&&ordinaryBusinessAdapter(plans[g.gameId]),'SG_AG_EXISTING_OWN_ADAPTER_REQUIRED');
   if(Date.now()-canonicalAt<15000)return;
   const part=(await store.get('journal',participantKey(profile)))?.value;
   if(profile.federation&&part)inspectParticipant({profile,receipt:part,coordinatorRun,commit});
@@ -145,7 +147,7 @@ export async function openExistingWorkflowControl({profile,store,transport,guard
   acceptCompletedGames:async saved=>{const sourceDeferred=inspectSourceDeferrals(profile);for(const game of saved.games){
    if(sourceDeferred.has(game.gameId)){game.phase='blocked';game.reason='SG_OWN_FEATURE_REPAIR_REQUIRED';continue;}
    if(game.gameId==='32629'){game.phase='blocked';game.reason='SG_EXISTING_INDEPENDENT_MONEY_ANOMALY_RETAINED';continue;}
-   if(plans[game.gameId].adapter!=='native-nextgen-v1'){game.phase='blocked';game.reason='SG_OWN_BUSINESS_ADAPTER_REVIEW_REQUIRED';continue;}
+   if(!ordinaryBusinessAdapter(plans[game.gameId])){game.phase='blocked';game.reason='SG_OWN_BUSINESS_ADAPTER_REVIEW_REQUIRED';continue;}
    const proof=policy.completedBusinessReceipts[game.gameId];if(!proof)continue;
    const nativeKey='rolling-merge:'+queueHash([profile.payload.queueId,game.gameId,game.campaignId]);
    const native=(await store.get('journal',nativeKey+':complete'))?.value,stateRow=(await store.get('state',nativeKey))?.value;

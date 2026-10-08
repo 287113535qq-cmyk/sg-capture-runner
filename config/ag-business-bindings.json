@@ -1947,6 +1947,126 @@
         10001
       ],
       "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b"
+    },
+    "32752": {
+      "runtimeGameId": 32974,
+      "runtimeSlug": "acornpixie",
+      "database": "sg_acornpixie",
+      "trialId": "sg_ag_r1_20261004_32752",
+      "rtp": [
+        0,
+        30,
+        100,
+        300,
+        500,
+        1000,
+        1001,
+        2001,
+        2500,
+        5000,
+        5001,
+        10000,
+        10001
+      ],
+      "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b",
+      "gameId": 32752,
+      "queueId": "rolling-20261003225355-f0d07c84"
+    },
+    "32759": {
+      "runtimeGameId": 32981,
+      "runtimeSlug": "crystalforest",
+      "database": "sg_crystalforest",
+      "trialId": "sg_ag_r1_20261005_32759",
+      "rtp": [
+        0,
+        30,
+        100,
+        300,
+        500,
+        1000,
+        1001,
+        2001,
+        2500,
+        5000,
+        5001,
+        10000,
+        10001
+      ],
+      "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b",
+      "gameId": 32759,
+      "queueId": "rolling-20261003225355-f0d07c84"
+    },
+    "32764": {
+      "runtimeGameId": 32986,
+      "runtimeSlug": "dragonspin",
+      "database": "sg_dragonspin",
+      "trialId": "sg_ag_r1_20261005_32764",
+      "rtp": [
+        0,
+        30,
+        100,
+        300,
+        500,
+        1000,
+        1001,
+        2001,
+        2500,
+        5000,
+        5001,
+        10000,
+        10001
+      ],
+      "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b",
+      "gameId": 32764,
+      "queueId": "rolling-20261003225355-f0d07c84"
+    },
+    "32770": {
+      "runtimeGameId": 32992,
+      "runtimeSlug": "giantsgold_prt",
+      "database": "sg_giantsgold_prt",
+      "trialId": "sg_ag_r1_20261005_32770",
+      "rtp": [
+        0,
+        30,
+        100,
+        300,
+        500,
+        1000,
+        1001,
+        2001,
+        2500,
+        5000,
+        5001,
+        10000,
+        10001
+      ],
+      "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b",
+      "gameId": 32770,
+      "queueId": "rolling-20261003225355-f0d07c84"
+    },
+    "32774": {
+      "runtimeGameId": 32996,
+      "runtimeSlug": "himalayas",
+      "database": "sg_himalayas",
+      "trialId": "sg_ag_r1_20261005_32774",
+      "rtp": [
+        0,
+        30,
+        100,
+        300,
+        500,
+        1000,
+        1001,
+        2001,
+        2500,
+        5000,
+        5001,
+        10000,
+        10001
+      ],
+      "rtpFileSha256": "9339f7fe9b36236d6f8d5271e67612497c48b3681e4b03050e7d61562cb8bc4b",
+      "gameId": 32774,
+      "queueId": "rolling-20261003225355-f0d07c84"
     }
   }
 }
