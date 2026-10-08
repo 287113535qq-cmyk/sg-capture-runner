@@ -1,0 +1,99 @@
+{
+  "schema": "sg-ag-rolling-new-game-empty-v1",
+  "at": 1791440651,
+  "queueId": "rolling-20261003225355-f0d07c84",
+  "profileHash": "e04ee51598231f1a946b80212185c67f423150fb846ecc5800d3d94db253cf89",
+  "previousActivation": "b1567b69614324484a1fc6ba3da8e5ca5598c83654b1566fe031049c81041427",
+  "previousRun": "37695561166:1",
+  "endedProofHash": "7f0a4fee2326a8186d84e35c5993706ede575431d82ce449d2dba389aced7563",
+  "planRegistryHash": "1714021980a2ef3a17365792e651241d10e7eae12a57554f1e8ac98e566755a8",
+  "source": {
+    "owner": null,
+    "queueId": null,
+    "status": "idle",
+    "lastRun": "37695561166:1",
+    "lastQueueId": "rolling-20261003225355-f0d07c84",
+    "endedProofHash": "7f0a4fee2326a8186d84e35c5993706ede575431d82ce449d2dba389aced7563"
+  },
+  "holds": [
+    false,
+    false
+  ],
+  "games": [
+    {
+      "gameId": "32752",
+      "trialId": "sg_ag_r1_20261004_32752",
+      "officialCount": 0,
+      "history": [
+        {
+          "game_id": 32752,
+          "status": "needs-adapter",
+          "baseline": 0,
+          "confirmed": 0,
+          "completed": null,
+          "group": "secondary"
+        }
+      ]
+    },
+    {
+      "gameId": "32759",
+      "trialId": "sg_ag_r1_20261005_32759",
+      "officialCount": 0,
+      "history": [
+        {
+          "game_id": 32759,
+          "status": "needs-adapter",
+          "baseline": 0,
+          "confirmed": 0,
+          "completed": null,
+          "group": "primary"
+        }
+      ]
+    },
+    {
+      "gameId": "32764",
+      "trialId": "sg_ag_r1_20261005_32764",
+      "officialCount": 0,
+      "history": [
+        {
+          "game_id": 32764,
+          "status": "needs-adapter",
+          "baseline": 0,
+          "confirmed": 0,
+          "completed": null,
+          "group": "secondary"
+        }
+      ]
+    },
+    {
+      "gameId": "32770",
+      "trialId": "sg_ag_r1_20261005_32770",
+      "officialCount": 0,
+      "history": [
+        {
+          "game_id": 32770,
+          "status": "needs-adapter",
+          "baseline": 0,
+          "confirmed": 0,
+          "completed": null,
+          "group": "secondary"
+        }
+      ]
+    },
+    {
+      "gameId": "32774",
+      "trialId": "sg_ag_r1_20261005_32774",
+      "officialCount": 0,
+      "history": [
+        {
+          "game_id": 32774,
+          "status": "needs-adapter",
+          "baseline": 0,
+          "confirmed": 0,
+          "completed": null,
+          "group": "secondary"
+        }
+      ]
+    }
+  ]
+}
