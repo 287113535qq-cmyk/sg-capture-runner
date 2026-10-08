@@ -90,6 +90,7 @@ import './ag-rolling/sg-ag-ordinary-inherited-launcher.test.mjs';
 import './ag-rolling/sg-ag-live-controller.test.mjs';
 import './ag-rolling/sg-resume-reuse.test.mjs';
 import './ag-rolling/sg-native-page-verification-cache.test.mjs';
+import './ag-rolling/sg-native-record-verification-cache.test.mjs';
 import './ag-rolling/sg-ended-leases.test.mjs';
 import './ag-rolling/sg-ag-game-budget.test.mjs';
 import './ag-rolling/sg-source-finalizer.test.mjs';

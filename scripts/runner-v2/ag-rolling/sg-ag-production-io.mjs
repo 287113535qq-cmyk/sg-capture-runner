@@ -13,22 +13,36 @@ import {assertCompleteBinding,digest,verifyLegacyPage,missingDocuments} from './
 import {businessInventory,readBusinessNativePages} from './sg-business-native-reader.mjs';
 import {businessDocument,verifyBusinessPage} from './sg-business-document.mjs';
 import {createHash} from 'node:crypto';
-import {createGameNativePageVerificationCache} from './sg-native-page-verification-cache.mjs';
+import {createGameRecordVerificationCache} from './sg-native-record-verification-cache.mjs';
 
 // RunnerState/gateway perform the original SG scoped metadata I/O. Business
 // Mongo uses its original account independently; it never gains metadata CAS.
 // The protected entry owns admission, SSH memory agents and evidence endpoints.
-export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,evidenceMode='private-full-ack',sourceJobsEnded=()=>false,now=Date.now}){
+export function createProductionSgIo({profile,cohortRun,coordinatorRun,commit,actorRun=cohortRun,actorCommit=commit,repository,store,transport,parser,businessClient,ObjectId,bindings,plans,githubRead,admission,privateEvidence,privateControlPersist,currentRtp,evidenceMode='private-full-ack',sourceJobsEnded=()=>false,now=Date.now,nativeProgress=value=>console.log(JSON.stringify(value))}){
  const queueId=profile.payload.queueId,owner=actorRun+':strict-ag-control',prefixes=new Map(),done=new Map(),completedAudits=new Map(),selectedRefs=new Map();
  assert(/^\d+:1$/.test(actorRun)&&/^[a-f0-9]{40}$/.test(actorCommit),'SG_AG_ACTUAL_CONTROL_ACTOR');
  assert(Object.values(cohortRepos).includes(repository)&&/^\d+:1$/.test(cohortRun),'SG_AG_PRODUCTION_IDENTITY');
  for(const method of ['guard','assertCapturedEnding','assertResumeBoundary','dispatchRemaining','finishCohort','originalCount','originalDocuments'])assert(typeof admission?.[method]==='function','SG_AG_PRODUCTION_ADMISSION_REQUIRED:'+method);
  assert(typeof githubRead==='function'&&typeof privateControlPersist==='function'&&typeof currentRtp==='function','SG_AG_PRODUCTION_PRIVATE_PORTS');
  const gameKey=g=>'rolling-merge:'+queueHash([queueId,g.gameId,g.campaignId]);
- const nativeVerification=createGameNativePageVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
- const verifyNative=(g,records)=>nativeVerification.verify(gameKey(g),plans[g.gameId],records);
+ const nativeVerification=createGameRecordVerificationCache({verify:(plan,records)=>verifyOrdinaryNativePage({records,plan,parser})});
+ let observedGame=null,observedPhase='native-verification',freshRows=0,lastReported=0;
+ assert(typeof nativeProgress==='function','SG_NATIVE_PROGRESS_PORT');
+ const verifyNative=async(g,records)=>{
+  const result=await nativeVerification.verify(gameKey(g),plans[g.gameId],records);
+  if(observedGame!==gameKey(g)){observedGame=gameKey(g);freshRows=0;lastReported=0;}
+  freshRows+=records.length;
+  if(lastReported===0||freshRows-lastReported>=15000){
+   const stats=nativeVerification.status();
+   nativeProgress({schema:'sg-native-full-readback-progress-v1',gameId:g.gameId,phase:observedPhase,
+    freshReadbackRows:freshRows,independentlyParsedRows:stats.verifiedRecords,reusedRecordVerifications:stats.hits,
+    at:now(),newCaptureRows:0,sourceRequests:0});lastReported=freshRows;
+  }
+  return result;
+ };
  const businessKey=(g,p)=>'game:'+g.gameId+':'+digest(p);
  async function guard(phase,g){
+  observedPhase=phase;
   if(g)assert(profile.payload.games.some(x=>x.gameId===g.gameId&&x.campaignId===g.campaignId&&x.dbName===g.dbName&&x.baseline===g.baseline),'SG_AG_PRODUCTION_GAME_SCOPE');
   await admission.guard(phase,g);await store.writable();
   const source=(await store.get('state','rolling-source'))?.value;
