@@ -1,34 +1,43 @@
-name: SG single-game existing session readiness
+name: SG own Crystal natural free evidence only
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: 'Existing session or twenty independent anonymous demo handshakes; no BET'
-        type: choice
-        default: parallel
-        options: [parallel, existing]
 permissions:
   contents: read
+  actions: read
 concurrency:
-  group: sg-real-single-game-trial
+  group: sg-own-crystal-natural-free-evidence-v12
   cancel-in-progress: false
 jobs:
-  session:
+  evidence:
+    if: ${{ github.repository == '287113535qq-cmyk/sg-capture-runner' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - name: Install locked protocol parser
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '22'
+      - name: Install locked XML parser
         working-directory: collector
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Check demo sessions without any BET
+      - name: Own client route, independent Python, and single-use evidence safety tests
+        run: |
+          node --test scripts/trial/crystal-free-evidence/route.test.mjs scripts/trial/crystal-free-evidence/probe.test.mjs
+          python3 scripts/trial/crystal-free-evidence/test_route.py
+      - name: Single fresh bounded demo observation without database access or collection credit
         env:
           SG_TRIAL_DEMO_CONFIG: ${{ secrets.SG_TRIAL_DEMO_CONFIG }}
-        run: |
-          if [ '${{ inputs.mode }}' = 'parallel' ]; then
-            node scripts/trial/parallel-session-check.mjs
-          else
-            node scripts/trial/session-check.mjs
-          fi
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/trial/crystal-free-evidence/probe.mjs
+      - name: Preserve only encrypted raw evidence and non-sensitive summary
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: crystal-natural-free-evidence-v12
+          path: |
+            .local/crystal-free-evidence/evidence.jsonl.enc
+            .local/crystal-free-evidence/summary.json
+          retention-days: 7
+          if-no-files-found: warn
