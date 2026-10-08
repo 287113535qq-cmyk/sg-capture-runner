@@ -1,585 +1,513 @@
-{
-  "games": [
-    {
-      "provider": "sg",
-      "gameId": "32749",
-      "name": "5 Treasures",
-      "backendId": "fivetreasures",
-      "dbName": "sg_fivetreasures",
-      "serviceDir": "sg_fivetreasures",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "fivetreasures",
-          "gameID": "20442",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "176"
-        },
-        "betRaw": 176,
-        "runtimeGameId": 32971,
-        "runtimeSlug": "fivetreasures",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32753",
-      "name": "Action Bank Plus",
-      "backendId": "actionbankplus",
-      "dbName": "sg_actionbankplus",
-      "serviceDir": "sg_actionbankplus",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "actionbankplus",
-          "gameID": "20369",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "200"
-        },
-        "betRaw": 200,
-        "runtimeGameId": 32975,
-        "runtimeSlug": "actionbankplus",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32754",
-      "name": "Arthur and the Round Table",
-      "backendId": "arthurandtheroundtable",
-      "dbName": "sg_arthurandtheroundtable",
-      "serviceDir": "sg_arthurandtheroundtable",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "arthurandtheroundtable",
-          "gameID": "20467",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "200"
-        },
-        "betRaw": 200,
-        "runtimeGameId": 32976,
-        "runtimeSlug": "arthurandtheroundtable",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32756",
-      "name": "Celestial King",
-      "backendId": "celestialking",
-      "dbName": "sg_celestialking",
-      "serviceDir": "sg_celestialking",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "celestialking",
-          "gameID": "20210",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "100",
-          "lines": "30"
-        },
-        "betRaw": 100,
-        "runtimeGameId": 32978,
-        "runtimeSlug": "celestialking",
-        "omitsBaseRemaining": false
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32757",
-      "name": "Cheshire Cat",
-      "backendId": "cheshirecat",
-      "dbName": "sg_cheshirecat",
-      "serviceDir": "sg_cheshirecat",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "cheshirecat",
-          "gameID": "20132",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "240",
-          "lines": "40"
-        },
-        "betRaw": 240,
-        "runtimeGameId": 32979,
-        "runtimeSlug": "cheshirecat",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32760",
-      "name": "Dancing Drums",
-      "backendId": "dancingdrums",
-      "dbName": "sg_dancingdrums",
-      "serviceDir": "sg_dancingdrums",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "dancingdrums",
-          "gameID": "20207",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "528",
-          "paylineCount": "1"
-        },
-        "betRaw": 528,
-        "runtimeGameId": 32982,
-        "runtimeSlug": "dancingdrums",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32761",
-      "name": "Dancing Drums Explosion",
-      "backendId": "dancingdrumsexplosion",
-      "dbName": "sg_dancingdrumsexplosion",
-      "serviceDir": "sg_dancingdrumsexplosion",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "dancingdrumsexplosion",
-          "gameID": "20454",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "176"
-        },
-        "betRaw": 176,
-        "runtimeGameId": 32983,
-        "runtimeSlug": "dancingdrumsexplosion",
-        "omitsBaseRemaining": true
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32763",
-      "name": "Dr. Jekyll Goes Wild",
-      "backendId": "drjekyllgoeswild",
-      "dbName": "sg_drjekyllgoeswild",
-      "serviceDir": "sg_drjekyllgoeswild",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "drjekyllgoeswild",
-          "gameID": "20126",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "100",
-          "isBigBet": "0"
-        },
-        "betRaw": 100,
-        "runtimeGameId": 32985,
-        "runtimeSlug": "drjekyllgoeswild",
-        "omitsBaseRemaining": false
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32766",
-      "name": "Eureka Blast Superlock",
-      "backendId": "eurekareelsblastsuperlock",
-      "dbName": "sg_eurekareelsblastsuperlock",
-      "serviceDir": "sg_eurekareelsblastsuperlock",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "eurekareelsblastsuperlock",
-          "gameID": "20400",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "50"
-        },
-        "betRaw": 50,
-        "runtimeGameId": 32988,
-        "runtimeSlug": "eurekareelsblastsuperlock",
-        "omitsBaseRemaining": false
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32775",
-      "name": "Hula Hula Nights",
-      "backendId": "hulahulanights",
-      "dbName": "sg_hulahulanights",
-      "serviceDir": "sg_hulahulanights",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "hulahulanights",
-          "gameID": "20188",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "100",
-          "isBigBet": "0"
-        },
-        "betRaw": 100,
-        "runtimeGameId": 32997,
-        "runtimeSlug": "hulahulanights",
-        "omitsBaseRemaining": false
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32776",
-      "name": "Invaders of Planet Moolah",
-      "backendId": "invadersfromplanetmoolah_prt",
-      "dbName": "sg_invadersfromplanetmoolah_prt",
-      "serviceDir": "sg_invadersfromplanetmoolah_prt",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "invadersfromplanetmoolah_prt",
-          "gameID": "20145",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "25"
-        },
-        "betRaw": 25,
-        "runtimeGameId": 32998,
-        "runtimeSlug": "invadersfromplanetmoolah_prt",
-        "omitsBaseRemaining": false
-      }
-    },
-    {
-      "provider": "sg",
-      "gameId": "32780",
-      "name": "King of Babylon Action Spins",
-      "backendId": "kingofbabylonactionspins",
-      "dbName": "sg_kingofbabylonactionspins",
-      "serviceDir": "sg_kingofbabylonactionspins",
-      "rtpBuckets": [
-        0,
-        30,
-        100,
-        300,
-        500,
-        1000,
-        2500,
-        5000,
-        10000,
-        1001,
-        2001,
-        5001,
-        10001
-      ],
-      "sg": {
-        "protocol": "wms",
-        "endpoint": "https://gls.atc.casinarena.com/gls.rgsx",
-        "header": {
-          "affiliate": "0",
-          "ccyCode": "",
-          "channel": "I",
-          "freePlay": "Y",
-          "gameCodeRGI": "kingofbabylonactionspins",
-          "gameID": "20402",
-          "glsID": "65535",
-          "lang": "en_US",
-          "promotions": "N",
-          "userID": "null",
-          "userType": "C",
-          "versionID": "1_0"
-        },
-        "stake": {
-          "total": "200"
-        },
-        "betRaw": 200,
-        "runtimeGameId": 33002,
-        "runtimeSlug": "kingofbabylonactionspins",
-        "omitsBaseRemaining": true
-      }
-    }
-  ]
-}
+games:
+  - provider: sg
+    gameId: '32749'
+    name: 5 Treasures
+    backendId: fivetreasures
+    dbName: sg_fivetreasures
+    serviceDir: sg_fivetreasures
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: fivetreasures
+        gameID: '20442'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '176'
+      betRaw: 176
+      runtimeGameId: 32971
+      runtimeSlug: fivetreasures
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32753'
+    name: Action Bank Plus
+    backendId: actionbankplus
+    dbName: sg_actionbankplus
+    serviceDir: sg_actionbankplus
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: actionbankplus
+        gameID: '20369'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      betRaw: 200
+      runtimeGameId: 32975
+      runtimeSlug: actionbankplus
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32754'
+    name: Arthur and the Round Table
+    backendId: arthurandtheroundtable
+    dbName: sg_arthurandtheroundtable
+    serviceDir: sg_arthurandtheroundtable
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: arthurandtheroundtable
+        gameID: '20467'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      betRaw: 200
+      runtimeGameId: 32976
+      runtimeSlug: arthurandtheroundtable
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32756'
+    name: Celestial King
+    backendId: celestialking
+    dbName: sg_celestialking
+    serviceDir: sg_celestialking
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: celestialking
+        gameID: '20210'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        lines: '30'
+      betRaw: 100
+      runtimeGameId: 32978
+      runtimeSlug: celestialking
+      omitsBaseRemaining: false
+  - provider: sg
+    gameId: '32757'
+    name: Cheshire Cat
+    backendId: cheshirecat
+    dbName: sg_cheshirecat
+    serviceDir: sg_cheshirecat
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: cheshirecat
+        gameID: '20132'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '240'
+        lines: '40'
+      betRaw: 240
+      runtimeGameId: 32979
+      runtimeSlug: cheshirecat
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32760'
+    name: Dancing Drums
+    backendId: dancingdrums
+    dbName: sg_dancingdrums
+    serviceDir: sg_dancingdrums
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: dancingdrums
+        gameID: '20207'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '528'
+        paylineCount: '1'
+      betRaw: 528
+      runtimeGameId: 32982
+      runtimeSlug: dancingdrums
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32761'
+    name: Dancing Drums Explosion
+    backendId: dancingdrumsexplosion
+    dbName: sg_dancingdrumsexplosion
+    serviceDir: sg_dancingdrumsexplosion
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: dancingdrumsexplosion
+        gameID: '20454'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '176'
+      betRaw: 176
+      runtimeGameId: 32983
+      runtimeSlug: dancingdrumsexplosion
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32763'
+    name: Dr. Jekyll Goes Wild
+    backendId: drjekyllgoeswild
+    dbName: sg_drjekyllgoeswild
+    serviceDir: sg_drjekyllgoeswild
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: drjekyllgoeswild
+        gameID: '20126'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        isBigBet: '0'
+      betRaw: 100
+      runtimeGameId: 32985
+      runtimeSlug: drjekyllgoeswild
+      omitsBaseRemaining: false
+  - provider: sg
+    gameId: '32766'
+    name: Eureka Blast Superlock
+    backendId: eurekareelsblastsuperlock
+    dbName: sg_eurekareelsblastsuperlock
+    serviceDir: sg_eurekareelsblastsuperlock
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: eurekareelsblastsuperlock
+        gameID: '20400'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '50'
+      betRaw: 50
+      runtimeGameId: 32988
+      runtimeSlug: eurekareelsblastsuperlock
+      omitsBaseRemaining: false
+  - provider: sg
+    gameId: '32775'
+    name: Hula Hula Nights
+    backendId: hulahulanights
+    dbName: sg_hulahulanights
+    serviceDir: sg_hulahulanights
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: hulahulanights
+        gameID: '20188'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        isBigBet: '0'
+      betRaw: 100
+      runtimeGameId: 32997
+      runtimeSlug: hulahulanights
+      omitsBaseRemaining: false
+  - provider: sg
+    gameId: '32776'
+    name: Invaders of Planet Moolah
+    backendId: invadersfromplanetmoolah_prt
+    dbName: sg_invadersfromplanetmoolah_prt
+    serviceDir: sg_invadersfromplanetmoolah_prt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: invadersfromplanetmoolah_prt
+        gameID: '20145'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '25'
+      betRaw: 25
+      runtimeGameId: 32998
+      runtimeSlug: invadersfromplanetmoolah_prt
+      omitsBaseRemaining: false
+      freeStake:
+        total: '25'
+        fsOn: '1'
+  - provider: sg
+    gameId: '32780'
+    name: King of Babylon Action Spins
+    backendId: kingofbabylonactionspins
+    dbName: sg_kingofbabylonactionspins
+    serviceDir: sg_kingofbabylonactionspins
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: kingofbabylonactionspins
+        gameID: '20402'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      betRaw: 200
+      runtimeGameId: 33002
+      runtimeSlug: kingofbabylonactionspins
+      omitsBaseRemaining: true
