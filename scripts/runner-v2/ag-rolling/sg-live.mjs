@@ -28,7 +28,7 @@ import {companionBoundary} from './sg-federated-boundary.mjs';
 import {closePreparation} from './sg-preparation-close.mjs';
 import {protocolStopReport} from './sg-fault-code.mjs';
 import {openExistingWorkflowControl} from './sg-ag-existing-workflow.mjs';
-import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
+import {prepareReviewedExistingAgResume} from './sg-ag-reviewed-resume.mjs';
 import {finalizeEndedSource} from './sg-source-finalizer.mjs';
 import {closeSealedSource} from './sg-sealed-cleanup.mjs';
 
@@ -164,8 +164,7 @@ try{
    readPrevious:activation=>read(`config/ag-rolling-queue-${activation}.json`),
    checkNewGame:context=>inspectNewGame({...context,store,transport,plan:registry.plans[context.game.gameId]}),
    prepareResume:prepareResumeGame,
-   prepareFullResume:context=>prepareExistingAgResume({...context,store,prepareGame:prepareResumeGame,
-    canResumeQuotaGame:game=>registry.plans[game.gameId]?.adapter==='native-nextgen-v1'}),
+   prepareFullResume:context=>prepareReviewedExistingAgResume({...context,registry,store,prepareGame:prepareResumeGame}),
    checkBaselines:async(_profile,ended)=>{
     await checkPrimaryLeases({store,plans:read('config/round-one-plans.json'),read});
     const holds=await transport.request('global_holds');assert(holds.length===2&&holds.every(r=>r?.value.active===false),'SG_AG_GLOBAL_HOLD');

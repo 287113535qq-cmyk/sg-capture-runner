@@ -8,6 +8,8 @@ import {queueHash} from './sg-queue-profile.mjs';
 import {inspectExistingWorkflowPolicy,inspectExistingGameBinding} from './sg-ag-existing-workflow.mjs';
 import {deliverOrdinaryBusiness} from './sg-ag-ordinary-business.mjs';
 import {prepareExistingAgResume} from './sg-ag-existing-resume.mjs';
+import {prepareReviewedExistingAgResume} from './sg-ag-reviewed-resume.mjs';
+import {resetEndedTask} from './sg-resume.mjs';
 import {protectMongoOnce} from './sg-ag-once-mongo.mjs';
 import {stagingLeaseKey} from './sg-staging-store.mjs';
 
@@ -59,6 +61,97 @@ function savedResumeState(f,changes,cohort='secondary'){
  f.docs.set('journal/'+saved.journal,{version:0,value:{file:'own-control-state',value:structuredClone(state),cohortRun:oldRun,commit:f.commit}});
  return {key,state: f.docs.get('state/'+key),journal:f.docs.get('journal/'+saved.journal)};
 }
+
+const ownResumeRegistry=JSON.parse(fs.readFileSync(new URL('../../../config/ag-rolling-plans.json',import.meta.url)));
+const ownWmsIds=['32752','32759','32764','32770','32774'];
+const emptyQuota='有效 0 条，低于 300000；保留数据等待续跑或协议诊断';
+function reviewedResumeFixture(id='32752',changes={}){
+ const f=resumeFixture(['32441',id]);
+ savedResumeState(f,{reason:emptyQuota,...changes});
+ f.args.registry=structuredClone(ownResumeRegistry);
+ return f;
+}
+test('production resume entry restores each exact reviewed WMS quota stop through the original AG preparation',async()=>{
+ for(const id of ownWmsIds){
+  const f=reviewedResumeFixture(id),before=structuredClone(f.docs);
+  const result=await prepareReviewedExistingAgResume(f.args);
+  assert.deepEqual(f.prepared,['32441',id]);assert.deepEqual(result[1].remaining,[id]);
+  for(const[k,v]of before)assert.deepEqual(f.docs.get(k),v,'old source/task/journal evidence stays unchanged');
+  assert(result.every(r=>r.sourceRequests===0));
+  await assert.rejects(prepareReviewedExistingAgResume(f.args),/EXISTING_HANDOFF_NO_REPLAY/);
+ }
+});
+test('production resume entry rejects changed WMS plans even when relabelled as the old native adapter',async()=>{
+ for(const id of ownWmsIds)for(const mutate of [p=>{p.adapter='native-nextgen-v1';},p=>{p.gameId='32700';},p=>{p.unreviewed=true;}]){
+  const f=reviewedResumeFixture(id);mutate(f.args.registry.plans[id]);
+  const result=await prepareReviewedExistingAgResume(f.args);assert.deepEqual(result[1].remaining,[]);assert.deepEqual(f.prepared,['32441']);
+ }
+});
+test('production resume entry retains unknown, accepted, merging and unreviewed failure states for the reviewed five',async()=>{
+ for(const id of ownWmsIds)for(const changes of [{sgOutcomeUnknownRetained:true},{sgExistingOperationRetained:true},
+  {acceptedTotal:0},{acceptedTotal:300000},{phase:'merging'},{phase:'merged'},{reason:'SG_PROTOCOL_STOPPED'}]){
+  const f=reviewedResumeFixture(id,changes),before=structuredClone(f.docs);
+  const result=await prepareReviewedExistingAgResume(f.args);assert.deepEqual(result[1].remaining,[]);assert.deepEqual(f.prepared,['32441']);
+  for(const[k,v]of before)assert.deepEqual(f.docs.get(k),v);
+ }
+});
+test('production resume entry cannot bypass original source ending, leases, saved journal or prefix validation',async()=>{
+ for(const kind of ['ending','lease','journal','prefix']){
+  const f=reviewedResumeFixture();
+  if(kind==='ending')f.docs.get('journal/rolling-ended:'+f.ended.queueId+':'+f.ended.run).value.changed=true;
+  if(kind==='lease')f.docs.set('state/'+stagingLeaseKey(f.ended.queueId,f.games[0],'worker',1),{value:{expiresAt:Date.now()+60000}});
+  if(kind==='journal')savedResumeState(f,{reason:emptyQuota}).journal.value.changed=true;
+  if(kind==='prefix')f.args.prepareGame=async()=>{throw Error('own-prefix-rejected');};
+  await assert.rejects(prepareReviewedExistingAgResume(f.args));
+  assert(![...f.docs.keys()].some(k=>k.startsWith('journal/rolling-ag-resume:')));
+ }
+});
+test('production resume entry retains native compatibility and does not accept injected eligibility or arbitrary WMS adapters',async()=>{
+ const native=reviewedResumeFixture('32442');assert.deepEqual((await prepareReviewedExistingAgResume(native.args))[1].remaining,['32442']);
+ const unknown=reviewedResumeFixture('32442');unknown.args.registry.plans['32442'].adapter='unreviewed-wms';
+ assert.deepEqual((await prepareReviewedExistingAgResume(unknown.args))[1].remaining,[]);
+ const override=reviewedResumeFixture();override.args.canResumeQuotaGame=()=>true;
+ await assert.rejects(prepareReviewedExistingAgResume(override.args),/NO_ELIGIBILITY_OVERRIDE/);assert.equal(override.prepared.length,0);
+});
+test('the shared production entry uses actual task recovery for all five closed empty WMS games and preserves unknown source evidence',async()=>{
+ let recovered=0;
+ for(const id of ownWmsIds){
+  const f=reviewedResumeFixture(id),game=f.games[1],queueId=f.profile.payload.queueId;
+  const prior=new Map();
+  for(const [kind,n] of [['canary',2],['worker',20]])for(let index=1;index<=n;index++){
+   const key=taskKey(queueId,game,kind+':'+index),row=f.docs.get('state/'+key);
+   Object.assign(row.value,{status:kind==='canary'?'failed':'blocked',count:0,owner:'old-closed-owner'});
+   prior.set(key,structuredClone(row));
+  }
+  const unknown={immutable:true,value:{outcomeUnknown:true,owner:'old-closed-owner'}};
+  f.docs.set('journal/old-unresolved-source',structuredClone(unknown));
+  f.args.ended.queueId=queueId;
+  f.args.prepareGame=async({game:g,ended,guard})=>{
+   if(g.gameId!==id)return;
+   for(const [kind,n] of [['canary',2],['worker',20]])for(let index=1;index<=n;index++){
+    const value=await resetEndedTask({store:f.store,transport:{request:async(op)=>{assert.equal(op,'scan');return [];}},
+     game:g,queueId,kind,index,guard,ended,verifyRecords:()=>assert.fail('empty prefix must not fabricate validation')});
+    assert.equal(value.status,'pending');assert.equal(value.resume.count,0);recovered++;
+   }
+  };
+  const result=await prepareReviewedExistingAgResume(f.args);assert.deepEqual(result[1].remaining,[id]);
+  for(const[key,before]of prior){
+   const row=await f.store.get('state',key);assert.equal(row.version,before.version+1);
+   const receipt=(await f.store.get('journal',row.value.resume.receiptKey)).value;
+   assert.equal(receipt.previousTaskHash,queueHash(before.value));assert.equal(receipt.unknownOrUnfinishedSource,'retained-unreplayed-unaccounted');
+  }
+  assert.deepEqual(f.docs.get('journal/old-unresolved-source'),unknown);
+ }
+ assert.equal(recovered,110);
+});
+test('reviewed WMS deferral still overrides production recovery eligibility',async()=>{
+ const f=reviewedResumeFixture(),id='32752',hash=queueHash(f.args.registry.plans[id]);
+ f.profile.manifest=f.games.map(g=>({...g,planHash:g.gameId===id?hash:'a'.repeat(64)}));
+ f.profile.sourceDeferrals={schema:'sg-ag-source-deferrals-v1',previousActivation:f.profile.resume.previousActivation,
+  previousRun:f.profile.resume.previousRun,evidenceFile:'config/ag-source-deferrals-'+'b'.repeat(64)+'.json',evidenceSha256:'b'.repeat(64),
+  games:[{gameId:id,planHash:hash,reason:'OWN_UNRESOLVED_FEATURE_FAULT'}]};
+ assert.deepEqual((await prepareReviewedExistingAgResume(f.args))[1].remaining,[]);assert.deepEqual(f.prepared,['32441']);
+});
 test('existing admit uses the original AG resume for both own cohorts and hands off to the existing permit without source requests',async()=>{
  const f=resumeFixture(),result=await prepareExistingAgResume(f.args);
  assert.deepEqual(f.prepared,['32441','32442']);assert.deepEqual(result.map(r=>[r.previousRun,r.remaining]),[['123:1',['32441']],['456:1',['32442']]]);
