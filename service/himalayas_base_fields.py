@@ -1,3 +1,4 @@
+from own_wms_init import own_wms_init
 """Independent, ordinary-only Himalayas - Roof of the World WMS decoder. No network/storage."""
 from pearl_fields import parse, one
 from round_fields import amount, check, VERSION, type_profile
@@ -47,6 +48,9 @@ def bootstrap(step,session):
     check(step.get('msgId')=='Init' and request(step.get('requestPayload'),'Init')==session,'HIMALAYAS_REQUEST_MISMATCH')
     check(step.get('responsePayload')==step.get('responseXml') and not step.get('sourceRejected') and amount(step.get('elapsedMs'))<=300000,'WMS_XML_EVIDENCE_MISMATCH')
     root,value,balance=response(step['responsePayload'],'Init')
+    if own_wms_init(root,32774,200):
+        check(amount(step.get('responseBalance'))==balance,'WMS_BALANCE_MISMATCH')
+        return {'validated':True,'session':value,'balanceRaw':balance}
     init_schema={**SCHEMA,'GameResponse':('type','Header AccountData Balances GameInfo Stakes PageInfo'),
                  'GameInfo':('RTP','Stakes PageInfo'),'Stakes':('count defaultIndex type',''),'PageInfo':('pageCount','')}
     shape(root,init_schema);stakes=list(root.iter('Stakes'));pages=list(root.iter('PageInfo'))

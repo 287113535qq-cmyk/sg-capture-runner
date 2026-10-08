@@ -1,0 +1,45 @@
+{
+  "schema": "sg-own-wms-init-static-v1",
+  "games": {
+    "32752": {
+      "gameId": 32752,
+      "wmsGameId": "20174",
+      "betRaw": 100,
+      "sourceKey": "acornpixie-base-ag-rolling-wms-v1",
+      "staticTreeSha256": "f705c7dcda695e9855555787e9270ad6d9acdcdffd194e35a68dfd97ddbd6bef",
+      "responseSha256": "3674cf29b713acd18e3b122285476f97cef82617d8a1863b7ba1162c212aa40f"
+    },
+    "32759": {
+      "gameId": 32759,
+      "wmsGameId": "20142",
+      "betRaw": 25,
+      "sourceKey": "crystalforest-base-ag-rolling-wms-v1",
+      "staticTreeSha256": "98343f975ba48350584891ae87c6b93b8ec3b1644c580e0f8ec6950fe40f8db6",
+      "responseSha256": "00f7755f415f2c074ff1ef02f0bd5c8bda3de1767aec3c588eec5796df7fff70"
+    },
+    "32764": {
+      "gameId": 32764,
+      "wmsGameId": "20117",
+      "betRaw": 210,
+      "sourceKey": "dragonspin-base-ag-rolling-wms-v1",
+      "staticTreeSha256": "c57dc9e9b33d1063b993c1c5fe5833584eef3d1398b254484422a35d47ae6f8e",
+      "responseSha256": "230ab4a890e3e9167e98a804b847bc69c761ac64a4ecddad88ec8d0b24b11045"
+    },
+    "32770": {
+      "gameId": 32770,
+      "wmsGameId": "20129",
+      "betRaw": 50,
+      "sourceKey": "giantsgold-base-ag-rolling-wms-v1",
+      "staticTreeSha256": "5d1ee83458aebb23ea2de5fae2dac1d9bdfe20c819ac7c50c9465d9407eaa302",
+      "responseSha256": "f6cc902b5bda5e01c963aa606d8c000ca06593513b19007f7da98d5944a696c1"
+    },
+    "32774": {
+      "gameId": 32774,
+      "wmsGameId": "20230",
+      "betRaw": 200,
+      "sourceKey": "himalayas-base-ag-rolling-wms-v1",
+      "staticTreeSha256": "363ca8efc4a497130adb443c841f075e9c175d60ec2a609e1520390c51f70520",
+      "responseSha256": "bb574d502a7b1f60fc204bf2a66c90b39bf655c94c87cd41283b5f5481d75e63"
+    }
+  }
+}

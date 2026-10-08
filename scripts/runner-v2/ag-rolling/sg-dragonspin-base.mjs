@@ -1,3 +1,4 @@
+import {ownWmsInit} from './sg-own-wms-init.mjs';
 import {parseXml,one,children,need,uint} from '../../trial/pearl-protocol.mjs';
 import {stable} from '../mongo-writer.mjs';
 import {readFileSync} from 'node:fs';
@@ -41,6 +42,7 @@ export function bootstrap(step,session){
  need(step.msgId==='Init'&&request(step.requestPayload,'Init')===session,'DRAGONSPIN_REQUEST_MISMATCH');
  need(same(parseXml(step.responsePayload),parseXml(step.responseXml))&&!step.sourceRejected&&uint(step.elapsedMs)<=300000,'WMS_XML_EVIDENCE_MISMATCH');
  const r=response(step.responsePayload,'Init');
+ if(ownWmsInit(r.root,32764,210)){need(uint(step.responseBalance)===r.balance,'WMS_BALANCE_MISMATCH');return {validated:true,session:r.session,balanceRaw:r.balance};}
  const initSchema={...SCHEMA,GameResponse:['type','Header AccountData Balances GameInfo Stakes PageInfo'],
   GameInfo:['RTP','Stakes PageInfo'],Stakes:['count defaultIndex type',''],PageInfo:['pageCount','']};
  shape(r.root,initSchema);

@@ -106,3 +106,4 @@ import './ag-rolling/sg-own-geometry.test.mjs';
 import './ag-rolling/sg-controller-ipc-close.test.mjs';
 
 import './ag-rolling/sg-own-wms-business.test.mjs';
+import './ag-rolling/sg-own-wms-init.test.mjs';
