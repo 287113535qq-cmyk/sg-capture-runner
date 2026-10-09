@@ -180,6 +180,45 @@ export function validateJekyllScatterMarker(game:AGGameConfig,g:any):void {
  assert(Number.isSafeInteger(sum)&&sum===integer(spin.spinWins,'Jekyll spin win')&&sum===integer(g.totalWin,'Jekyll total')&&sum===integer(g.BGInfo.bgWinnings,'Jekyll base')&&sum===integer(g.BGInfo.totalWagerWin,'Jekyll cumulative'),'AG integrity: SG Jekyll marker money');
 }
 
+export function validateBlazingXData(game:AGGameConfig,g:any,first:boolean,prior:any,priorWin:number):void {
+ assert(game.gameId==='32755'&&game.dbName==='sg_blazingxasia'&&game.sg?.runtimeGameId===32977&&game.sg?.header?.gameID==='20363'&&game.sg?.blazingXContract==='blazing-x-own-current-components-v1'&&game.sg?.betRaw===240,'AG integrity: SG Blazing own binding');
+ const keys=(v:any,n:string)=>assert(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===n.split('|').sort().join('|'),'AG integrity: SG Blazing schema');
+ keys(g,'stake|stakePerLine|paylineCount|totalWin|betID|ReelResults|BGInfo'+(g.XInfo?'|XInfo':'')+(g.FSInfo?'|FSInfo':'')+(g.BaseGameRecoveryInfo?'|BaseGameRecoveryInfo':''));
+ assert(g.stake==='240'&&g.stakePerLine==='20'&&g.paylineCount==='40','AG integrity: SG Blazing wager');keys(g.BGInfo,'totalWagerWin|bgWinnings|isMaxWin');assert(g.BGInfo.isMaxWin==='0','AG integrity: SG Blazing cap');
+ if(g.XInfo){keys(g.XInfo,'currentX|previousX|currSpinToReset|prevSpinToReset');assert(integer(g.XInfo.currentX,'Blazing multiplier')>0&&integer(g.XInfo.previousX,'Blazing prior multiplier')>0,'AG integrity: SG Blazing multiplier metadata');integer(g.XInfo.currSpinToReset,'Blazing reset');integer(g.XInfo.prevSpinToReset,'Blazing prior reset');}
+ keys(g.ReelResults,'numSpins|ReelSpin');const spins=list(g.ReelResults.ReelSpin);assert(g.ReelResults.numSpins==='1'&&spins.length===1,'AG integrity: SG Blazing reel count');const s=spins[0];assert(s.spinIndex==='0'&&s.reelsetIndex===(first?'0':'1')&&s.freeSpin===(first?'N':'Y'),'AG integrity: SG Blazing reel state');
+ const lines=list(s.PaylineWin),scatters=list(s.ScatterWin);assert(lines.length===integer(s.winCountPL,'Blazing line count')&&scatters.length===integer(s.winCountSC,'Blazing scatter count'),'AG integrity: SG Blazing win count');const indices=new Set<number>();let lineWin=0;for(const w of lines){const index=integer(w.index,'Blazing line');assert(index<40&&!indices.has(index),'AG integrity: SG Blazing line index');indices.add(index);integer(w.awardIndex,'Blazing award');integer(w.awardTableIndex,'Blazing award table');lineWin+=integer(w.winVal,'Blazing line win');}
+ const scatterWin=scatters.reduce((n:number,w:any)=>n+integer(w.winVal,'Blazing scatter win'),0),spin=integer(s.spinWins,'Blazing spin'),current=integer(g.totalWin,'Blazing current'),wager=integer(g.BGInfo.totalWagerWin,'Blazing cumulative'),base=integer(g.BGInfo.bgWinnings,'Blazing base');assert(Number.isSafeInteger(lineWin+scatterWin)&&spin===lineWin+scatterWin,'AG integrity: SG Blazing reel money');
+ if(!g.FSInfo){assert(first&&!prior&&g.XInfo&&s.bonusAwarded==='N'&&current===spin&&base===current&&wager===current,'AG integrity: SG Blazing ordinary settlement');return;}
+ const f=g.FSInfo;keys(f,'scatterPayout|fsWinnings|freeSpinsTotal|freeSpinNumber|isMaxWin'+(first?'':'|currFSX|prevFSX'));const played=integer(f.freeSpinNumber,'Blazing free played'),total=integer(f.freeSpinsTotal,'Blazing total'),freeWin=integer(f.fsWinnings,'Blazing free win'),trigger=integer(f.scatterPayout,'Blazing trigger');assert(f.isMaxWin==='0'&&total>0&&played<=total&&base+freeWin===wager,'AG integrity: SG Blazing free components');
+ if(first)assert(!prior&&played===0&&freeWin===0&&s.bonusAwarded==='Y'&&current===spin+trigger&&base===current&&wager===current,'AG integrity: SG Blazing paid trigger');
+ else {assert(prior&&played===prior.freeSpinsPlayed+1&&total===prior.freeSpinsTotal&&s.bonusAwarded==='N'&&current===spin&&wager===priorWin+current,'AG integrity: SG Blazing free progression');assert(integer(f.currFSX,'Blazing free multiplier')>0&&integer(f.prevFSX,'Blazing previous free multiplier')>0,'AG integrity: SG Blazing free multiplier metadata');}
+}
+
+export function validateBlazingRecovery(game:AGGameConfig,g:any,paidReels:any,paidX:number):void {
+ assert(game.gameId==='32755'&&game.sg?.blazingXContract==='blazing-x-own-current-components-v1'&&paidReels&&Number.isSafeInteger(paidX)&&paidX>0,'AG integrity: SG Blazing recovery binding');
+ const recovery=g.BaseGameRecoveryInfo;assert(Object.keys(recovery).join('|')==='ReelResults','AG integrity: SG Blazing recovery schema');
+ const expected=structuredClone(paidReels),current=integer(g.XInfo.currentX,'Blazing current display multiplier');
+ if(current!==paidX){
+  assert(current===1&&integer(g.XInfo.previousX,'Blazing prior display multiplier')===paidX&&g.XInfo.currSpinToReset==='0'&&g.FSInfo.freeSpinNumber===g.FSInfo.freeSpinsTotal,'AG integrity: SG Blazing recovery multiplier reset');
+  const scale=(value:string)=>{const n=integer(value,'Blazing paid display win');assert(n%paidX===0,'AG integrity: SG Blazing nonintegral recovery display');return String(n/paidX);};
+  for(const spin of list(expected.ReelSpin)){spin.spinWins=scale(spin.spinWins);for(const win of [...list(spin.PaylineWin),...list(spin.ScatterWin)])win.winVal=scale(win.winVal);}
+ }
+ assert(JSON.stringify(recovery.ReelResults)===JSON.stringify(expected),'AG integrity: SG Blazing recovery projection changed');
+}
+
+export function validateHerculesData(game:AGGameConfig,g:any):void {
+ assert(game.gameId==='32773'&&game.dbName==='sg_herculeshighandmighty'&&game.sg?.runtimeGameId===32995&&game.sg?.header?.gameID==='20102'&&game.sg?.herculesContract==='hercules-own-wild-display-v1'&&game.sg?.betRaw===100,'AG integrity: SG Hercules own binding');
+ const w=g.WildPositions;assert(w&&Object.keys(w).sort().join('|')==='bottomWildReel|existingHeldWildReels|expandPointsBottom|expandPointsTop|heldWildReels|topWildReel','AG integrity: SG Hercules wild schema');
+ const values=(v:any,max:number,unique=true)=>{assert(typeof v==='string'&&(v===''||/^\d+(?:\|\d+)*$/.test(v)),'AG integrity: SG Hercules wild positions');const a=v===''?[]:v.split('|').map((n:string)=>integer(n,'Hercules wild position'));assert(a.every((n:number)=>n<max)&&(!unique||new Set(a).size===a.length),'AG integrity: SG Hercules wild bounds');return a;};
+ // Client expansion starts at a position in each ten-symbol reel; positions
+ // in different reels may coincide, while the reel identifiers remain unique.
+ for(const side of ['Bottom','Top']){const reels=values(w[side==='Bottom'?'bottomWildReel':'topWildReel'],5),points=values(w['expandPoints'+side],10,false);assert(reels.length===points.length,'AG integrity: SG Hercules paired expansion');}
+ values(w.heldWildReels,5);values(w.existingHeldWildReels,5);assert(g.BGInfo.isBigBet==='0'&&g.BGInfo.isMaxWin==='0'&&['0','1'].includes(g.BGInfo.wildBonus),'AG integrity: SG Hercules wager flags');
+ let sum=0;for(const s of list(g.ReelResults?.ReelSpin)){const lines=list(s.PaylineWin),scatter=list(s.ScatterWin);assert(lines.length===integer(s.winCountPL,'Hercules line count')&&scatter.length===integer(s.winCountSC,'Hercules scatter count'),'AG integrity: SG Hercules win counts');let win=0;for(const x of [...lines,...scatter])win+=integer(x.winVal,'Hercules component');assert(Number.isSafeInteger(win)&&win===integer(s.spinWins,'Hercules spin win'),'AG integrity: SG Hercules reel money');sum+=win;}
+ assert(Number.isSafeInteger(sum)&&sum===integer(g.totalWin,'Hercules current win'),'AG integrity: SG Hercules current money');
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -191,7 +230,7 @@ export class SGWmsSession {
     private session = this.freshFreeId;
     private closed = false;
     private lastRequest: {event:string;parameters:Record<string,any>|null} | undefined;
-    private lastBase: unknown;
+    private lastBase: unknown;private lastBlazingX?:number;
     private journal: number | null = null;
     private journalPath: string | null = null;
     private ordinal = 0;
@@ -287,7 +326,8 @@ export class SGWmsSession {
         // This is an explicit per-game wire binding, never a guessed feature stake.
         const freeAccount = event==='Logic' && !stake && this.game.sg.freeLogicCurrencyMultiplier !== undefined;
         if(freeAccount) assert(this.game.sg.freeLogicCurrencyMultiplier==='1','AG integrity: SG own free currency binding');
-        return `<GameRequest type="${event}">${stake?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${header}${freeAccount?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${stake}${choice}</GameRequest>`;
+        let lines='';if(event==='Logic'&&this.action==='SPIN'&&this.game.sg.blazingXContract){assert(this.game.gameId==='32755'&&this.game.sg.logicPaylineCount==='40'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Blazing own paid request');lines='<PaylineCount count="40"/>';}
+        return `<GameRequest type="${event}">${stake?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${header}${freeAccount?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${stake}${lines}${choice}</GameRequest>`;
     }
     private async exchange(event:string,parameters:Record<string,any>):Promise<WireStep> {
         assert(!this.closed,'AG integrity: SG session closed');const payload=this.payload(event,parameters);
@@ -360,9 +400,11 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
-            const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : [])]);
+            const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : []),...(this.game.sg.blazingXContract?['XInfo']:[]),...(this.game.sg.herculesContract?['WildPositions']:[])]);
             assert(Object.keys(g).every(k=>known.has(k)),'AG integrity: SG observed feature needs mapping');
             if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g,this.totalWin,this.action);
+            if(this.game.sg.blazingXContract)validateBlazingXData(this.game,g,first,this.free,this.totalWin);
+            if(this.game.sg.herculesContract)validateHerculesData(this.game,g);
             assert(integer(g.stake,'stake')===this.game.sg.betRaw,'AG integrity: SG changed stake');
             const bg=g.BGInfo;
             if(this.game.sg.omitsBaseRemaining)assert(bg.baseGameSpinsRemaining===undefined,'AG integrity: SG changed base schema');
@@ -370,9 +412,9 @@ export class SGWmsSession {
             if(g.BonusData)assert(g.BonusData.BonusBet==='0'&&Object.keys(g.BonusData).length===1,'AG integrity: SG purchased bonus not mapped');
             this.totalWin=integer(bg.totalWagerWin,'cumulative wager win');
             assert(g.ReelResults && list(g.ReelResults.ReelSpin).length>0,'AG integrity: SG reel result');
-            if(first)this.lastBase=structuredClone(g.ReelResults);
+            if(first){this.lastBase=structuredClone(g.ReelResults);if(this.game.sg.blazingXContract)this.lastBlazingX=integer(g.XInfo.currentX,'Blazing paid multiplier');}
             if(g.BaseGameRecoveryInfo) {
-                assert(this.lastBase && JSON.stringify(g.BaseGameRecoveryInfo.ReelResults)===JSON.stringify(this.lastBase),'AG integrity: SG base recovery changed');
+                if(this.game.sg.blazingXContract)validateBlazingRecovery(this.game,g,this.lastBase,this.lastBlazingX!);else assert(this.lastBase && JSON.stringify(g.BaseGameRecoveryInfo.ReelResults)===JSON.stringify(this.lastBase),'AG integrity: SG base recovery changed');
             }
             if(g.FSInfo) {
                 const f=g.FSInfo,own=this.game.sg.freeCounterContract ? actionBankFreeCounters(this.game,f) : undefined,

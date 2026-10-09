@@ -526,3 +526,92 @@ games:
       runtimeGameId: 33002
       runtimeSlug: kingofbabylonactionspins
       omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32755'
+    name: Blazing X Asia
+    backendId: blazingxasia
+    dbName: sg_blazingxasia
+    serviceDir: sg_blazingxasia
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: blazingxasia
+        gameID: '20363'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '240'
+      freeStake: {}
+      betRaw: 240
+      runtimeSlug: blazingxasia
+      runtimeGameId: 32977
+      blazingXContract: blazing-x-own-current-components-v1
+      logicPaylineCount: '40'
+      omitsBaseRemaining: true
+  - provider: sg
+    gameId: '32773'
+    name: Hercules High and Mighty
+    backendId: herculeshighandmighty
+    dbName: sg_herculeshighandmighty
+    serviceDir: sg_herculeshighandmighty
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: herculeshighandmighty
+        gameID: '20102'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 100
+      runtimeSlug: herculeshighandmighty
+      runtimeGameId: 32995
+      herculesContract: hercules-own-wild-display-v1
