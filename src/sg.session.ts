@@ -93,7 +93,7 @@ function fiveTreasuresBinding(game: AGGameConfig): void {
     assert(game.gameId==='32749' && game.dbName==='sg_fivetreasures'
         && game.sg?.header?.gameCodeRGI==='fivetreasures' && game.sg?.header?.gameID==='20442'
         && game.sg?.runtimeGameId===32971 && game.sg?.betRaw===176
-        && game.sg?.fiveTreasuresContract==='five-treasures-own-choice-cash-v3',
+        && game.sg?.fiveTreasuresContract==='five-treasures-own-choice-cash-v4',
         'AG integrity: SG Five Treasures binding');
 }
 
@@ -120,7 +120,7 @@ export function validateFiveTreasuresCash(game: AGGameConfig, result: any, prior
     const base=integer(result.BGInfo.bgWinnings,'Five Treasures base win');
     const wager=integer(result.BGInfo.totalWagerWin,'Five Treasures wager win');
     if(free){
-        assert(action==='FREE_SPIN'&&priorWager!==undefined&&Number.isSafeInteger(priorWager),
+        assert((action==='FREE_SPIN'||(action==='PICK_FREE_SPINS'&&integer(result.FSInfo.freeSpinNumber,'Five Treasures first selected spin')===1))&&priorWager!==undefined&&Number.isSafeInteger(priorWager),
             'AG integrity: SG Five Treasures unbound compound jackpot');
         assert(base+integer(result.FSInfo.fsWinnings,'Five Treasures free win')===wager
             &&wager-priorWager===total,'AG integrity: SG Five Treasures free jackpot components');
