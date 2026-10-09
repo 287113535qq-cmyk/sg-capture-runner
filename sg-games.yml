@@ -347,6 +347,10 @@ games:
       runtimeGameId: 32985
       runtimeSlug: drjekyllgoeswild
       omitsBaseRemaining: false
+      jekyllScatterMarkerContract: jekyll-own-no-feature-scatter-marker-v1
+      freeStake:
+        total: '100'
+        isBigBet: '0'
   - provider: sg
     gameId: '32766'
     name: Eureka Blast Superlock

@@ -167,6 +167,19 @@ export function sgTransportDiagnostic(error: unknown, start: number, deadline: n
         completeResponseCaptured:false,serverApplicationOutcomeProven:false};
 }
 
+
+// Own client uses FSInfo/HydeSpinsInfo to enter a feature, not the generic reel
+// marker alone. Only this exact no-feature scalar result can continue to EndGame.
+export function validateJekyllScatterMarker(game:AGGameConfig,g:any):void {
+ assert(game.gameId==='32763'&&game.dbName==='sg_drjekyllgoeswild'&&game.sg?.runtimeGameId===32985&&game.sg?.header?.gameID==='20126'&&game.sg?.header?.gameCodeRGI==='drjekyllgoeswild'&&game.sg?.betRaw===100&&game.sg?.jekyllScatterMarkerContract==='jekyll-own-no-feature-scatter-marker-v1','AG integrity: SG Jekyll marker binding');
+ const keys=(v:any,names:string)=>assert(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===names.split('|').sort().join('|'),'AG integrity: SG Jekyll marker schema');
+ keys(g,'stake|stakePerLine|paylineCount|totalWin|betID|ReelResults|BGInfo');keys(g.BGInfo,'totalWagerWin|bgWinnings|baseGameSpinsRemaining|isBigBet|isMaxWin');
+ assert(g.stake==='100'&&g.stakePerLine==='10'&&g.paylineCount==='10'&&g.BGInfo.baseGameSpinsRemaining==='0'&&g.BGInfo.isBigBet==='0'&&g.BGInfo.isMaxWin==='0','AG integrity: SG Jekyll no-feature predicate');
+ keys(g.ReelResults,'numSpins|ReelSpin');const spins=list(g.ReelResults.ReelSpin);assert(g.ReelResults.numSpins==='1'&&spins.length===1,'AG integrity: SG Jekyll marker reel');const spin=spins[0];assert(spin.spinIndex==='0'&&[0,1,2,3,4].includes(integer(spin.reelsetIndex,'Jekyll own Init base reelset'))&&spin.freeSpin==='N'&&spin.bonusAwarded==='Y'&&spin.winCountSC==='1','AG integrity: SG Jekyll marker flags');keys(spin.ScatterWin,'#text|winVal|awardIndex');assert(spin.ScatterWin.winVal==='0'&&spin.ScatterWin.awardIndex==='0','AG integrity: SG Jekyll zero scatter marker');
+ const wins=list(spin.PaylineWin);assert(wins.length===integer(spin.winCountPL,'Jekyll line count'),'AG integrity: SG Jekyll marker line count');let sum=0;const seen=new Set<number>();for(const w of wins){const n=integer(w.index,'Jekyll line index');assert(n<10&&!seen.has(n),'AG integrity: SG Jekyll line index');seen.add(n);sum+=integer(w.winVal,'Jekyll line winnings');}
+ assert(Number.isSafeInteger(sum)&&sum===integer(spin.spinWins,'Jekyll spin win')&&sum===integer(g.totalWin,'Jekyll total')&&sum===integer(g.BGInfo.bgWinnings,'Jekyll base')&&sum===integer(g.BGInfo.totalWagerWin,'Jekyll cumulative'),'AG integrity: SG Jekyll marker money');
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -387,7 +400,8 @@ export class SGWmsSession {
                 } else this.action=played<total?'FREE_SPIN':'PLAY';
             } else {
                 assert(!this.free,'AG integrity: SG free state disappeared');
-                assert(list(g.ReelResults.ReelSpin).every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG unclassified feature');
+                if(this.game.sg.jekyllScatterMarkerContract&&list(g.ReelResults.ReelSpin).some(s=>s.bonusAwarded==='Y'))validateJekyllScatterMarker(this.game,g);
+                else assert(list(g.ReelResults.ReelSpin).every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG unclassified feature');
                 this.action='PLAY';
             }
         }
