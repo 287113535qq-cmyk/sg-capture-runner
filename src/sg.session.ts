@@ -93,7 +93,7 @@ function fiveTreasuresBinding(game: AGGameConfig): void {
     assert(game.gameId==='32749' && game.dbName==='sg_fivetreasures'
         && game.sg?.header?.gameCodeRGI==='fivetreasures' && game.sg?.header?.gameID==='20442'
         && game.sg?.runtimeGameId===32971 && game.sg?.betRaw===176
-        && game.sg?.fiveTreasuresContract==='five-treasures-own-choice-cash-v1',
+        && game.sg?.fiveTreasuresContract==='five-treasures-own-choice-cash-v3',
         'AG integrity: SG Five Treasures binding');
 }
 
@@ -108,7 +108,9 @@ export function validateFiveTreasuresCash(game: AGGameConfig, result: any, prior
     const win=integer(j.jackpotWinnings,'Five Treasures jackpot winnings');
     const total=integer(result.totalWin,'Five Treasures current response win');
     const spins=list(result.ReelResults?.ReelSpin);
-    const free=!!result.FSInfo;
+    const trigger=!!result.FSInfo&&action==='SPIN'&&integer(result.FSInfo.freeSpinNumber,'Five Treasures trigger counter')===0;
+    if(trigger)assert(integer(result.FSInfo.fsWinnings,'Five Treasures trigger winnings')===0&&integer(result.FSInfo.extraSpinsAwarded,'Five Treasures trigger extras')===0&&!result.FSInfo.freeSpinMode,'AG integrity: SG Five Treasures jackpot trigger state');
+    const free=!!result.FSInfo&&!trigger;
     const current=spins.filter(s=>s.freeSpin===(free?'Y':'N'));
     assert(current.length===1,'AG integrity: SG Five Treasures current jackpot reel');
     const wins=current.flatMap(s=>list(s.AnywayWin).concat(list(s.ScatterWin),list(s.PaylineWin)));
