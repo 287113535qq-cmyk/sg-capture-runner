@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { XMLParser } from 'fast-xml-parser';
 import { AGGameConfig } from './ag.types';
+import { AGDiscardedRoundError } from './ag.round';
 // SG transport evidence mapped into the unchanged original AG error policy.
 // This file never retries a request or changes AG scheduling/round handling.
 export type SGFaultCategory = 'recoverable-initialization' | 'protocol' | 'execution-unknown';
@@ -32,6 +33,19 @@ export class SGSourceFault extends Error {
         this.executionUncertain = category === 'execution-unknown';
         this.retryAction = category === 'recoverable-initialization' ? 'original-ag-new-session' : 'stop-preserve-evidence';
         this.evidence = Object.freeze({ ...evidence });
+    }
+}
+
+export class SGClosedFreeSessionDiscard extends AGDiscardedRoundError {
+    readonly executionUncertain=true;
+    readonly oldRequestMayHaveExecuted=true;
+    readonly oldRequestReplays=0;
+    readonly retryAction='original-ag-discard-then-new-free-session';
+    constructor(readonly originalFault:SGSourceFault) {
+        super(originalFault.evidence.event);
+        this.name='SGClosedFreeSessionDiscard';
+        // Do not claim an error-only response or that the old wager failed.
+        this.message='SG uncertain Free round sealed; discard and create a new Free session for future samples';
     }
 }
 
@@ -83,7 +97,7 @@ function fiveTreasuresBinding(game: AGGameConfig): void {
         'AG integrity: SG Five Treasures binding');
 }
 
-export function validateFiveTreasuresCash(game: AGGameConfig, result: any): void {
+export function validateFiveTreasuresCash(game: AGGameConfig, result: any, priorWager?: number, action?: string): void {
     fiveTreasuresBinding(game);
     const j=result.JackpotInfo;
     assert(j && typeof j==='object' && !Array.isArray(j)
@@ -92,12 +106,24 @@ export function validateFiveTreasuresCash(game: AGGameConfig, result: any): void
     const index=integer(j.jackpotIndex,'Five Treasures jackpot index');
     assert(index<4,'AG integrity: SG Five Treasures jackpot index');
     const win=integer(j.jackpotWinnings,'Five Treasures jackpot winnings');
-    // Own natural cash responses already include the award in BGInfo. Never
-    // add JackpotInfo again or silently classify a compound feature here.
-    assert(win>0 && !result.FSInfo && win===integer(result.BGInfo.bgWinnings,'Five Treasures base win')
-        && win===integer(result.BGInfo.totalWagerWin,'Five Treasures wager win')
-        && win===integer(result.totalWin,'Five Treasures total win'),
+    const total=integer(result.totalWin,'Five Treasures current response win');
+    const spins=list(result.ReelResults?.ReelSpin);
+    const free=!!result.FSInfo;
+    const current=spins.filter(s=>s.freeSpin===(free?'Y':'N'));
+    assert(current.length===1,'AG integrity: SG Five Treasures current jackpot reel');
+    const wins=current.flatMap(s=>list(s.AnywayWin).concat(list(s.ScatterWin),list(s.PaylineWin)));
+    const reelWin=wins.reduce((n:number,w:any)=>n+integer(w.winVal,'Five Treasures reel win'),0);
+    assert(Number.isSafeInteger(reelWin)&&win>0&&total===reelWin+win,
         'AG integrity: SG Five Treasures cash components');
+    const base=integer(result.BGInfo.bgWinnings,'Five Treasures base win');
+    const wager=integer(result.BGInfo.totalWagerWin,'Five Treasures wager win');
+    if(free){
+        assert(action==='FREE_SPIN'&&priorWager!==undefined&&Number.isSafeInteger(priorWager),
+            'AG integrity: SG Five Treasures unbound compound jackpot');
+        assert(base+integer(result.FSInfo.fsWinnings,'Five Treasures free win')===wager
+            &&wager-priorWager===total,'AG integrity: SG Five Treasures free jackpot components');
+    }else assert(base===wager&&wager===total,'AG integrity: SG Five Treasures wager components');
+
 }
 
 
@@ -146,7 +172,8 @@ export class SGWmsSession {
     private free: Record<string, any> | undefined;
     private action = 'SPIN';
     private steps: WireStep[] = [];
-    private session = 'Free:' + crypto.randomBytes(16).toString('hex');
+    private readonly freshFreeId = 'Free:' + crypto.randomBytes(16).toString('hex');
+    private session = this.freshFreeId;
     private closed = false;
     private lastRequest: {event:string;parameters:Record<string,any>|null} | undefined;
     private lastBase: unknown;
@@ -257,7 +284,7 @@ export class SGWmsSession {
             const step=await this.transport(event,payload);
             if(step.httpStatus!==undefined && !(step.httpStatus>=200 && step.httpStatus<300)) {
                 const fault=httpSourceFault({...context,httpStatus:step.httpStatus,responseSHA256:crypto.createHash('sha256').update(step.responsePayload).digest('hex')});
-                this.close();throw fault;
+                this.close();throw this.closedFaultForFutureSession(fault);
             }
             return step;
         }
@@ -270,14 +297,31 @@ export class SGWmsSession {
         } catch(error) {
             const fault=transportSourceFault(context);
             this.evidence({phase:'unknown',ordinal,event,...sourceFaultMetadata(fault),transportDiagnostic:sgTransportDiagnostic(error,start,deadline,Date.now(),response?.status)});this.close();
-            throw fault;
+            throw this.closedFaultForFutureSession(fault);
         }
         assert(response,'AG integrity: SG missing transport response');
         const fault=response.ok ? null : httpSourceFault({...context,httpStatus:response.status,responseSHA256:crypto.createHash('sha256').update(text).digest('hex')});
         this.evidence({phase:'response',ordinal,event,httpStatus:response.status,text,...(fault ? sourceFaultMetadata(fault) : {})});
-        if(fault){this.close();throw fault;}
+        if(fault){this.close();throw this.closedFaultForFutureSession(fault);}
         for(const cookie of response.headers.getSetCookie?.() || []) {const pair=cookie.split(';')[0],at=pair.indexOf('=');if(at>0)this.cookies.set(pair.slice(0,at),pair.slice(at+1));}
         return {msgId:event,requestPayload:payload,responsePayload:text,elapsedMs:Date.now()-start};
+    }
+    private closedFaultForFutureSession(fault:SGSourceFault):Error {
+        if(fault.category!=='execution-unknown' || !this.game.sg.unknownFreeSessionRecovery)return fault;
+        assert(this.game.sg.unknownFreeSessionRecovery==='original-ag-discard-free-v1',
+            'AG integrity: SG unknown Free session recovery contract');
+        assert(this.game.sg.header.freePlay==='Y'&&this.closed&&this.cookies.size===0
+            &&/^Free:[0-9a-f]{32}$/.test(this.freshFreeId),
+            'AG integrity: SG old uncertain session not sealed');
+        if(!['Logic','EndGame'].includes(fault.evidence.event))return fault;
+        const status=fault.evidence.httpStatus;
+        if(status!==undefined && ![408,425,429,500,502,503,504,520,521,522,523,524].includes(status))return fault;
+        // The old outcome stays unknown and cannot be retried. Only a later,
+        // independent Free session is eligible under original AG finite reset.
+        this.evidence({phase:'sealed-session-recovery',ordinal:fault.evidence.ordinal,
+            event:fault.evidence.event,oldOutcomeStillUnknown:true,oldRequestReplays:0,
+            retryAction:'original-ag-discard-then-new-free-session'});
+        return new SGClosedFreeSessionDiscard(fault);
     }
     private readEnvelope(step:WireStep,event:string) {
         const r=xml.parse(step.responsePayload)?.GameResponse;
@@ -303,7 +347,7 @@ export class SGWmsSession {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
             const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : [])]);
             assert(Object.keys(g).every(k=>known.has(k)),'AG integrity: SG observed feature needs mapping');
-            if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g);
+            if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g,this.totalWin,this.action);
             assert(integer(g.stake,'stake')===this.game.sg.betRaw,'AG integrity: SG changed stake');
             const bg=g.BGInfo;
             if(this.game.sg.omitsBaseRemaining)assert(bg.baseGameSpinsRemaining===undefined,'AG integrity: SG changed base schema');

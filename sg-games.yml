@@ -41,6 +41,7 @@ games:
       runtimeGameId: 32971
       runtimeSlug: fivetreasures
       omitsBaseRemaining: true
+      unknownFreeSessionRecovery: original-ag-discard-free-v1
       fiveTreasuresContract: five-treasures-own-choice-cash-v1
       freeStake:
         total: '176'
