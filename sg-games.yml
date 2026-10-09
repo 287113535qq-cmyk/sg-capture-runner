@@ -424,6 +424,9 @@ games:
       runtimeGameId: 32997
       runtimeSlug: hulahulanights
       omitsBaseRemaining: false
+      freeStake:
+        total: '100'
+        isBigBet: '0'
   - provider: sg
     gameId: '32776'
     name: Invaders of Planet Moolah
