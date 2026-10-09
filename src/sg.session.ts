@@ -75,6 +75,26 @@ const integer = (v: unknown, name: string): number => {
 };
 const escape = (v: unknown) => String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
+
+// Own Action Bank Plus client overrides the common FS total with totalSpin.
+// Keep every original wire field; this is a game-bound counter/data decoder.
+export function actionBankFreeCounters(game: AGGameConfig, f: any): {total:number;played:number} {
+    assert(game.gameId === '32753' && game.dbName === 'sg_actionbankplus'
+        && game.sg?.header?.gameCodeRGI === 'actionbankplus' && game.sg?.header?.gameID === '20369'
+        && game.sg?.runtimeGameId === 32975 && game.sg?.runtimeSlug === 'actionbankplus'
+        && game.sg?.freeCounterContract === 'actionbank-totalspin-v1', 'AG integrity: SG Action Bank counter binding');
+    const known = new Set(['fsWinnings','vaultSpins','extraSpins','totalSpin','freeSpinNumber','isMaxWin','vaultCount']);
+    assert(f && typeof f === 'object' && !Array.isArray(f) && Object.keys(f).every(k=>known.has(k)),
+        'AG integrity: SG Action Bank free schema');
+    const total=integer(f.totalSpin,'Action Bank free total'),played=integer(f.freeSpinNumber,'Action Bank free played');
+    assert(total>0 && played<=total,'AG integrity: SG Action Bank free counter');
+    integer(f.vaultSpins,'Action Bank vault spins');integer(f.extraSpins,'Action Bank extra spins');
+    if(f.vaultCount !== undefined)integer(f.vaultCount,'Action Bank vault count');
+    assert(f.isMaxWin === '0' || f.isMaxWin === '1','AG integrity: SG Action Bank max flag');
+    assert(f.isMaxWin !== '1' || played===total,'AG integrity: SG Action Bank unfinished capped feature not mapped');
+    return {total,played};
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -210,7 +230,8 @@ export class SGWmsSession {
                 assert(this.lastBase && JSON.stringify(g.BaseGameRecoveryInfo.ReelResults)===JSON.stringify(this.lastBase),'AG integrity: SG base recovery changed');
             }
             if(g.FSInfo) {
-                const f=g.FSInfo,total=integer(f.freeSpinsTotal,'free total'),played=integer(f.freeSpinNumber,'free played');
+                const f=g.FSInfo,own=this.game.sg.freeCounterContract ? actionBankFreeCounters(this.game,f) : undefined,
+                    total=own ? own.total : integer(f.freeSpinsTotal,'free total'),played=own ? own.played : integer(f.freeSpinNumber,'free played');
                 assert(played<=total,'AG integrity: SG free counter');
                 const freeWin=integer(f.fsWinnings,'free winnings'),baseWin=integer(bg.bgWinnings,'base winnings');
                 assert(baseWin+freeWin===this.totalWin,'AG integrity: SG component winnings');

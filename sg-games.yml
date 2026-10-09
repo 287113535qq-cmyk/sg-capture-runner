@@ -82,6 +82,10 @@ games:
       betRaw: 200
       runtimeGameId: 32975
       runtimeSlug: actionbankplus
+      freeCounterContract: actionbank-totalspin-v1
+      freeStake:
+        total: '200'
+      freeLogicCurrencyMultiplier: '1'
       omitsBaseRemaining: true
   - provider: sg
     gameId: '32754'
