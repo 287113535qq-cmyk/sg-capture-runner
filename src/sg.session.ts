@@ -95,6 +95,25 @@ export function actionBankFreeCounters(game: AGGameConfig, f: any): {total:numbe
     return {total,played};
 }
 
+
+// Connection metadata only. Never downgrade uncertainty or retry any request.
+export function sgRequestTimeoutMs(game: AGGameConfig): number {
+    const value=game.sg?.requestTimeoutMs === undefined ? 30000 : game.sg.requestTimeoutMs;
+    assert(Number.isSafeInteger(value) && value>=1000 && value<=120000,'AG integrity: SG request timeout binding');
+    return value;
+}
+export function sgTransportDiagnostic(error: unknown, start: number, deadline: number, now=Date.now(), responseStatus?: number) {
+    const e=error && typeof error==='object' ? error as any : undefined;
+    const safeName=(v:unknown)=>typeof v==='string' && /^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(v) ? v : undefined;
+    const safeCode=(v:unknown)=>typeof v==='string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(v) ? v : undefined;
+    const elapsed=Number.isSafeInteger(start)&&Number.isSafeInteger(now)&&now>=start ? now-start : undefined;
+    return {errorName:safeName(e?.name),causeName:safeName(e?.cause?.name),causeCode:safeCode(e?.cause?.code),
+        elapsedMs:elapsed,configuredTimeoutMs:deadline,
+        responseHeadersReceived:responseStatus!==undefined,
+        ...(responseStatus!==undefined ? {responseStatusBeforeBodyFailed:responseStatus} : {}),
+        completeResponseCaptured:false,serverApplicationOutcomeProven:false};
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -178,16 +197,17 @@ export class SGWmsSession {
             return step;
         }
         this.evidence({phase:'intent',ordinal,event,payload});
-        const start=Date.now();let response:Response,text:string;
+        const start=Date.now(),deadline=sgRequestTimeoutMs(this.game);let response:Response | undefined,text:string;
         try {
-            response=await fetch(this.game.sg.endpoint,{method:'POST',redirect:'error',signal:AbortSignal.timeout(30000),
+            response=await fetch(this.game.sg.endpoint,{method:'POST',redirect:'error',signal:AbortSignal.timeout(deadline),
                 headers:{'Content-Type':'text/xml; charset=utf-8',...(this.cookies.size?{Cookie:[...this.cookies].map(([k,v])=>k+'='+v).join('; ')}:{})},body:payload});
             text=await response.text();
-        } catch {
+        } catch(error) {
             const fault=transportSourceFault(context);
-            this.evidence({phase:'unknown',ordinal,event,...sourceFaultMetadata(fault)});this.close();
+            this.evidence({phase:'unknown',ordinal,event,...sourceFaultMetadata(fault),transportDiagnostic:sgTransportDiagnostic(error,start,deadline,Date.now(),response?.status)});this.close();
             throw fault;
         }
+        assert(response,'AG integrity: SG missing transport response');
         const fault=response.ok ? null : httpSourceFault({...context,httpStatus:response.status,responseSHA256:crypto.createHash('sha256').update(text).digest('hex')});
         this.evidence({phase:'response',ordinal,event,httpStatus:response.status,text,...(fault ? sourceFaultMetadata(fault) : {})});
         if(fault){this.close();throw fault;}
