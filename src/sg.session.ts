@@ -75,6 +75,31 @@ const integer = (v: unknown, name: string): number => {
 };
 const escape = (v: unknown) => String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
+function fiveTreasuresBinding(game: AGGameConfig): void {
+    assert(game.gameId==='32749' && game.dbName==='sg_fivetreasures'
+        && game.sg?.header?.gameCodeRGI==='fivetreasures' && game.sg?.header?.gameID==='20442'
+        && game.sg?.runtimeGameId===32971 && game.sg?.betRaw===176
+        && game.sg?.fiveTreasuresContract==='five-treasures-own-choice-cash-v1',
+        'AG integrity: SG Five Treasures binding');
+}
+
+export function validateFiveTreasuresCash(game: AGGameConfig, result: any): void {
+    fiveTreasuresBinding(game);
+    const j=result.JackpotInfo;
+    assert(j && typeof j==='object' && !Array.isArray(j)
+        && Object.keys(j).sort().join('|')==='jackpotIndex|jackpotWinnings',
+        'AG integrity: SG Five Treasures jackpot schema');
+    const index=integer(j.jackpotIndex,'Five Treasures jackpot index');
+    assert(index<4,'AG integrity: SG Five Treasures jackpot index');
+    const win=integer(j.jackpotWinnings,'Five Treasures jackpot winnings');
+    // Own natural cash responses already include the award in BGInfo. Never
+    // add JackpotInfo again or silently classify a compound feature here.
+    assert(win>0 && !result.FSInfo && win===integer(result.BGInfo.bgWinnings,'Five Treasures base win')
+        && win===integer(result.BGInfo.totalWagerWin,'Five Treasures wager win')
+        && win===integer(result.totalWin,'Five Treasures total win'),
+        'AG integrity: SG Five Treasures cash components');
+}
+
 
 // Own Action Bank Plus client overrides the common FS total with totalSpin.
 // Keep every original wire field; this is a game-bound counter/data decoder.
@@ -163,24 +188,64 @@ export class SGWmsSession {
     getBalance() { return this.balance/100; }
     getFallbackBet() { return this.game.sg.betRaw/100; }
     getSpinParams() { return {...this.game.sg.stake}; }
-    getPickParams(_index: number|string): never { throw new Error('AG integrity: SG pick protocol not mapped'); }
+    getPickParams(index: number|string): Record<string,any> {
+        if(!this.game.sg.fiveTreasuresContract)throw new Error('AG integrity: SG pick protocol not mapped');
+        fiveTreasuresBinding(this.game);
+        assert(this.action==='PICK_FREE_SPINS' && this.free?.freeSpinsPlayed===0,
+            'AG integrity: SG Five Treasures choice phase');
+        const pick=typeof index==='number'?index:Number(index);
+        assert(Number.isInteger(pick)&&pick>=0&&pick<5,'AG integrity: SG Five Treasures choice index');
+        return {...this.game.sg.freeStake,pickIndex:pick};
+    }
+    getPickProtocol(action:string) {
+        if(action!=='PICK_FREE_SPINS'||!this.game.sg.fiveTreasuresContract)return undefined;
+        fiveTreasuresBinding(this.game);
+        assert(this.action===action&&this.free?.freeSpinsPlayed===0,
+            'AG integrity: SG Five Treasures choice phase');
+        // Unchanged original AG selects and records the option; SG serializes
+        // the exact own frontend FreeSpinChoice type 0..4.
+        return {event:'Logic',kind:'choice' as const,options:[0,1,2,3,4].map(pickIndex=>({pickIndex,
+            requestParams:this.getPickParams(pickIndex)}))};
+    }
     getInitialRoundRequest() { return {event:'Logic',parameters:this.getSpinParams()}; }
     getLastGameRequest() { return this.lastRequest; }
     isRoundTerminalAction(action: string) { return action === 'SPIN'; }
     getExactFollowUpRequest(action: string) {
         if(action === 'PLAY') return {event:'EndGame',parameters:{}};
-        if(action === 'FREE_SPIN') { assert(this.game.sg.freeStake,'AG integrity: SG own free request not mapped');return {event:'Logic',parameters:{...this.game.sg.freeStake}}; }
+        if(action === 'PICK_FREE_SPINS') {fiveTreasuresBinding(this.game);return undefined;}
+        if(action === 'FREE_SPIN') {
+            assert(this.game.sg.freeStake,'AG integrity: SG own free request not mapped');
+            if(this.game.sg.fiveTreasuresContract) {
+                fiveTreasuresBinding(this.game);
+                assert(Number.isInteger(this.free?.choiceType),'AG integrity: SG Five Treasures missing selected mode');
+                return {event:'Logic',parameters:{...this.game.sg.freeStake,pickIndex:this.free?.choiceType}};
+            }
+            return {event:'Logic',parameters:{...this.game.sg.freeStake}};
+        }
         throw new Error('AG integrity: SG observed action not mapped');
     }
     private payload(event:string,parameters:Record<string,any>) {
         const h={...this.game.sg.header,sessionID:this.session};
         const header='<Header '+Object.entries(h).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>';
-        const stake=Object.keys(parameters).length?'<Stake '+Object.entries(parameters).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>':'';
+        let choice='';
+        if(parameters.pickIndex!==undefined) {
+            fiveTreasuresBinding(this.game);
+            assert(event==='Logic'&&((this.action==='PICK_FREE_SPINS'&&this.free?.freeSpinsPlayed===0)
+                ||(this.action==='FREE_SPIN'&&parameters.pickIndex===this.free?.choiceType)),
+                'AG integrity: SG Five Treasures choice request');
+            assert(Number.isInteger(parameters.pickIndex)&&parameters.pickIndex>=0&&parameters.pickIndex<5,
+                'AG integrity: SG Five Treasures choice index');
+            choice=`<FreeSpinChoice type="${parameters.pickIndex}"/>`;
+        }
+        assert(this.action!=='PICK_FREE_SPINS'||event!=='Logic'||choice!=='',
+            'AG integrity: SG Five Treasures missing choice');
+        const stakeFields=Object.entries(parameters).filter(([k])=>k!=='pickIndex');
+        const stake=stakeFields.length?'<Stake '+stakeFields.map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>':'';
         // Own Dragon client serializes AccountData for a stake-less free Logic too.
         // This is an explicit per-game wire binding, never a guessed feature stake.
         const freeAccount = event==='Logic' && !stake && this.game.sg.freeLogicCurrencyMultiplier !== undefined;
         if(freeAccount) assert(this.game.sg.freeLogicCurrencyMultiplier==='1','AG integrity: SG own free currency binding');
-        return `<GameRequest type="${event}">${stake?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${header}${freeAccount?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${stake}</GameRequest>`;
+        return `<GameRequest type="${event}">${stake?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${header}${freeAccount?'<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>':''}${stake}${choice}</GameRequest>`;
     }
     private async exchange(event:string,parameters:Record<string,any>):Promise<WireStep> {
         assert(!this.closed,'AG integrity: SG session closed');const payload=this.payload(event,parameters);
@@ -226,7 +291,7 @@ export class SGWmsSession {
     async callGameData(event:string,parameters:Record<string,any>|null) {
         const first=this.action==='SPIN';
         if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;}
-        else assert(event===this.getExactFollowUpRequest(this.action).event,'AG integrity: SG request order');
+        else assert(event===(this.action==='PICK_FREE_SPINS'?'Logic':this.getExactFollowUpRequest(this.action)?.event),'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
         const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
         this.steps.push({...step,responseBalance:this.balance});this.lastRequest={event,parameters:structuredClone(parameters)};
@@ -236,8 +301,9 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
-            const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || [])]);
+            const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : [])]);
             assert(Object.keys(g).every(k=>known.has(k)),'AG integrity: SG observed feature needs mapping');
+            if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g);
             assert(integer(g.stake,'stake')===this.game.sg.betRaw,'AG integrity: SG changed stake');
             const bg=g.BGInfo;
             if(this.game.sg.omitsBaseRemaining)assert(bg.baseGameSpinsRemaining===undefined,'AG integrity: SG changed base schema');
@@ -255,9 +321,24 @@ export class SGWmsSession {
                 assert(played<=total,'AG integrity: SG free counter');
                 const freeWin=integer(f.fsWinnings,'free winnings'),baseWin=integer(bg.bgWinnings,'base winnings');
                 assert(baseWin+freeWin===this.totalWin,'AG integrity: SG component winnings');
-                if(this.free)assert(played>this.free.freeSpinsPlayed && total>=this.free.freeSpinsTotal,'AG integrity: SG nonadvancing free state');
-                this.free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:this.totalWin/100};
-                this.action=played<total?'FREE_SPIN':'PLAY';
+                let choiceType: number|undefined;
+                if(this.game.sg.fiveTreasuresContract) {
+                    fiveTreasuresBinding(this.game);
+                    choiceType=f.freeSpinMode===undefined ? parameters?.pickIndex ?? this.free?.choiceType : integer(f.freeSpinMode,'Five Treasures free mode');
+                    if(choiceType!==undefined)assert(choiceType>=0&&choiceType<5,'AG integrity: SG Five Treasures free mode');
+                    if(parameters?.pickIndex!==undefined)assert(choiceType===parameters.pickIndex,'AG integrity: SG Five Treasures changed selected mode');
+                }
+                if(this.free)assert((played>this.free.freeSpinsPlayed
+                    ||(this.game.sg.fiveTreasuresContract&&this.action==='PICK_FREE_SPINS'
+                        &&parameters?.pickIndex!==undefined&&played===0&&this.free.freeSpinsPlayed===0&&total===this.free.freeSpinsTotal))
+                    &&total>=this.free.freeSpinsTotal,'AG integrity: SG nonadvancing free state');
+                this.free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:this.totalWin/100,
+                    ...(choiceType!==undefined?{choiceType}:{})};
+                if(this.game.sg.fiveTreasuresContract && played===0 && choiceType===undefined) {
+                    fiveTreasuresBinding(this.game);
+                    assert(total>0,'AG integrity: SG Five Treasures missing choice spins');
+                    this.action='PICK_FREE_SPINS';
+                } else this.action=played<total?'FREE_SPIN':'PLAY';
             } else {
                 assert(!this.free,'AG integrity: SG free state disappeared');
                 assert(list(g.ReelResults.ReelSpin).every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG unclassified feature');
