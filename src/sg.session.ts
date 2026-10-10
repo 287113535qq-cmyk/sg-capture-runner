@@ -79,6 +79,35 @@ export function sourceFaultMetadata(fault: SGSourceFault) {
 }
 
 
+const ownJinseList = (v:any):any[] => v===undefined?[]:Array.isArray(v)?v:[v];
+function ownJinseKeys(v:any,keys:string,label:string){assert(v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join('|')===keys.split('|').sort().join('|'),`AG integrity: SG Jinse ${label} schema`);}
+export function validateJinseDragonData(game:AGGameConfig,g:any,first:boolean,prior:any,base:any,previousWin:number){
+ assert(game.gameId==='32779'&&game.dbName==='sg_jinsedaodragon'&&game.sg.runtimeGameId===33001&&game.sg.header.gameID==='20401'&&game.sg.header.gameCodeRGI==='jinsedaodragon'&&game.sg.jinseDragonContract==='jinse-dragon-own-wheel-free-orb-v1'&&game.sg.betRaw===100,'AG integrity: SG Jinse own binding');
+ ownJinseKeys(g,'stake|stakePerLine|paylineCount|totalWin|betID|ReelResults|BGInfo|Orbs'+(g.WheelInfo!==undefined?'|WheelInfo':'')+(g.FSInfo!==undefined?'|FSInfo':'')+(g.BaseGameRecoveryInfo!==undefined?'|BaseGameRecoveryInfo':''),'result');assert(g.stake==='100'&&g.stakePerLine==='100'&&g.paylineCount==='1'&&typeof g.betID==='string','AG integrity: SG Jinse wager');
+ if(first)assert(!prior&&!base&&previousWin===0&&!g.FSInfo&&!g.BaseGameRecoveryInfo,'AG integrity: SG Jinse initial order');else assert(prior&&base&&prior.freeSpinsRemaining>0&&!g.WheelInfo&&g.FSInfo&&g.betID===base.betID,'AG integrity: SG Jinse own free order');
+ const wheel=g.WheelInfo!==undefined;
+ ownJinseKeys(g.ReelResults,'numSpins|ReelSpin','reels');assert(g.ReelResults.numSpins==='1'&&!Array.isArray(g.ReelResults.ReelSpin),'AG integrity: SG Jinse reel count');const r=g.ReelResults.ReelSpin;
+ ownJinseKeys(r,'spinIndex|reelsetIndex|anywayWins|scatterWinCount|totalSpinWin|freeSpin|bonusAwarded|ReelStops'+(r.AnywayWin!==undefined?'|AnywayWin':'')+(r.ScatterWin!==undefined?'|ScatterWin':''),'spin');assert(r.spinIndex==='0'&&r.freeSpin===(first?'N':'Y')&&r.bonusAwarded===(wheel?'Y':'N'),'AG integrity: SG Jinse feature marker');integer(r.reelsetIndex,'Jinse reel set');assert(typeof r.ReelStops==='string'&&/^\d+(\|\d+){4}$/.test(r.ReelStops),'AG integrity: SG Jinse reel stops');
+ const ways=ownJinseList(r.AnywayWin),scatters=ownJinseList(r.ScatterWin);assert(ways.length===integer(r.anywayWins,'Jinse way count')&&scatters.length===integer(r.scatterWinCount,'Jinse scatter count'),'AG integrity: SG Jinse declared pays');let spinCash=0;const ids=new Set<number>();
+ const positions=(v:any)=>{assert(typeof v==='string'&&/^\d+(\|\d+)*$/.test(v),'AG integrity: SG Jinse pay positions');for(const value of v.split('|'))integer(value,'Jinse pay position');};
+ for(const w of ways){ownJinseKeys(w,'winIndex|winVal|ways|awardIndex|#text','way');const id=integer(w.winIndex,'Jinse way index');assert(id<ways.length&&!ids.has(id)&&integer(w.ways,'Jinse ways')>0,'AG integrity: SG Jinse way index');ids.add(id);integer(w.awardIndex,'Jinse way award');positions(w['#text']);spinCash+=integer(w.winVal,'Jinse way cash');}
+ for(const w of scatters){ownJinseKeys(w,'winVal|awardIndex|#text','scatter');integer(w.awardIndex,'Jinse scatter award');positions(w['#text']);spinCash+=integer(w.winVal,'Jinse scatter cash');}
+ assert(Number.isSafeInteger(spinCash)&&spinCash===integer(r.totalSpinWin,'Jinse spin cash'),'AG integrity: SG Jinse reel components');
+ ownJinseKeys(g.Orbs,'numJackpotWins'+(g.Orbs.Orb!==undefined?'|Orb':''),'orbs');assert(g.Orbs.numJackpotWins==='0','AG integrity: SG Jinse jackpot needs own actual contract');let orbCash=0;const orbIds=new Set<number>();
+ for(const o of ownJinseList(g.Orbs.Orb)){ownJinseKeys(o,'awardIndex|amount|position|winning|isJackpot','orb');const id=integer(o.position,'Jinse orb position');assert(!orbIds.has(id)&&['y','n'].includes(o.winning)&&o.isJackpot==='n','AG integrity: SG Jinse orb identity or award');orbIds.add(id);integer(o.awardIndex,'Jinse orb award');const amount=integer(o.amount,'Jinse orb amount');if(o.winning==='y')orbCash+=amount;}
+ const current=integer(g.totalWin,'Jinse current');assert(Number.isSafeInteger(orbCash)&&current===spinCash+orbCash,'AG integrity: SG Jinse current components');
+ const bg=g.BGInfo;ownJinseKeys(bg,'totalWagerWin|bgWinnings|baseGameSpinsRemaining|isMaxWin'+(bg.expReelTriggerType!==undefined?'|expReelTriggerType':'')+(bg.reelHeights!==undefined?'|reelHeights':''),'base cash');assert(bg.baseGameSpinsRemaining==='0'&&bg.isMaxWin==='0','AG integrity: SG Jinse base remaining or cap');
+ const display=(v:any)=>{assert(['-1','0','1','2'].includes(v.expReelTriggerType)&&integer(v.reelHeights,'Jinse displayed height')>=3,'AG integrity: SG Jinse returned expansion display');};
+ if(first)display(bg);else if(bg.expReelTriggerType!==undefined||bg.reelHeights!==undefined)display(bg);
+ const win=integer(bg.totalWagerWin,'Jinse returned cumulative'),baseWin=integer(bg.bgWinnings,'Jinse base winnings');let free;
+ if(first){assert(win===current&&baseWin===current,'AG integrity: SG Jinse paid current or cumulative');
+  if(wheel){ownJinseKeys(g.WheelInfo,'wheelStop|featureType|FSInfo','wheel');integer(g.WheelInfo.wheelStop,'Jinse wheel position');assert(g.WheelInfo.featureType==='FreeSpins','AG integrity: SG Jinse new wheel feature');const f=g.WheelInfo.FSInfo;ownJinseKeys(f,'fsWinnings|freeSpinsTotal|freeSpinNumber|isMaxWin','wheel free');const total=integer(f.freeSpinsTotal,'Jinse actual awarded total');assert(total>0&&f.freeSpinNumber==='0'&&f.fsWinnings==='0'&&f.isMaxWin==='0','AG integrity: SG Jinse wheel budget');free={freeSpinsTotal:total,freeSpinsPlayed:0,freeSpinsRemaining:total,accumulativeWin:win/100};}
+ }else{const f=g.FSInfo;ownJinseKeys(f,'fsWinnings|freeSpinsTotal|freeSpinNumber|isMaxWin|expReelTriggerType|reelHeights','free');display(f);const total=integer(f.freeSpinsTotal,'Jinse free total'),played=integer(f.freeSpinNumber,'Jinse free played'),freeCash=integer(f.fsWinnings,'Jinse cumulative free cash');assert(played===prior.freeSpinsPlayed+1&&total>=prior.freeSpinsTotal&&played<=total&&f.isMaxWin==='0'&&baseWin===integer(base.BGInfo.bgWinnings,'Jinse original base')&&win===baseWin+freeCash&&win===previousWin+current,'AG integrity: SG Jinse free counters or components');free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};
+  if(g.BaseGameRecoveryInfo!==undefined){const recovery=g.BaseGameRecoveryInfo;ownJinseKeys(recovery,'ReelResults|BGInfo|Orbs','recovery');assert.deepStrictEqual(recovery.ReelResults,base.ReelResults,'AG integrity: SG Jinse recovery reels changed');assert.deepStrictEqual(recovery.Orbs,base.Orbs,'AG integrity: SG Jinse recovery orbs changed');const expected={...base.BGInfo,totalWagerWin:bg.totalWagerWin};assert.deepStrictEqual(recovery.BGInfo,expected,'AG integrity: SG Jinse recovery base changed');}
+ }
+ return {win,free,base:first?structuredClone(g):base};
+}
+
 type WireStep = {msgId: string; requestPayload: string; responsePayload: string; responseBalance?: number; elapsedMs?: number; httpStatus?: number};
 type WireTransport = (event: string, payload: string) => Promise<WireStep>;
 const xml = new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseAttributeValue:false,parseTagValue:false});
@@ -248,7 +277,7 @@ export class SGWmsSession {
     private session = this.freshFreeId;
     private closed = false;
     private lastRequest: {event:string;parameters:Record<string,any>|null} | undefined;
-    private lastBase: unknown;private lastBlazingX?:number;
+    private lastBase: unknown;private lastBlazingX?:number;private jinseBase:unknown;
     private journal: number | null = null;
     private journalPath: string | null = null;
     private ordinal = 0;
@@ -407,7 +436,7 @@ export class SGWmsSession {
     }
     async callGameData(event:string,parameters:Record<string,any>|null) {
         const first=this.action==='SPIN';
-        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;}
+        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;}
         else assert(event===(this.action==='PICK_FREE_SPINS'?'Logic':this.getExactFollowUpRequest(this.action)?.event),'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
         const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
@@ -418,6 +447,8 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
+            if(this.game.sg.jinseDragonContract){const mapped=validateJinseDragonData(this.game,g,first,this.free,this.jinseBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.jinseBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
+            else{
             const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : []),...(this.game.sg.blazingXContract?['XInfo']:[]),...(this.game.sg.herculesContract?['WildPositions']:[])]);
             assert(Object.keys(g).every(k=>known.has(k)),'AG integrity: SG observed feature needs mapping');
             if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g,this.totalWin,this.action);
@@ -463,6 +494,7 @@ export class SGWmsSession {
                 if(this.game.sg.jekyllScatterMarkerContract&&list(g.ReelResults.ReelSpin).some(s=>s.bonusAwarded==='Y'))validateJekyllScatterMarker(this.game,g);
                 else assert(list(g.ReelResults.ReelSpin).every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG unclassified feature');
                 this.action='PLAY';
+            }
             }
         }
         // AG retains every response in its own action sequence. Do not embed the
