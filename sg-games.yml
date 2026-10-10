@@ -701,3 +701,266 @@ games:
       runtimeSlug: ragingrhinomegaways
       runtimeGameId: 33160
       healthyComponentsContract: raging-rhino-own-returned-components-v3
+  - provider: sg
+    gameId: '32783'
+    name: Kronos
+    dbName: sg_kronos_prt
+    backendId: kronos_prt
+    serviceDir: sg_kronos_prt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: kronos_prt
+        gameID: '20159'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        paylineCount: '20'
+        total: '100'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33005
+      runtimeSlug: kronos_prt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32783'
+        dbName: sg_kronos_prt
+        runtimeGameId: 33005
+        sourceGameId: '20159'
+        slug: kronos_prt
+        betRaw: 100
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake paylineCount="20" total="100" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+  - provider: sg
+    gameId: '32784'
+    name: Kronos Unleashed
+    dbName: sg_kronosunleashed
+    backendId: kronosunleashed
+    serviceDir: sg_kronosunleashed
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: kronosunleashed
+        gameID: '20208'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+        paylineCount: '60'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33006
+      runtimeSlug: kronosunleashed
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32784'
+        dbName: sg_kronosunleashed
+        runtimeGameId: 33006
+        sourceGameId: '20208'
+        slug: kronosunleashed
+        betRaw: 200
+        paidRequestDataXML: <Stake total="200" paylineCount="60" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - Respins
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+          GameResult/Respins:
+            keys:
+              - Respin
+              - jackpots
+            required:
+              - Respin
+              - jackpots
+          GameResult/Respins/Respin:
+            keys:
+              - '#text'
+              - index
+            required:
+              - index
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true

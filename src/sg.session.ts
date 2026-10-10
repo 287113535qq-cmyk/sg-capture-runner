@@ -356,6 +356,25 @@ export function validateOwnHealthyComponents(game:AGGameConfig,g:any,first:boole
  return {win,base,free:{freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100,...{ownCascadeMultiplier:first?1:integer(g.CascadeInfo.curCascadeMultiplier,'Rhino current multiplier')}}};
 }
 
+
+function ownMatchedPaidBinding(game:AGGameConfig) {
+ const c=game.sg.ownMatchedPaidContract;assert(c?.version==='fixed-own-paid-result-v1'&&c.unseenFeatureNotAdmitted===true,'AG integrity: SG matched paid scope');
+ assert(c.gameId===game.gameId&&c.dbName===game.dbName&&c.runtimeGameId===game.sg.runtimeGameId&&c.slug===game.sg.runtimeSlug&&c.sourceGameId===game.sg.header.gameID&&c.betRaw===game.sg.betRaw,'AG integrity: SG matched own data binding');
+ assert(c.fixedGitCommit==='885f862bcc04841406820a932ef14c38c7759f1d'&&/^[0-9a-f]{64}$/.test(c.ownEvidenceSHA256),'AG integrity: SG matched source proof');return c;
+}
+function validateOwnMatchedPaidResult(game:AGGameConfig,g:any,first:boolean):number {
+ const c=ownMatchedPaidBinding(game);assert(first,'AG integrity: SG matched paid continuation not admitted');
+ const check=(value:any,p:string):void=>{if(Array.isArray(value)){assert(value.length>0,'AG integrity: SG matched empty structure');for(const x of value)check(x,p);return;}if(value&&typeof value==='object'){const s=c.schemas[p];assert(s&&Object.keys(value).every(k=>s.keys.includes(k))&&s.required.every((k:string)=>k in value),'AG integrity: SG matched result schema');for(const[k,x]of Object.entries(value))check(x,p+'/'+k);}};
+ check(g,'GameResult');assert(!g.FSInfo&&!g.BaseGameRecoveryInfo&&!g.Feature&&!g.PickerInfo&&!g.BonusWheel,'AG integrity: SG matched new feature needs its own evidence');
+ assert(integer(g.stake,'matched paid wager')===c.betRaw,'AG integrity: SG matched wager');
+ assert(g.BGInfo.isMaxWin==='0','AG integrity: SG matched unseen cap state');if(g.BGInfo.baseGameSpinsRemaining!==undefined)assert(integer(g.BGInfo.baseGameSpinsRemaining,'matched base remaining')===0,'AG integrity: SG matched base continuation requires own evidence');if(g.BGInfo.isBigBet!==undefined)assert(g.BGInfo.isBigBet==='0','AG integrity: SG matched extra wager state');assert(g.paylineCount===game.sg.stake.paylineCount,'AG integrity: SG matched line count');
+ const win=integer(g.totalWin,'matched result cash');assert(integer(g.BGInfo.bgWinnings,'matched base cash')===win&&integer(g.BGInfo.totalWagerWin,'matched cumulative cash')===win,'AG integrity: SG matched cash components');
+ const spins=list(g.ReelResults?.ReelSpin);assert(spins.length===1&&integer(g.ReelResults.numSpins,'matched reel count')===1&&spins.every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG matched feature marker');
+ let sum=0;const visit=(value:any):void=>{if(Array.isArray(value)){value.forEach(visit);return;}if(value&&typeof value==='object')for(const[k,x]of Object.entries(value)){if(k==='winVal'||k==='winValue'){sum+=integer(x,'matched returned reel prize');assert(Number.isSafeInteger(sum),'AG integrity: SG matched safe prize sum');}else if(x&&typeof x==='object')visit(x);}};
+ visit(g.ReelResults);assert(sum===win&&spins.every(s=>integer(s.spinWins,'matched spin cash')===win),'AG integrity: SG matched returned prize cash');
+ return win;
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -446,6 +465,7 @@ export class SGWmsSession {
     private payload(event:string,parameters:Record<string,any>) {
         const h={...this.game.sg.header,sessionID:this.session};
         const header='<Header '+Object.entries(h).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>';
+        if(event==='Logic'&&this.game.sg.ownMatchedPaidContract){const c=ownMatchedPaidBinding(this.game);assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG matched paid request');return `<GameRequest type="Logic">${header}${c.paidRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.healthyComponentsContract){ownHealthyComponentsBinding(this.game);if(this.action==='FREE_SPIN'){assert(Object.keys(parameters).length===0,'AG integrity: SG Rhino free request');return `<GameRequest type="Logic">${header}</GameRequest>`;}assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Rhino paid request');return `<GameRequest type="Logic">${header}<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200"/></GameRequest>`;}
         let choice='';
         if(parameters.pickIndex!==undefined) {
@@ -539,7 +559,8 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
-            if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
+            if(this.game.sg.ownMatchedPaidContract){this.totalWin=validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
+            else if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.jinseDragonContract){const mapped=validateJinseDragonData(this.game,g,first,this.free,this.jinseBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.jinseBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else{
             const known=new Set(['stake','stakePerLine','paylineCount','totalWin','betID','ReelResults','BGInfo','FSInfo','BaseGameRecoveryInfo',...(this.game.sg.passiveResultFields || []),...(this.game.sg.fiveTreasuresContract ? ['JackpotInfo'] : []),...(this.game.sg.blazingXContract?['XInfo']:[]),...(this.game.sg.herculesContract?['WildPositions']:[])]);
