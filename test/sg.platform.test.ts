@@ -20,8 +20,8 @@ test('SG child retains original AG quota/ownership with only its own connection 
 test('whole AG loaders use SG own server bindings and reject a substituted database',()=>{
  const previous=process.env.AG_CAPTURE_PLATFORM;process.env.AG_CAPTURE_PLATFORM='sg';
  try {
-  const manifest=loadGameTargets(gameManifestPath());assert.equal(manifest.length,15);
-  const actual=loadGames();assert.equal(actual.length,15);assert(actual.every(g=>g.provider==='sg'));
+  const manifest=loadGameTargets(gameManifestPath());assert.equal(manifest.length,16);
+  const actual=loadGames();assert.equal(actual.length,16);assert(actual.every(g=>g.provider==='sg'));
   assert.equal(resolveGameTarget(manifest,'32749','sg_fivetreasures').gameId,'32749');
   assert.throws(()=>resolveGameTarget(manifest,'32749','sg_wrongpool'),/mismatch/);
   for(const game of actual){assert(game.sg.runtimeSlug);assert.equal(game.backendId,game.sg.header.gameCodeRGI);}
