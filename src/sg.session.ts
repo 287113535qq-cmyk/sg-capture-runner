@@ -208,7 +208,7 @@ export function validateBlazingRecovery(game:AGGameConfig,g:any,paidReels:any,pa
 }
 
 export function validateHerculesData(game:AGGameConfig,g:any,prior?:any):void {
- assert(game.gameId==='32773'&&game.dbName==='sg_herculeshighandmighty'&&game.sg?.runtimeGameId===32995&&game.sg?.header?.gameID==='20102'&&game.sg?.herculesContract==='hercules-own-free-wild-display-v2'&&game.sg?.betRaw===100,'AG integrity: SG Hercules own binding');
+ assert(game.gameId==='32773'&&game.dbName==='sg_herculeshighandmighty'&&game.sg?.runtimeGameId===32995&&game.sg?.header?.gameID==='20102'&&game.sg?.herculesContract==='hercules-own-natural-retrigger-v3'&&game.sg?.betRaw===100,'AG integrity: SG Hercules own binding');
  const f=g.FSInfo,playingFree=f!==undefined&&integer(f.freeSpinNumber,'Hercules played')>0;
  const w=g.WildPositions,required=['bottomWildReel','expandPointsBottom','expandPointsTop','topWildReel'],allowed=[...required,'heldWildReels','existingHeldWildReels'];assert(w&&required.every(k=>Object.prototype.hasOwnProperty.call(w,k))&&Object.keys(w).every(k=>allowed.includes(k))&&(playingFree||allowed.every(k=>Object.prototype.hasOwnProperty.call(w,k))),'AG integrity: SG Hercules wild schema');
  const values=(v:any,max:number,unique=true)=>{assert(typeof v==='string'&&(v===''||/^\d+(?:\|\d+)*$/.test(v)),'AG integrity: SG Hercules wild positions');const a=v===''?[]:v.split('|').map((n:string)=>integer(n,'Hercules wild position'));assert(a.every((n:number)=>n<max)&&(!unique||new Set(a).size===a.length),'AG integrity: SG Hercules wild bounds');return a;};
@@ -224,7 +224,16 @@ export function validateHerculesData(game:AGGameConfig,g:any,prior?:any):void {
   if(playingFree){const added=integer(f.newFreespinsAwarded,'Hercules free award');assert(prior&&played===prior.freeSpinsPlayed+1&&total===prior.freeSpinsTotal+added&&f.isMaxWin==='0'&&['0','1'].includes(f.wildBonus),'AG integrity: SG Hercules free counter');}
   else assert(!prior&&played===0&&f.fsWinnings==='0','AG integrity: SG Hercules free introduction');
  }
- let sum=0;for(const s of list(g.ReelResults?.ReelSpin)){const lines=list(s.PaylineWin),scatter=list(s.ScatterWin);assert(lines.length===integer(s.winCountPL,'Hercules line count')&&scatter.length===integer(s.winCountSC,'Hercules scatter count'),'AG integrity: SG Hercules win counts');let win=0;for(const x of [...lines,...scatter])win+=integer(x.winVal,'Hercules component');assert(Number.isSafeInteger(win)&&win===integer(s.spinWins,'Hercules spin win'),'AG integrity: SG Hercules reel money');sum+=win;}
+ let sum=0;for(const s of list(g.ReelResults?.ReelSpin)){
+  const lines=list(s.PaylineWin),scatter=list(s.ScatterWin),retrigger=playingFree&&integer(f.newFreespinsAwarded,'Hercules awarded')>0;
+  // The actual client consumes FSInfo's newly awarded spins. In both observed
+  // natural retriggers winCountSC marks this award, with no monetary ScatterWin
+  // node. It does not add cash or invent a response; all spin/cumulative money
+  // still comes from the explicit returned line and root amounts.
+  const scatterCount=integer(s.winCountSC,'Hercules scatter count');
+  assert(lines.length===integer(s.winCountPL,'Hercules line count')&&(retrigger?s.bonusAwarded==='Y'&&scatterCount===1&&s.ScatterWin===undefined:scatter.length===scatterCount),'AG integrity: SG Hercules win counts');
+  let win=0;for(const x of [...lines,...scatter])win+=integer(x.winVal,'Hercules component');assert(Number.isSafeInteger(win)&&win===integer(s.spinWins,'Hercules spin win'),'AG integrity: SG Hercules reel money');sum+=win;
+ }
  assert(Number.isSafeInteger(sum)&&sum===integer(g.totalWin,'Hercules current win'),'AG integrity: SG Hercules current money');
 }
 
