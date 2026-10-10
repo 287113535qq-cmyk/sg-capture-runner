@@ -279,7 +279,7 @@ function ownPositionNumbers(value:any,count:number|undefined,label:string):numbe
  return numbers;
 }
 function ownHealthyComponentsBinding(game:AGGameConfig):'megaways'|'deepsea'|'jinji'|'rhino' {
- assert(game.gameId==='32800'&&game.dbName==='sg_ragingrhinomegaways'&&game.sg.runtimeGameId===33160&&game.sg.header.gameID==='20353'&&game.sg.header.gameCodeRGI==='ragingrhinomegaways'&&game.sg.betRaw===200&&game.sg.healthyComponentsContract==='raging-rhino-own-returned-components-v1','AG integrity: SG own Rhino connection');return 'rhino';
+ assert(game.gameId==='32800'&&game.dbName==='sg_ragingrhinomegaways'&&game.sg.runtimeGameId===33160&&game.sg.header.gameID==='20353'&&game.sg.header.gameCodeRGI==='ragingrhinomegaways'&&game.sg.betRaw===200&&game.sg.healthyComponentsContract==='raging-rhino-own-returned-components-v2','AG integrity: SG own Rhino connection');return 'rhino';
 }
 function ownHealthyTopReel(top:any) {
  ownPaidKeys(top,'reelSetIndex|reelStop|positions','healthy top reel');integer(top.reelSetIndex,'top set');integer(top.reelStop,'top stop');
@@ -301,11 +301,11 @@ function ownHealthyReelCash(reels:any,kind:string,isFree:boolean,hasIntro:boolea
    ownPaidKeys(w,deep?'index|winVal|awardIndex|awardTableIndex|#text':'winIndex|winVal|ways|awardIndex|#text','healthy cash award');
    if(deep){assert(integer(w.index,'payline index')<50,'AG integrity: SG payline index');integer(w.awardTableIndex,'award table');}
    else assert(integer(w.winIndex,'ways index')===j&&integer(w.ways,'ways')>0,'AG integrity: SG ways index');
-   integer(w.awardIndex,'healthy award index');assert(ownPositionNumbers(w['#text'],undefined,'healthy winning positions').every(n=>n<(deep?15:41)),'AG integrity: SG healthy position range');lines+=integer(w.winVal,'healthy line cash');
+   integer(w.awardIndex,'healthy award index');assert(ownPositionNumbers(w['#text'],undefined,'healthy winning positions').every(n=>n<(deep?15:kind==='rhino'?6*7:41)),'AG integrity: SG healthy position range');lines+=integer(w.winVal,'healthy line cash');
   }
   for(const w of scatters) {
    ownPaidKeys(w,'winVal|awardIndex'+(w['#text']!==undefined?'|#text':''),'healthy scatter');integer(w.awardIndex,'scatter award');
-   if(w['#text']!==undefined)assert(ownPositionNumbers(w['#text'],undefined,'scatter positions').every(n=>n<(deep?15:41)),'AG integrity: SG scatter range');scatter+=integer(w.winVal,'scatter cash');
+   if(w['#text']!==undefined)assert(ownPositionNumbers(w['#text'],undefined,'scatter positions').every(n=>n<(deep?15:kind==='rhino'?6*7:41)),'AG integrity: SG scatter range');scatter+=integer(w.winVal,'scatter cash');
   }
   assert(lines===integer(deep?s.spinWins:s.totalSpinWin,'healthy returned line cash'),'AG integrity: SG healthy line cash disagreement');cash+=lines+scatter;assert(Number.isSafeInteger(cash),'AG integrity: SG unsafe healthy cash');
  }
