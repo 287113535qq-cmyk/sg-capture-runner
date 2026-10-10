@@ -413,6 +413,21 @@ function validateOwnKronosData(game:AGGameConfig,g:any,first:boolean,prior:any,b
 }
 
 
+function ownBulkPaidScatter(game:AGGameConfig,g:any,spin:any,boardIndex:number):number {
+ const q=game.sg.ownMatchedPaidContract.ordinaryCashContract,c=q.ownScatterCashContract;
+ assert(c&&c.gameId===game.gameId&&/^[a-f0-9]{64}$/.test(c.ownSDKFileSHA256),'AG integrity: SG own scatter binding');
+ const nemo=game.gameId==='32793'&&c.version==='own-Nemo-zero-scatter-marker-v1',triple=game.gameId==='32811'&&c.version==='own-Triple-separate-cash-scatter-v1';assert(nemo||triple,'AG integrity: SG scatter scope');
+ assert(spin.freeSpin==='N'&&integer(spin.spinIndex,'scatter board index')===boardIndex&&boardIndex<(nemo?1:3),'AG integrity: SG scatter paid board');
+ const lines=list(spin.PaylineWin),scatters=list(spin.ScatterWin);assert(lines.length===integer(spin.winCountPL,'scatter line count')&&scatters.length===integer(spin.winCountSC,'scatter count')&&scatters.length<=1,'AG integrity: SG scatter counts');
+ const lineCash=lines.reduce((n:number,w:any)=>n+integer(w.winVal,'scatter line cash'),0);assert(Number.isSafeInteger(lineCash)&&lineCash===integer(spin.spinWins,'scatter separate line money'),'AG integrity: SG scatter line cash');
+ let scatterCash=0;
+ for(const w of scatters){ownPaidKeys(w,'winVal|awardIndex|#text','paid scatter');integer(w.awardIndex,'paid scatter award index');const positions=ownPositionNumbers(w['#text'],undefined,'paid scatter positions');assert(positions.length>0&&positions.every(p=>p<(nemo?20:15))&&new Set(positions).size===positions.length,'AG integrity: SG scatter own geometry');const cash=integer(w.winVal,'paid scatter cash');
+  if(nemo){assert(cash===0&&spin.bonusAwarded==='N','AG integrity: SG Nemo marker must remain zero ordinary cash');}
+  else{assert(g.WheelBonus?.wheelSpins==='0'&&g.WheelBonus?.wheelMultiplier==='0'&&!g.FSInfo,'AG integrity: SG Triple pending feature remains blocked');assert(positions.length>1||cash===0,'AG integrity: SG Triple singleton is a marker');scatterCash+=cash;}
+ }
+ assert(spin.bonusAwarded==='N'||(triple&&spin.bonusAwarded==='Y'&&scatterCash>0),'AG integrity: SG paid scatter award marker');
+ assert(Number.isSafeInteger(scatterCash),'AG integrity: SG scatter overflow');return scatterCash;
+}
 function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
  const c=ownMatchedPaidBinding(game),q=c.ordinaryCashContract;
  assert(q?.version==='own-returned-ordinary-cash-v1'&&first&&!game.sg.ownKronosFeatureContract,'AG integrity: SG bulk ordinary scope');
@@ -432,7 +447,8 @@ function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
  for(const r of containers){const paired=q.pairedReelContract==='own-SDK-top-and-bottom-parallel-spins-v1';let spins:any[];
   if(paired){assert(game.gameId==='32794','AG integrity: SG paired own binding');ownPaidKeys(r,'numSpins|Top_reel_Info|Bottom_reel_Info','bulk paired boards');assert(r.numSpins==='1','AG integrity: SG paired round count');spins=[];for(const key of ['Top_reel_Info','Bottom_reel_Info']){ownPaidKeys(r[key],'ReelSpin','bulk actual board');const own=list(r[key].ReelSpin);assert(own.length===1,'AG integrity: SG one actual spin per paired board');spins.push(...own);}}
   else{spins=list(r.ReelSpin);assert(spins.length>0&&integer(r.numSpins,'bulk actual spin count')===spins.length,'AG integrity: SG bulk spin count');}
-  for(const s of spins){const ownDisplayFree=q.ordinaryMarkerContract==='own-SDK-FSInfo-selects-feature-v1'&&game.gameId==='32812';assert(s.freeSpin===(ownDisplayFree?'Y':'N')&&s.bonusAwarded==='N','AG integrity: SG bulk feature marker');totalSpinCash+=integer(s[q.spinCashField],'bulk actual spin cash');assert(Number.isSafeInteger(totalSpinCash),'AG integrity: SG bulk safe spin cash');}
+  if(q.ownScatterCashContract)assert(spins.length===(game.gameId==='32793'?1:3),'AG integrity: SG paid scatter board count');
+  for(const [boardIndex,s] of spins.entries()){const ownDisplayFree=q.ordinaryMarkerContract==='own-SDK-FSInfo-selects-feature-v1'&&game.gameId==='32812';if(q.ownScatterCashContract){totalSpinCash+=ownBulkPaidScatter(game,g,s,boardIndex);}else assert(s.freeSpin===(ownDisplayFree?'Y':'N')&&s.bonusAwarded==='N','AG integrity: SG bulk feature marker');totalSpinCash+=integer(s[q.spinCashField],'bulk actual spin cash');assert(Number.isSafeInteger(totalSpinCash),'AG integrity: SG bulk safe spin cash');}
  }
  const visit=(v:any):void=>{if(Array.isArray(v)){v.forEach(visit);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){if(k==='winVal'||k==='winValue'){totalPrizes+=integer(x,'bulk actual reel prize');assert(Number.isSafeInteger(totalPrizes),'AG integrity: SG bulk safe prize cash');}else if(x&&typeof x==='object')visit(x);}};
  visit(g.ReelResults);assert(totalPrizes===win&&totalSpinCash===win,'AG integrity: SG bulk current cash differs from actual prizes');return win;

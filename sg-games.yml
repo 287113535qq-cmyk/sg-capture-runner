@@ -2473,6 +2473,7 @@ games:
               - spinWins
               - winCountPL
               - winCountSC
+              - ScatterWin
             required:
               - ReelStops
               - bonusAwarded
@@ -2521,6 +2522,15 @@ games:
               - awardTableIndex
               - index
               - winVal
+          GameResult/ReelResults/ReelSpin/ScatterWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - winVal
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
@@ -2535,6 +2545,11 @@ games:
           currentCashPaths: []
           zeroFreeCashPaths: []
           spinCashField: spinWins
+          ownScatterCashContract:
+            version: own-Nemo-zero-scatter-marker-v1
+            gameId: '32793'
+            ownSDKFileSHA256: 228fb4577e66ab8b5171e9d28559182c79a81b4ca6040dd72f208bfc99f00918
+            fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
   - provider: sg
     gameId: '32796'
     name: Pharaoh's Dream
@@ -3640,6 +3655,7 @@ games:
               - spinWins
               - winCountPL
               - winCountSC
+              - ScatterWin
             required:
               - ReelStops
               - bonusAwarded
@@ -3676,6 +3692,15 @@ games:
               - awardTableIndex
               - index
               - winVal
+          GameResult/ReelResults/ReelSpin/ScatterWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - winVal
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
@@ -3691,6 +3716,11 @@ games:
             - BGInfo/totalWagerWin
           zeroFreeCashPaths: []
           spinCashField: spinWins
+          ownScatterCashContract:
+            version: own-Triple-separate-cash-scatter-v1
+            gameId: '32811'
+            ownSDKFileSHA256: 0903de2a8aad707abf617996dee42def683070e2d23f9a369e47f98be620c0f8
+            fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
   - provider: sg
     gameId: '32813'
     name: Volts and Bolts
