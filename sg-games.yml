@@ -1119,3 +1119,3790 @@ games:
         clientSHA256: 611093eda7e11f2991571ac967589b5ea6796a982ec8ebf6d8757e473d950da0
         freeRequestUsesOwnWagerContext: true
         unseenFeatureStructuresNotAdmitted: true
+  - provider: sg
+    gameId: '32781'
+    name: Kings Honour
+    dbName: sg_kings_honour
+    backendId: kingshonour
+    serviceDir: sg_kings-honour
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: kingshonour
+        gameID: '20241'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33003
+      runtimeSlug: kingshonour
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32781'
+        dbName: sg_kings_honour
+        runtimeGameId: 33003
+        sourceGameId: '20241'
+        slug: kingshonour
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ClumpPlaceholderInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ClumpPlaceholderInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - kingsCharge
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - kingsCharge
+              - totalWagerWin
+          GameResult/ClumpPlaceholderInfo:
+            keys:
+              - bigSymbolId
+              - smallSymbolId
+            required:
+              - bigSymbolId
+              - smallSymbolId
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '0'
+            paylineCount: '100'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32782'
+    name: Knight's Keep
+    dbName: sg_knights_keep
+    backendId: knightskeep
+    serviceDir: sg_knights-keep
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: knightskeep
+        gameID: '20196'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '75'
+        lines: '25'
+      freeStake: {}
+      betRaw: 75
+      runtimeGameId: 33004
+      runtimeSlug: knightskeep
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32782'
+        dbName: sg_knights_keep
+        runtimeGameId: 33004
+        sourceGameId: '20196'
+        slug: knightskeep
+        betRaw: 75
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="75" lines="25" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '3'
+            paylineCount: '25'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32785'
+    name: Lady Of Egypt
+    dbName: sg_lady_of_egypt
+    backendId: ladyofegypt
+    serviceDir: sg_lady-of-egypt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: ladyofegypt
+        gameID: '20115'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 175
+      runtimeGameId: 33007
+      runtimeSlug: ladyofegypt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32785'
+        dbName: sg_lady_of_egypt
+        runtimeGameId: 33007
+        sourceGameId: '20115'
+        slug: ladyofegypt
+        betRaw: 175
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><SpinInfo stake="175" />
+        schemas:
+          GameResult:
+            keys:
+              - BaseGame
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BaseGame
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BaseGame:
+            keys:
+              - isMaxWin
+              - maxWinValue
+            required:
+              - isMaxWin
+              - maxWinValue
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '5'
+            paylineCount: '9'
+          fixedStateFields:
+            BaseGame/isMaxWin: 'N'
+          currentCashPaths: []
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32786'
+    name: Legend of Fortune
+    dbName: sg_legend_of_fortune
+    backendId: legendoffortune
+    serviceDir: sg_legend-of-fortune
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: legendoffortune
+        gameID: '20233'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33008
+      runtimeSlug: legendoffortune
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32786'
+        dbName: sg_legend_of_fortune
+        runtimeGameId: 33008
+        sourceGameId: '20233'
+        slug: legendoffortune
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '20'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32787'
+    name: Legend of the Pharaohs
+    dbName: sg_legend_of_the_pharaohs
+    backendId: legendofthepharaohs
+    serviceDir: sg_legend-of-the-pharaohs
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: legendofthepharaohs
+        gameID: '20118'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33009
+      runtimeSlug: legendofthepharaohs
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32787'
+        dbName: sg_legend_of_the_pharaohs
+        runtimeGameId: 33009
+        sourceGameId: '20118'
+        slug: legendofthepharaohs
+        betRaw: 100
+        paidRequestDataXML: <WagerInfo totalStake="100" isBigBet="0" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/GameWinInfo:
+            keys:
+              - isBigBet
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeGameWin
+              - totalPharoahsBonusWin
+              - totalWagerWin
+            required:
+              - isBigBet
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeGameWin
+              - totalPharoahsBonusWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '5'
+            paylineCount: '20'
+          fixedStateFields:
+            GameWinInfo/isMaxWin: 'N'
+            GameWinInfo/isBigBet: 'N'
+          currentCashPaths:
+            - GameWinInfo/totalBaseGameWin
+            - GameWinInfo/totalWagerWin
+          zeroFreeCashPaths:
+            - GameWinInfo/totalFreeGameWin
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32788'
+    name: Lock It Link Night Life
+    dbName: sg_lockitlink
+    backendId: lockitlink
+    serviceDir: sg_lockitlink
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: lockitlink
+        gameID: '20158'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 50
+      runtimeGameId: 33010
+      runtimeSlug: lockitlink
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32788'
+        dbName: sg_lockitlink
+        runtimeGameId: 33010
+        sourceGameId: '20158'
+        slug: lockitlink
+        betRaw: 50
+        paidRequestDataXML: <WagerInfo totalStake="50" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - GameRtpInfo
+              - GameWinInfo
+              - GoldenHeartInfo
+              - HeartAwardMultipliers
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - GameRtpInfo
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/HeartAwardMultipliers:
+            keys:
+              - Heart
+            required:
+              - Heart
+          GameResult/HeartAwardMultipliers/Heart:
+            keys:
+              - index
+              - multiplierValue
+            required:
+              - index
+              - multiplierValue
+          GameResult/GameWinInfo:
+            keys:
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeSpinsWin
+              - totalWagerWin
+            required:
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeSpinsWin
+              - totalWagerWin
+          GameResult/GameRtpInfo:
+            keys:
+              - gameTargetRtpValue
+            required:
+              - gameTargetRtpValue
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '1'
+            paylineCount: '50'
+          fixedStateFields:
+            GameWinInfo/isMaxWin: 'N'
+          currentCashPaths:
+            - GameWinInfo/totalBaseGameWin
+            - GameWinInfo/totalWagerWin
+          zeroFreeCashPaths:
+            - GameWinInfo/totalFreeSpinsWin
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32789'
+    name: Lucky Tree
+    dbName: sg_lucky_tree
+    backendId: luckytree
+    serviceDir: sg_lucky-tree
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: luckytree
+        gameID: '20106'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 300
+      runtimeGameId: 33149
+      runtimeSlug: luckytree
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32789'
+        dbName: sg_lucky_tree
+        runtimeGameId: 33149
+        sourceGameId: '20106'
+        slug: luckytree
+        betRaw: 300
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><SpinInfo stake="300" />
+        schemas:
+          GameResult:
+            keys:
+              - BaseGame
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BaseGame
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BaseGame:
+            keys:
+              - isMaxWin
+              - maxWinValue
+            required:
+              - isMaxWin
+              - maxWinValue
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '30'
+          fixedStateFields:
+            BaseGame/isMaxWin: 'N'
+          currentCashPaths: []
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32790'
+    name: Marvelous Mouse Coin Combo
+    dbName: sg_marvelousmouse
+    backendId: marvelousmouse
+    serviceDir: sg_marvelousmouse
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: marvelousmouse
+        gameID: '20460'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '176'
+      freeStake: {}
+      betRaw: 176
+      runtimeGameId: 33150
+      runtimeSlug: marvelousmouse
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32790'
+        dbName: sg_marvelousmouse
+        runtimeGameId: 33150
+        sourceGameId: '20460'
+        slug: marvelousmouse
+        betRaw: 176
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="176" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - CoinInfo
+              - ReelResults
+              - betID
+              - stake
+              - totalWin
+            required:
+              - BGInfo
+              - CoinInfo
+              - ReelResults
+              - betID
+              - stake
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - AnywayWin
+              - ReelStops
+              - anywayWins
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - scatterWinCount
+              - spinIndex
+              - totalSpinWin
+            required:
+              - ReelStops
+              - anywayWins
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - scatterWinCount
+              - spinIndex
+              - totalSpinWin
+          GameResult/CoinInfo:
+            keys:
+              - coinType
+            required:
+              - coinType
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - mysterySymbol
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - mysterySymbol
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/AnywayWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - ways
+              - winIndex
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - ways
+              - winIndex
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields: {}
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: totalSpinWin
+  - provider: sg
+    gameId: '32792'
+    name: Montezuma
+    dbName: sg_montezuma_prt
+    backendId: montezuma_prt
+    serviceDir: sg_montezuma_prt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: montezuma_prt
+        gameID: '20131'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 30
+      runtimeGameId: 33152
+      runtimeSlug: montezuma_prt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32792'
+        dbName: sg_montezuma_prt
+        runtimeGameId: 33152
+        sourceGameId: '20131'
+        slug: montezuma_prt
+        betRaw: 30
+        paidRequestDataXML: <WagerInfo totalStake="30" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - GameRtpInfo
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - GameRtpInfo
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/GameWinInfo:
+            keys:
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeSpinsWin
+              - totalWagerWin
+            required:
+              - isMaxWin
+              - maxWinValue
+              - totalBaseGameWin
+              - totalFreeSpinsWin
+              - totalWagerWin
+          GameResult/GameRtpInfo:
+            keys:
+              - gameTargetRtpValue
+            required:
+              - gameTargetRtpValue
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '1'
+            paylineCount: '30'
+          fixedStateFields:
+            GameWinInfo/isMaxWin: 'N'
+          currentCashPaths:
+            - GameWinInfo/totalBaseGameWin
+            - GameWinInfo/totalWagerWin
+          zeroFreeCashPaths:
+            - GameWinInfo/totalFreeSpinsWin
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32793'
+    name: Nemo's Voyage
+    dbName: sg_nemos_voyage
+    backendId: nemosvoyage_prt
+    serviceDir: sg_nemos-voyage
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: nemosvoyage_prt
+        gameID: '20154'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        perLine: '1'
+        total: '40'
+        gameMode: NormalBaseGame
+      freeStake: {}
+      betRaw: 40
+      runtimeGameId: 33153
+      runtimeSlug: nemosvoyage_prt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32793'
+        dbName: sg_nemos_voyage
+        runtimeGameId: 33153
+        sourceGameId: '20154'
+        slug: nemosvoyage_prt
+        betRaw: 40
+        paidRequestDataXML: <Stake perLine="1" total="40" gameMode="NormalBaseGame" /><PaylineCount count="40" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - MaxWin_Info
+              - ReelResults
+              - SubInfo
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - MaxWin_Info
+              - ReelResults
+              - SubInfo
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/SubInfo:
+            keys:
+              - depthChange
+              - descending
+              - nextSpinReelLvl
+              - pressureChange
+              - symbolValue
+              - totalDepth
+              - totalPressure
+            required:
+              - depthChange
+              - descending
+              - nextSpinReelLvl
+              - pressureChange
+              - symbolValue
+              - totalDepth
+              - totalPressure
+          GameResult/MaxWin_Info:
+            keys:
+              - cappedWins
+              - maxWin
+              - maxWinValue
+            required:
+              - cappedWins
+              - maxWin
+              - maxWinValue
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '1'
+            paylineCount: '40'
+          fixedStateFields:
+            MaxWin_Info/maxWin: 'false'
+            MaxWin_Info/cappedWins: '0'
+          currentCashPaths: []
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32796'
+    name: Pharaoh's Dream
+    dbName: sg_pharaohsdream
+    backendId: pharaohsdream
+    serviceDir: sg_pharaohsdream
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: pharaohsdream
+        gameID: '20311'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33156
+      runtimeSlug: pharaohsdream
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32796'
+        dbName: sg_pharaohsdream
+        runtimeGameId: 33156
+        sourceGameId: '20311'
+        slug: pharaohsdream
+        betRaw: 100
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="100" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '2'
+            paylineCount: '40'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32801'
+    name: Road to Riches Free Spins
+    dbName: sg_rrfreespins
+    backendId: rrfreespins
+    serviceDir: sg_rrfreespins
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: rrfreespins
+        gameID: '20116'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33161
+      runtimeSlug: rrfreespins
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32801'
+        dbName: sg_rrfreespins
+        runtimeGameId: 33161
+        sourceGameId: '20116'
+        slug: rrfreespins
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - maxWin
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - maxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '20'
+            paylineCount: '10'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/maxWin: '25000000'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32802'
+    name: Road to Riches Gold Pots
+    dbName: sg_rrpg
+    backendId: rrpg
+    serviceDir: sg_rrpg
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: rrpg
+        gameID: '20474'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33162
+      runtimeSlug: rrpg
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32802'
+        dbName: sg_rrpg
+        runtimeGameId: 33162
+        sourceGameId: '20474'
+        slug: rrpg
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - SymbolsInView
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - SymbolsInView
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - potResult
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - potResult
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '20'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32803'
+    name: Road to Riches Race Day
+    dbName: sg_rrraceday
+    backendId: rrraceday
+    serviceDir: sg_rrraceday
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: rrraceday
+        gameID: '20456'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33163
+      runtimeSlug: rrraceday
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32803'
+        dbName: sg_rrraceday
+        runtimeGameId: 33163
+        sourceGameId: '20456'
+        slug: rrraceday
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - HorseTrackInfo
+              - MysteryReplace
+              - PotInfo
+              - ReelResults
+              - betID
+              - stake
+              - totalWin
+            required:
+              - BGInfo
+              - HorseTrackInfo
+              - MysteryReplace
+              - PotInfo
+              - ReelResults
+              - betID
+              - stake
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - HorseLandedInfo
+              - ReelSpin
+              - numSpins
+            required:
+              - HorseLandedInfo
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - AnywayWin
+              - ReelStops
+              - anywayWins
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - scatterWinCount
+              - spinIndex
+              - totalSpinWin
+            required:
+              - ReelStops
+              - anywayWins
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - scatterWinCount
+              - spinIndex
+              - totalSpinWin
+          GameResult/ReelResults/HorseLandedInfo:
+            keys:
+              - landed
+              - progress
+              - spinIndex
+            required:
+              - landed
+              - progress
+              - spinIndex
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/MysteryReplace:
+            keys:
+              - HorseInfo
+            required:
+              - HorseInfo
+          GameResult/MysteryReplace/HorseInfo:
+            keys:
+              - horseIDs
+              - reel
+            required:
+              - horseIDs
+              - reel
+          GameResult/HorseTrackInfo:
+            keys:
+              - endProgress
+              - endStakeTowardsHorse
+              - stakeTowardsHorse
+              - startProgress
+            required:
+              - endProgress
+              - endStakeTowardsHorse
+              - stakeTowardsHorse
+              - startProgress
+          GameResult/PotInfo:
+            keys:
+              - displayPrize
+              - multiplier
+              - potWin
+              - totalPotWin
+            required:
+              - displayPrize
+              - multiplier
+              - potWin
+              - totalPotWin
+          GameResult/ReelResults/ReelSpin/AnywayWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - ways
+              - winIndex
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - ways
+              - winIndex
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields: {}
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: totalSpinWin
+  - provider: sg
+    gameId: '32804'
+    name: Road to Riches Twilight Dream
+    dbName: sg_rrmmtd
+    backendId: rrmmtd
+    serviceDir: sg_rrmmtd
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: rrmmtd
+        gameID: '20413'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+        isFunDial: '0'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33164
+      runtimeSlug: rrmmtd
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32804'
+        dbName: sg_rrmmtd
+        runtimeGameId: 33164
+        sourceGameId: '20413'
+        slug: rrmmtd
+        betRaw: 200
+        paidRequestDataXML: <Stake total="200" isFunDial="0" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isFunDial
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isFunDial
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '20'
+            paylineCount: '10'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isFunDial: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32806'
+    name: Spartacus Gladiator of Rome
+    dbName: sg_spartacus_prt
+    backendId: spartacus_prt
+    serviceDir: sg_spartacus_prt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: spartacus_prt
+        gameID: '20128'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 50
+      runtimeGameId: 33166
+      runtimeSlug: spartacus_prt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32806'
+        dbName: sg_spartacus_prt
+        runtimeGameId: 33166
+        sourceGameId: '20128'
+        slug: spartacus_prt
+        betRaw: 50
+        paidRequestDataXML: <WagerInfo totalStake="50" paylineCount="20" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - ClumpPlaceholderInfo
+              - GameWinInfo
+              - ReelResults
+              - WildReels
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - ClumpPlaceholderInfo
+              - GameWinInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ClumpPlaceholderInfo:
+            keys:
+              - bigSymbolId
+              - smallSymbolId
+            required:
+              - bigSymbolId
+              - smallSymbolId
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/GameWinInfo:
+            keys:
+              - isMaxWin
+              - maxWinValue
+              - totalBGWin
+              - totalFSWin
+              - totalWagerWin
+            required:
+              - isMaxWin
+              - maxWinValue
+              - totalBGWin
+              - totalFSWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '5'
+            paylineCount: '20'
+          fixedStateFields:
+            GameWinInfo/isMaxWin: 'N'
+          currentCashPaths:
+            - GameWinInfo/totalBGWin
+            - GameWinInfo/totalWagerWin
+          zeroFreeCashPaths:
+            - GameWinInfo/totalFSWin
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32810'
+    name: The Legend of Big Foot
+    dbName: sg_the_legend_of_big_foot
+    backendId: bigfoot
+    serviceDir: sg_the-legend-of-big-foot
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: bigfoot
+        gameID: '20205'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33170
+      runtimeSlug: bigfoot
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32810'
+        dbName: sg_the_legend_of_big_foot
+        runtimeGameId: 33170
+        sourceGameId: '20205'
+        slug: bigfoot
+        betRaw: 100
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="100" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '10'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32811'
+    name: Triple Cash Wheel
+    dbName: sg_triplecashwheel
+    backendId: triplecashwheel
+    serviceDir: sg_triplecashwheel
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: triplecashwheel
+        gameID: '20191'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        paylineCount: '20'
+        total: '1000'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 1000
+      runtimeGameId: 33171
+      runtimeSlug: triplecashwheel
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32811'
+        dbName: sg_triplecashwheel
+        runtimeGameId: 33171
+        sourceGameId: '20191'
+        slug: triplecashwheel
+        betRaw: 1000
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake paylineCount="20" total="1000" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - WheelBonus
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - WheelBonus
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - isMaxWin
+              - totalWagerWin
+          GameResult/WheelBonus:
+            keys:
+              - wheelMultiplier
+              - wheelSpins
+            required:
+              - wheelMultiplier
+              - wheelSpins
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '20'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            WheelBonus/wheelSpins: '0'
+          currentCashPaths:
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32813'
+    name: Volts and Bolts
+    dbName: sg_volts_and_bolts
+    backendId: voltsandbolts
+    serviceDir: sg_volts-and-bolts
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: voltsandbolts
+        gameID: '20240'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33173
+      runtimeSlug: voltsandbolts
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32813'
+        dbName: sg_volts_and_bolts
+        runtimeGameId: 33173
+        sourceGameId: '20240'
+        slug: voltsandbolts
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '4'
+            paylineCount: '50'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32814'
+    name: Wild Streets
+    dbName: sg_wild_streets
+    backendId: wildstreets
+    serviceDir: sg_wild-streets
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: wildstreets
+        gameID: '20287'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33174
+      runtimeSlug: wildstreets
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32814'
+        dbName: sg_wild_streets
+        runtimeGameId: 33174
+        sourceGameId: '20287'
+        slug: wildstreets
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '10'
+            paylineCount: '20'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32815'
+    name: Zeus God of Thunder
+    dbName: sg_zeusgodofthunder
+    backendId: zeusgodofthunder
+    serviceDir: sg_zeusgodofthunder
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: zeusgodofthunder
+        gameID: '20121'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake: {}
+      freeStake: {}
+      betRaw: 150
+      runtimeGameId: 33175
+      runtimeSlug: zeusgodofthunder
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32815'
+        dbName: sg_zeusgodofthunder
+        runtimeGameId: 33175
+        sourceGameId: '20121'
+        slug: zeusgodofthunder
+        betRaw: 150
+        paidRequestDataXML: <WagerInfo totalStake="150" isExtraBet="0" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - GameState
+              - GameWinInfo
+              - ReelResults
+              - Watermark
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - GameState
+              - GameWinInfo
+              - ReelResults
+              - Watermark
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/Watermark:
+            keys:
+              - hasWatermark
+            required:
+              - hasWatermark
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/GameState:
+            keys:
+              - currentFeature
+              - isBonusPlay
+              - previousFeature
+            required:
+              - currentFeature
+              - isBonusPlay
+              - previousFeature
+          GameResult/GameWinInfo:
+            keys:
+              - isEndGame
+              - isExtrabet
+              - isMaxWin
+              - maxWinValue
+              - totalBGWin
+              - totalCurrentFGWin
+              - totalFSWin
+              - totalWagerWin
+            required:
+              - isEndGame
+              - isExtrabet
+              - isMaxWin
+              - maxWinValue
+              - totalBGWin
+              - totalCurrentFGWin
+              - totalFSWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '3'
+            paylineCount: '30'
+          fixedStateFields:
+            GameWinInfo/isMaxWin: 'N'
+            GameWinInfo/isExtrabet: 'N'
+            GameWinInfo/isEndGame: 'Y'
+          currentCashPaths:
+            - GameWinInfo/totalBGWin
+            - GameWinInfo/totalWagerWin
+          zeroFreeCashPaths:
+            - GameWinInfo/totalFSWin
+            - GameWinInfo/totalCurrentFGWin
+          spinCashField: spinWins
+  - provider: sg
+    gameId: '32791'
+    name: Mighty Black Knight
+    dbName: sg_mightyblackknight
+    backendId: mightyblackknight
+    serviceDir: sg_mightyblackknight
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: mightyblackknight
+        gameID: '20177'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33151
+      runtimeSlug: mightyblackknight
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32791'
+        dbName: sg_mightyblackknight
+        runtimeGameId: 33151
+        sourceGameId: '20177'
+        slug: mightyblackknight
+        betRaw: 100
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="100" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - WildPositions
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - WildPositions
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/WildPositions:
+            keys:
+              - bottomWildReel
+              - existingHeldWildReels
+              - expandPointsBottom
+              - expandPointsTop
+              - heldWildReels
+              - topWildReel
+            required:
+              - bottomWildReel
+              - existingHeldWildReels
+              - expandPointsBottom
+              - expandPointsTop
+              - heldWildReels
+              - topWildReel
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+              - wildBonus
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+              - wildBonus
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '2'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+          returnedLineContract:
+            statePath: BGInfo/wildBonus
+  - provider: sg
+    gameId: '32794'
+    name: OMG Kittens
+    dbName: sg_omgkittens_prt
+    backendId: omgkittens_prt
+    serviceDir: sg_omgkittens_prt
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: omgkittens_prt
+        gameID: '20165'
+        glsID: '65535'
+        lang: en_us
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 0_0
+      stake:
+        multiplier: '1'
+        total: '40'
+        fsOn: '1'
+      freeStake: {}
+      betRaw: 40
+      runtimeGameId: 33154
+      runtimeSlug: omgkittens_prt
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32794'
+        dbName: sg_omgkittens_prt
+        runtimeGameId: 33154
+        sourceGameId: '20165'
+        slug: omgkittens_prt
+        betRaw: 40
+        paidRequestDataXML: <Stake multiplier="1" total="40" fsOn="1" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        schemas:
+          GameResult:
+            keys:
+              - MaxWin_Info
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - MaxWin_Info
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - Bottom_reel_Info
+              - Top_reel_Info
+              - numSpins
+            required:
+              - Bottom_reel_Info
+              - Top_reel_Info
+              - numSpins
+          GameResult/ReelResults/Top_reel_Info:
+            keys:
+              - ReelSpin
+            required:
+              - ReelSpin
+          GameResult/ReelResults/Top_reel_Info/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/ReelResults/Bottom_reel_Info:
+            keys:
+              - ReelSpin
+            required:
+              - ReelSpin
+          GameResult/ReelResults/Bottom_reel_Info/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/MaxWin_Info:
+            keys:
+              - cappedWins
+              - maxWin
+            required:
+              - cappedWins
+              - maxWin
+          GameResult/ReelResults/Top_reel_Info/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+          GameResult/ReelResults/Bottom_reel_Info/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '0'
+            paylineCount: '40'
+          fixedStateFields:
+            MaxWin_Info/maxWin: 'false'
+            MaxWin_Info/cappedWins: '0'
+          currentCashPaths: []
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+          pairedReelContract: own-SDK-top-and-bottom-parallel-spins-v1
+  - provider: sg
+    gameId: '32805'
+    name: Soldier of Rome
+    dbName: sg_soldier_of_rome
+    backendId: soldierofrome
+    serviceDir: sg_soldier-of-rome
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: soldierofrome
+        gameID: '20246'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        paylineCount: '1'
+        total: '200'
+        isBigBet: '0'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33165
+      runtimeSlug: soldierofrome
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32805'
+        dbName: sg_soldier_of_rome
+        runtimeGameId: 33165
+        sourceGameId: '20246'
+        slug: soldierofrome
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake paylineCount="1" total="200" isBigBet="0" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/ReelInfo:
+            keys:
+              - expandedWilds
+              - topOpen
+            required:
+              - expandedWilds
+              - topOpen
+          GameResult/BGInfo:
+            keys:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - baseGameSpinsRemaining
+              - bgWinnings
+              - isBigBet
+              - isMaxWin
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '0'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+            BGInfo/isBigBet: '0'
+            BGInfo/baseGameSpinsRemaining: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+          returnedLineContract:
+            statePath: ReelInfo/topOpen
+  - provider: sg
+    gameId: '32809'
+    name: Sword of Destiny
+    dbName: sg_sword_of_destiny
+    backendId: swordofdestiny
+    serviceDir: sg_sword-of-destiny
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: swordofdestiny
+        gameID: '20175'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+        lines: '50'
+      freeStake: {}
+      betRaw: 200
+      runtimeGameId: 33169
+      runtimeSlug: swordofdestiny
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32809'
+        dbName: sg_sword_of_destiny
+        runtimeGameId: 33169
+        sourceGameId: '20175'
+        slug: swordofdestiny
+        betRaw: 200
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" lines="50" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - Feature
+              - NearPaylineWin
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/NearPaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - totalWagerWin
+          GameResult/Feature:
+            keys:
+              - WatermarkPositions
+            required:
+              - WatermarkPositions
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '0'
+            paylineCount: '25'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+          watermarkDisplayContract: own-SDK-watermark-display-without-award-v1
+  - provider: sg
+    gameId: '32812'
+    name: Very Fruity
+    dbName: sg_very_fruity
+    backendId: veryfruity
+    serviceDir: sg_very-fruity
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: veryfruity
+        gameID: '20206'
+        glsID: '65535'
+        lang: en_us
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        perLine: '5'
+        total: '100'
+      freeStake: {}
+      betRaw: 100
+      runtimeGameId: 33172
+      runtimeSlug: veryfruity
+      ownMatchedPaidContract:
+        version: fixed-own-paid-result-v1
+        gameId: '32812'
+        dbName: sg_very_fruity
+        runtimeGameId: 33172
+        sourceGameId: '20206'
+        slug: veryfruity
+        betRaw: 100
+        paidRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake perLine="5" total="100" /><PaylineCount count="20" />
+        schemas:
+          GameResult:
+            keys:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+            required:
+              - BGInfo
+              - ReelResults
+              - betID
+              - paylineCount
+              - stake
+              - stakePerLine
+              - totalWin
+          GameResult/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BGInfo:
+            keys:
+              - bgWinnings
+              - isMaxWin
+              - mysterySymbol
+              - totalWagerWin
+            required:
+              - bgWinnings
+              - isMaxWin
+              - mysterySymbol
+              - totalWagerWin
+          GameResult/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+        ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        unseenFeatureNotAdmitted: true
+        ordinaryCashContract:
+          version: own-returned-ordinary-cash-v1
+          wagerFields:
+            stakePerLine: '5'
+            paylineCount: '20'
+          fixedStateFields:
+            BGInfo/isMaxWin: '0'
+          currentCashPaths:
+            - BGInfo/bgWinnings
+            - BGInfo/totalWagerWin
+          zeroFreeCashPaths: []
+          spinCashField: spinWins
+          ordinaryMarkerContract: own-SDK-FSInfo-selects-feature-v1
