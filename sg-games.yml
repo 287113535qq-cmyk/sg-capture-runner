@@ -1879,6 +1879,7 @@ games:
               - stake
               - stakePerLine
               - totalWin
+              - GoldenHeartInfo
             required:
               - GameRtpInfo
               - GameWinInfo
@@ -1958,6 +1959,18 @@ games:
               - awardTableIndex
               - index
               - winVal
+          GameResult/GoldenHeartInfo:
+            keys:
+              - Heart
+            required:
+              - Heart
+          GameResult/GoldenHeartInfo/Heart:
+            keys:
+              - index
+              - jackpotLevel
+            required:
+              - index
+              - jackpotLevel
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
@@ -1974,6 +1987,12 @@ games:
           zeroFreeCashPaths:
             - GameWinInfo/totalFreeSpinsWin
           spinCashField: spinWins
+          ownPaidDecorationContract:
+            version: own-GoldenHeart-paid-type-display-v1
+            gameId: '32788'
+            ownSDKFileSHA256: 714a87e7745ae636078fb107b506e1ff59fffbb457da175eeecb283babaf0125
+            fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+            explicitSDKEmptyHeartChildren: true
   - provider: sg
     gameId: '32789'
     name: Lucky Tree
@@ -2446,6 +2465,9 @@ games:
               - stake
               - stakePerLine
               - totalWin
+              - PressurizedWilds
+              - WildenedReels
+              - PersistingWildsInfo
             required:
               - MaxWin_Info
               - ReelResults
@@ -2531,6 +2553,21 @@ games:
               - '#text'
               - awardIndex
               - winVal
+          GameResult/PressurizedWilds:
+            keys:
+              - expanded
+            required:
+              - expanded
+          GameResult/WildenedReels:
+            keys:
+              - changed
+            required:
+              - changed
+          GameResult/PersistingWildsInfo:
+            keys:
+              - positions
+            required:
+              - positions
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
@@ -2547,6 +2584,11 @@ games:
           spinCashField: spinWins
           ownScatterCashContract:
             version: own-Nemo-zero-scatter-marker-v1
+            gameId: '32793'
+            ownSDKFileSHA256: 228fb4577e66ab8b5171e9d28559182c79a81b4ca6040dd72f208bfc99f00918
+            fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+          ownPaidDecorationContract:
+            version: own-Nemo-paid-SDK-position-display-v2
             gameId: '32793'
             ownSDKFileSHA256: 228fb4577e66ab8b5171e9d28559182c79a81b4ca6040dd72f208bfc99f00918
             fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d

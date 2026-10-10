@@ -440,6 +440,19 @@ function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
 
  const get=(p:string)=>p.split('/').reduce((x:any,k:string)=>x?.[k],g);
  for(const[path,value]of Object.entries(q.fixedStateFields))assert(get(path)===value,'AG integrity: SG bulk new pending/cap/extra-wager state');
+ const decoration=q.ownPaidDecorationContract;
+ if(decoration){assert(decoration.gameId===game.gameId&&/^[a-f0-9]{64}$/.test(decoration.ownSDKFileSHA256),'AG integrity: SG paid SDK display binding');
+  if(game.gameId==='32793'&&decoration.version==='own-Nemo-paid-SDK-position-display-v2'){
+   if(g.PressurizedWilds!==undefined){ownPaidKeys(g.PressurizedWilds,'expanded','Nemo paid wild display');const positions=ownPositionNumbers(g.PressurizedWilds.expanded,undefined,'Nemo expanded positions');assert(positions.length>0&&positions.every(p=>p<20)&&new Set(positions).size===positions.length,'AG integrity: SG Nemo paid wild geometry');}
+   if(g.WildenedReels!==undefined){ownPaidKeys(g.WildenedReels,'changed','Nemo paid reel display');const reels=ownPositionNumbers(g.WildenedReels.changed,undefined,'Nemo changed reels');assert(reels.length>0&&reels.every(p=>p<5)&&new Set(reels).size===reels.length,'AG integrity: SG Nemo own changed reel geometry');}
+   if(g.PersistingWildsInfo!==undefined){ownPaidKeys(g.PersistingWildsInfo,'positions','Nemo paid persisted display');const positions=ownPositionNumbers(g.PersistingWildsInfo.positions,undefined,'Nemo persisted wild positions');assert(positions.length>0&&positions.every(p=>p<20)&&new Set(positions).size===positions.length,'AG integrity: SG Nemo persisted geometry');}
+  }else if(game.gameId==='32788'&&decoration.version==='own-GoldenHeart-paid-type-display-v1'){
+   // Own SDK initializes its display array before iterating the XML children.
+   // A genuinely empty element has no display entries; no cash is defaulted.
+   if(g.GoldenHeartInfo==='')assert(decoration.explicitSDKEmptyHeartChildren===true,'AG integrity: SG Golden Heart empty display binding');
+   else if(g.GoldenHeartInfo!==undefined){ownPaidKeys(g.GoldenHeartInfo,'Heart','Golden Heart paid display');const hearts=list(g.GoldenHeartInfo.Heart),ids=new Set<number>();assert(hearts.length>0&&hearts.length<=20,'AG integrity: SG Golden Heart count');for(const heart of hearts){ownPaidKeys(heart,'index|jackpotLevel','Golden Heart display type');const index=integer(heart.index,'Golden Heart display position');assert(index<20&&!ids.has(index),'AG integrity: SG Golden Heart geometry');ids.add(index);integer(heart.jackpotLevel,'Golden Heart SDK-decoded display level');}}
+  }else throw new Error('AG integrity: SG paid display scope');
+ }
  const win=integer(g.totalWin,'bulk current returned cash');
  for(const p of q.currentCashPaths)assert(integer(get(p),'bulk paid cash component')===win,'AG integrity: SG bulk paid cash component');
  for(const p of q.zeroFreeCashPaths)assert(integer(get(p),'bulk free cash in ordinary state')===0,'AG integrity: SG bulk free cash needs actual feature mapping');
