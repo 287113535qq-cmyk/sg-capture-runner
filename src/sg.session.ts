@@ -207,14 +207,23 @@ export function validateBlazingRecovery(game:AGGameConfig,g:any,paidReels:any,pa
  assert(JSON.stringify(recovery.ReelResults)===JSON.stringify(expected),'AG integrity: SG Blazing recovery projection changed');
 }
 
-export function validateHerculesData(game:AGGameConfig,g:any):void {
- assert(game.gameId==='32773'&&game.dbName==='sg_herculeshighandmighty'&&game.sg?.runtimeGameId===32995&&game.sg?.header?.gameID==='20102'&&game.sg?.herculesContract==='hercules-own-wild-display-v1'&&game.sg?.betRaw===100,'AG integrity: SG Hercules own binding');
- const w=g.WildPositions;assert(w&&Object.keys(w).sort().join('|')==='bottomWildReel|existingHeldWildReels|expandPointsBottom|expandPointsTop|heldWildReels|topWildReel','AG integrity: SG Hercules wild schema');
+export function validateHerculesData(game:AGGameConfig,g:any,prior?:any):void {
+ assert(game.gameId==='32773'&&game.dbName==='sg_herculeshighandmighty'&&game.sg?.runtimeGameId===32995&&game.sg?.header?.gameID==='20102'&&game.sg?.herculesContract==='hercules-own-free-wild-display-v2'&&game.sg?.betRaw===100,'AG integrity: SG Hercules own binding');
+ const f=g.FSInfo,playingFree=f!==undefined&&integer(f.freeSpinNumber,'Hercules played')>0;
+ const w=g.WildPositions,required=['bottomWildReel','expandPointsBottom','expandPointsTop','topWildReel'],allowed=[...required,'heldWildReels','existingHeldWildReels'];assert(w&&required.every(k=>Object.prototype.hasOwnProperty.call(w,k))&&Object.keys(w).every(k=>allowed.includes(k))&&(playingFree||allowed.every(k=>Object.prototype.hasOwnProperty.call(w,k))),'AG integrity: SG Hercules wild schema');
  const values=(v:any,max:number,unique=true)=>{assert(typeof v==='string'&&(v===''||/^\d+(?:\|\d+)*$/.test(v)),'AG integrity: SG Hercules wild positions');const a=v===''?[]:v.split('|').map((n:string)=>integer(n,'Hercules wild position'));assert(a.every((n:number)=>n<max)&&(!unique||new Set(a).size===a.length),'AG integrity: SG Hercules wild bounds');return a;};
  // Client expansion starts at a position in each ten-symbol reel; positions
  // in different reels may coincide, while the reel identifiers remain unique.
  for(const side of ['Bottom','Top']){const reels=values(w[side==='Bottom'?'bottomWildReel':'topWildReel'],5),points=values(w['expandPoints'+side],10,false);assert(reels.length===points.length,'AG integrity: SG Hercules paired expansion');}
- values(w.heldWildReels,5);values(w.existingHeldWildReels,5);assert(g.BGInfo.isBigBet==='0'&&g.BGInfo.isMaxWin==='0'&&['0','1'].includes(g.BGInfo.wildBonus),'AG integrity: SG Hercules wager flags');
+ // Own SDK makes these display-only held-reel lists optional in free responses.
+ if(w.heldWildReels!==undefined)values(w.heldWildReels,5);if(w.existingHeldWildReels!==undefined)values(w.existingHeldWildReels,5);
+ assert(g.BGInfo.isBigBet==='0'&&g.BGInfo.isMaxWin==='0'&&(playingFree?g.BGInfo.wildBonus===undefined||['0','1'].includes(g.BGInfo.wildBonus):['0','1'].includes(g.BGInfo.wildBonus)),'AG integrity: SG Hercules wager flags');
+ if(f) {
+  const keys=playingFree?'freeSpinNumber|freeSpinsTotal|fsWinnings|fromTopRows|isMaxWin|newFreespinsAwarded|wildBonus':'freeSpinNumber|freeSpinsTotal|fsWinnings|fromTopRows';assert(Object.keys(f).sort().join('|')===keys.split('|').sort().join('|'),'AG integrity: SG Hercules free schema');
+  const total=integer(f.freeSpinsTotal,'Hercules free total'),played=integer(f.freeSpinNumber,'Hercules played');integer(f.fsWinnings,'Hercules free win');assert(total>0&&played<=total&&['0','1'].includes(f.fromTopRows),'AG integrity: SG Hercules free budget');
+  if(playingFree){const added=integer(f.newFreespinsAwarded,'Hercules free award');assert(prior&&played===prior.freeSpinsPlayed+1&&total===prior.freeSpinsTotal+added&&f.isMaxWin==='0'&&['0','1'].includes(f.wildBonus),'AG integrity: SG Hercules free counter');}
+  else assert(!prior&&played===0&&f.fsWinnings==='0','AG integrity: SG Hercules free introduction');
+ }
  let sum=0;for(const s of list(g.ReelResults?.ReelSpin)){const lines=list(s.PaylineWin),scatter=list(s.ScatterWin);assert(lines.length===integer(s.winCountPL,'Hercules line count')&&scatter.length===integer(s.winCountSC,'Hercules scatter count'),'AG integrity: SG Hercules win counts');let win=0;for(const x of [...lines,...scatter])win+=integer(x.winVal,'Hercules component');assert(Number.isSafeInteger(win)&&win===integer(s.spinWins,'Hercules spin win'),'AG integrity: SG Hercules reel money');sum+=win;}
  assert(Number.isSafeInteger(sum)&&sum===integer(g.totalWin,'Hercules current win'),'AG integrity: SG Hercules current money');
 }
@@ -404,7 +413,7 @@ export class SGWmsSession {
             assert(Object.keys(g).every(k=>known.has(k)),'AG integrity: SG observed feature needs mapping');
             if(g.JackpotInfo!==undefined)validateFiveTreasuresCash(this.game,g,this.totalWin,this.action);
             if(this.game.sg.blazingXContract)validateBlazingXData(this.game,g,first,this.free,this.totalWin);
-            if(this.game.sg.herculesContract)validateHerculesData(this.game,g);
+            if(this.game.sg.herculesContract)validateHerculesData(this.game,g,this.free);
             assert(integer(g.stake,'stake')===this.game.sg.betRaw,'AG integrity: SG changed stake');
             const bg=g.BGInfo;
             if(this.game.sg.omitsBaseRemaining)assert(bg.baseGameSpinsRemaining===undefined,'AG integrity: SG changed base schema');
