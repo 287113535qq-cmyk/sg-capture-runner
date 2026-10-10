@@ -741,7 +741,10 @@ games:
         paylineCount: '20'
         total: '100'
         isBigBet: '0'
-      freeStake: {}
+      freeStake:
+        paylineCount: '20'
+        total: '100'
+        isBigBet: '0'
       betRaw: 100
       runtimeGameId: 33005
       runtimeSlug: kronos_prt
@@ -758,12 +761,14 @@ games:
           GameResult:
             keys:
               - BGInfo
+              - FSInfo
               - ReelResults
               - betID
               - paylineCount
               - stake
               - stakePerLine
               - totalWin
+              - BaseGameRecoveryInfo
             required:
               - BGInfo
               - ReelResults
@@ -821,9 +826,74 @@ games:
               - awardTableIndex
               - index
               - winVal
+          GameResult/FSInfo:
+            keys:
+              - freeSpinNumber
+              - freeSpinsAwarded
+              - freeSpinsTotal
+              - fsWinnings
+              - isMaxWin
+            required:
+              - fsWinnings
+              - freeSpinsTotal
+              - freeSpinNumber
+              - isMaxWin
+          GameResult/BaseGameRecoveryInfo:
+            keys:
+              - ReelResults
+            required:
+              - ReelResults
+          GameResult/BaseGameRecoveryInfo/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/BaseGameRecoveryInfo/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BaseGameRecoveryInfo/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
+      ownKronosFeatureContract:
+        version: own-kronos-free-respins-v3
+        gameId: '32783'
+        sourceGameId: '20159'
+        dbName: sg_kronos_prt
+        clientSHA256: acc1a35f291f625d9d8a2d2914e54b60fffa8a328076fbe0759ede49f1db1382
+        freeRequestUsesOwnWagerContext: true
+        unseenFeatureStructuresNotAdmitted: true
   - provider: sg
     gameId: '32784'
     name: Kronos Unleashed
@@ -863,7 +933,9 @@ games:
       stake:
         total: '200'
         paylineCount: '60'
-      freeStake: {}
+      freeStake:
+        total: '200'
+        paylineCount: '60'
       betRaw: 200
       runtimeGameId: 33006
       runtimeSlug: kronosunleashed
@@ -880,6 +952,7 @@ games:
           GameResult:
             keys:
               - BGInfo
+              - FSInfo
               - ReelResults
               - Respins
               - betID
@@ -887,6 +960,7 @@ games:
               - stake
               - stakePerLine
               - totalWin
+              - BaseGameRecoveryInfo
             required:
               - BGInfo
               - ReelResults
@@ -906,6 +980,7 @@ games:
             keys:
               - PaylineWin
               - ReelStops
+              - ScatterWin
               - bonusAwarded
               - freeSpin
               - reelsetIndex
@@ -961,6 +1036,86 @@ games:
               - index
             required:
               - index
+          GameResult/ReelResults/ReelSpin/ScatterWin:
+            keys:
+              - awardIndex
+              - winVal
+            required:
+              - awardIndex
+              - winVal
+          GameResult/FSInfo:
+            keys:
+              - freeSpinNumber
+              - freeSpinsTotal
+              - fsGuarantee
+              - fsWinnings
+              - isMaxWin
+            required:
+              - fsWinnings
+              - freeSpinsTotal
+              - freeSpinNumber
+              - isMaxWin
+          GameResult/BaseGameRecoveryInfo:
+            keys:
+              - ReelResults
+            required:
+              - ReelResults
+          GameResult/BaseGameRecoveryInfo/ReelResults:
+            keys:
+              - ReelSpin
+              - numSpins
+            required:
+              - ReelSpin
+              - numSpins
+          GameResult/BaseGameRecoveryInfo/ReelResults/ReelSpin:
+            keys:
+              - PaylineWin
+              - ReelStops
+              - ScatterWin
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+            required:
+              - ReelStops
+              - bonusAwarded
+              - freeSpin
+              - reelsetIndex
+              - spinIndex
+              - spinWins
+              - winCountPL
+              - winCountSC
+          GameResult/BaseGameRecoveryInfo/ReelResults/ReelSpin/PaylineWin:
+            keys:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+            required:
+              - '#text'
+              - awardIndex
+              - awardTableIndex
+              - index
+              - winVal
+          GameResult/BaseGameRecoveryInfo/ReelResults/ReelSpin/ScatterWin:
+            keys:
+              - awardIndex
+              - winVal
+            required:
+              - awardIndex
+              - winVal
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
+      ownKronosFeatureContract:
+        version: own-kronos-free-respins-v3
+        gameId: '32784'
+        sourceGameId: '20208'
+        dbName: sg_kronosunleashed
+        clientSHA256: 611093eda7e11f2991571ac967589b5ea6796a982ec8ebf6d8757e473d950da0
+        freeRequestUsesOwnWagerContext: true
+        unseenFeatureStructuresNotAdmitted: true

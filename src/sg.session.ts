@@ -367,12 +367,49 @@ function validateOwnMatchedPaidResult(game:AGGameConfig,g:any,first:boolean):num
  const check=(value:any,p:string):void=>{if(Array.isArray(value)){assert(value.length>0,'AG integrity: SG matched empty structure');for(const x of value)check(x,p);return;}if(value&&typeof value==='object'){const s=c.schemas[p];assert(s&&Object.keys(value).every(k=>s.keys.includes(k))&&s.required.every((k:string)=>k in value),'AG integrity: SG matched result schema');for(const[k,x]of Object.entries(value))check(x,p+'/'+k);}};
  check(g,'GameResult');assert(!g.FSInfo&&!g.BaseGameRecoveryInfo&&!g.Feature&&!g.PickerInfo&&!g.BonusWheel,'AG integrity: SG matched new feature needs its own evidence');
  assert(integer(g.stake,'matched paid wager')===c.betRaw,'AG integrity: SG matched wager');
- assert(g.BGInfo.isMaxWin==='0','AG integrity: SG matched unseen cap state');if(g.BGInfo.baseGameSpinsRemaining!==undefined)assert(integer(g.BGInfo.baseGameSpinsRemaining,'matched base remaining')===0,'AG integrity: SG matched base continuation requires own evidence');if(g.BGInfo.isBigBet!==undefined)assert(g.BGInfo.isBigBet==='0','AG integrity: SG matched extra wager state');assert(g.paylineCount===game.sg.stake.paylineCount,'AG integrity: SG matched line count');
+ assert(g.BGInfo.isMaxWin==='0','AG integrity: SG matched unseen cap state');if(g.BGInfo.baseGameSpinsRemaining!==undefined)assert(integer(g.BGInfo.baseGameSpinsRemaining,'matched base remaining')===0,'AG integrity: SG matched base continuation requires own evidence');if(g.BGInfo.isBigBet!==undefined)assert(g.BGInfo.isBigBet==='0','AG integrity: SG matched extra wager state');validateOwnKronosReturnedLines(game,g);
  const win=integer(g.totalWin,'matched result cash');assert(integer(g.BGInfo.bgWinnings,'matched base cash')===win&&integer(g.BGInfo.totalWagerWin,'matched cumulative cash')===win,'AG integrity: SG matched cash components');
  const spins=list(g.ReelResults?.ReelSpin);assert(spins.length===1&&integer(g.ReelResults.numSpins,'matched reel count')===1&&spins.every(s=>s.freeSpin==='N'&&s.bonusAwarded==='N'),'AG integrity: SG matched feature marker');
  let sum=0;const visit=(value:any):void=>{if(Array.isArray(value)){value.forEach(visit);return;}if(value&&typeof value==='object')for(const[k,x]of Object.entries(value)){if(k==='winVal'||k==='winValue'){sum+=integer(x,'matched returned reel prize');assert(Number.isSafeInteger(sum),'AG integrity: SG matched safe prize sum');}else if(x&&typeof x==='object')visit(x);}};
  visit(g.ReelResults);assert(sum===win&&spins.every(s=>integer(s.spinWins,'matched spin cash')===win),'AG integrity: SG matched returned prize cash');
  return win;
+}
+
+
+function ownKronosBinding(game:AGGameConfig) {
+ const c=game.sg.ownKronosFeatureContract;assert(c?.version==='own-kronos-free-respins-v3'&&['32783','32784'].includes(game.gameId)&&c.gameId===game.gameId&&c.dbName===game.dbName&&c.sourceGameId===game.sg.header.gameID&&c.freeRequestUsesOwnWagerContext===true&&c.unseenFeatureStructuresNotAdmitted===true&&/^[a-f0-9]{64}$/.test(c.clientSHA256),'AG integrity: SG Kronos own feature binding');return c;
+}
+function validateOwnKronosReturnedLines(game:AGGameConfig,g:any) {
+ const requested=game.sg.stake.paylineCount;
+ if(g.paylineCount===requested)return;
+ ownKronosBinding(game);assert(game.gameId==='32784'&&requested==='60'&&g.paylineCount==='70'&&g.Respins,'AG integrity: SG matched line count');
+ ownPaidKeys(g.Respins,'jackpots|Respin','Kronos respins');assert(g.Respins.jackpots==='','AG integrity: SG Kronos respins jackpot requires own cash evidence');
+ const respins=list(g.Respins.Respin);assert(respins.length>0,'AG integrity: SG Kronos respins missing');let extraRow=false;
+ for(const[r,i]of respins.map((r:any,i:number)=>[r,i] as const)){
+  ownPaidKeys(r,r['#text']===undefined?'index':'index|#text','Kronos respin');assert(integer(r.index,'Kronos respin index')===i,'AG integrity: SG Kronos respin sequence');
+  if(r['#text']!==undefined){assert(typeof r['#text']==='string'&&/^\d+,\d+(;\d+,\d+)*$/.test(r['#text']),'AG integrity: SG Kronos respin display pairs');for(const pair of r['#text'].split(';')){const[id,pos]=pair.split(',').map(Number);assert(Number.isSafeInteger(pos)&&pos>=0&&Number.isSafeInteger(id)&&id>=1&&id<=5,'AG integrity: SG Kronos respin display values');if(id===4)extraRow=true;}}
+ }
+ assert(extraRow,'AG integrity: SG Kronos changed lines without returned extra row');
+ for(const s of list(g.ReelResults?.ReelSpin))for(const w of list(s.PaylineWin))assert(integer(w.index,'Kronos returned line')<70,'AG integrity: SG Kronos payout line outside returned geometry');
+}
+function validateOwnKronosData(game:AGGameConfig,g:any,first:boolean,prior:any,base:any,previousWin:number) {
+ ownKronosBinding(game);const c=ownMatchedPaidBinding(game);
+ if(!g.FSInfo){assert(first&&!prior,'AG integrity: SG Kronos free state disappeared');return {win:validateOwnMatchedPaidResult(game,g,true),free:undefined,base:g};}
+ const check=(value:any,p:string):void=>{if(Array.isArray(value)){assert(value.length>0,'AG integrity: SG Kronos empty structure');value.forEach(x=>check(x,p));return;}if(value&&typeof value==='object'){const s=c.schemas[p];assert(s&&Object.keys(value).every(k=>s.keys.includes(k))&&s.required.every((k:string)=>k in value),'AG integrity: SG Kronos feature schema');for(const[k,x]of Object.entries(value))check(x,p+'/'+k);}};
+ check(g,'GameResult');assert(integer(g.stake,'Kronos wager')===c.betRaw&&g.BGInfo.isMaxWin==='0','AG integrity: SG Kronos wager or cap');
+ if(g.BGInfo.baseGameSpinsRemaining!==undefined)assert(g.BGInfo.baseGameSpinsRemaining==='0','AG integrity: SG Kronos base continuation');if(g.BGInfo.isBigBet!==undefined)assert(g.BGInfo.isBigBet==='0','AG integrity: SG Kronos extra wager');
+ validateOwnKronosReturnedLines(game,g);const f=g.FSInfo,played=integer(f.freeSpinNumber,'Kronos free played'),total=integer(f.freeSpinsTotal,'Kronos free total'),freeCash=integer(f.fsWinnings,'Kronos free cash'),bg=integer(g.BGInfo.bgWinnings,'Kronos paid cash'),win=integer(g.BGInfo.totalWagerWin,'Kronos cumulative cash');
+ assert(f.isMaxWin==='0'&&total>0&&played<=total&&win===bg+freeCash,'AG integrity: SG Kronos free budget or cash');
+ if(f.fsGuarantee!==undefined)integer(f.fsGuarantee,'Kronos returned guarantee threshold');
+ const spins=list(g.ReelResults?.ReelSpin);assert(integer(g.ReelResults.numSpins,'Kronos reel count')===1&&spins.length===1,'AG integrity: SG Kronos reel sequence');
+ let cash=0;const visit=(v:any):void=>{if(Array.isArray(v)){v.forEach(visit);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){if(k==='winVal'||k==='winValue'){cash+=integer(x,'Kronos actual reel prize');assert(Number.isSafeInteger(cash),'AG integrity: SG Kronos safe cash');}else if(x&&typeof x==='object')visit(x);}};visit(g.ReelResults);
+ assert(integer(g.totalWin,'Kronos current cash')===cash&&integer(spins[0].spinWins,'Kronos returned spin cash')===cash,'AG integrity: SG Kronos current prize cash');
+ if(first){assert(!prior&&!base&&previousWin===0&&played===0&&freeCash===0&&win===cash&&spins[0].freeSpin==='N'&&spins[0].bonusAwarded==='Y'&&!g.BaseGameRecoveryInfo,'AG integrity: SG Kronos actual free intro');if(f.freeSpinsAwarded!==undefined)assert(integer(f.freeSpinsAwarded,'Kronos intro grant')===total,'AG integrity: SG Kronos intro grant');base=structuredClone(g);}
+ else{assert(prior&&base&&prior.freeSpinsRemaining>0&&played===prior.freeSpinsPlayed+1&&total>=prior.freeSpinsTotal&&bg===integer(base.BGInfo.bgWinnings,'Kronos original paid cash')&&win===previousWin+cash&&g.betID===base.betID&&spins[0].freeSpin==='Y'&&['N','Y'].includes(spins[0].bonusAwarded),'AG integrity: SG Kronos free transition');
+  if(total>prior.freeSpinsTotal)assert(f.freeSpinsAwarded!==undefined&&integer(f.freeSpinsAwarded,'Kronos new grant')===total-prior.freeSpinsTotal&&spins[0].bonusAwarded==='Y','AG integrity: SG Kronos actual new free grant');
+  if(g.BaseGameRecoveryInfo)assert(JSON.stringify(g.BaseGameRecoveryInfo.ReelResults)===JSON.stringify(base.ReelResults),'AG integrity: SG Kronos paid recovery changed');
+ }
+ return {win,base,free:{freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100}};
 }
 
 export class SGWmsSession {
@@ -387,6 +424,7 @@ export class SGWmsSession {
     private closed = false;
     private lastRequest: {event:string;parameters:Record<string,any>|null} | undefined;
     private lastBase: unknown;private lastBlazingX?:number;private jinseBase:unknown;
+    private ownKronosBase:any;
     private healthyComponentsBase:any;
     private journal: number | null = null;
     private journalPath: string | null = null;
@@ -465,7 +503,7 @@ export class SGWmsSession {
     private payload(event:string,parameters:Record<string,any>) {
         const h={...this.game.sg.header,sessionID:this.session};
         const header='<Header '+Object.entries(h).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>';
-        if(event==='Logic'&&this.game.sg.ownMatchedPaidContract){const c=ownMatchedPaidBinding(this.game);assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG matched paid request');return `<GameRequest type="Logic">${header}${c.paidRequestDataXML}</GameRequest>`;}
+        if(event==='Logic'&&this.game.sg.ownMatchedPaidContract){const c=ownMatchedPaidBinding(this.game);if(this.action==='FREE_SPIN'){ownKronosBinding(this.game);assert(this.free?.freeSpinsRemaining>0&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Kronos own free request');}else assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG matched paid request');return `<GameRequest type="Logic">${header}${c.paidRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.healthyComponentsContract){ownHealthyComponentsBinding(this.game);if(this.action==='FREE_SPIN'){assert(Object.keys(parameters).length===0,'AG integrity: SG Rhino free request');return `<GameRequest type="Logic">${header}</GameRequest>`;}assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Rhino paid request');return `<GameRequest type="Logic">${header}<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200"/></GameRequest>`;}
         let choice='';
         if(parameters.pickIndex!==undefined) {
@@ -548,7 +586,7 @@ export class SGWmsSession {
     }
     async callGameData(event:string,parameters:Record<string,any>|null) {
         const first=this.action==='SPIN';
-        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;}
+        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;this.ownKronosBase=undefined;}
         else assert(event===(this.action==='PICK_FREE_SPINS'?'Logic':this.getExactFollowUpRequest(this.action)?.event),'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
         const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
@@ -559,7 +597,8 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&g.BGInfo,'AG integrity: SG game result');
-            if(this.game.sg.ownMatchedPaidContract){this.totalWin=validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
+            if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
+            else if(this.game.sg.ownMatchedPaidContract){this.totalWin=validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
             else if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.jinseDragonContract){const mapped=validateJinseDragonData(this.game,g,first,this.free,this.jinseBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.jinseBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else{
