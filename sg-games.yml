@@ -2453,7 +2453,9 @@ games:
         sourceGameId: '20154'
         slug: nemosvoyage_prt
         betRaw: 40
-        paidRequestDataXML: <Stake perLine="1" total="40" gameMode="NormalBaseGame" /><PaylineCount count="40" /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        paidRequestDataXML: >-
+          <Stake perLine="1" total="40" gameMode="NormalBaseGame" /><PaylineCount count="40"
+          /><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
         schemas:
           GameResult:
             keys:
@@ -4978,3 +4980,469 @@ games:
           zeroFreeCashPaths: []
           spinCashField: spinWins
           ordinaryMarkerContract: own-SDK-FSInfo-selects-feature-v1
+  - provider: sg
+    gameId: '32502'
+    name: Dragon Unleashed - Prosperity Packets
+    dbName: sg_dragonunleashedprosperitypackets96
+    backendId: dragonunleashedprosperitypackets96
+    sg:
+      protocol: gdm
+      endpoint: https://ogs-gdm-usnj.nyxop.net/nextgen/
+      runtimeGameId: 33035
+      runtimeSlug: dragonunleashedprosperitypackets96
+      betRaw: 176
+      requestParams:
+        AP: 'false'
+        BPR: '176'
+        GN: dragonunleashedprosperitypackets96
+        RB: '5'
+      ownGDMContract:
+        version: own-SDK-ordinary-typed-final-v2
+        gameId: '32502'
+        dbName: sg_dragonunleashedprosperitypackets96
+        runtimeGameId: 33035
+        runtimeSlug: dragonunleashedprosperitypackets96
+        betRaw: 176
+        balanceScale: 1
+        winScale: 1
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        ordinaryOnly: true
+        requiresNoPreviousFeature: true
+        responseKeys:
+          - AB
+          - B
+          - BPR
+          - FID
+          - FRBAL
+          - GA
+          - GSD
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+          - WM
+          - WS
+        requiredResponseKeys:
+          - AB
+          - B
+          - BPR
+          - FRBAL
+          - GA
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+        ordinaryGSDKeys: []
+        ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+        pendingClauses:
+          - kind: SDK-base-false
+          - kind: fresh-ordinary-SDK-NFG
+            wireKey: NFG
+            explicitSDKDefault: '0'
+            SDKSourceSHA256: be0c6cbb7f94207742685dfc1d41f542acfdcccbaa1cca970f5c1d005ba3b1b1
+          - kind: own-root-fresh-ordinary-predicate
+            shape: own-FID-feature-model-absence
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            SDKSourceSHA256: 72451a01396786bb23b3f4b128af30018c125c2b4528473f862625c5ec231a78
+            ownMethodSource: >-
+              var b=this.Z.features.Jg==a.ra.sb.Dd.wd||this.Z.features.Jg==a.ra.sb.Dd.Ka||this.Z.features.Jg==a.ra.sb.Dd.qb;return
+              f.prototype.NM.call(this)||
+
+              b
+            wireKeys:
+              - FID
+            fieldBindings:
+              - wireKey: FID
+                property: qM
+                source: '{key:"FID",type:k.aa.ad(k.aa.ib)}'
+                sourceSHA256: 229243bce2975d30a53c9d94d73e4bb1cc5cf01b8de4cc00afd7c591fe61968f
+            SDKMissingValue: 'null'
+            noCashDefaults: true
+            ownMetadataDeserializerSHA256: 955bf01d484a669097469e8ef1e3fcc93cc2964235dfdc566d3f59d7ecd6889d
+            ownFeatureModelSetterSHA256: 33d865b62ce525c8b407ec4d9f9b4aca01a4c7babf05d03379e597cca26a9136
+            ownFeatureModelClearSHA256: ed319b47fb654c08d030dfb15baa5a23532f5fb5102201cfc73d961284d657af
+            ownFeatureEnumerationSHA256: 7feb97e950b582025c918012c1744dfd70ce18fb69f6b7a902ef3916daf7de0b
+            featureKinds:
+              '0': ReSpin
+              '1': FreeSpins
+              '2': HoldNSpin
+            presentFIDIsOutsideOrdinaryTrial: true
+        rootInactiveFlags:
+          - wireKey: IFG
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: 198545985ec85dc2185db1f6bbf4ffaac1957aab7b852c4ad3d687d4f2951995
+          - wireKey: GA
+            explicitSDKDefault: null
+            SDKDecoderSHA256: 630579f11c9a8f0215c9ca84a483cd8c8c3f523d8f5c795ec61de519910cfe9c
+          - wireKey: GCT
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: 3d64c09fe71e7fc9f514a918923011f6139d1f964ab5d3782301fb2bdf8707bb
+        SDKFinalGetterSourceSHA256: fd2f5e37f05a4ada084ab8667de2c12c688e86361b3649ec46ecc19f7dbd5503
+        ownRootPendingBinding:
+          kind: own-root-fresh-ordinary-predicate
+          shape: own-FID-feature-model-absence
+          gameId: '32502'
+          ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+          SDKSourceSHA256: 72451a01396786bb23b3f4b128af30018c125c2b4528473f862625c5ec231a78
+          ownMethodSource: >-
+            var b=this.Z.features.Jg==a.ra.sb.Dd.wd||this.Z.features.Jg==a.ra.sb.Dd.Ka||this.Z.features.Jg==a.ra.sb.Dd.qb;return
+            f.prototype.NM.call(this)||
+
+            b
+          wireKeys:
+            - FID
+          fieldBindings:
+            - wireKey: FID
+              property: qM
+              source: '{key:"FID",type:k.aa.ad(k.aa.ib)}'
+              sourceSHA256: 229243bce2975d30a53c9d94d73e4bb1cc5cf01b8de4cc00afd7c591fe61968f
+          SDKMissingValue: 'null'
+          noCashDefaults: true
+          ownMetadataDeserializerSHA256: 955bf01d484a669097469e8ef1e3fcc93cc2964235dfdc566d3f59d7ecd6889d
+          ownFeatureModelSetterSHA256: 33d865b62ce525c8b407ec4d9f9b4aca01a4c7babf05d03379e597cca26a9136
+          ownFeatureModelClearSHA256: ed319b47fb654c08d030dfb15baa5a23532f5fb5102201cfc73d961284d657af
+          ownFeatureEnumerationSHA256: 7feb97e950b582025c918012c1744dfd70ce18fb69f6b7a902ef3916daf7de0b
+          featureKinds:
+            '0': ReSpin
+            '1': FreeSpins
+            '2': HoldNSpin
+          presentFIDIsOutsideOrdinaryTrial: true
+        ownGSDDataSchema:
+          version: own-exact-SDK-GSD-types-v1
+          gameId: '32502'
+          ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+          ownGSDClass: ordinary-empty-only-own-FID-model
+          compiledOwnClassSHA256: aa661200cff49040106a7244d49e483ca7bbc892b170300c15d997e4cf0ad4db
+          fields: {}
+          unknownUncompiledFieldsStillFatal: true
+          noCashOrNextActionDerivedFromOptionalGSD: true
+          preserveNullableSDKArrayCells: true
+          nullableSDKNumberValidatorSHA256: c44a945c4bbbdca08c8eab63fb7fd3b2855906eface3bb298eca4546e23f6af1
+          ordinaryEmptyGSDOnlyNoObjectAliasClaim: true
+  - provider: sg
+    gameId: '32503'
+    name: Dragon Unleashed Three Legends
+    dbName: sg_dragonunleashedthreelegends96
+    backendId: dragonunleashedthreelegends96
+    sg:
+      protocol: gdm
+      endpoint: https://ogs-gdm-usnj.nyxop.net/nextgen/
+      runtimeGameId: 33036
+      runtimeSlug: dragonunleashedthreelegends96
+      betRaw: 176
+      requestParams:
+        AP: 'false'
+        BPR: '176'
+        GN: dragonunleashedthreelegends96
+        RB: '5'
+      ownGDMContract:
+        version: own-SDK-ordinary-typed-final-v2
+        gameId: '32503'
+        dbName: sg_dragonunleashedthreelegends96
+        runtimeGameId: 33036
+        runtimeSlug: dragonunleashedthreelegends96
+        betRaw: 176
+        balanceScale: 1
+        winScale: 1
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        ordinaryOnly: true
+        requiresNoPreviousFeature: true
+        responseKeys:
+          - AB
+          - B
+          - BPR
+          - FID
+          - FRBAL
+          - GA
+          - GSD
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+          - WM
+          - WS
+        requiredResponseKeys:
+          - AB
+          - B
+          - BPR
+          - FRBAL
+          - GA
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+        ordinaryGSDKeys: []
+        ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+        pendingClauses:
+          - kind: SDK-base-false
+          - kind: fresh-ordinary-SDK-NFG
+            wireKey: NFG
+            explicitSDKDefault: '0'
+            SDKSourceSHA256: 3a68dbb29aed8d4a8852a5683bfa41aee4ee197d97505fbc435943acfcc40f9f
+          - kind: own-root-fresh-ordinary-predicate
+            shape: own-FID-feature-model-absence
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            SDKSourceSHA256: a802c17d8cd479da1091e3f2f2944dd5103567432222ca0614e4cdccd91d6caa
+            ownMethodSource: >-
+              var b=this.Z.features.eg==a.ma.ab.Zc.kd||this.Z.features.eg==a.ma.ab.Zc.Da||this.Z.features.eg==a.ma.ab.Zc.jb;return
+              f.prototype.eN.call(this)||b
+            wireKeys:
+              - FID
+            fieldBindings:
+              - wireKey: FID
+                property: EM
+                source: '{key:"FID",type:k.ca.Vc(k.ca.lb)}'
+                sourceSHA256: f5f76417374389794b0c3edfa85f9c53da93c66d81c2d3618a33005e6430fe12
+            SDKMissingValue: 'null'
+            noCashDefaults: true
+            ownMetadataDeserializerSHA256: 84b2cfdb56ad98e4cff67d2a61e09ff059488539f388d835aa315b58be84fb17
+            ownFeatureModelSetterSHA256: ec1d60b8f980bac17612877e8ad513ef94254bacac755e3de1d3c79b49338272
+            ownFeatureModelClearSHA256: 37404342508dc00d4d2b588192498711b61c80d48287749a18dccca9b08b7b10
+            ownFeatureEnumerationSHA256: d150af11d5a3a6558af8180e7ceeadd9e0e0cb8362c32ce297aef70af4b386bf
+            featureKinds:
+              '0': ReSpin
+              '1': FreeSpins
+              '2': HoldNSpin
+            presentFIDIsOutsideOrdinaryTrial: true
+        rootInactiveFlags:
+          - wireKey: IFG
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: aa25f52464546ecbeccb8c45345b06a787b97c5b8adcf3d9b1a53ae10a6d2ff5
+          - wireKey: GA
+            explicitSDKDefault: null
+            SDKDecoderSHA256: e1978015b3f0dca6d44b65c8cbb248bf389ed598178f860d2003dccf18264a8d
+          - wireKey: GCT
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: 14f2333de11bd80329fdec5c4688b039b467c6102fe9037dfd40a55413949413
+        SDKFinalGetterSourceSHA256: da259de624df39738414d5e297c773ecffe3c1fba04bcc06426e7cd922347e5f
+        ownRootPendingBinding:
+          kind: own-root-fresh-ordinary-predicate
+          shape: own-FID-feature-model-absence
+          gameId: '32503'
+          ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+          SDKSourceSHA256: a802c17d8cd479da1091e3f2f2944dd5103567432222ca0614e4cdccd91d6caa
+          ownMethodSource: >-
+            var b=this.Z.features.eg==a.ma.ab.Zc.kd||this.Z.features.eg==a.ma.ab.Zc.Da||this.Z.features.eg==a.ma.ab.Zc.jb;return
+            f.prototype.eN.call(this)||b
+          wireKeys:
+            - FID
+          fieldBindings:
+            - wireKey: FID
+              property: EM
+              source: '{key:"FID",type:k.ca.Vc(k.ca.lb)}'
+              sourceSHA256: f5f76417374389794b0c3edfa85f9c53da93c66d81c2d3618a33005e6430fe12
+          SDKMissingValue: 'null'
+          noCashDefaults: true
+          ownMetadataDeserializerSHA256: 84b2cfdb56ad98e4cff67d2a61e09ff059488539f388d835aa315b58be84fb17
+          ownFeatureModelSetterSHA256: ec1d60b8f980bac17612877e8ad513ef94254bacac755e3de1d3c79b49338272
+          ownFeatureModelClearSHA256: 37404342508dc00d4d2b588192498711b61c80d48287749a18dccca9b08b7b10
+          ownFeatureEnumerationSHA256: d150af11d5a3a6558af8180e7ceeadd9e0e0cb8362c32ce297aef70af4b386bf
+          featureKinds:
+            '0': ReSpin
+            '1': FreeSpins
+            '2': HoldNSpin
+          presentFIDIsOutsideOrdinaryTrial: true
+        ownGSDDataSchema:
+          version: own-exact-SDK-GSD-types-v1
+          gameId: '32503'
+          ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+          ownGSDClass: ordinary-empty-only-own-FID-model
+          compiledOwnClassSHA256: 45983c9214a4ba82a87098a2a45c474509f05122d3d7a2e3a2bf6aa2d9d248bf
+          fields: {}
+          unknownUncompiledFieldsStillFatal: true
+          noCashOrNextActionDerivedFromOptionalGSD: true
+          preserveNullableSDKArrayCells: true
+          nullableSDKNumberValidatorSHA256: c44a945c4bbbdca08c8eab63fb7fd3b2855906eface3bb298eca4546e23f6af1
+          ordinaryEmptyGSDOnlyNoObjectAliasClaim: true
+  - provider: sg
+    gameId: '32504'
+    name: Dragon Unleashed Treasured Happiness
+    dbName: sg_dragonunleashedtreasuredhappiness96
+    backendId: dragonunleashedtreasuredhappiness96
+    sg:
+      protocol: gdm
+      endpoint: https://ogs-gdm-usnj.nyxop.net/nextgen/
+      runtimeGameId: 33037
+      runtimeSlug: dragonunleashedtreasuredhappiness96
+      betRaw: 176
+      requestParams:
+        AP: 'false'
+        BPR: '176'
+        GN: dragonunleashedtreasuredhappiness96
+        RB: '5'
+      ownGDMContract:
+        version: own-SDK-ordinary-typed-final-v2
+        gameId: '32504'
+        dbName: sg_dragonunleashedtreasuredhappiness96
+        runtimeGameId: 33037
+        runtimeSlug: dragonunleashedtreasuredhappiness96
+        betRaw: 176
+        balanceScale: 1
+        winScale: 1
+        fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+        ordinaryOnly: true
+        requiresNoPreviousFeature: true
+        responseKeys:
+          - AB
+          - B
+          - BPR
+          - FID
+          - FRBAL
+          - GA
+          - GSD
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+          - WM
+          - WS
+        requiredResponseKeys:
+          - AB
+          - B
+          - BPR
+          - FRBAL
+          - GA
+          - IFG
+          - MSGID
+          - MUL
+          - NRID
+          - PD
+          - RB
+          - RID
+          - RS
+          - SID
+          - SUB
+          - TW
+          - VER
+          - WC
+        ordinaryGSDKeys: []
+        ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+        pendingClauses:
+          - kind: SDK-base-false
+          - kind: fresh-ordinary-SDK-NFG
+            wireKey: NFG
+            explicitSDKDefault: '0'
+            SDKSourceSHA256: 5334c4d718735da76da8db29b0223c2e16e4e1daede9b3593069d9bc0b38cf8c
+          - kind: own-root-fresh-ordinary-predicate
+            shape: own-FID-feature-model-absence
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            SDKSourceSHA256: cf70abe6d20b27684c5f6ddfd317013c73c0cd4bdfcbad94ce0de5899fba2b93
+            ownMethodSource: >-
+              var b=this.Z.features.cg==a.na.eb.Zc.Ad||this.Z.features.cg==a.na.eb.Zc.Da||this.Z.features.cg==a.na.eb.Zc.jb;return
+              f.prototype.sN.call(this)||b
+            wireKeys:
+              - FID
+            fieldBindings:
+              - wireKey: FID
+                property: QM
+                source: '{key:"FID",type:k.ca.Vc(k.ca.lb)}'
+                sourceSHA256: f5f76417374389794b0c3edfa85f9c53da93c66d81c2d3618a33005e6430fe12
+            SDKMissingValue: 'null'
+            noCashDefaults: true
+            ownMetadataDeserializerSHA256: 15184a1e7c5447d1979be522c203916b133ea1c3a937436f50bc4da50b528696
+            ownFeatureModelSetterSHA256: 032501611783c8882a28ccdfbb18ecb83e064cda04ecb3843c79fb9441d08064
+            ownFeatureModelClearSHA256: 178acaefa2a613d201604756e2e3541570690e67afc9aa5b9f3c7967191bb8b3
+            ownFeatureEnumerationSHA256: 1fb97f235c7bad5ae7324ef444b468de4d2461af8c65f4e57b706a593a74dff3
+            featureKinds:
+              '0': ReSpin
+              '1': FreeSpins
+              '2': HoldNSpin
+            presentFIDIsOutsideOrdinaryTrial: true
+        rootInactiveFlags:
+          - wireKey: IFG
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: aa25f52464546ecbeccb8c45345b06a787b97c5b8adcf3d9b1a53ae10a6d2ff5
+          - wireKey: GA
+            explicitSDKDefault: null
+            SDKDecoderSHA256: e1978015b3f0dca6d44b65c8cbb248bf389ed598178f860d2003dccf18264a8d
+          - wireKey: GCT
+            explicitSDKDefault: '0'
+            SDKDecoderSHA256: 14f2333de11bd80329fdec5c4688b039b467c6102fe9037dfd40a55413949413
+        SDKFinalGetterSourceSHA256: d3a8cd1c5411d501fa69387ecfbecb0dea12df3d553fe85148626f39ff2f475e
+        ownRootPendingBinding:
+          kind: own-root-fresh-ordinary-predicate
+          shape: own-FID-feature-model-absence
+          gameId: '32504'
+          ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+          SDKSourceSHA256: cf70abe6d20b27684c5f6ddfd317013c73c0cd4bdfcbad94ce0de5899fba2b93
+          ownMethodSource: >-
+            var b=this.Z.features.cg==a.na.eb.Zc.Ad||this.Z.features.cg==a.na.eb.Zc.Da||this.Z.features.cg==a.na.eb.Zc.jb;return
+            f.prototype.sN.call(this)||b
+          wireKeys:
+            - FID
+          fieldBindings:
+            - wireKey: FID
+              property: QM
+              source: '{key:"FID",type:k.ca.Vc(k.ca.lb)}'
+              sourceSHA256: f5f76417374389794b0c3edfa85f9c53da93c66d81c2d3618a33005e6430fe12
+          SDKMissingValue: 'null'
+          noCashDefaults: true
+          ownMetadataDeserializerSHA256: 15184a1e7c5447d1979be522c203916b133ea1c3a937436f50bc4da50b528696
+          ownFeatureModelSetterSHA256: 032501611783c8882a28ccdfbb18ecb83e064cda04ecb3843c79fb9441d08064
+          ownFeatureModelClearSHA256: 178acaefa2a613d201604756e2e3541570690e67afc9aa5b9f3c7967191bb8b3
+          ownFeatureEnumerationSHA256: 1fb97f235c7bad5ae7324ef444b468de4d2461af8c65f4e57b706a593a74dff3
+          featureKinds:
+            '0': ReSpin
+            '1': FreeSpins
+            '2': HoldNSpin
+          presentFIDIsOutsideOrdinaryTrial: true
+        ownGSDDataSchema:
+          version: own-exact-SDK-GSD-types-v1
+          gameId: '32504'
+          ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+          ownGSDClass: ordinary-empty-only-own-FID-model
+          compiledOwnClassSHA256: 83e6c8aac01c431a821c90891046ffbe7ddcc26d3fc77dc2405ae85204d96288
+          fields: {}
+          unknownUncompiledFieldsStillFatal: true
+          noCashOrNextActionDerivedFromOptionalGSD: true
+          preserveNullableSDKArrayCells: true
+          nullableSDKNumberValidatorSHA256: c44a945c4bbbdca08c8eab63fb7fd3b2855906eface3bb298eca4546e23f6af1
+          ordinaryEmptyGSDOnlyNoObjectAliasClaim: true
