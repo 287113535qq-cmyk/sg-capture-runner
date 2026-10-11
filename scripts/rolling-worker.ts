@@ -51,6 +51,7 @@ export function childEnvironment(game: RollingGame, kind: TaskKind, index: numbe
         env.AG_CAPTURE_PLATFORM='sg';env.AG_GAMES_MANIFEST=gameManifestPath(inherited);
         if(inherited.SG_AG_ALLOW_SOURCE==='1')env.SG_AG_ALLOW_SOURCE='1';
         if(inherited.SG_EVIDENCE_DIR)env.SG_EVIDENCE_DIR=inherited.SG_EVIDENCE_DIR;
+        if(inherited.SG_GDM_OPERATOR_ID)env.SG_GDM_OPERATOR_ID=inherited.SG_GDM_OPERATOR_ID;
     }
     return { ...env, MONGO_URI: game.mongoUri, ONLY_GAME: game.gameId, TEST_RTP: '1',
         FREE_CHOICE_PER_OPTION: '0', SPIN_DELAY_MS: '200', RETRY_ATTEMPTS: '5', RETRY_DELAY_MS: '2000',
