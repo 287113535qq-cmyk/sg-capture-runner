@@ -6266,6 +6266,33 @@ games:
             noSecondCashCredit: true
             requiresUnchangedTotalAndFinalBalance: true
             currentEqualsReturnedStageWin: true
+          ownNativeNestedHold:
+            version: own-32503-physical-Hold-over-FreeSpins-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            ownSecondFIDEndContextSHA256: 87eab77cfe75fafb7118b4946d610289625004b992efb92b9460482478d91000
+            actualOwnWholePacketsSHA256:
+              - e93ab96889a0375cbc605d1ad240b3f0707252f639743e58dd772129378c8b60
+            outerMode: '1'
+            realHoldEndsReturnUnchangedOuterBudget: true
+            separatePaidHoldAndFreeStageCash: true
+            actualRootEndCWIsOriginalPaidCash: true
+            noSyntheticCounters: true
+            onlyActualFinalFeatureEndMakesNative: true
+            requiresOriginalAGRoundMongoReplay: true
+          ownNestedHoldIntroBudget:
+            version: own-32503-returned-nested-Hold-intro-budget-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            actualOwnPacketSHA256s:
+              - 24dae97f8231210f9fd06bb1667106c6cad1900631801a2cfba0f67759e790ef
+              - e93ab96889a0375cbc605d1ad240b3f0707252f639743e58dd772129378c8b60
+            actualIntroAwards:
+              - 1
+              - 3
+            requiresActualPositiveAwardEqualsRemainingAndTotal: true
+            requiresPlayedZeroAndStageCashZero: true
+            noSyntheticCounter: true
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6991,3 +7018,13 @@ games:
             noNative: true
             outerConsumesExactlyOne: true
             requiresRealMode2EndThenReturnedMode0End: true
+          ownNestedReSpinHoldReturn:
+            version: own-32504-real-Hold-ending-return-to-spent-ReSpin-prefix-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            actualOwnPacketSHA256: 74985542d80d5bcac591eda55621d33fd70a74e855af847f9831240bfeca3d2d
+            ownSecondFIDEndContextSHA256: c6fa6bc7e0db95aa4d65734980d2b446913e70d7ebf11d8a12cb0c9a278f9296
+            requiresUnchangedRootAndOuterCounters: true
+            requiresActualInnerTerminalCountersAndSavedTriggerCash: true
+            nextPhysicalRequestMode: '0'
+            noNativeUntilOwnCompletePhysicalChain: true
