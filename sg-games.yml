@@ -5583,6 +5583,34 @@ games:
             currentEqualsReturnedPaidOffset: true
             variant: retained-zero-end-CW
             ownEndPositiveRequiredBeforeProduction: false
+        ownFlowOnlyCapture:
+          version: own-SDK-first-FID-flow-only-capture-v3
+          gameId: '32502'
+          ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+          ownStageSetterSHA256: 46a1e0e3435ba7435efb6398545d14bc1469a95b87de1306fa532cff9ecea600
+          ownFreeSelectorSHA256: 7893da457766276e07d08c631cd5c05974b59296032107044a027d07a3f4b1ed
+          ownEndSelectorSHA256: f7b927b88b397fd7165b7302730abd764e83cfb510e7e114e4cf45d8ffc4c22b
+          ownEndModeCallSHA256s:
+            - 3698e616044a66d1e2458c9c36bf6fb017d0b9a972f103142e05ceb9c4dadf75
+            - 7e6f67226ffe4e94eb2c6fa1c11e8fd8e973913d88692794fe112cc3142c5142
+            - 32d40675072a23da07faf8df3a72be13e0ad98ecb4b597644fb3dd4f6db51a65
+          supportedModes:
+            - '0'
+            - '1'
+            - '2'
+          usesActualFirstFIDAndRemainingOnly: true
+          totalWinSource: TW
+          balanceSource: B
+          betSource: own-fixed-request
+          rawWirePreserved: true
+          noSyntheticFreeCounters: true
+          noDisplayAmountOrBudgetArithmeticGate: true
+          originalAGAmountReplayMongoChecksRequired: true
+          noOldUnknownPOSTReplay: true
+          nonFlowFieldsPreservedWithoutInterpretation: true
+          onlyUsedRequiredFieldsValidated: true
+          unknownFlowStillStops: true
+          ownMode2EndCallSHA256: 32d40675072a23da07faf8df3a72be13e0ad98ecb4b597644fb3dd4f6db51a65
   - provider: sg
     gameId: '32503'
     name: Dragon Unleashed Three Legends
@@ -7073,3 +7101,31 @@ games:
             requiresActualInnerTerminalCountersAndSavedTriggerCash: true
             nextPhysicalRequestMode: '0'
             noNativeUntilOwnCompletePhysicalChain: true
+        ownFlowOnlyCapture:
+          version: own-SDK-first-FID-flow-only-capture-v3
+          gameId: '32504'
+          ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+          ownStageSetterSHA256: 2fb4a5d1e55bbbc6679e453fce950ac4401e0d20057caf6a666517541bcf409d
+          ownFreeSelectorSHA256: 1f47238ac7da5adcdb14334298f04a84b48c2598e8d941f40f32e208c8519c1c
+          ownEndSelectorSHA256: 89dace175dde0fd7d066450a4dfa7312f5bd42d4ae131ba4885b977e37c60cd8
+          ownEndModeCallSHA256s:
+            - 61f421f5e92b9cd08cf40605ef2d87838af002ede5b327a5f682bb3ad2d17801
+            - 245cfe98b5993c98ee49552857d842f0759e965b74c9f0478ef8392fbce3570a
+            - 76868787d3e3d64329f15124f115f72d42ae31ace534ee138c81fce927d2acdf
+          supportedModes:
+            - '0'
+            - '1'
+            - '2'
+          usesActualFirstFIDAndRemainingOnly: true
+          totalWinSource: TW
+          balanceSource: B
+          betSource: own-fixed-request
+          rawWirePreserved: true
+          noSyntheticFreeCounters: true
+          noDisplayAmountOrBudgetArithmeticGate: true
+          originalAGAmountReplayMongoChecksRequired: true
+          noOldUnknownPOSTReplay: true
+          nonFlowFieldsPreservedWithoutInterpretation: true
+          onlyUsedRequiredFieldsValidated: true
+          unknownFlowStillStops: true
+          ownMode2EndCallSHA256: 76868787d3e3d64329f15124f115f72d42ae31ace534ee138c81fce927d2acdf

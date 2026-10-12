@@ -1112,8 +1112,9 @@ export class SGGdmSession{
   private ownFlowSteps:GDMWireStep[]=[];
   private ownFlowRule(){
    const c=gdmBinding(this.game),q=c.ownFlowOnlyCapture,r=c.ownFIDFeatureContract;
-   assert(this.game.gameId==='32503'&&q?.version==='own-SDK-first-FID-flow-only-capture-v2'&&q.gameId===this.game.gameId&&q.ownSDKFileSHA256===c.ownSDKFileSHA256&&q.ownStageSetterSHA256===r.SDKStageSetterSHA256&&q.ownFreeSelectorSHA256===r.SDKFreeSelectorSHA256&&q.ownEndSelectorSHA256===r.SDKEndSelectorSHA256&&JSON.stringify(q.ownEndModeCallSHA256s)===JSON.stringify(r.SDKEndModeCallSHA256s)&&JSON.stringify(q.supportedModes)===JSON.stringify(['0','1','2']),'AG integrity: GDM own flow-only source binding');
+   assert(['own-SDK-first-FID-flow-only-capture-v2','own-SDK-first-FID-flow-only-capture-v3'].includes(q?.version)&&q.gameId===this.game.gameId&&r.gameId===this.game.gameId&&q.ownSDKFileSHA256===c.ownSDKFileSHA256&&q.ownStageSetterSHA256===r.SDKStageSetterSHA256&&q.ownFreeSelectorSHA256===r.SDKFreeSelectorSHA256&&q.ownEndSelectorSHA256===r.SDKEndSelectorSHA256&&JSON.stringify(q.ownEndModeCallSHA256s)===JSON.stringify(r.SDKEndModeCallSHA256s)&&JSON.stringify(q.supportedModes)===JSON.stringify(['0','1','2']),'AG integrity: GDM own flow-only source binding');
    assert(q.usesActualFirstFIDAndRemainingOnly&&q.totalWinSource==='TW'&&q.balanceSource==='B'&&q.betSource==='own-fixed-request'&&q.rawWirePreserved&&q.noSyntheticFreeCounters&&q.noDisplayAmountOrBudgetArithmeticGate&&q.originalAGAmountReplayMongoChecksRequired&&q.noOldUnknownPOSTReplay&&q.nonFlowFieldsPreservedWithoutInterpretation&&q.onlyUsedRequiredFieldsValidated&&q.unknownFlowStillStops,'AG integrity: GDM own flow-only envelope');
+   if(q.version==='own-SDK-first-FID-flow-only-capture-v3')assert(q.ownMode2EndCallSHA256===r.ownHoldDiagnostic.ownMode2EndCallSHA256,'AG integrity: GDM own mode2 ending source binding');
    return {c,q,r};
   }
   private ownFlowNext(){const {r}=this.ownFlowRule(),s=this.ownFlowState;if(!s)return undefined;return s.remaining>0?{event:'FREE_GAME',parameters:{...r.freeRequestParams}}:{event:'FEATURE_END',parameters:{...r.endRequestParams,CFG:s.mode}};}
