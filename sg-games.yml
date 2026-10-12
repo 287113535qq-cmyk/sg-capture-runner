@@ -1158,7 +1158,9 @@ games:
       stake:
         total: '200'
         isBigBet: '0'
-      freeStake: {}
+      freeStake:
+        total: '200'
+        isBigBet: '0'
       betRaw: 200
       runtimeGameId: 33003
       runtimeSlug: kingshonour
@@ -1285,6 +1287,22 @@ games:
             - BGInfo/totalWagerWin
           zeroFreeCashPaths: []
           spinCashField: spinWins
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32781'
+        dbName: sg_kings_honour
+        runtimeGameId: 33003
+        sourceGameId: '20241'
+        kind: kings-honour
+        ownSDKFileSHA256: 8dd6490c6c2566bd51d67206f926adf3c040f654e0a197ac869946bc9820181d
+        cashPath: BGInfo/totalWagerWin
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" isBigBet="0" />
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
   - provider: sg
     gameId: '32782'
     name: Knight's Keep
@@ -3661,7 +3679,10 @@ games:
         paylineCount: '20'
         total: '1000'
         isBigBet: '0'
-      freeStake: {}
+      freeStake:
+        paylineCount: '20'
+        total: '1000'
+        isBigBet: '0'
       betRaw: 1000
       runtimeGameId: 33171
       runtimeSlug: triplecashwheel
@@ -3778,6 +3799,22 @@ games:
             gameId: '32811'
             ownSDKFileSHA256: 0903de2a8aad707abf617996dee42def683070e2d23f9a369e47f98be620c0f8
             fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32811'
+        dbName: sg_triplecashwheel
+        runtimeGameId: 33171
+        sourceGameId: '20191'
+        kind: triple-cash-wheel
+        ownSDKFileSHA256: 0903de2a8aad707abf617996dee42def683070e2d23f9a369e47f98be620c0f8
+        cashPath: BGInfo/totalWagerWin
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake paylineCount="20" total="1000" isBigBet="0" />
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
   - provider: sg
     gameId: '32813'
     name: Volts and Bolts

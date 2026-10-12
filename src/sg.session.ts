@@ -467,6 +467,47 @@ function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
  visit(g.ReelResults);assert(totalPrizes===win&&totalSpinCash===win,'AG integrity: SG bulk current cash differs from actual prizes');return win;
 }
 
+// Own fixed WMS clients select future Logic from actual FS/base counters.
+// Honour/wheel presentations use already returned data and send no wheel request.
+function ownWMSRealFlowBinding(game:AGGameConfig) {
+ const c=game.sg.ownRealNextEndContract;
+ const fixed:Record<string,any>={
+  '32781':{db:'sg_kings_honour',runtime:33003,source:'20241',kind:'kings-honour',sdk:'8dd6490c6c2566bd51d67206f926adf3c040f654e0a197ac869946bc9820181d'},
+  '32811':{db:'sg_triplecashwheel',runtime:33171,source:'20191',kind:'triple-cash-wheel',sdk:'0903de2a8aad707abf617996dee42def683070e2d23f9a369e47f98be620c0f8'},
+ };
+ const f=fixed[game.gameId];
+ assert(c?.version==='own-fixed-client-real-next-end-v1'&&f&&c.gameId===game.gameId&&c.dbName===game.dbName&&game.dbName===f.db&&c.runtimeGameId===f.runtime&&game.sg.runtimeGameId===f.runtime&&c.sourceGameId===f.source&&String(game.sg.header.gameID)===f.source&&c.kind===f.kind&&c.ownSDKFileSHA256===f.sdk,'AG integrity: SG own real next/end binding');
+ assert(c.cashPath==='BGInfo/totalWagerWin'&&c.rawRequestResponsePreserved&&c.localPresentationsDoNotRequestServer&&c.originalAGMoneyReplayMongoRequired&&c.noSyntheticTerminal&&c.unmappedFlowStops&&c.noOldUnknownPOSTReplay,'AG integrity: SG own real next/end contract');
+ const paid=ownMatchedPaidBinding(game);
+ assert(c.logicRequestDataXML===paid.paidRequestDataXML&&JSON.stringify(game.sg.freeStake)===JSON.stringify(game.sg.stake),'AG integrity: SG own continuation request data');
+ return c;
+}
+function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any) {
+ const c=ownWMSRealFlowBinding(game);
+ assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object','AG integrity: SG own flow result');
+ assert(integer(g.stake,'own flow actual wager')===game.sg.betRaw,'AG integrity: SG own flow changed wager');
+ // These interactive structures are not selected by either fixed own client.
+ // Extra display data remains raw; it does not need another reel/schema equation.
+ for(const tag of ['PickerInfo','Feature','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo'])assert(g[tag]===undefined,'AG integrity: SG own actual next needs mapping');
+ const bg=g.BGInfo,win=integer(bg.totalWagerWin,'own flow cumulative wager cash');
+ assert(bg.isMaxWin==='0','AG integrity: SG own maximum-win flow not mapped');
+ let baseRemaining=0;
+ if(c.kind==='kings-honour') {
+  assert(bg.isBigBet==='0','AG integrity: SG own extra-wager flow not mapped');
+  baseRemaining=integer(bg.baseGameSpinsRemaining,'own base remaining');
+ } else if(bg.baseGameSpinsRemaining!==undefined)assert(integer(bg.baseGameSpinsRemaining,'own unbound base remaining')===0,'AG integrity: SG own base continuation needs mapping');
+ let free:Record<string,any>|undefined;
+ if(g.FSInfo!==undefined) {
+  const f=g.FSInfo;
+  assert(f&&typeof f==='object'&&!Array.isArray(f),'AG integrity: SG own FS control');
+  const total=integer(f.freeSpinsTotal,'own FS actual total'),played=integer(f.freeSpinNumber,'own FS actual played');
+  assert(played<=total,'AG integrity: SG own invalid FS remaining');
+  free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};
+ } else assert(!previousFree||previousFree.freeSpinsRemaining===0,'AG integrity: SG own active FS selector disappeared');
+ const localFeature=c.kind==='kings-honour'?g.ReelOfHonour!==undefined:g.WheelBonus?.WheelOutcome!==undefined;
+ return {win,free,baseRemaining,next:(free?.freeSpinsRemaining>0||(!free&&baseRemaining>0))?'FREE_SPIN':localFeature?'WHEEL_SPIN':'PLAY'};
+}
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -480,6 +521,7 @@ export class SGWmsSession {
     private lastRequest: {event:string;parameters:Record<string,any>|null} | undefined;
     private lastBase: unknown;private lastBlazingX?:number;private jinseBase:unknown;
     private ownKronosBase:any;
+    private ownWMSBaseRemaining=0;
     private healthyComponentsBase:any;
     private journal: number | null = null;
     private journalPath: string | null = null;
@@ -544,8 +586,10 @@ export class SGWmsSession {
     isRoundTerminalAction(action: string) { return action === 'SPIN'; }
     getExactFollowUpRequest(action: string) {
         if(action === 'PLAY') return {event:'EndGame',parameters:{}};
+        if(action==='WHEEL_SPIN'&&this.game.sg.ownRealNextEndContract){ownWMSRealFlowBinding(this.game);return {event:'EndGame',parameters:{}};}
         if(action === 'PICK_FREE_SPINS') {fiveTreasuresBinding(this.game);return undefined;}
         if(action === 'FREE_SPIN') {
+            if(this.game.sg.ownRealNextEndContract){ownWMSRealFlowBinding(this.game);assert(this.free?.freeSpinsRemaining>0||this.ownWMSBaseRemaining>0,'AG integrity: SG own missing continuation selector');return {event:'Logic',parameters:{...this.game.sg.stake}};}
             assert(this.game.sg.freeStake,'AG integrity: SG own free request not mapped');
             if(this.game.sg.fiveTreasuresContract) {
                 fiveTreasuresBinding(this.game);
@@ -559,6 +603,7 @@ export class SGWmsSession {
     private payload(event:string,parameters:Record<string,any>) {
         const h={...this.game.sg.header,sessionID:this.session};
         const header='<Header '+Object.entries(h).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>';
+        if(event==='Logic'&&this.game.sg.ownRealNextEndContract){const c=ownWMSRealFlowBinding(this.game);assert((this.action==='SPIN'||(this.action==='FREE_SPIN'&&(this.free?.freeSpinsRemaining>0||this.ownWMSBaseRemaining>0)))&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG own real Logic request');return `<GameRequest type="Logic">${header}${c.logicRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.ownMatchedPaidContract){const c=ownMatchedPaidBinding(this.game);if(this.action==='FREE_SPIN'){ownKronosBinding(this.game);assert(this.free?.freeSpinsRemaining>0&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Kronos own free request');}else assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG matched paid request');return `<GameRequest type="Logic">${header}${c.paidRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.healthyComponentsContract){ownHealthyComponentsBinding(this.game);if(this.action==='FREE_SPIN'){assert(Object.keys(parameters).length===0,'AG integrity: SG Rhino free request');return `<GameRequest type="Logic">${header}</GameRequest>`;}assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Rhino paid request');return `<GameRequest type="Logic">${header}<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200"/></GameRequest>`;}
         let choice='';
@@ -642,7 +687,7 @@ export class SGWmsSession {
     }
     async callGameData(event:string,parameters:Record<string,any>|null) {
         const first=this.action==='SPIN';
-        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;this.ownKronosBase=undefined;}
+        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;this.ownKronosBase=undefined;this.ownWMSBaseRemaining=0;}
         else assert(event===(this.action==='PICK_FREE_SPINS'?'Logic':this.getExactFollowUpRequest(this.action)?.event),'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
         const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
@@ -653,7 +698,8 @@ export class SGWmsSession {
             this.action='SPIN';
         } else {
             const g=r.GameResult;assert(g&&(g.BGInfo||this.game.sg.ownMatchedPaidContract?.ordinaryCashContract),'AG integrity: SG game result');
-            if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
+            if(this.game.sg.ownRealNextEndContract){const mapped=validateOwnWMSRealFlow(this.game,g,this.free);this.totalWin=mapped.win;this.free=mapped.free;this.ownWMSBaseRemaining=mapped.baseRemaining;this.action=mapped.next;}
+            else if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.ownMatchedPaidContract){this.totalWin=this.game.sg.ownMatchedPaidContract.ordinaryCashContract?validateOwnBulkPaidData(this.game,g,first):validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
             else if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.jinseDragonContract){const mapped=validateJinseDragonData(this.game,g,first,this.free,this.jinseBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.jinseBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
