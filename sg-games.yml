@@ -4995,7 +4995,7 @@ games:
         GN: dragonunleashedprosperitypackets96
         RB: '5'
       ownGDMContract:
-        version: own-SDK-FID-stage-counter-trial-v9
+        version: own-SDK-HoldNSpin-cash-components-no-Native-diagnostic-v13
         gameId: '32502'
         dbName: sg_dragonunleashedprosperitypackets96
         runtimeGameId: 33035
@@ -5419,6 +5419,7 @@ games:
           supportedModes:
             - '0'
             - '1'
+            - '2'
           stageFieldBindings:
             '0':
               NFG:
@@ -5462,6 +5463,27 @@ games:
                 wireKey: FGTW_1
                 property: nOa
                 SHA256: 9ef9df2baf4554d29c48e9f0cfafde2eb1fb6ae6f6586f4b0effd4c1e9ec16be
+            '2':
+              NFG:
+                wireKey: NFG_2
+                property: kOa
+                SHA256: 4724bb4965bfdd792e75ffe8be004e0565b52ce63bead9b76e5cec67e02ca39f
+              FGT:
+                wireKey: FGT_2
+                property: sOa
+                SHA256: 3500111e94b9e7052fde1dd0d9d19b309495a9ca672e28205a7b60936552f85f
+              TFG:
+                wireKey: TFG_2
+                property: uhb
+                SHA256: e9a889b03e7b3e909c8335bf7092470c29d6462c32cf88e866edb915e6d5aabd
+              CFGG:
+                wireKey: CFGG_2
+                property: iOa
+                SHA256: ecad4be5df84a9985c889ea535214cfddf69c90f71db09687ebf47250837abcc
+              FGTW:
+                wireKey: FGTW_2
+                property: oOa
+                SHA256: 8001c3c220cc1f63f896f74b6c9e2fb1db90ceff0dd25e71762275a659e03f9e
           SDKCashGetterSHA256: 4db562e1c0656bb97b17e59ac7d0e5c036b44d1c6b49eea1af4f4379e160d9d1
           SDKStageSetterSHA256: 46a1e0e3435ba7435efb6398545d14bc1469a95b87de1306fa532cff9ecea600
           SDKRequestConstructorSHA256: 8cf3c21da62fb696b94b3f273d8919a66548191df1767761602c87aadf39cbe4
@@ -5470,6 +5492,7 @@ games:
           SDKEndModeCallSHA256s:
             - 3698e616044a66d1e2458c9c36bf6fb017d0b9a972f103142e05ceb9c4dadf75
             - 7e6f67226ffe4e94eb2c6fa1c11e8fd8e973913d88692794fe112cc3142c5142
+            - 32d40675072a23da07faf8df3a72be13e0ad98ecb4b597644fb3dd4f6db51a65
           freeRequestParams:
             GN: dragonunleashedprosperitypackets96
             BPR: '176'
@@ -5488,6 +5511,78 @@ games:
           ownABFieldSHA256: 97b54218c7a517f75303f1bf5636ab52dc01165f39fd6bdba322c4c0107e1f8d
           pendingAvailableIsFundedBalance: true
           terminalAvailableIncludesTotalWin: true
+          ownOptionalTriggerAward:
+            version: own-SDK-FGT-optional-when-budget-does-not-grow-v1
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            noAwardOrCashSynthesized: true
+            introAndBudgetGrowthStillRequireActualAward: true
+            requiredMoneyAndBudgetFieldsUnchanged: true
+            fieldBindings:
+              '0':
+                wireKey: FGT_0
+                fieldSHA256: 662044ed01a5114a1f0b47d8afc72189f2462f4ebb8beaf00408bc8132f930fe
+                property: qOa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 955bf01d484a669097469e8ef1e3fcc93cc2964235dfdc566d3f59d7ecd6889d
+              '1':
+                wireKey: FGT_1
+                fieldSHA256: ae1af9d2a739b3bcdab521fa7bf021868c15f8e8006f9161a7954fa46dee75f3
+                property: rOa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 955bf01d484a669097469e8ef1e3fcc93cc2964235dfdc566d3f59d7ecd6889d
+          ownRealFeatureEndMarker:
+            version: own-SDK-FID-absence-at-actual-FEATURE_END-v1
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            ownPendingMethodSHA256: 72451a01396786bb23b3f4b128af30018c125c2b4528473f862625c5ec231a78
+            ownFeatureModelClearSHA256: ed319b47fb654c08d030dfb15baa5a23532f5fb5102201cfc73d961284d657af
+            actualEndResponseSHA256: 06947c8f2149ec9fc6b664c237df67c0371696214758cfaf474c0d5aa45e4248
+            actualOwnSourceArchiveSHA256: 82af05cf2688f72a5c61ea727250a94acd2b13eb40bb7c79764ed3ae3b1fa609
+            preserveReturnedIFGMarker: true
+            onlyAfterActualFeatureEnd: true
+            requiresPriorRemainingZero: true
+            requiresNoFIDAndNoActiveGAOrGCT: true
+            ordinaryStartGuardUnchanged: true
+            noSyntheticTerminal: true
+          unseenNestedFIDFatal: true
+          HoldDiagnosticsOnly: true
+          HoldNeverNativeBeforePhysicalReview: true
+          ownHoldDiagnostic:
+            version: own-returned-Hold-NFG-request-only-no-Native-v1
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            ownMode2EndCallSHA256: 32d40675072a23da07faf8df3a72be13e0ad98ecb4b597644fb3dd4f6db51a65
+            ownMode2StageSetterSHA256: 46a1e0e3435ba7435efb6398545d14bc1469a95b87de1306fa532cff9ecea600
+            ownFreeSelectorSHA256: 7893da457766276e07d08c631cd5c05974b59296032107044a027d07a3f4b1ed
+            ownEndSelectorSHA256: f7b927b88b397fd7165b7302730abd764e83cfb510e7e114e4cf45d8ffc4c22b
+            ownInputSHA256: 83e7048115fb5a7adc5f5b13b710ba6d2e96baf78b04d3734cc10991fda09a5d
+            noSyntheticFreeCounters: true
+            noHoldNative: true
+            onlyReturnedNFGSelectsContinuation: true
+            requiresPhysicalFeatureEnd: true
+            unseenNestedFatal: true
+          ownClientFeatureEndContext:
+            version: own-client-cleared-FID-at-explicit-ending-v1
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            ownPendingMethodSHA256: 72451a01396786bb23b3f4b128af30018c125c2b4528473f862625c5ec231a78
+            ownFeatureModelClearSHA256: ed319b47fb654c08d030dfb15baa5a23532f5fb5102201cfc73d961284d657af
+            ownEndSelectorSHA256: f7b927b88b397fd7165b7302730abd764e83cfb510e7e114e4cf45d8ffc4c22b
+            requiresPriorReturnedNFGZero: true
+            noOrdinaryIFGRelaxation: true
+            noSyntheticTerminal: true
+          ownEndBaseCashComponent:
+            version: own-returned-end-CW-is-retained-paid-component-v1
+            gameId: '32502'
+            ownSDKFileSHA256: a1856424e94c456d0f9062150c7626b89e6d1d25d657faa1801884358bf3bfb3
+            rootCWFieldSHA256: 3b5ceec5c47d1b26403674deef16353761737e03900547540c02174a3fac6b28
+            rootTWFieldSHA256: 374231299b05521d517617e261555b506fdc7795e5e8750ccd70d84a6c1c55f5
+            noSecondCredit: true
+            requiresUnchangedTotalAndFinalBalance: true
+            currentEqualsReturnedPaidOffset: true
+            variant: retained-zero-end-CW
+            ownEndPositiveRequiredBeforeProduction: false
   - provider: sg
     gameId: '32503'
     name: Dragon Unleashed Three Legends
@@ -5505,7 +5600,7 @@ games:
         GN: dragonunleashedthreelegends96
         RB: '5'
       ownGDMContract:
-        version: own-SDK-FID-stage-counter-trial-v9
+        version: own-SDK-HoldNSpin-cash-components-no-Native-diagnostic-v13
         gameId: '32503'
         dbName: sg_dragonunleashedthreelegends96
         runtimeGameId: 33036
@@ -5961,6 +6056,7 @@ games:
           supportedModes:
             - '0'
             - '1'
+            - '2'
           stageFieldBindings:
             '0':
               NFG:
@@ -6004,6 +6100,27 @@ games:
                 wireKey: FGTW_1
                 property: bPa
                 SHA256: 5ae51a2077f0c01e1647a1ba028c410bb0d15bdb91885b5c9c55e44909fe8079
+            '2':
+              NFG:
+                wireKey: NFG_2
+                property: kna
+                SHA256: cd6ceccfceb70e2350857c4cf7606907e7e820f5b6cd91bf19b439526c604c05
+              FGT:
+                wireKey: FGT_2
+                property: gPa
+                SHA256: 559ce68a100eeb45b8b81969bac07cb894ce03b9e02bed70e88418e36f26253d
+              TFG:
+                wireKey: TFG_2
+                property: pjb
+                SHA256: 13681a043497d24f5531a0e2023277ca262eea156aa37f0ce9f7253f45509865
+              CFGG:
+                wireKey: CFGG_2
+                property: YOa
+                SHA256: d1e807abe8ab4cc151f3bfe7e5a151153c7d7ed798387b9f8f9dfcc4b59a3356
+              FGTW:
+                wireKey: FGTW_2
+                property: cPa
+                SHA256: 084e583ec518a07fd4dcc6dec8fc9324c02d5ae4d0c27482119d3afcdec18168
           SDKCashGetterSHA256: 0ed34d0e27c59073379d21265358c9704c732a1e5a633caa6fedd22dc67b8b91
           SDKStageSetterSHA256: 7bfe99d13ad240bd7788604b3265224e599cfbb23a49b42d912020905a1821b9
           SDKRequestConstructorSHA256: d78afb55b7ac53b2d2c05205d54d8af1795401b877a05433fe56477144f8fa95
@@ -6012,6 +6129,7 @@ games:
           SDKEndModeCallSHA256s:
             - b7c182e295e0ef37af6d913c01d6080f3b5ba40b541e0bb490c00ad013a2c337
             - b29e5e22970030e2e63511503f20fcea949588c1cff6ee2ef097633c81b9e3fc
+            - b995f7056128d52368984b6b65fdb73efbf41c4dc4c277463d68e6bd18e9048c
           freeRequestParams:
             GN: dragonunleashedthreelegends96
             BPR: '176'
@@ -6030,6 +6148,64 @@ games:
           ownABFieldSHA256: cc441173bb51af79bc609b2456892fc30cc6d7d45fbf71da6071746de7ddfe9e
           pendingAvailableIsFundedBalance: true
           terminalAvailableIncludesTotalWin: true
+          ownOptionalTriggerAward:
+            version: own-SDK-FGT-optional-when-budget-does-not-grow-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            noAwardOrCashSynthesized: true
+            introAndBudgetGrowthStillRequireActualAward: true
+            requiredMoneyAndBudgetFieldsUnchanged: true
+            fieldBindings:
+              '0':
+                wireKey: FGT_0
+                fieldSHA256: e9dd3dc99b40f59603f9c7fa9dbf6b8b0c516311ffa63104afa3e861a36f83bb
+                property: ePa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 84b2cfdb56ad98e4cff67d2a61e09ff059488539f388d835aa315b58be84fb17
+              '1':
+                wireKey: FGT_1
+                fieldSHA256: 64b5d119986284b91260e0048a594c5f8e84ab51bd7c1a85f87a17c60e1b1014
+                property: fPa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 84b2cfdb56ad98e4cff67d2a61e09ff059488539f388d835aa315b58be84fb17
+          unseenNestedFIDFatal: true
+          HoldDiagnosticsOnly: true
+          HoldNeverNativeBeforePhysicalReview: true
+          ownHoldDiagnostic:
+            version: own-returned-Hold-NFG-request-only-no-Native-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            ownMode2EndCallSHA256: b995f7056128d52368984b6b65fdb73efbf41c4dc4c277463d68e6bd18e9048c
+            ownMode2StageSetterSHA256: 7bfe99d13ad240bd7788604b3265224e599cfbb23a49b42d912020905a1821b9
+            ownFreeSelectorSHA256: 340c915dcd0e794c43dd45bf205dd58bb71c6f0a4a593aebcf44d92e975eca98
+            ownEndSelectorSHA256: 78095c55193654e734a866d6e671710014f0f8a79df39c445a48f58f8a4032c6
+            ownInputSHA256: 878d8e52d326d1e2c149fb7301ef4b391917128af14a77559574f9df505534da
+            noSyntheticFreeCounters: true
+            noHoldNative: true
+            onlyReturnedNFGSelectsContinuation: true
+            requiresPhysicalFeatureEnd: true
+            unseenNestedFatal: true
+          ownClientFeatureEndContext:
+            version: own-client-cleared-FID-at-explicit-ending-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            ownPendingMethodSHA256: a802c17d8cd479da1091e3f2f2944dd5103567432222ca0614e4cdccd91d6caa
+            ownFeatureModelClearSHA256: 37404342508dc00d4d2b588192498711b61c80d48287749a18dccca9b08b7b10
+            ownEndSelectorSHA256: 78095c55193654e734a866d6e671710014f0f8a79df39c445a48f58f8a4032c6
+            requiresPriorReturnedNFGZero: true
+            noOrdinaryIFGRelaxation: true
+            noSyntheticTerminal: true
+          ownEndBaseCashComponent:
+            version: own-returned-end-CW-is-retained-paid-component-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            rootCWFieldSHA256: c2073d507782a1e7677261f0f4bbd78fee1fff680cec5c496d1bd9a1378b6d7d
+            rootTWFieldSHA256: fe308f61fca38270060d98ab3207339a90ecaa7781d4aacdd093674bd468930d
+            noSecondCredit: true
+            requiresUnchangedTotalAndFinalBalance: true
+            currentEqualsReturnedPaidOffset: true
+            variant: own-returned-paid-offset-end-CW
+            ownEndPositiveRequiredBeforeProduction: false
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6047,7 +6223,7 @@ games:
         GN: dragonunleashedtreasuredhappiness96
         RB: '5'
       ownGDMContract:
-        version: own-SDK-FID-stage-counter-trial-v9
+        version: own-SDK-HoldNSpin-own-physical-Native-v14
         gameId: '32504'
         dbName: sg_dragonunleashedtreasuredhappiness96
         runtimeGameId: 33037
@@ -6503,6 +6679,7 @@ games:
           supportedModes:
             - '0'
             - '1'
+            - '2'
           stageFieldBindings:
             '0':
               NFG:
@@ -6546,6 +6723,27 @@ games:
                 wireKey: FGTW_1
                 property: xPa
                 SHA256: 5ae51a2077f0c01e1647a1ba028c410bb0d15bdb91885b5c9c55e44909fe8079
+            '2':
+              NFG:
+                wireKey: NFG_2
+                property: zna
+                SHA256: cd6ceccfceb70e2350857c4cf7606907e7e820f5b6cd91bf19b439526c604c05
+              FGT:
+                wireKey: FGT_2
+                property: CPa
+                SHA256: 559ce68a100eeb45b8b81969bac07cb894ce03b9e02bed70e88418e36f26253d
+              TFG:
+                wireKey: TFG_2
+                property: $ib
+                SHA256: 13681a043497d24f5531a0e2023277ca262eea156aa37f0ce9f7253f45509865
+              CFGG:
+                wireKey: CFGG_2
+                property: tPa
+                SHA256: d1e807abe8ab4cc151f3bfe7e5a151153c7d7ed798387b9f8f9dfcc4b59a3356
+              FGTW:
+                wireKey: FGTW_2
+                property: yPa
+                SHA256: 084e583ec518a07fd4dcc6dec8fc9324c02d5ae4d0c27482119d3afcdec18168
           SDKCashGetterSHA256: eae147e136cc84daf2f2915d928e103686d7555884631f94cdaa1244ca4f8d6c
           SDKStageSetterSHA256: 2fb4a5d1e55bbbc6679e453fce950ac4401e0d20057caf6a666517541bcf409d
           SDKRequestConstructorSHA256: ebf80a1d99f511c33e2ecdb0e47f761cca810719e1445da4ce811367b5163494
@@ -6554,6 +6752,7 @@ games:
           SDKEndModeCallSHA256s:
             - 61f421f5e92b9cd08cf40605ef2d87838af002ede5b327a5f682bb3ad2d17801
             - 245cfe98b5993c98ee49552857d842f0759e965b74c9f0478ef8392fbce3570a
+            - 76868787d3e3d64329f15124f115f72d42ae31ace534ee138c81fce927d2acdf
           freeRequestParams:
             GN: dragonunleashedtreasuredhappiness96
             BPR: '176'
@@ -6572,3 +6771,80 @@ games:
           ownABFieldSHA256: cc441173bb51af79bc609b2456892fc30cc6d7d45fbf71da6071746de7ddfe9e
           pendingAvailableIsFundedBalance: true
           terminalAvailableIncludesTotalWin: true
+          unseenNestedFIDFatal: true
+          HoldDiagnosticsOnly: false
+          HoldNeverNativeBeforePhysicalReview: false
+          ownHoldDiagnostic:
+            version: own-returned-Hold-NFG-request-only-no-Native-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownMode2EndCallSHA256: 76868787d3e3d64329f15124f115f72d42ae31ace534ee138c81fce927d2acdf
+            ownMode2StageSetterSHA256: 2fb4a5d1e55bbbc6679e453fce950ac4401e0d20057caf6a666517541bcf409d
+            ownFreeSelectorSHA256: 1f47238ac7da5adcdb14334298f04a84b48c2598e8d941f40f32e208c8519c1c
+            ownEndSelectorSHA256: 89dace175dde0fd7d066450a4dfa7312f5bd42d4ae131ba4885b977e37c60cd8
+            ownInputSHA256: 005dc6ed685c017f138bd0704b87d4c38ceab5e0200a3d9435cf013d481b71fc
+            noSyntheticFreeCounters: true
+            noHoldNative: true
+            onlyReturnedNFGSelectsContinuation: true
+            requiresPhysicalFeatureEnd: true
+            unseenNestedFatal: true
+          ownOptionalTriggerAward:
+            version: own-SDK-FGT-optional-when-budget-does-not-grow-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            noAwardOrCashSynthesized: true
+            introAndBudgetGrowthStillRequireActualAward: true
+            requiredMoneyAndBudgetFieldsUnchanged: true
+            fieldBindings:
+              '0':
+                wireKey: FGT_0
+                fieldSHA256: e9dd3dc99b40f59603f9c7fa9dbf6b8b0c516311ffa63104afa3e861a36f83bb
+                property: APa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 15184a1e7c5447d1979be522c203916b133ea1c3a937436f50bc4da50b528696
+              '1':
+                wireKey: FGT_1
+                fieldSHA256: 64b5d119986284b91260e0048a594c5f8e84ab51bd7c1a85f87a17c60e1b1014
+                property: BPa
+                explicitSDKDefault: 0
+                missingFieldDeserializerSHA256: 15184a1e7c5447d1979be522c203916b133ea1c3a937436f50bc4da50b528696
+          ownClientFeatureEndContext:
+            version: own-client-cleared-FID-at-explicit-ending-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownPendingMethodSHA256: cf70abe6d20b27684c5f6ddfd317013c73c0cd4bdfcbad94ce0de5899fba2b93
+            ownFeatureModelClearSHA256: 178acaefa2a613d201604756e2e3541570690e67afc9aa5b9f3c7967191bb8b3
+            ownEndSelectorSHA256: 89dace175dde0fd7d066450a4dfa7312f5bd42d4ae131ba4885b977e37c60cd8
+            requiresPriorReturnedNFGZero: true
+            noOrdinaryIFGRelaxation: true
+            noSyntheticTerminal: true
+          ownEndBaseCashComponent:
+            version: own-returned-end-CW-is-retained-paid-component-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            rootCWFieldSHA256: c2073d507782a1e7677261f0f4bbd78fee1fff680cec5c496d1bd9a1378b6d7d
+            rootTWFieldSHA256: fe308f61fca38270060d98ab3207339a90ecaa7781d4aacdd093674bd468930d
+            noSecondCredit: true
+            requiresUnchangedTotalAndFinalBalance: true
+            currentEqualsReturnedPaidOffset: true
+            variant: retained-zero-end-CW
+            ownEndPositiveRequiredBeforeProduction: true
+          ownNativeHold:
+            version: own-32504-physical-Hold-reset-and-cash-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownPhysicalJournalSHA256: 11eda33556a6ce4fdc457bc29fdc4841fd19f40ba07cbd647861646ef54d8608
+            ownSourceArchiveSHA256: bec6ccce288a394e7e59ea21b365c1915dd0f2c7803560d2c03d280942f6c910
+            ownPhysicalEndResponseSHA256: fc827b00ba0c8a48f89916deb1475b97fbc6ead8425c98923aacb5bd65e363a2
+            ownActualHoldFreeReplies: 11
+            ownActualResetAwards:
+              - 1
+              - 3
+            onlyOwnSingleHoldMode: true
+            exactReturnedBudgetSum: true
+            currentCashIsStageWinDelta: true
+            noCashOrCounterDefaults: true
+            noNestedNative: true
+            requiresActualFeatureEndAndFIDAbsent: true
+            requiresRootCashConservation: true
+            originalAGRoundMongoReplayRequired: true
