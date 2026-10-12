@@ -6224,6 +6224,17 @@ games:
             noSyntheticFreeCounters: true
             unknownOtherNestedStillFatal: true
             ownNaturalPrefixSHA256: 0983af99526fd1813227dc3c4849d3673729f8bfbc3b168a229c5c53f0e1fb57
+          ownNestedReSpinHoldDiagnostic:
+            version: own-32503-Hold-over-ReSpin-physical-prefix-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            actualFID: 2|0|
+            outerMode: '0'
+            ownSecondFIDEndContextSHA256: 87eab77cfe75fafb7118b4946d610289625004b992efb92b9460482478d91000
+            actualOwnJournalSHA256: 0961f6c74a31f949c527ab67e6170f4a993f4efbb5d795dd3314551f3798e0f5
+            noNative: true
+            outerConsumesExactlyOne: true
+            requiresRealMode2EndThenReturnedMode0End: true
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6866,6 +6877,8 @@ games:
             requiresActualFeatureEndAndFIDAbsent: true
             requiresRootCashConservation: true
             originalAGRoundMongoReplayRequired: true
+            actualOwnLowerResetPacketSHA256: b5544f6f28ba569837c128f733b01969d2b0c83cadb521e9d319cd7c2e57cb3a
+            returnedResetMayReduceUnspentBudget: true
           ownReturnedReSpinEndCash:
             version: own-32504-returned-ReSpin-stage-win-at-physical-end-v2
             gameId: '32504'
@@ -6899,3 +6912,13 @@ games:
             noSyntheticFreeCounters: true
             unknownOtherNestedStillFatal: true
             ownNaturalPrefixSHA256: 439624617d1a0a0b1e126f6a5e778457b8ae53badc1823853154915a60cb1ef4
+          ownFreeStageEndCash:
+            version: own-32504-real-FreeSpins-end-retains-paid-offset-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            actualOwnPacketSHA256: e0a6e2161372fe5c2a8692a5332b165c6e104754b3ed8f16d4a8b18002aa40d7
+            requiresActualEndAfterCompleteStage1: true
+            requiresPlayedEqualsTotalAndRemainingZero: true
+            currentEqualsUnchangedPaidOffset: true
+            stageAndRootCashUnchanged: true
+            noSecondCredit: true
