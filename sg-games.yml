@@ -1176,7 +1176,10 @@ games:
             keys:
               - BGInfo
               - ClumpPlaceholderInfo
+              - PsudoNearMissFreespins
+              - PsudoSuperStackWilds
               - ReelResults
+              - WildReels
               - betID
               - paylineCount
               - stake
@@ -1253,6 +1256,18 @@ games:
               - awardTableIndex
               - index
               - winVal
+          GameResult/PsudoNearMissFreespins:
+            keys:
+              - finalSmallReelStops
+              - finalBigReelStops
+              - heldReels
+            required: []
+          GameResult/PsudoSuperStackWilds:
+            keys:
+              - finalSmallReelStops
+              - finalBigReelStops
+              - heldReels
+            required: []
         ownEvidenceSHA256: b2705ff42d04439ec89669a64b499451b3591fbd5b2d579ed3db04d45cebb1a2
         fixedGitCommit: 885f862bcc04841406820a932ef14c38c7759f1d
         unseenFeatureNotAdmitted: true
