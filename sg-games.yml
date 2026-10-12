@@ -6848,3 +6848,16 @@ games:
             requiresActualFeatureEndAndFIDAbsent: true
             requiresRootCashConservation: true
             originalAGRoundMongoReplayRequired: true
+          ownReturnedReSpinEndCash:
+            version: own-32504-returned-single-ReSpin-stage-win-at-physical-end-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownCurrentSourceRun: 38189471681
+            actualOwnPacketSHA256s:
+              - 17bcb4cf7ae840219978bedbfc96c843d01d72520cb090f0228ea3d587b33ce9
+              - 13efc7b3f5c07126c098514c1f41731e78712fa869840b6d5f2136c8ef482f5d
+            requiresActualFeatureEndAndPriorMode0: true
+            requiresExplicitTotal1Played1Remaining0: true
+            noSecondCashCredit: true
+            requiresUnchangedTotalAndFinalBalance: true
+            currentEqualsReturnedStageWin: true
