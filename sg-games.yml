@@ -6253,6 +6253,19 @@ games:
             requiresActualFeatureEndAndFIDAbsent: true
             requiresRootCashConservation: true
             originalAGRoundMongoReplayRequired: true
+          ownReturnedReSpinEndCash:
+            version: own-32503-returned-ReSpin-stage-win-at-physical-end-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            actualOwnPacketSHA256s:
+              - 6d968ab5586b8cab40afcd833c0c84c2e4901c222a67484c1f43da604ed16a9a
+              - effb5339ba784b056481ae5a04431253d443d7f02edf3adb4a2182d00d23d885
+            requiresActualFeatureEndAndPriorMode0: true
+            requiresPlayedEqualsActualTotalAndRemainingZero: true
+            requiresActualFreeCounterAndRootCashTransitions: true
+            noSecondCashCredit: true
+            requiresUnchangedTotalAndFinalBalance: true
+            currentEqualsReturnedStageWin: true
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6955,3 +6968,26 @@ games:
             noSyntheticCounters: true
             onlyActualFinalFeatureEndMakesNative: true
             requiresOriginalAGRoundMongoReplay: true
+          ownNestedHoldEndDisplay:
+            version: own-32504-inner-Hold-end-retains-outer-trigger-cash-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            actualOwnPacketSHA256: 283f80943feeab6eb4325628d12c77ea5b924b9909422808b9b49fe8fe9b22d0
+            ownSecondFIDEndContextSHA256: c6fa6bc7e0db95aa4d65734980d2b446913e70d7ebf11d8a12cb0c9a278f9296
+            outerMode: '1'
+            saveActualOuterTriggerCurrentCash: true
+            requiresOuterStageWinDeltaAndRootCashAtIntro: true
+            endCurrentEqualsSavedTriggerCash: true
+            requiresUnchangedRootAndOuterCounters: true
+            noSecondCashCredit: true
+          ownNestedReSpinHoldDiagnostic:
+            version: own-32504-Hold-over-ReSpin-physical-prefix-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            actualFID: 2|0|
+            outerMode: '0'
+            ownSecondFIDEndContextSHA256: c6fa6bc7e0db95aa4d65734980d2b446913e70d7ebf11d8a12cb0c9a278f9296
+            actualOwnPacketSHA256: e37dbd1aeffac3ba44a4a68c19739cd68088b9cee7908d95cd87860929810993
+            noNative: true
+            outerConsumesExactlyOne: true
+            requiresRealMode2EndThenReturnedMode0End: true
