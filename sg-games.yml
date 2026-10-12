@@ -6206,6 +6206,24 @@ games:
             currentEqualsReturnedPaidOffset: true
             variant: own-returned-paid-offset-end-CW
             ownEndPositiveRequiredBeforeProduction: false
+          ownNestedHoldDiagnostic:
+            version: own-second-FID-Hold-over-FreeSpins-no-Native-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            ownStageSetterSHA256: 7bfe99d13ad240bd7788604b3265224e599cfbb23a49b42d912020905a1821b9
+            ownSecondFIDEndContextSHA256: 87eab77cfe75fafb7118b4946d610289625004b992efb92b9460482478d91000
+            ownMode2EndCallSHA256: b995f7056128d52368984b6b65fdb73efbf41c4dc4c277463d68e6bd18e9048c
+            actualFID: 2|1|
+            outerMode: '1'
+            innerMode: '2'
+            outerFreeConsumesExactlyOne: true
+            outerCashAndBudgetPreservedInsideHold: true
+            onlyActualReturnedRemainingSelectsFreeRequest: true
+            requiresPhysicalMode2End: true
+            noNestedNative: true
+            noSyntheticFreeCounters: true
+            unknownOtherNestedStillFatal: true
+            ownNaturalPrefixSHA256: 0983af99526fd1813227dc3c4849d3673729f8bfbc3b168a229c5c53f0e1fb57
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6849,15 +6867,35 @@ games:
             requiresRootCashConservation: true
             originalAGRoundMongoReplayRequired: true
           ownReturnedReSpinEndCash:
-            version: own-32504-returned-single-ReSpin-stage-win-at-physical-end-v1
+            version: own-32504-returned-ReSpin-stage-win-at-physical-end-v2
             gameId: '32504'
             ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
             ownCurrentSourceRun: 38189471681
             actualOwnPacketSHA256s:
               - 17bcb4cf7ae840219978bedbfc96c843d01d72520cb090f0228ea3d587b33ce9
               - 13efc7b3f5c07126c098514c1f41731e78712fa869840b6d5f2136c8ef482f5d
+              - a263e5d4b10794067d4712f9bb31fb2e0b264486575e6619d7c6c65b5fc94505
             requiresActualFeatureEndAndPriorMode0: true
-            requiresExplicitTotal1Played1Remaining0: true
             noSecondCashCredit: true
             requiresUnchangedTotalAndFinalBalance: true
             currentEqualsReturnedStageWin: true
+            requiresPlayedEqualsActualTotalAndRemainingZero: true
+            requiresActualFreeCounterAndRootCashTransitions: true
+          ownNestedHoldDiagnostic:
+            version: own-second-FID-Hold-over-FreeSpins-no-Native-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownStageSetterSHA256: 2fb4a5d1e55bbbc6679e453fce950ac4401e0d20057caf6a666517541bcf409d
+            ownSecondFIDEndContextSHA256: c6fa6bc7e0db95aa4d65734980d2b446913e70d7ebf11d8a12cb0c9a278f9296
+            ownMode2EndCallSHA256: 76868787d3e3d64329f15124f115f72d42ae31ace534ee138c81fce927d2acdf
+            actualFID: 2|1|
+            outerMode: '1'
+            innerMode: '2'
+            outerFreeConsumesExactlyOne: true
+            outerCashAndBudgetPreservedInsideHold: true
+            onlyActualReturnedRemainingSelectsFreeRequest: true
+            requiresPhysicalMode2End: true
+            noNestedNative: true
+            noSyntheticFreeCounters: true
+            unknownOtherNestedStillFatal: true
+            ownNaturalPrefixSHA256: 439624617d1a0a0b1e126f6a5e778457b8ae53badc1823853154915a60cb1ef4
