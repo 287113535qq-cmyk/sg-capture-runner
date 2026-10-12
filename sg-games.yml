@@ -5600,7 +5600,7 @@ games:
         GN: dragonunleashedthreelegends96
         RB: '5'
       ownGDMContract:
-        version: own-SDK-HoldNSpin-cash-components-no-Native-diagnostic-v13
+        version: own-SDK-HoldNSpin-own-physical-Native-v14
         gameId: '32503'
         dbName: sg_dragonunleashedthreelegends96
         runtimeGameId: 33036
@@ -6169,8 +6169,8 @@ games:
                 explicitSDKDefault: 0
                 missingFieldDeserializerSHA256: 84b2cfdb56ad98e4cff67d2a61e09ff059488539f388d835aa315b58be84fb17
           unseenNestedFIDFatal: true
-          HoldDiagnosticsOnly: true
-          HoldNeverNativeBeforePhysicalReview: true
+          HoldDiagnosticsOnly: false
+          HoldNeverNativeBeforePhysicalReview: false
           ownHoldDiagnostic:
             version: own-returned-Hold-NFG-request-only-no-Native-v1
             gameId: '32503'
@@ -6235,6 +6235,24 @@ games:
             noNative: true
             outerConsumesExactlyOne: true
             requiresRealMode2EndThenReturnedMode0End: true
+          ownNativeHold:
+            version: own-32503-physical-Hold-reset-and-cash-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            ownPhysicalJournalSHA256: bb7cfd3bb760fa3fd26afba63c7a4ad4b9e81532655de48ee33818234bae9054
+            ownSourceArchiveSHA256: 5ea6403cda5bdd78547b2d58cfe2679f5452b75f48053fbe6e4512a1873fdfd1
+            ownPhysicalEndResponseSHA256: 2d965981134f565d193b9f49423e0a763dfdcae3389f0586c67d6e4b4d94ea0a
+            ownActualHoldFreeReplies: 5
+            ownActualResetAwards:
+              - 3
+            onlyOwnSingleHoldMode: true
+            exactReturnedBudgetSum: true
+            currentCashIsStageWinDelta: true
+            noCashOrCounterDefaults: true
+            noNestedNative: true
+            requiresActualFeatureEndAndFIDAbsent: true
+            requiresRootCashConservation: true
+            originalAGRoundMongoReplayRequired: true
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
@@ -6922,3 +6940,18 @@ games:
             currentEqualsUnchangedPaidOffset: true
             stageAndRootCashUnchanged: true
             noSecondCredit: true
+          ownNativeNestedHold:
+            version: own-32504-physical-repeated-and-final-free-Hold-v1
+            gameId: '32504'
+            ownSDKFileSHA256: 88c061fe0793fba8a86c48167ab5b975f3a9848c07cb0c53936cc807f3a3b709
+            ownSecondFIDEndContextSHA256: c6fa6bc7e0db95aa4d65734980d2b446913e70d7ebf11d8a12cb0c9a278f9296
+            actualOwnWholePacketsSHA256:
+              - 76526d334312321cdb2aa817dc4b954fbd0c68387c8484ac0a028216d0675de3
+              - 55ac056ba7199725a626650de78cb2329d6dab9f624b8722b6b72b088bfb815a
+            outerMode: '1'
+            realHoldEndsReturnUnchangedOuterBudget: true
+            separatePaidHoldAndFreeStageCash: true
+            actualRootEndCWIsOriginalPaidCash: true
+            noSyntheticCounters: true
+            onlyActualFinalFeatureEndMakesNative: true
+            requiresOriginalAGRoundMongoReplay: true
