@@ -6254,18 +6254,20 @@ games:
             requiresRootCashConservation: true
             originalAGRoundMongoReplayRequired: true
           ownReturnedReSpinEndCash:
-            version: own-32503-returned-ReSpin-stage-win-at-physical-end-v1
+            version: own-32503-ReSpin-end-retains-last-physical-current-cash-v2
             gameId: '32503'
             ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
             actualOwnPacketSHA256s:
               - 6d968ab5586b8cab40afcd833c0c84c2e4901c222a67484c1f43da604ed16a9a
               - effb5339ba784b056481ae5a04431253d443d7f02edf3adb4a2182d00d23d885
+              - 2aca8878392e2f5a5a55a5804cf546d7cb179b6ff45aad12cd4b56755d1d6a30
             requiresActualFeatureEndAndPriorMode0: true
             requiresPlayedEqualsActualTotalAndRemainingZero: true
             requiresActualFreeCounterAndRootCashTransitions: true
             noSecondCashCredit: true
             requiresUnchangedTotalAndFinalBalance: true
-            currentEqualsReturnedStageWin: true
+            currentEqualsReturnedStageWin: false
+            currentEqualsLastActualFreeResponseCash: true
           ownNativeNestedHold:
             version: own-32503-physical-Hold-over-FreeSpins-v1
             gameId: '32503'
@@ -6293,6 +6295,49 @@ games:
             requiresActualPositiveAwardEqualsRemainingAndTotal: true
             requiresPlayedZeroAndStageCashZero: true
             noSyntheticCounter: true
+          ownPaidFreeOverReSpinDiagnostic:
+            version: own-32503-paid-FreeSpins-over-ReSpin-prefix-v1
+            gameId: '32503'
+            ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+            actualOwnPacketSHA256: 7d39c98e60b5758e5ce13b0734a9022349b148707f217aa620a0864fd171317c
+            ownStageSetterSHA256: 7bfe99d13ad240bd7788604b3265224e599cfbb23a49b42d912020905a1821b9
+            ownEndSelectorSHA256: 78095c55193654e734a866d6e671710014f0f8a79df39c445a48f58f8a4032c6
+            ownEndModeCallSHA256s:
+              - b7c182e295e0ef37af6d913c01d6080f3b5ba40b541e0bb490c00ad013a2c337
+              - b29e5e22970030e2e63511503f20fcea949588c1cff6ee2ef097633c81b9e3fc
+            actualFID: 1|0|
+            onlyActualPaidIntro: true
+            firstFIDSelectsCurrentStage: true
+            strictTwoStageCountersAndCash: true
+            requiresActualStage1EndBeforeReturnedStage0: true
+            noNativeUntilOwnWholePhysicalChain: true
+        ownFlowOnlyCapture:
+          version: own-SDK-first-FID-flow-only-capture-v2
+          gameId: '32503'
+          ownSDKFileSHA256: d65611803d14aa6517c96189c71787d3e0523432fdf98a3248556fdf0fad06a4
+          ownStageSetterSHA256: 7bfe99d13ad240bd7788604b3265224e599cfbb23a49b42d912020905a1821b9
+          ownFreeSelectorSHA256: 340c915dcd0e794c43dd45bf205dd58bb71c6f0a4a593aebcf44d92e975eca98
+          ownEndSelectorSHA256: 78095c55193654e734a866d6e671710014f0f8a79df39c445a48f58f8a4032c6
+          ownEndModeCallSHA256s:
+            - b7c182e295e0ef37af6d913c01d6080f3b5ba40b541e0bb490c00ad013a2c337
+            - b29e5e22970030e2e63511503f20fcea949588c1cff6ee2ef097633c81b9e3fc
+            - b995f7056128d52368984b6b65fdb73efbf41c4dc4c277463d68e6bd18e9048c
+          supportedModes:
+            - '0'
+            - '1'
+            - '2'
+          usesActualFirstFIDAndRemainingOnly: true
+          totalWinSource: TW
+          balanceSource: B
+          betSource: own-fixed-request
+          rawWirePreserved: true
+          noSyntheticFreeCounters: true
+          noDisplayAmountOrBudgetArithmeticGate: true
+          originalAGAmountReplayMongoChecksRequired: true
+          noOldUnknownPOSTReplay: true
+          nonFlowFieldsPreservedWithoutInterpretation: true
+          onlyUsedRequiredFieldsValidated: true
+          unknownFlowStillStops: true
   - provider: sg
     gameId: '32504'
     name: Dragon Unleashed Treasured Happiness
