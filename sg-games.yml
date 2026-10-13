@@ -4487,7 +4487,10 @@ games:
         multiplier: '1'
         total: '40'
         fsOn: '1'
-      freeStake: {}
+      freeStake:
+        multiplier: '1'
+        total: '40'
+        fsOn: '1'
       betRaw: 40
       runtimeGameId: 33154
       runtimeSlug: omgkittens_prt
@@ -4625,6 +4628,15 @@ games:
           zeroFreeCashPaths: []
           spinCashField: spinWins
           pairedReelContract: own-SDK-top-and-bottom-parallel-spins-v1
+      ownOMGNextEndContract:
+        version: own-OMG-source-next-cumulative-v3
+        ownSDKFileSHA256: fbd1b00f50009e0911723f782f5e3649362bf6b0986d6e3bc40b32e152bd9bc0
+        ownSourceReviewSHA256: 1d9021207939ea882f036a51431728eac2400a718e9170d52635f95c2a1688fd
+        logicRequestDataXML: <Stake multiplier="1" total="40" fsOn="1"/><AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData>
+        rawRequestResponsePreserved: true
+        noSyntheticTerminal: true
+        noOldUnknownPOSTReplay: true
+        originalAGMoneyReplayMongoRequired: true
   - provider: sg
     gameId: '32805'
     name: Soldier of Rome
@@ -4834,7 +4846,9 @@ games:
       stake:
         total: '200'
         lines: '50'
-      freeStake: {}
+      freeStake:
+        total: '200'
+        lines: '50'
       betRaw: 200
       runtimeGameId: 33169
       runtimeSlug: swordofdestiny
@@ -4948,6 +4962,27 @@ games:
           zeroFreeCashPaths: []
           spinCashField: spinWins
           watermarkDisplayContract: own-SDK-watermark-display-without-award-v1
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32809'
+        dbName: sg_sword_of_destiny
+        runtimeGameId: 33169
+        sourceGameId: '20175'
+        kind: sword-of-destiny
+        ownSDKFileSHA256: 0dcca4f9b4f6c188f4f9f74e02699a250f07d62cce20703bb9d94d273b0b5236
+        ownSDKFrameworkSHA256: 8c466d57a4d16d5e050444b901f5ee8eff050ecd918aa62a5df8cc39a28ea67d
+        ownSDKGameLibsSHA256: 64d5f6f4be5de05e37bd3ebda3f20af067307c47db25fc695444b3b09e05b49f
+        initialTriggerSelectorSHA256: b613c31122af2be66220db332b3acd4ed097ca7daa39c964942b1460bb994f1d
+        initialTriggerParserSHA256: 993260bf04c7249e63014d4bd4dfc01b3483fa2d5b9430549604f55d25b44a78
+        freeCounterSelectorSHA256: 29202fd501190c8687aa8bf4d761fa5a2ad9f2351f72a4a7326bb8219cda357e
+        cashPath: BGInfo/totalWagerWin
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" lines="50" />
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
   - provider: sg
     gameId: '32812'
     name: Very Fruity
