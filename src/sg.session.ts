@@ -472,6 +472,8 @@ function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
 function ownWMSRealFlowBinding(game:AGGameConfig) {
  const c=game.sg.ownRealNextEndContract;
  const fixed:Record<string,any>={
+  '32782':{"db":"sg_knights_keep","runtime":33004,"source":"20196","kind":"knights-keep","sdk":"435c6ae1488f267cf93b09b4d0f8caf5f721fde2bd8f703724d600e9cb6cb43a"},
+  '32812':{"db":"sg_very_fruity","runtime":33172,"source":"20206","kind":"very-fruity","sdk":"73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2"},
   '32781':{db:'sg_kings_honour',runtime:33003,source:'20241',kind:'kings-honour',sdk:'8dd6490c6c2566bd51d67206f926adf3c040f654e0a197ac869946bc9820181d'},
   '32811':{db:'sg_triplecashwheel',runtime:33171,source:'20191',kind:'triple-cash-wheel',sdk:'0903de2a8aad707abf617996dee42def683070e2d23f9a369e47f98be620c0f8'},
  };
@@ -504,7 +506,7 @@ function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any) {
   assert(played<=total,'AG integrity: SG own invalid FS remaining');
   free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};
  } else assert(!previousFree||previousFree.freeSpinsRemaining===0,'AG integrity: SG own active FS selector disappeared');
- const localFeature=c.kind==='kings-honour'?g.ReelOfHonour!==undefined:g.WheelBonus?.WheelOutcome!==undefined;
+ const localFeature=c.kind==='kings-honour'?g.ReelOfHonour!==undefined:c.kind==='triple-cash-wheel'&&g.WheelBonus?.WheelOutcome!==undefined;
  return {win,free,baseRemaining,next:(free?.freeSpinsRemaining>0||(!free&&baseRemaining>0))?'FREE_SPIN':localFeature?'WHEEL_SPIN':'PLAY'};
 }
 

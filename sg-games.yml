@@ -1342,7 +1342,9 @@ games:
       stake:
         total: '75'
         lines: '25'
-      freeStake: {}
+      freeStake:
+        total: '75'
+        lines: '25'
       betRaw: 75
       runtimeGameId: 33004
       runtimeSlug: knightskeep
@@ -1440,6 +1442,22 @@ games:
             - BGInfo/totalWagerWin
           zeroFreeCashPaths: []
           spinCashField: spinWins
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32782'
+        dbName: sg_knights_keep
+        runtimeGameId: 33004
+        sourceGameId: '20196'
+        kind: knights-keep
+        ownSDKFileSHA256: 435c6ae1488f267cf93b09b4d0f8caf5f721fde2bd8f703724d600e9cb6cb43a
+        cashPath: BGInfo/totalWagerWin
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="75" lines="25" />
   - provider: sg
     gameId: '32785'
     name: Lady Of Egypt
@@ -4932,7 +4950,9 @@ games:
       stake:
         perLine: '5'
         total: '100'
-      freeStake: {}
+      freeStake:
+        perLine: '5'
+        total: '100'
       betRaw: 100
       runtimeGameId: 33172
       runtimeSlug: veryfruity
@@ -5030,6 +5050,22 @@ games:
           zeroFreeCashPaths: []
           spinCashField: spinWins
           ordinaryMarkerContract: own-SDK-FSInfo-selects-feature-v1
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32812'
+        dbName: sg_very_fruity
+        runtimeGameId: 33172
+        sourceGameId: '20206'
+        kind: very-fruity
+        ownSDKFileSHA256: 73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2
+        cashPath: BGInfo/totalWagerWin
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake perLine="5" total="100" /><PaylineCount count="20" />
   - provider: sg
     gameId: '32502'
     name: Dragon Unleashed - Prosperity Packets
