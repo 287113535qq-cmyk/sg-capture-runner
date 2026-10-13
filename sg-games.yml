@@ -1119,6 +1119,17 @@ games:
         clientSHA256: 611093eda7e11f2991571ac967589b5ea6796a982ec8ebf6d8757e473d950da0
         freeRequestUsesOwnWagerContext: true
         unseenFeatureStructuresNotAdmitted: true
+      ownKUSourceNextEndContract:
+        version: own-KU-source-model-next-end-v2
+        ownSDKFileSHA256: 611093eda7e11f2991571ac967589b5ea6796a982ec8ebf6d8757e473d950da0
+        ownSourceMethodsSHA256: 65eb00710ca820e46fc46d0abd389ce04638ee7ae0db09e2537e2d199ed1ed8d
+        ownLineModelReviewSHA256: 8383c1862951ff75aa6ca0138f81a1f212d3ea19cbd94b480c6ea54744a7e63f
+        initialPaylineCount: 60
+        rawRequestResponsePreserved: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        noSyntheticCounters: true
+        noOldUnknownPOSTReplay: true
   - provider: sg
     gameId: '32781'
     name: Kings Honour

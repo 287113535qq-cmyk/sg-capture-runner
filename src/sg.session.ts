@@ -605,6 +605,47 @@ export function validateOwnOMGFlow(game:AGGameConfig,g:any,first:boolean,previou
 }
 
 
+// Kronos Unleashed's own source protocol DATA. It bypasses the old typed
+// Kronos result rule only for game32784, without modifying game32783.
+export function ownKUFlowBinding(game:AGGameConfig){
+ const c=game.sg?.ownKUSourceNextEndContract;
+ assert(game.provider==='sg'&&game.gameId==='32784'&&game.dbName==='sg_kronosunleashed'&&game.sg.protocol==='wms'&&game.sg.runtimeGameId===33006&&String(game.sg.header.gameID)==='20208'&&game.sg.header.gameCodeRGI==='kronosunleashed'&&game.sg.betRaw===200,'AG integrity: SG KU own identity');
+ assert(c?.version==='own-KU-source-model-next-end-v2'&&c.ownSDKFileSHA256==='611093eda7e11f2991571ac967589b5ea6796a982ec8ebf6d8757e473d950da0'&&c.ownSourceMethodsSHA256==='65eb00710ca820e46fc46d0abd389ce04638ee7ae0db09e2537e2d199ed1ed8d'&&c.ownLineModelReviewSHA256==='8383c1862951ff75aa6ca0138f81a1f212d3ea19cbd94b480c6ea54744a7e63f'&&c.initialPaylineCount===60&&c.rawRequestResponsePreserved&&c.originalAGMoneyReplayMongoRequired&&c.noSyntheticTerminal&&c.noSyntheticCounters&&c.noOldUnknownPOSTReplay,'AG integrity: SG KU own source binding');
+ assert(JSON.stringify(game.sg.stake)===JSON.stringify({total:'200',paylineCount:'60'}),'AG integrity: SG KU own actual wager DATA');return c;
+}
+export function ownKULogicDATA(game:AGGameConfig,selectedLines:number){
+ ownKUFlowBinding(game);assert([60,70,80,90,100].includes(selectedLines),'AG integrity: SG KU actual model selected lines unavailable');
+ return `<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" paylineCount="60"/><PaylineCount count="${selectedLines}"/>`;
+}
+export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previousFreeStage:boolean,previousNeedsLogic:boolean){
+ ownKUFlowBinding(game);assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object'&&!Array.isArray(g.BGInfo),'AG integrity: SG KU actual result missing');
+ assert(integer(g.stake,'KU actual wager')===game.sg.betRaw,'AG integrity: SG KU changed wager');
+ const selectedLines=integer(g.paylineCount,'KU actual returned model lines');assert([60,70,80,90,100].includes(selectedLines),'AG integrity: SG KU unmapped returned model lines');
+ const bg=g.BGInfo,win=integer(bg.totalWagerWin,'KU actual cumulative wager cash');
+ for(const x of [bg,g.FSInfo])if(x?.isMaxWin!==undefined)assert(x.isMaxWin==='0','AG integrity: SG KU maximum-win flow not mapped');
+ if(bg.isBigBet!==undefined)assert(bg.isBigBet==='0','AG integrity: SG KU additional wager flow not mapped');
+ if(bg.baseGameSpinsRemaining!==undefined)assert(integer(bg.baseGameSpinsRemaining,'KU returned base pending')===0,'AG integrity: SG KU unmapped base continuation');
+ for(const tag of ['Feature','PickerInfo','NextActionInfo','BonusWheel','BFInfo','IRFInfo','JackpotInfo','JackpotData','BaseGameRecoveryInfo','BonusData'])assert(g[tag]===undefined,'AG integrity: SG KU actual next needs mapping');
+ const respins=g.Respins!==undefined;
+ if(respins){assert(g.Respins&&typeof g.Respins==='object'&&!Array.isArray(g.Respins)&&g.Respins.jackpots==='','AG integrity: SG KU jackpot or unknown local Respins flow not mapped');for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');}
+ // The own source initializes featureAwarded=false and sets it only for Y
+ // or returned Respins. No line/prize/geometry equations are used here.
+ const spin=list(g.ReelResults?.ReelSpin)[0];
+ if(spin?.bonusAwarded!==undefined)assert(['N','Y'].includes(spin.bonusAwarded),'AG integrity: SG KU unknown initial award selector');
+ const awarded=respins||spin?.bonusAwarded==='Y';
+ if(first&&!awarded)return {win,selectedLines,free:undefined,freeStage:false,needsLogic:false,next:'PLAY'};
+ if(!first)assert(previousFreeStage&&previousNeedsLogic,'AG integrity: SG KU Logic without actual free selector');
+ let free:Record<string,any>|undefined,freeStage=false,needsLogic=false;
+ if(g.FSInfo!==undefined){const f=g.FSInfo;assert(f&&typeof f==='object'&&!Array.isArray(f),'AG integrity: SG KU actual FS selector missing');const total=integer(f.freeSpinsTotal,'KU actual FS total'),played=integer(f.freeSpinNumber,'KU actual FS played');assert(played<=total,'AG integrity: SG KU invalid actual remaining');
+  if(total>0){freeStage=true;needsLogic=played<total;free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};}
+  else assert(respins&&!previousFreeStage,'AG integrity: SG KU unknown zero-total selected feature');
+ }else assert(respins&&!previousFreeStage,'AG integrity: SG KU actual selected free counters missing');
+ // Returned Respins are consumed locally. They add no AG business request
+ // and no virtual AG stage. Keep their UI meaning separate from wire next.
+ return {win,selectedLines,free,freeStage,needsLogic,localRespinsPresentation:respins,next:needsLogic?'FREE_SPIN':'PLAY'};
+}
+
+
 export class SGWmsSession {
     private balance = Number.NaN;
     private startBalance = Number.NaN;
@@ -619,6 +660,7 @@ export class SGWmsSession {
     private lastBase: unknown;private lastBlazingX?:number;private jinseBase:unknown;
     private ownKronosBase:any;
     private ownWMSBaseRemaining=0;
+    private ownKUNeedsLogic=false;private ownKUFreeStage=false;private ownKUSelectedLines=60;
     private ownWMSSwordPendingIntro=false;
     private ownOMGNeedsLogic=false;private ownOMGFreeStage=false;
     private healthyComponentsBase:any;
@@ -684,6 +726,7 @@ export class SGWmsSession {
     getLastGameRequest() { return this.lastRequest; }
     isRoundTerminalAction(action: string) { return action === 'SPIN'; }
     getExactFollowUpRequest(action: string) {
+        if(this.game.sg.ownKUSourceNextEndContract&&action==='FREE_SPIN'){ownKUFlowBinding(this.game);assert(this.ownKUNeedsLogic,'AG integrity: SG KU missing actual free Logic selector');return {event:'Logic',parameters:{...this.game.sg.stake}};}
         if(action === 'PLAY') return {event:'EndGame',parameters:{}};
         if(action==='WHEEL_SPIN'&&this.game.sg.ownRealNextEndContract){ownWMSRealFlowBinding(this.game);return {event:'EndGame',parameters:{}};}
         if(action === 'PICK_FREE_SPINS') {fiveTreasuresBinding(this.game);return undefined;}
@@ -703,6 +746,8 @@ export class SGWmsSession {
     private payload(event:string,parameters:Record<string,any>) {
         const h={...this.game.sg.header,sessionID:this.session};
         const header='<Header '+Object.entries(h).map(([k,v])=>`${k}="${escape(v)}"`).join(' ')+'/>';
+        if(event==='EndGame'&&this.game.sg.ownKUSourceNextEndContract){ownKUFlowBinding(this.game);assert(this.action==='PLAY'&&Object.keys(parameters).length===0,'AG integrity: SG KU actual close request');return `<GameRequest type="EndGame">${header}<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData></GameRequest>`;}
+        if(event==='Logic'&&this.game.sg.ownKUSourceNextEndContract){assert((this.action==='SPIN'||(this.action==='FREE_SPIN'&&this.ownKUNeedsLogic))&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG KU exact Logic request');return `<GameRequest type="Logic">${header}${ownKULogicDATA(this.game,this.ownKUSelectedLines)}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.ownOMGNextEndContract){const c=ownOMGFlowBinding(this.game);assert((this.action==='SPIN'||(this.action==='FREE_SPIN'&&this.ownOMGNeedsLogic))&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG OMG own Logic request');return `<GameRequest type="Logic">${header}${c.logicRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.ownRealNextEndContract){const c=ownWMSRealFlowBinding(this.game);assert((this.action==='SPIN'||(this.action==='FREE_SPIN'&&(this.free?.freeSpinsRemaining>0||this.ownWMSBaseRemaining>0||(c.kind==='sword-of-destiny'&&this.ownWMSSwordPendingIntro))))&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG own real Logic request');return `<GameRequest type="Logic">${header}${c.logicRequestDataXML}</GameRequest>`;}
         if(event==='Logic'&&this.game.sg.ownMatchedPaidContract){const c=ownMatchedPaidBinding(this.game);if(this.action==='FREE_SPIN'){ownKronosBinding(this.game);assert(this.free?.freeSpinsRemaining>0&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG Kronos own free request');}else assert(this.action==='SPIN'&&JSON.stringify(parameters)===JSON.stringify(this.game.sg.stake),'AG integrity: SG matched paid request');return `<GameRequest type="Logic">${header}${c.paidRequestDataXML}</GameRequest>`;}
@@ -788,7 +833,7 @@ export class SGWmsSession {
     }
     async callGameData(event:string,parameters:Record<string,any>|null) {
         const first=this.action==='SPIN';
-        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;this.ownKronosBase=undefined;this.ownWMSBaseRemaining=0;this.ownWMSSwordPendingIntro=false;this.ownOMGNeedsLogic=false;this.ownOMGFreeStage=false;}
+        if(first) {assert(event==='Logic','AG integrity: SG round start');this.startBalance=this.balance;this.totalWin=0;this.free=undefined;this.steps=[];this.lastBase=undefined;this.jinseBase=undefined;this.healthyComponentsBase=undefined;this.ownKronosBase=undefined;this.ownWMSBaseRemaining=0;this.ownWMSSwordPendingIntro=false;this.ownOMGNeedsLogic=false;this.ownOMGFreeStage=false;this.ownKUNeedsLogic=false;this.ownKUFreeStage=false;}
         else assert(event===(this.action==='PICK_FREE_SPINS'?'Logic':this.getExactFollowUpRequest(this.action)?.event),'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
         const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
@@ -801,6 +846,7 @@ export class SGWmsSession {
             const g=r.GameResult;assert(g&&(this.game.sg.ownOMGNextEndContract||g.BGInfo||this.game.sg.ownMatchedPaidContract?.ordinaryCashContract),'AG integrity: SG game result');
             if(this.game.sg.ownOMGNextEndContract){const mapped=validateOwnOMGFlow(this.game,g,first,this.ownOMGNeedsLogic,this.ownOMGFreeStage);this.totalWin=mapped.win;this.free=mapped.free;this.ownOMGNeedsLogic=mapped.needsLogic;this.ownOMGFreeStage=mapped.freeStage;this.action=mapped.next;}
             else if(this.game.sg.ownRealNextEndContract){const mapped=validateOwnWMSRealFlow(this.game,g,this.free,r,this.ownWMSSwordPendingIntro);this.totalWin=mapped.win;this.free=mapped.free;this.ownWMSBaseRemaining=mapped.baseRemaining;this.ownWMSSwordPendingIntro='pendingIntro' in mapped&&mapped.pendingIntro===true;this.action=mapped.next;}
+            else if(this.game.sg.ownKUSourceNextEndContract){const mapped=validateOwnKUFlow(this.game,g,first,this.ownKUFreeStage,this.ownKUNeedsLogic);this.totalWin=mapped.win;this.free=mapped.free;this.ownKUSelectedLines=mapped.selectedLines;this.ownKUFreeStage=mapped.freeStage;this.ownKUNeedsLogic=mapped.needsLogic;this.action=mapped.next;}
             else if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.ownMatchedPaidContract){this.totalWin=this.game.sg.ownMatchedPaidContract.ordinaryCashContract?validateOwnBulkPaidData(this.game,g,first):validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
             else if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
