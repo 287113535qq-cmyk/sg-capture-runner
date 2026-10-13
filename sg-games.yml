@@ -4308,7 +4308,9 @@ games:
       stake:
         total: '100'
         isBigBet: '0'
-      freeStake: {}
+      freeStake:
+        total: '100'
+        isBigBet: '0'
       betRaw: 100
       runtimeGameId: 33151
       runtimeSlug: mightyblackknight
@@ -4429,6 +4431,22 @@ games:
           spinCashField: spinWins
           returnedLineContract:
             statePath: BGInfo/wildBonus
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32791'
+        dbName: sg_mightyblackknight
+        runtimeGameId: 33151
+        sourceGameId: '20177'
+        kind: mighty-black-knight
+        ownSDKFileSHA256: aefd5e1ff253dc27e5b4e387d8cc267fec0d9be99b10e53741ede448dc760958
+        cashPath: BGInfo/totalWagerWin
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="100" isBigBet="0" />
   - provider: sg
     gameId: '32794'
     name: OMG Kittens
@@ -4647,7 +4665,10 @@ games:
         paylineCount: '1'
         total: '200'
         isBigBet: '0'
-      freeStake: {}
+      freeStake:
+        paylineCount: '1'
+        total: '200'
+        isBigBet: '0'
       betRaw: 200
       runtimeGameId: 33165
       runtimeSlug: soldierofrome
@@ -4758,6 +4779,22 @@ games:
           spinCashField: spinWins
           returnedLineContract:
             statePath: ReelInfo/topOpen
+      ownRealNextEndContract:
+        version: own-fixed-client-real-next-end-v1
+        gameId: '32805'
+        dbName: sg_soldier_of_rome
+        runtimeGameId: 33165
+        sourceGameId: '20246'
+        kind: soldier-of-rome
+        ownSDKFileSHA256: 0e8c1cdc24933598c6245c37a78ef918ee8b5e9071a4101c5f6bef96187c3de7
+        cashPath: BGInfo/totalWagerWin
+        rawRequestResponsePreserved: true
+        localPresentationsDoNotRequestServer: true
+        originalAGMoneyReplayMongoRequired: true
+        noSyntheticTerminal: true
+        unmappedFlowStops: true
+        noOldUnknownPOSTReplay: true
+        logicRequestDataXML: <AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake paylineCount="1" total="200" isBigBet="0" />
   - provider: sg
     gameId: '32809'
     name: Sword of Destiny

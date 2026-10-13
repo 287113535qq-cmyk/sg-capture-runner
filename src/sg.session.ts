@@ -472,6 +472,8 @@ function validateOwnBulkPaidData(game:AGGameConfig,g:any,first:boolean):number {
 function ownWMSRealFlowBinding(game:AGGameConfig) {
  const c=game.sg.ownRealNextEndContract;
  const fixed:Record<string,any>={
+  '32791':{"db":"sg_mightyblackknight","runtime":33151,"source":"20177","kind":"mighty-black-knight","sdk":"aefd5e1ff253dc27e5b4e387d8cc267fec0d9be99b10e53741ede448dc760958"},
+  '32805':{"db":"sg_soldier_of_rome","runtime":33165,"source":"20246","kind":"soldier-of-rome","sdk":"0e8c1cdc24933598c6245c37a78ef918ee8b5e9071a4101c5f6bef96187c3de7"},
   '32782':{"db":"sg_knights_keep","runtime":33004,"source":"20196","kind":"knights-keep","sdk":"435c6ae1488f267cf93b09b4d0f8caf5f721fde2bd8f703724d600e9cb6cb43a"},
   '32812':{"db":"sg_very_fruity","runtime":33172,"source":"20206","kind":"very-fruity","sdk":"73d7979bc75f7d7c15748ce85bb02866592d61051bbf2b42a569be91fda02ab2"},
   '32781':{db:'sg_kings_honour',runtime:33003,source:'20241',kind:'kings-honour',sdk:'8dd6490c6c2566bd51d67206f926adf3c040f654e0a197ac869946bc9820181d'},
@@ -490,9 +492,11 @@ function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any) {
  assert(integer(g.stake,'own flow actual wager')===game.sg.betRaw,'AG integrity: SG own flow changed wager');
  // These interactive structures are not selected by either fixed own client.
  // Extra display data remains raw; it does not need another reel/schema equation.
- for(const tag of ['PickerInfo','Feature','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo'])assert(g[tag]===undefined,'AG integrity: SG own actual next needs mapping');
+ for(const tag of ['PickerInfo','Feature','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo'])if(!(c.kind==='soldier-of-rome'&&tag==='IRFInfo'))assert(g[tag]===undefined,'AG integrity: SG own actual next needs mapping');
  const bg=g.BGInfo,win=integer(bg.totalWagerWin,'own flow cumulative wager cash');
  assert(bg.isMaxWin==='0','AG integrity: SG own maximum-win flow not mapped');
+ const nextPair=c.kind==='mighty-black-knight'||c.kind==='soldier-of-rome';
+ if(nextPair)assert(bg.isBigBet==='0'&&(g.FSInfo?.isMaxWin===undefined||g.FSInfo.isMaxWin==='0'),'AG integrity: SG own extra-wager or maximum-win flow not mapped');
  let baseRemaining=0;
  if(c.kind==='kings-honour') {
   assert(bg.isBigBet==='0','AG integrity: SG own extra-wager flow not mapped');
@@ -502,9 +506,16 @@ function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any) {
  if(g.FSInfo!==undefined) {
   const f=g.FSInfo;
   assert(f&&typeof f==='object'&&!Array.isArray(f),'AG integrity: SG own FS control');
-  const total=integer(f.freeSpinsTotal,'own FS actual total'),played=integer(f.freeSpinNumber,'own FS actual played');
+  const played=integer(c.kind==='soldier-of-rome'?f.spinsUsed:f.freeSpinNumber,'own FS actual played');
+  const total=c.kind==='soldier-of-rome'?played+integer(f.spinsRemaining,'own FS actual remaining'):integer(f.freeSpinsTotal,'own FS actual total');
+  assert(Number.isSafeInteger(total),'AG integrity: SG own safe FS total');
   assert(played<=total,'AG integrity: SG own invalid FS remaining');
   free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};
+  if(c.kind==='soldier-of-rome'&&!previousFree&&free.freeSpinsRemaining>0){
+   const spin=list(g.ReelResults?.ReelSpin)[0];
+   assert(spin&&spin.winCountSC!==undefined,'AG integrity: SG own Soldier missing initial feature selector');
+   if(integer(spin.winCountSC,'own Soldier actual feature selector')!==1)free=undefined;
+  }
  } else assert(!previousFree||previousFree.freeSpinsRemaining===0,'AG integrity: SG own active FS selector disappeared');
  const localFeature=c.kind==='kings-honour'?g.ReelOfHonour!==undefined:c.kind==='triple-cash-wheel'&&g.WheelBonus?.WheelOutcome!==undefined;
  return {win,free,baseRemaining,next:(free?.freeSpinsRemaining>0||(!free&&baseRemaining>0))?'FREE_SPIN':localFeature?'WHEEL_SPIN':'PLAY'};
