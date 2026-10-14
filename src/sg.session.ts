@@ -617,7 +617,16 @@ export function ownKULogicDATA(game:AGGameConfig,selectedLines:number){
  ownKUFlowBinding(game);assert([60,70,80,90,100].includes(selectedLines),'AG integrity: SG KU actual model selected lines unavailable');
  return `<AccountData><CurrencyMultiplier>1</CurrencyMultiplier></AccountData><Stake total="200" paylineCount="60"/><PaylineCount count="${selectedLines}"/>`;
 }
-export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previousFreeStage:boolean,previousNeedsLogic:boolean){
+export function bindOwnKUInitMaxWin(game:AGGameConfig,r:any):number{
+ ownKUFlowBinding(game);
+ assert(r&&r.type==='Init'&&r.Header&&String(r.Header.gameID)==='20208'&&r.Header.isRecovering==='N','AG integrity: SG KU max binding needs own non-recovering Init');
+ const award=list(r.AwardsInfo)[0];
+ assert(award&&typeof award==='object'&&!Array.isArray(award)&&award.awardTableIndex==='0','AG integrity: SG KU own first award table missing');
+ const maxWin=integer(award.maxWin,'KU actual Init maximum winnings');
+ assert(maxWin>0,'AG integrity: SG KU actual Init maximum winnings must be positive');
+ return maxWin;
+}
+export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previousFreeStage:boolean,previousNeedsLogic:boolean,initMaxWin?:number){
  ownKUFlowBinding(game);assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object'&&!Array.isArray(g.BGInfo),'AG integrity: SG KU actual result missing');
  assert(integer(g.stake,'KU actual wager')===game.sg.betRaw,'AG integrity: SG KU changed wager');
  const selectedLines=integer(g.paylineCount,'KU actual returned model lines');assert([60,70,80,90,100].includes(selectedLines),'AG integrity: SG KU unmapped returned model lines');
@@ -625,7 +634,8 @@ export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previous
  for(const x of [bg,g.FSInfo])if(x?.isMaxWin!==undefined)assert(x.isMaxWin==='0','AG integrity: SG KU maximum-win flow not mapped');
  if(bg.isBigBet!==undefined)assert(bg.isBigBet==='0','AG integrity: SG KU additional wager flow not mapped');
  if(bg.baseGameSpinsRemaining!==undefined)assert(integer(bg.baseGameSpinsRemaining,'KU returned base pending')===0,'AG integrity: SG KU unmapped base continuation');
- for(const tag of ['Feature','PickerInfo','NextActionInfo','BonusWheel','BFInfo','IRFInfo','JackpotInfo','JackpotData','BaseGameRecoveryInfo','BonusData'])assert(g[tag]===undefined,'AG integrity: SG KU actual next needs mapping');
+ for(const tag of ['Feature','PickerInfo','NextActionInfo','BonusWheel','BFInfo','IRFInfo','JackpotInfo','JackpotData','BonusData'])assert(g[tag]===undefined,'AG integrity: SG KU actual next needs mapping');
+ if(g.BaseGameRecoveryInfo!==undefined)assert(!first&&previousFreeStage&&previousNeedsLogic&&list(g.ReelResults?.ReelSpin)[0]?.freeSpin==='Y','AG integrity: SG KU recovery field outside actual FREE selector');
  const respins=g.Respins!==undefined;
  if(respins){assert(g.Respins&&typeof g.Respins==='object'&&!Array.isArray(g.Respins)&&g.Respins.jackpots==='','AG integrity: SG KU jackpot or unknown local Respins flow not mapped');for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');}
  // The own source initializes featureAwarded=false and sets it only for Y
@@ -635,6 +645,12 @@ export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previous
  const awarded=respins||spin?.bonusAwarded==='Y';
  if(first&&!awarded)return {win,selectedLines,free:undefined,freeStage:false,needsLogic:false,next:'PLAY'};
  if(!first)assert(previousFreeStage&&previousNeedsLogic,'AG integrity: SG KU Logic without actual free selector');
+ if(!first)assert(spin?.freeSpin==='Y','AG integrity: SG KU nonfirst continuation needs actual FREE marker');
+ if(!first&&spin?.freeSpin==='Y'){
+  assert(typeof initMaxWin==='number'&&Number.isSafeInteger(initMaxWin)&&initMaxWin>0,'AG integrity: SG KU actual FREE needs bound Init maximum winnings');
+  const fsWinnings=integer(g.FSInfo?.fsWinnings,'KU actual FREE cumulative feature winnings');
+  assert(fsWinnings<initMaxWin!,'AG integrity: SG KU maximum winnings threshold flow not mapped');
+ }
  let free:Record<string,any>|undefined,freeStage=false,needsLogic=false;
  if(g.FSInfo!==undefined){const f=g.FSInfo;assert(f&&typeof f==='object'&&!Array.isArray(f),'AG integrity: SG KU actual FS selector missing');const total=integer(f.freeSpinsTotal,'KU actual FS total'),played=integer(f.freeSpinNumber,'KU actual FS played');assert(played<=total,'AG integrity: SG KU invalid actual remaining');
   if(total>0){freeStage=true;needsLogic=played<total;free={freeSpinsTotal:total,freeSpinsPlayed:played,freeSpinsRemaining:total-played,accumulativeWin:win/100};}
@@ -661,6 +677,7 @@ export class SGWmsSession {
     private ownKronosBase:any;
     private ownWMSBaseRemaining=0;
     private ownKUNeedsLogic=false;private ownKUFreeStage=false;private ownKUSelectedLines=60;
+    private ownKUInitMaxWin?:number;
     private ownWMSSwordPendingIntro=false;
     private ownOMGNeedsLogic=false;private ownOMGFreeStage=false;
     private healthyComponentsBase:any;
@@ -827,6 +844,7 @@ export class SGWmsSession {
         assert(r && r.type===event && r.Header && !r.Error && !r.Errors,'AG integrity: SG response envelope');
         assert(String(r.Header.gameID)===String(this.game.sg.header.gameID),'AG integrity: SG response game');
         assert(typeof r.Header.sessionID==='string'&&r.Header.sessionID.length>0,'AG integrity: SG response session');
+        if(event==='Init'&&this.game.sg.ownKUSourceNextEndContract)this.ownKUInitMaxWin=bindOwnKUInitMaxWin(this.game,r);
         const balances=list(r.Balances?.Balance).filter(b=>b.name==='CASH_BALANCE');assert(balances.length===1,'AG integrity: SG cash balance');
         this.balance=integer(balances[0].value,'cash balance');this.session=r.Header.sessionID;
         return r;
@@ -846,7 +864,7 @@ export class SGWmsSession {
             const g=r.GameResult;assert(g&&(this.game.sg.ownOMGNextEndContract||g.BGInfo||this.game.sg.ownMatchedPaidContract?.ordinaryCashContract),'AG integrity: SG game result');
             if(this.game.sg.ownOMGNextEndContract){const mapped=validateOwnOMGFlow(this.game,g,first,this.ownOMGNeedsLogic,this.ownOMGFreeStage);this.totalWin=mapped.win;this.free=mapped.free;this.ownOMGNeedsLogic=mapped.needsLogic;this.ownOMGFreeStage=mapped.freeStage;this.action=mapped.next;}
             else if(this.game.sg.ownRealNextEndContract){const mapped=validateOwnWMSRealFlow(this.game,g,this.free,r,this.ownWMSSwordPendingIntro);this.totalWin=mapped.win;this.free=mapped.free;this.ownWMSBaseRemaining=mapped.baseRemaining;this.ownWMSSwordPendingIntro='pendingIntro' in mapped&&mapped.pendingIntro===true;this.action=mapped.next;}
-            else if(this.game.sg.ownKUSourceNextEndContract){const mapped=validateOwnKUFlow(this.game,g,first,this.ownKUFreeStage,this.ownKUNeedsLogic);this.totalWin=mapped.win;this.free=mapped.free;this.ownKUSelectedLines=mapped.selectedLines;this.ownKUFreeStage=mapped.freeStage;this.ownKUNeedsLogic=mapped.needsLogic;this.action=mapped.next;}
+            else if(this.game.sg.ownKUSourceNextEndContract){const mapped=validateOwnKUFlow(this.game,g,first,this.ownKUFreeStage,this.ownKUNeedsLogic,this.ownKUInitMaxWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKUSelectedLines=mapped.selectedLines;this.ownKUFreeStage=mapped.freeStage;this.ownKUNeedsLogic=mapped.needsLogic;this.action=mapped.next;}
             else if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.ownMatchedPaidContract){this.totalWin=this.game.sg.ownMatchedPaidContract.ordinaryCashContract?validateOwnBulkPaidData(this.game,g,first):validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
             else if(this.game.sg.healthyComponentsContract){const mapped=validateOwnHealthyComponents(this.game,g,first,this.free,this.healthyComponentsBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.healthyComponentsBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
