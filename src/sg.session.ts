@@ -651,7 +651,14 @@ export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previous
    &&p.scope==='paid-first-N-N-no-FS-no-recovery'&&p.providerNext==='EndGame'
    &&p.rawBGInfoCashRequired===true&&p.noAdditionalProviderLogic===true&&p.noSyntheticTerminal===true;
   const formattedJackpots=typeof g.Respins.jackpots==='string'&&/^\d+(?:,\d+)*(?:;\d+(?:,\d+)*)*$/.test(g.Respins.jackpots);
-  assert(g.Respins.jackpots===''||(paidFirstNoFS&&paidProof&&formattedJackpots),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
+  const f=(c as any)?.freeLocalRespinsProtocolDATA;
+  const freeLocalPending=!first&&previousFreeStage&&previousNeedsLogic&&spin?.freeSpin==='Y'&&g.FSInfo&&typeof g.FSInfo==='object'&&!Array.isArray(g.FSInfo)
+   &&integer(g.FSInfo.freeSpinsTotal,'KU actual FS total')>integer(g.FSInfo.freeSpinNumber,'KU actual FS played');
+  const freeProof=f?.version==='own-KU-FREE-local-Respins-pending-next-Logic-v8'&&f.sourceBridgeProofSHA256==='d7a46f6510281ccaff792aea86df999eb357b364fae91250621e098bdfce44ca'
+   &&f.scope==='nonfirst-FREE-local-Respins-actual-FS-pending'&&f.providerNext==='Logic'
+   &&f.rawBGAndFSCashRequired===true&&f.noAdditionalRespinsWireRequest===true
+   &&f.noSyntheticCounters===true&&f.noSyntheticTerminal===true&&f.noJackpotMoneyReconstruction===true&&f.originalMaximumAndUnknownStopsRetained===true;
+  assert(g.Respins.jackpots===''||(((paidFirstNoFS&&paidProof)||(freeLocalPending&&freeProof))&&formattedJackpots),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
   for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');
  }
  // The own source initializes featureAwarded=false and sets it only for Y

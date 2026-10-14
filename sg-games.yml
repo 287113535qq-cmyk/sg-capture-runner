@@ -1138,6 +1138,17 @@ games:
           rawBGInfoCashRequired: true
           noAdditionalProviderLogic: true
           noSyntheticTerminal: true
+        freeLocalRespinsProtocolDATA:
+          version: "own-KU-FREE-local-Respins-pending-next-Logic-v8"
+          sourceBridgeProofSHA256: "d7a46f6510281ccaff792aea86df999eb357b364fae91250621e098bdfce44ca"
+          scope: "nonfirst-FREE-local-Respins-actual-FS-pending"
+          providerNext: "Logic"
+          rawBGAndFSCashRequired: true
+          noAdditionalRespinsWireRequest: true
+          noSyntheticCounters: true
+          noSyntheticTerminal: true
+          noJackpotMoneyReconstruction: true
+          originalMaximumAndUnknownStopsRetained: true
   - provider: sg
     gameId: '32781'
     name: Kings Honour
