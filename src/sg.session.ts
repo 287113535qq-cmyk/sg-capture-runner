@@ -627,7 +627,7 @@ export function bindOwnKUInitMaxWin(game:AGGameConfig,r:any):number{
  return maxWin;
 }
 export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previousFreeStage:boolean,previousNeedsLogic:boolean,initMaxWin?:number){
- ownKUFlowBinding(game);assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object'&&!Array.isArray(g.BGInfo),'AG integrity: SG KU actual result missing');
+ const c=ownKUFlowBinding(game);assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object'&&!Array.isArray(g.BGInfo),'AG integrity: SG KU actual result missing');
  assert(integer(g.stake,'KU actual wager')===game.sg.betRaw,'AG integrity: SG KU changed wager');
  const selectedLines=integer(g.paylineCount,'KU actual returned model lines');assert([60,70,80,90,100].includes(selectedLines),'AG integrity: SG KU unmapped returned model lines');
  const bg=g.BGInfo,win=integer(bg.totalWagerWin,'KU actual cumulative wager cash');
@@ -637,10 +637,25 @@ export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previous
  for(const tag of ['Feature','PickerInfo','NextActionInfo','BonusWheel','BFInfo','IRFInfo','JackpotInfo','JackpotData','BonusData'])assert(g[tag]===undefined,'AG integrity: SG KU actual next needs mapping');
  if(g.BaseGameRecoveryInfo!==undefined)assert(!first&&previousFreeStage&&previousNeedsLogic&&list(g.ReelResults?.ReelSpin)[0]?.freeSpin==='Y','AG integrity: SG KU recovery field outside actual FREE selector');
  const respins=g.Respins!==undefined;
- if(respins){assert(g.Respins&&typeof g.Respins==='object'&&!Array.isArray(g.Respins)&&g.Respins.jackpots==='','AG integrity: SG KU jackpot or unknown local Respins flow not mapped');for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');}
+ const spin=list(g.ReelResults?.ReelSpin)[0];
+ if(respins){
+  assert(g.Respins&&typeof g.Respins==='object'&&!Array.isArray(g.Respins),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
+  // v7 proves the paid N/N, no-FS local jackpot/Respins path converges on
+  // original EndGame. Actual BGInfo cash stays authoritative; these lists
+  // introduce no additional provider request or reconstructed payout.
+  const p=(c as any)?.paidFirstLocalJackpotProtocolDATA;
+  const paidFirstNoFS=first&&!previousFreeStage&&!previousNeedsLogic&&spin?.freeSpin==='N'&&spin?.bonusAwarded==='N'
+   &&!Object.prototype.hasOwnProperty.call(g,'FSInfo')&&!Object.prototype.hasOwnProperty.call(g,'BaseGameRecoveryInfo');
+  const paidProof=p?.version==='own-KU-paid-first-noFS-jackpot-nextEnd-v7'
+   &&p.sourceProofSHA256==='e39ffaefc42ded6786b6c975384a4da69b933744b6fe5cfc526d40597b23856b'
+   &&p.scope==='paid-first-N-N-no-FS-no-recovery'&&p.providerNext==='EndGame'
+   &&p.rawBGInfoCashRequired===true&&p.noAdditionalProviderLogic===true&&p.noSyntheticTerminal===true;
+  const formattedJackpots=typeof g.Respins.jackpots==='string'&&/^\d+(?:,\d+)*(?:;\d+(?:,\d+)*)*$/.test(g.Respins.jackpots);
+  assert(g.Respins.jackpots===''||(paidFirstNoFS&&paidProof&&formattedJackpots),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
+  for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');
+ }
  // The own source initializes featureAwarded=false and sets it only for Y
  // or returned Respins. No line/prize/geometry equations are used here.
- const spin=list(g.ReelResults?.ReelSpin)[0];
  if(spin?.bonusAwarded!==undefined)assert(['N','Y'].includes(spin.bonusAwarded),'AG integrity: SG KU unknown initial award selector');
  const awarded=respins||spin?.bonusAwarded==='Y';
  if(first&&!awarded)return {win,selectedLines,free:undefined,freeStage:false,needsLogic:false,next:'PLAY'};

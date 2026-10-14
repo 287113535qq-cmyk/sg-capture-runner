@@ -1130,6 +1130,14 @@ games:
         noSyntheticTerminal: true
         noSyntheticCounters: true
         noOldUnknownPOSTReplay: true
+        paidFirstLocalJackpotProtocolDATA:
+          version: "own-KU-paid-first-noFS-jackpot-nextEnd-v7"
+          sourceProofSHA256: "e39ffaefc42ded6786b6c975384a4da69b933744b6fe5cfc526d40597b23856b"
+          scope: "paid-first-N-N-no-FS-no-recovery"
+          providerNext: "EndGame"
+          rawBGInfoCashRequired: true
+          noAdditionalProviderLogic: true
+          noSyntheticTerminal: true
   - provider: sg
     gameId: '32781'
     name: Kings Honour
