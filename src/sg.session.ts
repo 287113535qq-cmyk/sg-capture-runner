@@ -658,7 +658,20 @@ export function validateOwnKUFlow(game:AGGameConfig,g:any,first:boolean,previous
    &&f.scope==='nonfirst-FREE-local-Respins-actual-FS-pending'&&f.providerNext==='Logic'
    &&f.rawBGAndFSCashRequired===true&&f.noAdditionalRespinsWireRequest===true
    &&f.noSyntheticCounters===true&&f.noSyntheticTerminal===true&&f.noJackpotMoneyReconstruction===true&&f.originalMaximumAndUnknownStopsRetained===true;
-  assert(g.Respins.jackpots===''||(((paidFirstNoFS&&paidProof)||(freeLocalPending&&freeProof))&&formattedJackpots),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
+  // v9's own normal Init N lifecycle starts firstRecoverySpin=false;
+  // the only two true setters require recovering=true. Returned local
+  // Respins keep this normal session on the original LAST close caller.
+  const l=(c as any)?.freeLocalRespinsLastProtocolDATA;
+  const freeLocalLast=!first&&previousFreeStage&&previousNeedsLogic&&spin?.freeSpin==='Y'&&spin?.bonusAwarded==='N'
+   &&g.FSInfo&&typeof g.FSInfo==='object'&&!Array.isArray(g.FSInfo)
+   &&integer(g.FSInfo.freeSpinsTotal,'KU actual FS total')>0
+   &&integer(g.FSInfo.freeSpinsTotal,'KU actual FS total')===integer(g.FSInfo.freeSpinNumber,'KU actual FS played');
+  const lastProof=l?.enabled===true&&l.version==='own-KU-LAST-FREE-local-Respins-conditional-next-EndGame-v9'
+   &&l.sourceBridgeProofSHA256==='013e8917eeaf7b0a4f4ce3dcc394a619be51ab33e1f603167b68e49666185cd0'
+   &&l.scope==='nonfirst-LAST-FREE-local-Respins-normal-paid-session'&&l.providerNext==='EndGame'
+   &&l.normalNonrecoveringOwnInitRequired===true&&l.rawBGAndFSCashRequired===true&&l.noAdditionalRespinsWireRequest===true
+   &&l.noSyntheticCounters===true&&l.noSyntheticTerminal===true&&l.noJackpotMoneyReconstruction===true&&l.originalMaximumAndUnknownStopsRetained===true;
+  assert(g.Respins.jackpots===''||(((paidFirstNoFS&&paidProof)||(freeLocalPending&&freeProof)||(freeLocalLast&&lastProof))&&formattedJackpots),'AG integrity: SG KU jackpot or unknown local Respins flow not mapped');
   for(const k of ['PickerInfo','NextActionInfo','JackpotInfo','JackpotData'])assert(g.Respins[k]===undefined,'AG integrity: SG KU local Respins interactive next not mapped');
  }
  // The own source initializes featureAwarded=false and sets it only for Y
