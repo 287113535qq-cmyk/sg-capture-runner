@@ -491,27 +491,46 @@ function ownWMSRealFlowBinding(game:AGGameConfig) {
 // Sword's initial award is ReelSpin.bonusAwarded, not the mere presence of
 // FSInfo. Once that own award has entered free play, the own client compares
 // the returned played/total counters. SymbolUpgrade/RandomWild are local views.
-function validateOwnSwordRealFlow(game:AGGameConfig,g:any,previousFree:any,envelope:any,previousPendingIntro=false) {
+function validateOwnSwordRealFlow(game:AGGameConfig,g:any,previousFree:any,envelope:any,previousPendingIntro=false,rawXML?:string) {
  assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object','AG integrity: SG Sword missing result cash');
  assert(integer(g.stake,'Sword actual wager')===game.sg.betRaw,'AG integrity: SG Sword changed wager');
  const win=integer(g.BGInfo.totalWagerWin,'Sword cumulative wager cash');
  assert(g.BGInfo.isMaxWin!=='1','AG integrity: SG Sword maximum-win flow not mapped');
- // These are actual unmapped control/recovery paths. Display fields remain raw
- // and do not gain a geometry, prize-sum, display-count or display-schema gate.
- const unmapped=new Set(['JackpotInfo','CoinData','StonePick','PickerInfo','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo','BaseGameRecoveryInfo']);
- const stopControls=(v:any):void=>{if(Array.isArray(v)){v.forEach(stopControls);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){assert(!unmapped.has(k),'AG integrity: SG Sword actual next or recovery flow not mapped');if(x&&typeof x==='object')stopControls(x);}};
- stopControls(envelope);
  const spin=list(g.ReelResults?.ReelSpin)[0];
  assert(spin&&typeof spin==='object'&&!Array.isArray(spin),'AG integrity: SG Sword missing actual spin selector');
  assert(previousFree||previousPendingIntro||spin.freeSpin!=='Y','AG integrity: SG Sword initial free recovery flow not mapped');
- const f=g.FSInfo;
+ // The own SDK selects the first FSInfo in the complete raw document.
+ // Preserve XML order, including interleaved repeated parent elements.
+ assert(typeof rawXML==='string'&&rawXML.length>0,'AG integrity: SG Sword missing raw response');
+ const ordered=new XMLParser({ignoreAttributes:false,attributeNamePrefix:'',parseTagValue:false,parseAttributeValue:false,preserveOrder:true}).parse(rawXML);
+ const firstOwnInfo=(nodes:any[],tag:string):any=>{
+  for(const node of nodes){
+   if(Object.prototype.hasOwnProperty.call(node,tag))return node[':@']||{};
+   for(const[k,children]of Object.entries(node))if(k!==':@'&&Array.isArray(children)){
+    const found=firstOwnInfo(children,tag);
+    if(found!==undefined)return found;
+   }
+  }
+  return undefined;
+ };
+ const f=firstOwnInfo(ordered,'FSInfo');
  if(f!==undefined)assert(f&&typeof f==='object'&&!Array.isArray(f)&&f.isMaxWin!=='Y','AG integrity: SG Sword maximum-win free flow not mapped');
+ // In BASE_GAME the own client selects the actual jackpot before bonusAwarded.
+ // Coin picks and the transition back to spin evaluation are local; the next
+ // provider command remains the original End. Cash stays actual BGInfo cash.
+ const localJackpot=!previousFree&&!previousPendingIntro&&spin.freeSpin==='N'
+  &&firstOwnInfo(ordered,'JackpotInfo')!==undefined&&firstOwnInfo(ordered,'CoinData')!==undefined;
+ // The local pick loop needs its actual finite step control, never a default.
+ if(localJackpot)assert(integer(firstOwnInfo(ordered,'CoinData').steps,'Sword actual local coin steps')>0,'AG integrity: SG Sword invalid actual local coin steps');
+ // All other actual next/recovery paths retain the original stop, including
+ // jackpot/coin data outside this exact paid local branch.
+ const unmapped=new Set(['JackpotInfo','CoinData','StonePick','PickerInfo','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo','BaseGameRecoveryInfo']);
+ const stopControls=(v:any):void=>{if(Array.isArray(v)){v.forEach(stopControls);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){assert(!unmapped.has(k)||(localJackpot&&(k==='JackpotInfo'||k==='CoinData')),'AG integrity: SG Sword actual next or recovery flow not mapped');if(x&&typeof x==='object')stopControls(x);}};
+ stopControls(envelope);
  let free:Record<string,any>|undefined;
- // Keep the paid bonus transition pending until its first real FREE reply.
- // This future trial path creates no counters, cash defaults or terminal.
- if(!previousFree&&!previousPendingIntro&&spin.bonusAwarded==='Y'&&f===undefined)
-  return {win,free:undefined,baseRemaining:0,pendingIntro:true,next:'FREE_SPIN'};
- if(previousFree||previousPendingIntro||spin.bonusAwarded==='Y') {
+ // No unbound extra request when the whole response has no actual control.
+ // The original missing-control guard below remains authoritative.
+ if(!localJackpot&&(previousFree||previousPendingIntro||spin.bonusAwarded==='Y')) {
   assert(f,'AG integrity: SG Sword missing actual free control');
   const played=integer(f.freeSpinNumber,'Sword actual free played'),total=integer(f.freeSpinsTotal,'Sword actual free total');
   assert(played<=total,'AG integrity: SG Sword unmapped free counter overshoot');
@@ -519,9 +538,9 @@ function validateOwnSwordRealFlow(game:AGGameConfig,g:any,previousFree:any,envel
  }
  return {win,free,baseRemaining:0,pendingIntro:false,next:free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY'};
 }
-function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any,envelope:any,previousPendingIntro=false) {
+function validateOwnWMSRealFlow(game:AGGameConfig,g:any,previousFree:any,envelope:any,previousPendingIntro=false,rawXML?:string) {
  const c=ownWMSRealFlowBinding(game);
- if(c.kind==='sword-of-destiny')return validateOwnSwordRealFlow(game,g,previousFree,envelope,previousPendingIntro);
+ if(c.kind==='sword-of-destiny')return validateOwnSwordRealFlow(game,g,previousFree,envelope,previousPendingIntro,rawXML);
  assert(g&&typeof g==='object'&&!Array.isArray(g)&&g.BGInfo&&typeof g.BGInfo==='object','AG integrity: SG own flow result');
  assert(integer(g.stake,'own flow actual wager')===game.sg.betRaw,'AG integrity: SG own flow changed wager');
  // These interactive structures are not selected by either fixed own client.
@@ -898,7 +917,7 @@ export class SGWmsSession {
         } else {
             const g=r.GameResult;assert(g&&(this.game.sg.ownOMGNextEndContract||g.BGInfo||this.game.sg.ownMatchedPaidContract?.ordinaryCashContract),'AG integrity: SG game result');
             if(this.game.sg.ownOMGNextEndContract){const mapped=validateOwnOMGFlow(this.game,g,first,this.ownOMGNeedsLogic,this.ownOMGFreeStage);this.totalWin=mapped.win;this.free=mapped.free;this.ownOMGNeedsLogic=mapped.needsLogic;this.ownOMGFreeStage=mapped.freeStage;this.action=mapped.next;}
-            else if(this.game.sg.ownRealNextEndContract){const mapped=validateOwnWMSRealFlow(this.game,g,this.free,r,this.ownWMSSwordPendingIntro);this.totalWin=mapped.win;this.free=mapped.free;this.ownWMSBaseRemaining=mapped.baseRemaining;this.ownWMSSwordPendingIntro='pendingIntro' in mapped&&mapped.pendingIntro===true;this.action=mapped.next;}
+            else if(this.game.sg.ownRealNextEndContract){const mapped=validateOwnWMSRealFlow(this.game,g,this.free,r,this.ownWMSSwordPendingIntro,step.responsePayload);this.totalWin=mapped.win;this.free=mapped.free;this.ownWMSBaseRemaining=mapped.baseRemaining;this.ownWMSSwordPendingIntro='pendingIntro' in mapped&&mapped.pendingIntro===true;this.action=mapped.next;}
             else if(this.game.sg.ownKUSourceNextEndContract){const mapped=validateOwnKUFlow(this.game,g,first,this.ownKUFreeStage,this.ownKUNeedsLogic,this.ownKUInitMaxWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKUSelectedLines=mapped.selectedLines;this.ownKUFreeStage=mapped.freeStage;this.ownKUNeedsLogic=mapped.needsLogic;this.action=mapped.next;}
             else if(this.game.sg.ownKronosFeatureContract){const mapped=validateOwnKronosData(this.game,g,first,this.free,this.ownKronosBase,this.totalWin);this.totalWin=mapped.win;this.free=mapped.free;this.ownKronosBase=mapped.base;this.action=this.free?.freeSpinsRemaining>0?'FREE_SPIN':'PLAY';}
             else if(this.game.sg.ownMatchedPaidContract){this.totalWin=this.game.sg.ownMatchedPaidContract.ordinaryCashContract?validateOwnBulkPaidData(this.game,g,first):validateOwnMatchedPaidResult(this.game,g,first);this.free=undefined;this.action='PLAY';}
