@@ -524,8 +524,13 @@ function validateOwnSwordRealFlow(game:AGGameConfig,g:any,previousFree:any,envel
  if(localJackpot)assert(integer(firstOwnInfo(ordered,'CoinData').steps,'Sword actual local coin steps')>0,'AG integrity: SG Sword invalid actual local coin steps');
  // All other actual next/recovery paths retain the original stop, including
  // jackpot/coin data outside this exact paid local branch.
+ // A normal FREE response may carry the old paid reels for local restoration.
+ // It is not initial/true recovery and cannot supply the current free selector.
+ const normalFreeBaseRecovery=previousFree&&typeof previousFree==='object'&&!Array.isArray(previousFree)
+  &&Number.isSafeInteger(previousFree.freeSpinsRemaining)&&previousFree.freeSpinsRemaining>0
+  &&!previousPendingIntro&&spin.freeSpin==='Y'&&envelope?.Header?.isRecovering==='N';
  const unmapped=new Set(['JackpotInfo','CoinData','StonePick','PickerInfo','BonusData','BonusWheel','BFInfo','IRFInfo','NextActionInfo','BaseGameRecoveryInfo']);
- const stopControls=(v:any):void=>{if(Array.isArray(v)){v.forEach(stopControls);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){assert(!unmapped.has(k)||(localJackpot&&(k==='JackpotInfo'||k==='CoinData')),'AG integrity: SG Sword actual next or recovery flow not mapped');if(x&&typeof x==='object')stopControls(x);}};
+ const stopControls=(v:any):void=>{if(Array.isArray(v)){v.forEach(stopControls);return;}if(v&&typeof v==='object')for(const[k,x]of Object.entries(v)){assert(!unmapped.has(k)||(localJackpot&&(k==='JackpotInfo'||k==='CoinData'))||(normalFreeBaseRecovery&&k==='BaseGameRecoveryInfo'),'AG integrity: SG Sword actual next or recovery flow not mapped');if(x&&typeof x==='object')stopControls(x);}};
  stopControls(envelope);
  let free:Record<string,any>|undefined;
  // No unbound extra request when the whole response has no actual control.
