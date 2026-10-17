@@ -17417,3 +17417,51 @@ games:
         isBigBet: '0'
       own32763ProtocolDATA:
         contract: own32763-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32756'
+    name: Celestial King
+    backendId: celestialking
+    dbName: sg_celestialking
+    serviceDir: sg_drjekyllgoeswild
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: celestialking
+        gameID: '20210'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '100'
+      betRaw: 100
+      runtimeGameId: 32978
+      runtimeSlug: celestialking
+      omitsBaseRemaining: false
+      jekyllScatterMarkerContract: jekyll-own-no-feature-scatter-marker-v1
+      freeStake:
+        total: '100'
+        isBigBet: '0'
+      own32756ProtocolDATA:
+        contract: own32756-original-SG-protocol-private-v1
