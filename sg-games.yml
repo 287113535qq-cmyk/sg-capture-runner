@@ -17467,6 +17467,7 @@ games:
         contract: own32756-original-SG-protocol-private-v1
   - gameId: '32760'
     dbName: sg_dancingdrums
+    backendId: dancingdrums
     name: Dancing Drums
     provider: sg
     sg:
