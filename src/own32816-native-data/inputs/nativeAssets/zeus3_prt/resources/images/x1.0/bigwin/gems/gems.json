@@ -1,0 +1,111 @@
+{"frames": [
+
+{
+	"filename": "gems01.png",
+	"frame": {"x":1,"y":1,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems02.png",
+	"frame": {"x":1,"y":66,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems03.png",
+	"frame": {"x":1,"y":131,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems04.png",
+	"frame": {"x":1,"y":196,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems05.png",
+	"frame": {"x":66,"y":1,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems06.png",
+	"frame": {"x":131,"y":1,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems07.png",
+	"frame": {"x":196,"y":1,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems08.png",
+	"frame": {"x":66,"y":66,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems09.png",
+	"frame": {"x":66,"y":131,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems10.png",
+	"frame": {"x":66,"y":196,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "gems11.png",
+	"frame": {"x":131,"y":66,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "gems.png",
+	"format": "RGBA8888",
+	"size": {"w":261,"h":261},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:37343801eac2f1bd2ee45afb4610910a:fe332b2beb2178e6657b4b634c7c48bb:47563babdb83f46ff37372645e9dd88b$"
+}
+}

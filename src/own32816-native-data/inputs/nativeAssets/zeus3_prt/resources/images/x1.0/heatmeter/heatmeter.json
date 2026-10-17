@@ -1,0 +1,57 @@
+{"frames": [
+
+{
+	"filename": "3kind.png",
+	"frame": {"x":1,"y":1,"w":55,"h":231},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":231},
+	"sourceSize": {"w":55,"h":231},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "4kind.png",
+	"frame": {"x":57,"y":1,"w":55,"h":231},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":231},
+	"sourceSize": {"w":55,"h":231},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "5kind.png",
+	"frame": {"x":113,"y":1,"w":55,"h":231},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":231},
+	"sourceSize": {"w":55,"h":231},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "6kind.png",
+	"frame": {"x":169,"y":1,"w":55,"h":231},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":231},
+	"sourceSize": {"w":55,"h":231},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus.png",
+	"frame": {"x":225,"y":1,"w":55,"h":231},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":55,"h":231},
+	"sourceSize": {"w":55,"h":231},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "heatmeter.png",
+	"format": "RGBA8888",
+	"size": {"w":281,"h":233},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:4c3cfa561bdcd87a9fff324451cf50d2:f98c9dc8160705704ea42438c2a39bd6:f2183a5174968625850e3efef828721c$"
+}
+}

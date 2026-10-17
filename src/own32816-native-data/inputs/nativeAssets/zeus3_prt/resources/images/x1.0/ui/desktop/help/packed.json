@@ -1,0 +1,48 @@
+{"frames": [
+
+{
+	"filename": "down.png",
+	"frame": {"x":74,"y":74,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "off.png",
+	"frame": {"x":74,"y":2,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "on.png",
+	"frame": {"x":2,"y":74,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "over.png",
+	"frame": {"x":2,"y":2,"w":70,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":70},
+	"sourceSize": {"w":70,"h":70},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "packed.png",
+	"format": "RGBA8888",
+	"size": {"w":146,"h":146},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:962be362875ebd16bcc66e2a07fa51f8$"
+}
+}

@@ -1,0 +1,17 @@
+{
+  "name": "zeus3_prt",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-ts": "5.5.1",
+    "grunt-zip": "^0.17.0",
+    "grunt-nexus-deployer": "0.0.7",
+    "grunt-typedoc": "0.2.3",
+    "grunt-pngquant-preserve": "^0.1.1",
+    "python": "0.0.4",
+    "grunt-shell": "^1.1.2"
+  },
+  "scripts": {},
+  "version": "1.2.36"
+}

@@ -1231,52 +1231,7 @@ games:
       runtimeGameId: 33168
       spiritRiverContract: spirit-river-own-cash-progress-irf-v1
       spiritRiverEmptyMysteryContract: own-returned-empty-mystery-display-v2
-  - provider: sg
-    gameId: '32816'
-    name: Zeus III
-    backendId: zeus3_prt
-    dbName: sg_zeus3_prt
-    serviceDir: sg_zeus3_prt
-    rtpBuckets:
-      - 0
-      - 30
-      - 100
-      - 300
-      - 500
-      - 1000
-      - 2500
-      - 5000
-      - 10000
-      - 1001
-      - 2001
-      - 5001
-      - 10001
-    sg:
-      protocol: wms
-      endpoint: https://gls.atc.casinarena.com/gls.rgsx
-      header:
-        affiliate: '0'
-        ccyCode: ''
-        channel: I
-        freePlay: 'Y'
-        gameCodeRGI: zeus3_prt
-        gameID: '20123'
-        glsID: '65535'
-        lang: en_US
-        promotions: 'N'
-        userID: 'null'
-        userType: C
-        versionID: 1_0
-      stake:
-        totalStake: '40'
-      freeStake: {}
-      betRaw: 40
-      runtimeSlug: zeus3_prt
-      runtimeGameId: 33176
-      logicRequestNode: WagerInfo
-      zeusThreeContract: zeus-three-own-line-free-wild-v1
-      zeusThreeTriggerCashContract: own-exact-separate-trigger-cash-v3
-      zeusThreePaidRecoveryContract: own-exact-paid-wild-display-v2
+  - {"provider":"sg","gameId":"32816","name":"Zeus III","backendId":"zeus3_prt","dbName":"sg_zeus3_prt","serviceDir":"sg_zeus3_prt","rtpBuckets":[0,30,100,300,500,1000,2500,5000,10000,1001,2001,5001,10001],"sg":{"protocol":"wms","endpoint":"https://gls.atc.casinarena.com/gls.rgsx","header":{"affiliate":"0","ccyCode":"","channel":"I","freePlay":"Y","gameCodeRGI":"zeus3_prt","gameID":"20123","glsID":"65535","lang":"en_US","promotions":"N","userID":"null","userType":"C","versionID":"1_0"},"stake":{"totalStake":"40"},"freeStake":{},"betRaw":40,"runtimeSlug":"zeus3_prt","runtimeGameId":33176,"logicRequestNode":"WagerInfo","zeusThreeContract":"zeus-three-own-line-free-wild-v1","zeusThreeTriggerCashContract":"own-exact-separate-trigger-cash-v3","zeusThreePaidRecoveryContract":"own-exact-paid-wild-display-v2","own32816OriginalWire":{"contract":"own32816-original-wire-native-v1"},"own32816NativeData":{"contract":"own32816-original-AG-native-next-end-DATA-v1","hostContract":"own32816-original-native-producer-v881","group":"FIRST","originalOwner":"first20","installation":{"root":{"kind":"original-ag-project","moduleDirectoryFromRoot":"src/own32816-native-data","packageJSON":"package.json","packageName":"ag-capture-public-runner","canvasDependency":"0.1.100"},"relativePaths":{"nativeRoot":"src/own32816-native-data/inputs/nativeSDK/zeus3_prt","cacheRoot":"src/own32816-native-data/inputs/nativeAssets/zeus3_prt","domPortModule":"src/own32750-native-data/vendor/own32750-dom/own32769-node-dom.cjs","canvasModule":"node_modules/@napi-rs/canvas/index.js","canvasPackageJSON":"node_modules/@napi-rs/canvas/package.json","requireJSPath":"src/own32816-native-data/inputs/nativeSDK/zeus3_prt/lib/require/require.js","metadataPath":"src/own32816-native-data/inputs/nativeSDK/zeus3_prt/resources/js/zeus3_prt.metadatabundle.js","wrapperPath":"src/own32816-native-data/inputs/nativeSDK/zeus3_prt/resources/js/zeus3_prt.game.js","fontFile":"src/own32816-native-data/inputs/nativeFonts/Arial-original-system.ttf","audioInputsIndex":"src/own32816-native-data/own32816-qualified-audio-inputs-DATA-v1.json","staticReceiptsIndex":"src/own32816-native-data/own32816-static-responses-DATA-v1.json","fontBinderModule":"src/own32816-native-data/own32816-real-declared-Arial-v880.cjs","oggDecoderModule":"node_modules/@wasm-audio-decoders/ogg-vorbis/index.js","oggDecoderPackageJSON":"node_modules/@wasm-audio-decoders/ogg-vorbis/package.json"}},"resourcePrefix":"https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/","resourceVersion":"5.0.4.1-1787670669","menu":{"contract":"own32816-original-Init-menu-v1","totalStake":40,"originalDefaultMustMatchConsumedNativePaidIntent":true},"limits":{"timeoutMs":30000,"maxTicks":10000},"viewport":{"width":1920,"height":1080},"font":{"family":"Arial","originalDeclaredFamily":"Arial","SHA256":"b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a"},"rootPaintOptimization":false,"audioInputsSHA256":"58303cde725d41e82b619541a97c04f5fe134c5fb4d288c56c83f9a0465d83d7","staticReceiptsSHA256":"6defc9fa95667747a4eef192ba5055f51a48b021a06639c40c67e5f4f4fbcc3d"}}}
   - provider: sg
     gameId: '32500'
     name: Dragon Spin Cross Link Fire

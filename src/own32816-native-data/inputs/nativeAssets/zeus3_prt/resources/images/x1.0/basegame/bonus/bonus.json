@@ -1,0 +1,156 @@
+{"frames": [
+
+{
+	"filename": "bonus-00.png",
+	"frame": {"x":2,"y":2,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-01.png",
+	"frame": {"x":329,"y":2,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-02.png",
+	"frame": {"x":656,"y":2,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-03.png",
+	"frame": {"x":2,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-04.png",
+	"frame": {"x":329,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-05.png",
+	"frame": {"x":656,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-06.png",
+	"frame": {"x":2,"y":652,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-07.png",
+	"frame": {"x":329,"y":652,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-08.png",
+	"frame": {"x":656,"y":652,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-09.png",
+	"frame": {"x":656,"y":652,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-10.png",
+	"frame": {"x":2,"y":652,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-11.png",
+	"frame": {"x":656,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-12.png",
+	"frame": {"x":329,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-13.png",
+	"frame": {"x":2,"y":327,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-14.png",
+	"frame": {"x":656,"y":2,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "bonus-15.png",
+	"frame": {"x":2,"y":2,"w":324,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":322},
+	"sourceSize": {"w":324,"h":322},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bonus.png",
+	"format": "RGBA8888",
+	"size": {"w":982,"h":976},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7ae51665f012bd235afdae79fadaa9aa:b93e2f49c8364c5f1e0a2491b8348eb9:27013bb363ab30b49717b7ee2ac28b8b$"
+}
+}

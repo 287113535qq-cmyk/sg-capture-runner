@@ -1,0 +1,8 @@
+{
+  "schema": "own32816-retained-static-complete-response-DATA-v1",
+  "gameId": "32816",
+  "version": "5.0.4.1-1787670669",
+  "staticOnly": true,
+  "inputs": [],
+  "noFailedStaticResponsesRequiredByRetainedZeus959Input": true
+}

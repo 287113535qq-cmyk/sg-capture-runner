@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "hit.png",
+	"frame": {"x":2,"y":2,"w":702,"h":524},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":702,"h":524},
+	"sourceSize": {"w":702,"h":524},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "on.png",
+	"frame": {"x":2,"y":529,"w":702,"h":524},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":702,"h":524},
+	"sourceSize": {"w":702,"h":524},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "press.png",
+	"frame": {"x":2,"y":1056,"w":702,"h":524},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":702,"h":524},
+	"sourceSize": {"w":702,"h":524},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "click.png",
+	"format": "RGBA8888",
+	"size": {"w":706,"h":1582},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:34f0e48bf98352914dd325f62a0267c2:67589fea7904b4d467ad4ac035fd9deb:f2cc2f0b7f2d3f3325d5cc117a2d88de$"
+}
+}

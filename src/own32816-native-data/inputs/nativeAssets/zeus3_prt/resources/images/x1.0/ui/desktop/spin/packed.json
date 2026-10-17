@@ -1,0 +1,48 @@
+{"frames": [
+
+{
+	"filename": "down.png",
+	"frame": {"x":152,"y":128,"w":148,"h":124},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":124},
+	"sourceSize": {"w":148,"h":124},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "off.png",
+	"frame": {"x":2,"y":128,"w":148,"h":124},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":124},
+	"sourceSize": {"w":148,"h":124},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "on.png",
+	"frame": {"x":152,"y":2,"w":148,"h":124},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":124},
+	"sourceSize": {"w":148,"h":124},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "over.png",
+	"frame": {"x":2,"y":2,"w":148,"h":124},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":148,"h":124},
+	"sourceSize": {"w":148,"h":124},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "spin.png",
+	"format": "RGBA8888",
+	"size": {"w":302,"h":254},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d11aa53833fcc3c34e27dd468e0703bd$"
+}
+}

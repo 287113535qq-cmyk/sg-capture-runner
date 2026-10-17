@@ -1,0 +1,733 @@
+{
+  "schema": "own32816-retained-real-audio-inputs-DATA-v1",
+  "gameId": "32816",
+  "version": "5.0.4.1-1787670669",
+  "inputs": [
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/Zeus3_Ambience_Thunderclap.ogg",
+      "inputSHA256": "d494376ffc3e30fd462caa521764c9b57c20e96403efb92b076d974e0d1997d3",
+      "samplesDecoded": 372690,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "5d4651b4e70fa0902a758888590e9c421528ae7cf4b0252716b64b6321ab43a7",
+        "4fbef13d5f2198831fcee70b20cc77a0e31e51a8c9d0cbdee841b7da84485132"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/MOBILE_AMBIENCE_LOOP.ogg",
+      "inputSHA256": "5a7e961ff1b4a6849b8c5142b80b14764ad03150fb510ced0aceff1c7250433e",
+      "samplesDecoded": 2339408,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "4a301425400f76af601e11dcc21022ab5dccb4bd64576afad33cb0c2a1f93cac",
+        "15de5499c4d8d1d6ed430236c6de7c67bbeb1793c2a2f90fea45cfa4cadef6c2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/NUBUTTON.ogg",
+      "inputSHA256": "37a59f90361c3ef8324a525ae04e4ed47e98375ba88657a4ff2b24751fb6eb46",
+      "samplesDecoded": 878,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "c9f18c05e0170c38d15f21bc15f3911c2ff016a139ae92fd4b0a2524356fd016",
+        "c9f18c05e0170c38d15f21bc15f3911c2ff016a139ae92fd4b0a2524356fd016"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/maxbet.ogg",
+      "inputSHA256": "3788168e59573ad5e1c3bbc8f2c12f1fb87bf8663df13742390d1822a4e1b418",
+      "samplesDecoded": 84122,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "ca803843bd28f94fc397a133368a879fc0464356d18f157736ca66855a538577",
+        "8544f7f9e1238ddd86a0d3134255db47bbe7caedc794609726c9c0044d7a49f1"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/ANTICIPATION_ONLINE.ogg",
+      "inputSHA256": "2ddb2351f6f5e77c7263172ca2b648cb3b24a230cb8fb73817e9fb2826483b4c",
+      "samplesDecoded": 329905,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "31182c7d8b3a4fafcfecf5368bb9d79c9afcbe30902e97f4294bb9ca2925b9c5",
+        "c8bb08f211c80f90108b030235f3660919dae16cc5b0926e9669cda6a4d137f5"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/ZEUS_EXP_WILD.ogg",
+      "inputSHA256": "06cabf4f7e83b6bdb94b9f099daa3d1d2d1d152b823d5221ed4ff7c6d1f57762",
+      "samplesDecoded": 191448,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "0948f7bac8f11fb25fd9f228754b49097561d6324424681ed3cb9b59ab15a7c2",
+        "3aa113bbb19bd0fb943c53e8a5eda1faa527d633dbbd7aa60e4f84726c877d54"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_1.ogg",
+      "inputSHA256": "aba5025af0f2feab8c2f2f5f9b2b1b4f3a5ca8fe957200c7f20b3ed52e0ebf3c",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "5c4b9597e0faba71f3a6742766508533b021a6b35bc763fb8832cec6510ac96f",
+        "d960925471f0e201fd04f56780226d90a84f98c6f9665a2afb0074156f4bb1a0"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_2.ogg",
+      "inputSHA256": "1e260f576c5411b6a1ccfa4143be4bdd6f45a7cd5ef5431530d2c0490b855366",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "f05400b0890ae7bcc615ad1b45a82dc3a114490389a4ac18b5dc9b97f20a8cd7",
+        "68700b87e64cbd9259381d53474f44487629a5c6982e6496b23b5633f4945584"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_3.ogg",
+      "inputSHA256": "048e705f48a3d8cfa8fd2a4f0f30d6488a8523f779d4f137187727728df80684",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "01f4ef926a1e233643f801613e954848f515698996da9d8f914df518d6b39405",
+        "b0fd76eddca0b83e37f0fb01321a1a6cda9d69eda9ca88169e4187831d3ea290"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_4.ogg",
+      "inputSHA256": "961a1fe8d607d799a666fedae13fcb6ad4d8da72466b5c8db0e03a9f82d580f4",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "43f7fc3eb556fdc5a2fb441bdc0309ca45875f00931ed58beeebbe94c07b3580",
+        "43f7fc3eb556fdc5a2fb441bdc0309ca45875f00931ed58beeebbe94c07b3580"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_5.ogg",
+      "inputSHA256": "03a46e7733c0c843ec9d35bfff03aa3a05bc0a9c63fbfde944478462e1305779",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "68700b87e64cbd9259381d53474f44487629a5c6982e6496b23b5633f4945584",
+        "f05400b0890ae7bcc615ad1b45a82dc3a114490389a4ac18b5dc9b97f20a8cd7"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelstops/reelstop_6.ogg",
+      "inputSHA256": "568b0b3b86ebd1a6a8d9e7845072f18671e3159acd0939bcb106a78032c3ca47",
+      "samplesDecoded": 16632,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "455f4efdbfcf06042dc205cd3d8bd3ee439e4d213558dbf3e26ef9afdc81ce5a",
+        "e5d620130eb2537b4172842e3fd7890393f24036d88434f8040f92c1e14bebf4"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN1.ogg",
+      "inputSHA256": "753d7a044c8d6c3c0a73c407905633dcaccd8d088b6718480cd45eef3b45ae4b",
+      "samplesDecoded": 119056,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "ba36734d5830afed23fa667d978103168dc79814e0148c8a691e05bb5ae8862b",
+        "716dc7b98a7f3c56fdb4e200005aebd89aa22e8993330aa98f63b909b7af695a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN2.ogg",
+      "inputSHA256": "2ab9aadfea546c1e29e36a8ed73303593a5132c07f4fdbef13cd6857801de107",
+      "samplesDecoded": 110272,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "1e02476e1dc666f6f6d6e695b0344e4cda5184ef46dd65fb6775c20fe7bd6a3f",
+        "14afd6fccdb6204463cf8591cc69c07fd80abf11175ad07d16101ea7737a3280"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN3.ogg",
+      "inputSHA256": "2e41d5f9738806ba7607cc6c929c97ba5657cd15df8691d66111a258b9a25c66",
+      "samplesDecoded": 110480,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "14a3b5512c21df30664a66a422e167881522d83c0a96e7cddff9672a8effde21",
+        "181dbe7ea077c4d772fef601d5000b4ca1276692ea9ca680d8818f77b70a5029"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN4.ogg",
+      "inputSHA256": "bc419c4d75c5175114b4862e217d848be87d73b9199a7be983b6d24f08da42a9",
+      "samplesDecoded": 107520,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "b1c2b2794d4ff9abe6ba1bedd5b98e40045d9d7c0a29f7c0dad77f6c129729ab",
+        "17fe0d980404b238712beb0ba9bcee2d7f1c12add096dc241ba47d9c62098fed"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN5.ogg",
+      "inputSHA256": "3f9c34b3ba358104b359c16fbf82cc09c51d8d5983bb50f1e0b6a920a65fa6bc",
+      "samplesDecoded": 98592,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "116cc761c9456d53f23a71ffd5d19960ebdc4615a9495862bb634756ea6e6df9",
+        "3055fe4d2bcc0515e7def86dfac3afd07f2871733ef4e008345aaca4f64e96ae"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN6.ogg",
+      "inputSHA256": "3c46a45fa68de469c683b0c36036a50b08c7dda2dff23d28332473b084f889c9",
+      "samplesDecoded": 110640,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "6762e6f312153dd2f6a685ad74591f0285a64ccb698217dbb05f5699b20e07f3",
+        "669ddb21874331f66baa75073284d5c778bda90e2b4d1dab2f7cb6bdb76bfda0"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN7.ogg",
+      "inputSHA256": "38d4be1ac2d6af13370bc90511e7cd1e54b38fca9c9580872c0bf71734121060",
+      "samplesDecoded": 102464,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "7640c4306aaf0c8a854128c2fffb177ce54d8de8147ef4c27d235f73c2cbf4d1",
+        "b8f3a035637a68cf9a06d7d96517a224789957dd360b3d81a383bd0e5cf91e08"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN8.ogg",
+      "inputSHA256": "665e3769b200df39b47703d889b93784287e00292a5df84b11f04092f1e2dc36",
+      "samplesDecoded": 111024,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "72ae385e232f4d017bcd2a7905d7065b572ed57612aaaa2859b1be5c045242d0",
+        "92144617d54c337ce7f8264b233d5817316c9836446353a888a460d5b1c65350"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN9.ogg",
+      "inputSHA256": "2e4e571856856318d412399e98338bd4ba6a70f5eea80c56c82f939c237ab909",
+      "samplesDecoded": 108080,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "9a0c0f68b3c6e93ee36027b854ccd4295e36165dec9b6f8f159731fc53ff42df",
+        "dc66bf125ee47fc7ef7ded88296c973654342933b939c9e8868126fed968be55"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN10.ogg",
+      "inputSHA256": "e6040afc3b2335673fd04ef48d4f1591f0963f71b72d2e1c127b6247b4b5205d",
+      "samplesDecoded": 109712,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "39993c713ad6ef52f804517085774743b3a0f9888679ae8b55f75e5383570e98",
+        "daf8b48008977559b1bae39a47592216002bb69fe0035f04a12b08a8cc2e2b45"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/reelspins/REELSPIN11.ogg",
+      "inputSHA256": "6e8ffc14dd45e24b0e7341917b5f79b11df1037cc2ef713f04497a5fd7dd7982",
+      "samplesDecoded": 113280,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "a5ad1230ea6806f563c55ba18179c56bfa9056ae649c4d1a4db94b93bb7da2ca",
+        "23136bb57be60674e9d6e2e1917d1bbb46dfac7ddde9fdfd1ce8e84d37b4c0cc"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/helpButtons/help.ogg",
+      "inputSHA256": "99d00bb26cdc9c291198e9ae69f808087894ca35ca992082ae843dba5c4646b2",
+      "samplesDecoded": 12270,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "be9b70febba4f5681e3181bd5d7f8b66dd9698ee0871da607cab355f0b02ddff",
+        "8f87e8282bbd4f28ae4ee485e92db3400bcc75b18b42446dd5b5550eef89d0d2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/helpButtons/helpforward.ogg",
+      "inputSHA256": "b8bdf459cf7c995e0d6e07abd4a30681a21b1afbe329612b11c04a0ac877fc2b",
+      "samplesDecoded": 10606,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "1a6a05b41ca86e946501791ae9ce2fcd45ed6edac4ef373222c4b330f391f503",
+        "29d8b2bdfb791865aec7e5e799c252abe80e9cfba4c40e49004618af7a89e6de"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/helpButtons/helpback.ogg",
+      "inputSHA256": "9842432c5db574df6fc8531944ae39776cf82f24d60fe53539516605d1e735e8",
+      "samplesDecoded": 14976,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "da480abb9721126b3945cb39dc87ce8994aac96ad36d38bd187db7030a195810",
+        "530ed4e2879b294c6b619fee6bbad494b3d24d7bd95c3f8e5578ff4ee70fea1a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/helpButtons/helpexit.ogg",
+      "inputSHA256": "a3b8ddce4e9f9362198f06a3857947eafa3e1ea994dbc5886b161dce669184ed",
+      "samplesDecoded": 30465,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "40ad59200d3eeaba8ffbe7bb5840392e24d6ca60f23f6576a1b6adb167887845",
+        "51ebe6e6b21ea3e553fd71c02465f13656adbfe400c260b54b8ff9653b1cf952"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/burstMeter/HEATSHIELD_GREEN_QUIETER.ogg",
+      "inputSHA256": "bc8e4960bae7b29ca527847052b38669bb18cc103c2b14d94f13d46268c329d8",
+      "samplesDecoded": 171584,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "f515a43e31a040d997b13565ad15dbb590be1ac8d49bd760ca2f613e9c0f39b0",
+        "72f4c7abb8e20c4ae6b53a4d76a862e8f967aee20946aabf5eba75f24e1e9d92"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/burstMeter/HEATSHIELD_YELLOW_QUIETER.ogg",
+      "inputSHA256": "c534317901f68fbcdda89137391b9ef5c6b492f358c744fd47b4afc8debf4b15",
+      "samplesDecoded": 170352,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "85bd6579f0a8e409d770a859c3c91d322ecfa84f91acc752bb5e828ca01fcbd5",
+        "3fbb659e19fb0f4be56ef36e998baa53b82b448e6291939c3b9bbbfffc706535"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/burstMeter/HEATSHIELD_ORANGE_QUIETER.ogg",
+      "inputSHA256": "05b8af02d21807439d31666e46153933d0c9b1df80576d517ac5d5a732dcc07e",
+      "samplesDecoded": 154080,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "7271594a279b7d5e23fd2bf49a265e7efbd741a73faac5c46ab662799e6660d3",
+        "1d234781e40cda16caf007cafeeac857736374e0aae726b63bd2edb3c70d1200"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/burstMeter/HEATSHIELD_RED_QUIETER.ogg",
+      "inputSHA256": "632c507879e8e09795774073728e0bbb179a864802015b4d0c2b710fe784c030",
+      "samplesDecoded": 163712,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "bf8ccc590e7e02ac96a9a72461ce2f46eac0e574e675075a5e960ef12f0e0623",
+        "aae22de72dc270e7d7476d337c296a678e939ec6a9cc93b463c61f1a9566710d"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bonusTriggers/BONUS_TRIGGER_1.ogg",
+      "inputSHA256": "e75b7678e3279ec70adcd578818447a86dc999e7fb3b5ae3b39aff2a93a7af92",
+      "samplesDecoded": 41064,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "5232b5ea14f0a45ade2e253edf920338fb2e32bfac79ead1ab85137b2726c212",
+        "73bb036c5b217c7625cc968270604fc8e46b077820ed2f4b84623bbe256dffa9"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bonusTriggers/BONUS_TRIGGER_2.ogg",
+      "inputSHA256": "bd2f268138b45b298b861985dc9c39e3257690befcdf81ddaa9df5c5b51b98a8",
+      "samplesDecoded": 42000,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "c3408192d7ab3b74bcc4e5152d8ef3ea390d00dedbc001c8c1deb85b4249d287",
+        "3bc882b1b8a8071d68895dfe194d5fc52007ae591d729c0de69d9f08051333f4"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bonusTriggers/BONUS_TRIGGER_3.ogg",
+      "inputSHA256": "f01412da9b97099ed668972dc914e664a9831bcfbe166c8e6fa764694e17c3c6",
+      "samplesDecoded": 56340,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "b651c1ded14e8e973b0f67ba48391fe90ba34ab9c7b7038eebe40e6c9a553644",
+        "b8053d7c79fef997591b1d8f24f8e7a8c2d007be98095d4354d7429aabc308ea"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bonusTriggers/ZBELL_03a2_QUIETER.ogg",
+      "inputSHA256": "342b931f81f7306815660e2c3877384951366769a1de3ed479e0ba29e775e0a9",
+      "samplesDecoded": 157440,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "3161d130e661f43e22de235ebdd75d7b8edfdf4a00651e01afa14f798a66b89a",
+        "80ae2ab647f894fb1c3eccd7e7e0f3ef42abf88c9dfefcae7b3278ae68c34aca"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/betMultButtons/linemech1.ogg",
+      "inputSHA256": "31b1baddc249eb4e44b48e343c3dd4a3d011c47ebdaefe37c33d2ce0a6dcd34d",
+      "samplesDecoded": 10350,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "11f56c3e19978635dcbdf4db423e4202ba3174d92b73004eaaba52cb3eacbc55",
+        "d797e03db76856052e9958629415fc63f7c6fca1219cc8faedc7653e829fe0b5"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/betMultButtons/linemech2.ogg",
+      "inputSHA256": "130f28f0deca5e984a88652d939975e436731e8b33eb976a67835bd07bd9f79a",
+      "samplesDecoded": 12398,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "a701fb4da48f79f0c12e273ca90677cde1fdbb6bddb58142040ab29375adcd42",
+        "40017e5bb77d420dd32e438a81d9f0dd18bf8def98d3abdba022bd6158626325"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/betMultButtons/linemech3.ogg",
+      "inputSHA256": "01d42d490d7b36412183cd383126d42c9b53b3e67ec26808ab6fafbfbaf635af",
+      "samplesDecoded": 12416,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "0447ffbe9895d7e1e46b937528eec6769d35086720e8c3a79d7c615206df370a",
+        "6db2677f5f77121819a3679e62cd768d07a9ea546962fc8247c9629063005a33"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/betMultButtons/linemech4.ogg",
+      "inputSHA256": "a9927b0d6a069bc5784e803da9e1d58581e8c67f962b21b35c36d3a1e35de8ff",
+      "samplesDecoded": 12718,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "ae85ac67cc36424cbf5a36b6ebe1be00e9cb1bf475412d7ff3df8710811217eb",
+        "13aa529e6dfe2dda478c8b7a16e1881744b782ac316f01f5133f59c7390fe55e"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/betMultButtons/linemech5.ogg",
+      "inputSHA256": "fe49ef1d0304270e0b13bfe43bc1318609fe5acd1586361c6e355025c5167626",
+      "samplesDecoded": 11374,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "39b8d9c9047571ea7344c46594f5fa79a595baf30ddd8ee2080a94dba17b81c7",
+        "4f75ffdc5fdd5f52ab20fa0e64cac6aba197e382c25a6e320f8c72f82b20b24c"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/Bangup1_QUIETER.ogg",
+      "inputSHA256": "2e01c1e0e10893662544582d5af0fda915171967ca4e46b513f19780e11c2445",
+      "samplesDecoded": 26208,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "a3ab64be1a1af63c6fb601d596bdeb0de0bb478b9060bdc35d1cf4ced60d4c02",
+        "efe6e7bf3454e6c191b35c59edce2cce93899bd218420b3dcf68259d2383d383"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/Bangup2_QUIETER.ogg",
+      "inputSHA256": "a6be2b2db61f3d0ce3547071d3f98f588161bb2283b95055ee40e6d9d11defc8",
+      "samplesDecoded": 36304,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "530f4791d157f029a0c5764c6b422d1852bd8d4e615596d87b03bdfa12161f34",
+        "50ff91a52d2f0f8171705e52e4fbe82aec998ee5cc65ccafe51a96806815c431"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/Bangup3_QUIETER.ogg",
+      "inputSHA256": "6c7d96446db07485bdb7314df335e13f0537243c563285b230aa57f63bf9f52a",
+      "samplesDecoded": 47408,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "1c9185dd1db22aa7c1df154ff85a2da4d2b5e0811b9667d381fe565292a70bdb",
+        "838b9f55bbf760cb73bfeeab6e40797b06325856ab9ebd6a172a6d7220ce5d69"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/Bangup4_QUIETER.ogg",
+      "inputSHA256": "a172a206ad232292f288a69dd51bd24f01bb732ac63583cdd60d7a6242a9b976",
+      "samplesDecoded": 59472,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "394c5086d38adb485beaac2e0ec92452626771b5205412052cd4db76e624d0d1",
+        "d367f1517e1ddb514f5253d64712e255f45df1f17ed473693a13e3f8dd0f1a7f"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/Bangup5_QUIETER.ogg",
+      "inputSHA256": "d1be2470b984de9c79ebf9cdb792cc6b62c15ee7e6b7f34b901dd80b7d26c5d2",
+      "samplesDecoded": 95904,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "97b114615ec210615c2a8b95b9406691f4bfecfdae8bd8f78f0c0d3b9bb8c991",
+        "dda8ad2979922fde04aee305463a82857b338994a0e54c593789ca05266b4855"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/basegame/bangups/BANGUP_END_ONLINE.ogg",
+      "inputSHA256": "f2cba49f2d6de5993e3c3ad19983160168e613edfbda76da4f9c5696df8dc3de",
+      "samplesDecoded": 58116,
+      "sampleRate": 44100,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "7389c1fcc0308942229761cca2efab1e6e63efc0f0af83e253d89244a3db7309",
+        "90259f52d5178838ff1e62b8c480e46b6060943df3affe9b79bef053a3140ece"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/ZEUS3_BONUS_MUSIC_INTRO1.ogg",
+      "inputSHA256": "216c9cbd9b2d25481a68fb4916675f805bdd25221dc45e7e90e33f0cbedaad6f",
+      "samplesDecoded": 66432,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "9f1f4aeaed9c39bff592046ed3f7c67753473ebe9ccf9bb3d008e69442719431",
+        "e90c0fcc65e14f72a1802b2d6b3ebf0ef0b4c286a151bdd2231cb8cf42f30b5f"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/ZEUS3_BONUS_MUSIC_INTRO2.ogg",
+      "inputSHA256": "503b4a77efb6d944b8df871907efaae619de1cca36fba0e99d8e9805249f681f",
+      "samplesDecoded": 66192,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "7bc9dbae2fbbcf81085e9dd9782b88ade7eef9f25405641bdc206b906fa99c81",
+        "6e0fe87decbec68ecfe6b2301c2cccca87272437cfe80e84f8ddd86f288f4371"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/ZEUS3_BONUS_MUSIC_INTRO3.ogg",
+      "inputSHA256": "21abd7be9631fca9a67d71efa342aaf635dc93f4dbdee37f943bcc5323ed32e6",
+      "samplesDecoded": 66144,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "75cfc033fceb7c1407c08221d0e6a7d94ecc7e0988ae15cd11e42db260d84a01",
+        "4edd62aeadc1af990b99d5283308183c6615ab5ccd8d6486b633a0b8626426f8"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/StartButton.ogg",
+      "inputSHA256": "459b0d480dfd267691936af110d17afb4dc6d9d46f8771f8b304afb2c0dd6cb1",
+      "samplesDecoded": 32960,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "b24454edc05f889465b53d7d4e217b3539fcffe7e17eee28389c24f6353a9f9d",
+        "10b81162ef684366e9fd29d6500b93951677ca70e1238af48dbaa864dcf3a7c3"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/BONUS_MUSIC_ONLINE.ogg",
+      "inputSHA256": "c46f232c5883b4580ed24c3dda9775242a43ebd51f49d7604e193974bc056b87",
+      "samplesDecoded": 1059264,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "b34f4178a3304c0dc37d5180ae0690151a15705c191b58c957f8e1a752d36ea5",
+        "7c54d01d5492ea50989e8cc6cdb9f9cab6f57e351b7ac4b0aa492a8cdf6bfe62"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/BONUS_TALLY.ogg",
+      "inputSHA256": "e87a14e03e1cb5ba2607305f65714a4e44b1b1edd7792ac73d35562be475bfaf",
+      "samplesDecoded": 93136,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "2066e84c0ad2a2ddea73a4632193b8ce3fe2f0ef836e922b911b9263408f42d6",
+        "84794821d06477e0cc3823481b5aafb195310a0f123f6be4823f7bc31f4c864c"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bonus/ZEUS3_BONUS_MUSIC_END_ONLINE.ogg",
+      "inputSHA256": "67495b2e2b8eb48cf38765f6d71fa5ac75bd807194dcbbe707a1f4d326d01ed6",
+      "samplesDecoded": 179456,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "377b5e3d44d2229fe2db0356c32052e3aa335ecc4fbff1dffcda59c75e0f64fc",
+        "59fe40250fb2fd514f3d5187ba89ef1825f5759870f46b92cb84597b5d4e8835"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/BigWinSegment.ogg",
+      "inputSHA256": "6bf04c67900cdb9accf97783ed447716aa223da2edb3011af181c122092dc2a8",
+      "samplesDecoded": 264576,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "a45193935f3c272dbda85ff6ecd09f2316f7d751833cbce1ac029ae4dfd09329",
+        "c56c7259debc73a29ced49e107e1b0bbdf5a1e62ffea005f7f64bd24b9df33c1"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_OutstandingREV.ogg",
+      "inputSHA256": "b40b35ffeeb3446f600ac48b98295b4b1e103b503cad0382255a25dd017a8753",
+      "samplesDecoded": 20368,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "0b459ec390113b7bb7c3fc3f773960f1ee29b3c8eaa7796f84a0a800150fa4a8",
+        "64186fd4388234a22632a67fdab1bb88bcb3c927792231aaad06ec2a26c49f91"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_FantasticREV.ogg",
+      "inputSHA256": "790c71e1f166528e901f351602df6bd9a1bd39559bcd1c1cf3742ec70d28863a",
+      "samplesDecoded": 20128,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "95750aa2193f9c95afad1176e2bf88462b59dbd7959204286770f021d1b30cd2",
+        "68224ca9d749e3beb7ad896e3ed53cf095a36256be2c3cdc8834769e7b043845"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_Magnificent.ogg",
+      "inputSHA256": "8cd344669d816db5dfe59a7b9a40c05e68cbfddf945ea155dbbf0d598549d38e",
+      "samplesDecoded": 20624,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "b7ec68ba526f710dacdae8002407240911a9f29285ccb4be6b975d20bc548b79",
+        "a98f458a39c11368ba7cb297838e23bfd2ad8b9ee19410e5d9dd0e23ff2fd321"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/SUPER_BIG_WIN_WITH_RAMPUP.ogg",
+      "inputSHA256": "522438dfa80f42025c1f036970cc55beb37f85adae932884f5985f33883a87fa",
+      "samplesDecoded": 268416,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "48a124bb324f474dfdc1a8d803c7edbfd8724f2f3a77f0206d78f130072c8140",
+        "24e203e37a89322cc05b2592cf02c65db0e4d8e9c9fa5fce6be381f4206a4566"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_UnbelievableREV.ogg",
+      "inputSHA256": "0947af703dd19b05c1abd967a27df395be87134733c0cb0d58b06619a00dfea6",
+      "samplesDecoded": 24640,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "66f574fc008b606895ff0ede456f132c258a0d0f25ab76158533afc36b1c6b28",
+        "fee3e313ddd691ad69bcb90446fc62a1a0866d97d8e04ff7ea07d885da9890e9"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_IncredibleREV.ogg",
+      "inputSHA256": "56e03c2d9cfaf8b309022c165b895d7e0fd028bf6ff53d5fb0bee53abb1ae34e",
+      "samplesDecoded": 20080,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "717006219e12abf4362481815067c9fa36a80379e2b15dfe1fafd69abbe67396",
+        "8e72cf7060d815bc2cc663e617abe372f32aacfd1385546ad1054f925ac131e4"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/MEGA_BIG_WIN_WITH_RAMPUP.ogg",
+      "inputSHA256": "b67991c51008e1e8e6e12ee1726da737d4fd41d42e071a379172576ba03065d0",
+      "samplesDecoded": 273920,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "f89dd6cedf19497f03ac8f687152a73faec9373c081bd6ae3e1f31af389d2022",
+        "a999b9ab6cd00d6002f1df1a5d1ad348b004a6aa9129b00f81cfea5a1670f64e"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_ImpossibleREV.ogg",
+      "inputSHA256": "c23cd4740ffb68191c3ac4756f63c43bbc5711941fab720dfd0278a0f1ce029d",
+      "samplesDecoded": 18608,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "dc08bfeeb880635c4612c882459427f4cf5f08f14b03d18af6dcc43fe3c15e62",
+        "252b3c8cf9859ce8815c16db6cba7fd584de8008b00351a0d748d7e3c86ede2e"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/en_US_InconceivableREV.ogg",
+      "inputSHA256": "3d1fccbcd2e563ba010fdd532366a56ee15f63beeb377e1c0749dbb64bf28664",
+      "samplesDecoded": 27184,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "a614a2637f0e9bf8362b5d7cd655c90bf630c32f51954081a57e59a5f27fd048",
+        "0624863751f7735161caadf32951cc6406bd8b191a09f33ebbfce8939e04aca7"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/REVISEDBigWinwFX_END.ogg",
+      "inputSHA256": "d2b85cdbe56a94024b831ae5f7c4937f19943d2a94b8eed6fd1e48ec65f90062",
+      "samplesDecoded": 21248,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "81a1645f03ddfbf1cd5f97da11570408a970038f5cab4e1108c9c94d892e5af3",
+        "56d91df960208f99bad58b64aa7c549bd195f44c20bf39343a970f929d6ae35a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/REVISEDSuperWinwFX_END.ogg",
+      "inputSHA256": "e2124121bfcfc6d2375171591b32c783bb3d289796c6a4c8cd6b46b59830c0ce",
+      "samplesDecoded": 23424,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "0ec0b7c0b8930684f3d57ff88c713737b93efdd89221a27f1cf884154e646332",
+        "e182b75777690e9cbc2387598a9fb166126359ec473e77e8eed7ccfef187f4fe"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/zeus3_prt/resources/audio/desktop_ogg/bigWin/REVISEDMegaWinwFX_END.ogg",
+      "inputSHA256": "9b41d9e47794792cff8d97f14ae91caab99d3ba4b3b783be829751e964a9338c",
+      "samplesDecoded": 28880,
+      "sampleRate": 16000,
+      "channels": 2,
+      "pcmSHA256ByChannel": [
+        "63562acdb136cb07aaa3e543750acf8664dd1b74548d37d4e6234b2112298f48",
+        "b3d9f4d432f818bcfa131c845cfbe0900a91c8b862ecafed31b69f8059650d98"
+      ]
+    }
+  ]
+}

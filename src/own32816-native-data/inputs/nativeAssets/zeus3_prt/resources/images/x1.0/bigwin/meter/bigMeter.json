@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "Bigmeter01.png",
+	"frame": {"x":2,"y":2,"w":615,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":615,"h":275},
+	"sourceSize": {"w":615,"h":275},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "Bigmeter02.png",
+	"frame": {"x":2,"y":280,"w":615,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":615,"h":275},
+	"sourceSize": {"w":615,"h":275},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "Bigmeter03.png",
+	"frame": {"x":2,"y":558,"w":615,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":615,"h":275},
+	"sourceSize": {"w":615,"h":275},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bigMeter.png",
+	"format": "RGBA8888",
+	"size": {"w":619,"h":835},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:657a57cdaeb27742644750ff1fa71d9a:6f899f132c2ff9d22613f8035f13e4e0:5ef847b86a0b18adde93d6d8c4d64262$"
+}
+}
