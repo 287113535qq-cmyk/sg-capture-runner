@@ -17465,3 +17465,45 @@ games:
         isBigBet: '0'
       own32756ProtocolDATA:
         contract: own32756-original-SG-protocol-private-v1
+  - gameId: '32760'
+    dbName: sg_dancingdrums
+    name: Dancing Drums
+    provider: sg
+    sg:
+      protocol: wms
+      runtimeGameId: 32982
+      runtimeSlug: dancingdrums
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: dancingdrums
+        gameID: '20207'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      betRaw: 528
+      stake:
+        total: '528'
+        paylineCount: '1'
+      own32760ProtocolDATA:
+        contract: own32760-original-SG-protocol-private-v1
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
