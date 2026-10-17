@@ -1,0 +1,23 @@
+{
+  "schema": "own32786-original-SG-protocol-connection-DATA-v1",
+  "sourceTransportContentType": "application/x-www-form-urlencoded",
+  "sourceHeaderFields": [
+    "affiliate",
+    "ccyCode",
+    "channel",
+    "freePlay",
+    "gameCodeRGI",
+    "gameID",
+    "glsID",
+    "lang",
+    "promotions",
+    "userID",
+    "userType",
+    "versionID"
+  ],
+  "sourceAbsentCurrencyMultiplier": 1,
+  "ownCurrencyFallbackSource": "Own app.js Init branch at501235..501575: nested CurrencyInformation.Vh; absent information sets kk.Vh=1",
+  "sourceStakeMenu": "Actual own accepted Init Stakes numeric list; wager must be present. No old sample combination whitelist.",
+  "sourceRequestDATA": "Own Logic header/AccountData/Stake, no force/replay/choice paths; real Epa free/max guard; End Header only",
+  "ownWireSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\WMS32786-own-free-next-preparation-20261018\\own32786-wire-model-DATA-v1298.json"
+}

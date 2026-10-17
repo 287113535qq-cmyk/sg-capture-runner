@@ -1,0 +1,63 @@
+{
+  "schema": "own32786-original-wire-model-DATA-v1298",
+  "gameId": "32786",
+  "nativeHeaderGameId": "20233",
+  "backendId": "legendoffortune",
+  "sourceFile": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\legendoffortune\\js\\app.js",
+  "sourceBytes": 803357,
+  "sourceFunctions": {
+    "decodeFree": "function(a){this.R.zc.uz=(null!=a.M0?a.M0:\na.oqa)||0;this.R.zc.Jv=0<this.R.zc.uz;this.R.zc.zk=(null!=a.N0?a.N0-this.R.zc.uz:a.nqa)||0;this.R.zc.winAmount=a.fia;this.R.zc.ny=a.ny||0}",
+    "maxWin": "function(a){return A.nb.get().yI!==A.lr.Ta&&a.MO.Ug}",
+    "realEndGuard": "function(){return this.hoa.Be||0<this.R.zc.zk&&!this.R.state.Ug?!1:!0}",
+    "clearFree": "function(a){a.Jv=!1;a.uz=null;a.zk=null;a.winAmount=null;a.ny=null}"
+  },
+  "sourceFunctionPins": {
+    "decodeFree": {
+      "sourceMethod": "Jma",
+      "start": 506140,
+      "end": 506321,
+      "SHA256": "0592a89babbdad62bff120ba83f71b287bbeed584f7cc8b1302d919d920fce24"
+    },
+    "maxWin": {
+      "sourceMethod": "Bea",
+      "start": 506071,
+      "end": 506123,
+      "SHA256": "7778f11f0dc346d738c47040f0dd653ad8db48ff8e7a42401b09da4fc9494355"
+    },
+    "realEndGuard": {
+      "sourceMethod": "Epa",
+      "start": 504403,
+      "end": 504473,
+      "SHA256": "7640318896d4d15036d28e8ce544ad35206f02a2b1c508933d45fd1804631d83"
+    },
+    "clearFree": {
+      "start": 310952,
+      "end": 311019,
+      "SHA256": "3dc7bd7b7fc5ccb87e5eff6f43732f167ef1373b01b07ac3429a5b3e08fe81e4"
+    }
+  },
+  "sourceMetadata": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\legendoffortune\\js\\bootstrapper.js",
+    "maxWinFunction": "function(){return\"on\"===\"ON\".toLowerCase()}",
+    "actualLogicUrl": "https://gls.atc.casinarena.com/gls.rgsx",
+    "ownGameCode": "legendoffortune",
+    "bootstrapDeclaredAppSHA256": "4c53f94e4f2c51bdc207a3761d7788c578420238ff852329254dcb7f2da5a345",
+    "fullSDKHashNotRepeated": true
+  },
+  "typedFS": {
+    "M0": "freeSpinNumber",
+    "oqa": "spinsUsed",
+    "N0": "freeSpinsTotal",
+    "nqa": "spinsRemaining",
+    "fia": "fsWinnings",
+    "ny": "extraSpinsAwarded"
+  },
+  "sourceClearMissingFreeRemaining": null,
+  "noChoiceTransportInOwnLogicDTO": true,
+  "sourceEpaBlocksReplayAndPositiveFreeUnlessMax": true,
+  "oldRawPrefixNeverSent": true,
+  "sourceRequests": 0,
+  "DBReads": 0,
+  "DBWrites": 0,
+  "productionReady": false
+}

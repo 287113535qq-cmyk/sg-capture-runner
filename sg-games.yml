@@ -17550,3 +17550,45 @@ games:
         total: '176'
       own32761ProtocolDATA:
         contract: own32761-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32786'
+    name: Legend of Fortune
+    dbName: sg_legend_of_fortune
+    backendId: legendoffortune
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      runtimeGameId: 33008
+      runtimeSlug: legendoffortune
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: legendoffortune
+        gameID: '20233'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      betRaw: 200
+      stake:
+        total: '200'
+      own32786ProtocolDATA:
+        contract: own32786-original-SG-protocol-private-v1
