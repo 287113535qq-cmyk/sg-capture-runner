@@ -1,0 +1,72 @@
+{
+  "schema": "own32761-original-wire-model-DATA-v1261",
+  "gameId": "32761",
+  "sourceSHA256": "9c8bbeeb2840e404e8245ef792110c6ad25c6d218bb2a7ba9c4d56270f38f7e7",
+  "sourcePinReused": true,
+  "sourceFunctions": {
+    "clearFree": "function(a){a.Jj=!1;a.El=null;a.Ig=null;a.winAmount=null;a.gs=null}",
+    "decodeFree": "function(a){this.T.vb.El=(null!=a.cra?a.cra:a.S2a)||0;this.T.vb.Jj=0<this.T.vb.El;this.T.vb.Ig=(null!=a.uP?a.uP-this.T.vb.El:a.R2a)||0;this.T.vb.winAmount=a.oTa;this.T.vb.gs=a.gs||0}",
+    "maxWin": "function(a){return E.ic.get().DF!==E.at.Db&&a.ZA.ai}",
+    "realEndGuard": "function(){return this.Ixa.ue||!this.settings.Joa||0<this.T.vb.Ig&&!this.T.state.ai?!1:!0}"
+  },
+  "sourceChoiceDomain": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "sourceMetadata": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/dancingdrumsexplosion/js/metadatabundle.js",
+    "certifiedSHA256": "d734ce2889d5b70c590e5361b376e3aa67a202aea9f98c4f377c245e18a467d2",
+    "maxWinFunction": "function(){return\"on\"===\"ON\".toLowerCase()}"
+  },
+  "newNarrowSourceSpans": [
+    {
+      "name": "typed FS attributes",
+      "start": 1201700,
+      "end": 1202290,
+      "SHA256": "e7665c4076bc880f134e3bf74783066e7d2a6dcd62b235803a802f1e42bc661f",
+      "source": "({path:\".fsWinnings\",type:l.Number})],target:a.prototype,j:void 0};b.ai={i:[l.Oa({path:\".isMaxWin\",type:l.Boolean})],target:a.prototype,j:void 0};b.uP={i:[l.Oa({path:\".freeSpinsTotal\",type:l.Number})],target:a.prototype,\nj:void 0};b.cra={i:[l.Oa({path:\".freeSpinNumber\",type:l.Number})],target:a.prototype,j:void 0};b.S2a={i:[l.Oa({path:\".spinsUsed\",type:l.Number})],target:a.prototype,j:void 0};b.R2a={i:[l.Oa({path:\".spinsRemaining\",type:l.Number})],target:a.prototype,j:void 0};b.gs={i:[l.Oa({path:\".extraSpinsAwarded\",type:l.Number})],target:a.prototype,j:void 0};B(b);return a=z([l.ga("
+    },
+    {
+      "name": "own clear resets previous choice",
+      "start": 1347465,
+      "end": 1347650,
+      "SHA256": "146a1a271e5ee88ea6a979ef7c5b73ade9b5bef8cc2f46c8e6905cf8efb0fb12",
+      "source": "ction(a){(function(a){(function(a){a.clear=function(a){E.fa.Ha.dc.clear(a);a.$za=[];a.uP=0;a.bf=null;a.zoa=null;a.hra=!1;a.T9=!1;a.Bta=null;a.Pxa=!1}})(a.dc||(a.dc={}))})(a.Ha||(a.Ha={}"
+    },
+    {
+      "name": "source DX copies current explicit selection",
+      "start": 1268860,
+      "end": 1269070,
+      "SHA256": "53817d48eda74dccb923f5c2e2d0e8e263bd04bfcde7ef2732097f6fa7b7d0c5",
+      "source": "function(a){a.Ok&&(a.Ok.wK&&(this.T.Ok.wK=a.Ok.wK),a.Ok.HZ&&(this.T.Ok.HZ=a.Ok.HZ),a.Ok.HQ&&(this.T.Ok.HQ=a.Ok.HQ))};d.prototype.DX=function(a){a=e.prototype.DX.call(this,a);a.aTa=this.T.vb.zoa;return a};d.prot"
+    }
+  ],
+  "typedFS": {
+    "cra": "freeSpinNumber",
+    "S2a": "spinsUsed",
+    "uP": "freeSpinsTotal",
+    "R2a": "spinsRemaining",
+    "oTa": "fsWinnings",
+    "gs": "extraSpinsAwarded"
+  },
+  "semantics": {
+    "noFreeRemainingDefault": true,
+    "absentFSUsesLiteralSourceClearNull": true,
+    "paidStakeAndAccountPassthrough": true,
+    "sourceEndHeaderOnly": true,
+    "choiceClearedByOwnVbaBeforeNextAutomaticFree": true,
+    "originalMaxFlagReadFromAcceptedBGInfo": true,
+    "sourceMetadataMaxEnabledLiteral": true,
+    "sourceCloseGuardAloneDoesNotResolvePendingChoice": true
+  },
+  "old13GroupsReexecuted": 0,
+  "wholeSDKEntry": 0,
+  "wholeSDKAST": 0,
+  "UIAudio": 0,
+  "sourceRequests": 0,
+  "DBReads": 0,
+  "productionReady": false
+}

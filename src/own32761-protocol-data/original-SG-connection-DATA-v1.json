@@ -1,0 +1,23 @@
+{
+  "schema": "own32761-original-SG-protocol-connection-DATA-v1",
+  "sourceTransportContentType": "application/x-www-form-urlencoded",
+  "sourceHeaderFields": [
+    "affiliate",
+    "ccyCode",
+    "channel",
+    "freePlay",
+    "gameCodeRGI",
+    "gameID",
+    "glsID",
+    "lang",
+    "promotions",
+    "userID",
+    "userType",
+    "versionID"
+  ],
+  "sourceAbsentCurrencyMultiplier": 1,
+  "ownCurrencyFallbackSource": "app.js own FTa: null!==a.Ni.Sd?a.Ni.Sd:1 (normal non-replay)",
+  "sourceStakeMenu": "Actual own accepted Init Stakes numeric list; wager must be present. No old sample combination whitelist.",
+  "sourceRequestDATA": "Own source q0.F8 + DL.um/own Wu.IPa DTO; End Header only, explicit choice0..4, subsequent automatic free clears earlier choice.",
+  "sourceSHA256": "9c8bbeeb2840e404e8245ef792110c6ad25c6d218bb2a7ba9c4d56270f38f7e7"
+}

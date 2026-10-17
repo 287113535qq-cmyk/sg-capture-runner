@@ -17508,3 +17508,45 @@ games:
       - 2001
       - 5001
       - 10001
+  - provider: sg
+    gameId: '32761'
+    name: Dancing Drums Explosion
+    dbName: sg_dancingdrumsexplosion
+    backendId: dancingdrumsexplosion
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      runtimeGameId: 32983
+      runtimeSlug: dancingdrumsexplosion
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: dancingdrumsexplosion
+        gameID: '20454'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      betRaw: 176
+      stake:
+        total: '176'
+      own32761ProtocolDATA:
+        contract: own32761-original-SG-protocol-private-v1
