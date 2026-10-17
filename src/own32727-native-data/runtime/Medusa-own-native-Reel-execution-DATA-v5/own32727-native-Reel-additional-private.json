@@ -1,0 +1,106 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "selector": "NovaReel.prototype.setSymbolHeight",
+      "inputFile": "new-0.js",
+      "offset": 1631708,
+      "kind": "function",
+      "source": "function(newHeight,count){this.symHeight=newHeight;for(var i=0;i<this.totalSlots;i++){var slot=this.getSlotByIndex(i);slot.y=i*this.symHeight,slot.wrapperY=slot.y;for(var j=0,l=slot.symbols.length;j<l;j++)\"undefined\"!=typeof slot.symbols[j].setSize&&slot.symbols[j].setSize(count)}this.y=-this.symHeight,this.maskShape.y=this.symHeight,this.motion.init(),this.changeReelSpinSpeed(72/this.symHeight,0),this.motion.delayStop=1-this.symHeight/126+this.motion.configDelayStop}",
+      "SHA256": "60be8ea2477605b0db6e9e65e6456b48ed899aeceb2f06e705ee4610de2293e4"
+    },
+    {
+      "selector": "NovaReel.prototype.changeReelSpinSpeed",
+      "inputFile": "new-1.js",
+      "offset": 1613427,
+      "kind": "function",
+      "source": "function(speedScale,duration){this.motion.changeSpeed(speedScale,duration)}",
+      "SHA256": "83958e99ddf9468d2c6357d4268f596fdb2c1acf23cde5b8f23c1d102fc560ec"
+    },
+    {
+      "selector": "NovaSlotObject.prototype.hideSymbol",
+      "inputFile": "new-2.js",
+      "offset": 1611900,
+      "kind": "function",
+      "source": "function(bool){bool?(this.visible=!1,null!=this.effectObject):(this.visible=!0,null!=this.effectObject)}",
+      "SHA256": "fca514087eb7c87e0a1ea7e7fa3446377877721cca6e6ec1f50ad08fe7c14672"
+    },
+    {
+      "selector": "NovaSlotObject.prototype.onInteractionUp",
+      "inputFile": "new-3.js",
+      "offset": 1612123,
+      "kind": "function",
+      "source": "function(){console.warn(\"WARNING: Interation Enabled, UP Exicted\")}",
+      "SHA256": "92aac668c10f6528872e82d5a585ff277b0362085b497830bf75e44331f98c16"
+    },
+    {
+      "selector": "NovaSlotObject.prototype.onInteractionDown",
+      "inputFile": "new-4.js",
+      "offset": 1612234,
+      "kind": "function",
+      "source": "function(){console.warn(\"WARNING: Interation Enabled, DOWN Exicted\")}",
+      "SHA256": "d2cd7b43708a3fc15366da3633f47539bfd70ada51706298bc5949a291022e5c"
+    },
+    {
+      "selector": "SymbolModule.prototype.addBlur",
+      "inputFile": "new-5.js",
+      "offset": 1645835,
+      "kind": "function",
+      "source": "function(texture,reelCfg){var symWidth=reelCfg?reelCfg.symWidth:NOVA.config.game.reels.symWidth,symHeight=reelCfg?reelCfg.symHeight:NOVA.config.game.reels.symHeight;this.blurredSprite=NOVA.getSprite(texture),this.blurredSprite.anchor.set(.5,.5),this.blurredSprite.position.set(symWidth/2,symHeight/2),this.addChild(this.blurredSprite),this.blurredSprite.visible=!1,this.symbolAssests.visible=!1}",
+      "SHA256": "5854909192ce2f435f53d28e9ef51b8e1e54e9355e70e61f023303cc7eb560b9"
+    },
+    {
+      "selector": "SymbolModule.prototype.addShade",
+      "inputFile": "new-6.js",
+      "offset": 1645137,
+      "kind": "function",
+      "source": "function(prefix,texture,bBlur,reelCfg){var symWidth=reelCfg?reelCfg.symWidth:NOVA.config.game.reels.symWidth,symHeight=reelCfg?reelCfg.symHeight:NOVA.config.game.reels.symHeight;if(this.filteredSprite=NOVA.getSprite(prefix+texture),this.filteredSprite.anchor.set(.5,.5),this.filteredSprite.position.set(symWidth/2,symHeight/2),this.addChild(this.filteredSprite),bBlur){var blurPrefix=\"blur_\";this.hybridSprite=NOVA.getSprite(prefix+blurPrefix+texture),this.hybridSprite.anchor.set(.5,.5),this.hybridSprite.position.set(symWidth/2,symHeight/2),this.addChild(this.hybridSprite)}this.hybridSprite.visible=!1,this.filteredSprite.visible=!1,this.symbolAssests.visible=!1}",
+      "SHA256": "ee6a8bdf835bef29d93844c39dfecd5f034af7f0159471eecb5a6764617e0a66"
+    },
+    {
+      "selector": "ReelManager.prototype.resetReels",
+      "offset": 1649772,
+      "file": "new-selected-manager-reset-1-private.js",
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].reset()}",
+      "sourceBytes": 83,
+      "SHA256": "0dcdf55c4e51fa6cecf7445a9da7ff91eb2e36cb0e4abf42a6d801e893e8333b",
+      "reused": true
+    },
+    {
+      "selector": "ReelManager.prototype.resetSRS",
+      "offset": 1651745,
+      "file": "new-selected-manager-reset-2-private.js",
+      "source": "function(){if(this.srsTriggered){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].resetSRS();this.srsTriggered=!1,this.srsReelTrigger=-1,this.hasWin&&this.hasDimming||this.shadeReels(ENUM.symbolState.NORMAL)}this.srsGate.reset()}",
+      "sourceBytes": 244,
+      "SHA256": "a84754726c9c3d0fee0c4f6f6047d226170644800512bbecd828607c605e0730",
+      "reused": true
+    },
+    {
+      "selector": "symbolState",
+      "inputFile": "enum-0.js",
+      "offset": 2377,
+      "kind": "enum",
+      "source": "{NORMAL:0,SHADED:1,BLURRED:2,HYBRID:3}",
+      "SHA256": "2a4be527530244bb15508694e650ca56ae5bdd580f39a7a15b774439ba3a9609"
+    },
+    {
+      "selector": "reelsGameState",
+      "inputFile": "enum-1.js",
+      "offset": 2324,
+      "kind": "enum",
+      "source": "{REEL_BASE_GAME:0,REEL_FREE_GAME:1}",
+      "SHA256": "22a9c88d53f291019006e01e655a88f903132a43f163fd4b0a334b7e5231c239"
+    },
+    {
+      "selector": "reelManagerGameState",
+      "inputFile": "enum-2.js",
+      "offset": 2272,
+      "kind": "enum",
+      "source": "{RM_BASE_GAME:0,RM_FREE_GAME:1}",
+      "SHA256": "6e7706308a2c7ec3f8dbacfa1d918bb3a360cec40eee570a242538ef838c373d"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

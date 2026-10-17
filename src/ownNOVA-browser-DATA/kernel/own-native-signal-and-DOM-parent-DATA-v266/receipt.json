@@ -1,0 +1,30 @@
+{
+  "schema": "own-NOVA-pair-selected-signal-and-DOM-parent-DATA-v266",
+  "at": 1792176441.45,
+  "rows": [
+    {
+      "gameId": "32550",
+      "selectedSignalBytes": 3911,
+      "newDOMParentId": "3073",
+      "newDOMParentBytes": 2040,
+      "dependencies": [],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-signal-and-DOM-parent-DATA-v266\\32550-selected-private.json",
+      "SHA256": "ec64581c17023bf4ece741eee8a9b42e1828efcb8485ecae90ba33113ef17495"
+    },
+    {
+      "gameId": "32738",
+      "selectedSignalBytes": 3911,
+      "newDOMParentId": "73073",
+      "newDOMParentBytes": 2040,
+      "dependencies": [],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-signal-and-DOM-parent-DATA-v266\\32738-selected-private.json",
+      "SHA256": "8ca5e3afa953eec9ac272defdbac7332f5b82c3adc740ba3718512ccd3be2cde"
+    }
+  ],
+  "oldSelectedFactoriesRepeated": 0,
+  "wholeSDKASTOrHashRecheck": 0,
+  "newSelectedFactoryASTs": 2,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "productionReady": false
+}

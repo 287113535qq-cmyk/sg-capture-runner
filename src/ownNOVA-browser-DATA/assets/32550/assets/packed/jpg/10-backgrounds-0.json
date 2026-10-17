@@ -1,0 +1,76 @@
+{"frames": {
+
+"CC_HH_AWARD_CARD_PANEL1":
+{
+	"frame": {"x":2048,"y":2944,"w":819,"h":545},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":819,"h":545},
+	"sourceSize": {"w":819,"h":545}
+},
+"CC_HH_AWARD_CARD_PANEL2":
+{
+	"frame": {"x":3240,"y":1024,"w":819,"h":545},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":819,"h":545},
+	"sourceSize": {"w":819,"h":545}
+},
+"hh_cc_desktop_bg":
+{
+	"frame": {"x":0,"y":0,"w":2048,"h":1024},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":2048,"h":1024},
+	"sourceSize": {"w":2048,"h":1024}
+},
+"hh_cc_desktop_fg_bg":
+{
+	"frame": {"x":2048,"y":0,"w":2048,"h":1024},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":2048,"h":1024},
+	"sourceSize": {"w":2048,"h":1024}
+},
+"hh_cc_jackpot_bg":
+{
+	"frame": {"x":0,"y":2944,"w":2048,"h":1024},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":2048,"h":1024},
+	"sourceSize": {"w":2048,"h":1024}
+},
+"hh_cc_mobile_bg":
+{
+	"frame": {"x":0,"y":1024,"w":1080,"h":1920},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1080,"h":1920},
+	"sourceSize": {"w":1080,"h":1920}
+},
+"hh_cc_mobile_fg_bg":
+{
+	"frame": {"x":1080,"y":1024,"w":1080,"h":1920},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1080,"h":1920},
+	"sourceSize": {"w":1080,"h":1920}
+},
+"hh_cc_mobile_jackpot_bg":
+{
+	"frame": {"x":2160,"y":1024,"w":1080,"h":1920},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1080,"h":1920},
+	"sourceSize": {"w":1080,"h":1920}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-backgrounds-0.jpg",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":3968},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2e4ac273342a9a8caa91ee03c5a8e05b:de9363ada67a6ebda94d1d9ac61760dd:56f526e692e8163c7759c3f7b60bcf4e$"
+}
+}

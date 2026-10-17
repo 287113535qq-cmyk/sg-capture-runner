@@ -1,0 +1,40 @@
+{
+  "schema": "own-NOVA-CoinCombo-selected-native-next-methods-v179",
+  "gameId": "32738",
+  "wholeSourceCertificateReused": {
+    "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\terrifictigercoincombo\\218.bundle.js",
+    "SHA256": "63e25c482f8c98655ba3e9a180d40722c83e3b04c4ec6624736ad4bec74bfc03",
+    "bytes": 537312,
+    "exactPriorClientFileCertificateExists": true
+  },
+  "functions": {
+    "readyForNextSpin": {
+      "source": "function(){if(this.alphaSymbols(1),v.getCoinCount()>0)t.time.events.add(100,this.readyForNextSpin,this);else if(this.lastSpinData&&this.lastSpinData.game.freespins.remaining>0)R.set(\"SPIN\");else{if(!0===this.gameEndedComplete&&this.lastSpinData&&!0===this.lastSpinData.game.freespins.active&&0===this.lastSpinData.game.freespins.remaining)return this.disableUI(),void t.time.events.add(2e3,(function(){L.transitionToBaseGame()}));if(this.inFreeSpins)t.time.events.add(100,this.readyForNextSpin,this);else{var e=config.msBetweenSpins;if(this.game.time.now-this.timeOfLastSpin<e)return void this.game.time.events.add(e-(this.game.time.now-this.timeOfLastSpin),j.prototype.readyForNextSpin,this);this.freeRoundsActive||this.enableUI(),R.set(\"IDLE\")}}}",
+      "start": 317420,
+      "end": 318168,
+      "SHA256": "699501ddb5ad334435958ef37805da9dbfc9b8c380367ba08e06b2faf65afdba"
+    },
+    "winDisplayOver": {
+      "source": "function(){this.resultsComplete=!0;var e=this.autoplayManager;if(e.singlePrizeWinnings=this.lastSpinData.game.totalWinnings,this.inFreeSpins&&(this.lastSpinData.game.currentWinnings>0?L.updateTotalWonText(this.lastSpinData.game.totalWinnings,!0):L.updateTotalWonText(this.lastSpinData.game.totalWinnings),this.GameUI.updateTotalWin(this.lastSpinData.game.totalWinnings),this.buttons.btnSpin.disable()),this.lastSpinData&&!this.isMaxCap())if(this.lastSpinData&&this.lastSpinData.game.currentWinnings>0&&this.inFreeSpins)R.set(\"SHOW_WIN_TEXT\");else{var n=this;0===this.lastSpinData.game.currentWinnings&&!0===e.active&&3===this.winController.getWinTier(this.lastSpinData.game.totalWinnings)?t.time.events.add(3500,(function(){j.prototype.bigWinOver.call(n)})):j.prototype.bigWinOver.call(this)}else if(this.lastSpinData&&this.isMaxCap()){var a=t.getTranslation(\"Dialog.System.MaxWin\",t.formatCurrency(this.maxCap)),i=t.getTranslation(\"UI.Button.OK\");L.updateTotalWonText(this.lastSpinData.game.totalWinnings),this.GameUI.updateTotalWin(this.lastSpinData.game.totalWinnings),P.showError(a,i,\"\",(function(){L.transitionToBaseGame()}))}}",
+      "start": 314778,
+      "end": 315910,
+      "SHA256": "fc026ee6508a29c04d3347ba4aa08174045be4b33d91c08cf1b7537bc5eee383"
+    },
+    "freeSpinsBeginGame": {
+      "source": "function(e){L.playFreeSpinsMusic(),this.inFreeSpins&&this.lastSpinData&&0==this.lastSpinData.game.freespins.current&&(t.time.events.add(200,(function(){R.set(\"PRE_SPIN\")}),this),!0)}",
+      "start": 318188,
+      "end": 318370,
+      "SHA256": "deded0ac526d7650945b28ec2692161fe39b52feadbff60a7a436eeca5cd3a3a"
+    },
+    "gameEndedComplete": {
+      "source": "function(){this.gameEndedComplete=!0}",
+      "start": 319788,
+      "end": 319825,
+      "SHA256": "7a83bf8c4ba9f80e7bfe6ee7ef7b8ef81d462205a0eaf0273cadf9ea1bad337c"
+    }
+  },
+  "SDKASTExecutions": 0,
+  "SDKExecutions": 0,
+  "sourceRequests": 0,
+  "productionReady": false
+}

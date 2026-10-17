@@ -1,0 +1,68 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "rows": [
+    {
+      "name": "WinManager.strumLines",
+      "sourceStart": 250812,
+      "sourceEnd": 250864,
+      "source": "function(callBack){winSequence.strumLines(callBack)}",
+      "fragmentSHA256": "74219e04098c9af58a826649f0758b31b282999effc2656a846ae857c63d90d6"
+    },
+    {
+      "name": "WinManager.setWinCombinations",
+      "sourceStart": 250968,
+      "sourceEnd": 252043,
+      "source": "function(wins){serverResponceWins=wins,winsArray=wins,winCombinations=[],totalWin=0;for(var hasLeftWin=!1,hasRightWin=!1,i=0;i<wins.length;i++){var line=wins[i][0],direction=\"leftToRight\",bVertical=!1,extraRowsPosition=[];\"R\"==wins[i][wins[i].length-1]?(direction=\"rightToLeft\",hasRightWin=!0):hasLeftWin=!0,parseInt(line)==-1&&\"V\"==wins[i][wins[i].length-1]&&(bVertical=!0),totalWin+=wins[i][1];for(var count=0,j=2;j<numReels+2;j++)if(wins[i][j]>=0&&count++,bVertical){var currentReelRow=[];if(wins[i][j]>=0)for(var nReel=j-2,symbolId=(wins[i][j],parseInt(reelManager.getSymbolID(nReel,wins[i][j]))),nRow=0,as=reelManager.reelCfg.activeSlots[nReel];nRow<as;nRow++){var currentSymId=parseInt(reelManager.getSymbolID(nReel,nRow));wins[i][j]!=nRow&&currentSymId==symbolId&&currentReelRow.push(nRow)}extraRowsPosition.push(currentReelRow)}fiveOfKind||(fiveOfKind=count==numReels),winCombinations.push({line:line,direction:direction,winSlots:count,verticalWin:extraRowsPosition})}winSequence.setWins(winCombinations,hasLeftWin,hasRightWin),wins.length>0&&(reelManager.hasWin=!0)}",
+      "fragmentSHA256": "6d1bd07b2ad4c1f7538953501ead1c71777001ba8cb49768c0a30d04b5d1e2bb"
+    },
+    {
+      "name": "WinSequence.strumLines",
+      "sourceStart": 1677429,
+      "sourceEnd": 1677670,
+      "source": "function(callBack){return this.type!=ENUM.winSequence.PAYLINE?void console.warn(\"WARNING: strumLines() called in a non-paylines games, it's only supported in games with visible lines - derr\"):void this.winSequenceObject.speedFlash(callBack)}",
+      "fragmentSHA256": "b6759178869ee118a7996945035cdeed223bde979ffb972edc96728d51adf33e"
+    },
+    {
+      "name": "WinSequence.setWins",
+      "sourceStart": 1676636,
+      "sourceEnd": 1676734,
+      "source": "function(data,hasLeftWin,hasRightWin){this.winSequenceObject.setWins(data,hasLeftWin,hasRightWin)}",
+      "fragmentSHA256": "706c5136613f03f2671b92e06993598844a1035ab20b7d505ca5334f79f7a2f5"
+    },
+    {
+      "name": "Payline.speedFlash",
+      "sourceStart": 236650,
+      "sourceEnd": 237656,
+      "source": "function(callBack){function showQuickLine(){if(winningCursor<winning.length){var lineIndex=winning[winningCursor].line;if(self.showLine(lineIndex,!0),strumCfg.bounce&&lineIndex>=0){var line=lines[lineIndex],oScale=line.scale,lineY=(line.x,line.y),scale=1.05;TweenMax.fromTo(line,.08,{scaleY:scale,y:lineY},{scaleY:oScale.y,y:lineY-(line.height*oScale.y-line.height)/2})}winningCursor++;var sound=Math.floor(winningCursor/strumCfg.esculation)+1;sound>strumCfg.samples&&(sound=strumCfg.samples);var soundIdToPlay=strumCfg.samplePrefix+sound;currentStrumSound=soundIdToPlay,SOUND.play(soundIdToPlay),winningCursor<winning.length&&TweenMax.delayedCall(strumCfg.interval,showQuickLine)}winningCursor>=winning.length&&(TweenMax.killDelayedCallsTo(showQuickLine),winningCursor=0,speedFlashEnabled=!1,null!=_callBack?TweenMax.delayedCall(.3,_callBack):self.lineCompleted())}var _callBack=callBack||null,strumCfg=NOVA.config.linesStrum;linesContainer.removeChild(linesMask),linesContainer.mask=null,showQuickLine()}",
+      "fragmentSHA256": "2fb3ac08ed0455b8f4b47b3639118cde09ac1ccc4d6cb42a7ccdf033afebf119"
+    },
+    {
+      "name": "Payline.setWins",
+      "sourceStart": 235622,
+      "sourceEnd": 235755,
+      "source": "function(data,hasLeftWin,hasRightWin){winning=data,this.hasLeftWin=hasLeftWin,this.hasRightWin=hasRightWin,this.processWinSegments()}",
+      "fragmentSHA256": "9b0b645785358d87d246d0c474daae6411406769a60b58e535bed9b23e90218f"
+    },
+    {
+      "name": "Payline.reset",
+      "sourceStart": 237668,
+      "sourceEnd": 237992,
+      "source": "function(){TweenMax.killDelayedCallsTo(self.startWin),TweenMax.killTweensOf(self.startWin),linesRendered?this.showLines(!1):(linesRendered=!0,TweenMax.delayedCall(.01,self.showLines,[!1],this)),this.resetLinesMask(),winning=[],winningCursor=0,winningCycle=0,direction=initialDirection,this.hasLeftWin=!1,this.hasRightWin=!1}",
+      "fragmentSHA256": "df790b3ebd4f77e11396f42b0fe3ac9f171b3969ece9bc172ad9bf8750b7d5e1"
+    },
+    {
+      "name": "Payline.processWinSegments",
+      "sourceStart": 238017,
+      "sourceEnd": 238144,
+      "source": "function(){for(var i=0;i<winning.length;i++)winning[i].line>=0&&lines[winning[i].line].setSegmentsActived(winning[i].winSlots)}",
+      "fragmentSHA256": "2ee2c6eea3527e6f2384a4b9e0de197b6338785161e0ba0d05c7bc0a1917724c"
+    }
+  ],
+  "initializationSource": "var self=this;this.hasLeftWin=!1,this.hasRightWin=!1,this.numCycles=0,this.handleStarted=null,this.handleUpdated=null,this.handleCompleted=null,this.handleAllSequenceCompleted=null,this.handleCycleCompleted=null;var linesRendered=!1,linesInitialized=!1,directionEnum={LEFT_TO_RIGHT:\"leftToRight\",RIGHT_TO_LEFT:\"rightToLeft\",BOTH:\"both\"},linesContainer=null,linesMask=null,points={x:[],y:[]},coords=[[]],lines=[],currentSegment=0,currentWinnings=[],winning=[],direction=null,initialDirection=null,reelConfig={},lineConfig={},winningCycle=0,winningCursor=0;this.lineDuration=null,this.lineHold=null;var speedFlashEnabled=!1,currentStrumSound=null;",
+  "initializationSHA256": "39fefb4be5627cce92285166f014f2bb9a6a9a4377ee3111f66c93b71d7e4f15",
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

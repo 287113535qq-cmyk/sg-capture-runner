@@ -1,0 +1,23 @@
+{
+  "schema": "own-NOVA-pair-shared-next-dependency-v212",
+  "at": 1792170103.27,
+  "rows": [
+    {
+      "gameId": "32550",
+      "moduleId": "6405",
+      "selectedBytes": 637291,
+      "dependencies": []
+    },
+    {
+      "gameId": "32738",
+      "moduleId": "76405",
+      "selectedBytes": 636767,
+      "dependencies": []
+    }
+  ],
+  "moduleFactoryExecutions": 0,
+  "wholeSDKASTOrHashRecheck": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

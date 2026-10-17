@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';import yaml from 'js-yaml';
 test('SG deployment keeps AG twenty lanes and original worker while preserving private evidence',()=>{
  const x:any=yaml.load(fs.readFileSync('.github/workflows/capture-sg-whole-ag-rolling.yml','utf8'));
- assert.equal(x.jobs.rolling.if,"github.repository == '287113535qq-cmyk/sg-capture-runner'");
+ assert.equal(x.jobs.rolling.if,"github.repository == 'zyzuoyang/sg-ag-capture'");
  assert.deepEqual(Object.keys(x.on),['workflow_dispatch']);assert.equal(x.jobs.rolling.strategy['max-parallel'],20);assert.equal(x.jobs.rolling.strategy['fail-fast'],false);
  const step=x.jobs.rolling.steps.find((s:any)=>s.run==='node -r ts-node/register scripts/rolling-worker.ts');assert(step);assert.equal(step.env.AG_CAPTURE_PLATFORM,'sg');assert.equal(step.env.SG_SOURCE_EVIDENCE_KEY,undefined);
  const upload=x.jobs.rolling.steps.find((s:any)=>s.uses?.startsWith('actions/upload-artifact'));assert(upload.with.path.endsWith('.enc'));assert.equal(upload.if,'always()');

@@ -1,0 +1,242 @@
+{
+  "frames" : {
+    "resources/atlas/symbols/L2" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/M3" : {
+      "frame" : {
+        "x" : 815,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/L3" : {
+      "frame" : {
+        "x" : 545,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/M4" : {
+      "frame" : {
+        "x" : 1085,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/Z_Bonus" : {
+      "frame" : {
+        "x" : 1355,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/L4" : {
+      "frame" : {
+        "x" : 815,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/M5" : {
+      "frame" : {
+        "x" : 1355,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/H1" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/L5" : {
+      "frame" : {
+        "x" : 545,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/H2" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/H3" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/H4" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/H5" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/M1" : {
+      "frame" : {
+        "x" : 815,
+        "y" : 275,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/L1" : {
+      "frame" : {
+        "x" : 545,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/M2" : {
+      "frame" : {
+        "x" : 1085,
+        "y" : 545,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/symbols/Wild" : {
+      "frame" : {
+        "x" : 1085,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    }
+  }
+}

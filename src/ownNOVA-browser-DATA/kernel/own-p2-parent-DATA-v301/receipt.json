@@ -1,0 +1,24 @@
+{
+  "at": 1792178920.227,
+  "results": [
+    {
+      "gameId": "32550",
+      "moduleId": "4969",
+      "bytes": 119398,
+      "dependencies": []
+    },
+    {
+      "gameId": "32738",
+      "moduleId": "64969",
+      "bytes": 119398,
+      "dependencies": []
+    }
+  ],
+  "newSelectedFactoryASTs": 2,
+  "oldSelectedFactoriesReextracted": 0,
+  "wholeSDKASTs": 0,
+  "wholeSDKHashRechecks": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

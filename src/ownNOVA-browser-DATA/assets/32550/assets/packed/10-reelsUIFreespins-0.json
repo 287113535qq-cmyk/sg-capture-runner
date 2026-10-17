@@ -1,0 +1,44 @@
+{"frames": {
+
+"IMG_FREESPINS_METER":
+{
+	"frame": {"x":213,"y":729,"w":152,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":97},
+	"sourceSize": {"w":152,"h":97}
+},
+"IMG_GLOW":
+{
+	"frame": {"x":1168,"y":1,"w":855,"h":866},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":855,"h":866},
+	"sourceSize": {"w":855,"h":866}
+},
+"IMG_REELS":
+{
+	"frame": {"x":1,"y":1,"w":1165,"h":726},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1165,"h":726},
+	"sourceSize": {"w":1165,"h":726}
+},
+"IMG_TOTAL_WIN_METER":
+{
+	"frame": {"x":1,"y":729,"w":210,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":210,"h":97},
+	"sourceSize": {"w":210,"h":97}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-reelsUIFreespins-0.png",
+	"format": "RGBA8888",
+	"size": {"w":2024,"h":868},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:49d2b57fb70cde727eb3edf58c6fb58c:0c410ac60b14e3616306ba74051b2d48:fc0b73675dbf6affc980dcb782373b38$"
+}
+}

@@ -1,0 +1,242 @@
+{
+  "frames" : {
+    "resources/atlas/coingold/coingold-08" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 2005,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-09" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 1205,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-04" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 2805,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-15" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 805,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-05" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 2005,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-16" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 405,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-06" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 2405,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-07" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 1605,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-00" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 3205,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-11" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 805,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-01" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 2805,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-12" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 1205,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-02" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 3205,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-13" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 405,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-03" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 2405,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-14" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coingold/coingold-10" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 1605,
+        "w" : 390,
+        "h" : 390
+      },
+      "sourceSize" : {
+        "w" : 390,
+        "h" : 390
+      },
+      "rotated" : false,
+      "page" : 0
+    }
+  }
+}

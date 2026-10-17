@@ -1,0 +1,36 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "owner": "NovaSlotObject",
+      "name": "forceStateUpdateForLineDimming",
+      "inputFile": "forceStateUpdateForLineDimming-window-private.js",
+      "sourceStart": 1606921,
+      "SHA256": "fc275e94d465e8e5c76958d8d6707b370790f5f6e261daef409f22dbdd0864ad",
+      "source": "function(bHide,state,bKillDim){if(!(null!=this.effectObject&&this.effectObject.isDimOverride()||this.currentSymbolObj.isDimOverride()))return\"undefined\"!=typeof bKillDim&&1==bKillDim?void(this.currentSymbolObj.isOversize()?null!=this.effectObject&&(this.effectObject.setSymbolState(ENUM.symbolState.NORMAL),this.effectObject.show(),this.effectObject.alpha=1):null!=this.effectObject?(this.currentSymbolObj.setSymbolState(ENUM.symbolState.NORMAL),this.currentSymbolObj.show(),this.currentSymbolObj.hide(),this.alpha=1,this.effectObject.setSymbolState(ENUM.symbolState.NORMAL),this.effectObject.show(),this.effectObject.visible=!0,this.effectObject.alpha=1):(this.currentSymbolObj.setSymbolState(ENUM.symbolState.NORMAL),this.currentSymbolObj.show(),this.alpha=1)):void(null!=this.effectObject?this.effectObject.isPaylineDim()?(this.currentSymbolObj.isOversize()?(bHide?(this.effectObject.setSymbolState(state),this.effectObject.alpha=this.dimAlpha):(this.effectObject.setSymbolState(ENUM.symbolState.NORMAL),this.effectObject.alpha=1),this.effectObject.show()):bHide?(this.currentSymbolObj.setSymbolState(state),this.currentSymbolObj.show(),state==ENUM.symbolState.SHADED&&(this.alpha=this.dimAlpha),this.effectObject.visible=!1):(this.effectObject.visible=!0,this.effectObject.alpha=1,this.currentSymbolObj.hide(),this.alpha=1),bHide&&!this.getEffectSymbol().isShade()&&NOVA.config.game.symbols.preventUnusedTextures&&(this.effectObject.alpha=this.dimAlpha-this.nonShadedAlphaOffset)):(bHide&&this.currentSymbolObj.isOversize()?this.effectObject.isAnimating()||(this.effectObject.setSymbolState(state),this.effectObject.alpha=this.dimAlpha):(this.effectObject.setSymbolState(ENUM.symbolState.NORMAL),this.effectObject.alpha=1),this.effectObject.show()):this.currentSymbolObj.isPaylineDim()?(this.currentSymbolObj.setSymbolState(state),this.currentSymbolObj.show(),state==ENUM.symbolState.SHADED?!this.currentSymbolObj.isShade()&&NOVA.config.game.symbols.preventUnusedTextures?this.alpha=this.dimAlpha-this.nonShadedAlphaOffset:this.alpha=this.dimAlpha:this.alpha=1):(bHide?!this.currentSymbolObj.isShade()&&NOVA.config.game.symbols.preventUnusedTextures?this.alpha=this.dimAlpha-this.nonShadedAlphaOffset:this.alpha=this.dimAlpha:this.alpha=1,this.currentSymbolObj.setSymbolState(state),this.currentSymbolObj.show()))}",
+      "fragmentSHA256": "88f653b851cd784ff708f9e1329100a61dd00a07f1af8c3b8e54d3ae17054283"
+    },
+    {
+      "owner": "NovaSlotObject",
+      "name": "animateSymbol",
+      "inputFile": "animateSymbol-window-private.js",
+      "sourceStart": 1610793,
+      "SHA256": "16a03aeffbbb49897586affac4cd0773145e59a869ff9f700cd58ed8b790ae89",
+      "source": "function(actionString,configObj){\"HIGHLIGHT\"==actionString&&this.effectsEnabled&&!this.effectObject.highlight||(\"HIGHLIGHT\"!=actionString||this.currentSymbolObj.highlight)&&(\"undefined\"==typeof configObj||null==configObj?(this.effectsEnabled||null!=this.effectObject||this.showSlotEffectLayer(!0,actionString,null,!1),null==this.effectObject?this.currentSymbolObj.animate_api(actionString,configObj):this.effectObject.animate_api(actionString,configObj)):(this.effectsEnabled||this.showSlotEffectLayer(!0,actionString,configObj,!1),null==this.effectObject?this.currentSymbolObj.animate_api(actionString,configObj):this.effectObject.animate_api(actionString,configObj)))}",
+      "fragmentSHA256": "43ab6ca6a5dbfa7caa4c2dddc49860f245b64c2755302af74b789c7f4da19762"
+    },
+    {
+      "owner": "NovaSlotObject",
+      "name": "stopAnimation",
+      "inputFile": "stopAnimation-window-private.js",
+      "sourceStart": 1611611,
+      "SHA256": "6bd0f715e05ec21671f9e843a4dcb1a790fc352f19a4b10c022124064d56342e",
+      "source": "function(actionString,configObj){this.effectObject&&this.effectObject.stopAnimation_api(actionString,configObj),this.currentSymbolObj.stopAnimation_api(actionString,configObj)}",
+      "fragmentSHA256": "ece25d112ad42b5dbff689854fdd70a01d399e19c19eb35ebc5ae59f4e1bec37"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

@@ -1,0 +1,75 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "name": "WinSequence.prototype.init",
+      "source": "function(){this.winSequenceObject.init(this.config.reels,this.linesConfig,this.containerID)}",
+      "SHA256": "492e266679d07f06329501f573687609bdff7c5f1c2127f262f751ac8b0df49a"
+    },
+    {
+      "name": "WinSequence.prototype.addListeners",
+      "source": "function(handleStarted,handleUpdated,handleCompleted,handleAllSequenceCompleted,handleCycleCompleted){this.winSequenceObject.addListeners(handleStarted,handleUpdated,handleCompleted,handleAllSequenceCompleted,handleCycleCompleted)}",
+      "SHA256": "1a5abcd4cd75d9ac315c91fbf2adc9d340ea838728910f0e9269db1f4467c720"
+    },
+    {
+      "name": "WinSequence.prototype.preCache",
+      "source": "function(){this.winSequenceObject.preCache()}",
+      "SHA256": "8abcbed1b334b8ee227ca1f18a973f5a35e7a75eaff129835639e691e9e3ca0d"
+    },
+    {
+      "name": "WinSequence.prototype.setWins",
+      "source": "function(data,hasLeftWin,hasRightWin){this.winSequenceObject.setWins(data,hasLeftWin,hasRightWin)}",
+      "SHA256": "706c5136613f03f2671b92e06993598844a1035ab20b7d505ca5334f79f7a2f5"
+    },
+    {
+      "name": "WinSequence.prototype.setNumCycles",
+      "source": "function(numCycles){this.winSequenceObject.setNumCycles(numCycles)}",
+      "SHA256": "41daa6583c43ea20883bf99896bd524650d80808a5f35dc4b4b4272192636389"
+    },
+    {
+      "name": "WinSequence.prototype.startWin",
+      "source": "function(){this.winSequenceObject.startWin()}",
+      "SHA256": "8e4f935d6ddc5feda2c906f411b37e66e37eb387fc2d181696a9f95a5fc5a751"
+    },
+    {
+      "name": "WinSequence.prototype.reset",
+      "source": "function(){this.winSequenceObject.reset()}",
+      "SHA256": "d7c334b4d39ee862044d36ca613fc2ff7bb9c078d1a258c6c91d86aa685c7aae"
+    },
+    {
+      "name": "WinSequence.prototype.moveLinesContainer",
+      "source": "function(destination){this.winSequenceObject.moveLinesContainer(destination)}",
+      "SHA256": "36559fde5ad56be1bd2362fb6f73e97eba73d7e94fab4df155fb08a645112e77"
+    },
+    {
+      "name": "WinSequence.prototype.enableSpeedFlash",
+      "source": "function(bEnable){return this.type!=ENUM.winSequence.PAYLINE?void console.warn(\"WARNING: enableSpeedFlash() called in a non-paylines games, it's only supported in games with visible lines - derr\"):void this.winSequenceObject.enableSpeedFlash(bEnable)}",
+      "SHA256": "b2a3b1e49f5e3055e4c4b498b4e57a104996642f01dfad35bd613f2e66f56f21"
+    },
+    {
+      "name": "WinSequence.prototype.strumLines",
+      "source": "function(callBack){return this.type!=ENUM.winSequence.PAYLINE?void console.warn(\"WARNING: strumLines() called in a non-paylines games, it's only supported in games with visible lines - derr\"):void this.winSequenceObject.speedFlash(callBack)}",
+      "SHA256": "b6759178869ee118a7996945035cdeed223bde979ffb972edc96728d51adf33e"
+    },
+    {
+      "name": "WinSequence.prototype.hideLinesContainer",
+      "source": "function(bHide){this.winSequenceObject.hideLinesContainer(bHide)}",
+      "SHA256": "5af1e8f0d0fc8a7f1e777677e64f760cb9aaa7d1930dcfc23c1c836f0d0d5d15"
+    },
+    {
+      "name": "this.winManNotify",
+      "source": "function(key,value){switch(key){case\"STOP_WIN\":self.api_notify(\"STOP_WIN\");break;case\"WIN_CUSTOMIZED\":self.api_notify(\"WIN_CUSTOMIZED\");break;case\"WIN_COMPLETE\":wingate.fire(0);break;case\"LINE_STARTED\":self.api_notify(\"LINE_STARTED\",value);break;case\"LINE_COMPLETED\":self.api_notify(\"LINE_COMPLETED\",value);break;case\"PLAYLINE_FLASHING_COMPLETE\":self.api_notify(\"PLAYLINE_FLASHING_COMPLETE\");break;case\"CELEBRATION_STARTED\":self.api_notify(\"CELEBRATION_STARTED\",value);break;case\"CELEBRATION_METER_STARTED\":self.api_notify(\"CELEBRATION_METER_STARTED\",value),self.fireEvent(\"START_BALANCE_ROLLUP\",value),self.fireEvent(\"START_WIN_METER_ROLLUP\",value);break;case\"CELEBRATION_METER_COMPLETE\":self.fireEvent(\"CELEBRATION_METER_COMPLETE\",value),self.api_notify(\"CELEBRATION_METER_COMPLETE\",value);break;case\"CELEBRATION_COMPLETE\":self.api_notify(\"CELEBRATION_COMPLETE\",value),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.account.getWin()),self.fireEvent(\"WIN_COMPLETE\");break;case\"CELEBRATION_SHOWER_STARTED\":self.api_notify(\"CELEBRATION_SHOWER_STARTED\",value);break;case\"CELEBRATION_TEXT_SHOWN\":self.api_notify(\"CELEBRATION_TEXT_SHOWN\",value);break;case\"CELEBRATION_TEXT_HIDING\":self.api_notify(\"CELEBRATION_TEXT_HIDING\",value);break;case\"SYMBOL_HIGHLIGHT\":self.api_notify(\"SYMBOL_HIGHLIGHT\",value);break;case\"SET_LEFT_TEXT\":case\"SET_LEFT_VALUE\":case\"SHOW_LEFT_TEXT\":self.api_notify(key,value)}self.unitTestEventListener&&self.unitTestEventListener(key)}",
+      "SHA256": "062f2a5edbb1800ca9d4024584352ac6ee0ce8eb09b7bfb640cc9ca249f6150a"
+    },
+    {
+      "name": "WinSequencePayway",
+      "source": "function WinSequencePayway(){var self=this;this.hasLeftWin=!1,this.hasRightWin=!1,this.numCycles=0,this.handleStarted=null,this.handleUpdated=null,this.handleCompleted=null,this.handleAllSequenceCompleted=null,this.handleCycleCompleted=null;var directionEnum={LEFT_TO_RIGHT:\"leftToRight\",RIGHT_TO_LEFT:\"rightToLeft\",BOTH:\"both\"},winContainer=null,winCoords=[],currentSegment=0,currentWinnings=[],winning=[],direction=null,initialDirection=null,reelConfig={},paywayConfig={},winningCycle=0,winningCursor=0;this.init=function(reelCfg){console.log(\"payways initialized\"),reelConfig=reelCfg,paywayConfig=NOVA.config.payways,initialDirection=paywayConfig.initialDirection&&paywayConfig.initialDirection!=directionEnum.LEFT_TO_RIGHT?directionEnum.LEFT_TO_RIGHT:null,direction=paywayConfig.initialDirection,this.lineDuration=paywayConfig.duration,this.winHold=paywayConfig.holdWin,winContainer=new NovaContainer,winContainer.x=0,winContainer.y=0},this.setLineDurations=function(lineDuration,winHold){this.lineDuration=lineDuration,this.winHold=winHold},this.addListeners=function(handleStarted,handleUpdated,handleCompleted,handleAllSequenceCompleted,handleCycleCompleted){this.handleStarted=handleStarted,this.handleUpdated=handleUpdated,this.handleCompleted=handleCompleted,this.handleAllSequenceCompleted=handleAllSequenceCompleted,this.handleCycleCompleted=handleCycleCompleted},this.preCache=function(){},this.setWins=function(data,hasLeftWin,hasRightWin){winning=data,this.hasLeftWin=hasLeftWin,this.hasRightWin=hasRightWin},this.setNumCycles=function(numCycles){this.numCycles=numCycles,paywayConfig.direction==directionEnum.BOTH&&this.hasLeftWin&&this.hasRightWin&&(this.numCycles=2*this.numCycles)},this.startWin=function(){self.showWins(!1),winningCycle++,winningCycle>self.numCycles?(direction=winning[winningCursor].direction,self.showWin(winning[winningCursor].line,!0),winningCursor++,winningCursor>=winning.length&&(winningCursor=0)):(self.defineDirection(),self.showWinningWays(!0)),self.resetWin(),self.animateWin()},this.reset=function(){TweenMax.killDelayedCallsTo(self.startWin),TweenMax.killTweensOf(self.startWin),this.showWins(!1),this.resetWin(),winning=[],winningCursor=0,winningCycle=0,direction=initialDirection,this.hasLeftWin=!1,this.hasRightWin=!1},this.showWinningWays=function(show){for(var i=0,l=winning.length;i<l;i++)winning[i].direction==direction&&this.showWin(winning[i].line,show)},this.showWins=function(show){currentWinnings=[]},this.showWin=function(line,show){for(var winIndex=null,i=0;i<winning.length;i++)if(winning[i].line==line&&winning[i].direction==direction){winIndex=i;break}show?currentWinnings.push(winIndex):currentWinnings.splice(currentWinnings.indexOf(winIndex),1)},this.animateWin=function(){var path=reelConfig.reels*(reelConfig.symWidth+reelConfig.gap);TweenMax.to(winContainer,this.lineDuration,{x:path,ease:Linear.easeNone,currentIntensity:0,onStart:this.payWayStarted,onUpdate:this.payWayUpdated,onUpdateParams:[winContainer,\"x\"],onComplete:this.payWayCompleted})},this.resetWin=function(){TweenMax.killTweensOf(winContainer),winContainer.x=0,winContainer.y=0,winCoords=[];for(var i=0;i<reelConfig.reels;i++)winCoords.push((reelConfig.symWidth+reelConfig.gap)*i)},this.defineDirection=function(){switch(paywayConfig.direction){case directionEnum.LEFT_TO_RIGHT:direction=directionEnum.LEFT_TO_RIGHT;break;case directionEnum.RIGHT_TO_LEFT:direction=directionEnum.RIGHT_TO_LEFT;break;case directionEnum.BOTH:direction=this.hasLeftWin&&this.hasRightWin?direction==directionEnum.LEFT_TO_RIGHT?directionEnum.RIGHT_TO_LEFT:directionEnum.LEFT_TO_RIGHT:this.hasRightWin?directionEnum.RIGHT_TO_LEFT:directionEnum.LEFT_TO_RIGHT}},this.payWayCompleted=function(){self.handleCompleted&&self.handleCompleted(currentWinnings,direction),winningCycle>self.numCycles&&winningCursor==winning.length-1&&self.handleCycleCompleted&&self.handleCycleCompleted(currentWinnings,direction),winningCycle==self.numCycles&&self.handleAllSequenceCompleted&&self.handleAllSequenceCompleted(currentWinnings,direction),winning.length>0&&TweenMax.delayedCall(self.winHold,self.startWin)},this.payWayStarted=function(){currentSegment=0,self.handleStarted&&self.handleStarted(currentWinnings,direction)},this.payWayUpdated=function(obj,prop){var showSegment=!1,currentCoord=obj[prop],currentWinSlot=0,numOfSegments=paywayConfig.activeReels;currentSegment<numOfSegments&&(direction==directionEnum.LEFT_TO_RIGHT?currentCoord>=winCoords[currentSegment]&&(currentSegment++,currentWinSlot=currentSegment,showSegment=!0):currentCoord<=winCoords[numOfSegments-currentSegment]&&(currentWinSlot=numOfSegments-currentSegment,currentSegment++,showSegment=!0)),self.handleUpdated&&showSegment&&self.handleUpdated(currentWinnings,direction,currentWinSlot)}}",
+      "newSDKWindowRead": false,
+      "SHA256": "9e6c844d62531b70cbc4b002ee94a5ca8b64d97b90cec66159ec7cbca604876f"
+    }
+  ],
+  "syntaxOnly": true,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

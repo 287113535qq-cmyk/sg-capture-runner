@@ -1,0 +1,126 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "rows": [
+    {
+      "name": "winSymbolChoreography",
+      "sourceStart": 1935170,
+      "sourceEnd": 1935623,
+      "source": "function(){if(!self.slotGame.serverResponse.freeGameTrigger){backgroundAnims.setFreeGameBackground(!1,!1);var winSymbol=self.slotGame.winManager.preStartWin();if(winSymbol){for(var symbols=winSymbol.symbols,sym=0;sym<symbols.length;sym++)self.slotGame.reelManager.animateSlot(symbols[sym].reel,symbols[sym].row,\"WIN\"),gameSound.playSymbol(self.slotGame.reelManager.getSymbol(symbols[sym].reel,symbols[sym].row).options.sound);return!0}return!1}return!1}",
+      "fragmentSHA256": "3c92a8eb1a1053be829c4e5b2d9cba62277ab1d222cfc531c2bb85747ca664ad",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "celebrationCompleted",
+      "sourceStart": 1942278,
+      "sourceEnd": 1942487,
+      "source": "function(){\"1|0|\"==self.slotGame.serverResponse.featureId&&\"2\"==self.slotGame.serverResponse.fgMultiplier?(introPanel.isPostSpin=!0,self.freeGameIntroChoreography()):self.slotGame.fireEvent(\"CLOSE_POST_SPIN\")}",
+      "fragmentSHA256": "c305cdb4ea4aabf92db3c0695a8cd297ece1d206ab8ef289d0618e8d4aeb9143",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "cascadeCompleted",
+      "sourceStart": 1942100,
+      "sourceEnd": 1942132,
+      "source": "function(){return playedCascade}",
+      "fragmentSHA256": "b35d793f2d3c551ff134ef2795fe8aa5f5792f5a04ee4420bfbb311891f0fd74",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "playBigWinCelebration",
+      "sourceStart": 1941630,
+      "sourceEnd": 1941840,
+      "source": "function(){var celebrationDuration=gameSound.playDiamondShower();bigwinCelebration.start(parseInt(game.slotGame.serverResponse.gsd.fieldValues.CTW),celebrationDuration,game.slotGame.serverResponse.inFreeGames)}",
+      "fragmentSHA256": "7c34f7c13887a9b7e2dcc0737ef5d5ad64443db0a7a2f0ae81ccfa2e8166ef12",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "playShortWinCelebration",
+      "sourceStart": 1941870,
+      "sourceEnd": 1942077,
+      "source": "function(){var celebrationDuration=gameSound.playShortWin();shortwinCelebration.start(parseInt(game.slotGame.serverResponse.gsd.fieldValues.CTW),celebrationDuration,game.slotGame.serverResponse.inFreeGames)}",
+      "fragmentSHA256": "2fad0b1b1ad8133ebacfb898d1ed6a3c025db75679dab221cc680f8d4c9ef013",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "playRetrigger",
+      "sourceStart": 1942152,
+      "sourceEnd": 1942251,
+      "source": "function(){fgMeters.updateRightCounter(!1),retriggerAnim.start(),gameSound.playRetriggerFreeGame()}",
+      "fragmentSHA256": "ce74aaac3e71a78417b2366f45c54c8d9384423b21bb98f8baa142f23e285655",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "freeGameIntroChoreography",
+      "sourceStart": 1936049,
+      "sourceEnd": 1936715,
+      "source": "function(){self.slotGame.serverResponse.gsd.fieldValues.BPT?(backgroundAnims.setFreeGameBackground(!0,!1),introPanel.show(!0),self.showBuyPass(!1),snakeStrikeFeature.showSnakes(!0),gameSound.playFreeGamesIntro()):self.slotGame.serverResponse.gsd.fieldValues.MTP?(backgroundAnims.setFreeGameBackground(!0,!1),snakeStrikeFeature.showSnakes(!0),TweenMax.delayedCall(.3,self.introPanelClose)):(self.playScatterAnimations(),TweenMax.delayedCall(1.8,function(){backgroundAnims.setFreeGameBackground(!0,!1),self.slotGame.ui.cancelAutoplay(),introPanel.show(!0),gameSound.playFreeGamesIntro(),self.showBuyPass(!1),snakeStrikeFeature.showSnakes(!0)})),self.freeGamesEnded=!1}",
+      "fragmentSHA256": "e26e7637bac2882a89f7c03791cc74aade4fec0dc66c8655d1387b43938a5c03",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "freeGameSummaryChoreography",
+      "sourceStart": 1936749,
+      "sourceEnd": 1936913,
+      "source": "function(){summaryPanel.init(self.summaryPanelClose),TweenMax.delayedCall(1,function(){summaryPanel.show(!0,self.slotGame.serverResponse.totalWin,0)},null,this,!0)}",
+      "fragmentSHA256": "f679eed1b5971c840d4c7b94b3a8471e660283f7d557c2308a83c5cf77c6000b",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "introPanelClose",
+      "sourceStart": 1937934,
+      "sourceEnd": 1937994,
+      "source": "function(){self.slotGame.fireEvent(\"CLOSE_FREE_GAME_INTRO\")}",
+      "fragmentSHA256": "db9166a7c5a3606e62c828d29d286f765a86f2bf34e05968d6e1b6d0cf1fb934",
+      "exactCachedBytesReused": true
+    },
+    {
+      "name": "summaryPanelClose",
+      "sourceStart": 1938018,
+      "sourceEnd": 1938262,
+      "source": "function(key){self.freeGamesEnded=!0,\"QUICKCLOSE\"===key&&gameSound.playQuickSummaryFreeGames(),\"COMPLETED\"===key&&(self.slotGame.fireEvent(\"CLOSE_FREE_GAME_SUMMARY\"),backgroundAnims.setFreeGameBackground(!1,!1),gameSound.playAmbientBaseGame())}",
+      "fragmentSHA256": "6dbbe498c3753ae728b83f45707b0647215382c523a1914af4d352fd236d7e21",
+      "exactCachedBytesReused": true
+    },
+    {
+      "name": "featureNotify",
+      "sourceStart": 1938282,
+      "sourceEnd": 1938501,
+      "source": "function(event){switch(event){case\"START_FEATURE_INTRO\":break;case\"CLOSE_FEATURE_INTRO\":self.slotGame.fireEvent(\"CLOSE_FEATURE_INTRO\");break;case\"CLOSE_FEATURE_SUMMARY\":self.slotGame.fireEvent(\"CLOSE_FEATURE_SUMMARY\")}}",
+      "fragmentSHA256": "4128e3ead3f3dd3048efe7b7f20b04504ca3cf9e0faab7033444143f29b802a6",
+      "exactCachedBytesReused": false
+    },
+    {
+      "name": "isReactionSpin",
+      "sourceStart": 1941286,
+      "sourceEnd": 1941431,
+      "source": "function(){var msg=game.slotGame.serverResponse;return\"0|\"==msg.featureId||\"0|1|\"==msg.featureId||\"1|0|\"==msg.featureId||\"2|1|0|\"==msg.featureId}",
+      "fragmentSHA256": "7f159944bd23933220234b6509d881075077cafcc2d0f631696345d2ae7eca41",
+      "exactCachedBytesReused": false
+    }
+  ],
+  "nativeInitializers": [
+    {
+      "source": "playedCascade=!1",
+      "sourceStart": 1902288
+    },
+    {
+      "source": "playFeatureAgain=!1",
+      "sourceStart": 1902179
+    },
+    {
+      "source": "reactionTriggered=!1",
+      "sourceStart": 1902158
+    },
+    {
+      "source": "windupTriggered=!1",
+      "sourceStart": 1902342
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "SDKExecuted": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

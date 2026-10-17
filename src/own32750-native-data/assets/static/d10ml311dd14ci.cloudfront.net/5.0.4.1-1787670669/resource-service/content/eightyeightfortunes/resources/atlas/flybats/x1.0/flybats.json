@@ -1,0 +1,130 @@
+{
+  "frames" : {
+    "resources/atlas/flybats/flybats00" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats02" : {
+      "frame" : {
+        "x" : 205,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats01" : {
+      "frame" : {
+        "x" : 105,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats08" : {
+      "frame" : {
+        "x" : 805,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats07" : {
+      "frame" : {
+        "x" : 705,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats04" : {
+      "frame" : {
+        "x" : 405,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats03" : {
+      "frame" : {
+        "x" : 305,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats06" : {
+      "frame" : {
+        "x" : 605,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/flybats/flybats05" : {
+      "frame" : {
+        "x" : 505,
+        "y" : 5,
+        "w" : 90,
+        "h" : 90
+      },
+      "sourceSize" : {
+        "w" : 90,
+        "h" : 90
+      },
+      "rotated" : false,
+      "page" : 0
+    }
+  }
+}

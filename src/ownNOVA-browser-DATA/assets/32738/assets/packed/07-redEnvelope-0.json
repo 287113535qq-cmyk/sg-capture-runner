@@ -1,0 +1,92 @@
+{"frames": {
+
+"envelopeBack":
+{
+	"frame": {"x":1,"y":1,"w":392,"h":580},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":8,"w":392,"h":580},
+	"sourceSize": {"w":398,"h":588}
+},
+"envelopeFlapBack":
+{
+	"frame": {"x":1,"y":961,"w":377,"h":58},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":377,"h":58},
+	"sourceSize": {"w":377,"h":58}
+},
+"envelopeFlapFront":
+{
+	"frame": {"x":369,"y":583,"w":377,"h":58},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":377,"h":58},
+	"sourceSize": {"w":377,"h":58}
+},
+"envelopeFront":
+{
+	"frame": {"x":395,"y":1,"w":379,"h":566},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":11,"w":379,"h":566},
+	"sourceSize": {"w":398,"h":588}
+},
+"envelopeLetter":
+{
+	"frame": {"x":776,"y":1,"w":370,"h":555},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":17,"w":370,"h":555},
+	"sourceSize": {"w":398,"h":588}
+},
+"envelopeLetterBlurred":
+{
+	"frame": {"x":476,"y":643,"w":96,"h":163},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":4,"w":96,"h":163},
+	"sourceSize": {"w":105,"h":171}
+},
+"envelopeLetterMove":
+{
+	"frame": {"x":380,"y":816,"w":96,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":3,"w":96,"h":165},
+	"sourceSize": {"w":105,"h":171}
+},
+"envelopeLetterSpin":
+{
+	"frame": {"x":369,"y":643,"w":105,"h":171},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":105,"h":171},
+	"sourceSize": {"w":105,"h":171}
+},
+"godrays":
+{
+	"frame": {"x":748,"y":569,"w":428,"h":450},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":428,"h":450},
+	"sourceSize": {"w":437,"h":450}
+},
+"godraysBlurred":
+{
+	"frame": {"x":1,"y":583,"w":366,"h":376},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":25,"y":0,"w":366,"h":376},
+	"sourceSize": {"w":415,"h":376}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "07-redEnvelope-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1177,"h":1020},
+	"scale": "0.75",
+	"smartupdate": "$TexturePacker:SmartUpdate:e6b1495b2a698ea51a17af0854477387:f90fe445da7a5bb8a7cf3ff12ab0a8fd:74d54bfe151d8459557ecec0f0b6bf22$"
+}
+}

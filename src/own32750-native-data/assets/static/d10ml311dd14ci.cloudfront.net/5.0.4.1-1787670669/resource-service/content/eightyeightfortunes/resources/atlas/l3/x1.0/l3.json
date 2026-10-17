@@ -1,0 +1,102 @@
+{
+  "frames" : {
+    "resources/atlas/l3/l3-06" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-05" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-04" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-03" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-02" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-01" : {
+      "frame" : {
+        "x" : 275,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/l3/l3-00" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 260,
+        "h" : 260
+      },
+      "sourceSize" : {
+        "w" : 260,
+        "h" : 260
+      },
+      "rotated" : false,
+      "page" : 0
+    }
+  }
+}

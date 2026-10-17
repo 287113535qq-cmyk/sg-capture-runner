@@ -1,0 +1,324 @@
+{
+  "schema": "own-NOVA-CoinCombo-pair-registration-and-selected-module-DATA-v189",
+  "at": 1792167745.414,
+  "results": [
+    {
+      "gameId": "32550",
+      "registeredModuleCount": 53,
+      "selectedModuleIndex": [
+        {
+          "moduleId": "1226",
+          "reasons": [
+            "readyForNextSpin"
+          ],
+          "bytes": 3671,
+          "dependencies": [
+            "414",
+            "8756",
+            "119",
+            "7331",
+            "6136",
+            "4898"
+          ],
+          "actualNextCallerNames": [
+            "transitionToBaseGame",
+            "readyForNextSpin"
+          ]
+        },
+        {
+          "moduleId": "2918",
+          "reasons": [
+            "readyForNextSpin"
+          ],
+          "bytes": 15325,
+          "dependencies": [
+            "1575",
+            "8295",
+            "8756",
+            "119",
+            "2500",
+            "6136",
+            "4898",
+            "5289",
+            "4267",
+            "5104"
+          ],
+          "actualNextCallerNames": [
+            "transitionToBaseGame",
+            "readyForNextSpin",
+            "freeSpinsBeginGame",
+            "gameEndedComplete"
+          ]
+        },
+        {
+          "moduleId": "3561",
+          "reasons": [
+            "NFG",
+            "FREE_GAME"
+          ],
+          "bytes": 22154,
+          "dependencies": [],
+          "actualNextCallerNames": []
+        },
+        {
+          "moduleId": "6111",
+          "reasons": [
+            "winDisplayOver"
+          ],
+          "bytes": 6677,
+          "dependencies": [
+            "1575",
+            "119",
+            "414",
+            "942",
+            "6136"
+          ],
+          "actualNextCallerNames": [
+            "winDisplayOver"
+          ]
+        },
+        {
+          "moduleId": "6321",
+          "reasons": [
+            "FREE_GAME"
+          ],
+          "bytes": 10556,
+          "dependencies": [
+            "6405",
+            "1575",
+            "3680",
+            "9384",
+            "7135",
+            "3561",
+            "8295",
+            "8756",
+            "119"
+          ],
+          "actualNextCallerNames": [
+            "gameEnded",
+            "endGame",
+            "gameEndedComplete"
+          ]
+        },
+        {
+          "moduleId": "6838",
+          "reasons": [
+            "readyForNextSpin",
+            "winDisplayOver"
+          ],
+          "bytes": 36751,
+          "dependencies": [
+            "6405",
+            "1575",
+            "1954",
+            "4832",
+            "4785",
+            "9699",
+            "3778",
+            "5402",
+            "3097",
+            "8150",
+            "9599",
+            "3267",
+            "4898",
+            "2918",
+            "1226",
+            "6136",
+            "1085",
+            "5182",
+            "7009",
+            "8295",
+            "8756",
+            "3300",
+            "119",
+            "6547",
+            "2592",
+            "149",
+            "942",
+            "5289",
+            "6111",
+            "8505",
+            "414",
+            "7438",
+            "4267",
+            "3447",
+            "6039"
+          ],
+          "actualNextCallerNames": [
+            "gameEndedComplete",
+            "readyForNextSpin",
+            "winDisplayOver",
+            "transitionToBaseGame",
+            "freeSpinsBeginGame",
+            "gameEnded"
+          ]
+        }
+      ],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\registered-own-native-next-module-DATA-v189\\32550-selected-modules-private.json",
+      "SHA256": "88adb5e0dc0559dc3047fd57ad67e6ea3ac6fcc117d302db247a6f16b33f2d33"
+    },
+    {
+      "gameId": "32738",
+      "registeredModuleCount": 53,
+      "selectedModuleIndex": [
+        {
+          "moduleId": "26111",
+          "reasons": [
+            "winDisplayOver"
+          ],
+          "bytes": 6808,
+          "dependencies": [
+            "21575",
+            "90119",
+            "30414",
+            "26136"
+          ],
+          "actualNextCallerNames": [
+            "winDisplayOver"
+          ]
+        },
+        {
+          "moduleId": "33561",
+          "reasons": [
+            "NFG",
+            "FREE_GAME"
+          ],
+          "bytes": 22155,
+          "dependencies": [],
+          "actualNextCallerNames": []
+        },
+        {
+          "moduleId": "41226",
+          "reasons": [
+            "readyForNextSpin"
+          ],
+          "bytes": 3922,
+          "dependencies": [
+            "30414",
+            "88756",
+            "90119",
+            "84699",
+            "26136",
+            "24898"
+          ],
+          "actualNextCallerNames": [
+            "transitionToBaseGame",
+            "readyForNextSpin"
+          ]
+        },
+        {
+          "moduleId": "46838",
+          "reasons": [
+            "readyForNextSpin",
+            "winDisplayOver"
+          ],
+          "bytes": 44657,
+          "dependencies": [
+            "76405",
+            "21575",
+            "31954",
+            "94832",
+            "44785",
+            "29699",
+            "33778",
+            "95402",
+            "33097",
+            "98150",
+            "9599",
+            "53267",
+            "24898",
+            "72918",
+            "41226",
+            "26136",
+            "1085",
+            "45182",
+            "98710",
+            "48295",
+            "88756",
+            "53300",
+            "90119",
+            "36547",
+            "42592",
+            "60149",
+            "942",
+            "85289",
+            "26111",
+            "98505",
+            "30414",
+            "27438",
+            "84267",
+            "83447",
+            "86039"
+          ],
+          "actualNextCallerNames": [
+            "gameEndedComplete",
+            "readyForNextSpin",
+            "winDisplayOver",
+            "transitionToBaseGame",
+            "freeSpinsBeginGame",
+            "gameEnded"
+          ]
+        },
+        {
+          "moduleId": "66321",
+          "reasons": [
+            "FREE_GAME"
+          ],
+          "bytes": 11304,
+          "dependencies": [
+            "76405",
+            "21575",
+            "33680",
+            "89384",
+            "17135",
+            "33561",
+            "48295",
+            "88756",
+            "90119"
+          ],
+          "actualNextCallerNames": [
+            "gameEnded",
+            "endGame",
+            "gameEndedComplete"
+          ]
+        },
+        {
+          "moduleId": "72918",
+          "reasons": [
+            "readyForNextSpin"
+          ],
+          "bytes": 21741,
+          "dependencies": [
+            "21575",
+            "48295",
+            "88756",
+            "90119",
+            "82500",
+            "26136",
+            "24898",
+            "85289",
+            "84267",
+            "55104"
+          ],
+          "actualNextCallerNames": [
+            "transitionToBaseGame",
+            "readyForNextSpin",
+            "freeSpinsBeginGame",
+            "gameEndedComplete"
+          ]
+        }
+      ],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\registered-own-native-next-module-DATA-v189\\32738-selected-modules-private.json",
+      "SHA256": "d04e524a3fa33cc66d28d943a14df5d9c844c5177d1eb20bbfcf8ec77cbfcbab"
+    }
+  ],
+  "newOwnChunkDeclarationRegistrations": 2,
+  "wholeSDKASTExecutions": 0,
+  "oldCertificatesRetested": 0,
+  "wholeSDKRehashes": 0,
+  "moduleFactoriesExecuted": 0,
+  "gameControllersExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

@@ -1,0 +1,107 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "name": "WinSequence",
+      "offset": 238606,
+      "inputFile": "WinSequence-selected-window-private.js",
+      "selectedBytes": 30000,
+      "existingWindowReused": true,
+      "kind": "declaration",
+      "source": "function WinSequence(type,config,linesCfg,containerID){switch(this.type=type,this.winSequenceObject=null,this.config=config,this.linesConfig=linesCfg,this.containerID=containerID,type){case ENUM.winSequence.PAYLINE:this.winSequenceObject=new WinSequencePayline;break;case ENUM.winSequence.PAYWAY:this.winSequenceObject=new WinSequencePayway;break;case ENUM.winSequence.JJ:this.winSequenceObject=new WinSequenceJJ}}",
+      "SHA256": "2a0efc46320501ff9d2a8e25b14df366b1dd0fb85a42ab8fc487b9c3b0525925",
+      "methods": []
+    },
+    {
+      "name": "CelebrationManager",
+      "offset": 165690,
+      "inputFile": "CelebrationManager-selected-window-private.js",
+      "selectedBytes": 30000,
+      "existingWindowReused": true,
+      "kind": "declaration",
+      "source": "function CelebrationManager(){function celebrationLookup(cbString){\"undefined\"!=typeof self.celebrationTable[cbString]&&(self.currentCelebration=self.celebrationTable[cbString])}this.cfg=NOVA.config.game.winLevels,this.notificationManager={},this.notifyCallback=function(){},this.celebrationTable=[],this.currentCelebration=null,this.playing=!1,this.isFreeGame=!1;var self=this;this.init=function(callback){\"undefined\"!=typeof callback&&(self.notifyCallback=callback);for(var i=0,l=self.cfg.length;i<l;i++)if(self.cfg[i].hasOwnProperty(\"celebration\")){var cbString=self.cfg[i].celebration,cbClass=window[cbString];self.celebrationTable[cbString]||(self.celebrationTable[cbString]=new cbClass,self.celebrationTable[cbString].init(self.notificationManager),self.celebrationTable[cbString].setID(cbString))}CelebrationManager.getCelebration=function(cbString){return self.celebrationTable[cbString]}},this.startCelebration=function(cbString,credits,duration,freegame){self.playing||\"undefined\"==typeof cbString||(this.playing=!0,null!=freegame&&(this.isFreeGame=freegame),celebrationLookup(cbString),self.currentCelebration.start(credits,duration,freegame))},this.stopCelebration=function(){null!=self.currentCelebration&&self.currentCelebration.stop()},this.isActive=function(){return null!=self.currentCelebration?self.currentCelebration.isPlaying():self.playing},this.notificationManager=function(key,value){switch(key){case\"CELEBRATION_STARTED\":self.notifyCallback(\"CELEBRATION_STARTED\",value);break;case\"CELEBRATION_METER_STARTED\":self.notifyCallback(\"CELEBRATION_METER_STARTED\",value);break;case\"CELEBRATION_METER_COMPLETE\":self.notifyCallback(\"CELEBRATION_METER_COMPLETE\",value);break;case\"CELEBRATION_COMPLETE\":self.playing=!1,self.notifyCallback(\"CELEBRATION_COMPLETE\",value),self.currentCelebration=null;break;case\"START_SHOWER\":self.notifyCallback(\"START_SHOWER\",value);break;case\"STOP_SHOWER\":self.notifyCallback(\"STOP_SHOWER\",value);break;case\"CELEBRATION_TEXT_SHOWN\":self.notifyCallback(\"CELEBRATION_TEXT_SHOWN\",value);break;case\"CELEBRATION_TEXT_HIDING\":self.notifyCallback(\"CELEBRATION_TEXT_HIDING\",value)}},this.update=function(deltaTime){null!=self.currentCelebration&&self.currentCelebration.update(deltaTime)},this.resize=function(){null!=self.currentCelebration&&self.currentCelebration.resize()},this.languageChanged=function(){for(var i in self.celebrationTable){var celeb=self.celebrationTable[i];celeb.languageChanged&&celeb.languageChanged()}}}",
+      "SHA256": "d2dc8c88c1b36d2f3adfba3afd90bb6ac1ada38df28729fffc2c9f6aedf12a62",
+      "methods": [
+        {
+          "name": "this.notifyCallback",
+          "source": "function(){}"
+        },
+        {
+          "name": "this.init",
+          "source": "function(callback){\"undefined\"!=typeof callback&&(self.notifyCallback=callback);for(var i=0,l=self.cfg.length;i<l;i++)if(self.cfg[i].hasOwnProperty(\"celebration\")){var cbString=self.cfg[i].celebration,cbClass=window[cbString];self.celebrationTable[cbString]||(self.celebrationTable[cbString]=new cbClass,self.celebrationTable[cbString].init(self.notificationManager),self.celebrationTable[cbString].setID(cbString))}CelebrationManager.getCelebration=function(cbString){return self.celebrationTable[cbString]}}"
+        },
+        {
+          "name": "this.startCelebration",
+          "source": "function(cbString,credits,duration,freegame){self.playing||\"undefined\"==typeof cbString||(this.playing=!0,null!=freegame&&(this.isFreeGame=freegame),celebrationLookup(cbString),self.currentCelebration.start(credits,duration,freegame))}"
+        },
+        {
+          "name": "this.stopCelebration",
+          "source": "function(){null!=self.currentCelebration&&self.currentCelebration.stop()}"
+        },
+        {
+          "name": "this.isActive",
+          "source": "function(){return null!=self.currentCelebration?self.currentCelebration.isPlaying():self.playing}"
+        },
+        {
+          "name": "this.notificationManager",
+          "source": "function(key,value){switch(key){case\"CELEBRATION_STARTED\":self.notifyCallback(\"CELEBRATION_STARTED\",value);break;case\"CELEBRATION_METER_STARTED\":self.notifyCallback(\"CELEBRATION_METER_STARTED\",value);break;case\"CELEBRATION_METER_COMPLETE\":self.notifyCallback(\"CELEBRATION_METER_COMPLETE\",value);break;case\"CELEBRATION_COMPLETE\":self.playing=!1,self.notifyCallback(\"CELEBRATION_COMPLETE\",value),self.currentCelebration=null;break;case\"START_SHOWER\":self.notifyCallback(\"START_SHOWER\",value);break;case\"STOP_SHOWER\":self.notifyCallback(\"STOP_SHOWER\",value);break;case\"CELEBRATION_TEXT_SHOWN\":self.notifyCallback(\"CELEBRATION_TEXT_SHOWN\",value);break;case\"CELEBRATION_TEXT_HIDING\":self.notifyCallback(\"CELEBRATION_TEXT_HIDING\",value)}}"
+        },
+        {
+          "name": "this.update",
+          "source": "function(deltaTime){null!=self.currentCelebration&&self.currentCelebration.update(deltaTime)}"
+        },
+        {
+          "name": "this.resize",
+          "source": "function(){null!=self.currentCelebration&&self.currentCelebration.resize()}"
+        },
+        {
+          "name": "this.languageChanged",
+          "source": "function(){for(var i in self.celebrationTable){var celeb=self.celebrationTable[i];celeb.languageChanged&&celeb.languageChanged()}}"
+        }
+      ]
+    },
+    {
+      "name": "WinShower",
+      "offset": 1723094,
+      "inputFile": "WinShower-selected-window-private.js",
+      "selectedBytes": 18000,
+      "existingWindowReused": false,
+      "kind": "expression",
+      "source": "function(){function transformShower(particleSprite,particle){particleSprite.position.x=particle.p.x,particleSprite.position.y=particle.p.y,particleSprite.scale.x=particle.scale,particleSprite.scale.y=particle.scale,particleSprite.anchor.x=.5,particleSprite.anchor.y=.5,particleSprite.alpha=particle.alpha,particleSprite.rotation=particle.rotation*Math.PI/180}function showerObject(){var showerObj,texture,idx=0;if(0!=self.objArrayLength)return self.objArrayLength>1&&(idx=randomIntToFrom(0,self.objArrayLength-1)),self.objArray[idx].hasOwnProperty(\"image\")?(showerObj=NOVA.getSprite(self.objArray[idx].image),showerObj.anim=0):(texture=generateTextureStringArray(self.objArray[idx].prefix,{from:self.objArray[idx].from,to:self.objArray[idx].to,ext:self.objArray[idx].ext}),showerObj=new FrameSequence({0:texture},self.objArray[idx].fps),showerObj.anim=1),showerObj}this.proton=null,this.emitter=null,this.type=0,this.cfg={},this.layout={},this.objArray=[],this.objArrayLength=0,this.showerEmitting=!1;var self=this;this.showerContainer=new NovaContainer,NOVA.addToContainer(\"REEL_FOREGROUND\",this.showerContainer),this.build=function(type){if(self.type=type,self.cfg=NOVA.config.game.shower[this.type],self.layout=NOVA.config.game.layout,self.objArray=self.cfg.objects,self.objArrayLength=self.objArray.length,0!=self.objArrayLength){self.proton=new Proton,self.emitter=new Proton.BehaviourEmitter,self.emitter.rate=new Proton.Rate(new Proton.Span(self.cfg.rate.min,self.cfg.rate.max),.1),self.emitter.addInitialize(new Proton.Mass(self.cfg.mass)),self.emitter.addInitialize(new Proton.Life(self.cfg.life.min,self.cfg.life.max)),self.emitter.addInitialize(new Proton.Velocity(new Proton.Span(self.cfg.velocity.horizontal.min,self.cfg.velocity.horizontal.max),new Proton.Span(self.cfg.velocity.vertical.min,self.cfg.velocity.vertical.max),self.cfg.velocity.type)),self.emitter.addBehaviour(new Proton.Gravity(self.cfg.gravity)),self.emitter.addBehaviour(new Proton.Scale(Proton.getSpan(self.cfg.scale.min,self.cfg.scale.max))),self.emitter.addBehaviour(new Proton.Alpha(self.cfg.alpha.from,self.cfg.alpha.to,1/0,Proton.easeInQuart)),self.emitter.addBehaviour(new Proton.Rotate(Proton.getSpan(self.cfg.rotate.min,self.cfg.rotate.max),Proton.getSpan(self.cfg.rotate.left,self.cfg.rotate.right),\"add\")),self.emitter.addBehaviour(new Proton.Collision(self.emitter)),self.proton.addEmitter(self.emitter);var renderer=new Proton.Renderer(\"other\",self.proton);renderer.onProtonUpdate=function(){},renderer.onParticleCreated=function(particle){0!==self.objArrayLength&&(particle.sprite=showerObject(),particle.sprite.anim&&particle.sprite.gotoAndPlay(\"0\",!0),self.showerContainer.addChild(particle.sprite))},renderer.onParticleUpdate=function(particle){\ntransformShower(particle.sprite,particle)},renderer.onParticleDead=function(particle){particle.sprite.stop(),self.showerContainer.removeChild(particle.sprite)},renderer.start()}},this.emit=function(type,durationSec){self.clear(),self.build(type),self.resize(),null!==self.emitter&&self.emitter.emit(),self.showerEmitting=!0,\"undefined\"!=typeof durationSec&&TweenMax.delayedCall(durationSec,self.stopEmit)},this.stopEmit=function(){null!==self.emitter&&(self.emitter.stopEmit(),self.showerEmitting=!1)},this.clear=function(){if(null!==self.proton){self.stopEmit();for(var i=0;i<this.showerContainer.children.length;i++)self.showerContainer.children[i].stop();self.showerContainer.removeChildren(),self.emitter.removeAllParticles(),self.emitter.destroy(),self.proton.destroy(),self.proton=null,self.emitter=null}},this.isEmitting=function(){return self.showerEmitting},this.update=function(){null!==self.proton&&self.proton.update()},this.resize=function(){if(null!==self.emitter){var pos;pos=NOVA.isLandscape()?self.layout.landscape:self.layout.portrait,self.emitter.p.x=pos.showerPos.x,self.emitter.p.y=pos.showerPos.y}}}",
+      "SHA256": "e5aff790e7ffeff53d3ead02c0223102ac7368050599c428f293693f77b164d8",
+      "methods": [
+        {
+          "name": "this.build",
+          "source": "function(type){if(self.type=type,self.cfg=NOVA.config.game.shower[this.type],self.layout=NOVA.config.game.layout,self.objArray=self.cfg.objects,self.objArrayLength=self.objArray.length,0!=self.objArrayLength){self.proton=new Proton,self.emitter=new Proton.BehaviourEmitter,self.emitter.rate=new Proton.Rate(new Proton.Span(self.cfg.rate.min,self.cfg.rate.max),.1),self.emitter.addInitialize(new Proton.Mass(self.cfg.mass)),self.emitter.addInitialize(new Proton.Life(self.cfg.life.min,self.cfg.life.max)),self.emitter.addInitialize(new Proton.Velocity(new Proton.Span(self.cfg.velocity.horizontal.min,self.cfg.velocity.horizontal.max),new Proton.Span(self.cfg.velocity.vertical.min,self.cfg.velocity.vertical.max),self.cfg.velocity.type)),self.emitter.addBehaviour(new Proton.Gravity(self.cfg.gravity)),self.emitter.addBehaviour(new Proton.Scale(Proton.getSpan(self.cfg.scale.min,self.cfg.scale.max))),self.emitter.addBehaviour(new Proton.Alpha(self.cfg.alpha.from,self.cfg.alpha.to,1/0,Proton.easeInQuart)),self.emitter.addBehaviour(new Proton.Rotate(Proton.getSpan(self.cfg.rotate.min,self.cfg.rotate.max),Proton.getSpan(self.cfg.rotate.left,self.cfg.rotate.right),\"add\")),self.emitter.addBehaviour(new Proton.Collision(self.emitter)),self.proton.addEmitter(self.emitter);var renderer=new Proton.Renderer(\"other\",self.proton);renderer.onProtonUpdate=function(){},renderer.onParticleCreated=function(particle){0!==self.objArrayLength&&(particle.sprite=showerObject(),particle.sprite.anim&&particle.sprite.gotoAndPlay(\"0\",!0),self.showerContainer.addChild(particle.sprite))},renderer.onParticleUpdate=function(particle){\ntransformShower(particle.sprite,particle)},renderer.onParticleDead=function(particle){particle.sprite.stop(),self.showerContainer.removeChild(particle.sprite)},renderer.start()}}"
+        },
+        {
+          "name": "this.emit",
+          "source": "function(type,durationSec){self.clear(),self.build(type),self.resize(),null!==self.emitter&&self.emitter.emit(),self.showerEmitting=!0,\"undefined\"!=typeof durationSec&&TweenMax.delayedCall(durationSec,self.stopEmit)}"
+        },
+        {
+          "name": "this.stopEmit",
+          "source": "function(){null!==self.emitter&&(self.emitter.stopEmit(),self.showerEmitting=!1)}"
+        },
+        {
+          "name": "this.clear",
+          "source": "function(){if(null!==self.proton){self.stopEmit();for(var i=0;i<this.showerContainer.children.length;i++)self.showerContainer.children[i].stop();self.showerContainer.removeChildren(),self.emitter.removeAllParticles(),self.emitter.destroy(),self.proton.destroy(),self.proton=null,self.emitter=null}}"
+        },
+        {
+          "name": "this.isEmitting",
+          "source": "function(){return self.showerEmitting}"
+        },
+        {
+          "name": "this.update",
+          "source": "function(){null!==self.proton&&self.proton.update()}"
+        },
+        {
+          "name": "this.resize",
+          "source": "function(){if(null!==self.emitter){var pos;pos=NOVA.isLandscape()?self.layout.landscape:self.layout.portrait,self.emitter.p.x=pos.showerPos.x,self.emitter.p.y=pos.showerPos.y}}"
+        }
+      ]
+    }
+  ],
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "wholeSDKASTRepeated": false
+}

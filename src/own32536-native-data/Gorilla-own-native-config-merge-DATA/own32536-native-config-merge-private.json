@@ -1,0 +1,728 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "SDKHashRecomputed": false,
+  "rows": [
+    {
+      "name": "jqueryExtend",
+      "sourceStart": 305928,
+      "sourceEnd": 306344,
+      "source": "function(){var e,t,n,r,i,o,a=arguments[0]||{},s=1,u=arguments.length,l=!1;for(\"boolean\"==typeof a&&(l=a,a=arguments[s]||{},s++),\"object\"==typeof a||g(a)||(a={}),s===u&&(a=this,s--);s<u;s++)if(null!=(e=arguments[s]))for(t in e)n=a[t],a!==(r=e[t])&&(l&&r&&(w.isPlainObject(r)||(i=Array.isArray(r)))?(i?(i=!1,o=n&&Array.isArray(n)?n:[]):o=n&&w.isPlainObject(n)?n:{},a[t]=w.extend(l,o,r)):void 0!==r&&(a[t]=r));return a}",
+      "fragmentSHA256": "d0a8e8f89a466c7ecd2a13364fefb036f870f970416f6aaa0bc69498f6784158"
+    },
+    {
+      "name": "jqueryIsFunction",
+      "sourceStart": 304967,
+      "sourceEnd": 305035,
+      "source": "function(t){return\"function\"==typeof t&&\"number\"!=typeof t.nodeType}",
+      "fragmentSHA256": "bf96bf364a365eeadd35c466d4cad9a80689a16a32d179dfcbfd447be01bec1c"
+    },
+    {
+      "name": "jqueryIsPlainObject",
+      "sourceStart": 306495,
+      "sourceEnd": 306647,
+      "source": "function(e){var t,n;return!(!e||\"[object Object]\"!==c.call(e)||(t=i(e))&&(\"function\"!=typeof(n=f.call(t,\"constructor\")&&t.constructor)||p.call(n)!==d))}",
+      "fragmentSHA256": "c719539fc92b48a989b57772ad9bf3d4028e1f4cab42d5ccb44474957380f1e1"
+    },
+    {
+      "name": "jqueryExtendExt",
+      "sourceStart": 379129,
+      "sourceEnd": 379995,
+      "source": "function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1,k=\"default\";for(\"boolean\"==typeof g&&(j=g,g=arguments[h++]||{}),\"string\"==typeof g&&(k=g.toLowerCase(),\"concat\"!==k&&\"replace\"!==k&&\"extend\"!==k&&(k=\"default\"),g=arguments[h++]||{}),\"object\"==typeof g||$.isFunction(g)||(g={}),h===i&&(g=this,h--);h<i;h++)if(null!==(a=arguments[h]))if($.isArray(a)&&\"default\"!==k)switch(f=g&&$.isArray(g)?g:[],k){case\"concat\":g=f.concat($.extend(j,[],a));break;case\"replace\":g=$.extend(j,[],a);break;case\"extend\":a.forEach(function(a,b){if(\"object\"==typeof a){var c=$.isArray(a)?[]:{};f[b]=$.extendext(j,k,f[b]||c,a)}else f.indexOf(a)===-1&&f.push(a)}),g=f}else for(b in a)c=g[b],d=a[b],g!==d&&(j&&d&&($.isPlainObject(d)||(e=$.isArray(d)))?(e?(e=!1,f=c&&$.isArray(c)?c:[]):f=c&&$.isPlainObject(c)?c:{},g[b]=$.extendext(j,k,f,d)):void 0!==d&&(g[b]=d));return g}",
+      "fragmentSHA256": "b08961ae3f5a98b0a3e69b0e31719baf23de18a0b3f4744b5a935bac064b5f83"
+    },
+    {
+      "name": "stripComments",
+      "sourceStart": 1475968,
+      "sourceEnd": 1477811,
+      "source": "function stripComments(stringIN){function getCurrentCharacter(){return string.charAt(position)}function getPreviousCharacter(){return string.charAt(position-1)}function getNextCharacter(){return string.charAt(position+1)}function add(){output.push(getCurrentCharacter())}function next(){position++}function atEnd(){return position>=length}function isEscaping(){if(getPreviousCharacter()==BACK_SLASH){for(var caret=position-1,escaped=!0;caret-- >0;){if(string.charAt(caret)!=BACK_SLASH)return escaped;escaped=!escaped}return escaped}return!1}function processSingleQuotedString(){if(getCurrentCharacter()==SINGLE_QUOTE)for(add(),next();!atEnd();){if(getCurrentCharacter()==SINGLE_QUOTE&&!isEscaping())return;add(),next()}}function processDoubleQuotedString(){if(getCurrentCharacter()==DOUBLE_QUOTE)for(add(),next();!atEnd();){if(getCurrentCharacter()==DOUBLE_QUOTE&&!isEscaping())return;add(),next()}}function processSingleLineComment(){if(getCurrentCharacter()==SLASH&&getNextCharacter()==SLASH)for(next();!atEnd();)if(next(),getCurrentCharacter()==NEW_LINE||getCurrentCharacter()==CARRIAGE_RETURN)return}function processMultiLineComment(){if(getCurrentCharacter()==SLASH&&getNextCharacter()==STAR)for(next(),next();!atEnd();)if(next(),getCurrentCharacter()==STAR&&getNextCharacter()==SLASH)return next(),void next()}function processRegularExpression(){if(getCurrentCharacter()==SLASH)for(add(),next();!atEnd();){if(getCurrentCharacter()==SLASH&&!isEscaping())return;add(),next()}}for(var SLASH=\"/\",BACK_SLASH=\"\\\\\",STAR=\"*\",DOUBLE_QUOTE='\"',SINGLE_QUOTE=\"'\",NEW_LINE=\"\\n\",CARRIAGE_RETURN=\"\\r\",string=stringIN,length=string.length,position=0,output=[];!atEnd();)processDoubleQuotedString(),processSingleQuotedString(),processSingleLineComment(),processMultiLineComment(),processRegularExpression(),atEnd()||(add(),next());return output.join(\"\")}",
+      "fragmentSHA256": "dccc41d30f0fb2e001e014e364e17a78ab16c53b5cf51d0d49cd85b574f6461e"
+    },
+    {
+      "name": "stripBars",
+      "sourceStart": 1477811,
+      "sourceEnd": 1477902,
+      "source": "function stripBars(stringIn){var stringOut=stringIn.replace(/\\|\\|\\|/g,\"\");return stringOut}",
+      "fragmentSHA256": "3e17ea61daf2193a3c97bb7e03fd99e360a06470cdb28bbf439c8fd16e76d432"
+    },
+    {
+      "name": "loadConfig",
+      "sourceStart": 1480850,
+      "sourceEnd": 1481303,
+      "source": "function(id,loadCompleteFunc){self.fetchConfigs(id,function(array,languageStartIdx){for(var i=0,len=array.length;i<len;i++){i===languageStartIdx&&$.extendext(!0,\"replace\",defaultConfig,NOVA.config);var parsedTxt=stripComments(array[i]),parsedTxt2=stripBars(parsedTxt);try{var jsonObj=$.parseJSON(parsedTxt2);$.extendext(!0,\"replace\",NOVA.config,jsonObj)}catch(e){console.warn(\">>>>> JSON File Error!: \"+self.manifest[id][i]+\" \"+e)}}loadCompleteFunc()})}",
+      "fragmentSHA256": "a4c94183f187e3dc1ed03687234ec038db55582f0ffb4a9ba624434046abeb51"
+    }
+  ],
+  "configInitializer": {
+    "source": "this.config={}",
+    "sourceStart": 37028
+  },
+  "originalGdmLanguage": "en_us",
+  "manifest": {
+    "config": [
+      "assets/slotConfig.json",
+      "assets/titanConfig.json",
+      "gameConfig.json",
+      "gameTitlesConfig.json",
+      "bgConfig.json",
+      "bgAnimConfig.json",
+      "infoPages.json",
+      "package.json",
+      "assets/language/%LANG_CODE%/languageSlotCommon.json",
+      "assets/language/%LANG_CODE%/titanStyles.json",
+      "assets/language/%LANG_CODE%/language.json",
+      "uidConfig.json"
+    ],
+    "preloader": [
+      {
+        "name": "logo.png",
+        "url": "assets/images/hd/@2x/preload/logo.png"
+      },
+      {
+        "name": "sgd.png",
+        "url": "assets/images/hd/@2x/preload/sgd.png"
+      },
+      {
+        "name": "title.png",
+        "url": "assets/images/hd/@2x/preload/title.png"
+      }
+    ],
+    "islandMap_hd": [
+      {
+        "name": "islandmap_1.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/islandmap_1.json"
+      },
+      {
+        "name": "bg_islandmap.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/bg_islandmap.jpg"
+      },
+      {
+        "name": "displacement.png",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/displacement.png"
+      },
+      {
+        "name": "islandmap_icons.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/islandmap_icons.json"
+      }
+    ],
+    "panel_1_hd": [
+      {
+        "name": "panel_1.png",
+        "url": "assets/images/hd/@2x/panels/panel_1.png"
+      }
+    ],
+    "panel_2_hd": [
+      {
+        "name": "panel_2.png",
+        "url": "assets/images/hd/@2x/panels/panel_2.png"
+      }
+    ],
+    "panel_3_hd": [
+      {
+        "name": "panel_3.png",
+        "url": "assets/images/hd/@2x/panels/panel_3.png"
+      }
+    ],
+    "panel_4_hd": [
+      {
+        "name": "panel_4.png",
+        "url": "assets/images/hd/@2x/panels/panel_4.png"
+      }
+    ],
+    "panel_5_hd": [
+      {
+        "name": "panel_5.png",
+        "url": "assets/images/hd/@2x/panels/panel_5.png"
+      }
+    ],
+    "panel_6_hd": [
+      {
+        "name": "panel_6.png",
+        "url": "assets/images/hd/@2x/panels/panel_6.png"
+      }
+    ],
+    "panel_7_hd": [
+      {
+        "name": "panel_7.png",
+        "url": "assets/images/hd/@2x/panels/panel_7.png"
+      }
+    ],
+    "panel_8_hd": [
+      {
+        "name": "panel_8.png",
+        "url": "assets/images/hd/@2x/panels/panel_8.png"
+      }
+    ],
+    "tikiBar_hd": [
+      {
+        "name": "08_floorboards.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/tikiBar/08_floorboards.jpg"
+      },
+      {
+        "name": "08_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/tikiBar/08_bg.jpg"
+      },
+      {
+        "name": "TikiBar.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/tikiBar/TikiBar.json"
+      }
+    ],
+    "greenJungle_hd": [
+      {
+        "name": "02_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/greenJungle/02_bg.jpg"
+      },
+      {
+        "name": "GreenJungle.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/greenJungle/GreenJungle.json"
+      },
+      {
+        "name": "GreenJungle_wild.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/greenJungle/GreenJungle_wild.json"
+      }
+    ],
+    "waterfall_hd": [
+      {
+        "name": "07_bg_waterfall.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/waterfall/07_bg_waterfall.jpg"
+      },
+      {
+        "name": "Waterfall.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/waterfall/Waterfall.json"
+      }
+    ],
+    "crystalCave_hd": [
+      {
+        "name": "05_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/crystalCave/05_bg.jpg"
+      },
+      {
+        "name": "CrystalCave.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/crystalCave/CrystalCave.json"
+      }
+    ],
+    "purpleForest_hd": [
+      {
+        "name": "03_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/purpleForest/03_bg.jpg"
+      },
+      {
+        "name": "PurpleForest.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/purpleForest/PurpleForest.json"
+      }
+    ],
+    "sunsetBeach_hd": [
+      {
+        "name": "04_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/sunsetBeach/04_bg.jpg"
+      },
+      {
+        "name": "04_bg_02.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/sunsetBeach/04_bg_02.jpg"
+      },
+      {
+        "name": "sunsetBeach.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/sunsetBeach/sunsetBeach.json"
+      }
+    ],
+    "spookyForest_hd": [
+      {
+        "name": "09_bg.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/spookyForest/09_bg.jpg"
+      },
+      {
+        "name": "spooky.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/spookyForest/spooky.json"
+      }
+    ],
+    "volcano_hd": [
+      {
+        "name": "06_bg_land.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/volcano/06_bg_land.jpg"
+      },
+      {
+        "name": "06_bg_sky.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/volcano/06_bg_sky.jpg"
+      },
+      {
+        "name": "volcano.json",
+        "url": "assets/images/hd/@2x/levelsDynamic/volcano/volcano.json"
+      },
+      {
+        "name": "heatHaze_displacement.png",
+        "url": "assets/images/hd/@2x/levelsDynamic/volcano/heatHaze_displacement.png"
+      }
+    ],
+    "islandMap_sd": [
+      {
+        "name": "islandmap_1.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/islandMap/islandmap_1.json"
+      },
+      {
+        "name": "bg_islandmap.jpg",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/bg_islandmap.jpg"
+      },
+      {
+        "name": "displacement.png",
+        "url": "assets/images/hd/@2x/levelsDynamic/islandMap/displacement.png"
+      },
+      {
+        "name": "islandmap_icons.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/islandMap/islandmap_icons.json"
+      }
+    ],
+    "panel_1_sd": [
+      {
+        "name": "panel_1.png",
+        "url": "assets/images/sd/@1x/panels/panel_1.png"
+      }
+    ],
+    "panel_2_sd": [
+      {
+        "name": "panel_2.png",
+        "url": "assets/images/sd/@1x/panels/panel_2.png"
+      }
+    ],
+    "panel_3_sd": [
+      {
+        "name": "panel_3.png",
+        "url": "assets/images/sd/@1x/panels/panel_3.png"
+      }
+    ],
+    "panel_4_sd": [
+      {
+        "name": "panel_4.png",
+        "url": "assets/images/sd/@1x/panels/panel_4.png"
+      }
+    ],
+    "panel_5_sd": [
+      {
+        "name": "panel_5.png",
+        "url": "assets/images/sd/@1x/panels/panel_5.png"
+      }
+    ],
+    "panel_6_sd": [
+      {
+        "name": "panel_6.png",
+        "url": "assets/images/sd/@1x/panels/panel_6.png"
+      }
+    ],
+    "panel_7_sd": [
+      {
+        "name": "panel_7.png",
+        "url": "assets/images/sd/@1x/panels/panel_7.png"
+      }
+    ],
+    "panel_8_sd": [
+      {
+        "name": "panel_8.png",
+        "url": "assets/images/sd/@1x/panels/panel_8.png"
+      }
+    ],
+    "tikiBar_sd": [
+      {
+        "name": "08_floorboards.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/tikiBar/08_floorboards.jpg"
+      },
+      {
+        "name": "08_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/tikiBar/08_bg.jpg"
+      },
+      {
+        "name": "TikiBar.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/tikiBar/TikiBar.json"
+      }
+    ],
+    "greenJungle_sd": [
+      {
+        "name": "02_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/greenJungle/02_bg.jpg"
+      },
+      {
+        "name": "GreenJungle.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/greenJungle/GreenJungle.json"
+      },
+      {
+        "name": "GreenJungle_wild.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/greenJungle/GreenJungle_wild.json"
+      }
+    ],
+    "waterfall_sd": [
+      {
+        "name": "07_bg_waterfall.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/waterfall/07_bg_waterfall.jpg"
+      },
+      {
+        "name": "Waterfall.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/waterfall/Waterfall.json"
+      }
+    ],
+    "crystalCave_sd": [
+      {
+        "name": "05_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/crystalCave/05_bg.jpg"
+      },
+      {
+        "name": "CrystalCave.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/crystalCave/CrystalCave.json"
+      }
+    ],
+    "purpleForest_sd": [
+      {
+        "name": "03_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/purpleForest/03_bg.jpg"
+      },
+      {
+        "name": "PurpleForest.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/purpleForest/PurpleForest.json"
+      }
+    ],
+    "sunsetBeach_sd": [
+      {
+        "name": "04_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/sunsetBeach/04_bg.jpg"
+      },
+      {
+        "name": "04_bg_02.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/sunsetBeach/04_bg_02.jpg"
+      },
+      {
+        "name": "sunsetBeach.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/sunsetBeach/sunsetBeach.json"
+      }
+    ],
+    "spookyForest_sd": [
+      {
+        "name": "09_bg.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/spookyForest/09_bg.jpg"
+      },
+      {
+        "name": "spooky.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/spookyForest/spooky.json"
+      }
+    ],
+    "volcano_sd": [
+      {
+        "name": "06_bg_land.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/volcano/06_bg_land.jpg"
+      },
+      {
+        "name": "06_bg_sky.jpg",
+        "url": "assets/images/sd/@1x/levelsDynamic/volcano/06_bg_sky.jpg"
+      },
+      {
+        "name": "volcano.json",
+        "url": "assets/images/sd/@1x/levelsDynamic/volcano/volcano.json"
+      },
+      {
+        "name": "heatHaze_displacement.png",
+        "url": "assets/images/hd/@2x/levelsDynamic/volcano/heatHaze_displacement.png"
+      }
+    ],
+    "base_hd": [
+      {
+        "name": "01_bg_02.jpg",
+        "url": "assets/images/hd/@2x/baseLoad/01_bg_02.jpg"
+      },
+      {
+        "name": "Base_bg.json",
+        "url": "assets/images/hd/@2x/baseLoad/Base_bg.json"
+      },
+      {
+        "name": "Base_symbols.json",
+        "url": "assets/images/hd/@2x/baseLoad/Base_symbols.json"
+      },
+      {
+        "name": "Base_multiUse.json",
+        "url": "assets/images/hd/@2x/baseLoad/Base_multiUse.json"
+      },
+      {
+        "name": "Base_shellRespin2.json",
+        "url": "assets/images/hd/@2x/baseLoad/Base_shellRespin2.json"
+      },
+      {
+        "name": "loadCircle.png",
+        "url": "assets/images/hd/@2x/loadCircle.png"
+      },
+      {
+        "name": "panel_0.png",
+        "url": "assets/images/hd/@2x/panels/panel_0.png"
+      },
+      {
+        "name": "gametitle.png",
+        "url": "assets/images/hd/@2x/gametitle.png"
+      },
+      {
+        "name": "featureTitle",
+        "url": "assets/images/hd/@2x/featureTitle.json"
+      },
+      {
+        "name": "titles",
+        "url": "assets/images/hd/spine/titles.json"
+      },
+      {
+        "name": "Crab",
+        "url": "assets/images/hd/spine/Crab.json"
+      },
+      {
+        "name": "Shells_basket",
+        "url": "assets/images/hd/spine/Shells_basket.json"
+      },
+      {
+        "name": "Shells_pile",
+        "url": "assets/images/hd/spine/Shells_pile.json"
+      },
+      {
+        "name": "welcome_01.png",
+        "url": "assets/images/hd/@2x/welcome/welcome_01.png"
+      },
+      {
+        "name": "welcome_02.png",
+        "url": "assets/images/hd/@2x/welcome/welcome_02.png"
+      },
+      {
+        "name": "welcome_03.png",
+        "url": "assets/images/hd/@2x/welcome/welcome_03.png"
+      },
+      {
+        "name": "Gorilla",
+        "url": "assets/images/hd/spine/Gorilla.json"
+      },
+      {
+        "name": "ShellRespins.json",
+        "url": "assets/images/hd/@2x/baseLoad/ShellRespins.json"
+      },
+      {
+        "name": "FX_gorilla_0",
+        "url": "assets/images/hd/@2x/gorilla/FX_gorilla_0.json"
+      },
+      {
+        "name": "FX_Confetti_0",
+        "url": "assets/images/hd/@2x/gorilla/FX_Confetti_0.json"
+      },
+      {
+        "name": "buttons.json",
+        "url": "assets/images/hd/@2x/buttons_hq.json"
+      },
+      {
+        "name": "coin",
+        "url": "assets/images/hd/@2x/shower/shower.json"
+      },
+      {
+        "name": "dot.png",
+        "url": "assets/images/hd/@2x/infopages/dot.png"
+      }
+    ],
+    "base_sd": [
+      {
+        "name": "01_bg_02.jpg",
+        "url": "assets/images/sd/@1x/baseLoad/01_bg_02.jpg"
+      },
+      {
+        "name": "Base_bg.json",
+        "url": "assets/images/sd/@1x/baseLoad/Base_bg.json"
+      },
+      {
+        "name": "Base_symbols.json",
+        "url": "assets/images/sd/@1x/baseLoad/Base_symbols.json"
+      },
+      {
+        "name": "Base_multiUse.json",
+        "url": "assets/images/sd/@1x/baseLoad/Base_multiUse.json"
+      },
+      {
+        "name": "Base_shellRespin2.json",
+        "url": "assets/images/sd/@1x/baseLoad/Base_shellRespin2.json"
+      },
+      {
+        "name": "loadCircle.png",
+        "url": "assets/images/hd/@2x/loadCircle.png"
+      },
+      {
+        "name": "panel_0.png",
+        "url": "assets/images/sd/@1x/panels/panel_0.png"
+      },
+      {
+        "name": "gametitle.png",
+        "url": "assets/images/hd/@2x/gametitle.png"
+      },
+      {
+        "name": "featureTitle",
+        "url": "assets/images/hd/@2x/featureTitle.json"
+      },
+      {
+        "name": "titles",
+        "url": "assets/images/sd/spine/titles.json"
+      },
+      {
+        "name": "Crab",
+        "url": "assets/images/sd/spine/Crab.json"
+      },
+      {
+        "name": "Shells_basket",
+        "url": "assets/images/sd/spine/Shells_basket.json"
+      },
+      {
+        "name": "Shells_pile",
+        "url": "assets/images/sd/spine/Shells_pile.json"
+      },
+      {
+        "name": "welcome_01.png",
+        "url": "assets/images/sd/@1x/welcome/welcome_01.png"
+      },
+      {
+        "name": "welcome_02.png",
+        "url": "assets/images/sd/@1x/welcome/welcome_02.png"
+      },
+      {
+        "name": "welcome_03.png",
+        "url": "assets/images/sd/@1x/welcome/welcome_03.png"
+      },
+      {
+        "name": "Gorilla",
+        "url": "assets/images/sd/spine/Gorilla.json"
+      },
+      {
+        "name": "ShellRespins.json",
+        "url": "assets/images/sd/@1x/baseLoad/ShellRespins.json"
+      },
+      {
+        "name": "FX_gorilla_0",
+        "url": "assets/images/hd/@2x/gorilla/FX_gorilla_0.json"
+      },
+      {
+        "name": "FX_Confetti_0",
+        "url": "assets/images/hd/@2x/gorilla/FX_Confetti_0.json"
+      },
+      {
+        "name": "buttons.json",
+        "url": "assets/images/hd/@2x/buttons_hq.json"
+      },
+      {
+        "name": "coin",
+        "url": "assets/images/sd/@1x/shower/shower.json"
+      },
+      {
+        "name": "dot.png",
+        "url": "assets/images/hd/@2x/infopages/dot.png"
+      }
+    ],
+    "panels": [],
+    "sounds_hd": "assets/sounds/hd/gorillagowilder.json",
+    "sounds_sd": "assets/sounds/sd/gorillagowilder.json",
+    "fonts": {
+      "families": [
+        "ngg_Roboto",
+        "rammetto_one",
+        "ngg_Alaska",
+        "ngg_josefin_sans"
+      ],
+      "urls": [
+        "assets/fonts/fonts.css"
+      ]
+    },
+    "bitmap_fonts": []
+  },
+  "manifestInputSHA256": "67dec9fa3f7d25c99ee4e30ccfc5ef35c27e650b0223bf9aeaf9afb712ca9114",
+  "inputs": [
+    {
+      "manifestIndex": 0,
+      "relative": "assets/slotConfig.json",
+      "inputFile": "inputs/00.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "4b2d4efe69a33384930077a67c4a3802d06f4735bd992361dcb39eeaa9631dab",
+      "bytes": 16721
+    },
+    {
+      "manifestIndex": 1,
+      "relative": "assets/titanConfig.json",
+      "inputFile": "inputs/01.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "d82b914419f6be4133c42a9c3847fcbcb450acc073cec8795c4ce29454184df1",
+      "bytes": 15326
+    },
+    {
+      "manifestIndex": 2,
+      "relative": "gameConfig.json",
+      "inputFile": "inputs/02.txt",
+      "kind": "exact-retained-parsed-own-config-value",
+      "originalInputSHA256": "40f694e4fad553c74ebba29679d05650316c69ae696feca58b3fd7b4b7f82c65",
+      "bytes": 60035
+    },
+    {
+      "manifestIndex": 3,
+      "relative": "gameTitlesConfig.json",
+      "inputFile": "inputs/03.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "79dbcfdbbcf66fed26c4d82058e1ddef4df1f0a5123a83f005f39105fa116bda",
+      "bytes": 1164
+    },
+    {
+      "manifestIndex": 4,
+      "relative": "bgConfig.json",
+      "inputFile": "inputs/04.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "c7879033c743536454ae64c6114028f53888675eca878582e329022a751b5c00",
+      "bytes": 19854
+    },
+    {
+      "manifestIndex": 5,
+      "relative": "bgAnimConfig.json",
+      "inputFile": "inputs/05.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "0e9f6c603b6ab98bcf7b318735d139c50df0355e16c5f21c360f7b922516feef",
+      "bytes": 17277
+    },
+    {
+      "manifestIndex": 6,
+      "relative": "infoPages.json",
+      "inputFile": "inputs/06.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "86a28f6f04acbdab9cf7426fddbdcf1aa43c9461014a0294aee25661ee62b313",
+      "bytes": 13199
+    },
+    {
+      "manifestIndex": 7,
+      "relative": "package.json",
+      "inputFile": "inputs/07.txt",
+      "kind": "exact-retained-parsed-own-config-value",
+      "originalInputSHA256": "4678dcd6e622a263eabcacba53819f2e327895d4139179444eafac8fafc25e20",
+      "bytes": 249
+    },
+    {
+      "manifestIndex": 8,
+      "relative": "assets/language/%LANG_CODE%/languageSlotCommon.json",
+      "inputFile": "inputs/08.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "de3b1082e56159e421219c74f25a23deb60aa052ecb9cbcc23b32e623e13792c",
+      "bytes": 8928
+    },
+    {
+      "manifestIndex": 9,
+      "relative": "assets/language/%LANG_CODE%/titanStyles.json",
+      "inputFile": "inputs/09.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "58b8d74c8e8812c6e887a965d19754a8bc40e60d33d899b3e6b9fcfa5c36f356",
+      "bytes": 13
+    },
+    {
+      "manifestIndex": 10,
+      "relative": "assets/language/%LANG_CODE%/language.json",
+      "inputFile": "inputs/10.txt",
+      "kind": "first-own-config-body-cache",
+      "originalInputSHA256": "cbb1cff5f9fc5b5523fa14d1bbdd31f524a60a658754d4371ee211954e0492bd",
+      "bytes": 21752
+    },
+    {
+      "manifestIndex": 11,
+      "relative": "uidConfig.json",
+      "inputFile": "inputs/11.txt",
+      "kind": "exact-retained-parsed-own-config-value",
+      "originalInputSHA256": "249f158a762536624f8b7c2f97e2e5b9ec146c0feabe69b612583f1676d26d77",
+      "bytes": 204
+    }
+  ],
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

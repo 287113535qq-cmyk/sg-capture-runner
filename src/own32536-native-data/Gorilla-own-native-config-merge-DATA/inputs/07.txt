@@ -1,0 +1,1 @@
+{"metadata":{"name":"Gorilla Go Wilder™","copyright":"© 2019","localStorage":"gorillagowilder","id":"16","version":"2.1.20","description":"Gorilla Go Wilder","author":"Jewan","rtp":"93.05% - 97.04%","keywords":["NOVA","Core Engine","Framework"]}}

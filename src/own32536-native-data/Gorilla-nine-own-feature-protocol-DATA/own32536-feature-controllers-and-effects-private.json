@@ -1,0 +1,954 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "rows": [
+    {
+      "name": "FeaturePowerPayTable",
+      "sourceStart": 1910349,
+      "sourceEnd": 1911405,
+      "source": "function(){var panelContainer=null,panelText=null,container=null;this.init=function(){container=NOVA.getContainer(\"GAME_BACKGROUND\"),panelContainer=new NovaContainer,panelText=new NovaTextBox({text:\"TXT_FEATURE_POWERPAYTABLE_PANEL\",debug:\"white\",width:142,height:174,valign:\"center\",padding:8}),panelText.setPositionXY(0,0),panelContainer.addChild(panelText),container.addChild(panelContainer),this.resize()},this.close=function(){},this.onPreSpin=function(){},this.onPostSpin=function(){},this.onWin=function(){game.gorillaAnims.playCheers(),SOUND.play(\"tikiCheers\")},this.resize=function(){NOVA.isLandscape()?panelContainer&&(panelContainer.setPositionXY(8,4),panelContainer.scale.set(1)):panelContainer&&(panelContainer.setPositionXY(358,396),panelContainer.scale.set(.8))},this.summaryCleanup=function(){function complete(){container.removeChild(panelContainer),panelContainer.removeChild(panelText),panelText.destroy(),panelText=null,container=null,panelContainer.destroy(),panelContainer=null}TweenMax.to(panelText,.4,{alpha:0,onComplete:complete})}}",
+      "fragmentSHA256": "e6b968ff724720492c75d2ad86808e2f8cd992a6c9aa7e9e0c909efd97f74190",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){container=NOVA.getContainer(\"GAME_BACKGROUND\"),panelContainer=new NovaContainer,panelText=new NovaTextBox({text:\"TXT_FEATURE_POWERPAYTABLE_PANEL\",debug:\"white\",width:142,height:174,valign:\"center\",padding:8}),panelText.setPositionXY(0,0),panelContainer.addChild(panelText),container.addChild(panelContainer),this.resize()}",
+          "sourceStart": 1910424,
+          "sourceEnd": 1910757,
+          "fragmentSHA256": "63e826a8c9ec381bc5f934143b0caca7123e96ce2ea7f7887e8ad6f16a23b4da"
+        },
+        {
+          "name": "close",
+          "source": "function(){}",
+          "sourceStart": 1910769,
+          "sourceEnd": 1910781,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){}",
+          "sourceStart": 1910797,
+          "sourceEnd": 1910809,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){}",
+          "sourceStart": 1910826,
+          "sourceEnd": 1910838,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onWin",
+          "source": "function(){game.gorillaAnims.playCheers(),SOUND.play(\"tikiCheers\")}",
+          "sourceStart": 1910850,
+          "sourceEnd": 1910917,
+          "fragmentSHA256": "2d685b594e09cad8a2a9617daed17b06f6c426518d33f4a81756f995d7c5e900"
+        },
+        {
+          "name": "resize",
+          "source": "function(){NOVA.isLandscape()?panelContainer&&(panelContainer.setPositionXY(8,4),panelContainer.scale.set(1)):panelContainer&&(panelContainer.setPositionXY(358,396),panelContainer.scale.set(.8))}",
+          "sourceStart": 1910930,
+          "sourceEnd": 1911125,
+          "fragmentSHA256": "afea36974549c1f3a5bb2f28e91da4118f713f0ca24b7bb7884b09bb83e91b6f"
+        },
+        {
+          "name": "summaryCleanup",
+          "source": "function(){function complete(){container.removeChild(panelContainer),panelContainer.removeChild(panelText),panelText.destroy(),panelText=null,container=null,panelContainer.destroy(),panelContainer=null}TweenMax.to(panelText,.4,{alpha:0,onComplete:complete})}",
+          "sourceStart": 1911146,
+          "sourceEnd": 1911404,
+          "fragmentSHA256": "c2a5d261a1940abbd9ea1f9bea6a6d19ade7793d418ddb964490a9e4e2172bdb"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeatureExpandingWild",
+      "sourceStart": 1911427,
+      "sourceEnd": 1913621,
+      "source": "function(){var self=this;this.expandingWilds=null,this.init=function(){this.expandingWilds=new ExpandingWilds,this.expandingWilds.init()},this.close=function(){this.expandingWilds.reset(!0)},this.onSpinning=function(){this.expandingWilds.forceRemoveExpand()},this.onPreSpin=function(){TweenMax.delayedCall(.2,function(){for(var i=0;i<5;++i)self.expandingWilds.hideSymbols(i,!1)})},this.onReelBounce=function(value){var rm=game.slotGame.reelManager,rHandler=rm.getSymbolHandlers(value,0),count=0;for(var key in rHandler)rHandler[key].visible&&count++;count>=1&&SOUND.play(\"wildLanding\")},this.onPostSpin=function(bRecovery){function setExpand(){for(var i in items){for(var pos=items[i].split(\";\"),bWin=!1,reel=parseInt(pos[0]),j=(parseInt(pos[1]),0);j<3;++j)rm.setSymbol(reel,j,\"0\");winReels[reel]!=-1&&(bWin=!0),self.expandingWilds.play(reel,bWin)}SOUND.play(\"wildExpansion\")}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,winingSyms=slotGame.serverResponse.winCombinations,winReels=[-1,-1,-1,-1,-1],rsp=gsd.fieldValues.EWP,items={};if(winingSyms.length>0){for(var extractReels=[],i0=0,l0=winingSyms.length;i0<l0;i0++)extractReels.push(winingSyms[i0].slice(2,7));for(var i1=0,l1=extractReels.length;i1<l1;i1++)for(var i2=0;i2<extractReels[i1].length;i2++)extractReels[i1][i2]!=-1&&winReels[i2]==-1&&(winReels[i2]=1)}if(rsp)return items=rsp.split(\"|\"),_bRecovery?setExpand():TweenMax.delayedCall(.9,setExpand),_bRecovery||(TweenMax.delayedCall(1.5,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),game.gorillaAnims.playExpandingWild()),ENUM.SKIP_DEFAULT_ENTER},this.onWin=function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)},this.onIdle=function(bRecovery){bRecovery&&(console.log(\">>>>> Expanding recover Idle\"),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)},this.onBetChange=function(){this.expandingWilds.stopExpandAnim()},this.update=function(){this.expandingWilds.update()}}",
+      "fragmentSHA256": "9c545851088af7f15a73216b8021816473b2b85a86e8bb0fe6353f47193e240f",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){this.expandingWilds=new ExpandingWilds,this.expandingWilds.init()}",
+          "sourceStart": 1911487,
+          "sourceEnd": 1911564,
+          "fragmentSHA256": "a5713e7f2f9d5683ec74c99fd864f6b60c27a9c25d25fd548e763b654bbe9f9e"
+        },
+        {
+          "name": "close",
+          "source": "function(){this.expandingWilds.reset(!0)}",
+          "sourceStart": 1911576,
+          "sourceEnd": 1911617,
+          "fragmentSHA256": "2056b3075d3269cdf7166d3015adbb940d904d558458dcecf2f19909bd4d27f8"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(){this.expandingWilds.forceRemoveExpand()}",
+          "sourceStart": 1911634,
+          "sourceEnd": 1911685,
+          "fragmentSHA256": "dc6311fce279cff2cb93c93c71ea988a4d21b1dca4519b7d1eb75bc4bd4c78d9"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){TweenMax.delayedCall(.2,function(){for(var i=0;i<5;++i)self.expandingWilds.hideSymbols(i,!1)})}",
+          "sourceStart": 1911701,
+          "sourceEnd": 1911807,
+          "fragmentSHA256": "eaf8eb7de1b6f73a9f8cfcd4b8c654cfdfa60f68fd94b1fb9a0a1015c0a0115d"
+        },
+        {
+          "name": "onReelBounce",
+          "source": "function(value){var rm=game.slotGame.reelManager,rHandler=rm.getSymbolHandlers(value,0),count=0;for(var key in rHandler)rHandler[key].visible&&count++;count>=1&&SOUND.play(\"wildLanding\")}",
+          "sourceStart": 1911826,
+          "sourceEnd": 1912013,
+          "fragmentSHA256": "504c01c5c47966644181813b66d88f0b8fc3d54f94744140c6bf9336c4e1c2cf"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(bRecovery){function setExpand(){for(var i in items){for(var pos=items[i].split(\";\"),bWin=!1,reel=parseInt(pos[0]),j=(parseInt(pos[1]),0);j<3;++j)rm.setSymbol(reel,j,\"0\");winReels[reel]!=-1&&(bWin=!0),self.expandingWilds.play(reel,bWin)}SOUND.play(\"wildExpansion\")}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,winingSyms=slotGame.serverResponse.winCombinations,winReels=[-1,-1,-1,-1,-1],rsp=gsd.fieldValues.EWP,items={};if(winingSyms.length>0){for(var extractReels=[],i0=0,l0=winingSyms.length;i0<l0;i0++)extractReels.push(winingSyms[i0].slice(2,7));for(var i1=0,l1=extractReels.length;i1<l1;i1++)for(var i2=0;i2<extractReels[i1].length;i2++)extractReels[i1][i2]!=-1&&winReels[i2]==-1&&(winReels[i2]=1)}if(rsp)return items=rsp.split(\"|\"),_bRecovery?setExpand():TweenMax.delayedCall(.9,setExpand),_bRecovery||(TweenMax.delayedCall(1.5,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),game.gorillaAnims.playExpandingWild()),ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1912030,
+          "sourceEnd": 1913043,
+          "fragmentSHA256": "1798b2f199099d7c1b1cced562970dc09625ea7b2a4d175e1b46c196b18be503"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)}",
+          "sourceStart": 1913055,
+          "sourceEnd": 1913249,
+          "fragmentSHA256": "32bf0b1df16a78282fa764de4af7720e17cac343d711c5677bf8d87a2e5bc41b"
+        },
+        {
+          "name": "onIdle",
+          "source": "function(bRecovery){bRecovery&&(console.log(\">>>>> Expanding recover Idle\"),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)}",
+          "sourceStart": 1913262,
+          "sourceEnd": 1913501,
+          "fragmentSHA256": "1994fdf9860308f2344e2783bd69696af5841fdee2cd9282b4d0436cd6f37421"
+        },
+        {
+          "name": "onBetChange",
+          "source": "function(){this.expandingWilds.stopExpandAnim()}",
+          "sourceStart": 1913519,
+          "sourceEnd": 1913567,
+          "fragmentSHA256": "643e381315ee3ffdc6fab5464241ac2fd8f65130d7fa61d89ae34d9edfeac735"
+        },
+        {
+          "name": "update",
+          "source": "function(){this.expandingWilds.update()}",
+          "sourceStart": 1913580,
+          "sourceEnd": 1913620,
+          "fragmentSHA256": "378bc6b9a72c8f4e348267a818649d16f1bdffa1dd4af62210828b86f602c545"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeatureMegaStacks",
+      "sourceStart": 1919497,
+      "sourceEnd": 1921887,
+      "source": "function(){this.waterfall_whizzby=null,this.whizzby_rsIndices=null,this.bonusStacked=null,this.init=function(){this.bonusStacked=[!1,!1,!1,!1,!1],this.whizzby_rsIndices=[[],[],[],[],[]],this.waterfall_whizzby=new Waterfall_Whizzby,this.waterfall_whizzby.init();for(var i=0;i<5;++i)game.slotGame.reelManager.enableSymbolPass(i,!0)},this.close=function(){this.waterfall_whizzby.reset(!0);for(var i=0;i<5;++i)game.slotGame.reelManager.enableSymbolPass(i,!1)},this.update=function(){this.waterfall_whizzby&&this.waterfall_whizzby.update()},this.onPreSpin=function(){var slotGame=game.slotGame,rm=slotGame.reelManager,serverResponse=slotGame.serverResponse,rid=serverResponse.reelstripID,rs=rm.reelStrips[rid];this.setWhizzRS(rs);for(var i=0;i<5;++i)0==rm.getSymbolID(i,1)&&this.waterfall_whizzby.playSplash(i,.15)},this.onPostSpin=function(){for(var i=0;i<5;++i)this.waterfall_whizzby.stop(i)},this.onSpinning=function(){return TweenLite.delayedCall(game.features.minSpinDuration,game.slotGame.fireEvent,[\"END_FREEGAME_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER},this.onReelStopped=function(value){this.waterfall_whizzby.stop(value);var rm=game.slotGame.reelManager,rHandler=rm.getSymbolHandlers(value,0),count=0;for(var key in rHandler)rHandler[key].visible&&count++;count>=3&&SOUND.play(\"stackLand\")},this.onSymbolPass=function(value){var reel=value.reel,symID=value.slotObj.currentSymID;0==symID&&1==value.state?(this.waterfall_whizzby.playSplash(reel),SOUND.play(\"stackWhizzby\")):this.waterfall_whizzby.stopSplash(reel),this.bonusStacked[reel]?0!=symID&&(this.bonusStacked[reel]=!1):0==symID&&(this.bonusStacked[reel]=!0);for(var whizzby_rsIndices=this.whizzby_rsIndices[reel],i=0;i<whizzby_rsIndices.length;++i)value.slotObj.stripId==whizzby_rsIndices[i]&&this.waterfall_whizzby.play(reel,value.slotObj)},this.processMsg=function(){var slotGame=(game.slotGame.getCurrentState(),game.slotGame),serverResponse=slotGame.serverResponse,rm=slotGame.reelManager,rid=serverResponse.reelstripID,rs=rm.reelStrips[rid];8==rid?game.features.minSpinDuration+=.4:7==rid?game.features.minSpinDuration+=1.8:6==rid&&(game.features.minSpinDuration+=2.4),this.setWhizzRS(rs)},this.setWhizzRS=function(rs){for(var i=0;i<5;++i){this.whizzby_rsIndices[i]=[];for(var j=0,l=rs[i].length;j<l;++j)0==rs[i][j]&&(0!=rs[i][(j-1)%l]?this.whizzby_rsIndices[i].push(j):0!=rs[i][(j+1)%l]&&this.whizzby_rsIndices[i].push((j+2)%l))}}}",
+      "fragmentSHA256": "7d95a2564797a3fca68d28173f796fe1566e7e47e208959f128d20dec02a0b9d",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){this.bonusStacked=[!1,!1,!1,!1,!1],this.whizzby_rsIndices=[[],[],[],[],[]],this.waterfall_whizzby=new Waterfall_Whizzby,this.waterfall_whizzby.init();for(var i=0;i<5;++i)game.slotGame.reelManager.enableSymbolPass(i,!0)}",
+          "sourceStart": 1919597,
+          "sourceEnd": 1919827,
+          "fragmentSHA256": "112ec5704dd1c68ff951dc9a06eedab01e66d1f03e265264f94aae2efe63f4bf"
+        },
+        {
+          "name": "close",
+          "source": "function(){this.waterfall_whizzby.reset(!0);for(var i=0;i<5;++i)game.slotGame.reelManager.enableSymbolPass(i,!1)}",
+          "sourceStart": 1919839,
+          "sourceEnd": 1919952,
+          "fragmentSHA256": "06323a6ef40681eabe03eb4255a201bd394c94fcae479a422a1da84d49e0318f"
+        },
+        {
+          "name": "update",
+          "source": "function(){this.waterfall_whizzby&&this.waterfall_whizzby.update()}",
+          "sourceStart": 1919965,
+          "sourceEnd": 1920032,
+          "fragmentSHA256": "24b816f738e067a45eb4ea4211a7a3e5086b55dfb2e09ae9029d81de5f397d36"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){var slotGame=game.slotGame,rm=slotGame.reelManager,serverResponse=slotGame.serverResponse,rid=serverResponse.reelstripID,rs=rm.reelStrips[rid];this.setWhizzRS(rs);for(var i=0;i<5;++i)0==rm.getSymbolID(i,1)&&this.waterfall_whizzby.playSplash(i,.15)}",
+          "sourceStart": 1920048,
+          "sourceEnd": 1920307,
+          "fragmentSHA256": "519f6e79c0061a8025296a411fcf4c93e0e2440705bc40c9f6b6070c3e93a05a"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){for(var i=0;i<5;++i)this.waterfall_whizzby.stop(i)}",
+          "sourceStart": 1920324,
+          "sourceEnd": 1920386,
+          "fragmentSHA256": "6f4f13f12d935e1607235059d2d34c591ab36f97f1f24e1fbe0c765ddf602652"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(){return TweenLite.delayedCall(game.features.minSpinDuration,game.slotGame.fireEvent,[\"END_FREEGAME_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1920403,
+          "sourceEnd": 1920544,
+          "fragmentSHA256": "58064491ee49560f02fbb9f5378d5eac969ea9f9ed4c134f28357621ef92fba7"
+        },
+        {
+          "name": "onReelStopped",
+          "source": "function(value){this.waterfall_whizzby.stop(value);var rm=game.slotGame.reelManager,rHandler=rm.getSymbolHandlers(value,0),count=0;for(var key in rHandler)rHandler[key].visible&&count++;count>=3&&SOUND.play(\"stackLand\")}",
+          "sourceStart": 1920564,
+          "sourceEnd": 1920784,
+          "fragmentSHA256": "436b763bc25aa943f53e322890e8a6d93206a7d7a1d657841d00f0f624369dea"
+        },
+        {
+          "name": "onSymbolPass",
+          "source": "function(value){var reel=value.reel,symID=value.slotObj.currentSymID;0==symID&&1==value.state?(this.waterfall_whizzby.playSplash(reel),SOUND.play(\"stackWhizzby\")):this.waterfall_whizzby.stopSplash(reel),this.bonusStacked[reel]?0!=symID&&(this.bonusStacked[reel]=!1):0==symID&&(this.bonusStacked[reel]=!0);for(var whizzby_rsIndices=this.whizzby_rsIndices[reel],i=0;i<whizzby_rsIndices.length;++i)value.slotObj.stripId==whizzby_rsIndices[i]&&this.waterfall_whizzby.play(reel,value.slotObj)}",
+          "sourceStart": 1920803,
+          "sourceEnd": 1921291,
+          "fragmentSHA256": "1ec777dcbb1c1e6133e28998d3d56b341644850c64a987997ace843f004f3b65"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(){var slotGame=(game.slotGame.getCurrentState(),game.slotGame),serverResponse=slotGame.serverResponse,rm=slotGame.reelManager,rid=serverResponse.reelstripID,rs=rm.reelStrips[rid];8==rid?game.features.minSpinDuration+=.4:7==rid?game.features.minSpinDuration+=1.8:6==rid&&(game.features.minSpinDuration+=2.4),this.setWhizzRS(rs)}",
+          "sourceStart": 1921308,
+          "sourceEnd": 1921644,
+          "fragmentSHA256": "1418ec6b10898aca04358190ae930f03277ff12e13657d86445d3f510185ae92"
+        },
+        {
+          "name": "setWhizzRS",
+          "source": "function(rs){for(var i=0;i<5;++i){this.whizzby_rsIndices[i]=[];for(var j=0,l=rs[i].length;j<l;++j)0==rs[i][j]&&(0!=rs[i][(j-1)%l]?this.whizzby_rsIndices[i].push(j):0!=rs[i][(j+1)%l]&&this.whizzby_rsIndices[i].push((j+2)%l))}}",
+          "sourceStart": 1921661,
+          "sourceEnd": 1921886,
+          "fragmentSHA256": "dc634b0d7edd68900dbd528d8963745f33061e9b078ffcacfd93d64050c7599b"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeatureSecretSymbols",
+      "sourceStart": 1925281,
+      "sourceEnd": 1926775,
+      "source": "function(){var self=this,transformAnim=null;this.init=function(){transformAnim=new MysteryTransform,transformAnim.init()},this.close=function(){transformAnim.reset(),transformAnim.kill(),transformAnim=null},this.onPreSpin=function(){transformAnim.reset()},this.onWin=function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)},this.onIdle=function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)},this.onPostSpin=function(bRecovery){function symSwap(){for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),symbolId=parseInt(pos[2]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,symbolId),rm.showSlotEffectLayer(reel,row,!0,!1)}}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,ssp=gsd.fieldValues.SSP;if(ssp){var items=ssp.split(\"|\");SOUND.play(\"crystalReveal\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),symbolId=parseInt(pos[2]);_bRecovery||transformAnim.addAnimation(reel,row,symbolId)}if(_bRecovery?symSwap():TweenMax.delayedCall(.69,symSwap),!_bRecovery)return TweenMax.delayedCall(1.4,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}}}",
+      "fragmentSHA256": "d1d37bff94fd7ab4e620834a0eb9ed5f78ee1cf4ccf5067cfe4964966c7738e5",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){transformAnim=new MysteryTransform,transformAnim.init()}",
+          "sourceStart": 1925335,
+          "sourceEnd": 1925402,
+          "fragmentSHA256": "e9669288ec9e0f16f0059a37718566bc85265dfd609c19f19d06cc1b3a552aff"
+        },
+        {
+          "name": "close",
+          "source": "function(){transformAnim.reset(),transformAnim.kill(),transformAnim=null}",
+          "sourceStart": 1925414,
+          "sourceEnd": 1925487,
+          "fragmentSHA256": "d7d7fa715f92826d455f6885d10f36bd60d6277c95575439b80aba672ab0cdf3"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){transformAnim.reset()}",
+          "sourceStart": 1925503,
+          "sourceEnd": 1925536,
+          "fragmentSHA256": "30100064683c88f2752b3bb5069f90f71839170fdfb46082479af72d4534e363"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)}",
+          "sourceStart": 1925548,
+          "sourceEnd": 1925742,
+          "fragmentSHA256": "32bf0b1df16a78282fa764de4af7720e17cac343d711c5677bf8d87a2e5bc41b"
+        },
+        {
+          "name": "onIdle",
+          "source": "function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)}",
+          "sourceStart": 1925755,
+          "sourceEnd": 1925950,
+          "fragmentSHA256": "2b6f30e7d652887b16a73e7febd087f6c67c58d94bfcddcda852fb063cacbb15"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(bRecovery){function symSwap(){for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),symbolId=parseInt(pos[2]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,symbolId),rm.showSlotEffectLayer(reel,row,!0,!1)}}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,ssp=gsd.fieldValues.SSP;if(ssp){var items=ssp.split(\"|\");SOUND.play(\"crystalReveal\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),symbolId=parseInt(pos[2]);_bRecovery||transformAnim.addAnimation(reel,row,symbolId)}if(_bRecovery?symSwap():TweenMax.delayedCall(.69,symSwap),!_bRecovery)return TweenMax.delayedCall(1.4,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}}",
+          "sourceStart": 1925967,
+          "sourceEnd": 1926774,
+          "fragmentSHA256": "5d0198d4e1e2e79557a6eae7b6def4743597c0fd0b4fcb2bc3b673ada11d00ac"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeatureRoamingWilds",
+      "sourceStart": 1930485,
+      "sourceEnd": 1934814,
+      "source": "function(){var self=this,slotGame={},rm={},gsd={},rwp={},rwm=null,items=null,roamer1={},roamer2={},roamerArray=[],container={},pos1={},pos2={},posArray=[],bonusEffects=[],isTenX=!1,multipler={},multiContainer={};this.init=function(){slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"ABOVE_SYMBOLS\"),roamer1=new RoamerObject,roamer1.init(),roamer1.anchor.set(.5),roamer1.visible=!1,roamerArray.push(roamer1),container.addChild(roamer1),roamer2=new RoamerObject,roamer2.init(),roamer2.anchor.set(.5),\nroamer2.visible=!1,roamerArray.push(roamer2),container.addChild(roamer2),pos1=game.slotGame.reelManager.getSlotMapCoordinateCenter(0,0),roamer1.setPositionXY(pos1.x,pos1.y),posArray.push(pos1),pos2=game.slotGame.reelManager.getSlotMapCoordinateCenter(0,0),roamer2.setPositionXY(pos2.x,pos2.y),posArray.push(pos2),multiContainer=new NovaContainer,multiBg=NOVA.getSprite(\"multiplierDisplay_purple.png\"),multiBg.anchor.set(.5),multiBg.setPositionXY(-3,2),multiContainer.addChild(multiBg),multipler=new NovaTextBox({text:\"10x\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),multipler.setPositionXY(-2,-7),multipler.novaName=\"MultiplierTxt\",multiContainer.addChild(multipler),multiContainer.setPositionXY(80,100),NOVA.addToContainer(\"GAME_FOREGROUND\",multiContainer),multiContainer.visible=!1},this.close=function(){container.removeChild(roamer2),container.removeChild(roamer1),posArray=[],roamerArray=[],roamer1.destroy(),roamer1=null,roamer2.destroy(),roamer2=null,isTenX=!1;for(var b in bonusEffects)bonusEffects[b].stop(),NOVA.removeFromContainer(\"UNDER_SYMBOLS\",bonusEffects[b]),bonusEffects[b].destroy(),bonusEffects[b]=null;bonusEffects=[],multiContainer.visible=!1,NOVA.removeFromContainer(\"GAME_FOREGROUND\",multiContainer),multiContainer.destroy(),container=null},this.onPreSpin=function(){rwm=null;for(var i in roamerArray)roamerArray[i].visible=!0;items=null,isTenX=!1;for(var b in bonusEffects)bonusEffects[b].stop(),NOVA.removeFromContainer(\"UNDER_SYMBOLS\",bonusEffects[b]),bonusEffects[b].destroy(),bonusEffects[b]=null;bonusEffects=[],multiContainer.visible&&TweenMax.fromTo(multiContainer,.2,{scaleX:1.1,scaleY:1.1,ease:Back.easeIn.config(1.3)},{scaleX:0,scaleY:0,onComplete:function(){multiContainer.visible=!1}})},this.processMsg=function(){},this.onSpinning=function(bRecovery){if(gsd=slotGame.serverResponse.gsd,rwp=gsd.fieldValues.RWP,rwm=gsd.fieldValues.RWM,rwp){items=rwp.split(\"|\"),SOUND.play(\"wanderingWildTrail\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);posArray[i]=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row),bRecovery?(roamerArray[i].x=posArray[i].x,roamerArray[i].y=posArray[i].y,rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),roamerArray[i].visible=!1):(TweenMax.to(roamerArray[i],1,{x:posArray[i].x,y:posArray[i].y}),roamerArray[i].play(posArray[i]))}}},this.onPostSpin=function(){},this.onIdle=function(bRecovery){bRecovery&&(self.onSpinning(bRecovery),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)},this.onWin=function(bRecovery){bRecovery&&(self.onSpinning(bRecovery),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0),rwm&&(isTenX=!0);for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),roamerArray[i].visible=!1}var wildWin=!1;if(isTenX){for(var wilds=game.slotGame.reelManager.getAllSymbolCoords(0),index=0;index<wilds.length;index++){var sym=wilds[index];if(game.slotGame.winManager.winSymbolCheck(sym.reel,sym.row,game.slotGame.serverResponse.winCombinations)){var bonusEffect=new BonusSymbolEffect;bonusEffect.init(16711792),bonusEffect.setPositionXY(sym.x,sym.y),NOVA.addToContainer(\"UNDER_SYMBOLS\",bonusEffect),bonusEffect.play(),bonusEffects.push(bonusEffect),wildWin=!0}}wildWin&&(multipler.text=String(rwm+\"x\"),multipler.refreshText(),multiContainer.visible=!0,TweenMax.fromTo(multiContainer,.22,{scaleX:0,scaleY:0},{ease:Back.easeOut.config(1.4),scaleX:1.1,scaleY:1.1}))}}}",
+      "fragmentSHA256": "fb6bfd31ed40708ef44f09e602ae8c5a800b2af5051517a72325edcebe8c7684",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"ABOVE_SYMBOLS\"),roamer1=new RoamerObject,roamer1.init(),roamer1.anchor.set(.5),roamer1.visible=!1,roamerArray.push(roamer1),container.addChild(roamer1),roamer2=new RoamerObject,roamer2.init(),roamer2.anchor.set(.5),\nroamer2.visible=!1,roamerArray.push(roamer2),container.addChild(roamer2),pos1=game.slotGame.reelManager.getSlotMapCoordinateCenter(0,0),roamer1.setPositionXY(pos1.x,pos1.y),posArray.push(pos1),pos2=game.slotGame.reelManager.getSlotMapCoordinateCenter(0,0),roamer2.setPositionXY(pos2.x,pos2.y),posArray.push(pos2),multiContainer=new NovaContainer,multiBg=NOVA.getSprite(\"multiplierDisplay_purple.png\"),multiBg.anchor.set(.5),multiBg.setPositionXY(-3,2),multiContainer.addChild(multiBg),multipler=new NovaTextBox({text:\"10x\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),multipler.setPositionXY(-2,-7),multipler.novaName=\"MultiplierTxt\",multiContainer.addChild(multipler),multiContainer.setPositionXY(80,100),NOVA.addToContainer(\"GAME_FOREGROUND\",multiContainer),multiContainer.visible=!1}",
+          "sourceStart": 1930707,
+          "sourceEnd": 1931829,
+          "fragmentSHA256": "1ac68a5adcbc3cfc2407691b1d9a2d032bd0fd4ec7b36791672a9e065174e137"
+        },
+        {
+          "name": "close",
+          "source": "function(){container.removeChild(roamer2),container.removeChild(roamer1),posArray=[],roamerArray=[],roamer1.destroy(),roamer1=null,roamer2.destroy(),roamer2=null,isTenX=!1;for(var b in bonusEffects)bonusEffects[b].stop(),NOVA.removeFromContainer(\"UNDER_SYMBOLS\",bonusEffects[b]),bonusEffects[b].destroy(),bonusEffects[b]=null;bonusEffects=[],multiContainer.visible=!1,NOVA.removeFromContainer(\"GAME_FOREGROUND\",multiContainer),multiContainer.destroy(),container=null}",
+          "sourceStart": 1931841,
+          "sourceEnd": 1932308,
+          "fragmentSHA256": "7ac565799f37e88fd031365675f91663b0c51a5ffac1ae6b54415798f34100d2"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){rwm=null;for(var i in roamerArray)roamerArray[i].visible=!0;items=null,isTenX=!1;for(var b in bonusEffects)bonusEffects[b].stop(),NOVA.removeFromContainer(\"UNDER_SYMBOLS\",bonusEffects[b]),bonusEffects[b].destroy(),bonusEffects[b]=null;bonusEffects=[],multiContainer.visible&&TweenMax.fromTo(multiContainer,.2,{scaleX:1.1,scaleY:1.1,ease:Back.easeIn.config(1.3)},{scaleX:0,scaleY:0,onComplete:function(){multiContainer.visible=!1}})}",
+          "sourceStart": 1932324,
+          "sourceEnd": 1932767,
+          "fragmentSHA256": "cb63ad90d7f2bbcd91357cafc833d3fdda5828c5a6e1c5aee8be861fc21904a5"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(){}",
+          "sourceStart": 1932784,
+          "sourceEnd": 1932796,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(bRecovery){if(gsd=slotGame.serverResponse.gsd,rwp=gsd.fieldValues.RWP,rwm=gsd.fieldValues.RWM,rwp){items=rwp.split(\"|\"),SOUND.play(\"wanderingWildTrail\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);posArray[i]=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row),bRecovery?(roamerArray[i].x=posArray[i].x,roamerArray[i].y=posArray[i].y,rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),roamerArray[i].visible=!1):(TweenMax.to(roamerArray[i],1,{x:posArray[i].x,y:posArray[i].y}),roamerArray[i].play(posArray[i]))}}}",
+          "sourceStart": 1932813,
+          "sourceEnd": 1933447,
+          "fragmentSHA256": "5c979ef728e1f90e151fd1144cb7351df74101374558a6d6b8a0c65cd8a89cfe"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){}",
+          "sourceStart": 1933464,
+          "sourceEnd": 1933476,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onIdle",
+          "source": "function(bRecovery){bRecovery&&(self.onSpinning(bRecovery),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)}",
+          "sourceStart": 1933489,
+          "sourceEnd": 1933691,
+          "fragmentSHA256": "7da4825e3dab3c24ca65e5fc036d255fee13a0f324d5f546b3547e2216f3dcd4"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){bRecovery&&(self.onSpinning(bRecovery),game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0),rwm&&(isTenX=!0);for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),roamerArray[i].visible=!1}var wildWin=!1;if(isTenX){for(var wilds=game.slotGame.reelManager.getAllSymbolCoords(0),index=0;index<wilds.length;index++){var sym=wilds[index];if(game.slotGame.winManager.winSymbolCheck(sym.reel,sym.row,game.slotGame.serverResponse.winCombinations)){var bonusEffect=new BonusSymbolEffect;bonusEffect.init(16711792),bonusEffect.setPositionXY(sym.x,sym.y),NOVA.addToContainer(\"UNDER_SYMBOLS\",bonusEffect),bonusEffect.play(),bonusEffects.push(bonusEffect),wildWin=!0}}wildWin&&(multipler.text=String(rwm+\"x\"),multipler.refreshText(),multiContainer.visible=!0,TweenMax.fromTo(multiContainer,.22,{scaleX:0,scaleY:0},{ease:Back.easeOut.config(1.4),scaleX:1.1,scaleY:1.1}))}}",
+          "sourceStart": 1933703,
+          "sourceEnd": 1934813,
+          "fragmentSHA256": "0299315fcb7a68103a931bdf3b8d59a741fcbe3dda60eab4a853c8ce178fd7af"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeaturePositionalMultiplier",
+      "sourceStart": 1936650,
+      "sourceEnd": 1940870,
+      "source": "function(){var self=this,cfg={},slotGame={},rm={},gsd={},pm=0,pmp={},items=null,container={},shapesArray=[],ropesArray=[],multiContainer={},multipler={},multiBG={};this.init=function(){cfg=NOVA.config.game.reels,slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"UNDER_SYMBOLS\"),multiBG=NOVA.getSprite(\"multiplierDisplay.png\"),multiBG.anchor.set(.5),multiBG.setPositionXY(0,0),multiBG.novaName=\"multiBG\",multipler=new NovaTextBox({text:\"0x\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),multipler.novaName=\"MultiplierTxt\",multipler.setPositionXY(-2,-7),multiContainer=new NovaContainer,multiContainer.addChild(multiBG),multiContainer.addChild(multipler),multiContainer.visible=!1,NOVA.addToContainer(\"GAME_FOREGROUND\",multiContainer),this.resize()},this.close=function(){function complete(){multiContainer.visible=!1,multiContainer.alpha=1,NOVA.removeFromContainer(\"GAME_FOREGROUND\",multiContainer)}this.onPreSpin(),TweenMax.to(multiContainer,.5,{alpha:0,onComplete:complete})},this.onPreSpin=function(bRecovery){function onComplete(){for(var i in shapesArray)container.removeChild(shapesArray[i]);for(var i in ropesArray)container.removeChild(ropesArray[i]);shapesArray=[],ropesArray=[],multiContainer.visible&&TweenMax.fromTo(multiContainer,.2,{scaleX:1,scaleY:1,ease:Back.easeIn.config(1.3)},{scaleX:0,scaleY:0,onComplete:function(){multiContainer.visible=!1}}),container.alpha=1}var cfgg=slotGame.serverResponse.cfgg;if(0!=cfgg)return TweenMax.to(container,.25,{alpha:0,onComplete:onComplete}),TweenMax.delayedCall(.25,game.slotGame.fireEvent,[\"CLOSE_PRE_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER},this.onSpinning=function(bRecovery){function addWidthRope(bTop,pos,numY){var rw0=NOVA.getSprite(\"ropeWidth.png\");rw0.visible=!1,rw0.anchor.set(.5),bTop?rw0.setPositionXY(startX+pos*cfg.symWidth,startY-cfg.symHeight/2):rw0.setPositionXY(startX+pos*cfg.symWidth,startY+numY*cfg.symHeight+cfg.symHeight/2),container.addChild(rw0),ropesArray.push(rw0)}function addHeightRope(bLeft,pos,numX){var rh0=NOVA.getSprite(\"ropeHeight.png\");rh0.visible=!1,rh0.anchor.set(.5),bLeft?rh0.setPositionXY(startX-cfg.symWidth/2,startY+pos*cfg.symHeight):rh0.setPositionXY(startX+numX*cfg.symWidth+cfg.symWidth/2,startY+pos*cfg.symHeight),container.addChild(rh0),ropesArray.push(rh0)}function showShapes(){for(var i in shapesArray)shapesArray[i].visible=!0;for(var i in ropesArray)ropesArray[i].visible=!0;multiContainer.visible=!0,_bRecovery||(TweenMax.fromTo(container,.34,{scaleX:.3,scaleY:.3},{ease:Back.easeOut.config(1.2),scaleX:1,scaleY:1}),TweenMax.fromTo(multiContainer,.2,{scaleX:0,scaleY:0},{ease:Back.easeOut.config(1.3),scaleX:1,scaleY:1}),SOUND.play(\"netLand\"))}var _bRecovery=bRecovery||!1;_bRecovery||game.gorillaAnims.playThrownet(),gsd=slotGame.serverResponse.gsd,pm=gsd.fieldValues.PM,pmp=gsd.fieldValues.PMP,items=pmp.split(\"|\");var netWidth=cfg.symWidth,netHeight=cfg.symHeight,startX=0,startY=0,startRow=0;for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shape=NOVA.getSprite(\"netBG.png\");shape.anchor.set(.5);var shapePos=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row);shape.setPositionXY(shapePos.x,shapePos.y),shape.visible=!1,container.addChild(shape),shapesArray.push(shape),i>0?(shapesArray[i].x>shapesArray[i-1].x&&shapesArray[i].x>netWidth&&startRow==row&&(netWidth+=cfg.symWidth),shapesArray[i].y>shapesArray[i-1].y&&shapesArray[i].y>netHeight&&(netHeight+=cfg.symHeight)):(startRow=row,startX=shapesArray[i].x,startY=shapesArray[i].y)}for(var widthRopes=netWidth/cfg.symWidth,heightRopes=netHeight/cfg.symHeight,w=0;w<widthRopes;w++){addWidthRope(!0,w),addWidthRope(!1,w,heightRopes-1);for(var h=0;h<heightRopes;h++)addHeightRope(!0,h),addHeightRope(!1,h,widthRopes-1)}return multipler.text=String(pm+\"x\"),multipler.refreshText(),_bRecovery?void showShapes():(TweenMax.delayedCall(.8,showShapes),TweenMax.delayedCall(1,game.slotGame.fireEvent,[\"END_FREEGAME_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER)},this.onPostSpin=function(){},this.resize=function(){NOVA.isLandscape()?multiContainer.setPositionXY(80,100):multiContainer.setPositionXY(420,442)},this.onWin=function(bRecovery){bRecovery&&self.onSpinning(!0)}}",
+      "fragmentSHA256": "a852e4b9b3561b2ec426d9e4d0b3229ac762bf02c584ac587c422a23aa36938c",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){cfg=NOVA.config.game.reels,slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"UNDER_SYMBOLS\"),multiBG=NOVA.getSprite(\"multiplierDisplay.png\"),multiBG.anchor.set(.5),multiBG.setPositionXY(0,0),multiBG.novaName=\"multiBG\",multipler=new NovaTextBox({text:\"0x\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),multipler.novaName=\"MultiplierTxt\",multipler.setPositionXY(-2,-7),multiContainer=new NovaContainer,multiContainer.addChild(multiBG),multiContainer.addChild(multipler),multiContainer.visible=!1,NOVA.addToContainer(\"GAME_FOREGROUND\",multiContainer),this.resize()}",
+          "sourceStart": 1936824,
+          "sourceEnd": 1937455,
+          "fragmentSHA256": "515fa33a08deb522883fbe3801214d3487b1a80158295f1e1d8f78ad80b55fb6"
+        },
+        {
+          "name": "close",
+          "source": "function(){function complete(){multiContainer.visible=!1,multiContainer.alpha=1,NOVA.removeFromContainer(\"GAME_FOREGROUND\",multiContainer)}this.onPreSpin(),TweenMax.to(multiContainer,.5,{alpha:0,onComplete:complete})}",
+          "sourceStart": 1937467,
+          "sourceEnd": 1937684,
+          "fragmentSHA256": "1fecbb745db2844c9f80c0452061b207a3e7205ed3360681c9c90989d0aeb9cd"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(bRecovery){function onComplete(){for(var i in shapesArray)container.removeChild(shapesArray[i]);for(var i in ropesArray)container.removeChild(ropesArray[i]);shapesArray=[],ropesArray=[],multiContainer.visible&&TweenMax.fromTo(multiContainer,.2,{scaleX:1,scaleY:1,ease:Back.easeIn.config(1.3)},{scaleX:0,scaleY:0,onComplete:function(){multiContainer.visible=!1}}),container.alpha=1}var cfgg=slotGame.serverResponse.cfgg;if(0!=cfgg)return TweenMax.to(container,.25,{alpha:0,onComplete:onComplete}),TweenMax.delayedCall(.25,game.slotGame.fireEvent,[\"CLOSE_PRE_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1937700,
+          "sourceEnd": 1938298,
+          "fragmentSHA256": "0736d72da0b2e70303a827fd42665d12fa872ab3e9bd6249e7bf6da28cf95d73"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(bRecovery){function addWidthRope(bTop,pos,numY){var rw0=NOVA.getSprite(\"ropeWidth.png\");rw0.visible=!1,rw0.anchor.set(.5),bTop?rw0.setPositionXY(startX+pos*cfg.symWidth,startY-cfg.symHeight/2):rw0.setPositionXY(startX+pos*cfg.symWidth,startY+numY*cfg.symHeight+cfg.symHeight/2),container.addChild(rw0),ropesArray.push(rw0)}function addHeightRope(bLeft,pos,numX){var rh0=NOVA.getSprite(\"ropeHeight.png\");rh0.visible=!1,rh0.anchor.set(.5),bLeft?rh0.setPositionXY(startX-cfg.symWidth/2,startY+pos*cfg.symHeight):rh0.setPositionXY(startX+numX*cfg.symWidth+cfg.symWidth/2,startY+pos*cfg.symHeight),container.addChild(rh0),ropesArray.push(rh0)}function showShapes(){for(var i in shapesArray)shapesArray[i].visible=!0;for(var i in ropesArray)ropesArray[i].visible=!0;multiContainer.visible=!0,_bRecovery||(TweenMax.fromTo(container,.34,{scaleX:.3,scaleY:.3},{ease:Back.easeOut.config(1.2),scaleX:1,scaleY:1}),TweenMax.fromTo(multiContainer,.2,{scaleX:0,scaleY:0},{ease:Back.easeOut.config(1.3),scaleX:1,scaleY:1}),SOUND.play(\"netLand\"))}var _bRecovery=bRecovery||!1;_bRecovery||game.gorillaAnims.playThrownet(),gsd=slotGame.serverResponse.gsd,pm=gsd.fieldValues.PM,pmp=gsd.fieldValues.PMP,items=pmp.split(\"|\");var netWidth=cfg.symWidth,netHeight=cfg.symHeight,startX=0,startY=0,startRow=0;for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shape=NOVA.getSprite(\"netBG.png\");shape.anchor.set(.5);var shapePos=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row);shape.setPositionXY(shapePos.x,shapePos.y),shape.visible=!1,container.addChild(shape),shapesArray.push(shape),i>0?(shapesArray[i].x>shapesArray[i-1].x&&shapesArray[i].x>netWidth&&startRow==row&&(netWidth+=cfg.symWidth),shapesArray[i].y>shapesArray[i-1].y&&shapesArray[i].y>netHeight&&(netHeight+=cfg.symHeight)):(startRow=row,startX=shapesArray[i].x,startY=shapesArray[i].y)}for(var widthRopes=netWidth/cfg.symWidth,heightRopes=netHeight/cfg.symHeight,w=0;w<widthRopes;w++){addWidthRope(!0,w),addWidthRope(!1,w,heightRopes-1);for(var h=0;h<heightRopes;h++)addHeightRope(!0,h),addHeightRope(!1,h,widthRopes-1)}return multipler.text=String(pm+\"x\"),multipler.refreshText(),_bRecovery?void showShapes():(TweenMax.delayedCall(.8,showShapes),TweenMax.delayedCall(1,game.slotGame.fireEvent,[\"END_FREEGAME_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER)}",
+          "sourceStart": 1938315,
+          "sourceEnd": 1940659,
+          "fragmentSHA256": "0d7857b8f047411998e5af89177e4f9b471986edac6e6b99ec7e5207790d11cd"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){}",
+          "sourceStart": 1940676,
+          "sourceEnd": 1940688,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "resize",
+          "source": "function(){NOVA.isLandscape()?multiContainer.setPositionXY(80,100):multiContainer.setPositionXY(420,442)}",
+          "sourceStart": 1940701,
+          "sourceEnd": 1940806,
+          "fragmentSHA256": "996f56ea703890fb08fedc20a491cd8c13a1bbecd33839de1d075a48798734d0"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){bRecovery&&self.onSpinning(!0)}",
+          "sourceStart": 1940818,
+          "sourceEnd": 1940869,
+          "fragmentSHA256": "1c724cfe58651678eeab54ead739e490b9786c34483076dfce9f03ddc04c799f"
+        }
+      ],
+      "effects": []
+    },
+    {
+      "name": "FeatureTaggedWild",
+      "sourceStart": 1940889,
+      "sourceEnd": 1943075,
+      "source": "function(){var self=this,revealsArray=null,container={},items=[],slotGame={},rm={};this.init=function(){revealsArray=[],slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"ABOVE_SYMBOLS\");for(var index=0;index<7;index++){var obj=new TaggedReveal;obj.init(),revealsArray.push(obj)}},this.close=function(){if(this.onPreSpin(),revealsArray)for(var r in revealsArray)revealsArray[r].destroy();revealsArray=null},this.onPreSpin=function(){for(var i in revealsArray)container.removeChild(revealsArray[i]),revealsArray[i].visible=!0;items=[]},this.onPostSpin=function(bRecovery){function showAndPlay(){for(var i in items){var obj=revealsArray[i];container.addChild(obj),obj.play()}}function stompAudio(){SOUND.play(\"stomp\")}function swap(){for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),revealsArray[i].visible=!1}_bRecovery||game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,twsp=(gsd.fieldValues.FRID,gsd.fieldValues.TWSP);if(twsp){items=twsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);animPos=game.slotGame.reelManager.getSlotMapCoordinate(reel,row),revealsArray[i].setPositionXY(animPos.x,animPos.y)}_bRecovery?swap():(items.length<3?game.gorillaAnims.playFootStompA():game.gorillaAnims.playFootStompB(),TweenMax.delayedCall(.4,stompAudio),TweenMax.delayedCall(.7,showAndPlay),TweenMax.delayedCall(1.8,swap))}else _bRecovery||TweenMax.delayedCall(.8,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]);if(!_bRecovery)return ENUM.SKIP_DEFAULT_ENTER},this.onWin=function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)},this.onIdle=function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)}}",
+      "fragmentSHA256": "401e22b7a051bd5f053905aad16c6791fdbf046930914e7fce24060a38db2620",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){revealsArray=[],slotGame=game.slotGame,rm=slotGame.reelManager,container=NOVA.getContainer(\"ABOVE_SYMBOLS\");for(var index=0;index<7;index++){var obj=new TaggedReveal;obj.init(),revealsArray.push(obj)}}",
+          "sourceStart": 1940982,
+          "sourceEnd": 1941194,
+          "fragmentSHA256": "0be96c3b9c53618823ded1ed395b449348f60d070649f0fa1450a167181f1f45"
+        },
+        {
+          "name": "close",
+          "source": "function(){if(this.onPreSpin(),revealsArray)for(var r in revealsArray)revealsArray[r].destroy();revealsArray=null}",
+          "sourceStart": 1941206,
+          "sourceEnd": 1941320,
+          "fragmentSHA256": "518670b0fede00dae11e66b5512a7da1e5477d46687a94af3f6621a0c0404e7d"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){for(var i in revealsArray)container.removeChild(revealsArray[i]),revealsArray[i].visible=!0;items=[]}",
+          "sourceStart": 1941336,
+          "sourceEnd": 1941448,
+          "fragmentSHA256": "9f7f6e9aae7a64eca6b6c021442d9d99a187256bad95ca5c6a62002e95f1d2b2"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(bRecovery){function showAndPlay(){for(var i in items){var obj=revealsArray[i];container.addChild(obj),obj.play()}}function stompAudio(){SOUND.play(\"stomp\")}function swap(){for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);rm.showSlotEffectLayer(reel,row,!1,!1),rm.setSymbol(reel,row,\"0\"),rm.showSlotEffectLayer(reel,row,!0,!1),revealsArray[i].visible=!1}_bRecovery||game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")}var _bRecovery=bRecovery||!1,slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,twsp=(gsd.fieldValues.FRID,gsd.fieldValues.TWSP);if(twsp){items=twsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]);animPos=game.slotGame.reelManager.getSlotMapCoordinate(reel,row),revealsArray[i].setPositionXY(animPos.x,animPos.y)}_bRecovery?swap():(items.length<3?game.gorillaAnims.playFootStompA():game.gorillaAnims.playFootStompB(),TweenMax.delayedCall(.4,stompAudio),TweenMax.delayedCall(.7,showAndPlay),TweenMax.delayedCall(1.8,swap))}else _bRecovery||TweenMax.delayedCall(.8,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]);if(!_bRecovery)return ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1941465,
+          "sourceEnd": 1942660,
+          "fragmentSHA256": "4b42421cf0f60c8662f265e15d4a98b3c5a8a2bebf73b527153c65fcec0508f7"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_WIN].cfg.skipSetStops=!0)}",
+          "sourceStart": 1942672,
+          "sourceEnd": 1942866,
+          "fragmentSHA256": "32bf0b1df16a78282fa764de4af7720e17cac343d711c5677bf8d87a2e5bc41b"
+        },
+        {
+          "name": "onIdle",
+          "source": "function(bRecovery){bRecovery&&(game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops),self.onPostSpin(!0),game.slotGame.states[ENUM.gameState.FREEGAME_IDLE].cfg.skipSetStops=!0)}",
+          "sourceStart": 1942879,
+          "sourceEnd": 1943074,
+          "fragmentSHA256": "2b6f30e7d652887b16a73e7febd087f6c67c58d94bfcddcda852fb063cacbb15"
+        }
+      ],
+      "effects": [
+        {
+          "method": "onPostSpin",
+          "kind": "call",
+          "target": "game.slotGame.fireEvent",
+          "source": "game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")"
+        }
+      ]
+    },
+    {
+      "name": "FeatureLotsOfLines",
+      "sourceStart": 1908463,
+      "sourceEnd": 1910327,
+      "source": "function(){var lsl=null,gsd=null,slotGame={},cacheWinCycles=0,callBack={},numLinesTxt={},numLinesContainer={},numLinesBG={};this.init=function(){slotGame=game.slotGame,callBack=function(){game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")},cacheWinCycles=NOVA.config.lines.numCyclesFree,NOVA.config.lines.numCyclesFree=2,numLinesBG=NOVA.getSprite(\"lavaLinesDisplay.png\"),numLinesBG.anchor.set(.5),numLinesBG.setPositionXY(0,0),numLinesBG.novaName=\"numLinesBG\",numLinesTxt=new NovaTextBox({text:\"25\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),numLinesTxt.novaName=\"numLinesTxt\",numLinesTxt.setPositionXY(-2,-7),numLinesContainer=new NovaContainer,numLinesContainer.addChild(numLinesBG),numLinesContainer.addChild(numLinesTxt),numLinesContainer.scale.set(.85),NOVA.addToContainer(\"GAME_FOREGROUND\",numLinesContainer),this.resize()},this.close=function(){NOVA.config.lines.numCyclesFree=cacheWinCycles},this.summaryCleanup=function(){function complete(){NOVA.removeFromContainer(\"GAME_FOREGROUND\",numLinesContainer),numLinesBG.destroy(),numLinesTxt.destroy(),numLinesContainer.destroy(),numLinesBG=null,numLinesTxt=null,numLinesContainer=null,slotGame=null,lsl=null,gsd=null,callBack=null}TweenMax.to(numLinesContainer,.5,{alpha:0,onComplete:complete})},this.resize=function(){numLinesContainer&&(NOVA.isLandscape()?numLinesContainer.setPositionXY(795,97):numLinesContainer.setPositionXY(421,442))},this.onPreSpin=function(){},this.processMsg=function(){gsd=slotGame.serverResponse.gsd,lsl=gsd.fieldValues.LSL,lsl?(slotGame.account.setNumPaylinesSelected(lsl),numLinesTxt.visible=!0,numLinesTxt.text=String(lsl),numLinesTxt.refreshText()):slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)},this.onSpinning=function(){},this.onPostSpin=function(){return slotGame.winManager.strumLines(callBack),ENUM.SKIP_DEFAULT_ENTER}}",
+      "fragmentSHA256": "457008fc502728ef064cb1501461fdc60ca7d51853abf1b556542732095a3b62",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){slotGame=game.slotGame,callBack=function(){game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")},cacheWinCycles=NOVA.config.lines.numCyclesFree,NOVA.config.lines.numCyclesFree=2,numLinesBG=NOVA.getSprite(\"lavaLinesDisplay.png\"),numLinesBG.anchor.set(.5),numLinesBG.setPositionXY(0,0),numLinesBG.novaName=\"numLinesBG\",numLinesTxt=new NovaTextBox({text:\"25\",style:\"STL_MULTIPLER\",width:90,height:90,valign:\"center\",anchor:{x:.5,y:.5}}),numLinesTxt.novaName=\"numLinesTxt\",numLinesTxt.setPositionXY(-2,-7),numLinesContainer=new NovaContainer,numLinesContainer.addChild(numLinesBG),numLinesContainer.addChild(numLinesTxt),numLinesContainer.scale.set(.85),NOVA.addToContainer(\"GAME_FOREGROUND\",numLinesContainer),this.resize()}",
+          "sourceStart": 1908597,
+          "sourceEnd": 1909319,
+          "fragmentSHA256": "e8bd81070fd70d6516c115d0164b4c17937f048d350db436e450fac56ab04a91"
+        },
+        {
+          "name": "close",
+          "source": "function(){NOVA.config.lines.numCyclesFree=cacheWinCycles}",
+          "sourceStart": 1909331,
+          "sourceEnd": 1909389,
+          "fragmentSHA256": "2ef74e4d7dbca4b62fa7948b66e87e7683551ba29cf900802fcc3aa5fe9bcc25"
+        },
+        {
+          "name": "summaryCleanup",
+          "source": "function(){function complete(){NOVA.removeFromContainer(\"GAME_FOREGROUND\",numLinesContainer),numLinesBG.destroy(),numLinesTxt.destroy(),numLinesContainer.destroy(),numLinesBG=null,numLinesTxt=null,numLinesContainer=null,slotGame=null,lsl=null,gsd=null,callBack=null}TweenMax.to(numLinesContainer,.5,{alpha:0,onComplete:complete})}",
+          "sourceStart": 1909410,
+          "sourceEnd": 1909740,
+          "fragmentSHA256": "5c43a651bf51e02432bb8a09435025b37bfcd695d2cacd2aecbe833848c28f01"
+        },
+        {
+          "name": "resize",
+          "source": "function(){numLinesContainer&&(NOVA.isLandscape()?numLinesContainer.setPositionXY(795,97):numLinesContainer.setPositionXY(421,442))}",
+          "sourceStart": 1909753,
+          "sourceEnd": 1909885,
+          "fragmentSHA256": "abc8b3a61a32c3e633eacc3c63ed14b4c294c83dd3899a66c8a7b86cc5457bd2"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){}",
+          "sourceStart": 1909901,
+          "sourceEnd": 1909913,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(){gsd=slotGame.serverResponse.gsd,lsl=gsd.fieldValues.LSL,lsl?(slotGame.account.setNumPaylinesSelected(lsl),numLinesTxt.visible=!0,numLinesTxt.text=String(lsl),numLinesTxt.refreshText()):slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)}",
+          "sourceStart": 1909930,
+          "sourceEnd": 1910197,
+          "fragmentSHA256": "c3ceb7f3cceba3135f26baa9f1535a37bd4b184bf7f30453d4a569824f8f2264"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(){}",
+          "sourceStart": 1910214,
+          "sourceEnd": 1910226,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){return slotGame.winManager.strumLines(callBack),ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1910243,
+          "sourceEnd": 1910326,
+          "fragmentSHA256": "531c2906a0783abab7f0b219b1d2d233af394842a0009d249378000d1bc04ab4"
+        }
+      ],
+      "effects": [
+        {
+          "method": "init",
+          "kind": "call",
+          "target": "game.slotGame.fireEvent",
+          "source": "game.slotGame.fireEvent(\"CLOSE_POST_SPIN\")"
+        },
+        {
+          "method": "processMsg",
+          "kind": "call",
+          "target": "slotGame.account.setNumPaylinesSelected",
+          "source": "slotGame.account.setNumPaylinesSelected(lsl)"
+        },
+        {
+          "method": "processMsg",
+          "kind": "call",
+          "target": "slotGame.account.setNumPaylinesSelected",
+          "source": "slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)"
+        }
+      ]
+    },
+    {
+      "name": "FeatureShellRespins",
+      "sourceStart": 1945773,
+      "sourceEnd": 1950961,
+      "source": "function(){var self=this,reelAboveSymbols=[],container={},prizes=[],sprShells=[\"Shell05.png\",\"Shell04.png\",\"Shell03.png\",\"Shell02.png\",\"Shell01.png\"],shellHoldAnim=null,initialStops=[1,1,1,1,1],clonedReelstrips=null,DRID=0;this.SFC=0,this.init=function(){var slotGame=game.slotGame;slotGame.serverResponse.gsd;reelAboveSymbols=new Array(5);for(var i=0;i<5;++i)reelAboveSymbols[i]=new Array(3);container=NOVA.getContainer(\"ABOVE_SYMBOLS\"),shellHoldAnim=new ShellHoldAnimation,shellHoldAnim.init(),this.resize()},this.close=function(){function destoryPrizes(){for(var p in prizes)containerEfx.removeChild(prizes[p]),prizes[p].destroy();prizes=[]}shellHoldAnim.reset(!0),shellHoldAnim=null,container.removeChildren(),container.visible=!0,game.slotGame.winManager.hideLinesContainer(!1);var containerEfx=NOVA.getContainer(\"REEL_EFFECTS_LAYER\");TweenMax.to(prizes,.4,{alpha:0,onComplete:destoryPrizes})},this.resize=function(){NOVA.isLandscape()},this.playInitialSpin=function(duration){var slotGame=game.slotGame,rm=slotGame.reelManager;slotGame.winManager.hideLinesContainer(!0),slotGame.winManager.stopWin();for(var i=0;i<5;++i)rm.setCloneReelStrip(i,clonedReelstrips[i]);rm.reelStopCounter=0,rm.srsEnabled=!1;for(var i=0;i<rm.reelsArray.length;++i)rm.reelsArray[i].startMotion()},this.stopInitialSpin=function(duration){var slotGame=game.slotGame,rm=slotGame.reelManager;TweenMax.delayedCall(duration,function(){for(var i=0;i<rm.reelsArray.length;++i)rm.reelsArray[i].setStop(parseInt(initialStops[i]));rm.changeStopDelays(0),rm.stopSpin()}),TweenMax.delayedCall(duration+1.3,function(){self.onPostSpin(\"fake\"),game.slotGame.oldWin=game.slotGame.serverResponse.totalWin,game.slotGame.account.addWin(game.firstRespinsWin-game.slotGame.oldWin),game.slotGame.metersManager.winMeter.rollup(game.slotGame.oldWin,game.firstRespinsWin,2e3)})},this.onReelBounce=function(value){game.slotGame.currentState!=ENUM.gameState.BASE_SPINNING_STOP&&0==value&&game.slotGame.serverResponse.freeGameTrigger&&SOUND.play(\"shellLand\")},this.onWin=function(){game.slotGame.winManager.hideLinesContainer(!0)},this.setSymbol=function(reel,row,shellIdx,prize){var symSpr=reelAboveSymbols[reel][row];if(symSpr)container.removeChild(symSpr);else{shellHoldAnim.addAnimation(reel,row,prize);var sPrize=String(prize/game.slotGame.account.getCurrentBetPerLine()),prizeTxt=new NovaTextBox({text:sPrize,style:\"STL_MULTIPLER\",width:114,height:100,valign:\"center\",anchor:{x:.5,y:.5}}),slotPos=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row);prizeTxt.setPositionXY(slotPos.x,slotPos.y-5),prizes.push(prizeTxt)}var symSprite=NOVA.getSprite(sprShells[shellIdx-1]);reelAboveSymbols[reel][row]=symSprite,container.addChild(symSprite);for(var p in prizes)container.addChild(prizes[p]);var pos=game.slotGame.reelManager.getSlotMapCoordinate(reel,row);symSprite.setPositionXY(pos.x,pos.y)},this.onPreSpin=function(){shellHoldAnim.moveTo(\"REEL_EFFECTS_LAYER\"),container.visible=!0;var slotGame=game.slotGame,gsd=(slotGame.reelManager,slotGame.serverResponse.gsd),rsp=gsd.fieldValues.RSP;if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]);this.setSymbol(reel,row,shellIdx,shellPrize)}}},this.processMsg=function(){var slotGame=game.slotGame,serverResponse=slotGame.serverResponse,rm=slotGame.reelManager,rs=rm.reelStrips[serverResponse.reelstripID],stops=serverResponse.stops,gsd=serverResponse.gsd,rsp=gsd.fieldValues.RSP,drs=gsd.fieldValues.DRS;if(DRID=gsd.fieldValues.DRID,this.SFC=gsd.fieldValues.SFC,drs){initialStops=drs.split(\";\"),clonedReelstrips=new Array(5);for(var i=0;i<5;++i)clonedReelstrips[i]=rm.getReelStripClone(i,DRID);game.shellCollectAnims.playByTriggerId(this.SFC)}if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]),rsidx=(stops[reel]+row-1)%rs[reel].length;rs[reel][rsidx]>=15&&(rs[reel][rsidx]=14+shellIdx),drs&&(clonedReelstrips[reel][parseInt(initialStops[reel])+row-1]=14+shellIdx),game.slotGame.inRecovery&&game.slotGame.serverResponse.currentFreeGame>0&&(this.setSymbol(reel,row,shellIdx,shellPrize),rm.setSymbol(reel,row,14+shellIdx))}}},this.onSpinning=function(){game.slotGame.reelManager.changeStopDelays(0)},this.onPostSpin=function(){function process(){if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]);self.setSymbol(reel,row,shellIdx,shellPrize),rm.setSymbol(reel,row,14+shellIdx)}}container.visible=!1,shellHoldAnim&&shellHoldAnim.moveTo(\"UNDER_SYMBOLS\");var containerEfx=NOVA.getContainer(\"REEL_EFFECTS_LAYER\");for(var p in prizes)containerEfx.addChild(prizes[p])}\"fake\"!==arguments[0]&&game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops);var slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,rsp=gsd.fieldValues.RSP;return TweenMax.delayedCall(.01,process),TweenMax.delayedCall(.8,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}}",
+      "fragmentSHA256": "e163d1c70a1db109d46f65ee8793fea5a1af88d5ba4dd18889891abc598111df",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(){var slotGame=game.slotGame;slotGame.serverResponse.gsd;reelAboveSymbols=new Array(5);for(var i=0;i<5;++i)reelAboveSymbols[i]=new Array(3);container=NOVA.getContainer(\"ABOVE_SYMBOLS\"),shellHoldAnim=new ShellHoldAnimation,shellHoldAnim.init(),this.resize()}",
+          "sourceStart": 1946017,
+          "sourceEnd": 1946283,
+          "fragmentSHA256": "575d8076d1aa53d28669b1bd5d39c96db7ce38f8ee2a88dc77fc3c9587e7dae0"
+        },
+        {
+          "name": "close",
+          "source": "function(){function destoryPrizes(){for(var p in prizes)containerEfx.removeChild(prizes[p]),prizes[p].destroy();prizes=[]}shellHoldAnim.reset(!0),shellHoldAnim=null,container.removeChildren(),container.visible=!0,game.slotGame.winManager.hideLinesContainer(!1);var containerEfx=NOVA.getContainer(\"REEL_EFFECTS_LAYER\");TweenMax.to(prizes,.4,{alpha:0,onComplete:destoryPrizes})}",
+          "sourceStart": 1946295,
+          "sourceEnd": 1946671,
+          "fragmentSHA256": "92c90d15a4b5d406b5f24dd29df99c7a6df176fe58ef312475cbadc78a94c8d3"
+        },
+        {
+          "name": "resize",
+          "source": "function(){NOVA.isLandscape()}",
+          "sourceStart": 1946684,
+          "sourceEnd": 1946714,
+          "fragmentSHA256": "c145d61417cc37b6c4a8dcd39152cb0f0676bdeb3bac2adcfe1542b3836334d0"
+        },
+        {
+          "name": "playInitialSpin",
+          "source": "function(duration){var slotGame=game.slotGame,rm=slotGame.reelManager;slotGame.winManager.hideLinesContainer(!0),slotGame.winManager.stopWin();for(var i=0;i<5;++i)rm.setCloneReelStrip(i,clonedReelstrips[i]);rm.reelStopCounter=0,rm.srsEnabled=!1;for(var i=0;i<rm.reelsArray.length;++i)rm.reelsArray[i].startMotion()}",
+          "sourceStart": 1946736,
+          "sourceEnd": 1947051,
+          "fragmentSHA256": "52615ef271c4463ec34956a52a9028ec852d6b1fbc8974dd20865c94c3d255da"
+        },
+        {
+          "name": "stopInitialSpin",
+          "source": "function(duration){var slotGame=game.slotGame,rm=slotGame.reelManager;TweenMax.delayedCall(duration,function(){for(var i=0;i<rm.reelsArray.length;++i)rm.reelsArray[i].setStop(parseInt(initialStops[i]));rm.changeStopDelays(0),rm.stopSpin()}),TweenMax.delayedCall(duration+1.3,function(){self.onPostSpin(\"fake\"),game.slotGame.oldWin=game.slotGame.serverResponse.totalWin,game.slotGame.account.addWin(game.firstRespinsWin-game.slotGame.oldWin),game.slotGame.metersManager.winMeter.rollup(game.slotGame.oldWin,game.firstRespinsWin,2e3)})}",
+          "sourceStart": 1947073,
+          "sourceEnd": 1947607,
+          "fragmentSHA256": "a4f58738a585b7155547e96fc5556941e9c6e8c7e55b654a25fceda1c5fed0e9"
+        },
+        {
+          "name": "onReelBounce",
+          "source": "function(value){game.slotGame.currentState!=ENUM.gameState.BASE_SPINNING_STOP&&0==value&&game.slotGame.serverResponse.freeGameTrigger&&SOUND.play(\"shellLand\")}",
+          "sourceStart": 1947626,
+          "sourceEnd": 1947785,
+          "fragmentSHA256": "6e4a31e4b1afef47e7faea10dd10340376706fe1d98d74af6e3b51cf4b48fe3d"
+        },
+        {
+          "name": "onWin",
+          "source": "function(){game.slotGame.winManager.hideLinesContainer(!0)}",
+          "sourceStart": 1947797,
+          "sourceEnd": 1947856,
+          "fragmentSHA256": "b0d4fc0eb80e58d2af64276ff523704b41ca8fba5ddcd87749ebcf6ce7bcaa03"
+        },
+        {
+          "name": "setSymbol",
+          "source": "function(reel,row,shellIdx,prize){var symSpr=reelAboveSymbols[reel][row];if(symSpr)container.removeChild(symSpr);else{shellHoldAnim.addAnimation(reel,row,prize);var sPrize=String(prize/game.slotGame.account.getCurrentBetPerLine()),prizeTxt=new NovaTextBox({text:sPrize,style:\"STL_MULTIPLER\",width:114,height:100,valign:\"center\",anchor:{x:.5,y:.5}}),slotPos=game.slotGame.reelManager.getSlotMapCoordinateCenter(reel,row);prizeTxt.setPositionXY(slotPos.x,slotPos.y-5),prizes.push(prizeTxt)}var symSprite=NOVA.getSprite(sprShells[shellIdx-1]);reelAboveSymbols[reel][row]=symSprite,container.addChild(symSprite);for(var p in prizes)container.addChild(prizes[p]);var pos=game.slotGame.reelManager.getSlotMapCoordinate(reel,row);symSprite.setPositionXY(pos.x,pos.y)}",
+          "sourceStart": 1947872,
+          "sourceEnd": 1948632,
+          "fragmentSHA256": "b2ccbce38efa07f7129594c0aaba5582cfe1a4d5b8d6c731044155ea121bbcf5"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){shellHoldAnim.moveTo(\"REEL_EFFECTS_LAYER\"),container.visible=!0;var slotGame=game.slotGame,gsd=(slotGame.reelManager,slotGame.serverResponse.gsd),rsp=gsd.fieldValues.RSP;if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]);this.setSymbol(reel,row,shellIdx,shellPrize)}}}",
+          "sourceStart": 1948648,
+          "sourceEnd": 1949054,
+          "fragmentSHA256": "c00a4c03129fefad4cae2182abe6920a92fd232d5bd80e0ff55e7f09c4149a4c"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(){var slotGame=game.slotGame,serverResponse=slotGame.serverResponse,rm=slotGame.reelManager,rs=rm.reelStrips[serverResponse.reelstripID],stops=serverResponse.stops,gsd=serverResponse.gsd,rsp=gsd.fieldValues.RSP,drs=gsd.fieldValues.DRS;if(DRID=gsd.fieldValues.DRID,this.SFC=gsd.fieldValues.SFC,drs){initialStops=drs.split(\";\"),clonedReelstrips=new Array(5);for(var i=0;i<5;++i)clonedReelstrips[i]=rm.getReelStripClone(i,DRID);game.shellCollectAnims.playByTriggerId(this.SFC)}if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]),rsidx=(stops[reel]+row-1)%rs[reel].length;rs[reel][rsidx]>=15&&(rs[reel][rsidx]=14+shellIdx),drs&&(clonedReelstrips[reel][parseInt(initialStops[reel])+row-1]=14+shellIdx),game.slotGame.inRecovery&&game.slotGame.serverResponse.currentFreeGame>0&&(this.setSymbol(reel,row,shellIdx,shellPrize),rm.setSymbol(reel,row,14+shellIdx))}}}",
+          "sourceStart": 1949071,
+          "sourceEnd": 1950061,
+          "fragmentSHA256": "d4cc50ea2591549871ceff5c87196d0d95e2cde8f794f30dcc58d9398e77620d"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(){game.slotGame.reelManager.changeStopDelays(0)}",
+          "sourceStart": 1950078,
+          "sourceEnd": 1950135,
+          "fragmentSHA256": "88e6b68862e160b75029be7491a327e94fce59904a60cdd23c63885e63727acb"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){function process(){if(rsp){var items=rsp.split(\"|\");for(var i in items){var pos=items[i].split(\";\"),reel=parseInt(pos[0]),row=parseInt(pos[1]),shellIdx=parseInt(pos[2]),shellPrize=parseInt(pos[3]);self.setSymbol(reel,row,shellIdx,shellPrize),rm.setSymbol(reel,row,14+shellIdx)}}container.visible=!1,shellHoldAnim&&shellHoldAnim.moveTo(\"UNDER_SYMBOLS\");var containerEfx=NOVA.getContainer(\"REEL_EFFECTS_LAYER\");for(var p in prizes)containerEfx.addChild(prizes[p])}\"fake\"!==arguments[0]&&game.slotGame.reelManager.setStops(game.slotGame.serverResponse.stops);var slotGame=game.slotGame,rm=slotGame.reelManager,gsd=slotGame.serverResponse.gsd,rsp=gsd.fieldValues.RSP;return TweenMax.delayedCall(.01,process),TweenMax.delayedCall(.8,game.slotGame.fireEvent,[\"CLOSE_POST_SPIN\"]),ENUM.SKIP_DEFAULT_ENTER}",
+          "sourceStart": 1950152,
+          "sourceEnd": 1950960,
+          "fragmentSHA256": "d7a3f52beb79b06f1e38d523cba8a19fb7dc2a21fbde8a95fdec2dfd7ef03693"
+        }
+      ],
+      "effects": [
+        {
+          "method": "stopInitialSpin",
+          "kind": "call",
+          "target": "game.slotGame.account.addWin",
+          "source": "game.slotGame.account.addWin(game.firstRespinsWin-game.slotGame.oldWin)"
+        },
+        {
+          "method": "onReelBounce",
+          "kind": "assignment",
+          "target": "game.slotGame.currentState!=ENUM.gameState.BASE_SPINNING_STOP&&0==value&&game.slotGame.serverResponse.freeGameTrigger",
+          "source": "game.slotGame.currentState!=ENUM.gameState.BASE_SPINNING_STOP&&0==value&&game.slotGame.serverResponse.freeGameTrigger&&SOUND.play(\"shellLand\")"
+        },
+        {
+          "method": "setSymbol",
+          "kind": "call",
+          "target": "game.slotGame.account.getCurrentBetPerLine",
+          "source": "game.slotGame.account.getCurrentBetPerLine()"
+        },
+        {
+          "method": "processMsg",
+          "kind": "assignment",
+          "target": "game.slotGame.inRecovery&&game.slotGame.serverResponse.currentFreeGame>0",
+          "source": "game.slotGame.inRecovery&&game.slotGame.serverResponse.currentFreeGame>0&&(this.setSymbol(reel,row,shellIdx,shellPrize),rm.setSymbol(reel,row,14+shellIdx))"
+        },
+        {
+          "method": "processMsg",
+          "kind": "assignment",
+          "target": "game.slotGame.serverResponse.currentFreeGame",
+          "source": "game.slotGame.serverResponse.currentFreeGame>0"
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "sourceStart": 1952305,
+      "sourceEnd": 1954967,
+      "source": "function(){this.currentFeature=null,this.FID=0,this.features=new Array(10),this.features[0]=null,this.features[1]=new FeaturePowerPayTable,this.features[2]=new FeatureExpandingWild,this.features[3]=new FeatureMegaStacks,this.features[4]=new FeatureSecretSymbols,this.features[5]=new FeatureRoamingWilds,this.features[6]=new FeaturePositionalMultiplier,this.features[7]=new FeatureTaggedWild,this.features[8]=new FeatureLotsOfLines,this.features[9]=new FeatureShellRespins,this.minSpinDuration=0,this.canInitFeature=!1,this.init=function(featureId){this.FID=featureId,this.currentFeature=this.features[featureId],this.currentFeature.init&&this.currentFeature.init()},this.close=function(){this.currentFeature&&(this.currentFeature.close&&this.currentFeature.close(),this.FID=0,this.currentFeature=null,game.setWhizbyAssets(0))},this.summaryCleanup=function(){this.currentFeature&&this.currentFeature.summaryCleanup&&this.currentFeature.summaryCleanup()},this.update=function(){this.currentFeature&&this.currentFeature.update&&this.currentFeature.update()},this.showIntro=function(){},this.processMsg=function(callBack){var _callBack=callBack,slotGame=game.slotGame,serverResponse=slotGame.serverResponse,gsd=serverResponse.gsd;if(null==game.initialMSGStore&&(game.initialMSGStore={sfc:gsd?gsd.fieldValues.SFC:null}),game.initialized&&this.canInitFeature){var fid=serverResponse.featureId;\"string\"==typeof fid?fid=parseInt(fid.split(\"|\")[0]):\"object\"==typeof fid&&(fid=0),fid>0&&0==this.FID&&(this.init(fid),8!=fid&&slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)),_callBack(fid),0!==gsd.data.length&&this.currentFeature&&this.currentFeature.processMsg&&this.currentFeature.processMsg()}},this.onPreSpin=function(){if(this.minSpinDuration=NOVA.config.game.reelsMotion.spin.minDuration,this.currentFeature)return this.currentFeature.onPreSpin?this.currentFeature.onPreSpin():void 0},this.onSpinning=function(){if(this.currentFeature)return this.currentFeature.onSpinning?this.currentFeature.onSpinning():void 0},this.onPostSpin=function(){if(this.currentFeature)return this.currentFeature.onPostSpin?this.currentFeature.onPostSpin():void 0},this.onWin=function(bRecovery){if(this.currentFeature)return this.currentFeature.onWin?this.currentFeature.onWin(bRecovery):void 0},this.onIdle=function(bRecovery){if(this.currentFeature)return this.currentFeature.onIdle?this.currentFeature.onIdle(bRecovery):void 0},this.onBetChange=function(){if(this.currentFeature)return this.currentFeature.onBetChange?this.currentFeature.onBetChange():void 0},this.resize=function(){this.currentFeature&&this.currentFeature.resize&&this.currentFeature.resize()}}",
+      "fragmentSHA256": "83d85b18fa9d4ad0799e67bd057af2bd36df2aa0a5638f8e3986f6e0b6627623",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(featureId){this.FID=featureId,this.currentFeature=this.features[featureId],this.currentFeature.init&&this.currentFeature.init()}",
+          "sourceStart": 1952833,
+          "sourceEnd": 1952970,
+          "fragmentSHA256": "fad50996275ed35971072158884132a2384411616c23e5b8a648a7f71a4f3d5b"
+        },
+        {
+          "name": "close",
+          "source": "function(){this.currentFeature&&(this.currentFeature.close&&this.currentFeature.close(),this.FID=0,this.currentFeature=null,game.setWhizbyAssets(0))}",
+          "sourceStart": 1952982,
+          "sourceEnd": 1953131,
+          "fragmentSHA256": "e1be63a3788335f87e5aacf0592ca4612e5afcf2aeceee339bde28c9adf63b43"
+        },
+        {
+          "name": "summaryCleanup",
+          "source": "function(){this.currentFeature&&this.currentFeature.summaryCleanup&&this.currentFeature.summaryCleanup()}",
+          "sourceStart": 1953152,
+          "sourceEnd": 1953257,
+          "fragmentSHA256": "a72951fbb1ec416e1e33b01fa794cd82441dce39ba243468a0d0706528e7105b"
+        },
+        {
+          "name": "update",
+          "source": "function(){this.currentFeature&&this.currentFeature.update&&this.currentFeature.update()}",
+          "sourceStart": 1953270,
+          "sourceEnd": 1953359,
+          "fragmentSHA256": "a2aada91898ceac7dc2b7e969a75841b4e2a8833e1827ac1e0fa009c694f5cf5"
+        },
+        {
+          "name": "showIntro",
+          "source": "function(){}",
+          "sourceStart": 1953375,
+          "sourceEnd": 1953387,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(callBack){var _callBack=callBack,slotGame=game.slotGame,serverResponse=slotGame.serverResponse,gsd=serverResponse.gsd;if(null==game.initialMSGStore&&(game.initialMSGStore={sfc:gsd?gsd.fieldValues.SFC:null}),game.initialized&&this.canInitFeature){var fid=serverResponse.featureId;\"string\"==typeof fid?fid=parseInt(fid.split(\"|\")[0]):\"object\"==typeof fid&&(fid=0),fid>0&&0==this.FID&&(this.init(fid),8!=fid&&slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)),_callBack(fid),0!==gsd.data.length&&this.currentFeature&&this.currentFeature.processMsg&&this.currentFeature.processMsg()}}",
+          "sourceStart": 1953404,
+          "sourceEnd": 1954014,
+          "fragmentSHA256": "90a1706befefaa0852eccbc006a226c857b16a9395833787b900ee40febb7a93"
+        },
+        {
+          "name": "onPreSpin",
+          "source": "function(){if(this.minSpinDuration=NOVA.config.game.reelsMotion.spin.minDuration,this.currentFeature)return this.currentFeature.onPreSpin?this.currentFeature.onPreSpin():void 0}",
+          "sourceStart": 1954030,
+          "sourceEnd": 1954207,
+          "fragmentSHA256": "c71bd85a589a3d6031453546273aa8be7b6d791d2c56a5a4b42c8f8530fa9c46"
+        },
+        {
+          "name": "onSpinning",
+          "source": "function(){if(this.currentFeature)return this.currentFeature.onSpinning?this.currentFeature.onSpinning():void 0}",
+          "sourceStart": 1954224,
+          "sourceEnd": 1954336,
+          "fragmentSHA256": "1ed25bc201dee0e896b04d535c5a2d0c8c1c8d73b11dddce48a08448a14008af"
+        },
+        {
+          "name": "onPostSpin",
+          "source": "function(){if(this.currentFeature)return this.currentFeature.onPostSpin?this.currentFeature.onPostSpin():void 0}",
+          "sourceStart": 1954353,
+          "sourceEnd": 1954465,
+          "fragmentSHA256": "845c0ed66dc272f0e9874bad9cc2f3bbab831eb845564479ae3bf404522636bb"
+        },
+        {
+          "name": "onWin",
+          "source": "function(bRecovery){if(this.currentFeature)return this.currentFeature.onWin?this.currentFeature.onWin(bRecovery):void 0}",
+          "sourceStart": 1954477,
+          "sourceEnd": 1954597,
+          "fragmentSHA256": "3bd43db7a05c272ad0d1cdb2d091a3924085f3d3c4205abf924c1e199ebb46d6"
+        },
+        {
+          "name": "onIdle",
+          "source": "function(bRecovery){if(this.currentFeature)return this.currentFeature.onIdle?this.currentFeature.onIdle(bRecovery):void 0}",
+          "sourceStart": 1954610,
+          "sourceEnd": 1954732,
+          "fragmentSHA256": "6bbac23da07abff1bea88020e96b00bd23e306725a236091090deb767d8c464a"
+        },
+        {
+          "name": "onBetChange",
+          "source": "function(){if(this.currentFeature)return this.currentFeature.onBetChange?this.currentFeature.onBetChange():void 0}",
+          "sourceStart": 1954750,
+          "sourceEnd": 1954864,
+          "fragmentSHA256": "6ed44ee9389cd0a058e0e2d7259d5903b72fde90920ed3cebdaad08dc67cbd36"
+        },
+        {
+          "name": "resize",
+          "source": "function(){this.currentFeature&&this.currentFeature.resize&&this.currentFeature.resize()}",
+          "sourceStart": 1954877,
+          "sourceEnd": 1954966,
+          "fragmentSHA256": "e137092ac29246c1841ec2b74b64c26b8853410bbb6951090d50fffa6e2d3172"
+        }
+      ],
+      "effects": [
+        {
+          "method": "processMsg",
+          "kind": "call",
+          "target": "slotGame.account.setNumPaylinesSelected",
+          "source": "slotGame.account.setNumPaylinesSelected(NOVA.config.lines.activeLines)"
+        }
+      ]
+    },
+    {
+      "name": "FreeRoundsBase",
+      "sourceStart": 19731,
+      "sourceEnd": 25390,
+      "source": "function FreeRoundsBase(){var self=this;this.metersShown=!1;var type=1,inFreeRounds=!1,confirmation=!1,totalRounds=0;this.roundsRemaining=0,this.totalWin=0;var lastFreeRound=!1,betPerLine=0,defaultBetPerLine=0,expiryStr=\"\",options=[],optionIndex=0,available=!1,notifyCallback={};this.roundNumberMeter={},this.roundNumberLabel={},this.totalWinMeter={},this.totalWinLabel={},this.superBet=0,this.customMessage=\"\",this.init=function(callback){notifyCallback=callback,this.roundNumberLabel=new NovaText(\"TXT_FR_ROUND_NUMBER_METER_LABEL\"),this.totalWinLabel=new NovaText(\"TXT_FR_WIN_METER_LABEL\"),this.roundNumberMeter=new NovaMeter(NOVA.config.freeRounds.roundMeter,{meter:\"STL_FR_METER\"}),this.totalWinMeter=new NovaMeter(NOVA.config.freeRounds.winMeter,{meter:\"STL_FR_METER\"})},this.processInitMsg=function(msg){if(0===Object.keys(msg).length&&msg.constructor===Object);else if(type=msg.type,inFreeRounds=\"undefined\"!=typeof msg.inFreeRounds&&msg.inFreeRounds,confirmation=\"undefined\"!=typeof msg.confirmation&&msg.confirmation,totalRounds=msg.totalRounds||0,this.roundsRemaining=msg.roundsRemaining||0,this.totalWin=msg.totalWin||0,betPerLine=msg.betPerLine||0,expiryStr=msg.expiryStr||\"\",available=\"undefined\"!=typeof msg.available&&msg.available,this.superBet=\"undefined\"==typeof msg.anteBetMultiplier?0:msg.anteBetMultiplier,this.customMessage=\"undefined\"==typeof msg.customMessage?\"\":decodeURIComponent((msg.customMessage+\"\").replace(/\\+/g,\"%20\")),\"undefined\"!=typeof msg.options){options.length=0;for(var j=0;j<msg.options.length;j++)options.push(msg.options[j])}},this.processMsg=function(msg){if(0===Object.keys(msg).length&&msg.constructor===Object);else if(inFreeRounds=\"undefined\"!=typeof msg.inFreeRounds&&msg.inFreeRounds,confirmation=\"undefined\"!=typeof msg.confirmation&&msg.confirmation,totalRounds=msg.totalRounds||0,this.roundsRemaining=msg.roundsRemaining||0,this.totalWin=msg.totalWin||0,lastFreeRound=\"undefined\"!=typeof msg.lastFreeRound&&msg.lastFreeRound,betPerLine=msg.betPerLine||0,expiryStr=msg.expiryStr||\"\",available=\"undefined\"!=typeof msg.available&&msg.available,this.superBet=\"undefined\"==typeof msg.anteBetMultiplier?0:msg.anteBetMultiplier,\"undefined\"!=typeof msg.options){options.length=0;for(var j=0;j<msg.options.length;j++)options.push(msg.options[j])}},this.recall=function(){type=2,inFreeRounds=!0,confirmation=!0,totalRounds=0,this.roundsRemaining=0,this.totalWin=0,lastFreeRound=!1,betPerLine=0,available=!1},this.setDefaultBetPerLine=function(amount){defaultBetPerLine=amount},this.getDefaultBetPerLine=function(){return defaultBetPerLine},this.getBetPerLine=function(){return betPerLine},this.isInFreeRounds=function(){return inFreeRounds},this.getExpiryString=function(){return expiryStr},this.getOptions=function(){return options},this.setOption=function(index){optionIndex=Number(index)},this.getSelectedOption=function(){return options[optionIndex]},this.isFreeBtnAvailable=function(){return available},this.getType=function(){return type},this.showIntro=function(){var result=!1;return confirmation?(1==type&&(this.showMeters(!0),this.showDialog(\"intro_1\"),result=!0),2==type&&(this.showMeters(!0),this.showDialog(\"intro_2\"),result=!0)):inFreeRounds?(this.showMeters(!0),this.showDialog(\"intro_0\"),result=!0):2==type&&(this.showMeters(!0),this.showDialog(\"intro_3\"),result=!0),result},this.showOutro=function(){var result=!1;return lastFreeRound&&(this.showDialog(\"outro\"),lastFreeRound=!1,result=!0),result},this.isLastFreeRound=function(){return lastFreeRound},this.end=function(){self.showMeters(!1),inFreeRounds=!1},this.updateRoundMeter=function(){this.roundNumberMeter.snapTo(this.roundsRemaining)},this.updateWinMeter=function(duration){this.totalWinMeter.rollTo(this.totalWin,duration)},this.snapWinMeter=function(){this.totalWinMeter.snapTo(this.totalWin)},this.update=function(){},this.showDialog=function(type){switch(type){case\"intro_0\":var numGames=this.roundsRemaining;if(0==numGames)notifyCallback(\"option\",\"FR_DEFERRED\");else{var text=new NovaText(1==numGames?\"TXT_FR_INTRO_ONE\":\"TXT_FR_INTRO\");text.insertValues(numGames);var str=text.txtString.text+NOVA.getString(\"TXT_FR_INTRO_GOOD_LUCK\").txt;new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_OK\"],function(id){notifyCallback(\"option\",\"FR_DEFERRED\")})}break;case\"intro_1\":var numGames=totalRounds,text=new NovaText(1==numGames?\"TXT_FR_INTRO_ONE\":\"TXT_FR_INTRO\");text.insertValues(numGames);var str=text.txtString.text+NOVA.getString(\"TXT_FR_YES_NO_QUESTION\").txt;new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_YES\",\"TXT_BTN_NO\"],function(id){\"TXT_BTN_YES\"==id&&notifyCallback(\"option\",\"FR_DEFERRED\"),\"TXT_BTN_NO\"==id&&notifyCallback(\"option\",\"FR_REJECT\")});break;case\"intro_2\":new OptionsDialog(\"TXT_FR_TITLE\",self,[\"TXT_BTN_USE_NOW\",\"TXT_BTN_USE_LATER\"],function(id){\"TXT_BTN_USE_NOW\"==id&&notifyCallback(\"option\",\"FR_CONFIRM\"),\"TXT_BTN_USE_LATER\"==id&&notifyCallback(\"option\",\"FR_REJECT\")});break;case\"intro_3\":new OptionsDialog(\"TXT_FR_TITLE\",self,[\"TXT_BTN_USE_NOW\"],function(id){\"TXT_BTN_USE_NOW\"==id&&notifyCallback(\"option\",\"FR_CONFIRM\")});break;case\"outro\":var winAmount=this.totalWin,text=new NovaText(\"TXT_FR_OUTRO_START\");text.insertValues(NOVA.currency.getString(winAmount));var str=\"\";winAmount>0&&(str+=text.txtString.text),str+=NOVA.getString(\"TXT_FR_OUTRO_END\").txt,\"it_it\"==NOVA.languageCode&&!winAmount>0&&(str=NOVA.getString(\"TXT_FR_OUTRO_LOSE\").txt);new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_OK\"],function(id){notifyCallback(\"FR_OUTRO_OK\")});break;case\"error\":new Dialog(\"TXT_FR_TITLE\",\"TXT_FR_ERROR\",[\"TXT_BTN_OK\"],function(id){notifyCallback(\"option\",\"FR_DEFERRED\")})}}}",
+      "fragmentSHA256": "e923035d7c020edbee1cf25d9e97de67b9b074ef6647cdb5f44ce9bef348a966",
+      "methods": [
+        {
+          "name": "init",
+          "source": "function(callback){notifyCallback=callback,this.roundNumberLabel=new NovaText(\"TXT_FR_ROUND_NUMBER_METER_LABEL\"),this.totalWinLabel=new NovaText(\"TXT_FR_WIN_METER_LABEL\"),this.roundNumberMeter=new NovaMeter(NOVA.config.freeRounds.roundMeter,{meter:\"STL_FR_METER\"}),this.totalWinMeter=new NovaMeter(NOVA.config.freeRounds.winMeter,{meter:\"STL_FR_METER\"})}",
+          "sourceStart": 20152,
+          "sourceEnd": 20506,
+          "fragmentSHA256": "cbf50ca59f0af0f97a4da650bbdf8d92e720f1e57ee1017e8c714984bffeb4f1"
+        },
+        {
+          "name": "processInitMsg",
+          "source": "function(msg){if(0===Object.keys(msg).length&&msg.constructor===Object);else if(type=msg.type,inFreeRounds=\"undefined\"!=typeof msg.inFreeRounds&&msg.inFreeRounds,confirmation=\"undefined\"!=typeof msg.confirmation&&msg.confirmation,totalRounds=msg.totalRounds||0,this.roundsRemaining=msg.roundsRemaining||0,this.totalWin=msg.totalWin||0,betPerLine=msg.betPerLine||0,expiryStr=msg.expiryStr||\"\",available=\"undefined\"!=typeof msg.available&&msg.available,this.superBet=\"undefined\"==typeof msg.anteBetMultiplier?0:msg.anteBetMultiplier,this.customMessage=\"undefined\"==typeof msg.customMessage?\"\":decodeURIComponent((msg.customMessage+\"\").replace(/\\+/g,\"%20\")),\"undefined\"!=typeof msg.options){options.length=0;for(var j=0;j<msg.options.length;j++)options.push(msg.options[j])}}",
+          "sourceStart": 20527,
+          "sourceEnd": 21299,
+          "fragmentSHA256": "cd4e3512d99a1bd5870d485ff47b219c7e1a0af938cd35702ffd9c9846055285"
+        },
+        {
+          "name": "processMsg",
+          "source": "function(msg){if(0===Object.keys(msg).length&&msg.constructor===Object);else if(inFreeRounds=\"undefined\"!=typeof msg.inFreeRounds&&msg.inFreeRounds,confirmation=\"undefined\"!=typeof msg.confirmation&&msg.confirmation,totalRounds=msg.totalRounds||0,this.roundsRemaining=msg.roundsRemaining||0,this.totalWin=msg.totalWin||0,lastFreeRound=\"undefined\"!=typeof msg.lastFreeRound&&msg.lastFreeRound,betPerLine=msg.betPerLine||0,expiryStr=msg.expiryStr||\"\",available=\"undefined\"!=typeof msg.available&&msg.available,this.superBet=\"undefined\"==typeof msg.anteBetMultiplier?0:msg.anteBetMultiplier,\"undefined\"!=typeof msg.options){options.length=0;for(var j=0;j<msg.options.length;j++)options.push(msg.options[j])}}",
+          "sourceStart": 21316,
+          "sourceEnd": 22021,
+          "fragmentSHA256": "d89e5f7f4300566b5e9272b1b5fb33d514aedc9af5d2b86dea5b3f3dbd693759"
+        },
+        {
+          "name": "recall",
+          "source": "function(){type=2,inFreeRounds=!0,confirmation=!0,totalRounds=0,this.roundsRemaining=0,this.totalWin=0,lastFreeRound=!1,betPerLine=0,available=!1}",
+          "sourceStart": 22034,
+          "sourceEnd": 22180,
+          "fragmentSHA256": "558a3e2e961feb6cd99cab73cc3380ee5f71182fb13c75681358ff9b24b32648"
+        },
+        {
+          "name": "setDefaultBetPerLine",
+          "source": "function(amount){defaultBetPerLine=amount}",
+          "sourceStart": 22207,
+          "sourceEnd": 22249,
+          "fragmentSHA256": "d9ebec9f016eabbbbf59e177cc05c634477768f7f701dd15d724a851e87b9f6e"
+        },
+        {
+          "name": "getDefaultBetPerLine",
+          "source": "function(){return defaultBetPerLine}",
+          "sourceStart": 22276,
+          "sourceEnd": 22312,
+          "fragmentSHA256": "b450e7d90b6f7a08d37c3c86316758984afc5536c4844c9701ed7b9ffcef7daf"
+        },
+        {
+          "name": "getBetPerLine",
+          "source": "function(){return betPerLine}",
+          "sourceStart": 22332,
+          "sourceEnd": 22361,
+          "fragmentSHA256": "4ff0b6369497cd8cc90ff12600e8d0e9255dc9a762e952508a264701047da962"
+        },
+        {
+          "name": "isInFreeRounds",
+          "source": "function(){return inFreeRounds}",
+          "sourceStart": 22382,
+          "sourceEnd": 22413,
+          "fragmentSHA256": "798a168c244d47400e51604c566630ce62242145e704266b63c476df47647545"
+        },
+        {
+          "name": "getExpiryString",
+          "source": "function(){return expiryStr}",
+          "sourceStart": 22435,
+          "sourceEnd": 22463,
+          "fragmentSHA256": "4291305bebc20066893ca4ce1981dbde20a005f91ab444cff2c779022f3cefe3"
+        },
+        {
+          "name": "getOptions",
+          "source": "function(){return options}",
+          "sourceStart": 22480,
+          "sourceEnd": 22506,
+          "fragmentSHA256": "cde30426ac7093591095596d9630fb7d1816d41246cf41fc6a10ecfd9b7da0e8"
+        },
+        {
+          "name": "setOption",
+          "source": "function(index){optionIndex=Number(index)}",
+          "sourceStart": 22522,
+          "sourceEnd": 22564,
+          "fragmentSHA256": "2e4950ef9a45930d1c6ba0da8ab224dc06cc24177972d140541e98afd0db9df2"
+        },
+        {
+          "name": "getSelectedOption",
+          "source": "function(){return options[optionIndex]}",
+          "sourceStart": 22588,
+          "sourceEnd": 22627,
+          "fragmentSHA256": "81aa7705e560dae6280e18f95adebec5fcd65765eb642f84b75fa6c40169a6e7"
+        },
+        {
+          "name": "isFreeBtnAvailable",
+          "source": "function(){return available}",
+          "sourceStart": 22652,
+          "sourceEnd": 22680,
+          "fragmentSHA256": "e59b2cf6adc84c5041285a6d3eb5237a0d4cb5c41d7ff6a5a512142ff4826d13"
+        },
+        {
+          "name": "getType",
+          "source": "function(){return type}",
+          "sourceStart": 22694,
+          "sourceEnd": 22717,
+          "fragmentSHA256": "efd2ba43fb2882e98cb3744fba7db204583917db16168835978e76430d4edacd"
+        },
+        {
+          "name": "showIntro",
+          "source": "function(){var result=!1;return confirmation?(1==type&&(this.showMeters(!0),this.showDialog(\"intro_1\"),result=!0),2==type&&(this.showMeters(!0),this.showDialog(\"intro_2\"),result=!0)):inFreeRounds?(this.showMeters(!0),this.showDialog(\"intro_0\"),result=!0):2==type&&(this.showMeters(!0),this.showDialog(\"intro_3\"),result=!0),result}",
+          "sourceStart": 22733,
+          "sourceEnd": 23063,
+          "fragmentSHA256": "9a62e59a72605aaf9bb462165c17563833c4e2ca85fc9ab21fb3a23a80dba94c"
+        },
+        {
+          "name": "showOutro",
+          "source": "function(){var result=!1;return lastFreeRound&&(this.showDialog(\"outro\"),lastFreeRound=!1,result=!0),result}",
+          "sourceStart": 23079,
+          "sourceEnd": 23187,
+          "fragmentSHA256": "4c0cf9ebc5206792c095c31f716a4c4fa5d9790cdfb821f2f5654689d5208253"
+        },
+        {
+          "name": "isLastFreeRound",
+          "source": "function(){return lastFreeRound}",
+          "sourceStart": 23209,
+          "sourceEnd": 23241,
+          "fragmentSHA256": "97231bf76d9c07128c68a740e92788c9ab92f0422f078f204c93bbb195129128"
+        },
+        {
+          "name": "end",
+          "source": "function(){self.showMeters(!1),inFreeRounds=!1}",
+          "sourceStart": 23251,
+          "sourceEnd": 23298,
+          "fragmentSHA256": "7f17802bbc296b86ac95c06fa98f7f4b54e1d04ddbe3413418041196c2faa058"
+        },
+        {
+          "name": "updateRoundMeter",
+          "source": "function(){this.roundNumberMeter.snapTo(this.roundsRemaining)}",
+          "sourceStart": 23321,
+          "sourceEnd": 23383,
+          "fragmentSHA256": "0177875494235a84278ab23ed394b0b9a79ad4049b94c7ea706e79b6c9c496d4"
+        },
+        {
+          "name": "updateWinMeter",
+          "source": "function(duration){this.totalWinMeter.rollTo(this.totalWin,duration)}",
+          "sourceStart": 23404,
+          "sourceEnd": 23473,
+          "fragmentSHA256": "4d47feb778d9eeca0935bef50b5394f4bbaab966119d29f2c3c1bbe649cd2ada"
+        },
+        {
+          "name": "snapWinMeter",
+          "source": "function(){this.totalWinMeter.snapTo(this.totalWin)}",
+          "sourceStart": 23492,
+          "sourceEnd": 23544,
+          "fragmentSHA256": "fed99d67669de1af99d778247d2b648d5d7cc10b09250031c36bf284f224d71c"
+        },
+        {
+          "name": "update",
+          "source": "function(){}",
+          "sourceStart": 23557,
+          "sourceEnd": 23569,
+          "fragmentSHA256": "5ef5d1ac865d5989c69073dafa4c847fa199f1777c72dfb16a5d61104b6bc6f3"
+        },
+        {
+          "name": "showDialog",
+          "source": "function(type){switch(type){case\"intro_0\":var numGames=this.roundsRemaining;if(0==numGames)notifyCallback(\"option\",\"FR_DEFERRED\");else{var text=new NovaText(1==numGames?\"TXT_FR_INTRO_ONE\":\"TXT_FR_INTRO\");text.insertValues(numGames);var str=text.txtString.text+NOVA.getString(\"TXT_FR_INTRO_GOOD_LUCK\").txt;new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_OK\"],function(id){notifyCallback(\"option\",\"FR_DEFERRED\")})}break;case\"intro_1\":var numGames=totalRounds,text=new NovaText(1==numGames?\"TXT_FR_INTRO_ONE\":\"TXT_FR_INTRO\");text.insertValues(numGames);var str=text.txtString.text+NOVA.getString(\"TXT_FR_YES_NO_QUESTION\").txt;new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_YES\",\"TXT_BTN_NO\"],function(id){\"TXT_BTN_YES\"==id&&notifyCallback(\"option\",\"FR_DEFERRED\"),\"TXT_BTN_NO\"==id&&notifyCallback(\"option\",\"FR_REJECT\")});break;case\"intro_2\":new OptionsDialog(\"TXT_FR_TITLE\",self,[\"TXT_BTN_USE_NOW\",\"TXT_BTN_USE_LATER\"],function(id){\"TXT_BTN_USE_NOW\"==id&&notifyCallback(\"option\",\"FR_CONFIRM\"),\"TXT_BTN_USE_LATER\"==id&&notifyCallback(\"option\",\"FR_REJECT\")});break;case\"intro_3\":new OptionsDialog(\"TXT_FR_TITLE\",self,[\"TXT_BTN_USE_NOW\"],function(id){\"TXT_BTN_USE_NOW\"==id&&notifyCallback(\"option\",\"FR_CONFIRM\")});break;case\"outro\":var winAmount=this.totalWin,text=new NovaText(\"TXT_FR_OUTRO_START\");text.insertValues(NOVA.currency.getString(winAmount));var str=\"\";winAmount>0&&(str+=text.txtString.text),str+=NOVA.getString(\"TXT_FR_OUTRO_END\").txt,\"it_it\"==NOVA.languageCode&&!winAmount>0&&(str=NOVA.getString(\"TXT_FR_OUTRO_LOSE\").txt);new Dialog(\"TXT_FR_TITLE\",{txt:str,style:text.style},[\"TXT_BTN_OK\"],function(id){notifyCallback(\"FR_OUTRO_OK\")});break;case\"error\":new Dialog(\"TXT_FR_TITLE\",\"TXT_FR_ERROR\",[\"TXT_BTN_OK\"],function(id){notifyCallback(\"option\",\"FR_DEFERRED\")})}}",
+          "sourceStart": 23586,
+          "sourceEnd": 25389,
+          "fragmentSHA256": "463931226d9f086fc9c50dff3bf15f361a189e35bdbd2881b09b7241b2a633fc"
+        }
+      ],
+      "effects": []
+    }
+  ],
+  "SDKExecuted": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

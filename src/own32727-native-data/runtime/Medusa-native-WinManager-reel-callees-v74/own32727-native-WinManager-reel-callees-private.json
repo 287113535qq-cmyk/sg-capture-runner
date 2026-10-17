@@ -1,0 +1,72 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "name": "animateSlotServer",
+      "owner": "ReelManager",
+      "sourceStart": 1659351,
+      "inputFile": "animateSlotServer-selected-window-private.js",
+      "windowSHA256": "2c6cc3003102335da7d7247c650d2f0ec81b988fe739dd24e0534c0424291e7a",
+      "source": "function(reel,row,actionString,configObj){this.reelsArray[reel].animateSymbolServer(row,actionString,configObj)}",
+      "fragmentSHA256": "0823f9f94023909c05507a0f143f68fca655c49c69050746e8127161f6870787"
+    },
+    {
+      "name": "dimmingSymbols",
+      "owner": "ReelManager",
+      "sourceStart": 1653286,
+      "inputFile": "dimmingSymbols-selected-window-private.js",
+      "windowSHA256": "87ff2e130036f1272979e8fa8ea6deb311adcece697b6d8935f42b8cc97b52ff",
+      "source": "function(){if(this.hasDimming)for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].forceReelStateUpdateForLineDimming(!0,ENUM.symbolState.SHADED)}",
+      "fragmentSHA256": "3808648ab3031c3fa7cb47f0d1cb704858f6444fb27f8e1898c91bde09ce5dbd"
+    },
+    {
+      "name": "getSlotObjectServer",
+      "owner": "ReelManager",
+      "sourceStart": 1659096,
+      "inputFile": "getSlotObjectServer-selected-window-private.js",
+      "windowSHA256": "2816202e7a642452cbe8bffb677a012e569c47087411ca6f2471f350fb2d3394",
+      "source": "function(reel,row){return this.reelsArray[reel].getSlotObjectServer(row)}",
+      "fragmentSHA256": "0518ecd5384a2fce8b1ac8ca227ca0b41d2bf39308c2c4c784294ab6e99e5326"
+    },
+    {
+      "name": "getSymbolServer",
+      "owner": "ReelManager",
+      "sourceStart": 1659933,
+      "inputFile": "getSymbolServer-selected-window-private.js",
+      "windowSHA256": "4e1f21a1290ee15bffbd58019d9003744f6c9fd327dd76a8c1ef8a02d6494826",
+      "source": "function(reel,row){return this.reelsArray[reel].getSymbolServer(row)}",
+      "fragmentSHA256": "c804606a38b5a06ae1647709692521da31e6c10357fdf4386fae5b12bf746b05"
+    },
+    {
+      "name": "stopAllAnimations",
+      "owner": "ReelManager",
+      "sourceStart": 1660469,
+      "inputFile": "stopAllAnimations-selected-window-private.js",
+      "windowSHA256": "2b6ca2fc749d4ccde86ffd9f2135bc6da3511435adc716f1c7dd43fc879402ec",
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].stopAllAnimations()}",
+      "fragmentSHA256": "3b46b855141d6475b3600f5f43fbb47f8e329a5bcb9bd85b4e0ee024fcec773d"
+    },
+    {
+      "name": "unDimmingAllSymbols",
+      "owner": "ReelManager",
+      "sourceStart": 1653650,
+      "inputFile": "unDimmingAllSymbols-selected-window-private.js",
+      "windowSHA256": "f3e8fd6a28e4259b4a56acbb25d98a2ca2bcd86fee5f8a359ffd7c290bdac8ba",
+      "source": "function(bKillDim){if(this.hasDimming)for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].forceReelStateUpdateForLineDimming(!1,ENUM.symbolState.NORMAL,bKillDim)}",
+      "fragmentSHA256": "2515fe677da81aa24fe022d8202fcfa6f13294da4aa9871045a6257654eee2b5"
+    },
+    {
+      "name": "unDimmingSymbol",
+      "owner": "ReelManager",
+      "sourceStart": 1653482,
+      "inputFile": "unDimmingSymbol-selected-window-private.js",
+      "windowSHA256": "4064dabedcd117826baab4aac045ed74eb5c32b12e9202e83f031d67a0b9fe69",
+      "source": "function(reel,row){this.hasDimming&&this.reelsArray[reel].forceSlotStateUpdateForLineDimming(!1,ENUM.symbolState.NORMAL,row)}",
+      "fragmentSHA256": "628febce899d342cfe8359d880d555662c1c5e5237b3c5bf851ca7a2a27d925e"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

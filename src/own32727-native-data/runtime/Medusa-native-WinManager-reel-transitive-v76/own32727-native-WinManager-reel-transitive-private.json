@@ -1,0 +1,63 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "name": "animateSymbolServer",
+      "owner": "NovaReel",
+      "sourceStart": 1627644,
+      "inputFile": "animateSymbolServer-selected-window-private.js",
+      "windowSHA256": "403e46d062877f65de4ec7c5561cea80594d3282af96b51096aaa176e88b5804",
+      "source": "function(row,actionString,configObj){var _row=row-this.reelInitial,index=this.getRowOffset(_row);\"HIGHLIGHT\"==actionString&&(this.notifyManager(\"SLOT_HIGHLIGHT\",this.getSlotByIndex(index)),this.notifyManager(\"REEL_HIGHLIGHT\",{slot:this.getSlotByIndex(index),reel:this.id})),this.getSlotByIndex(index).animateSymbol(actionString,configObj)}",
+      "fragmentSHA256": "78b77da07936c6e754596f40dc857a18cc7efec02298215bb800bb8cb2038476"
+    },
+    {
+      "name": "forceReelStateUpdateForLineDimming",
+      "owner": "NovaReel",
+      "sourceStart": 1625531,
+      "inputFile": "forceReelStateUpdateForLineDimming-selected-window-private.js",
+      "windowSHA256": "7e7f37cd640102e6e4ea023154f9cde3ba91991717e920644580961817d4b5ae",
+      "source": "function(bHide,state,bKillDim){for(var i=0,l=this.slots.length;i<l;i++)this.getSlotByIndex(i).forceStateUpdateForLineDimming(bHide,state,bKillDim);\n}",
+      "fragmentSHA256": "05ca6c8e20b9ab11ea73a21b36ea58d5fa5ce01fa8d25e902b2598fc48f9f315"
+    },
+    {
+      "name": "forceSlotStateUpdateForLineDimming",
+      "owner": "NovaReel",
+      "sourceStart": 1625324,
+      "inputFile": "forceSlotStateUpdateForLineDimming-selected-window-private.js",
+      "windowSHA256": "cf37a7e2db07917d949018bc2c8ea29a4c74eaa19e683202f0b88c5f5f6af996",
+      "source": "function(bHide,state,row){row-=this.reelInitial;var index=this.getRowOffset(row);this.getSlotByIndex(index).forceStateUpdateForLineDimming(bHide,state)}",
+      "fragmentSHA256": "050720272b5837dc52c2414645bd7305b5bc02003de9a685699ee80288b93b7c"
+    },
+    {
+      "name": "getSlotObjectServer",
+      "owner": "NovaReel",
+      "sourceStart": 1630761,
+      "inputFile": "getSlotObjectServer-selected-window-private.js",
+      "windowSHA256": "11c8ef7bcbe48971c83f46a11011d14e2e3fbddc66dd67f104b7015e257f8e37",
+      "source": "function(row){row-=this.reelInitial;var index=this.getRowOffset(row);return this.getSlotByIndex(index)}",
+      "fragmentSHA256": "40e54c752e679cb29695dc2ae1c09e8b5e8e3dad27adbb637ed9f0de5147e5f6"
+    },
+    {
+      "name": "getSymbolServer",
+      "owner": "NovaReel",
+      "sourceStart": 1626383,
+      "inputFile": "getSymbolServer-selected-window-private.js",
+      "windowSHA256": "b64c3c2ea26c6333347fb4b5587e110be728ffe42f3920e7f69f8de1d0f44442",
+      "source": "function(row){var _row=row-this.reelInitial,index=this.getRowOffset(_row);return this.getSlotByIndex(index).getSymbol()}",
+      "fragmentSHA256": "b3985f601a3136d4ee08c1e7c79a606565447d24fe33b63faef88d82247a5539"
+    },
+    {
+      "name": "stopAllAnimations",
+      "owner": "NovaReel",
+      "sourceStart": 1628805,
+      "inputFile": "stopAllAnimations-selected-window-private.js",
+      "windowSHA256": "815d683800a64c069c29d39ed2209937f4e0cb01d2e8f1fee31aba748a865bb3",
+      "source": "function(){for(var i=0,l=this.slots.length;i<l;i++)this.getSlotByIndex(i).stopAnimation(\"ALL\",null)}",
+      "fragmentSHA256": "7077b7999935c58dcab50b8ef42ee6f5d7d7ffcf53e1f209fadba03ff2b8b4d4"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

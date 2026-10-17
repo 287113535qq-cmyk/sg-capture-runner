@@ -1,0 +1,1 @@
+{"metadata":{"name":"MEDUSA MEGAWAYS\u2122","copyright":"\u00A9 2019","localStorage":"medusamegaways","id":"26","version":"2.1.14","description":"Medusa Megaways","author":"Nextgen Gaming","rtp":"--.---%","keywords":["NOVA","Framework"]}}

@@ -1,0 +1,40 @@
+{
+  "schema": "own-NOVA-CoinCombo-selected-native-next-methods-v179",
+  "gameId": "32550",
+  "wholeSourceCertificateReused": {
+    "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\hurricanehorsecoincombo\\218.bundle.js",
+    "SHA256": "aa3b7e7d52f273a9504ad507f90ea55119aad930b3d12d41f2cbe18198076329",
+    "bytes": 505493,
+    "exactPriorClientFileCertificateExists": true
+  },
+  "functions": {
+    "readyForNextSpin": {
+      "source": "function(){if(this.alphaSymbols(1),v.getCoinCount()>0)t.time.events.add(100,this.readyForNextSpin,this);else if(this.lastSpinData&&this.lastSpinData.game.freespins.remaining>0)_.set(\"SPIN\");else{if(!0===this.gameEndedComplete&&this.lastSpinData&&!0===this.lastSpinData.game.freespins.active&&0===this.lastSpinData.game.freespins.remaining)return this.disableUI(),void t.time.events.add(2e3,(function(){L.transitionToBaseGame()}));if(this.inFreeSpins)t.time.events.add(100,this.readyForNextSpin,this);else{var e=config.msBetweenSpins;if(this.game.time.now-this.timeOfLastSpin<e)return void this.game.time.events.add(e-(this.game.time.now-this.timeOfLastSpin),j.prototype.readyForNextSpin,this);this.freeRoundsActive||this.enableUI(),_.set(\"IDLE\")}}}",
+      "start": 297669,
+      "end": 298417,
+      "SHA256": "5697b90906868a79a7944dc318982ad1224e66d0b527aea54b6b6b70b62274d6"
+    },
+    "winDisplayOver": {
+      "source": "function(){this.resultsComplete=!0;var e=this.autoplayManager;if(e.singlePrizeWinnings=this.lastSpinData.game.totalWinnings,this.inFreeSpins&&(L.updateTotalWonText(this.lastSpinData.game.totalWinnings),this.GameUI.updateTotalWin(this.lastSpinData.game.totalWinnings),this.buttons.btnSpin.disable()),this.lastSpinData&&!this.isMaxCap())if(this.lastSpinData&&this.lastSpinData.game.currentWinnings>0&&this.inFreeSpins)_.set(\"SHOW_WIN_TEXT\");else{var n=this;0===this.lastSpinData.game.currentWinnings&&!0===e.active&&3===this.winController.getWinTier(this.lastSpinData.game.totalWinnings)?t.time.events.add(3500,(function(){j.prototype.bigWinOver.call(n)})):j.prototype.bigWinOver.call(this)}else if(this.lastSpinData&&this.isMaxCap()){var a=t.getTranslation(\"Dialog.System.MaxWin\",t.formatCurrency(this.maxCap)),i=t.getTranslation(\"UI.Button.OK\");L.updateTotalWonText(this.lastSpinData.game.totalWinnings),this.GameUI.updateTotalWin(this.lastSpinData.game.totalWinnings),B.showError(a,i,\"\",(function(){L.transitionToBaseGame()}))}}",
+      "start": 295100,
+      "end": 296129,
+      "SHA256": "f37948189bc54c3552f02e107cc2ab0aabc91bbbfe352dcc1fe9c1f54e2d0680"
+    },
+    "freeSpinsBeginGame": {
+      "source": "function(e){L.playFreeSpinsMusic(),this.inFreeSpins&&this.lastSpinData&&0==this.lastSpinData.game.freespins.current&&(t.time.events.add(200,(function(){_.set(\"PRE_SPIN\")}),this),!0)}",
+      "start": 298437,
+      "end": 298619,
+      "SHA256": "34d24cb72474614cdf530195349de5a87d5a58f24e6c06b8c6e2062fd6740793"
+    },
+    "gameEndedComplete": {
+      "source": "function(){this.gameEndedComplete=!0}",
+      "start": 300014,
+      "end": 300051,
+      "SHA256": "7a83bf8c4ba9f80e7bfe6ee7ef7b8ef81d462205a0eaf0273cadf9ea1bad337c"
+    }
+  },
+  "SDKASTExecutions": 0,
+  "SDKExecutions": 0,
+  "sourceRequests": 0,
+  "productionReady": false
+}

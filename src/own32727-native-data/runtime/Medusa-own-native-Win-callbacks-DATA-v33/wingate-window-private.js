@@ -1,0 +1,1 @@
+wingate=new EventGate(function(){self.winCompleted()},2),reelgate=new EventGate(function(){self.allReelsStopped()},2),initgate={},bDontStopAutoplay=!1;this.callbackSuper=null,initgate=0==NOVA.soundLoadMode?new EventGate(function(){self.fireEvent("INITIALIZED")},2):new EventGate(function(){self.fireE

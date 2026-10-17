@@ -1,0 +1,172 @@
+{"frames": {
+
+"AUTOPLAY STOP":
+{
+	"frame": {"x":387,"y":59,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"AUTOPLAY":
+{
+	"frame": {"x":453,"y":59,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"BUTTON CLOSE":
+{
+	"frame": {"x":346,"y":140,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"BUTTON HOVER":
+{
+	"frame": {"x":318,"y":71,"w":67,"h":67},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":9,"w":67,"h":67},
+	"sourceSize": {"w":83,"h":85}
+},
+"BUTTON NORMAL":
+{
+	"frame": {"x":412,"y":125,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"BUTTON SETTINGS":
+{
+	"frame": {"x":412,"y":191,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"BUTTON TOGGLE LEFTHAND":
+{
+	"frame": {"x":478,"y":125,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"IMG_BUTTON_TOTALBET_MINUS_LIGHT":
+{
+	"frame": {"x":380,"y":1,"w":94,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":14,"w":94,"h":56},
+	"sourceSize": {"w":185,"h":83}
+},
+"IMG_BUTTON_TOTALBET_PLUS_LIGHT":
+{
+	"frame": {"x":476,"y":1,"w":94,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":91,"y":14,"w":94,"h":56},
+	"sourceSize": {"w":185,"h":83}
+},
+"IMG_METER":
+{
+	"frame": {"x":1,"y":1,"w":377,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":377,"h":68},
+	"sourceSize": {"w":377,"h":68}
+},
+"MESSAGE_BAR_POP_UP":
+{
+	"frame": {"x":1,"y":71,"w":315,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":315,"h":68},
+	"sourceSize": {"w":315,"h":68}
+},
+"METER_LIGHTMODE":
+{
+	"frame": {"x":346,"y":206,"w":64,"h":26},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":26},
+	"sourceSize": {"w":64,"h":26}
+},
+"MORE INFO":
+{
+	"frame": {"x":478,"y":191,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"SKIP":
+{
+	"frame": {"x":1,"y":141,"w":113,"h":113},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":113},
+	"sourceSize": {"w":113,"h":113}
+},
+"SPIN STOP":
+{
+	"frame": {"x":116,"y":141,"w":113,"h":113},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":113},
+	"sourceSize": {"w":113,"h":113}
+},
+"SPIN":
+{
+	"frame": {"x":231,"y":141,"w":113,"h":113},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":113},
+	"sourceSize": {"w":113,"h":113}
+},
+"TOTALBET":
+{
+	"frame": {"x":544,"y":70,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"TOTALBET_X":
+{
+	"frame": {"x":572,"y":1,"w":67,"h":67},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":8,"w":67,"h":67},
+	"sourceSize": {"w":185,"h":83}
+},
+"VOLUME":
+{
+	"frame": {"x":544,"y":136,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+},
+"VOLUME_OFF":
+{
+	"frame": {"x":610,"y":70,"w":64,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
+	"sourceSize": {"w":64,"h":64}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "07-UI-0.png",
+	"format": "RGBA8888",
+	"size": {"w":675,"h":256},
+	"scale": "0.75",
+	"smartupdate": "$TexturePacker:SmartUpdate:60089415d488d21757814be496ea7d47:75886e095490c7485655180d06c3bbe3:89a6130916f244aabc9bf25a026c996a$"
+}
+}

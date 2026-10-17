@@ -1,0 +1,14 @@
+{
+  "schema": "own-selected-native-FontStyle-parent-DATA-v313",
+  "gameId": "32738",
+  "moduleId": "87600",
+  "source": "function(e){\"use strict\";e.exports=JSON.parse('{\"fontStyles\":{\"font\":\"Frutiger Black\",\"fill\":\"#BB0000\",\"strokes\":{\"titleStrokeThickness\":10,\"strokeThickness\":10,\"titleCol\":\"#EACA6E\",\"valueCol\":\"#A37000\"},\"gradients\":{\"title\":[\"#BFF288\",\"#EAF288\",\"#5BA422\"],\"value\":[\"#FFD500\",\"#FFF6D6\",\"#FFEE00\"]},\"shadows\":{\"titleCol\":\"#000000\",\"valueCol\":\"#FFA70F\"},\"fontSize\":200,\"smallerFontSize\":50},\"scaleAnim\":{\"titleFrom\":0.9,\"titleTo\":1,\"scaleTextDownDelay\":810,\"scaleTextDownDur\":150,\"tiers\":{\"tier4TextDur\":4640,\"tier4ValueFrom\":0.6,\"tier4ValueTo\":0.7,\"tier4ValueDur\":4640,\"tier5TextDur\":4640,\"tier5ValueFrom\":0.7,\"tier5ValueTo\":0.8,\"tier5ValueDur\":4640,\"tier6TextDur\":8360,\"tier6ValueFrom\":0.8,\"tier6ValueTo\":0.9,\"tier6ValueDur\":8360,\"tier7TextDur\":8300,\"tier7ValueFrom\":0.9,\"tier7ValueTo\":1,\"tier7ValueDur\":8400}},\"shakeAnim\":{\"tiers\":{\"tier4Intensity\":0.015,\"tier4Dur\":550,\"tier5Intensity\":0.02,\"tier5Dur\":550,\"tier6Intensity\":0.025,\"tier6Dur\":700,\"tier6MidDur\":1400,\"tier6MidOffset\":5000,\"tier7Intensity\":0.03,\"tier7Dur\":1000,\"tier7MidDur\":1200,\"tier7MidOffset\":6000}},\"orientation\":{\"landscape\":{},\"portrait\":{}}}')}",
+  "dependencies": [],
+  "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\terrifictigercoincombo\\218.bundle.js",
+  "selectedModuleSHA256": "abe2365171f727c2bfbd0d82e058eec10382b2c231c8ba590ae4cce3396ad5d2",
+  "wholeSDKHashRechecks": 0,
+  "wholeSDKASTs": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

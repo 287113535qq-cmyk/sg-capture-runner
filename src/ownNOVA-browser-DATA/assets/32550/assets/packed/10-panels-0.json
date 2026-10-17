@@ -1,0 +1,52 @@
+{"frames": {
+
+"btn_1":
+{
+	"frame": {"x":866,"y":1652,"w":310,"h":155},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":155},
+	"sourceSize": {"w":310,"h":155}
+},
+"btn_2":
+{
+	"frame": {"x":866,"y":1495,"w":316,"h":155},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":316,"h":155},
+	"sourceSize": {"w":316,"h":155}
+},
+"btn_3":
+{
+	"frame": {"x":866,"y":1809,"w":304,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":304,"h":150},
+	"sourceSize": {"w":304,"h":150}
+},
+"godRays":
+{
+	"frame": {"x":1,"y":1,"w":1370,"h":1492},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1370,"h":1492},
+	"sourceSize": {"w":1370,"h":1492}
+},
+"IMG_JACKPOT_COIN_PANEL":
+{
+	"frame": {"x":1,"y":1495,"w":863,"h":761},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":863,"h":761},
+	"sourceSize": {"w":863,"h":761}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-panels-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1372,"h":2257},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:adb42b3f53f4499dd7eb4b349a7450d3:3e90eddb15d4884ff146982bd51ec10a:93563e69caaad05a4a8118f2e9ccf093$"
+}
+}

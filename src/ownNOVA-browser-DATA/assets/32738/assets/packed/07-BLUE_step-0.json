@@ -1,0 +1,492 @@
+{"frames": {
+
+"HH_CC_BOWL_BLUE_STEP_RENDER_00012":
+{
+	"frame": {"x":831,"y":1081,"w":180,"h":196},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":68,"w":180,"h":196},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00013":
+{
+	"frame": {"x":1,"y":2588,"w":181,"h":197},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":67,"w":181,"h":197},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00014":
+{
+	"frame": {"x":380,"y":2586,"w":181,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":66,"w":181,"h":198},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00015":
+{
+	"frame": {"x":196,"y":2586,"w":182,"h":199},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":65,"w":182,"h":199},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00016":
+{
+	"frame": {"x":773,"y":2376,"w":183,"h":200},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":64,"w":183,"h":200},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00017":
+{
+	"frame": {"x":769,"y":2582,"w":184,"h":201},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":63,"w":184,"h":201},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00018":
+{
+	"frame": {"x":582,"y":2582,"w":185,"h":202},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":62,"w":185,"h":202},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00019":
+{
+	"frame": {"x":570,"y":2168,"w":186,"h":203},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":61,"w":186,"h":203},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00020":
+{
+	"frame": {"x":381,"y":2168,"w":187,"h":204},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":60,"w":187,"h":204},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00021":
+{
+	"frame": {"x":192,"y":2168,"w":187,"h":205},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":59,"w":187,"h":205},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00022":
+{
+	"frame": {"x":1,"y":2168,"w":189,"h":206},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":58,"w":189,"h":206},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00023":
+{
+	"frame": {"x":582,"y":2373,"w":189,"h":207},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":57,"w":189,"h":207},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00024":
+{
+	"frame": {"x":196,"y":2376,"w":191,"h":208},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":48,"y":56,"w":191,"h":208},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00025":
+{
+	"frame": {"x":389,"y":2376,"w":191,"h":208},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":48,"y":56,"w":191,"h":208},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00026":
+{
+	"frame": {"x":1,"y":2376,"w":193,"h":210},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":54,"w":193,"h":210},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00027":
+{
+	"frame": {"x":817,"y":1512,"w":193,"h":211},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":53,"w":193,"h":211},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00028":
+{
+	"frame": {"x":817,"y":1298,"w":194,"h":212},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":52,"w":194,"h":212},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00029":
+{
+	"frame": {"x":798,"y":2161,"w":195,"h":213},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":46,"y":51,"w":195,"h":213},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00030":
+{
+	"frame": {"x":600,"y":1952,"w":196,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":46,"y":50,"w":196,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00031":
+{
+	"frame": {"x":401,"y":1952,"w":197,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":50,"w":197,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00032":
+{
+	"frame": {"x":202,"y":1732,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00033":
+{
+	"frame": {"x":402,"y":1734,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00034":
+{
+	"frame": {"x":602,"y":1734,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00035":
+{
+	"frame": {"x":802,"y":1943,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00036":
+{
+	"frame": {"x":1,"y":1950,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00037":
+{
+	"frame": {"x":201,"y":1950,"w":198,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":45,"y":48,"w":198,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00038":
+{
+	"frame": {"x":1,"y":1514,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00039":
+{
+	"frame": {"x":202,"y":1514,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00040":
+{
+	"frame": {"x":403,"y":1516,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00041":
+{
+	"frame": {"x":604,"y":1516,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00042":
+{
+	"frame": {"x":805,"y":1725,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00043":
+{
+	"frame": {"x":1,"y":1732,"w":199,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":44,"y":48,"w":199,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00044":
+{
+	"frame": {"x":615,"y":1298,"w":200,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":43,"y":48,"w":200,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00045":
+{
+	"frame": {"x":411,"y":1298,"w":202,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":42,"y":48,"w":202,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00046":
+{
+	"frame": {"x":1,"y":1296,"w":203,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":48,"w":203,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00047":
+{
+	"frame": {"x":206,"y":1296,"w":203,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":41,"y":48,"w":203,"h":216},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00048":
+{
+	"frame": {"x":625,"y":1081,"w":204,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":40,"y":49,"w":204,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00049":
+{
+	"frame": {"x":418,"y":1081,"w":205,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":39,"y":49,"w":205,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00050":
+{
+	"frame": {"x":210,"y":1079,"w":206,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":49,"w":206,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00051":
+{
+	"frame": {"x":1,"y":1079,"w":207,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":37,"y":49,"w":207,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00052":
+{
+	"frame": {"x":636,"y":864,"w":208,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":36,"y":49,"w":208,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00053":
+{
+	"frame": {"x":214,"y":862,"w":209,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":35,"y":49,"w":209,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00054":
+{
+	"frame": {"x":425,"y":864,"w":209,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":35,"y":49,"w":209,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00055":
+{
+	"frame": {"x":1,"y":862,"w":211,"h":215},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":49,"w":211,"h":215},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00056":
+{
+	"frame": {"x":649,"y":648,"w":212,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":50,"w":212,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00057":
+{
+	"frame": {"x":434,"y":648,"w":213,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":50,"w":213,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00058":
+{
+	"frame": {"x":218,"y":646,"w":214,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":31,"y":50,"w":214,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00059":
+{
+	"frame": {"x":1,"y":646,"w":215,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":30,"y":50,"w":215,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00060":
+{
+	"frame": {"x":442,"y":432,"w":216,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":29,"y":50,"w":216,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00061":
+{
+	"frame": {"x":660,"y":432,"w":216,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":29,"y":50,"w":216,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00062":
+{
+	"frame": {"x":223,"y":430,"w":217,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":28,"y":50,"w":217,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00063":
+{
+	"frame": {"x":676,"y":216,"w":220,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":26,"y":50,"w":220,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00064":
+{
+	"frame": {"x":1,"y":430,"w":220,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":26,"y":50,"w":220,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00065":
+{
+	"frame": {"x":453,"y":216,"w":221,"h":214},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":25,"y":50,"w":221,"h":214},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00066":
+{
+	"frame": {"x":228,"y":215,"w":223,"h":213},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":51,"w":223,"h":213},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00067":
+{
+	"frame": {"x":1,"y":215,"w":225,"h":213},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":51,"w":225,"h":213},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00068":
+{
+	"frame": {"x":698,"y":1,"w":227,"h":213},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":51,"w":227,"h":213},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00069":
+{
+	"frame": {"x":468,"y":1,"w":228,"h":213},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":51,"w":228,"h":213},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00070":
+{
+	"frame": {"x":235,"y":1,"w":231,"h":212},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":52,"w":231,"h":212},
+	"sourceSize": {"w":272,"h":272}
+},
+"HH_CC_BOWL_BLUE_STEP_RENDER_00071":
+{
+	"frame": {"x":1,"y":1,"w":232,"h":212},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":52,"w":232,"h":212},
+	"sourceSize": {"w":272,"h":272}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "07-BLUE_step-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1012,"h":2786},
+	"scale": "0.75",
+	"smartupdate": "$TexturePacker:SmartUpdate:056fe02d5bedb506e97c87b20ececd09:e9d8107cb60c76d72669f45b68d88737:1ffca0575e342bf9c25dde8dce3c99fe$"
+}
+}

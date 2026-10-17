@@ -1,0 +1,20 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "functions": [
+    {
+      "name": "dateFix",
+      "sourceStart": 1760105,
+      "sourceEnd": 1760390,
+      "source": "function(date){var tDate=date;if(!tDate.match(/(\\d{4})-(\\d{2})-(\\d{2})/)){var separated=tDate.split(\"-\"),month=parseInt(separated[1]),day=parseInt(separated[2]);month<10&&(month=String(\"0\"+month)),day<10&&(day=String(\"0\"+day)),tDate=String(separated[0]+\"-\"+month+\"-\"+day)}return tDate}",
+      "fragmentSHA256": "54479218ca3bff096a79bf6ebe22a67748a844c44bbe88dbca2bcc8eb5735656"
+    },
+    {
+      "name": "dGString",
+      "sourceStart": 1759637,
+      "sourceEnd": 1760091,
+      "source": "function(i_toDecode){for(var decodedStringFinal=\"\",parts=i_toDecode.split(\"*\"),i=0;i<parts.length;i++){for(var data=parts[i],length=data.length,result=\"\",j=0;j<length;j++){var c=data.charCodeAt(j);c==\"#\".charCodeAt()&&(c=\"=\".charCodeAt()),c==\"-\".charCodeAt()&&(c=\"|\".charCodeAt()),c-=21,c<\"0\".charCodeAt()&&(c+=79),result+=String.fromCharCode(c)}decodedStringFinal.length>0&&(decodedStringFinal+=\"#\"),decodedStringFinal+=result}return decodedStringFinal}",
+      "fragmentSHA256": "3af609b6c1b94b2aba85270247c091536e59219e222bd95d657820e036a279da"
+    }
+  ]
+}

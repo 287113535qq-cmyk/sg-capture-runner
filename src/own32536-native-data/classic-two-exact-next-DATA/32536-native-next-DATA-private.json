@@ -1,0 +1,235 @@
+{
+  "gameId": "32536",
+  "sourcePath": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\gorillagowilder\\js\\game.js",
+  "retainedSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "sourceHashRecomputed": false,
+  "functions": [
+    {
+      "name": "BaseWinState",
+      "sourceStart": 1697465,
+      "sourceEnd": 1704666,
+      "source": "function BaseWinState(id){var XC_0_SPIN_START=0,XC_1_CHANGE_BET=1,XC_2_FREEGAME_TRIGGER=2,XC_3_PICK_FEATURE_TRIGGER=3,XC_4_FREE_ROUNDS=4,XC_5_PLAYER_FEATURE_SELECTED=5,XC_6_COLLECT=6,XC_7_GAMBLE=7;this.id=id,this.cfg={},this.resetCfg=function(){this.cfg={funcStartWin:null,delayUIEnable:!1,skipSetStops:!1}},this.resetCfg(),this.getNumCycles=function(){var numCycles=0;return numCycles=NOVA.config.game.type==ENUM.winSequence.PAYWAY?self.serverResponse.freeGameTrigger>0||self.serverResponse.pickFeatureTrigger?NOVA.config.payways.numCyclesFree:self.ui.autoplay.inAutoplay?NOVA.config.payways.numCyclesAuto:NOVA.config.payways.numCyclesBase:self.serverResponse.freeGameTrigger>0||self.serverResponse.pickFeatureTrigger?NOVA.config.lines.numCyclesFree:self.ui.autoplay.inAutoplay?NOVA.config.lines.numCyclesAuto:NOVA.config.lines.numCyclesBase},this.enter=function(){if(self.freeRounds.isLastFreeRound()&&self.ui.setGameUIDisable(!0),self.returnFromGamble)self.returnFromGamble=!1,self.winManager.setWinCombinations(self.preGambleWinCombinations),self.winManager.startWinSequenceOnly();else if(self.returnFromFreeGames)self.returnFromFreeGames=!1,self.freeRounds.showOutro()&&self.ui.cancelAutoplay(),\"undefined\"!=typeof self.ui.gamble&&self.serverResponse.gamble.available&&self.gambleAllowed&&!self.freeRounds.isInFreeRounds()&&self.ui.gamble(),lowBalanceShown=self.ui.showLowBalanceDialogs();else{if(self.account.clearWin(),self.account.addWin(self.serverResponse.totalWin),self.inRecovery&&(this.cfg.skipSetStops||self.reelManager.setStops(self.serverResponse.stops),self.metersManager.winMeter.setValue(self.account.getWin()),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.metersManager.winMeter.show(),self.messageBar.showRightText(!1),self.inRecovery=!1),lastWin=self.account.getWin(),self.winManager.setWinCombinations(self.serverResponse.winCombinations),this.cfg.funcStartWin)this.cfg.funcStartWin();else{var numCycles=this.getNumCycles(),result=self.winManager.startWin(numCycles,self.serverResponse.triggerId,!1);self.api_notify(\"WINTUNE_SOUND\",result)}var canContinueValue=NOVA.config.ui.enableContinueOnFGTrigger||!1;if(self.serverResponse.freeGameTrigger>0){if(bDontStopAutoplay){var fidTrigger=self.serverResponse.featureId,bPauseAutoplay=self.canFreegamePauseAutoplay(fidTrigger);bPauseAutoplay?self.ui.pauseAutoplay(!0):self.ui.cancelAutoplay()}else self.ui.cancelAutoplay();1==self.serverResponse.freeGameTrigger?self.messageBar.setRightText(\"TXT_FREEGAME_WON\"):self.messageBar.setRightText(\"TXT_FREEGAMES_WON\"),self.messageBar.setRightValue(self.serverResponse.freeGameTrigger),self.messageBar.showRightText(!0),canContinueValue===!0?self.ui.canContinue(!0):bDontStopAutoplay&&self.ui.disableAutoplay(!0)}else if(self.serverResponse.pickFeatureTrigger)if(bDontStopAutoplay){var fidTrigger=self.serverResponse.featureId,bPauseAutoplay=self.canFreegamePauseAutoplay(fidTrigger);bPauseAutoplay?self.ui.pauseAutoplay(!0):self.ui.cancelAutoplay(),self.messageBar.showRightText(!0),canContinueValue===!0?self.ui.canContinue(!0):self.ui.disableAutoplay(!0)}else self.ui.cancelAutoplay(),self.messageBar.showRightText(!0),canContinueValue===!0&&self.ui.canContinue(!0);else this.cfg.delayUIEnable||(self.roundActive&&(wrapperAPI(\"ROUND\",0),self.ui.setRound(!1),self.roundActive=!1,lowBalanceShown=self.ui.showLowBalanceDialogs()),self.resultShown||(wrapperAPI(\"RESULT_SHOWN\"),self.resultShown=!0)),\"undefined\"!=typeof self.ui.gamble&&self.serverResponse.gamble.available&&self.gambleAllowed&&!self.freeRounds.isInFreeRounds()&&self.ui.gamble()}this.resetCfg()},this.handleEvent=function(event,param){\"END_UI_DELAY\"==event&&(self.roundActive&&(wrapperAPI(\"ROUND\",0),self.ui.setRound(!1),self.roundActive=!1,lowBalanceShown=self.ui.showLowBalanceDialogs()),self.resultShown||(wrapperAPI(\"RESULT_SHOWN\"),self.resultShown=!0));var canContinueValue=NOVA.config.ui.enableContinueOnFGTrigger||!1,canSkipWin=NOVA.config.ui.enableSkipWinOnAutoplay||!1;if(\"UI\"==event){if(\"SPIN\"==param)return XC_0_SPIN_START;if(\"CHANGE_BET\"==param)return XC_1_CHANGE_BET;if(\"FREE_ROUNDS_SELECT\"==param)return XC_4_FREE_ROUNDS;if(\"COLLECT\"==param)return XC_6_COLLECT;if(\"GAMBLE\"==param)return XC_7_GAMBLE;if(\"CONTINUE\"==param){if(canContinueValue===!0){if(self.serverResponse.freeGameTrigger>0)return bDontStopAutoplay&&self.ui.disableAutoplay(!0),self.winManager.stopCelebration(),self.metersManager.winMeter.show(),self.metersManager.winMeter.snapTo(self.account.getWin()),XC_2_FREEGAME_TRIGGER;if(self.serverResponse.pickFeatureTrigger)return bDontStopAutoplay&&self.ui.disableAutoplay(!0),self.winManager.stopCelebration(),self.metersManager.winMeter.show(),self.metersManager.winMeter.snapTo(self.account.getWin()),XC_3_PICK_FEATURE_TRIGGER}canSkipWin===!0&&self.serverResponse.freeGameTrigger<=0&&!self.serverResponse.pickFeatureTrigger&&(self.freeRounds.showOutro()?self.ui.cancelAutoplay():self.ui.canSpinAutoplay(0))}}if(\"WIN_COMPLETE\"==event){if(self.serverResponse.freeGameTrigger>0)return canContinueValue===!0&&(self.ui.canContinue(!1),bDontStopAutoplay&&self.ui.disableAutoplay(!0)),XC_2_FREEGAME_TRIGGER;if(self.serverResponse.pickFeatureTrigger)return canContinueValue===!0&&(self.ui.canContinue(!1),bDontStopAutoplay&&self.ui.disableAutoplay(!0)),XC_3_PICK_FEATURE_TRIGGER;self.freeRounds.snapWinMeter(),self.freeRounds.showOutro()?self.ui.cancelAutoplay():self.ui.canSpinAutoplay(0)}if(\"FR_OUTRO_OK\"==event)return NOVA.config.game.type!=ENUM.winSequence.JJ&&(self.account.superbet=NOVA.config.game.anteBet.superBetDefault),NOVA.config.game.type==ENUM.winSequence.PAYWAY?(self.account.setCurrentBetAmount(self.freeRounds.getDefaultBetPerLine()),self.metersManager.betMeter.setValue(self.account.getTotalBetAmount()),self.ui.setBetPerLine(self.freeRounds.getDefaultBetPerLine())):NOVA.config.game.type==ENUM.winSequence.JJ||(self.account.setCurrentBetAmount(self.freeRounds.getDefaultBetPerLine()),self.metersManager.betMeter.setValue(self.account.getTotalBetAmount()),self.ui.setBetPerLine(self.freeRounds.getDefaultBetPerLine())),NOVA.config.game.type!=ENUM.winSequence.JJ&&self.api_notify(\"BET_CHANGED\"),self.ui.updateBetButtonsText(),self.ui.enableBet(!0),self.freeRounds.end(),self.ui.setGameUIDisable(!1),lowBalanceShown=self.ui.showLowBalanceDialogs(),self.api_notify(\"FR_END\"),XC_1_CHANGE_BET;if(\"PLAYER_FEATURE_SELECTED\"==event)return XC_5_PLAYER_FEATURE_SELECTED;if(\"START_BALANCE_ROLLUP\"==event&&self.metersManager.balanceMeter.rollup(self.oldBalance,self.account.getBalance(),param),\"START_WIN_METER_ROLLUP\"==event){var result=self.winManager.getWinLevel(self.serverResponse.triggerId,!1);self.messageBar.hideIdle(),self.account.getWin()<=self.account.getTotalBetAmount()?self.metersManager.winMeter.rollup(0,self.account.getWin(),0):self.metersManager.winMeter.rollup(0,self.account.getWin(),param),result.isBigWin&&self.metersManager.winMeter.hide(),self.serverResponse.freeGameTrigger>0||self.serverResponse.pickFeatureTrigger||self.freeRounds.updateWinMeter(param)}return\"CELEBRATION_METER_COMPLETE\"==event&&(self.metersManager.winMeter.show(),self.metersManager.winMeter.snapTo(self.account.getWin())),ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "bfeeee21e7ab6ffbed7ba83e37ec8878234d3258727a0eead2eb6112dd93b35c"
+    },
+    {
+      "name": "FreeGameIdleState",
+      "sourceStart": 1704933,
+      "sourceEnd": 1706657,
+      "source": "function FreeGameIdleState(id){var XC_0_NEXT_FREEGAME=0,XC_1_LAST_FREEGAME=1;this.id=id,this.cfg={},this.resetCfg=function(){this.cfg={skipSetStops:!1,disableContinueBtn:!1}},this.resetCfg(),this.enter=function(){bDontStopAutoplay&&self.ui.disableAutoplay(!1),self.winManager.stopWin(),self.reelManager.stopAllSRSslotAnimations(),self.inRecovery&&(this.cfg.skipSetStops||self.reelManager.setStops(self.serverResponse.stops),self.account.clearWin(),self.account.addWin(self.serverResponse.totalWin),self.metersManager.winMeter.setValue(self.account.getWin()),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.account.getWin()),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.messageBar.displayWinText(!0),self.metersManager.winMeter.show(),self.inRecovery=!1),self.serverResponse.numberFreeGames>0?this.cfg.disableContinueBtn?self.ui.canContinue(!1):self.ui.canContinue(!0):self.ui.canContinue(!1),self.serverResponse.numberFreeGames>0&&(self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance()),TweenLite.delayedCall(self.freeGameIdleSpinDelay,self.fireEvent,[\"TIMEOUT\"]),this.resetCfg()},this.skipRoundEnd=!1,this.endFree=!0,this.handleEvent=function(event,param){return\"TIMEOUT\"==event||\"UI\"==event&&\"CONTINUE\"==param?(self.ui.canContinue(!1),self.metersManager.winMeter.snapTo(self.account.getWin()),self.freeRounds.snapWinMeter(),self.serverResponse.numberFreeGames<=0&&this.endFree?(self.roundActive&&!this.skipRoundEnd&&(wrapperAPI(\"ROUND\",0),self.roundActive=!1),this.skipRoundEnd=!1,bDontStopAutoplay&&self.ui.disableAutoplay(!0),XC_1_LAST_FREEGAME):(this.endFree=!0,XC_0_NEXT_FREEGAME)):ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "bee7cdfd824e8d30e1db89dc1529003b46aa56ca6d188c770d742e9debb9693f"
+    },
+    {
+      "name": "FreeGameSpinningStartState",
+      "sourceStart": 1706932,
+      "sourceEnd": 1708488,
+      "source": "function FreeGameSpinningStartState(id){var XC_0_MSG_RECEIVED=0;this.id=id,this.enter=function(){if(self.winManager.stopWin(),self.reelManager.hideEffectsLayerSlots(),self.messageBar.setRightText(\"TXT_FREEGAMES\"),self.messageBar.setRightValue(self.serverResponse.currentFreeGame+1,self.serverResponse.totalFreeGames),NOVA.startMsg(\"FREE_GAME\"),NOVA.config.game.type==ENUM.winSequence.PAYWAY?(NOVA.addToMsg(\"RB\",self.account.getNumReelsSelected()),NOVA.addToMsg(\"BPR\",self.account.getCurrentBetPerReel())):(NOVA.addToMsg(\"LB\",self.account.getNumPaylinesSelected()),NOVA.addToMsg(\"BPL\",self.account.getCurrentBetPerLine())),1==NOVA.config.game.anteBet.superBet&&NOVA.addToMsg(\"ABPM\",self.account.superbet),\"undefined\"!=typeof NOVA.debug.debugScreen.getStopsString){var presetStr=NOVA.debug.debugScreen.getStopsString();\"\"!=presetStr&&(NOVA.addToMsg(\"PRESET\",presetStr),NOVA.debug.debugScreen.clearStopsString())}NOVA.sendMsg(),METRICS.addSpin(2,self.freeRounds.isInFreeRounds()?1:0),self.reelManager.startSpin(!0),timeSpinStarted=new Date,self.ui.canQuickStop(!0)},this.handleEvent=function(event,param){return\"MSG\"==event?(self.account.setBalance(self.serverResponse.balance),self.reelManager.setReelstrips(self.serverResponse.reelstripID),self.reelManager.storeStopsLocally(self.serverResponse.stops),self.freeRounds.processMsg(self.serverResponse.freeRounds),self.freeRounds.updateRoundMeter(),self.winManager.setWinCombinations(self.serverResponse.winCombinations),XC_0_MSG_RECEIVED):(\"UI\"==event&&\"QUICK_STOP\"==param&&(quickStopFired=!0),ENUM.XC_NULL)}}",
+      "sourceFragmentSHA256": "536c119fc7720c8d26cee6dcaa479e3514bfd98331d331aa039101419daa33d3"
+    },
+    {
+      "name": "FreeGameWinState",
+      "sourceStart": 1710449,
+      "sourceEnd": 1713439,
+      "source": "function FreeGameWinState(id){var XC_0_NEXT_FREEGAME=0,XC_1_LAST_FREEGAME=1;this.id=id,this.oldWin=0,this.cfg={},this.resetCfg=function(){this.cfg={funcInRecovery:null,funcStartWin:null,skipSetStops:!1,disableContinueBtn:!1}},this.resetCfg(),this.getNumCycles=function(){return NOVA.config.game.type==ENUM.winSequence.PAYWAY?NOVA.config.payways.numCyclesFree:NOVA.config.lines.numCyclesFree},this.enter=function(){if(self.inRecovery?(this.cfg.funcInRecovery?this.cfg.funcInRecovery():(this.cfg.skipSetStops||self.reelManager.setStops(self.serverResponse.stops),self.account.clearWin(),self.account.addWin(self.serverResponse.totalWin),self.messageBar.hideIdle(),self.metersManager.winMeter.setValue(self.account.getWin()),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.account.getWin()),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.metersManager.winMeter.show(),self.messageBar.displayWinText(!0)),self.inRecovery=!1):(this.oldWin=self.account.getWin(),self.account.addWin(self.serverResponse.currentWin)),self.serverResponse.numberFreeGames>0&&(self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance()),lastWin=self.account.getWin(),self.winManager.setWinCombinations(self.serverResponse.winCombinations),this.cfg.funcStartWin)this.cfg.funcStartWin();else{var numCycles=this.getNumCycles(),result=self.winManager.startWin(numCycles,self.serverResponse.triggerId,!0);self.api_notify(\"WINTUNE_SOUND\",result)}if(self.serverResponse.numberFreeGames>0)this.cfg.disableContinueBtn?self.ui.canContinue(!1):self.ui.canContinue(!0),1==self.serverResponse.freeGameTrigger?self.messageBar.setRightText(\"TXT_FREEGAME_WON\"):0!=self.serverResponse.freeGameTrigger&&self.messageBar.setRightText(\"TXT_FREEGAMES_WON\"),0!=self.serverResponse.freeGameTrigger&&(self.messageBar.setRightValue(self.serverResponse.freeGameTrigger),self.messageBar.showRightText(!0));else{var canContinueValue=NOVA.config.ui.enableContinueOnLastFG||!1;self.ui.canContinue(canContinueValue)}this.resetCfg()},this.skipRoundEnd=!1,this.endFree=!0,this.handleEvent=function(event,param){if(\"WIN_COMPLETE\"==event||\"UI\"==event&&\"CONTINUE\"==param){self.ui.canContinue(!1),self.messageBar.hideIdle(),self.metersManager.winMeter.snapTo(self.account.getWin()),self.freeRounds.snapWinMeter();var canContinueFromConfig=NOVA.config.ui.enableContinueOnLastFG||!1;return canContinueFromConfig===!0&&\"UI\"==event&&\"CONTINUE\"==param&&self.serverResponse.numberFreeGames<=0&&self.winManager.stopCelebration(),self.serverResponse.numberFreeGames<=0&&this.endFree?(self.roundActive&&!this.skipRoundEnd&&(wrapperAPI(\"ROUND\",0),self.roundActive=!1),this.skipRoundEnd=!1,bDontStopAutoplay&&self.ui.disableAutoplay(!0),XC_1_LAST_FREEGAME):(this.endFree=!0,XC_0_NEXT_FREEGAME)}return\"START_WIN_METER_ROLLUP\"==event&&(self.messageBar.hideIdle(),self.metersManager.winMeter.rollup(this.oldWin,self.account.getWin(),param)),ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "8813e7553ff918f22c58bd7fb6dc7e9b5319307047ac5d9238ef8ccb40f11f2a"
+    },
+    {
+      "name": "FreeGameSummaryState",
+      "sourceStart": 1713439,
+      "sourceEnd": 1714456,
+      "source": "function FreeGameSummaryState(id){var XC_0_TIMEOUT=0,XC_1_NO_ROUND_END=1,XC_2_NO_ROUND_END_2=2;this.id=id,this.enter=function(){self.messageBar.setRightText(\"\"),self.messageBar.showRightText(!1)},this.handleEvent=function(event,param){var result=ENUM.XC_NULL;switch(event){case\"CLOSE_FREE_GAME_SUMMARY\":self.returnFromFreeGames=!0,self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.resultShown||(wrapperAPI(\"RESULT_SHOWN\"),self.resultShown=!0,self.ui.setRound(!1)),bDontStopAutoplay&&self.ui.inAutoplay()&&(self.ui.disableAutoplay(!1),self.ui.pauseAutoplay(!1),self.ui.canSpinAutoplay(NOVA.config.game.freeGamesAutoplayDelay)),result=XC_0_TIMEOUT;break;case\"CLOSE_SUMMARY_NO_ROUND_END\":result=XC_1_NO_ROUND_END;break;case\"CLOSE_SUMMARY_NO_ROUND_END_2\":result=XC_2_NO_ROUND_END_2;break;case\"START_BALANCE_ROLLUP\":self.metersManager.balanceMeter.rollup(self.oldBalance,self.account.getBalance(),param),self.freeRounds.updateWinMeter(param)}return result}}",
+      "sourceFragmentSHA256": "099c1234d6300c7c6cf3b8a7cba27ffb58feaf4f968a0998d70d7483152fc6e5"
+    },
+    {
+      "name": "FeatureStartState",
+      "sourceStart": 1714718,
+      "sourceEnd": 1715063,
+      "source": "function FeatureStartState(id){var XC_0_MESSAGE_RECEIVED=0;this.id=id,this.enter=function(){NOVA.startMsg(\"FEATURE_START\"),NOVA.addToMsg(\"CFG\",self.featureData.currentFeatureGame),NOVA.sendMsg()},this.handleEvent=function(event,param){return\"MSG\"==event?(self.account.setBalance(self.serverResponse.balance),XC_0_MESSAGE_RECEIVED):ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "8f992a7f0a6809bc29a07a1f383a0d89c0309d94b2aac25c1e51ace95a2d4f02"
+    },
+    {
+      "name": "FeaturePickState",
+      "sourceStart": 1715676,
+      "sourceEnd": 1716197,
+      "source": "function FeaturePickState(id){var XC_0_MESSAGE_RECEIVED=0;this.id=id,this.enter=function(){NOVA.startMsg(\"FEATURE_PICK\"),NOVA.addToMsg(\"CFG\",self.featureData.currentFeatureGame);var pickInfo=self.featureData.round+\"|\"+self.featureData.pick+\"|\"+self.featureData.pickValue+\"|\";NOVA.addToMsg(\"FP\",pickInfo),\"\"!=self.pickGSD&&NOVA.addToMsg(\"GSD\",self.pickGSD),NOVA.sendMsg()},this.handleEvent=function(event,param){return\"MSG\"==event?(self.account.setBalance(self.serverResponse.balance),XC_0_MESSAGE_RECEIVED):ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "eba4eba6fb2fc9a3b5175da434cf7d71aa17b8c2d402f8bde6b644431f56df20"
+    },
+    {
+      "name": "FeaturePostPickState",
+      "sourceStart": 1716197,
+      "sourceEnd": 1716967,
+      "source": "function FeaturePostPickState(id){var XC_0_DONE=0,XC_1_MORE_PICKS=1;this.id=id,this.enter=function(){TweenLite.delayedCall(.001,self.fireEvent,[\"CLOSE_POST_PICK\"])},this.handleEvent=function(event,param){var xc=ENUM.XC_NULL;switch(event){case\"CLOSE_POST_PICK\":xc=XC_0_DONE;break;case\"CLOSE_RECOVERY\":self.inRecovery&&(self.reelManager.setStops(self.serverResponse.stops),self.account.clearWin(),self.account.addWin(self.serverResponse.totalWin),self.metersManager.winMeter.setValue(self.account.getWin()),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.messageBar.displayWinText(!0),self.messageBar.showRightText(!1),self.inRecovery=!1),xc=XC_0_DONE;break;case\"MORE_PICKS\":xc=XC_1_MORE_PICKS}return xc}}",
+      "sourceFragmentSHA256": "4176fcefa30091e1c8a780958df1cc3a7fac8b610c49b34fb903bf50985b4051"
+    },
+    {
+      "name": "FeatureEndState",
+      "sourceStart": 1716967,
+      "sourceEnd": 1717398,
+      "source": "function FeatureEndState(id){var XC_0_MESSAGE_RECEIVED=0;this.id=id,this.enter=function(){NOVA.startMsg(\"FEATURE_END\"),NOVA.addToMsg(\"CFG\",self.featureData.currentFeatureGame),NOVA.sendMsg()},this.handleEvent=function(event,param){return\"MSG\"==event?(self.freeRounds.processMsg(self.serverResponse.freeRounds),self.account.setBalance(self.serverResponse.balance),self.freeRounds.snapWinMeter(),XC_0_MESSAGE_RECEIVED):ENUM.XC_NULL}}",
+      "sourceFragmentSHA256": "52f8f776bd2d339f873a789241094133092d0ba603499209dec6566eb826ead4"
+    }
+  ],
+  "wireDecoders": [
+    {
+      "wireKey": "FGT",
+      "sourceStart": 1755036,
+      "sourceEnd": 1755091,
+      "source": "case\"FGT\":result.freeGameTrigger=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "1b5d4e8108f73dec54bbc085e62ce6244b57e7a46fe868d8d8c3b266bda76a8e"
+    },
+    {
+      "wireKey": "NFG",
+      "sourceStart": 1755140,
+      "sourceEnd": 1755195,
+      "source": "case\"NFG\":result.numberFreeGames=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "f4658de4bc35abfc01b476dabaea01ef640d8082f93480317d5f9b622097a762"
+    },
+    {
+      "wireKey": "IFG",
+      "sourceStart": 1755195,
+      "sourceEnd": 1755249,
+      "source": "case\"IFG\":result.inFreeGames=1==Number(pair[1]);break;",
+      "sourceFragmentSHA256": "9b32dbf9c14a9142c14d210928c33a8bedbc6fe11f42dce7b8340fdd05fcc97c"
+    },
+    {
+      "wireKey": "TFG",
+      "sourceStart": 1755249,
+      "sourceEnd": 1755303,
+      "source": "case\"TFG\":result.totalFreeGames=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "38a8de622ffbf7db107c461167583569eada4ece0fca0237a9115e1546497d22"
+    },
+    {
+      "wireKey": "CFGG",
+      "sourceStart": 1755303,
+      "sourceEnd": 1755359,
+      "source": "case\"CFGG\":result.currentFreeGame=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "c544db3ef63fe6a4f31e967ade878816503f3d3ca517296748dcda7aa11534ae"
+    },
+    {
+      "wireKey": "FS_0",
+      "sourceStart": 1755467,
+      "sourceEnd": 1755478,
+      "source": "case\"FS_0\":",
+      "sourceFragmentSHA256": "9fff7ded5e2d1c8a332dc820cc04ccb65d48be45480b6fb23c5d94808102a104"
+    },
+    {
+      "wireKey": "FS_1",
+      "sourceStart": 1755478,
+      "sourceEnd": 1755489,
+      "source": "case\"FS_1\":",
+      "sourceFragmentSHA256": "447290435d69ebf1b284f7c1bf37995ad5c0fcb3115cb1946556796c641d8d65"
+    },
+    {
+      "wireKey": "FS_2",
+      "sourceStart": 1755489,
+      "sourceEnd": 1755500,
+      "source": "case\"FS_2\":",
+      "sourceFragmentSHA256": "f53e88e02ad37e4d17a26f5e3368db6e27349d7d6248e9d5a17201561a3e472f"
+    },
+    {
+      "wireKey": "FS_3",
+      "sourceStart": 1755500,
+      "sourceEnd": 1755511,
+      "source": "case\"FS_3\":",
+      "sourceFragmentSHA256": "993b35cef04e063e30d48d2ce6fef3b8c0eb80353400a8f0afe9ed0f9b96a782"
+    },
+    {
+      "wireKey": "FS_4",
+      "sourceStart": 1755511,
+      "sourceEnd": 1755576,
+      "source": "case\"FS_4\":self.featureData.featureStarted=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "9e84eff1b8adc82fc8f76dfbe97a73d42812bdfb6ac4504cbd507695f1090685"
+    },
+    {
+      "wireKey": "FTV_0",
+      "sourceStart": 1755576,
+      "sourceEnd": 1755588,
+      "source": "case\"FTV_0\":",
+      "sourceFragmentSHA256": "ecd55f735035d89c5216e2d9ba2375241505316156d1315e6d2e734513ac4ee5"
+    },
+    {
+      "wireKey": "FTV_1",
+      "sourceStart": 1755588,
+      "sourceEnd": 1755600,
+      "source": "case\"FTV_1\":",
+      "sourceFragmentSHA256": "694e979fb9c4cb1e1609d2b22facf5a6a54e80a24981e2bbffa1d393013e0256"
+    },
+    {
+      "wireKey": "FTV_2",
+      "sourceStart": 1755600,
+      "sourceEnd": 1755612,
+      "source": "case\"FTV_2\":",
+      "sourceFragmentSHA256": "dc000246ed27c8ed3822b10863c121e0f5c0660699cfb09f4af3986768258997"
+    },
+    {
+      "wireKey": "FTV_3",
+      "sourceStart": 1755612,
+      "sourceEnd": 1755624,
+      "source": "case\"FTV_3\":",
+      "sourceFragmentSHA256": "4b6c9ff8d9ad23db174b15d2bedececafdd85aab5e21de123a2b71ac9ba63d65"
+    },
+    {
+      "wireKey": "FTV_4",
+      "sourceStart": 1755624,
+      "sourceEnd": 1756455,
+      "source": "case\"FTV_4\":result.pickFeatureTrigger=!0,self.featureData.ftv=pair[1];var values=pair[1].split(\";\");self.featureData.numPicks=Number(values[1]),self.featureData.winAmount=Number(values[0]),self.featureData.winAmountPerRound=[];var aValuesPerRound=pair[1].split(\"|\"),totalWinAmount=0;self.featureData.numRounds=0,self.featureData.numPicksPerRound=[];for(var nRound=0;nRound<aValuesPerRound.length;nRound++)if(aValuesPerRound[nRound].length>0){var roundValues=aValuesPerRound[nRound].split(\";\");self.featureData.numPicksPerRound.push(Number(roundValues[1])),self.featureData.numRounds++,totalWinAmount+=Number(roundValues[0]),self.featureData.winAmountPerRound.push(Number(roundValues[0]))}self.featureData.numRounds>1&&(self.featureData.winAmount=totalWinAmount);var featureId=pair[0].split(\"_\");result.triggerId=featureId[1];break;",
+      "sourceFragmentSHA256": "f5ebecc56687ae728109bee853432a831282911f35ef0d89d609be2a4f1b53b0"
+    },
+    {
+      "wireKey": "CFG",
+      "sourceStart": 1756455,
+      "sourceEnd": 1756565,
+      "source": "case\"CFG\":result.currentFeatureGame=Number(pair[1]),self.featureData.currentFeatureGame=Number(pair[1]);break;",
+      "sourceFragmentSHA256": "4032bacfd673ed1b95e1098fee6b37abe4498e301f52a0da29558ef7f79638b4"
+    },
+    {
+      "wireKey": "FPM_0",
+      "sourceStart": 1756565,
+      "sourceEnd": 1756577,
+      "source": "case\"FPM_0\":",
+      "sourceFragmentSHA256": "264d3d0f9301b102d7645447d8be162bee3c6802b58d7a65b4a510c12591fb54"
+    },
+    {
+      "wireKey": "FPM_1",
+      "sourceStart": 1756577,
+      "sourceEnd": 1756589,
+      "source": "case\"FPM_1\":",
+      "sourceFragmentSHA256": "56d1dbf2996a568d8a3d7c438417c7a5131143fa46cc8785e1089364f91ca721"
+    },
+    {
+      "wireKey": "FPM_2",
+      "sourceStart": 1756589,
+      "sourceEnd": 1756601,
+      "source": "case\"FPM_2\":",
+      "sourceFragmentSHA256": "76d0d236f937286cc71ba03e17f88918fcd7ad349682a99fcf275d31ea5618d7"
+    },
+    {
+      "wireKey": "FPM_3",
+      "sourceStart": 1756601,
+      "sourceEnd": 1756613,
+      "source": "case\"FPM_3\":",
+      "sourceFragmentSHA256": "b9573971dcb1167f482b3f4e0bd1448047c665fac828866b131075d8e4a5faea"
+    },
+    {
+      "wireKey": "FPM_4",
+      "sourceStart": 1756613,
+      "sourceEnd": 1756672,
+      "source": "case\"FPM_4\":self.featureData.featurePickMade=pair[1];break;",
+      "sourceFragmentSHA256": "d28be6baf913cc3ffaaa08561af98dd4d6207bf72408ed183d28e6beb61a7ea1"
+    },
+    {
+      "wireKey": "CFR_0",
+      "sourceStart": 1756672,
+      "sourceEnd": 1756684,
+      "source": "case\"CFR_0\":",
+      "sourceFragmentSHA256": "61ec83acca1f201c3d7bf1e55ecd7b278d46521ffa2554a6c4b9a73ea3265e56"
+    },
+    {
+      "wireKey": "CFP_0",
+      "sourceStart": 1756791,
+      "sourceEnd": 1756803,
+      "source": "case\"CFP_0\":",
+      "sourceFragmentSHA256": "a8559bf0b82d9a30172d0afdef93a11299e982aa36cb301055dee5c1166a99e4"
+    }
+  ],
+  "exactOverrides": []
+}

@@ -1,0 +1,54 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "rows": [
+    {
+      "name": "countScatters",
+      "sourceStart": 1939149,
+      "sourceEnd": 1939558,
+      "source": "function(){var scatterCount=0;if(game.slotGame.serverResponse.gsd&&(msg_dpr=game.slotGame.serverResponse.gsd.fieldValues.DPR,msg_dpr)){msg_dpr=msg_dpr.split(\";\");for(var reel=0;reel<6;reel++)for(var currentDensity=parseInt(msg_dpr[reel]),row=0;row<currentDensity;row++)\"11\"==game.slotGame.reelManager.getSymbolID(reel,row)&&(scatterCount+=1);scatterCount+=cartFeature.getScatterCount()}return 2==scatterCount}",
+      "fragmentSHA256": "a8c2899d6a098f1c86c97213f2c09f2b831e4bcbab72ccf8b966460f32a26e74"
+    },
+    {
+      "name": "playReactionAnticipation",
+      "sourceStart": 1943008,
+      "sourceEnd": 1943490,
+      "source": "function(){TweenMax.delayedCall(1,function(){windupTriggered=!1,backgroundAnims.applyDarkTint(NOVA.getContainer(\"GAME_BACKGROUND\"),!0),cartFeature.shadeReel(!0,!0),gameSound.playGeneric(\"windup\"),self.fadeSoundsForWindup(),cascadeFeature.setAllSymbolsAlpha(NOVA.config.game.features.dimAlpha,[11]),TweenMax.delayedCall(2.8,function(){gameSound.fadeAmbientIn(),cartFeature.shadeReel(!1),cascadeFeature.setAllSymbolsAlpha(1),self.slotGame.fireEvent(\"CLOSE_PRE_SPIN\")})},null,this,!0)}",
+      "fragmentSHA256": "07f6869f219b95b4cdc6374c4d48562ed0bf2520912102dab5cec4c200f0ca21"
+    },
+    {
+      "name": "fadeSoundsForWindup",
+      "sourceStart": 1943552,
+      "sourceEnd": 1943611,
+      "source": "function(){gameSound.stopSpin(),gameSound.fadeAmbientOut()}",
+      "fragmentSHA256": "d94943ce772984604fa141597fd59e674e5b2bbe2515209e34b29d78c579155f"
+    }
+  ],
+  "nativeInitializers": [
+    {
+      "source": "secondaryReelGate=new EventGate(cartFeature.play,3)",
+      "sourceStart": 1901711
+    },
+    {
+      "source": "secondaryReelGate_FG=new EventGate(cartFeature.playFG,2)",
+      "sourceStart": 1901763
+    },
+    {
+      "source": "stoppedCalledHack=!1",
+      "sourceStart": 1901880
+    },
+    {
+      "source": "megawayValues=[0,0,0,0,0,0]",
+      "sourceStart": 1902361
+    },
+    {
+      "source": "megawayValueIndex=0",
+      "sourceStart": 1902389
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

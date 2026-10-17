@@ -1,0 +1,262 @@
+{
+  "gameId": "32727",
+  "retainedSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "sourceHashRecomputed": false,
+  "functions": [
+    {
+      "target": "this.slotGame.api_enter",
+      "sourceStart": 1915750,
+      "sourceEnd": 1929829,
+      "source": "function(state){var result=ENUM.RUN_DEFAULT_ENTER,featureID={},winLevel={};switch(state.id){case ENUM.gameState.REELSTRIP:if(self.slotGame.inRecovery){var test=self.slotGame.serverResponse.gsd.fieldValues.BPT;void 0!=test&&(state.cfg.skipSetStops=!0)}break;case ENUM.gameState.GAME_INTRO:self.updateBuyPass(),gameIntro.start(),\"undefined\"==typeof initGSD.fieldValues.DPR&&(initGSD.fieldValues.DPR=NOVA.config.game.defaultDPR),initGSD.fieldValues.SRS?cartFeature.setDefaultStops(initGSD.fieldValues.SRS):cartFeature.setDefaultStops(\"10;5;2;0\"),backgroundAnims.setFreeGameBackground(!1,!0),self.slotGame.reelManager.updateNumVisibleSymbols(initGSD.fieldValues.DPR),self.recoverCascadeReel(initGSD.fieldValues.CRR),TweenMax.delayedCall(1,fgMeters.resetCounters,null,this,!0),self.slotGame.inRecovery||self.setMegaways(4050),result=ENUM.SKIP_DEFAULT_ENTER;break;case ENUM.gameState.BASE_IDLE:self.slotGame.inRecovery&&(state.cfg.skipSetStops=!0,backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP)),state.enter(),null!=self.slotGame.serverResponse.triggerId?self.enableBuyPass(!1):self.updateBuyPass(),result=ENUM.SKIP_DEFAULT_ENTER;break;case ENUM.gameState.BASE_PRE_SPIN:windupTriggered=!1,featureGate.reset(),playedCascade=!1,stoppedCalledHack=!1,secondaryReelGate.reset(),gameSound.playSpin(),self.enableBuyPass(!1),showMegawaysContainer(!1),self.slotGame.reelManager.showAllSymbols(),cartFeature.spinOut(),self.slotGame.reelManager.changeSettingsSafe(!1);break;case ENUM.gameState.BASE_SPINNING:winLevel=self.slotGame.winManager.getWinLevel(self.slotGame.serverResponse.triggerId,!1);break;case ENUM.gameState.BASE_POST_SPIN:self.slotGame.serverResponse.pickFeatureTrigger||self.slotGame.serverResponse.freeGameTrigger||backgroundAnims.setFreeGameBackground(!1,!1),winLevel=self.slotGame.winManager.getWinLevel(self.slotGame.serverResponse.triggerId,!1);var hasWinSymbol=self.winSymbolChoreography();\nhasWinSymbol&&(result=ENUM.SKIP_DEFAULT_ENTER),result=ENUM.SKIP_DEFAULT_ENTER,featureGate.fire(0);break;case ENUM.gameState.BASE_WIN:self.slotGame.inRecovery&&(state.cfg.skipSetStops=!0,self.setMegawaysTotal(),\"0|\"!=self.slotGame.serverResponse.featureId&&backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP)),null!=self.slotGame.serverResponse.triggerId?self.enableBuyPass(!1):self.updateBuyPass(),\"0\"===self.slotGame.serverResponse.triggerId&&\"0|\"==self.slotGame.serverResponse.featureId&&1==self.slotGame.serverResponse.freeGameTrigger&&cascadeFeature.winStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.DPR),self.slotGame.serverResponse.triggerId||\"0|\"!=self.slotGame.serverResponse.featureId||self.slotGame.serverResponse.currentFreeGame!=self.slotGame.serverResponse.totalFreeGames||self.startBigWin(self.slotGame.serverResponse.gsd.fieldValues.CTW);break;case ENUM.gameState.FREEGAME_INTRO:\"0\"!=self.slotGame.serverResponse.triggerId&&self.showBuyPass(!1),self.slotGame.serverResponse.freeGameTrigger>1&&(self.killRandomAmbience(),self.freeGameIntroChoreography(),result=ENUM.SKIP_DEFAULT_ENTER);break;case ENUM.gameState.FREEGAME_IDLE:\"0\"===self.slotGame.serverResponse.triggerId&&(state.cfg.disableContinueBtn=!0),self.addFGmeterDelay(!0),self.slotGame.inRecovery&&(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal()),2==self.slotGame.serverResponse.triggerId&&(state.skipRoundEnd=!0),self.recoverCascadeReel(game.slotGame.serverResponse.gsd.fieldValues.CRR);break;case ENUM.gameState.FREEGAME_PRE_SPIN:playedCascade=!1,secondaryReelGate_FG.reset(),featureGate.reset(),\"0|\"!=self.slotGame.serverResponse.featureId&&\"0|1|\"!=self.slotGame.serverResponse.featureId&&showMegawaysContainer(!1),stoppedCalledHack=!1,\"0\"===self.slotGame.serverResponse.triggerId&&game.slotGame.ui.enableQuickStop(!1),\"0\"!=self.slotGame.serverResponse.triggerId,self.slotGame.reelManager.showAllSymbols(),\"1|0|\"==self.slotGame.serverResponse.featureId||\"1|\"==self.slotGame.serverResponse.featureId||\"2|1|0|\"==self.slotGame.serverResponse.featureId||\"2|1|\"==self.slotGame.serverResponse.featureId?(cartFeature.spinOut(),self.slotGame.reelManager.changeSettingsSafe(!1)):(reactionTriggered=!0,self.slotGame.reelManager.changeSettingsSafe(!0)),cascadeFeature.resetSymbolAlpha(),fgMeters.updateRightCounter(!0),\"0|\"==self.slotGame.serverResponse.featureId&&self.countScatters()&&!windupTriggered&&(self.playReactionAnticipation(),result=ENUM.SKIP_DEFAULT_ENTER);break;case ENUM.gameState.FREEGAME_SPINNING:cartFeature.isRunning();break;case ENUM.gameState.FREEGAME_SPINNING_STOP:self.isReactionSpin();break;case ENUM.gameState.FREEGAME_POST_SPIN:reactionTriggered=!1,NOVA.config.ui.quickStopAvailable&&game.slotGame.ui.enableQuickStop(!0),self.slotGame.reelManager.setNumVisibleSymbols(self.slotGame.serverResponse.gsd.fieldValues.DPR),featureGate.fire(0),\"0|1|\"==self.slotGame.serverResponse.featureId?cartFeature.playFG():\"1|0|\"==self.slotGame.serverResponse.featureId&&cartFeature.playFG(),self.slotGame.serverResponse.freeGameTrigger>1&&(\"1|0|\"==self.slotGame.serverResponse.featureId?\"2\"!=self.slotGame.serverResponse.fgMultiplier&&featureManager.queueRetrigger():featureManager.queueRetrigger()),cascadeFeature.postSpinStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.CSD,self.slotGame.serverResponse.gsd.fieldValues.DPR),result=ENUM.SKIP_DEFAULT_ENTER;break;case ENUM.gameState.FREEGAME_WIN:\"0\"===self.slotGame.serverResponse.triggerId&&(state.cfg.disableContinueBtn=!0),self.addFGmeterDelay(!0),self.recoverCascadeReel(game.slotGame.serverResponse.gsd.fieldValues.CRR),self.slotGame.inRecovery?(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),!self.slotGame.serverResponse.gsd.fieldValues.MTP&&\"1\"==self.slotGame.serverResponse.triggerId&&self.slotGame.serverResponse.freeGameTrigger>1&&0==self.slotGame.serverResponse.currentFreeGame?(self.freeGameIntroChoreography(),result=ENUM.SKIP_DEFAULT_ENTER):self.slotGame.serverResponse.freeGameTrigger>1&&(result=ENUM.SKIP_DEFAULT_ENTER,TweenMax.delayedCall(.005,self.slotGame.fireEvent,[\"END_RETRIGGER_RECOVERY\"])),\"0|\"==self.slotGame.serverResponse.featureId||(self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),fgMeters.updateLeftCounter(parseInt(self.slotGame.serverResponse.fgMultiplier))),TweenMax.delayedCall(.002,cascadeFeature.winStateBehaviour,[self.slotGame.serverResponse.gsd.fieldValues.DPR]),self.setMegawaysTotal()):(2==self.slotGame.serverResponse.triggerId&&(state.skipRoundEnd=!0),cascadeFeature.winStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.DPR));break;case ENUM.gameState.FREEGAME_SUMMARY:2==self.slotGame.serverResponse.triggerId?TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_SUMMARY_NO_ROUND_END\"]):\"0|\"!=game.slotGame.serverResponse.featureId&&game.slotGame.serverResponse.gsd.fieldValues.MTP?(self.freeGameSummaryChoreography(),snakeStrikeFeature.showSnakes(!1)):TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_FREE_GAME_SUMMARY\"]);break;case ENUM.gameState.FEATURE_INTRO:snakeStrikeFeature.showSnakes(!1),featureID=self.slotGame.featureData.currentFeatureGame,2==featureID&&(pickIntroAnim.start(),pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.start(self.slotGame.featureData.numPicks,self.slotGame.featureData.numRounds,self.slotGame.featureData.numPicksPerRound),self.slotGame.ui.showSpinGroup(!1)),self.slotGame.inRecovery&&(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal());break;case ENUM.gameState.FEATURE_PRE_PICK:featureID=self.slotGame.featureData.currentFeatureGame,self.slotGame.inRecovery?(backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal(),2==featureID&&(pickFeature.numberOfRound=self.slotGame.featureData.numRounds,pickFeature.numberOfPickPerRound=self.slotGame.featureData.numPicksPerRound,pickFeature.currentPick=self.slotGame.featureData.currentFeaturePick-1,pickFeature.currentRound=self.slotGame.featureData.currentFeatureRound,pickFeature.numPicks=self.slotGame.featureData.numPicksPerRound[pickFeature.currentRound-1],pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.setValues(self.slotGame.serverResponse.freeGameTotalWin,self.slotGame.serverResponse.gsd.fieldValues.MTW,self.slotGame.serverResponse.gsd.fieldValues.MOS),pickFeature.show(!0))):2==featureID&&0==pickFeature.currentPick&&1==pickFeature.currentRound&&(pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.setValues(self.slotGame.serverResponse.freeGameTotalWin,self.slotGame.serverResponse.gsd.fieldValues.MTW,self.slotGame.serverResponse.gsd.fieldValues.MOS),pickFeature.show(!0));break;case ENUM.gameState.FEATURE_POST_PICK:if(featureID=self.slotGame.featureData.currentFeatureGame,self.slotGame.inRecovery){self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),TweenMax.delayedCall(1,fgMeters.resetCounters,null,this,!0),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0);var pick=self.slotGame.featureData.featurePickMade;pick&&(pick=parseInt(pick),playFeatureAgain=0===pick),2==featureID&&(pickFeature.show(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_RECOVERY\"]),result=ENUM.SKIP_DEFAULT_ENTER)}else 2==featureID&&(self.slotGame.featureData.currentFeaturePick<=self.slotGame.featureData.numPicksPerRound[self.slotGame.featureData.currentFeatureRound-1]?(pickFeature.currentPick=self.slotGame.featureData.currentFeaturePick-1,pickFeature.currentRound=self.slotGame.featureData.currentFeatureRound,pickFeature.numPicks=self.slotGame.featureData.numPicksPerRound[pickFeature.currentRound-1],pickFeature.numberOfRound=self.slotGame.featureData.numRounds,pickFeature.updateText(),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"MORE_PICKS\"])):(pickFeature.updateText(),pickFeature.show(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_POST_PICK\"])));break;case ENUM.gameState.FEATURE_SUMMARY:playFeatureAgain?(snakeStrikeFeature.showSnakes(!0),fgMeters.resetCounters(),TweenMax.delayedCall(2,self.slotGame.fireEvent,[\"CLOSE_FEATURE_SUMMARY\"])):(self.freeGameSummaryChoreography(),snakeStrikeFeature.showSnakes(!1)),result=ENUM.SKIP_DEFAULT_ENTER;break;case ENUM.gameState.GAMBLE_INTRO:self.slotGame.reelManager.show(!1),gamble.load(self.gambleNotify,function(){gamble.show(!0),gamble.readyToPick(),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_GAMBLE_INTRO\"])});break;case ENUM.gameState.GAMBLE_PRE_PICK:self.slotGame.inRecovery?gamble.load(self.gambleNotify,function(){self.slotGame.serverResponse.gamble.available&&self.slotGame.serverResponse.gamble.count<gamble.countLimit?(gamble.enableUI(!0),gamble.show(!0),self.slotGame.reelManager.show(!1)):(gamble.enableUI(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"TAKE_WIN\"])),gamble.processStart(self.slotGame.serverResponse),gamble.readyToPick()}):(gamble.enableUI(!0),gamble.readyToPick());break;case ENUM.gameState.GAMBLE_PICK:gamble.enableUI(!1);break;case ENUM.gameState.GAMBLE_POST_PICK:gamble.processPickResult(self.slotGame.serverResponse),result=ENUM.SKIP_DEFAULT_ENTER;break;case ENUM.gameState.GAMBLE_SUMMARY:gamble.show(!1),self.slotGame.reelManager.show(!0);break;case ENUM.gameState.BUY_FEATURE:self.slotGame.winManager.stopWin(),self.slotGame.ui.showSpinGroup(!1),self.slotGame.metersManager.balanceMeter.setValue(self.slotGame.account.getBalance()),self.slotGame.oldBalance=self.slotGame.account.getBalance(),self.slotGame.account.clearWin(),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.slotGame.account.getWin()),self.slotGame.metersManager.winMeter.hide(),self.slotGame.messageBar.displayWinText(!1),self.slotGame.messageBar.showLeftText(!1),TweenMax.delayedCall(.2,function(){self.buyPassPanel.show(),self.updateBuyPass(),self.buyPassPanel.setValue(self.buyPass.txtBuyPass.getValue()),gameSound.playAmbientBuyPass(),gameSound.stopAmbientBaseGame()})}return result}",
+      "fragmentSHA256": "dea18cf3c356c0adc978cb053c9eb4d6ae7a48f0d3ed3497f284ed9754605b62",
+      "cases": [
+        {
+          "selector": "ENUM.gameState.REELSTRIP",
+          "source": "case ENUM.gameState.REELSTRIP:if(self.slotGame.inRecovery){var test=self.slotGame.serverResponse.gsd.fieldValues.BPT;void 0!=test&&(state.cfg.skipSetStops=!0)}break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAME_INTRO",
+          "source": "case ENUM.gameState.GAME_INTRO:self.updateBuyPass(),gameIntro.start(),\"undefined\"==typeof initGSD.fieldValues.DPR&&(initGSD.fieldValues.DPR=NOVA.config.game.defaultDPR),initGSD.fieldValues.SRS?cartFeature.setDefaultStops(initGSD.fieldValues.SRS):cartFeature.setDefaultStops(\"10;5;2;0\"),backgroundAnims.setFreeGameBackground(!1,!0),self.slotGame.reelManager.updateNumVisibleSymbols(initGSD.fieldValues.DPR),self.recoverCascadeReel(initGSD.fieldValues.CRR),TweenMax.delayedCall(1,fgMeters.resetCounters,null,this,!0),self.slotGame.inRecovery||self.setMegaways(4050),result=ENUM.SKIP_DEFAULT_ENTER;break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_IDLE",
+          "source": "case ENUM.gameState.BASE_IDLE:self.slotGame.inRecovery&&(state.cfg.skipSetStops=!0,backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP)),state.enter(),null!=self.slotGame.serverResponse.triggerId?self.enableBuyPass(!1):self.updateBuyPass(),result=ENUM.SKIP_DEFAULT_ENTER;break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_PRE_SPIN",
+          "source": "case ENUM.gameState.BASE_PRE_SPIN:windupTriggered=!1,featureGate.reset(),playedCascade=!1,stoppedCalledHack=!1,secondaryReelGate.reset(),gameSound.playSpin(),self.enableBuyPass(!1),showMegawaysContainer(!1),self.slotGame.reelManager.showAllSymbols(),cartFeature.spinOut(),self.slotGame.reelManager.changeSettingsSafe(!1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_SPINNING",
+          "source": "case ENUM.gameState.BASE_SPINNING:winLevel=self.slotGame.winManager.getWinLevel(self.slotGame.serverResponse.triggerId,!1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_POST_SPIN",
+          "source": "case ENUM.gameState.BASE_POST_SPIN:self.slotGame.serverResponse.pickFeatureTrigger||self.slotGame.serverResponse.freeGameTrigger||backgroundAnims.setFreeGameBackground(!1,!1),winLevel=self.slotGame.winManager.getWinLevel(self.slotGame.serverResponse.triggerId,!1);var hasWinSymbol=self.winSymbolChoreography();\nhasWinSymbol&&(result=ENUM.SKIP_DEFAULT_ENTER),result=ENUM.SKIP_DEFAULT_ENTER,featureGate.fire(0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_WIN",
+          "source": "case ENUM.gameState.BASE_WIN:self.slotGame.inRecovery&&(state.cfg.skipSetStops=!0,self.setMegawaysTotal(),\"0|\"!=self.slotGame.serverResponse.featureId&&backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP)),null!=self.slotGame.serverResponse.triggerId?self.enableBuyPass(!1):self.updateBuyPass(),\"0\"===self.slotGame.serverResponse.triggerId&&\"0|\"==self.slotGame.serverResponse.featureId&&1==self.slotGame.serverResponse.freeGameTrigger&&cascadeFeature.winStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.DPR),self.slotGame.serverResponse.triggerId||\"0|\"!=self.slotGame.serverResponse.featureId||self.slotGame.serverResponse.currentFreeGame!=self.slotGame.serverResponse.totalFreeGames||self.startBigWin(self.slotGame.serverResponse.gsd.fieldValues.CTW);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_INTRO",
+          "source": "case ENUM.gameState.FREEGAME_INTRO:\"0\"!=self.slotGame.serverResponse.triggerId&&self.showBuyPass(!1),self.slotGame.serverResponse.freeGameTrigger>1&&(self.killRandomAmbience(),self.freeGameIntroChoreography(),result=ENUM.SKIP_DEFAULT_ENTER);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_IDLE",
+          "source": "case ENUM.gameState.FREEGAME_IDLE:\"0\"===self.slotGame.serverResponse.triggerId&&(state.cfg.disableContinueBtn=!0),self.addFGmeterDelay(!0),self.slotGame.inRecovery&&(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal()),2==self.slotGame.serverResponse.triggerId&&(state.skipRoundEnd=!0),self.recoverCascadeReel(game.slotGame.serverResponse.gsd.fieldValues.CRR);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_PRE_SPIN",
+          "source": "case ENUM.gameState.FREEGAME_PRE_SPIN:playedCascade=!1,secondaryReelGate_FG.reset(),featureGate.reset(),\"0|\"!=self.slotGame.serverResponse.featureId&&\"0|1|\"!=self.slotGame.serverResponse.featureId&&showMegawaysContainer(!1),stoppedCalledHack=!1,\"0\"===self.slotGame.serverResponse.triggerId&&game.slotGame.ui.enableQuickStop(!1),\"0\"!=self.slotGame.serverResponse.triggerId,self.slotGame.reelManager.showAllSymbols(),\"1|0|\"==self.slotGame.serverResponse.featureId||\"1|\"==self.slotGame.serverResponse.featureId||\"2|1|0|\"==self.slotGame.serverResponse.featureId||\"2|1|\"==self.slotGame.serverResponse.featureId?(cartFeature.spinOut(),self.slotGame.reelManager.changeSettingsSafe(!1)):(reactionTriggered=!0,self.slotGame.reelManager.changeSettingsSafe(!0)),cascadeFeature.resetSymbolAlpha(),fgMeters.updateRightCounter(!0),\"0|\"==self.slotGame.serverResponse.featureId&&self.countScatters()&&!windupTriggered&&(self.playReactionAnticipation(),result=ENUM.SKIP_DEFAULT_ENTER);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SPINNING",
+          "source": "case ENUM.gameState.FREEGAME_SPINNING:cartFeature.isRunning();break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SPINNING_STOP",
+          "source": "case ENUM.gameState.FREEGAME_SPINNING_STOP:self.isReactionSpin();break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_POST_SPIN",
+          "source": "case ENUM.gameState.FREEGAME_POST_SPIN:reactionTriggered=!1,NOVA.config.ui.quickStopAvailable&&game.slotGame.ui.enableQuickStop(!0),self.slotGame.reelManager.setNumVisibleSymbols(self.slotGame.serverResponse.gsd.fieldValues.DPR),featureGate.fire(0),\"0|1|\"==self.slotGame.serverResponse.featureId?cartFeature.playFG():\"1|0|\"==self.slotGame.serverResponse.featureId&&cartFeature.playFG(),self.slotGame.serverResponse.freeGameTrigger>1&&(\"1|0|\"==self.slotGame.serverResponse.featureId?\"2\"!=self.slotGame.serverResponse.fgMultiplier&&featureManager.queueRetrigger():featureManager.queueRetrigger()),cascadeFeature.postSpinStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.CSD,self.slotGame.serverResponse.gsd.fieldValues.DPR),result=ENUM.SKIP_DEFAULT_ENTER;break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_WIN",
+          "source": "case ENUM.gameState.FREEGAME_WIN:\"0\"===self.slotGame.serverResponse.triggerId&&(state.cfg.disableContinueBtn=!0),self.addFGmeterDelay(!0),self.recoverCascadeReel(game.slotGame.serverResponse.gsd.fieldValues.CRR),self.slotGame.inRecovery?(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),!self.slotGame.serverResponse.gsd.fieldValues.MTP&&\"1\"==self.slotGame.serverResponse.triggerId&&self.slotGame.serverResponse.freeGameTrigger>1&&0==self.slotGame.serverResponse.currentFreeGame?(self.freeGameIntroChoreography(),result=ENUM.SKIP_DEFAULT_ENTER):self.slotGame.serverResponse.freeGameTrigger>1&&(result=ENUM.SKIP_DEFAULT_ENTER,TweenMax.delayedCall(.005,self.slotGame.fireEvent,[\"END_RETRIGGER_RECOVERY\"])),\"0|\"==self.slotGame.serverResponse.featureId||(self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),fgMeters.updateLeftCounter(parseInt(self.slotGame.serverResponse.fgMultiplier))),TweenMax.delayedCall(.002,cascadeFeature.winStateBehaviour,[self.slotGame.serverResponse.gsd.fieldValues.DPR]),self.setMegawaysTotal()):(2==self.slotGame.serverResponse.triggerId&&(state.skipRoundEnd=!0),cascadeFeature.winStateBehaviour(self.slotGame.serverResponse.gsd.fieldValues.DPR));break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SUMMARY",
+          "source": "case ENUM.gameState.FREEGAME_SUMMARY:2==self.slotGame.serverResponse.triggerId?TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_SUMMARY_NO_ROUND_END\"]):\"0|\"!=game.slotGame.serverResponse.featureId&&game.slotGame.serverResponse.gsd.fieldValues.MTP?(self.freeGameSummaryChoreography(),snakeStrikeFeature.showSnakes(!1)):TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_FREE_GAME_SUMMARY\"]);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FEATURE_INTRO",
+          "source": "case ENUM.gameState.FEATURE_INTRO:snakeStrikeFeature.showSnakes(!1),featureID=self.slotGame.featureData.currentFeatureGame,2==featureID&&(pickIntroAnim.start(),pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.start(self.slotGame.featureData.numPicks,self.slotGame.featureData.numRounds,self.slotGame.featureData.numPicksPerRound),self.slotGame.ui.showSpinGroup(!1)),self.slotGame.inRecovery&&(self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal());break;"
+        },
+        {
+          "selector": "ENUM.gameState.FEATURE_PRE_PICK",
+          "source": "case ENUM.gameState.FEATURE_PRE_PICK:featureID=self.slotGame.featureData.currentFeatureGame,self.slotGame.inRecovery?(backgroundAnims.setFreeGameBackground(!0,!0),self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0),snakeStrikeFeature.showSnakes(!0),gameSound.playAmbientFreeGame(),self.setMegawaysTotal(),2==featureID&&(pickFeature.numberOfRound=self.slotGame.featureData.numRounds,pickFeature.numberOfPickPerRound=self.slotGame.featureData.numPicksPerRound,pickFeature.currentPick=self.slotGame.featureData.currentFeaturePick-1,pickFeature.currentRound=self.slotGame.featureData.currentFeatureRound,pickFeature.numPicks=self.slotGame.featureData.numPicksPerRound[pickFeature.currentRound-1],pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.setValues(self.slotGame.serverResponse.freeGameTotalWin,self.slotGame.serverResponse.gsd.fieldValues.MTW,self.slotGame.serverResponse.gsd.fieldValues.MOS),pickFeature.show(!0))):2==featureID&&0==pickFeature.currentPick&&1==pickFeature.currentRound&&(pickFeature.totalPrize=self.slotGame.featureData.winAmount,pickFeature.prizePerRound=self.slotGame.featureData.winAmountPerRound,pickFeature.setValues(self.slotGame.serverResponse.freeGameTotalWin,self.slotGame.serverResponse.gsd.fieldValues.MTW,self.slotGame.serverResponse.gsd.fieldValues.MOS),pickFeature.show(!0));break;"
+        },
+        {
+          "selector": "ENUM.gameState.FEATURE_POST_PICK",
+          "source": "case ENUM.gameState.FEATURE_POST_PICK:if(featureID=self.slotGame.featureData.currentFeatureGame,self.slotGame.inRecovery){self.slotGame.serverResponse.gsd.fieldValues.MSS&&snakeStrikeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MSS),self.slotGame.serverResponse.gsd.fieldValues.MWP&&medusasGazeFeature.recoverFeature(self.slotGame.serverResponse.gsd.fieldValues.MWP),TweenMax.delayedCall(1,fgMeters.resetCounters,null,this,!0),self.showBuyPass(!1),backgroundAnims.setFreeGameBackground(!0,!0);var pick=self.slotGame.featureData.featurePickMade;pick&&(pick=parseInt(pick),playFeatureAgain=0===pick),2==featureID&&(pickFeature.show(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_RECOVERY\"]),result=ENUM.SKIP_DEFAULT_ENTER)}else 2==featureID&&(self.slotGame.featureData.currentFeaturePick<=self.slotGame.featureData.numPicksPerRound[self.slotGame.featureData.currentFeatureRound-1]?(pickFeature.currentPick=self.slotGame.featureData.currentFeaturePick-1,pickFeature.currentRound=self.slotGame.featureData.currentFeatureRound,pickFeature.numPicks=self.slotGame.featureData.numPicksPerRound[pickFeature.currentRound-1],pickFeature.numberOfRound=self.slotGame.featureData.numRounds,pickFeature.updateText(),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"MORE_PICKS\"])):(pickFeature.updateText(),pickFeature.show(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_POST_PICK\"])));break;"
+        },
+        {
+          "selector": "ENUM.gameState.FEATURE_SUMMARY",
+          "source": "case ENUM.gameState.FEATURE_SUMMARY:playFeatureAgain?(snakeStrikeFeature.showSnakes(!0),fgMeters.resetCounters(),TweenMax.delayedCall(2,self.slotGame.fireEvent,[\"CLOSE_FEATURE_SUMMARY\"])):(self.freeGameSummaryChoreography(),snakeStrikeFeature.showSnakes(!1)),result=ENUM.SKIP_DEFAULT_ENTER;break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_INTRO",
+          "source": "case ENUM.gameState.GAMBLE_INTRO:self.slotGame.reelManager.show(!1),gamble.load(self.gambleNotify,function(){gamble.show(!0),gamble.readyToPick(),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"CLOSE_GAMBLE_INTRO\"])});break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_PRE_PICK",
+          "source": "case ENUM.gameState.GAMBLE_PRE_PICK:self.slotGame.inRecovery?gamble.load(self.gambleNotify,function(){self.slotGame.serverResponse.gamble.available&&self.slotGame.serverResponse.gamble.count<gamble.countLimit?(gamble.enableUI(!0),gamble.show(!0),self.slotGame.reelManager.show(!1)):(gamble.enableUI(!1),TweenMax.delayedCall(.01,self.slotGame.fireEvent,[\"TAKE_WIN\"])),gamble.processStart(self.slotGame.serverResponse),gamble.readyToPick()}):(gamble.enableUI(!0),gamble.readyToPick());break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_PICK",
+          "source": "case ENUM.gameState.GAMBLE_PICK:gamble.enableUI(!1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_POST_PICK",
+          "source": "case ENUM.gameState.GAMBLE_POST_PICK:gamble.processPickResult(self.slotGame.serverResponse),result=ENUM.SKIP_DEFAULT_ENTER;break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_SUMMARY",
+          "source": "case ENUM.gameState.GAMBLE_SUMMARY:gamble.show(!1),self.slotGame.reelManager.show(!0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BUY_FEATURE",
+          "source": "case ENUM.gameState.BUY_FEATURE:self.slotGame.winManager.stopWin(),self.slotGame.ui.showSpinGroup(!1),self.slotGame.metersManager.balanceMeter.setValue(self.slotGame.account.getBalance()),self.slotGame.oldBalance=self.slotGame.account.getBalance(),self.slotGame.account.clearWin(),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.slotGame.account.getWin()),self.slotGame.metersManager.winMeter.hide(),self.slotGame.messageBar.displayWinText(!1),self.slotGame.messageBar.showLeftText(!1),TweenMax.delayedCall(.2,function(){self.buyPassPanel.show(),self.updateBuyPass(),self.buyPassPanel.setValue(self.buyPass.txtBuyPass.getValue()),gameSound.playAmbientBuyPass(),gameSound.stopAmbientBaseGame()})"
+        }
+      ]
+    },
+    {
+      "target": "this.slotGame.api_handleEvent",
+      "sourceStart": 1929860,
+      "sourceEnd": 1934378,
+      "source": "function(state,event,param){var exitCode=ENUM.XC_NULL,handleResponse=game.slotGame.serverResponse;switch(state.id){case ENUM.gameState.INIT:\"MSG\"==event&&(initGSD=handleResponse.gsd,self.initDefBetAndPassValues());break;case ENUM.gameState.GAME_INTRO:if(\"CLOSE_GAME_INTRO\"==event){var introSR=self.slotGame.serverResponse;\"1|\"==introSR.featureId||\"0|1|\"==introSR.featureId||\"1|0|\"==introSR.featureId||\"2|1|\"==introSR.featureId?(0==introSR.currentFreeGame&&introSR.freeGameTrigger>=10||backgroundAnims.setFreeGameBackground(!0,!0),self.showBuyPass(!1),gameSound.playAmbientFreeGame()):gameSound.playAmbientBaseGame()}break;case ENUM.gameState.FREE_ROUND_OPTION:TweenMax.delayedCall(1,function(){self.slotGame.reelManager.updateNumVisibleSymbols(initGSD.fieldValues.DPR)},null,this,!0);break;case ENUM.gameState.BASE_IDLE:switch(event){case\"BIG_WIN_COMPLETED\":}break;case ENUM.gameState.BASE_SPINNING_START:switch(event){case\"MSG\":self.slotGame.reelManager.setNumVisibleSymbols(handleResponse.gsd.fieldValues.DPR),cartFeature.saveStops(handleResponse.gsd.fieldValues.SRS),secondaryReelGate.fire(0),featureManager.saveFeatures(handleResponse.gsd.fieldValues);break;case\"BIG_WIN_COMPLETED\":}\"SECONDARY_REEL_CLEARED\"==event&&secondaryReelGate.fire(1);break;case ENUM.gameState.BASE_SPINNING:break;case ENUM.gameState.BASE_SPINNING_STOP:\"SECONDARY_REEL_SPIN_IN_COMPLETED\"==event&&featureGate.fire(1);break;case ENUM.gameState.BASE_POST_SPIN:\"SECONDARY_REEL_SPIN_IN_COMPLETED\"==event&&featureGate.fire(1);break;case ENUM.gameState.BASE_WIN:switch(event){case\"BIG_WIN_COMPLETED\":break;case\"WINTUNE_SOUND\":gameSound.playWintune(param.soundId)}break;case ENUM.gameState.FREEGAME_INTRO:\"CLOSE_FREE_GAME_INTRO\"==event&&(introPanel.show(!1),exitCode=0);break;case ENUM.gameState.FREEGAME_IDLE:if(\"BIG_WIN_COMPLETED\"==event)return void(handleResponse.numberFreeGames>0);break;case ENUM.gameState.FREEGAME_PRE_SPIN:break;case ENUM.gameState.FREEGAME_SPINNING_START:\"MSG\"==event&&(self.slotGame.reelManager.setNumVisibleSymbols(self.slotGame.serverResponse.gsd.fieldValues.DPR),featureManager.saveFeatures(handleResponse.gsd.fieldValues),cartFeature.saveStops(handleResponse.gsd.fieldValues.SRS),secondaryReelGate_FG.fire(0));break;case ENUM.gameState.FREEGAME_SPINNING:\"SECONDARY_REEL_SKIPPED\"==event&&self.slotGame.fireEvent(\"END_FREEGAME_SPIN\"),\"SECONDARY_REEL_CLEARED\"==event&&self.slotGame.fireEvent(\"END_FREEGAME_SPIN\");break;case ENUM.gameState.FREEGAME_SPINNING_STOP:break;case ENUM.gameState.FREEGAME_POST_SPIN:\"CASCADE_COMPLETED\"==event&&(playedCascade=!0,featureGate.fire(1)),\"CASCADE_STARTED\"==event&&cartFeature.playFG(),\"CLOSE_POST_SPIN\"==event&&(exitCode=self.slotGame.serverResponse.currentWin>0?1:0);break;case ENUM.gameState.FREEGAME_WIN:var winLevel=self.slotGame.winManager.getWinLevel(handleResponse.triggerId,!1);switch(event){case\"START_ROLLUP_SOUND\":winLevel.isBigWin||gameSound.playRollUp();break;case\"STOP_ROLLUP_SOUND\":gameSound.stopRollUp();break;case\"BIG_WIN_COMPLETED\":handleResponse.numberFreeGames>0;break;case\"WINTUNE_SOUND\":param.isBigWin&&gameSound.playWintune(param.soundId)}\"WIN_COMPLETE\"==event&&\"0|1|\"==handleResponse.featureId&&\"MULT_COMPLETE\"!=param&&(fgMultiplierAnim.start(),exitCode=-2),\"CLOSE_FREE_GAME_INTRO\"==event&&(introPanel.show(!1),state.enter()),\"END_RETRIGGER_RECOVERY\"==event&&state.enter();break;case ENUM.gameState.FREEGAME_SUMMARY:\"CLOSE_FREE_GAME_SUMMARY\"==event&&(self.showBuyPass(!0),summaryPanel.show(!1),backgroundAnims.setFreeGameBackground(!1,!1),\"0|\"!=handleResponse.featureId&&(gameSound.stopSummaryFreeGames(),gameSound.playAmbientBaseGame(),self.queueRandomAmbienceSound()),exitCode=ENUM.XC_NULL);break;case ENUM.gameState.FEATURE_SUMMARY:\"CLOSE_FEATURE_SUMMARY\"==event&&(self.slotGame.ui.showSpinGroup(!0),exitCode=0),\"CLOSE_FREE_GAME_SUMMARY\"==event&&(self.slotGame.ui.showSpinGroup(!0),self.showBuyPass(!0),self.slotGame.metersManager.balanceMeter.snapTo(self.slotGame.account.getBalance()),exitCode=2);break;case ENUM.gameState.GAMBLE_START:\"MSG\"==event&&gamble.processStart(self.slotGame.serverResponse);break;case ENUM.gameState.GAMBLE_SUMMARY:\"TAKE_WIN\"==event&&gamble.show(!1);break;case ENUM.gameState.BUY_FEATURE:\"CANCEL\"==event&&self.buyPassPanel.hide(),\"BUY\"==event&&introPanel.setBuy()}if(\"SOUND_LOADED\"===event){var soundFG=!0;handleResponse.inFreeGames&&\"0|\"!=handleResponse.featureId?handleResponse.inFreeGames&&self.freeGamesEnded&&(soundFG=!1):soundFG=!1,\"1|\"==handleResponse.featureId&&(soundFG=!0),self.checkSoundLoaded(soundFG)}return exitCode}",
+      "fragmentSHA256": "2c752c773308c628817bf05adf1f3fd4d2b4564391ee320f16ace243a151de9a",
+      "cases": [
+        {
+          "selector": "ENUM.gameState.INIT",
+          "source": "case ENUM.gameState.INIT:\"MSG\"==event&&(initGSD=handleResponse.gsd,self.initDefBetAndPassValues());break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAME_INTRO",
+          "source": "case ENUM.gameState.GAME_INTRO:if(\"CLOSE_GAME_INTRO\"==event){var introSR=self.slotGame.serverResponse;\"1|\"==introSR.featureId||\"0|1|\"==introSR.featureId||\"1|0|\"==introSR.featureId||\"2|1|\"==introSR.featureId?(0==introSR.currentFreeGame&&introSR.freeGameTrigger>=10||backgroundAnims.setFreeGameBackground(!0,!0),self.showBuyPass(!1),gameSound.playAmbientFreeGame()):gameSound.playAmbientBaseGame()}break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREE_ROUND_OPTION",
+          "source": "case ENUM.gameState.FREE_ROUND_OPTION:TweenMax.delayedCall(1,function(){self.slotGame.reelManager.updateNumVisibleSymbols(initGSD.fieldValues.DPR)},null,this,!0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_IDLE",
+          "source": "case ENUM.gameState.BASE_IDLE:switch(event){case\"BIG_WIN_COMPLETED\":}break;"
+        },
+        {
+          "selector": "\"BIG_WIN_COMPLETED\"",
+          "source": "case\"BIG_WIN_COMPLETED\":"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_SPINNING_START",
+          "source": "case ENUM.gameState.BASE_SPINNING_START:switch(event){case\"MSG\":self.slotGame.reelManager.setNumVisibleSymbols(handleResponse.gsd.fieldValues.DPR),cartFeature.saveStops(handleResponse.gsd.fieldValues.SRS),secondaryReelGate.fire(0),featureManager.saveFeatures(handleResponse.gsd.fieldValues);break;case\"BIG_WIN_COMPLETED\":}\"SECONDARY_REEL_CLEARED\"==event&&secondaryReelGate.fire(1);break;"
+        },
+        {
+          "selector": "\"MSG\"",
+          "source": "case\"MSG\":self.slotGame.reelManager.setNumVisibleSymbols(handleResponse.gsd.fieldValues.DPR),cartFeature.saveStops(handleResponse.gsd.fieldValues.SRS),secondaryReelGate.fire(0),featureManager.saveFeatures(handleResponse.gsd.fieldValues);break;"
+        },
+        {
+          "selector": "\"BIG_WIN_COMPLETED\"",
+          "source": "case\"BIG_WIN_COMPLETED\":"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_SPINNING",
+          "source": "case ENUM.gameState.BASE_SPINNING:break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_SPINNING_STOP",
+          "source": "case ENUM.gameState.BASE_SPINNING_STOP:\"SECONDARY_REEL_SPIN_IN_COMPLETED\"==event&&featureGate.fire(1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_POST_SPIN",
+          "source": "case ENUM.gameState.BASE_POST_SPIN:\"SECONDARY_REEL_SPIN_IN_COMPLETED\"==event&&featureGate.fire(1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BASE_WIN",
+          "source": "case ENUM.gameState.BASE_WIN:switch(event){case\"BIG_WIN_COMPLETED\":break;case\"WINTUNE_SOUND\":gameSound.playWintune(param.soundId)}break;"
+        },
+        {
+          "selector": "\"BIG_WIN_COMPLETED\"",
+          "source": "case\"BIG_WIN_COMPLETED\":break;"
+        },
+        {
+          "selector": "\"WINTUNE_SOUND\"",
+          "source": "case\"WINTUNE_SOUND\":gameSound.playWintune(param.soundId)"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_INTRO",
+          "source": "case ENUM.gameState.FREEGAME_INTRO:\"CLOSE_FREE_GAME_INTRO\"==event&&(introPanel.show(!1),exitCode=0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_IDLE",
+          "source": "case ENUM.gameState.FREEGAME_IDLE:if(\"BIG_WIN_COMPLETED\"==event)return void(handleResponse.numberFreeGames>0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_PRE_SPIN",
+          "source": "case ENUM.gameState.FREEGAME_PRE_SPIN:break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SPINNING_START",
+          "source": "case ENUM.gameState.FREEGAME_SPINNING_START:\"MSG\"==event&&(self.slotGame.reelManager.setNumVisibleSymbols(self.slotGame.serverResponse.gsd.fieldValues.DPR),featureManager.saveFeatures(handleResponse.gsd.fieldValues),cartFeature.saveStops(handleResponse.gsd.fieldValues.SRS),secondaryReelGate_FG.fire(0));break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SPINNING",
+          "source": "case ENUM.gameState.FREEGAME_SPINNING:\"SECONDARY_REEL_SKIPPED\"==event&&self.slotGame.fireEvent(\"END_FREEGAME_SPIN\"),\"SECONDARY_REEL_CLEARED\"==event&&self.slotGame.fireEvent(\"END_FREEGAME_SPIN\");break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SPINNING_STOP",
+          "source": "case ENUM.gameState.FREEGAME_SPINNING_STOP:break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_POST_SPIN",
+          "source": "case ENUM.gameState.FREEGAME_POST_SPIN:\"CASCADE_COMPLETED\"==event&&(playedCascade=!0,featureGate.fire(1)),\"CASCADE_STARTED\"==event&&cartFeature.playFG(),\"CLOSE_POST_SPIN\"==event&&(exitCode=self.slotGame.serverResponse.currentWin>0?1:0);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_WIN",
+          "source": "case ENUM.gameState.FREEGAME_WIN:var winLevel=self.slotGame.winManager.getWinLevel(handleResponse.triggerId,!1);switch(event){case\"START_ROLLUP_SOUND\":winLevel.isBigWin||gameSound.playRollUp();break;case\"STOP_ROLLUP_SOUND\":gameSound.stopRollUp();break;case\"BIG_WIN_COMPLETED\":handleResponse.numberFreeGames>0;break;case\"WINTUNE_SOUND\":param.isBigWin&&gameSound.playWintune(param.soundId)}\"WIN_COMPLETE\"==event&&\"0|1|\"==handleResponse.featureId&&\"MULT_COMPLETE\"!=param&&(fgMultiplierAnim.start(),exitCode=-2),\"CLOSE_FREE_GAME_INTRO\"==event&&(introPanel.show(!1),state.enter()),\"END_RETRIGGER_RECOVERY\"==event&&state.enter();break;"
+        },
+        {
+          "selector": "\"START_ROLLUP_SOUND\"",
+          "source": "case\"START_ROLLUP_SOUND\":winLevel.isBigWin||gameSound.playRollUp();break;"
+        },
+        {
+          "selector": "\"STOP_ROLLUP_SOUND\"",
+          "source": "case\"STOP_ROLLUP_SOUND\":gameSound.stopRollUp();break;"
+        },
+        {
+          "selector": "\"BIG_WIN_COMPLETED\"",
+          "source": "case\"BIG_WIN_COMPLETED\":handleResponse.numberFreeGames>0;break;"
+        },
+        {
+          "selector": "\"WINTUNE_SOUND\"",
+          "source": "case\"WINTUNE_SOUND\":param.isBigWin&&gameSound.playWintune(param.soundId)"
+        },
+        {
+          "selector": "ENUM.gameState.FREEGAME_SUMMARY",
+          "source": "case ENUM.gameState.FREEGAME_SUMMARY:\"CLOSE_FREE_GAME_SUMMARY\"==event&&(self.showBuyPass(!0),summaryPanel.show(!1),backgroundAnims.setFreeGameBackground(!1,!1),\"0|\"!=handleResponse.featureId&&(gameSound.stopSummaryFreeGames(),gameSound.playAmbientBaseGame(),self.queueRandomAmbienceSound()),exitCode=ENUM.XC_NULL);break;"
+        },
+        {
+          "selector": "ENUM.gameState.FEATURE_SUMMARY",
+          "source": "case ENUM.gameState.FEATURE_SUMMARY:\"CLOSE_FEATURE_SUMMARY\"==event&&(self.slotGame.ui.showSpinGroup(!0),exitCode=0),\"CLOSE_FREE_GAME_SUMMARY\"==event&&(self.slotGame.ui.showSpinGroup(!0),self.showBuyPass(!0),self.slotGame.metersManager.balanceMeter.snapTo(self.slotGame.account.getBalance()),exitCode=2);break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_START",
+          "source": "case ENUM.gameState.GAMBLE_START:\"MSG\"==event&&gamble.processStart(self.slotGame.serverResponse);break;"
+        },
+        {
+          "selector": "ENUM.gameState.GAMBLE_SUMMARY",
+          "source": "case ENUM.gameState.GAMBLE_SUMMARY:\"TAKE_WIN\"==event&&gamble.show(!1);break;"
+        },
+        {
+          "selector": "ENUM.gameState.BUY_FEATURE",
+          "source": "case ENUM.gameState.BUY_FEATURE:\"CANCEL\"==event&&self.buyPassPanel.hide(),\"BUY\"==event&&introPanel.setBuy()"
+        }
+      ]
+    },
+    {
+      "target": "this.pickSelect",
+      "sourceStart": 1938518,
+      "sourceEnd": 1939129,
+      "source": "function(pickRound,pickNumber,option){if(\"0\"==option){fgMeters.resetCounters(),self.slotGame.account.clearWin();var triggerWin=parseInt(self.slotGame.serverResponse.gsd.fieldValues.MTW);self.slotGame.account.addWin(triggerWin?triggerWin:0),self.slotGame.metersManager.winMeter.setValue(triggerWin?triggerWin:0),triggerWin>0&&self.slotGame.metersManager.winMeter.show(),playFeatureAgain=!0}else playFeatureAgain=!1;self.slotGame.featureData.round=pickRound,self.slotGame.featureData.pick=pickNumber,self.slotGame.featureData.pickValue=option,self.slotGame.fireEvent(\"CLOSE_PRE_PICK\"),gameSound.stopFeatureLoop()}",
+      "fragmentSHA256": "404c3822e846409e35c713499e0f2edf1c7c49cb5854607359e36f8bde34d90d",
+      "cases": []
+    }
+  ],
+  "SDKExecuted": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBReads": 0,
+  "productionAdmission": false
+}

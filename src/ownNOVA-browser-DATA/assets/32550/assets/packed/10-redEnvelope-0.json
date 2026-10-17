@@ -1,0 +1,92 @@
+{"frames": {
+
+"envelopeBack":
+{
+	"frame": {"x":1,"y":603,"w":522,"h":774},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":10,"w":522,"h":774},
+	"sourceSize": {"w":530,"h":784}
+},
+"envelopeFlapBack":
+{
+	"frame": {"x":506,"y":1847,"w":502,"h":77},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":502,"h":77},
+	"sourceSize": {"w":502,"h":77}
+},
+"envelopeFlapFront":
+{
+	"frame": {"x":506,"y":1926,"w":502,"h":77},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":502,"h":77},
+	"sourceSize": {"w":502,"h":77}
+},
+"envelopeFront":
+{
+	"frame": {"x":1,"y":1379,"w":503,"h":753},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":16,"w":503,"h":753},
+	"sourceSize": {"w":530,"h":784}
+},
+"envelopeLetter":
+{
+	"frame": {"x":525,"y":603,"w":491,"h":739},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":23,"w":491,"h":739},
+	"sourceSize": {"w":530,"h":784}
+},
+"envelopeLetterBlurred":
+{
+	"frame": {"x":857,"y":1,"w":127,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":6,"w":127,"h":216},
+	"sourceSize": {"w":140,"h":228}
+},
+"envelopeLetterMove":
+{
+	"frame": {"x":728,"y":1,"w":127,"h":218},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":5,"w":127,"h":218},
+	"sourceSize": {"w":140,"h":228}
+},
+"envelopeLetterSpin":
+{
+	"frame": {"x":586,"y":1,"w":140,"h":227},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":140,"h":227},
+	"sourceSize": {"w":140,"h":228}
+},
+"godrays":
+{
+	"frame": {"x":1,"y":1,"w":583,"h":600},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":583,"h":600},
+	"sourceSize": {"w":583,"h":600}
+},
+"godraysBlurred":
+{
+	"frame": {"x":525,"y":1344,"w":488,"h":501},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":0,"w":488,"h":501},
+	"sourceSize": {"w":553,"h":501}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-redEnvelope-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1017,"h":2133},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e6b1495b2a698ea51a17af0854477387:f90fe445da7a5bb8a7cf3ff12ab0a8fd:74d54bfe151d8459557ecec0f0b6bf22$"
+}
+}

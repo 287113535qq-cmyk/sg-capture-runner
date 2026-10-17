@@ -1,0 +1,49 @@
+{
+  "at": 1792187385.673377,
+  "gameId": "32550",
+  "originalOwnIndexSHA256": "a1ea376c2880725b56da720b93496ae697d5e75541e87e8edc1b11cecc585aab",
+  "rows": [
+    {
+      "family": "Frutiger Black",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-Black.woff2",
+      "bytes": 113644,
+      "SHA256": "353251e7ee9d4ecaad7d5e6a45c634bd6a566cb979881820ebbbbac259edd246",
+      "originalOwnHTMLCSSFaceSHA256": "43c37bf1f85d8c12fc41f0d4597ae6b19b6167ecdded3d4b2d178b3025f61f1a"
+    },
+    {
+      "family": "Frutiger Bold",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-Bold.woff2",
+      "bytes": 109492,
+      "SHA256": "6b57d237af2195d4369d910ff5194640bc10980aef6825b21012f2f24a186df7",
+      "originalOwnHTMLCSSFaceSHA256": "8c02de028f9b43e0eea9822416337f20443eb90d9499478c089c42a246c17227"
+    },
+    {
+      "family": "Frutiger Regular",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-Regular.woff2",
+      "bytes": 108428,
+      "SHA256": "2fe46daf76b756287bbe97a5624415a7bb4a078bea4b353a75abb188e75f5f4b",
+      "originalOwnHTMLCSSFaceSHA256": "bf4022a7d7dee684faea32192f333eb0ead757cb2ccffb2e4d23610071ed22dd"
+    },
+    {
+      "family": "Frutiger Medium",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-Regular.woff2",
+      "bytes": 108428,
+      "SHA256": "2fe46daf76b756287bbe97a5624415a7bb4a078bea4b353a75abb188e75f5f4b",
+      "originalOwnHTMLCSSFaceSHA256": "e9972df20d4c6cc4f1328b5a52b12e5d14195e04178f474c08f83d90ee4382a0"
+    }
+  ],
+  "declaredButNotPresentAndNotInvented": [
+    {
+      "family": "Frutiger It",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-It.woff2"
+    },
+    {
+      "family": "Frutiger BookIt",
+      "relative": "assets/fonts/standard/NeueFrutigerWorld-BookIt.woff2"
+    }
+  ],
+  "FrutigerLightNotDeclaredAndNotInvented": true,
+  "actualNativeOriginalFontFamiliesOnly": true,
+  "sourceRequests": 0,
+  "SDKASTRepeated": false
+}

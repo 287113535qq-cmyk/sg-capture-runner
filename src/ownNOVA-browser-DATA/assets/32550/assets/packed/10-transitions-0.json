@@ -1,0 +1,20 @@
+{"frames": {
+
+"IMG_REDCOIN":
+{
+	"frame": {"x":1,"y":1,"w":78,"h":81},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":81},
+	"sourceSize": {"w":78,"h":82}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-transitions-0.png",
+	"format": "RGBA8888",
+	"size": {"w":80,"h":83},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:ce433164618122065be251a4637ae221:982c2ccb448f7dd4e9634fa5d0e403c4:7db1b0af71a28ed1f3f88cad53e0ccb1$"
+}
+}

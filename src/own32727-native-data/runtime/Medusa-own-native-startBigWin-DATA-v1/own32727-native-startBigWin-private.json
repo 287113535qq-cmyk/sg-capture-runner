@@ -1,0 +1,17 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "rows": [
+    {
+      "name": "startBigWin",
+      "sourceStart": 1941531,
+      "sourceEnd": 1941602,
+      "source": "function(credits){credits>15*game.slotGame.account.getTotalBetAmount()}",
+      "fragmentSHA256": "692f4f9f94ea1f94470632b2a19a33d4a3758ef1b66b00058b7d7e1ad5505363"
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

@@ -1,0 +1,64 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "owner": "NovaReel",
+      "name": "hideEffectsLayerSlots",
+      "offset": 1628637,
+      "inputFile": "new-NovaReel-hideEffectsLayerSlots.js",
+      "source": "function(){for(var i=0,l=this.slots.length;i<l;i++)this.getSlotByIndex(i).isOversize()||this.getSlotByIndex(i).hideEffectsLayer()}",
+      "SHA256": "0227f5fe5e00989291ab1f423e81fa705c1d8f05a794ecea55bde80026a7a974"
+    },
+    {
+      "owner": "NovaReel",
+      "name": "showAllSymbols",
+      "offset": 1629060,
+      "inputFile": "new-NovaReel-showAllSymbols.js",
+      "source": "function(){for(var i=0,l=this.slots.length;i<l;i++)this.getSlotByIndex(i).hideSymbol(!1)}",
+      "SHA256": "010da8a8a65e0d31589c6f6ef0cc66ea2d9e5d04ee01f791b59a9a2896101b91"
+    },
+    {
+      "owner": "NovaReel",
+      "name": "stopAllSRSslotAnimations",
+      "offset": 1628332,
+      "inputFile": "new-NovaReel-stopAllSRSslotAnimations.js",
+      "source": "function(){for(var i=0,l=this.slots.length;i<l;i++)this.getSlotByIndex(i).isSRS()&&(this.reelConfig.enableDimming&&!this.getSlotByIndex(i).isOversize()?this.getSlotByIndex(i).showSlotEffectLayer(!1,\"SRS\",null,!1):this.getSlotByIndex(i).stopAnimation(\"SRS\",null))}",
+      "SHA256": "732229ab5229dd02fb51e43a14520e1f09237385fdcebad1a0a46b64bdf4fbf8"
+    },
+    {
+      "owner": "NovaSlotObject",
+      "name": "hideEffectsLayer",
+      "offset": 1611506,
+      "inputFile": "new-NovaSlotObject-hideEffectsLayer.js",
+      "source": "function(){this.effectObject&&this.showSlotEffectLayer(!1,\"ALL\")}",
+      "SHA256": "0868da02374652ebd3dcf13e00bde55d866c8016eba93aaa23ed07d6a25fa188"
+    },
+    {
+      "owner": "NovaSlotObject",
+      "name": "stopAnimation",
+      "offset": 1611611,
+      "inputFile": "new-NovaSlotObject-stopAnimation.js",
+      "source": "function(actionString,configObj){this.effectObject&&this.effectObject.stopAnimation_api(actionString,configObj),this.currentSymbolObj.stopAnimation_api(actionString,configObj)}",
+      "SHA256": "ece25d112ad42b5dbff689854fdd70a01d399e19c19eb35ebc5ae59f4e1bec37"
+    },
+    {
+      "owner": "SymbolModule",
+      "name": "animate_api",
+      "offset": 1646266,
+      "inputFile": "new-SymbolModule-animate_api.js",
+      "source": "function(actionString,configObj){switch(actionString){case\"WIN\":break;case\"TRIGGER\":break;case\"HIGHLIGHT\":break;case\"SRS\":break;case\"REEL\":}}",
+      "SHA256": "7709bcf22f8283b148831be9156154dced5c0a3f9ccda81c17de5e7920576cf2"
+    },
+    {
+      "owner": "SymbolModule",
+      "name": "stopAnimation_api",
+      "offset": 1646449,
+      "inputFile": "new-SymbolModule-stopAnimation_api.js",
+      "source": "function(actionString,configObj){switch(actionString){case\"ALL\":break;case\"WIN\":break;case\"TRIGGER\":break;case\"HIGHLIGHT\":break;case\"SRS\":break;case\"REEL\":}}",
+      "SHA256": "d7aef48f1ab046873db0b2885ff00319b23eeeed4e0924840fd3eafd15c45b41"
+    }
+  ],
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "wholeSDKASTRepeated": false
+}

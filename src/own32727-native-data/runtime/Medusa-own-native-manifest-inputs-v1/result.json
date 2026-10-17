@@ -1,0 +1,130 @@
+{
+  "at": 1792129858.200083,
+  "gameId": "32727",
+  "manifestInputSHA256": "ca9b3df4ba0fa8549129378c5325a0d278b9cde9a1018b27b65798d70b4d5479",
+  "language": "en_us",
+  "inputs": [
+    {
+      "manifestIndex": 0,
+      "relative": "assets/slotConfig.json",
+      "resolvedPath": "assets/slotConfig.json",
+      "inputFile": "inputs/00.txt",
+      "kind": "exact-own-prior-raw-GET-cache",
+      "originalInputSHA256": "4b2d4efe69a33384930077a67c4a3802d06f4735bd992361dcb39eeaa9631dab",
+      "bytes": 16721,
+      "GETAttempts": 0,
+      "cachedSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-GDM-eight-real-entry-source-20261016\\own32727-missing-config-GET-once\\assets__slotConfig.json\\config-private.json"
+    },
+    {
+      "manifestIndex": 1,
+      "relative": "assets/titanConfig.json",
+      "resolvedPath": "assets/titanConfig.json",
+      "inputFile": "inputs/01.txt",
+      "kind": "exact-own-prior-raw-GET-cache",
+      "originalInputSHA256": "d82b914419f6be4133c42a9c3847fcbcb450acc073cec8795c4ce29454184df1",
+      "bytes": 15326,
+      "GETAttempts": 0,
+      "cachedSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-GDM-eight-real-entry-source-20261016\\own32727-missing-config-GET-once\\assets__titanConfig.json\\config-private.json"
+    },
+    {
+      "manifestIndex": 2,
+      "relative": "assets/gambleCardConfig.json",
+      "resolvedPath": "assets/gambleCardConfig.json",
+      "inputFile": "inputs/02.txt",
+      "kind": "exact-own-prior-raw-GET-cache",
+      "originalInputSHA256": "39e9ff48ca6b8586249b107dd0ab939f1099f5ef2fa7c27006c9feed97c86091",
+      "bytes": 5186,
+      "GETAttempts": 0,
+      "cachedSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-GDM-eight-real-entry-source-20261016\\own32727-missing-config-GET-once\\assets__gambleCardConfig.json\\config-private.json"
+    },
+    {
+      "manifestIndex": 3,
+      "relative": "gameConfig.json",
+      "resolvedPath": "gameConfig.json",
+      "inputFile": "inputs/03.txt",
+      "kind": "exact-own-prior-raw-GET-cache",
+      "originalInputSHA256": "0c33c7817bec436ab38dda2f76d4fb07697b4e6c3bd789e6a8fe294df420e8b2",
+      "bytes": 44418,
+      "GETAttempts": 0,
+      "cachedSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-GDM-eight-real-entry-source-20261016\\own32727-missing-config-GET-once\\gameConfig.json\\config-private.json"
+    },
+    {
+      "manifestIndex": 4,
+      "relative": "infoPages.json",
+      "resolvedPath": "infoPages.json",
+      "inputFile": "inputs/04.txt",
+      "kind": "first-own-missing-config-GET",
+      "status": 200,
+      "originalInputSHA256": "aae4bf2e0d72b4d11f9fcf10d74a210ce34cef24b2e708175797387456048f33",
+      "bytes": 12376,
+      "GETAttempts": 1,
+      "elapsedSeconds": 1.4248181999937515
+    },
+    {
+      "manifestIndex": 5,
+      "relative": "package.json",
+      "resolvedPath": "package.json",
+      "inputFile": "inputs/05.txt",
+      "kind": "exact-own-prior-raw-GET-cache",
+      "originalInputSHA256": "a80e1133b5091ca6ce82b53ff494aadb74e7d28b4940b951b6847834580237f8",
+      "bytes": 238,
+      "GETAttempts": 0,
+      "cachedSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-GDM-eight-real-entry-source-20261016\\own32727-missing-config-GET-once\\package.json\\config-private.json"
+    },
+    {
+      "manifestIndex": 6,
+      "relative": "assets/language/%LANG_CODE%/languageSlotCommon.json",
+      "resolvedPath": "assets/language/en_us/languageSlotCommon.json",
+      "inputFile": "inputs/06.txt",
+      "kind": "first-own-missing-config-GET",
+      "status": 200,
+      "originalInputSHA256": "de3b1082e56159e421219c74f25a23deb60aa052ecb9cbcc23b32e623e13792c",
+      "bytes": 8928,
+      "GETAttempts": 1,
+      "elapsedSeconds": 1.237197800001013
+    },
+    {
+      "manifestIndex": 7,
+      "relative": "assets/language/%LANG_CODE%/titanStyles.json",
+      "resolvedPath": "assets/language/en_us/titanStyles.json",
+      "inputFile": "inputs/07.txt",
+      "kind": "first-own-missing-config-GET",
+      "status": 200,
+      "originalInputSHA256": "58b8d74c8e8812c6e887a965d19754a8bc40e60d33d899b3e6b9fcfa5c36f356",
+      "bytes": 13,
+      "GETAttempts": 1,
+      "elapsedSeconds": 0.9585993000000599
+    },
+    {
+      "manifestIndex": 8,
+      "relative": "assets/language/%LANG_CODE%/languageGambleCommon.json",
+      "resolvedPath": "assets/language/en_us/languageGambleCommon.json",
+      "inputFile": "inputs/08.txt",
+      "kind": "first-own-missing-config-GET",
+      "status": 200,
+      "originalInputSHA256": "ce0ebd922b607b2165f4546b0d75f5dd96711f4b75bbf81e757fbde1f0b37232",
+      "bytes": 1290,
+      "GETAttempts": 1,
+      "elapsedSeconds": 0.5317762999984552
+    },
+    {
+      "manifestIndex": 9,
+      "relative": "assets/language/%LANG_CODE%/language.json",
+      "resolvedPath": "assets/language/en_us/language.json",
+      "inputFile": "inputs/09.txt",
+      "kind": "first-own-missing-config-GET",
+      "status": 200,
+      "originalInputSHA256": "2aba34fed6e37b51d51af6a77572d6c217262c12c0cb0a5811874459f302ae96",
+      "bytes": 17629,
+      "GETAttempts": 1,
+      "elapsedSeconds": 1.1719870000015362
+    }
+  ],
+  "ownCachedBodiesReused": 5,
+  "newMissingGETs": 5,
+  "allOwnBodiesPresent": true,
+  "providerGameplayRequests": 0,
+  "SDKRepeated": false,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

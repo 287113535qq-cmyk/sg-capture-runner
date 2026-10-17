@@ -1,0 +1,45 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "rows": [
+    {
+      "name": "addReelstripSet",
+      "sourceStart": 1604194,
+      "sourceEnd": 1604234,
+      "source": "function(set){this.reelStrips.push(set)}",
+      "fragmentSHA256": "0a04a11321b8b2171c4ba684f05508478dd7b7ccf137ac5b8ba6f0fdbc54ad0d"
+    },
+    {
+      "name": "setReelstrips",
+      "sourceStart": 1604271,
+      "sourceEnd": 1604397,
+      "source": "function(setIndex){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].setReelStrip(this.reelStrips[setIndex][i])}",
+      "fragmentSHA256": "ef547bb114d2de72d0c1709f114b01f60bc6963343f734426003ec81976a8581"
+    },
+    {
+      "name": "storeStopsLocally",
+      "sourceStart": 1604693,
+      "sourceEnd": 1604773,
+      "source": "function(aStops){this.reelStopsBackup=aStops.slice(),this.reelStopsArray=aStops}",
+      "fragmentSHA256": "f955464eabe2260d1c468a8133c1b38cf109377e2d2dcf3cba1f9aad3e9bf04c"
+    },
+    {
+      "name": "getReelStripClone",
+      "sourceStart": 1604941,
+      "sourceEnd": 1605032,
+      "source": "function(reelID,RSTindex){var clone=this.reelStrips[RSTindex][reelID].slice();return clone}",
+      "fragmentSHA256": "25e35c2c29252b0a57f3238f0d616cdcba0082e1e98f1b13945ef7cafa64119f"
+    },
+    {
+      "name": "getReelsStripsClone",
+      "sourceStart": 1605075,
+      "sourceEnd": 1605151,
+      "source": "function(RSTindex){var clone=this.reelStrips[RSTindex].slice();return clone}",
+      "fragmentSHA256": "9574997155c783e6568f4c0bafd1c5acbf40a53fcf33d56435c755abad85c3e5"
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

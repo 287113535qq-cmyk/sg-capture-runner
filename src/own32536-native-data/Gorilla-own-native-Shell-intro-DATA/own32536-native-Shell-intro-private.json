@@ -1,0 +1,59 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "rows": [
+    {
+      "name": "IntroPanel",
+      "sourceStart": 1852429,
+      "sourceEnd": 1856568,
+      "source": "function(){var self=this,initialized=!1,callback={},gameBounds={},portraitScale=.75,panelContainer={},objectsContainer=null,okBtn={},animTimeLine=null,closingTimeLine=null,textFreeGames={},textPressAnywhere={};this.init=function(callBackFunc){void 0!==callBackFunc&&(callback=callBackFunc),gameBounds=NOVA.getGameBounds(),panelContainer=new NovaContainer,panelContainer.novaName=\"Free Games Intro\",panelContainer.visible=!1,this.initOKButton(),initialized=!0},this.initBackground=function(){9==game.features.FID},this.initMainContent=function(){objectsContainer=new NovaContainer,textFreeGames=new NovaTextBox({text:\"TXT_FREEGAMES_INTRO\",padding:4,anchor:{x:.5,y:.5}}),textFreeGames.setPositionXY(450,190),textPressAnywhere=new NovaTextBox({text:\"TXT_FREEGAMES_PANEL_PRESS_ANYWHERE\",padding:4,anchor:{x:.5,y:.5}}),textPressAnywhere.setPositionXY(450,350),textPressAnywhere.alpha=0,9!=game.features.FID&&(objectsContainer.addChild(textFreeGames),objectsContainer.addChild(textPressAnywhere)),panelContainer.addChild(objectsContainer)},this.initOKButton=function(){okBtn=new NovaButton({transparent:!0,hitpadding:1200,key:\"closePanel\"}),okBtn.setPosition({x:450,y:240}),okBtn.enable(!1),panelContainer.addChild(okBtn)},this.startAnimations=function(bSkipPressKey){if(game.slotGame.messageBar.hideIdle(),animTimeLine=new TimelineMax,9!=game.features.FID)return void callback();var panelDisplayTime=8;game.shellRespins.bannerBlank.alpha=1,game.shellRespins.bannerIntroTxt.alpha=1;var feature=game.features.features[9];feature.playInitialSpin(panelDisplayTime+.5),game.shellRespins.container.alpha=0,game.shellRespins.show(!0),game.shellRespins.setItemsByTriggerId(feature.SFC),okBtn.buttonUpAction=function(){okBtn.enable(!1),self.startAnimations2()},TweenMax.fromTo(game.shellRespins.container,.4,{alpha:0},{alpha:1,ease:Power0.easeNone,onComplete:function(){okBtn.enable(!0)}})},this.startAnimations2=function(){okBtn.buttonUpAction=function(){okBtn.enable(!1),self.startAnimations3()},TweenMax.fromTo([game.shellRespins.bannerBlank,game.shellRespins.bannerIntroTxt],.4,{alpha:1},{alpha:0,ease:Power0.easeNone,onComplete:function(){okBtn.enable(!0)}})},this.startAnimations3=function(){function fireCallBack(){game.slotGame.resetWinGate(),_callBack()}var _callBack=callback,feature=game.features.features[9];TweenMax.fromTo(game.shellRespins.container,.4,{alpha:1},{alpha:0,ease:Power0.easeNone,onComplete:function(){feature.stopInitialSpin(.1)}}),TweenMax.delayedCall(4,fireCallBack)},this.testPanel=function(bShow){var feature=game.features.features[9];bShow?(game.shellRespins.container.alpha=1,game.shellRespins.show(!0),game.shellRespins.setItemsByTriggerId(feature.SFC)):(game.shellRespins.container.alpha=0,game.shellRespins.show(!1))},this.startClosingAnimations=function(){closingTimeLine=new TimelineMax,objectsContainer&&closingTimeLine.fromTo(objectsContainer,.4,{alpha:1},{alpha:0}),closingTimeLine.add(function(){self.forceClose()}),closingTimeLine.play()},this.killAnimations=function(){animTimeLine&&(animTimeLine.kill(),animTimeLine=null),closingTimeLine&&(closingTimeLine.kill(),closingTimeLine=null)},this.forceClose=function(){9==game.features.FID&&TweenMax.to(game.shellRespins.container,.6,{alpha:0,ease:Power0.easeNone}),this.killAnimations(),NOVA.removeFromContainer(\"GAME_FOREGROUND\",panelContainer),panelContainer={},objectsContainer=null,textFreeGames={},textPressAnywhere={},okBtn.enable(!1),okBtn={},panelBackground=null},this.show=function(bShow){bShow?(NOVA.addToContainer(\"GAME_FOREGROUND\",panelContainer),panelContainer.visible=!0,this.resize(),this.killAnimations(),this.startAnimations(!0)):panelContainer.visible&&(this.startClosingAnimations(),okBtn.enable(!1))},this.update=function(){!panelContainer.visible},this.resize=function(){panelContainer.visible&&(gameBounds=NOVA.getGameBounds(),objectsContainer&&(NOVA.isLandscape()?(objectsContainer.position={x:0,y:0},objectsContainer.scale.set(1)):(objectsContainer.position={x:240-425*portraitScale,y:38},objectsContainer.scale.set(portraitScale))))},this.languageChanged=function(){panelContainer.visible&&(this.forceClose(),this.init(),this.show(!0))}}",
+      "fragmentSHA256": "60151c604ed494f72a78bdd24560d13d75b6f5a70645d139131d3feb9c174926"
+    },
+    {
+      "name": "setCloneReelStrip",
+      "sourceStart": 1604814,
+      "sourceEnd": 1604900,
+      "source": "function(reelID,stripArray){this.reelsArray[reelID].setReelStripFromClone(stripArray)}",
+      "fragmentSHA256": "8d54023da2b7c0fc5e99cc023e7a710e0d1c5b522a68f51a708c863087ce551b"
+    },
+    {
+      "name": "changeStopDelays",
+      "sourceStart": 1597321,
+      "sourceEnd": 1597420,
+      "source": "function(delay){for(var i=0;i<this.reelsArray.length;i++)this.reelsArray[i].changeStopDelay(delay)}",
+      "fragmentSHA256": "b7c99f3593f4f48997a1c39c450fc718af8e0151afbd4ecdbcf36f36027168c0"
+    },
+    {
+      "name": "stopSpin",
+      "sourceStart": 1596968,
+      "sourceEnd": 1597052,
+      "source": "function(){for(var i=0;i<this.reelsArray.length;i++)this.reelsArray[i].stopMotion()}",
+      "fragmentSHA256": "82a715f07698f3036822145538356b5b440c1b8b5124bfcb39d3244278a557b3"
+    },
+    {
+      "name": "setSymbol",
+      "sourceStart": 1607831,
+      "sourceEnd": 1607893,
+      "source": "function(reel,row,id){this.reelsArray[reel].setSymbol(row,id)}",
+      "fragmentSHA256": "928fa8c130d3f5e3569ca31148b907ad807fd8e874193edb8977193aa1690000"
+    },
+    {
+      "name": "getSlotMapCoordinate",
+      "sourceStart": 1602659,
+      "sourceEnd": 1602715,
+      "source": "function(reel,row){return this.reelsMapArray[reel][row]}",
+      "fragmentSHA256": "a5af2f9ed6deb50cf987db78721124a49a752101285d4d1d59037457c8b00934"
+    },
+    {
+      "name": "getSlotMapCoordinateCenter",
+      "sourceStart": 1602765,
+      "sourceEnd": 1602931,
+      "source": "function(reel,row){var coords=this.reelsMapArray[reel][row],centerCoords={x:coords.x+this.reelCfg.symWidth/2,y:coords.y+this.reelCfg.symHeight/2};return centerCoords}",
+      "fragmentSHA256": "94cdee38d23fac760e648229a5a4bd45dd8351862a538c05c8ab0ffa850ae0ea"
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

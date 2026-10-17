@@ -1,0 +1,12 @@
+{
+  "name": "jqueryTrim",
+  "source": "function(e){return null==e?\"\":(e+\"\").replace(T,\"\")}",
+  "sourceStart": 306891,
+  "sourceEnd": 306942,
+  "fragmentSHA256": "2b8138fed9b6b0691f7d3ef1802be1496b27f9295facc7af6c3689b0196dcd72",
+  "regexBindingSource": "T=/^[\\s\\uFEFF\\xA0]+|[\\s\\uFEFF\\xA0]+$/g",
+  "regexSourceStart": 305154,
+  "sourceRequests": 0,
+  "wholeSDKASTRepeated": false,
+  "SDKHashRecomputed": false
+}

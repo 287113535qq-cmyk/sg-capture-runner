@@ -1,0 +1,34 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "selector": "this.reelManNotify",
+      "offset": 1784068,
+      "file": "new-selected-game-reel-handler-window-1784162-private.js",
+      "source": "function(key,value){switch(key){case\"SRS_COMPLETED\":reelgate.fire(1);break;case\"ALL_STOPPED\":var hasSRS=value;reelgate.fire(0),hasSRS||reelgate.fire(1),self.api_notify(\"ALL_REELS_STOPPED\",value);break;case\"REEL_STOPPED\":self.api_notify(\"REEL_STOPPED\",value);break;case\"CRANK_COMPLETED\":self.api_notify(\"CRANK_COMPLETED\",value);break;case\"BOUNCE_STARTED\":var state=self.getCurrentState();1==value&&0!=lastWin&&!quickStopFired&&state!=ENUM.gameState.FREEGAME_SPINNING_START&&state!=ENUM.gameState.FREEGAME_SPINNING&&state!=ENUM.gameState.FREEGAME_SPINNING_STOP&&self.metersManager.winMeter.visible?(self.metersManager.winMeter.setValue(0),self.metersManager.winMeter.hide()):1==value&&state!=ENUM.gameState.FREEGAME_SPINNING_START&&state!=ENUM.gameState.FREEGAME_SPINNING&&state!=ENUM.gameState.FREEGAME_SPINNING_STOP&&(self.metersManager.winMeter.setValue(0),self.metersManager.winMeter.hide()),self.api_notify(\"BOUNCE_STARTED\",value);break;case\"STOP_WIN\":self.winManager.stopWin(),self.reelManager.hideEffectsLayerSlots(),self.metersManager.balanceMeter.snapTo(self.account.getBalance()),self.api_notify(\"STOP_WIN\");break;case\"CHANGED_STOPS\":for(var presetStops=self.reelManager.getCurrentStops(),presetString=presetStops[0],i=1;i<presetStops.length;i++)presetString+=\";\"+presetStops[i];NOVA.debug.setStopsString(presetString);break;case\"TRIGGER_SRS\":self.api_notify(\"TRIGGER_SRS\",value);break;case\"ANIMATE_SRS\":self.api_notify(\"ANIMATE_SRS\",value);break;case\"REEL_STOP_SOUND\":void 0!=value?SOUND.play(\"srs\",value):SOUND.play(\"reelStop\");break;case\"SLOT_HIGHLIGHT\":self.api_notify(\"SLOT_HIGHLIGHT\",value);break;case\"REEL_HIGHLIGHT\":self.api_notify(\"REEL_HIGHLIGHT\",value);break;case\"REEL_NUDGE_COMPLETED\":self.api_notify(\"REEL_NUDGE_COMPLETED\",value);break;case\"REEL_NUDGED\":self.api_notify(\"REEL_NUDGED\",value);break;case\"SYMBOL_FOLLOWER\":self.api_notify(\"SYMBOL_FOLLOWER\",value);break;case\"SYMBOL_PASS\":self.api_notify(\"SYMBOL_PASS\",value)}}",
+      "sourceBytes": 1943,
+      "SHA256": "4ea356217354000cef0f38cd5f227257d2a0122cae0ac7c74617bf37f618afcc"
+    },
+    {
+      "selector": "ReelManager.prototype.resetReels",
+      "offset": 1649772,
+      "file": "new-selected-manager-reset-1-private.js",
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].reset()}",
+      "sourceBytes": 83,
+      "SHA256": "0dcdf55c4e51fa6cecf7445a9da7ff91eb2e36cb0e4abf42a6d801e893e8333b"
+    },
+    {
+      "selector": "ReelManager.prototype.resetSRS",
+      "offset": 1651745,
+      "file": "new-selected-manager-reset-2-private.js",
+      "source": "function(){if(this.srsTriggered){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].resetSRS();this.srsTriggered=!1,this.srsReelTrigger=-1,this.hasWin&&this.hasDimming||this.shadeReels(ENUM.symbolState.NORMAL)}this.srsGate.reset()}",
+      "sourceBytes": 244,
+      "SHA256": "a84754726c9c3d0fee0c4f6f6047d226170644800512bbecd828607c605e0730"
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "SDKExecuted": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

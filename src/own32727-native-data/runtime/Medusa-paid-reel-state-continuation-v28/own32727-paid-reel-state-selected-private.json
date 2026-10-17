@@ -1,0 +1,104 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "selector": "ReelManager.prototype.getSlotObject",
+      "kind": "function",
+      "inputFile": "new-native-function-0.js",
+      "offset": 1658986,
+      "source": "function(reel,row){return this.reelsArray[reel].getSlotObject(row)}",
+      "SHA256": "f18d769d984912204578a5a22f73f368f340ad1fba6443d31a4e35f567a6d787"
+    },
+    {
+      "selector": "ReelManager.prototype.setSymbol",
+      "kind": "function",
+      "inputFile": "new-native-function-1.js",
+      "offset": 1659736,
+      "source": "function(reel,row,id){this.reelsArray[reel].setSymbol(row,id)}",
+      "SHA256": "928fa8c130d3f5e3569ca31148b907ad807fd8e874193edb8977193aa1690000"
+    },
+    {
+      "selector": "ReelManager.prototype.storeStopsLocally",
+      "kind": "function",
+      "inputFile": "new-native-function-2.js",
+      "offset": 1656597,
+      "source": "function(aStops){this.reelStopsBackup=aStops.slice(),this.reelStopsArray=aStops}",
+      "SHA256": "f955464eabe2260d1c468a8133c1b38cf109377e2d2dcf3cba1f9aad3e9bf04c"
+    },
+    {
+      "selector": "ReelManager.prototype.hideEffectsLayerSlots",
+      "kind": "function",
+      "inputFile": "new-native-function-3.js",
+      "offset": 1660759,
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].hideEffectsLayerSlots()}",
+      "SHA256": "5efc64b670d354d903a76b8cdde176b9eff9ab4234d7711aa7ff764869d9317f"
+    },
+    {
+      "selector": "ReelManager.prototype.showAllSymbols",
+      "kind": "function",
+      "inputFile": "new-native-function-4.js",
+      "offset": 1660896,
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].showAllSymbols()}",
+      "SHA256": "fec7c388ce88cc34afcc2b0c8930f83071f467bda37d85523699b41a9f14b47e"
+    },
+    {
+      "selector": "ReelManager.prototype.stopAllSRSslotAnimations",
+      "kind": "function",
+      "inputFile": "new-native-function-5.js",
+      "offset": 1660612,
+      "source": "function(){for(var i=0,l=this.reelsArray.length;i<l;i++)this.reelsArray[i].stopAllSRSslotAnimations()}",
+      "SHA256": "bbbf3faf42b3925f154672a84f846f7487ddd51105becbff6ea6630b9e315e1c"
+    },
+    {
+      "selector": "this.getCurrentState",
+      "kind": "function",
+      "inputFile": "new-native-function-6.js",
+      "offset": 1817482,
+      "source": "function(){return this.currentState}",
+      "SHA256": "510fafeda92da27481e3fa3605aa1b4aea8311f1f7d7638af49a47923b2f214c"
+    },
+    {
+      "selector": "secondaryReelGate",
+      "kind": "initializer",
+      "inputFile": "new-initializer-0.js",
+      "offset": 1901760,
+      "source": "secondaryReelGate=new EventGate(cartFeature.play,3)",
+      "SHA256": "c937ec851732fb5ae6f6d450c31346301c0b1ac282c819a6814181386ecd6037"
+    },
+    {
+      "selector": "secondaryReelGate_FG",
+      "kind": "initializer",
+      "inputFile": "new-initializer-1.js",
+      "offset": 1901812,
+      "source": "secondaryReelGate_FG=new EventGate(cartFeature.playFG,2)",
+      "SHA256": "bc1927977d7cb25b998bbc7d4d9b117867bf7a29c58b225ca28a4bc66f7c0a2f"
+    },
+    {
+      "selector": "megawayValueIndex",
+      "kind": "initializer",
+      "inputFile": "new-initializer-2.js",
+      "offset": 1902438,
+      "source": "megawayValueIndex=0",
+      "SHA256": "85cf455447239f85716fca6796de3b01fefbf294284098e7cbce5d8125b406ba"
+    },
+    {
+      "selector": "megawayValues",
+      "kind": "initializer",
+      "inputFile": "new-initializer-3.js",
+      "offset": 1902410,
+      "source": "megawayValues=[0,0,0,0,0,0]",
+      "SHA256": "c112e479ab1823a80649296c2d5d8cd187033c5c41dc012fb14c3ea164280dbc"
+    },
+    {
+      "selector": "stoppedCalledHack",
+      "kind": "initializer",
+      "inputFile": "new-initializer-4.js",
+      "offset": 1901929,
+      "source": "stoppedCalledHack=!1",
+      "SHA256": "122c90d5408f075e5a705f0bfaba8fd3a3447c3d2cf5f37837f25779f8acaf1b"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

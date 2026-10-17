@@ -1,0 +1,14 @@
+{
+  "gameId": "32727",
+  "retainedSDKSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "newNecessaryLeafOnly": true,
+  "wholeSDKHashOrASTRepeated": false,
+  "offset": 125215,
+  "playGrow": "function(){fadeMC.visible=!0,fadeMC.alpha=0,TweenMax.to([fadeMC,frames,myMC],.125,{scaleXY:1.2,yoyo:!0,repeat:1}),TweenMax.from(ghostContainer,1,{alpha:1,onStart:function(){ghostContainer.visible=!0,fadeMC.alpha=1},onComplete:function(){ghostContainer.visible=!1,ghostContainer.alpha=0}})}",
+  "playGrowSHA256": "51051c611cf279d200c928f9984955bb2de84eaeefa67fbbdf2124d84cfa08eb",
+  "stopGrow": "function(){}",
+  "originalCaller": "Own Game reelManNotify SRS grown symbol11; ignores result and continues",
+  "noGameplayCallbackInLeaf": true,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

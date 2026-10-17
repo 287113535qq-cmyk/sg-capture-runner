@@ -1,0 +1,448 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "ownSDKFile": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\medusamegaways\\js\\game.js",
+  "SDKHashRecomputed": false,
+  "rows": [
+    {
+      "name": "jqueryExtend",
+      "sourceStart": 383179,
+      "sourceEnd": 383606,
+      "source": "function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for(\"boolean\"==typeof g&&(j=g,g=arguments[h]||{},h++),\"object\"==typeof g||r.isFunction(g)||(g={}),h===i&&(g=this,h--);h<i;h++)if(null!=(a=arguments[h]))for(b in a)c=g[b],d=a[b],g!==d&&(j&&d&&(r.isPlainObject(d)||(e=Array.isArray(d)))?(e?(e=!1,f=c&&Array.isArray(c)?c:[]):f=c&&r.isPlainObject(c)?c:{},g[b]=r.extend(j,f,d)):void 0!==d&&(g[b]=d));return g}",
+      "fragmentSHA256": "26ae1f581cb6e7919af1120e1c05e3dc00b68bd097ee15c002473863d9ecb9ef",
+      "exactCachedBytesReused": false,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "jqueryIsFunction",
+      "sourceStart": 383748,
+      "sourceEnd": 383789,
+      "source": "function(a){return\"function\"===r.type(a)}",
+      "fragmentSHA256": "fbed30982da0d993cea7d72abe721313cabfabb82e7f6a0bfb35b0af0964a5c2",
+      "exactCachedBytesReused": false,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "jqueryIsPlainObject",
+      "sourceStart": 383954,
+      "sourceEnd": 384107,
+      "source": "function(a){var b,c;return!(!a||\"[object Object]\"!==k.call(a)||(b=e(a))&&(c=l.call(b,\"constructor\")&&b.constructor,\"function\"!=typeof c||m.call(c)!==n))}",
+      "fragmentSHA256": "8360bf8fad58578be0288649f503474572e4a299fc78c37ef1e82a78f24b4a5d",
+      "exactCachedBytesReused": false,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "jqueryType",
+      "sourceStart": 384175,
+      "sourceEnd": 384280,
+      "source": "function(a){return null==a?a+\"\":\"object\"==typeof a||\"function\"==typeof a?j[k.call(a)]||\"object\":typeof a}",
+      "fragmentSHA256": "45437e9ad732728663f07c602243fb64e9c2ff3ca9d82169b0ec5c862dc1e387",
+      "exactCachedBytesReused": false,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "jqueryExtendExt",
+      "sourceStart": 456601,
+      "sourceEnd": 457467,
+      "source": "function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1,k=\"default\";for(\"boolean\"==typeof g&&(j=g,g=arguments[h++]||{}),\"string\"==typeof g&&(k=g.toLowerCase(),\"concat\"!==k&&\"replace\"!==k&&\"extend\"!==k&&(k=\"default\"),g=arguments[h++]||{}),\"object\"==typeof g||$.isFunction(g)||(g={}),h===i&&(g=this,h--);h<i;h++)if(null!==(a=arguments[h]))if($.isArray(a)&&\"default\"!==k)switch(f=g&&$.isArray(g)?g:[],k){case\"concat\":g=f.concat($.extend(j,[],a));break;case\"replace\":g=$.extend(j,[],a);break;case\"extend\":a.forEach(function(a,b){if(\"object\"==typeof a){var c=$.isArray(a)?[]:{};f[b]=$.extendext(j,k,f[b]||c,a)}else f.indexOf(a)===-1&&f.push(a)}),g=f}else for(b in a)c=g[b],d=a[b],g!==d&&(j&&d&&($.isPlainObject(d)||(e=$.isArray(d)))?(e?(e=!1,f=c&&$.isArray(c)?c:[]):f=c&&$.isPlainObject(c)?c:{},g[b]=$.extendext(j,k,f,d)):void 0!==d&&(g[b]=d));return g}",
+      "fragmentSHA256": "b08961ae3f5a98b0a3e69b0e31719baf23de18a0b3f4744b5a935bac064b5f83",
+      "exactCachedBytesReused": true,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "stripComments",
+      "sourceStart": 1537879,
+      "sourceEnd": 1539722,
+      "source": "function stripComments(stringIN){function getCurrentCharacter(){return string.charAt(position)}function getPreviousCharacter(){return string.charAt(position-1)}function getNextCharacter(){return string.charAt(position+1)}function add(){output.push(getCurrentCharacter())}function next(){position++}function atEnd(){return position>=length}function isEscaping(){if(getPreviousCharacter()==BACK_SLASH){for(var caret=position-1,escaped=!0;caret-- >0;){if(string.charAt(caret)!=BACK_SLASH)return escaped;escaped=!escaped}return escaped}return!1}function processSingleQuotedString(){if(getCurrentCharacter()==SINGLE_QUOTE)for(add(),next();!atEnd();){if(getCurrentCharacter()==SINGLE_QUOTE&&!isEscaping())return;add(),next()}}function processDoubleQuotedString(){if(getCurrentCharacter()==DOUBLE_QUOTE)for(add(),next();!atEnd();){if(getCurrentCharacter()==DOUBLE_QUOTE&&!isEscaping())return;add(),next()}}function processSingleLineComment(){if(getCurrentCharacter()==SLASH&&getNextCharacter()==SLASH)for(next();!atEnd();)if(next(),getCurrentCharacter()==NEW_LINE||getCurrentCharacter()==CARRIAGE_RETURN)return}function processMultiLineComment(){if(getCurrentCharacter()==SLASH&&getNextCharacter()==STAR)for(next(),next();!atEnd();)if(next(),getCurrentCharacter()==STAR&&getNextCharacter()==SLASH)return next(),void next()}function processRegularExpression(){if(getCurrentCharacter()==SLASH)for(add(),next();!atEnd();){if(getCurrentCharacter()==SLASH&&!isEscaping())return;add(),next()}}for(var SLASH=\"/\",BACK_SLASH=\"\\\\\",STAR=\"*\",DOUBLE_QUOTE='\"',SINGLE_QUOTE=\"'\",NEW_LINE=\"\\n\",CARRIAGE_RETURN=\"\\r\",string=stringIN,length=string.length,position=0,output=[];!atEnd();)processDoubleQuotedString(),processSingleQuotedString(),processSingleLineComment(),processMultiLineComment(),processRegularExpression(),atEnd()||(add(),next());return output.join(\"\")}",
+      "fragmentSHA256": "dccc41d30f0fb2e001e014e364e17a78ab16c53b5cf51d0d49cd85b574f6461e",
+      "exactCachedBytesReused": true,
+      "wholeSDKASTRepeated": false
+    },
+    {
+      "name": "loadConfig",
+      "sourceStart": 1542670,
+      "sourceEnd": 1543090,
+      "source": "function(id,loadCompleteFunc){self.fetchConfigs(id,function(array,languageStartIdx){for(var i=0,len=array.length;i<len;i++){i===languageStartIdx&&$.extendext(!0,\"replace\",defaultConfig,NOVA.config);var parsedTxt=stripComments(array[i]);try{var jsonObj=$.parseJSON(parsedTxt);$.extendext(!0,\"replace\",NOVA.config,jsonObj)}catch(e){console.warn(\">>>>> JSON File Error!: \"+self.manifest[id][i]+\" \"+e)}}loadCompleteFunc()})}",
+      "fragmentSHA256": "59709e45840ceec6ea3e3839c81d7d21e271417270b859867b3cbd091f67aa03",
+      "exactCachedBytesReused": false,
+      "wholeSDKASTRepeated": false
+    }
+  ],
+  "currency": {
+    "name": "Currency",
+    "sourceStart": 68022,
+    "sourceEnd": 71226,
+    "source": "function Currency(){this.cur_cc=\"\",this.cur_ts=\"\",this.cur_ds=\"\",this.cur_wcs=\"\",this.cur_wcp=\"\",this.cur_fcs=\"\",this.cur_fcp=\"\",this.creditDenom=1,this.displayAsCredits=!1,this.baseValueInCents=!0,this.switchToCents=!0,this.fullPrecision=!0,this.wholeSymbol=\"\",this.fractionalSymbol=\"\",this.maxValues=[\"Normal Meters\",\"SEK 99,999,999.99\",\"SEK 9,999,999.99\",\"SEK 999,999.99\",\"SEK 99,999.99\"],this.currentMax=0,this.config=function(currencyDef){var currencyDefArray=currencyDef.split(\"|\");if(this.cur_cc=currencyDefArray[0],this.cur_ts=currencyDefArray[1],this.cur_ds=currencyDefArray[2],this.cur_wcs=currencyDefArray[3],this.cur_wcp=currencyDefArray[4],this.cur_fcs=currencyDefArray[5],this.cur_fcp=currencyDefArray[6],\"\"!=this.cur_wcs){var cur_wcs_array=this.cur_wcs.substr(0,this.cur_wcs.length-1).split(\";\");this.wholeSymbol=String.fromCharCode.apply(String,cur_wcs_array)}if(\"\"!=this.cur_fcs){var cur_fcs_array=this.cur_fcs.substr(0,this.cur_fcs.length-1).split(\";\");this.fractionalSymbol=String.fromCharCode.apply(String,cur_fcs_array)}\"\"==$.trim(this.fractionalSymbol)&&(this.switchToCents=!1);var code=this.cur_cc.split(\":\");METRICS.setCurrencyCode(code[1])},this.incrementMax=function(){this.currentMax++,this.currentMax=this.currentMax%this.maxValues.length},this.getString=function(credits,bRemoveSymbol){var sText,removeSymbol=bRemoveSymbol||!1;if(this.displayAsCredits)sText=String(Math.floor(credits/this.creditDenom));else{var nWhole,nFraction;if(this.baseValueInCents&&(credits/=100),nWhole=Math.floor(credits),nFraction=Math.round(100*(credits-nWhole)),nFraction>=100&&(nFraction=0,nWhole++),sText=null!=this.cur_ts&&\"\"!=this.cur_ts?this.InsertCommas(nWhole):nWhole,removeSymbol)return sText;sText=nWhole>0?this.AddWholeCurrencySymbol(sText,nFraction):this.AddFractionCurrencySymbol(nFraction)}return sText},this.getNumberString=function(credits){var nWhole=Math.floor(credits/100),nFraction=Math.floor(credits%100);return this.InsertCommas(nWhole)+this.cur_ds+(nFraction<10?\"0\"+nFraction:nFraction)},this.getWholeCurrencyString=function(credits){var nWhole=Math.floor(credits/100),nFraction=Math.floor(credits%100),temp=this.InsertCommas(nWhole);return this.AddWholeCurrencySymbol(temp,nFraction)},this.InsertCommas=function(nWhole){var sWholeStrOld,sWholeStrNew=\"\";sWholeStrOld=nWhole+\"\";var nCount=0,nCommaInc=0;for(nCommaInc=sWholeStrOld.length-1;nCommaInc>=0;nCommaInc--)nCount++,sWholeStrNew=sWholeStrOld.charAt(nCommaInc)+sWholeStrNew,nCount%3==0&&nCommaInc>0&&(sWholeStrNew=\"\"+this.cur_ts+sWholeStrNew);return sWholeStrNew},this.AddWholeCurrencySymbol=function(sWhole,nFraction){var sText=\"\";return nFraction>0?sText=nFraction<10?\"\"+this.cur_ds+\"0\"+nFraction:\"\"+this.cur_ds+nFraction:this.fullPrecision&&(sText=\"\"+this.cur_ds+\"00\"),sText=sWhole+sText,\"L\"==this.cur_wcp?sText=this.wholeSymbol+sText:\"R\"==this.cur_wcp&&(sText+=this.wholeSymbol),sText},this.AddFractionCurrencySymbol=function(nFraction){var sText;return this.switchToCents?sText=\"L\"==this.cur_fcp?this.fractionalSymbol+nFraction:nFraction+this.fractionalSymbol:(sText=nFraction<10?\"0\"+this.cur_ds+\"0\"+nFraction:\"0\"+this.cur_ds+nFraction,\"L\"==this.cur_wcp?sText=this.wholeSymbol+sText:sText+=this.wholeSymbol),sText}}",
+    "fragmentSHA256": "dafdf1d716cffb6bdc2897b7624bdb7531413807c41348adba24708651c1da97",
+    "exactCachedBytesReused": true,
+    "wholeSDKASTRepeated": false
+  },
+  "trim": {
+    "name": "jqueryTrim",
+    "sourceStart": 384524,
+    "sourceEnd": 384575,
+    "source": "function(a){return null==a?\"\":(a+\"\").replace(s,\"\")}",
+    "fragmentSHA256": "6e222ad9a07352b91cce909d3632b73b9585be546ab7f4764bc01bb2d0b775b3",
+    "exactCachedBytesReused": false,
+    "wholeSDKASTRepeated": false
+  },
+  "lexicalSource": "var c=[],e=Object.getPrototypeOf,j={},k=j.toString,l=j.hasOwnProperty,m=l.toString,n=m.call(Object)",
+  "lexicalNative": "var c=[],d=a.document,e=Object.getPrototypeOf,f=c.slice,g=c.concat,h=c.push,i=c.indexOf,j={},k=j.toString,l=j.hasOwnProperty,m=l.toString,n=m.call(Object)",
+  "typeNamesSource": "\"Boolean Number String Function Array Date RegExp Object Error Symbol\".split(\" \")",
+  "typeCallbackSource": "function(a,b){j[\"[object \"+b+\"]\"]=b.toLowerCase()}",
+  "trimRegexBindingSource": "s=/^[\\s\\uFEFF\\xA0]+|[\\s\\uFEFF\\xA0]+$/g",
+  "configInitializer": {
+    "source": "this.config={}",
+    "sourceStart": 36858,
+    "sourceEnd": 36872
+  },
+  "manifest": {
+    "config": [
+      "assets/slotConfig.json",
+      "assets/titanConfig.json",
+      "assets/gambleCardConfig.json",
+      "gameConfig.json",
+      "infoPages.json",
+      "package.json",
+      "assets/language/%LANG_CODE%/languageSlotCommon.json",
+      "assets/language/%LANG_CODE%/titanStyles.json",
+      "assets/language/%LANG_CODE%/languageGambleCommon.json",
+      "assets/language/%LANG_CODE%/language.json"
+    ],
+    "preloader": [
+      {
+        "name": "logo.png",
+        "url": "assets/images/hd/@2x/preload/logo.png"
+      },
+      {
+        "name": "sgd.png",
+        "url": "assets/images/hd/@2x/preload/sgd.png"
+      },
+      {
+        "name": "welcomeTitle.png",
+        "url": "assets/images/hd/@2x/welcome/welcomeTitle.png"
+      }
+    ],
+    "base_hd": [
+      {
+        "name": "buttons.json",
+        "url": "assets/images/hd/@2x/buttons_hq.json"
+      },
+      {
+        "name": "info_1.json",
+        "url": "assets/images/hd/@2x/infopages/info_1.json"
+      },
+      {
+        "name": "BigWin.json",
+        "url": "assets/images/hd/@2x/shower/BigWin.json"
+      },
+      {
+        "name": "sym.json",
+        "url": "assets/images/hd/@2x/symbols/sym.json"
+      },
+      {
+        "name": "symBg_glow.json",
+        "url": "assets/images/hd/@2x/symbols/symBg_glow.json"
+      },
+      {
+        "name": "sym_light.png",
+        "url": "assets/images/hd/@2x/symbols/sym_light.png"
+      },
+      {
+        "name": "smoke_explosion-1.json",
+        "url": "assets/images/hd/@2x/symbols/smoke_explosion-1.json"
+      },
+      {
+        "name": "stone_explosion.json",
+        "url": "assets/images/hd/@2x/symbols/stone_explosion.json"
+      },
+      {
+        "name": "sym00_Anim.json",
+        "url": "assets/images/hd/@2x/symbols/sym00_Anim.json"
+      },
+      {
+        "name": "sym11_Anim.json",
+        "url": "assets/images/hd/@2x/symbols/sym11_Anim.json"
+      },
+      {
+        "name": "background.json",
+        "url": "assets/images/hd/@2x/backgrounds/background.json"
+      },
+      {
+        "name": "basegame_bg_sky.jpg",
+        "url": "assets/images/hd/@2x/backgrounds/basegame_bg_sky.jpg"
+      },
+      {
+        "name": "freegames_background.jpg",
+        "url": "assets/images/hd/@2x/backgrounds/freegames_background.jpg"
+      },
+      {
+        "name": "freegame_ground_half.jpg",
+        "url": "assets/images/hd/@2x/backgrounds/freegame_ground_half.jpg"
+      },
+      {
+        "name": "background_glow2.png",
+        "url": "assets/images/hd/@2x/backgrounds/base_ambience/background_glow2.png"
+      },
+      {
+        "name": "lightning_large.png",
+        "url": "assets/images/hd/@2x/backgrounds/base_ambience/lightning_large.png"
+      },
+      {
+        "name": "lightning_extra.png",
+        "url": "assets/images/hd/@2x/backgrounds/base_ambience/lightning_extra.png"
+      },
+      {
+        "name": "reelborder.json",
+        "url": "assets/images/hd/@2x/reelborder/reelborder.json"
+      },
+      {
+        "name": "title.json",
+        "url": "assets/images/hd/@2x/title/title.json"
+      },
+      {
+        "name": "banners-1.json",
+        "url": "assets/images/hd/@2x/banners/banners-1.json"
+      },
+      {
+        "name": "banners-2.json",
+        "url": "assets/images/hd/@2x/banners/banners-2.json"
+      },
+      {
+        "name": "freegame_ambience-1.json",
+        "url": "assets/images/hd/@2x/backgrounds/freegame_ambience-1.json"
+      },
+      {
+        "name": "lightning.json",
+        "url": "assets/images/hd/@2x/particle/lightning.json"
+      },
+      {
+        "name": "medusa_idleHD-1.json",
+        "url": "assets/images/hd/@2x/features/medusasgaze/medusa_idleHD-1.json"
+      },
+      {
+        "name": "smoke_anim.json",
+        "url": "assets/images/hd/@2x/features/medusasgaze/smoke_anim.json"
+      },
+      {
+        "name": "eyes_glow_anim",
+        "url": "assets/images/hd/spine/eyes_glow/eyes_glow_anim.json"
+      },
+      {
+        "name": "snakeStrike.json",
+        "url": "assets/images/hd/@2x/features/snakeStrike/hq_feature_snake_bite.json"
+      },
+      {
+        "name": "snake_idle.json",
+        "url": "assets/images/hd/@2x/features/snakeStrike/snake_idle.json"
+      },
+      {
+        "name": "biteGlow.png",
+        "url": "assets/images/hd/@2x/features/snakeStrike/bite_glow.png"
+      },
+      {
+        "name": "welcome.json",
+        "url": "assets/images/hd/@2x/welcome/welcome.json"
+      },
+      {
+        "name": "particle.json",
+        "url": "assets/images/hd/@2x/particle/particle.json"
+      },
+      {
+        "name": "bitmapFont",
+        "url": "assets/fonts/bitmapFont.fnt"
+      },
+      {
+        "name": "bwCloud.png",
+        "url": "assets/images/hd/@2x/temp/sq_BigWin_StarCloud.png"
+      },
+      {
+        "name": "particleBall.png",
+        "url": "assets/images/hd/@2x/temp/particle_ball.png"
+      },
+      {
+        "name": "particle_HardRain.png",
+        "url": "assets/images/hd/@2x/temp/particle_HardRain.png"
+      },
+      {
+        "name": "MedusabitmapFont",
+        "url": "assets/fonts/MedusabitmapFont.fnt"
+      }
+    ],
+    "base_sd": [
+      {
+        "name": "buttons.json",
+        "url": "assets/images/hd/@2x/buttons_hq.json"
+      },
+      {
+        "name": "info_1.json",
+        "url": "assets/images/sd/@1x/infopages/info_1.json"
+      },
+      {
+        "name": "BigWin.json",
+        "url": "assets/images/sd/@1x/shower/BigWin.json"
+      },
+      {
+        "name": "sym.json",
+        "url": "assets/images/hd/@2x/symbols/sym.json"
+      },
+      {
+        "name": "symBg_glow.json",
+        "url": "assets/images/sd/@1x/symbols/symBg_glow.json"
+      },
+      {
+        "name": "sym_light.png",
+        "url": "assets/images/sd/@1x/symbols/sym_light.png"
+      },
+      {
+        "name": "smoke_explosion-1.json",
+        "url": "assets/images/sd/@1x/symbols/smoke_explosion-1.json"
+      },
+      {
+        "name": "stone_explosion.json",
+        "url": "assets/images/sd/@1x/symbols/stone_explosion.json"
+      },
+      {
+        "name": "sym00_Anim.json",
+        "url": "assets/images/sd/@1x/symbols/sym00_Anim.json"
+      },
+      {
+        "name": "sym11_Anim.json",
+        "url": "assets/images/sd/@1x/symbols/sym11_Anim.json"
+      },
+      {
+        "name": "background.json",
+        "url": "assets/images/sd/@1x/backgrounds/background.json"
+      },
+      {
+        "name": "basegame_bg_sky.jpg",
+        "url": "assets/images/sd/@1x/backgrounds/basegame_bg_sky.jpg"
+      },
+      {
+        "name": "freegames_background.jpg",
+        "url": "assets/images/sd/@1x/backgrounds/freegames_background.jpg"
+      },
+      {
+        "name": "freegame_ground_half.jpg",
+        "url": "assets/images/sd/@1x/backgrounds/freegame_ground_half.jpg"
+      },
+      {
+        "name": "background_glow2.png",
+        "url": "assets/images/sd/@1x/backgrounds/base_ambience/background_glow2.png"
+      },
+      {
+        "name": "lightning_large.png",
+        "url": "assets/images/sd/@1x/backgrounds/base_ambience/lightning_large.png"
+      },
+      {
+        "name": "lightning_extra.png",
+        "url": "assets/images/sd/@1x/backgrounds/base_ambience/lightning_extra.png"
+      },
+      {
+        "name": "reelborder.json",
+        "url": "assets/images/sd/@1x/reelborder/reelborder.json"
+      },
+      {
+        "name": "title.json",
+        "url": "assets/images/sd/@1x/title/title.json"
+      },
+      {
+        "name": "banners-1.json",
+        "url": "assets/images/sd/@1x/banners/banners-1.json"
+      },
+      {
+        "name": "banners-2.json",
+        "url": "assets/images/sd/@1x/banners/banners-2.json"
+      },
+      {
+        "name": "freegame_ambience-1.json",
+        "url": "assets/images/sd/@1x/backgrounds/freegame_ambience-1.json"
+      },
+      {
+        "name": "lightning.json",
+        "url": "assets/images/sd/@1x/particle/lightning.json"
+      },
+      {
+        "name": "medusa_idleHD-1.json",
+        "url": "assets/images/sd/@1x/features/medusasgaze/medusa_idle-1.json"
+      },
+      {
+        "name": "smoke_anim.json",
+        "url": "assets/images/sd/@1x/features/medusasgaze/smoke_anim.json"
+      },
+      {
+        "name": "eyes_glow_anim",
+        "url": "assets/images/sd/@1x/spine/eyes_glow/eyes_glow_anim.json"
+      },
+      {
+        "name": "snakeStrike.json",
+        "url": "assets/images/sd/@1x/features/snakeStrike/sq_feature_snake_bite.json"
+      },
+      {
+        "name": "snake_idle.json",
+        "url": "assets/images/sd/@1x/features/snakeStrike/snake_idle.json"
+      },
+      {
+        "name": "biteGlow.png",
+        "url": "assets/images/hd/@2x/features/snakeStrike/bite_glow.png"
+      },
+      {
+        "name": "welcome.json",
+        "url": "assets/images/sd/@1x/welcome/welcome.json"
+      },
+      {
+        "name": "particle.json",
+        "url": "assets/images/sd/@1x/particle/particle.json"
+      },
+      {
+        "name": "bitmapFont",
+        "url": "assets/fonts/bitmapFont.fnt"
+      },
+      {
+        "name": "bwCloud.png",
+        "url": "assets/images/hd/@2x/temp/sq_BigWin_StarCloud.png"
+      },
+      {
+        "name": "particleBall.png",
+        "url": "assets/images/hd/@2x/temp/particle_ball.png"
+      },
+      {
+        "name": "particle_HardRain.png",
+        "url": "assets/images/hd/@2x/temp/particle_HardRain.png"
+      },
+      {
+        "name": "MedusabitmapFont",
+        "url": "assets/fonts/MedusabitmapFont.fnt"
+      }
+    ],
+    "panels": [],
+    "sounds_hd": "assets/sounds/hd/medusamegaways.json",
+    "sounds_sd": "assets/sounds/sd/medusamegaways.json",
+    "gamble": [
+      {
+        "name": "gamble.json",
+        "url": "assets/images/hd/@2x/gamble/gamble.json"
+      },
+      {
+        "name": "Card",
+        "url": "assets/images/hd/spine/gamble/card.json"
+      }
+    ],
+    "fonts": {
+      "families": [
+        "ngg_Clrygh",
+        "ngg_Roboto",
+        "ngg_LithosProBlack",
+        "ngg_EBGara"
+      ],
+      "urls": [
+        "assets/fonts/fonts.css"
+      ]
+    }
+  },
+  "manifestInputSHA256": "ca9b3df4ba0fa8549129378c5325a0d278b9cde9a1018b27b65798d70b4d5479",
+  "originalGdmLanguage": "en_us",
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

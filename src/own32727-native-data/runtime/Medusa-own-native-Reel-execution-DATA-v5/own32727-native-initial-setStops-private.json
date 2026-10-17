@@ -1,0 +1,6 @@
+{
+  "selector": "ReelManager.prototype.setStops",
+  "source": "function(stopsArray){\nfor(var i=0,l=stopsArray.length;i<l;i++)this.reelsArray[i].setStop(stopsArray[i],!0)}",
+  "SHA256": "d62a99c5b411d4e76805cebce796b5caa82554fa45bf234641f180975db54865",
+  "sourceRequests": 0
+}

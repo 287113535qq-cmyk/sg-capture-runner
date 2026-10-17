@@ -20,10 +20,15 @@ test('SG child retains original AG quota/ownership with only its own connection 
 test('whole AG loaders use SG own server bindings and reject a substituted database',()=>{
  const previous=process.env.AG_CAPTURE_PLATFORM;process.env.AG_CAPTURE_PLATFORM='sg';
  try {
-  const manifest=loadGameTargets(gameManifestPath());assert.equal(manifest.length,47);
-  const actual=loadGames();assert.equal(actual.length,47);assert(actual.every(g=>g.provider==='sg'));
-  assert.equal(resolveGameTarget(manifest,'32749','sg_fivetreasures').gameId,'32749');
-  assert.throws(()=>resolveGameTarget(manifest,'32749','sg_wrongpool'),/mismatch/);
+  const raw=yaml.load(fs.readFileSync(gameManifestPath(),'utf8')) as {games:{gameId:string;dbName:string}[]};
+  assert(Array.isArray(raw.games)&&raw.games.length>0);
+  assert.equal(new Set(raw.games.map(g=>g.gameId)).size,raw.games.length);
+  const manifest=loadGameTargets(gameManifestPath());assert.equal(manifest.length,raw.games.length);
+  const actual=loadGames();assert.equal(actual.length,raw.games.length);assert(actual.every(g=>g.provider==='sg'));
+  assert.deepEqual(actual.map(g=>g.gameId).sort(),raw.games.map(g=>g.gameId).sort());
+  for(const row of raw.games)assert.equal(resolveGameTarget(manifest,row.gameId,row.dbName).dbName,row.dbName);
+  assert.equal(resolveGameTarget(manifest,'32759','sg_crystal_forest').gameId,'32759');
+  assert.throws(()=>resolveGameTarget(manifest,'32759','sg_crystalforest'),/mismatch/);
   for(const game of actual){assert(game.sg.runtimeSlug);assert.equal(game.backendId,game.sg.protocol==='gdm'?game.sg.runtimeSlug:game.sg.header.gameCodeRGI);}
  }finally {if(previous===undefined)delete process.env.AG_CAPTURE_PLATFORM;else process.env.AG_CAPTURE_PLATFORM=previous;}
 });

@@ -1,0 +1,464 @@
+{
+  "at": 1792184622.562,
+  "gameId": "32738",
+  "rows": [
+    {
+      "relative": "config/errorlist/en_us.json",
+      "status": 200,
+      "bytes": 3310,
+      "SHA256": "a22ed59bb2f58ae833da4665fc8c7462448ee7b915945e0c30c7182c6118e232"
+    },
+    {
+      "relative": "assets/packed/07-loading-0.png",
+      "status": 200,
+      "bytes": 34759,
+      "SHA256": "99a3bf41d29a1f7073572c1b32481b3e326c439871c00b04a3ef0ae9c4863d1a"
+    },
+    {
+      "relative": "assets/packed/07-loading-0.json",
+      "status": 200,
+      "bytes": 1512,
+      "SHA256": "61b1b0a24147e8675115ffbb339c6a7b22e95dff6fa7a0815a9b58b458c73d89"
+    },
+    {
+      "relative": "assets/packed/07-loading2-0.png",
+      "status": 200,
+      "bytes": 350021,
+      "SHA256": "b373cbba8ef8d879777d9771e1d6d2dd59242aa407860def75ecf56c4669dbdd"
+    },
+    {
+      "relative": "assets/packed/07-loading2-0.json",
+      "status": 200,
+      "bytes": 943,
+      "SHA256": "71ff46bb4ef83db17f145a2849976353d54ea1d5e6b2d4eac5a6a12abb2dd6b0"
+    },
+    {
+      "relative": "assets/packed/images/IMG_BASE_GAME_BACKGROUND.jpg",
+      "status": 200,
+      "bytes": 126219,
+      "SHA256": "3deeb006766f61feefe0b76abdf229b62078484dc51c8da7cf66c3304497dd4c"
+    },
+    {
+      "relative": "config/language_en_us.json",
+      "status": 200,
+      "bytes": 5544,
+      "SHA256": "b0e4ca40923fbaaec1153d85d25f3713ffeee54e340bf61b4c411755027ee6fe"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_explode-0.png",
+      "status": 200,
+      "bytes": 445736,
+      "SHA256": "c0e87fb1c8d6ebdb536da4c836ce49cc4beafd43a4f3a9e242da52c4960f6746"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_explode-0.json",
+      "status": 200,
+      "bytes": 8569,
+      "SHA256": "ecfa031f95be0b31f86836ea22dbaf6eeb60950a2c51e8450ad1d18b36cf069c"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_lid-0.png",
+      "status": 200,
+      "bytes": 716225,
+      "SHA256": "ef2f19eb17ec8c61752364cbc81eab49daf6cd3e2c7401cc81fbe44f51d16271"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_lid-0.json",
+      "status": 200,
+      "bytes": 10497,
+      "SHA256": "a8a513ee4c33fcc3968a3b5abbf1b3f2a297a016257a6cf20fb4fd5cf67dd54e"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_loop-0.png",
+      "status": 200,
+      "bytes": 544872,
+      "SHA256": "555140d3a00994e3d663c499b66d312d2d881497813d464e83d950e47019ca17"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_loop-0.json",
+      "status": 200,
+      "bytes": 8401,
+      "SHA256": "9ec72f272191e6af5d413b5046c6205f8bbb0e1e9100a1cb4175cf1817a9e225"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_step-0.png",
+      "status": 200,
+      "bytes": 1123339,
+      "SHA256": "e0fcf4b5a859c5610682caf19a09ea7fc11cecd8b52cefd8c77bb7d1cfdfd8f6"
+    },
+    {
+      "relative": "assets/packed/07-BLUE_step-0.json",
+      "status": 200,
+      "bytes": 13506,
+      "SHA256": "6ca713de80e073167b474ddc3537ceeed5b56dbfb547fedbf273df51ce21ef69"
+    },
+    {
+      "relative": "assets/packed/07-COINS-0.png",
+      "status": 200,
+      "bytes": 642822,
+      "SHA256": "a89bf334089333027a67987c0b3bf0fe9c9a9e529bd8f88d7fab01a25a35d005"
+    },
+    {
+      "relative": "assets/packed/07-COINS-0.json",
+      "status": 200,
+      "bytes": 16489,
+      "SHA256": "dfe45188490d2f6fa98ee6beda02e25358b9f9b463274b523a02fb1e24203d02"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_explode-0.png",
+      "status": 200,
+      "bytes": 445826,
+      "SHA256": "45f7e8c739171ed32fcfb63965d91c3f1391e83b56b035e60f0baf73f9ca4d88"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_explode-0.json",
+      "status": 200,
+      "bytes": 8570,
+      "SHA256": "ec1e4dd11a72b90d54954191ff6c8804c54d5f1c94918b39b3da8e69c23dc56e"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_lid-0.png",
+      "status": 200,
+      "bytes": 715803,
+      "SHA256": "4b3413352f939a819e0885da9320082c2d150bed9e924c71ccf6af12259dec5c"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_lid-0.json",
+      "status": 200,
+      "bytes": 10792,
+      "SHA256": "3867afa8dcc3c4b182f659a021c54d77f90f0dc3a045390ded05a229694cd34c"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_loop-0.png",
+      "status": 200,
+      "bytes": 520524,
+      "SHA256": "83c8126236504b09a7a7124a0acc584e31a368b4905ed68436f91bbf5770d899"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_loop-0.json",
+      "status": 200,
+      "bytes": 8440,
+      "SHA256": "8f4a9c4df5050b451d2335dcf66f12e8bc845a7e27d18c5ba123ed7fa180f90e"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_step-0.png",
+      "status": 200,
+      "bytes": 1104078,
+      "SHA256": "1cb56690959570cbc415c744007efeb51ac9b1fa6ef790029558167eeaeede4d"
+    },
+    {
+      "relative": "assets/packed/07-GREEN_step-0.json",
+      "status": 200,
+      "bytes": 13627,
+      "SHA256": "539079491ea9e28500d1026c5fe595cefce21969fe98d7907da69dfa23a132b5"
+    },
+    {
+      "relative": "assets/packed/07-help-0.png",
+      "status": 200,
+      "bytes": 248629,
+      "SHA256": "ecdc6c81dc5bbd9801af5e8311eaf53484494a4a2895e83b49dc8dd0386be164"
+    },
+    {
+      "relative": "assets/packed/07-help-0.json",
+      "status": 200,
+      "bytes": 951,
+      "SHA256": "34e72fa57bc6e3c2898dd7e3f661845b5a61da2e1711255273331dc43a67c5a0"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_BLUE-0.png",
+      "status": 200,
+      "bytes": 669362,
+      "SHA256": "a5fd6f00a7420bfd683606bca73edfb0fdeb5b3e7bb542ea3a2e24da0f1000c5"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_BLUE-0.json",
+      "status": 200,
+      "bytes": 17520,
+      "SHA256": "0823065520ce68a2e22799d1af28d3a6c26549a9f82fb711653ad63954073ac3"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_GREEN-0.png",
+      "status": 200,
+      "bytes": 655346,
+      "SHA256": "81ba902ba609d7caac106ddc899fe78e87fc62f38e3092ccf0d46afd4b90bfd0"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_GREEN-0.json",
+      "status": 200,
+      "bytes": 17602,
+      "SHA256": "8a2e7319d5b14e566b6a2b9d9a0a674abcf910b085e970fc6e7714626c405506"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_PURPLE-0.png",
+      "status": 200,
+      "bytes": 599914,
+      "SHA256": "7fed1327568e76d46fdfff1f313f9dec590cbb7811b3ef7abc60dc3d7e1a197c"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_PURPLE-0.json",
+      "status": 200,
+      "bytes": 17684,
+      "SHA256": "c7e756a7620a511fcb5c3a5e6baa1dc6186438471790b8a88c222704d2d88195"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_RED-0.png",
+      "status": 200,
+      "bytes": 652820,
+      "SHA256": "6e6a89041e67deb97c1bef89679d1938c595d6d26cef027e507b2f4f75c53c35"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_ELEMENTAL_RED-0.json",
+      "status": 200,
+      "bytes": 17438,
+      "SHA256": "d936ec9d55cd0d44d737fe75670bb78fbe4d0bd95aa80e8949c41727f523c5ae"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_HORSE-0.png",
+      "status": 200,
+      "bytes": 528744,
+      "SHA256": "5f70351c6beefc9ae8f81c757463debeeeca85835ee2e8bbb4da334c9f671245"
+    },
+    {
+      "relative": "assets/packed/07-HH_CC_HORSE-0.json",
+      "status": 200,
+      "bytes": 9424,
+      "SHA256": "e46702064a0a60bc790cb3d225dacc7f8c04428a7ad4ff1e18c482b817dd35ca"
+    },
+    {
+      "relative": "assets/packed/07-jackpotPicker1-0.png",
+      "status": 200,
+      "bytes": 467682,
+      "SHA256": "54a55d65793f92589e965badda2d60db6b212c8fced0c52d7f736304b128eb29"
+    },
+    {
+      "relative": "assets/packed/07-jackpotPicker1-0.json",
+      "status": 200,
+      "bytes": 26128,
+      "SHA256": "f6e9be5f6a6d6af032a0ceac7c59656f58ca8ed3a54b72a27b3fe28a973dfbb7"
+    },
+    {
+      "relative": "assets/packed/07-jackpotPicker2-0.png",
+      "status": 200,
+      "bytes": 378698,
+      "SHA256": "b0776c2bcc08b2dd351d7e50d49f4f9949e5502abf8bcee0449f18ac950bdeff"
+    },
+    {
+      "relative": "assets/packed/07-jackpotPicker2-0.json",
+      "status": 200,
+      "bytes": 14928,
+      "SHA256": "95c5762d20a03ee857b3052a7bfd970fd66f0261b4b9012f981e74e49c6ee0c5"
+    },
+    {
+      "relative": "assets/packed/07-misc-0.png",
+      "status": 200,
+      "bytes": 29401,
+      "SHA256": "d5e8006ad533553289167382af3958c95d6b58b81d9045a53be35140069b7cd1"
+    },
+    {
+      "relative": "assets/packed/07-misc-0.json",
+      "status": 200,
+      "bytes": 3437,
+      "SHA256": "cdc030c9d185f15e946068de7ae08c209ff02ae1274cb25e20e69ea833e26003"
+    },
+    {
+      "relative": "assets/packed/07-misc2-0.png",
+      "status": 200,
+      "bytes": 168843,
+      "SHA256": "0e011d9da29854444c712c0f324d19fdddc58752718b9ca54b29260f832e6950"
+    },
+    {
+      "relative": "assets/packed/07-misc2-0.json",
+      "status": 200,
+      "bytes": 761,
+      "SHA256": "bc8ba720ab80e7022ca4c460788bf6f73e4c7ce35c299890ce9ee7ccf0cf3bbc"
+    },
+    {
+      "relative": "assets/packed/07-panels-0.png",
+      "status": 200,
+      "bytes": 313135,
+      "SHA256": "a361110772eef9ed8a7e8c012a188817f4de23c384a6d26130e5bc3476f06e41"
+    },
+    {
+      "relative": "assets/packed/07-panels-0.json",
+      "status": 200,
+      "bytes": 1330,
+      "SHA256": "79c879c28926d050a04b918186e8247f33569591152eebdc08294b096e48a91e"
+    },
+    {
+      "relative": "assets/packed/07-particles-0.png",
+      "status": 200,
+      "bytes": 14105,
+      "SHA256": "dbc5928cf20c63974933bdea61de85e856fc3c775585f113dbf0baf37d6a9877"
+    },
+    {
+      "relative": "assets/packed/07-particles-0.json",
+      "status": 200,
+      "bytes": 3266,
+      "SHA256": "c6cd9d893f32f3d1f0c9a6755f71d73b8507635ed2188a160b2d84708f669d25"
+    },
+    {
+      "relative": "assets/packed/07-redEnvelope-0.png",
+      "status": 200,
+      "bytes": 193074,
+      "SHA256": "380153d3a74c96cbeb2d42c494c56e372fe4d45100e82448b9a1fd648ab5c552"
+    },
+    {
+      "relative": "assets/packed/07-redEnvelope-0.json",
+      "status": 200,
+      "bytes": 2338,
+      "SHA256": "f42c2611b99236d7ef3479b59a24a6944af93eb8c4b28c353c0de26528801228"
+    },
+    {
+      "relative": "assets/packed/07-RED_explode-0.png",
+      "status": 200,
+      "bytes": 460047,
+      "SHA256": "6022633cd78752b34f911461d5bcc89af7aec924c5b4139736c845f9427eb4a1"
+    },
+    {
+      "relative": "assets/packed/07-RED_explode-0.json",
+      "status": 200,
+      "bytes": 8492,
+      "SHA256": "af9a4eada86eb602d7abbe9fedd7d1232305b2ec3842a50a5b03137694a3e342"
+    },
+    {
+      "relative": "assets/packed/07-RED_lid-0.png",
+      "status": 200,
+      "bytes": 741522,
+      "SHA256": "75e3434fcc0e3b7a88b12be4152f14af9fc392d7e449437a68722ba94646da14"
+    },
+    {
+      "relative": "assets/packed/07-RED_lid-0.json",
+      "status": 200,
+      "bytes": 10692,
+      "SHA256": "f6e6c3302c7435cbcf5c3990c86c6439dc5b03e9860bd4128e1817046af25462"
+    },
+    {
+      "relative": "assets/packed/07-RED_loop-0.png",
+      "status": 200,
+      "bytes": 665576,
+      "SHA256": "cf61e0017b5f3f8c4312b95d2c138fd5fef39314ec7dc771a4595cfdd823f4f0"
+    },
+    {
+      "relative": "assets/packed/07-RED_loop-0.json",
+      "status": 200,
+      "bytes": 8362,
+      "SHA256": "2b052e73fc3117fe83d2077127867df356febc47baa37207cf90c75f9a8f0e06"
+    },
+    {
+      "relative": "assets/packed/07-RED_step-0.png",
+      "status": 200,
+      "bytes": 1267743,
+      "SHA256": "a4ed32d2fcd1b6ddfcee66bda467a48f4b41b2850107e3b9791e7894e590b77a"
+    },
+    {
+      "relative": "assets/packed/07-RED_step-0.json",
+      "status": 200,
+      "bytes": 13440,
+      "SHA256": "56212135782c6acbb804ee86d5a32bce352c619d07461a7bc0e076db0b0a1c8d"
+    },
+    {
+      "relative": "assets/packed/07-reelsUIBasegame-0.png",
+      "status": 200,
+      "bytes": 209016,
+      "SHA256": "aac8f979278d88bf7bc33dadb5e675d01f5902d6f7c70b9cbd63d2ebd005c04e"
+    },
+    {
+      "relative": "assets/packed/07-reelsUIBasegame-0.json",
+      "status": 200,
+      "bytes": 1560,
+      "SHA256": "8a7a4d1043f282e0802d10ac85b4939bd00c088666c87b1fd3e84453b5b184d5"
+    },
+    {
+      "relative": "assets/packed/07-reelsUIFreespins-0.png",
+      "status": 200,
+      "bytes": 278738,
+      "SHA256": "82e239354ea0ec5ef38546f8623c13977aeb98fb47d744b8458f18369f40aec1"
+    },
+    {
+      "relative": "assets/packed/07-reelsUIFreespins-0.json",
+      "status": 200,
+      "bytes": 1147,
+      "SHA256": "49f289629806020847caedfd65d3cfdca4b55b304e804b243931909cdcead589"
+    },
+    {
+      "relative": "assets/packed/07-symbolStatics-0.png",
+      "status": 200,
+      "bytes": 88508,
+      "SHA256": "b398f90ec98692ce2f3a15c5bac7c443c2bfdd67de2674b49e5497bb988f3382"
+    },
+    {
+      "relative": "assets/packed/07-symbolStatics-0.json",
+      "status": 200,
+      "bytes": 3595,
+      "SHA256": "ec129b852b5c16e72d817fcc6069d4f0fbac6ea223ffd2a2a54001474369fbf3"
+    },
+    {
+      "relative": "assets/packed/07-transitions-0.png",
+      "status": 200,
+      "bytes": 3508,
+      "SHA256": "cefcad473675b96ee341ff6e42daaf4defae81dd389f32e8b8e7bfc8ec519111"
+    },
+    {
+      "relative": "assets/packed/07-transitions-0.json",
+      "status": 200,
+      "bytes": 543,
+      "SHA256": "4e0a4c6bad455f93623731087ea39a60b167d39a40cbf1300fff0d68d7bd92ff"
+    },
+    {
+      "relative": "assets/packed/07-TT_CC_TIGER-0.png",
+      "status": 200,
+      "bytes": 384911,
+      "SHA256": "a225d1d6eaeb43a710ba9051f10cfee3ba9124c61ea85ea5926a8b01062ff87b"
+    },
+    {
+      "relative": "assets/packed/07-TT_CC_TIGER-0.json",
+      "status": 200,
+      "bytes": 10653,
+      "SHA256": "82fe1b8ccc7a5de6215a61085512792d2c4e931f77d2deabd1984a93b10a125b"
+    },
+    {
+      "relative": "assets/packed/07-TT_CC_WILD-0.png",
+      "status": 200,
+      "bytes": 348519,
+      "SHA256": "73996eff32186bd121ab72d06366c9e4f67060d812e754a622bfce12ff0e4657"
+    },
+    {
+      "relative": "assets/packed/07-TT_CC_WILD-0.json",
+      "status": 200,
+      "bytes": 10601,
+      "SHA256": "c185c218a194805e1b09c507893d35f011551d33387194d0ffefe77a027047ae"
+    },
+    {
+      "relative": "assets/packed/07-UI-0.png",
+      "status": 200,
+      "bytes": 62432,
+      "SHA256": "f7c9fab4be8c069e67831699709e565fdd438c706233f98cea4b19d7a0431b46"
+    },
+    {
+      "relative": "assets/packed/07-UI-0.json",
+      "status": 200,
+      "bytes": 4196,
+      "SHA256": "7cf1b30554a075e5bfb91b22bc7b11c197df20b1ad40e675269c4c9e2be9d3fc"
+    },
+    {
+      "relative": "assets/packed/jpg/07-backgrounds-0.jpg",
+      "status": 200,
+      "bytes": 520189,
+      "SHA256": "750494fc8acfff0faeff70cc63b3ae00e775eee9ab6b204c64988fcad39dd6fb"
+    },
+    {
+      "relative": "assets/packed/jpg/07-backgrounds-0.json",
+      "status": 200,
+      "bytes": 2005,
+      "SHA256": "bcc11e9c543880194252b8d65bf0fe04f6c4e5831f25411a1187505f0d7b4606"
+    },
+    {
+      "relative": "config/paytable/help_en_us.json",
+      "status": 200,
+      "bytes": 4966,
+      "SHA256": "cd619df92c8a9349c153654b66bae6202c3858318b3c9d92b31e7cc575582fd7"
+    }
+  ],
+  "sourceRequests": 0,
+  "canonicalExistingOwnRequestsOnly": true
+}

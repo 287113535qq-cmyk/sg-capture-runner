@@ -1,0 +1,15 @@
+{
+  "at": 1792176860.1552029,
+  "gameId": "32738",
+  "HTTPStatus": 404,
+  "errorType": "HTTPError",
+  "responseBytes": 153,
+  "responseSHA256": "bd5e6537d1fa8b7e136d3589dd722410eb3836f3b4b8e21733fba881463f5272",
+  "selectedHeaders": {},
+  "ownNativeAssetCached": false,
+  "requests": 1,
+  "retries": 0,
+  "gameplayRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

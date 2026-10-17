@@ -1,0 +1,284 @@
+{
+  "frames" : {
+    "resources/atlas/coins/coin-03" : {
+      "frame" : {
+        "x" : 215,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-14" : {
+      "frame" : {
+        "x" : 985,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-04" : {
+      "frame" : {
+        "x" : 285,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-15" : {
+      "frame" : {
+        "x" : 1055,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-05" : {
+      "frame" : {
+        "x" : 355,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-16" : {
+      "frame" : {
+        "x" : 1125,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-06" : {
+      "frame" : {
+        "x" : 425,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-17" : {
+      "frame" : {
+        "x" : 1195,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-10" : {
+      "frame" : {
+        "x" : 705,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-00" : {
+      "frame" : {
+        "x" : 5,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-11" : {
+      "frame" : {
+        "x" : 775,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-01" : {
+      "frame" : {
+        "x" : 75,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-12" : {
+      "frame" : {
+        "x" : 845,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-02" : {
+      "frame" : {
+        "x" : 145,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-13" : {
+      "frame" : {
+        "x" : 915,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-07" : {
+      "frame" : {
+        "x" : 495,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-18" : {
+      "frame" : {
+        "x" : 1265,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-08" : {
+      "frame" : {
+        "x" : 565,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-19" : {
+      "frame" : {
+        "x" : 1335,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    },
+    "resources/atlas/coins/coin-09" : {
+      "frame" : {
+        "x" : 635,
+        "y" : 5,
+        "w" : 60,
+        "h" : 74
+      },
+      "sourceSize" : {
+        "w" : 60,
+        "h" : 74
+      },
+      "rotated" : false,
+      "page" : 0
+    }
+  }
+}

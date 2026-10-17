@@ -1,0 +1,60 @@
+{"frames": {
+
+"IMG_3X5_REEL_FRAME":
+{
+	"frame": {"x":682,"y":1,"w":855,"h":536},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":0,"w":855,"h":536},
+	"sourceSize": {"w":932,"h":536}
+},
+"IMG_GLOW":
+{
+	"frame": {"x":1,"y":1,"w":679,"h":650},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":679,"h":650},
+	"sourceSize": {"w":679,"h":650}
+},
+"IMG_GRAND_JACKPOT":
+{
+	"frame": {"x":924,"y":539,"w":322,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":322,"h":108},
+	"sourceSize": {"w":322,"h":108}
+},
+"IMG_MAJOR_JACKPOT":
+{
+	"frame": {"x":924,"y":649,"w":311,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":311,"h":96},
+	"sourceSize": {"w":311,"h":96}
+},
+"IMG_MINI_JACKPOT":
+{
+	"frame": {"x":1248,"y":539,"w":254,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":254,"h":107},
+	"sourceSize": {"w":254,"h":107}
+},
+"IMG_MINOR_JACKPOT":
+{
+	"frame": {"x":682,"y":539,"w":240,"h":110},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":240,"h":110},
+	"sourceSize": {"w":240,"h":110}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "07-reelsUIBasegame-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1538,"h":746},
+	"scale": "0.75",
+	"smartupdate": "$TexturePacker:SmartUpdate:89c83a5afb0d95c55b9557b8ca176bf9:e7518ea933f80676b2f79753bf8fcb9d:82c7fdcc4225b2c8da5212d7e0c8354f$"
+}
+}

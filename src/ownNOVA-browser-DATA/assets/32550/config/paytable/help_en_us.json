@@ -1,0 +1,89 @@
+{
+	"Page1": {
+		"Title": "BASE GAME PAYOUTS"
+	},
+	"Page2": {
+		"Text1": "Only the highest winner paid per winning combination.",
+		"Text2": "REEL WAYS™ pays must occur on adjacent reels, beginning with the far-left reel.",
+		"Text3": "All wins on multiple ways are added together.",
+		"Text4": "Paytable reflects current bet configuration.",
+		"Text5": "The base game contains up to 243 ways to win.",
+		"Title": "BASE GAME RULES"
+	},
+	"Page3": {
+		"Title": "FREE SPINS PAYOUTS"
+	},
+	"Page4": {
+		"Text1": "Only the highest winner paid per winning combination.",
+		"Text2": "REEL WAYS™ pays must occur on adjacent reels, beginning with the far-left reel.",
+		"Text3": "All wins on multiple ways are added together.",
+		"Text4": "Paytable reflects current bet configuration.",
+		"Text5": "Free Spins contains up to 243 ways to win.",
+		"Title": "FREE SPINS RULES"
+	},
+	"Page5": {
+		"Text0": "{wildSymbol}",
+		"Text1": "The MA symbol is wild and substitutes for all symbols except for the ELEMENT COIN symbols. In the base game, the symbol appears on reel 3, 4 and 5.",
+		"Text2": "In the base game, wilds are persistent and move up 1 reel position for subsequent spins.",
+		"Text3": "If a wild lands on an Element coin at the end of a spin that position becomes both a Wild and an element coin.",
+		"Text4": "In Free Spins, the symbol appears on reels 2, 3, 4 and 5.",
+		"Title": "WILDS"
+	},
+	"Page6": {
+		"Text1": "{blueCoin} {redCoin} {greenCoin}",
+		"Text2": "Each ELEMENT COIN that lands during the base game will fly into the corresponding colored bowl. Any ELEMENT COIN may trigger the corresponding bowl.",
+		"Text3": "More than one bowl can be triggered on a single spin",
+		"Text4": "If bowl/s are triggered the corresponding feature will start.",
+		"Title": "ELEMENT COINS"
+	},
+	"Page7": {
+		"Text1": "{blueCoin} {redCoin} {greenCoin}",
+		"Text2": "The accumulation of ELEMENT COINS over time in the RED, GREEN and BLUE bowls has no effect on triggering the JACKPOT PICK feature or Free Spins.",
+		"Title": "ELEMENT COINS"
+	},
+	"Page8": {
+		"Text1": "{redBowlExplode}",
+		"Text2": "Any red ELEMENT COIN landing in the RED bowl may trigger the JACKPOT PICK feature.",
+		"Text3": "15 coins will be presented, coins are revealed by clicking on them. Coins will reveal FU BABY™ symbols or the UPGRADE symbol. Once 3 matching FU BABY™ symbols have been revealed, the corresponding JACKPOT is awarded.",
+		"Text4": "If 3 UPGRADE symbols are revealed before a JACKPOT is awarded, the JACKPOT won is upgraded to the next level. If Grand is awarded, it will be awarded twice.",
+		"Text5": "The feature ends when one jackpot is awarded to the player.",
+		"Title": "JACKPOT PICK FEATURE"
+	},
+	"Page9": {
+		"Title": "COLLECTION BOWLS",
+		"Text0": "BOWLS TRIGGERED",
+		"Text1": "FEATURES AWARDED",
+		"Text2": "MIGHTY: 6 Free Spins (3 to 6 WILDS added)",
+		"Text5": "SUPER: 6 Free Spins (7 to 12 WILDS added)",
+		"Text6": "ULTRA: 6 Free Spins (3 to 6 WILDS added) + JACKPOT",
+		"Text8": "ULTIMATE: 6 Free Spins (7 to 12 WILDS added) + JACKPOT",
+		"Text3": "MEGA: 6 Free Spins (5 to 8 WILDS added)",
+		"Text7": "SUPREME: 6 Free Spins (5 to 8 WILDS added) + JACKPOT",
+		"Text4": "JACKPOT PICK"
+	},
+	"Page10": {
+		"Text1": "{blueGreenBowlExplode}",
+		"Text2": "ELEMENT COINS may also award the JACKPOT PICK feature.",
+		"Text3": "Only RED ELEMENT COINS are available in Free Spins.",
+		"Text4": "Free Spins will end when there are no Free Spins remaining.",
+		"Text5": "Free Spins will end if the maximum win has been achieved.",
+		"Title": "FREE SPINS FEATURE"
+	},
+	"Page11": {
+		"Text1": "{redEnvelope}",
+		"Text2": "During the base reel game, the red mystery envelope bonus may be triggered at random.",
+		"Text3": "You will be shown a cash prize on top of the red envelope.",
+		"Text4": "The win from this bonus is [REDENV_WIN] and is based on the current bet value.",
+		"Text5": "After the prize is awarded, the game will continue as normal.",
+		"Title": "RED MYSTERY ENVELOPE BONUS"
+	},
+	"Page12": {
+		"Text1": "Any combination of wins in a single game is limited and will not exceed [MAXWIN]. It may not be possible to reach this limit in a single game from every bet configuration.",
+		"Text2": "In accordance with fair gaming practices, the outcome of each and every game is completely independent.",
+		"Text3": "The chances of getting a particular outcome are always the same at the start of every game.",
+		"Text4": "The expected return for this game is [RTP]. This reflects the theoretical return across many plays.",
+		"Text5": "Malfunction voids all pays and plays. {versionNumber}",
+		"Text6": "The look and feel of the game and its individual components and displays are trade dress of Scientific Games Corp. TM and © 2021 Scientific Games Corp. All rights reserved.",
+		"Title": "LEGAL NOTICE"
+	}
+}

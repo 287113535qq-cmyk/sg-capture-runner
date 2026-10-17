@@ -1,0 +1,19 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "sourceHashRecomputed": false,
+  "functions": [
+    {
+      "name": "fixFirstSheelsTotalWin",
+      "sourceStart": 1991525,
+      "sourceEnd": 1991846,
+      "source": "function(rsp){var items=rsp.split(\"|\"),shellPrizes=0;for(var i in items){var pos=items[i].split(\";\");shellPrizes+=parseInt(pos[3])}var tw=self.slotGame.serverResponse.totalWin;self.firstRespinsWin=tw;var fixedTW=tw-shellPrizes;self.slotGame.serverResponse.totalWin=fixedTW,self.slotGame.serverResponse.currentWin=fixedTW}",
+      "fragmentSHA256": "483ecbc50c4ff9f71421514685fe50b53dee97daafcf8409fb70b52a51e4f164"
+    }
+  ],
+  "SDKExecuted": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionAdmission": false
+}

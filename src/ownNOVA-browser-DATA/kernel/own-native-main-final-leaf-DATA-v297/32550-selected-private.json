@@ -1,0 +1,43 @@
+{
+  "schema": "own-NOVA-new-native-main-final-leaf-source-DATA-v297",
+  "gameId": "32550",
+  "selected": {
+    "7328": {
+      "moduleId": "7328",
+      "source": "function(e,t,n){var a;void 0===(a=function(e){\"use strict\";var t=n(6405);n(6136),n(8295);return function(e,n,a){var i=game.add.group();i.setSymbol=function(e){this.symbol=String(e),this.hideAllLayers(),this.addLayers(this.symbol)},i.getSymbol=function(){return this.symbol},i.hideAllLayers=function(){for(var e=0;e<this.numLayers;e++)this[\"layer\"+e].visible=!1},i.light=function(){for(var e=0;e<this.numLayers;e++)this[\"layer\"+e].tint=16777215},i.dim=function(){for(var e=0;e<this.numLayers;e++)this[\"layer\"+e].tint=6710886},i.addLayers=function(e){e=parseInt(e.split(\"/\")[0]);for(var t=config.symbolLayers[e],n=0;n<t.layers.length;n++){var a;if(!0===t.blur&&!0===this.blurred)0===n&&(this[\"layer\"+n].visible=!0,this.game.assetManager.replaceImage(this[\"layer\"+n],e+\"-blur\"));else a=t.layers[n],this[\"layer\"+n].visible=!0,this.game.assetManager.replaceImage(this[\"layer\"+n],a)}},i.setBlur=function(e){e!=this.blurred&&(this.blurred=e,this.setSymbol(this.symbol))},i.winAnim=function(){switch(parseInt(this.symbol)){case 6:case 5:case 4:case 3:case 2:case 1:case 0:this.flash(this);break;case 7:this.horseAnim(this.symbol)}},i.horseAnim=function(e){game.assetManager.replaceImage(this.layer0,\"HH_CC_HORSE_00000\"),this.layer0.animations.add(\"horse\",t.Animation.generateFrameNames(\"HH_CC_HORSE_\",0,44,\"\",5)),this.layer0.animations.play(\"horse\",22.5,!1)},i.coinAnim=function(e){var n;switch(e){case\"RED\":n=\"HH_CC_COIN_RED_\";break;case\"GREEN\":n=\"HH_CC_COIN_GREEN_\";break;case\"BLUE\":n=\"HH_CC_COIN_BLUE_\"}game.assetManager.replaceImage(this.layer0,n+\"00000\"),this.layer0.animations.add(e,t.Animation.generateFrameNames(n,0,25,\"\",5)),this.layer0.animations.play(e,30,!1)},i.pickAnim=function(e){},i.defaultAnim=function(e){var n=config.timeToDisplayWins;game.add.tween(e).to({angle:60},n/3,t.Easing.Sinusoidal.Out,!0).onComplete.add((function(){game.add.tween(e).to({angle:-60},n/3,t.Easing.Sinusoidal.Out,!0).onComplete.add((function(){game.add.tween(e).to({angle:0},n/3,t.Easing.Sinusoidal.Out,!0)}))})),game.add.tween(e.scale).to({x:1.4,y:1.4},n/1.5,t.Easing.Sinusoidal.Out,!0).yoyo(!0)},i.flash=function(e){var n=this,a=(config.timeToDisplayWins,game.add.tween(e).to({},500,t.Easing.Sinusoidal.Out,!0,!0,2));a.onStart.add((function(){n.alpha=!n.alpha}),e),a.onRepeat.add((function(){n.alpha=!n.alpha}),e),a.onComplete.add((function(){n.alpha=1}),e)},i.countMaxLayers=function(){var e=-1;for(var t in config.symbolLayers)e=Math.max(config.symbolLayers[t].layers.length,e);return e},i.y=scaleFloat(a*config.distanceBetweenSymbols.y),i.numLayers=i.countMaxLayers();for(var s=0;s<i.numLayers;s++)i.add(i[\"layer\"+s]=game.assetManager.addImage(0,0,\"IMG_QUEEN\")),i[\"layer\"+s].anchor.set(.5);return i.reel=n,i.pos=a,i.blurred=!1,i.setSymbol(e),i}}.call(t,n,t,e))||(e.exports=a)}",
+      "dependencies": [
+        "6405",
+        "6136",
+        "8295"
+      ],
+      "start": 460801,
+      "end": 463567,
+      "SHA256": "4527ddd1bd9c44a09826e5971c412882578bd0645646cbfe4a6e39be1a8d5219",
+      "selection": "actual own main-controller immediate parent 6838"
+    },
+    "7633": {
+      "moduleId": "7633",
+      "source": "function(e){\"use strict\";e.exports=JSON.parse('{\"packed\":{\"png\":[\"05-BLUE_explode-0.png\",\"05-BLUE_lid-0.png\",\"05-BLUE_loop-0.png\",\"05-BLUE_step-0.png\",\"05-COINS-0.png\",\"05-GREEN_explode-0.png\",\"05-GREEN_lid-0.png\",\"05-GREEN_loop-0.png\",\"05-GREEN_step-0.png\",\"05-help-0.png\",\"05-HH_CC_ELEMENTAL_BLUE-0.png\",\"05-HH_CC_ELEMENTAL_GREEN-0.png\",\"05-HH_CC_ELEMENTAL_PURPLE-0.png\",\"05-HH_CC_ELEMENTAL_RED-0.png\",\"05-HH_CC_HORSE-0.png\",\"05-jackpotPicker1-0.png\",\"05-jackpotPicker2-0.png\",\"05-loading-0.png\",\"05-loading2-0.png\",\"05-misc-0.png\",\"05-misc2-0.png\",\"05-panels-0.png\",\"05-particles-0.png\",\"05-redEnvelope-0.png\",\"05-RED_explode-0.png\",\"05-RED_lid-0.png\",\"05-RED_loop-0.png\",\"05-RED_step-0.png\",\"05-reelsUIBasegame-0.png\",\"05-reelsUIFreespins-0.png\",\"05-symbolStatics-0.png\",\"05-transitions-0.png\",\"05-UI-0.png\",\"07-BLUE_explode-0.png\",\"07-BLUE_lid-0.png\",\"07-BLUE_loop-0.png\",\"07-BLUE_step-0.png\",\"07-COINS-0.png\",\"07-GREEN_explode-0.png\",\"07-GREEN_lid-0.png\",\"07-GREEN_loop-0.png\",\"07-GREEN_step-0.png\",\"07-help-0.png\",\"07-HH_CC_ELEMENTAL_BLUE-0.png\",\"07-HH_CC_ELEMENTAL_GREEN-0.png\",\"07-HH_CC_ELEMENTAL_PURPLE-0.png\",\"07-HH_CC_ELEMENTAL_RED-0.png\",\"07-HH_CC_HORSE-0.png\",\"07-jackpotPicker1-0.png\",\"07-jackpotPicker2-0.png\",\"07-loading-0.png\",\"07-loading2-0.png\",\"07-misc-0.png\",\"07-misc2-0.png\",\"07-panels-0.png\",\"07-particles-0.png\",\"07-redEnvelope-0.png\",\"07-RED_explode-0.png\",\"07-RED_lid-0.png\",\"07-RED_loop-0.png\",\"07-RED_step-0.png\",\"07-reelsUIBasegame-0.png\",\"07-reelsUIFreespins-0.png\",\"07-symbolStatics-0.png\",\"07-transitions-0.png\",\"07-UI-0.png\",\"10-BLUE_explode-0.png\",\"10-BLUE_lid-0.png\",\"10-BLUE_loop-0.png\",\"10-BLUE_step-0.png\",\"10-COINS-0.png\",\"10-GREEN_explode-0.png\",\"10-GREEN_lid-0.png\",\"10-GREEN_loop-0.png\",\"10-GREEN_step-0.png\",\"10-help-0.png\",\"10-HH_CC_ELEMENTAL_BLUE-0.png\",\"10-HH_CC_ELEMENTAL_GREEN-0.png\",\"10-HH_CC_ELEMENTAL_PURPLE-0.png\",\"10-HH_CC_ELEMENTAL_RED-0.png\",\"10-HH_CC_HORSE-0.png\",\"10-jackpotPicker1-0.png\",\"10-jackpotPicker2-0.png\",\"10-loading-0.png\",\"10-loading2-0.png\",\"10-misc-0.png\",\"10-misc2-0.png\",\"10-panels-0.png\",\"10-particles-0.png\",\"10-redEnvelope-0.png\",\"10-RED_explode-0.png\",\"10-RED_lid-0.png\",\"10-RED_loop-0.png\",\"10-RED_step-0.png\",\"10-reelsUIBasegame-0.png\",\"10-reelsUIFreespins-0.png\",\"10-symbolStatics-0.png\",\"10-transitions-0.png\",\"10-UI-0.png\"],\"jpg\":[\"05-backgrounds-0.jpg\",\"07-backgrounds-0.jpg\",\"10-backgrounds-0.jpg\"],\"localised\":[]},\"sounds\":{\"ogg\":[\"base_game.ogg\",\"bowlsanimation.ogg\",\"fx_allup.ogg\",\"fx_bowl_grow.ogg\",\"fx_bowl_twitch.ogg\",\"fx_coin_fly.ogg\",\"fx_coin_lands_basegame.ogg\",\"fx_coin_lands_freegames.ogg\",\"fx_coin_reveal_bonus_prize.ogg\",\"fx_coin_reveal_credit_prize.ogg\",\"fx_coin_reveal_freegame.ogg\",\"fx_coin_select.ogg\",\"fx_coin_upgrade_1.ogg\",\"fx_coin_upgrade_2.ogg\",\"fx_coin_upgrade_3.ogg\",\"fx_coin_upgrade_grand.ogg\",\"fx_coin_upgrade_major.ogg\",\"fx_coin_upgrade_mini.ogg\",\"fx_coin_upgrade_minor.ogg\",\"fx_coin_win.ogg\",\"fx_freegames_end_banner.ogg\",\"fx_freegames_increment.ogg\",\"fx_free_games_intro.ogg\",\"fx_free_games_music.ogg\",\"fx_free_games_music_level_2.ogg\",\"fx_free_games_music_level_3.ogg\",\"fx_free_games_music_level_4.ogg\",\"fx_free_games_music_level_5.ogg\",\"fx_free_games_music_level_6.ogg\",\"fx_grand_jackpot_music.ogg\",\"fx_horse_anim.ogg\",\"fx_jackpot_feature.ogg\",\"fx_jackpot_feature_prize.ogg\",\"fx_major_jackpot_music.ogg\",\"fx_mini_bonus_music.ogg\",\"fx_minor_bonus_music.ogg\",\"fx_picker_end.ogg\",\"fx_pot_notifier.ogg\",\"fx_reel_stop.ogg\",\"fx_scroll_intro.ogg\",\"fx_touch_screen_sound.ogg\",\"fx_waitscreen_music.ogg\",\"fx_wildsym_flies.ogg\",\"fx_wildsym_fly_lands.ogg\",\"fx_wildsym_lands.ogg\",\"fx_wildsym_row1_up.ogg\",\"fx_wildsym_row2_up.ogg\",\"fx_wintune_end_1.ogg\",\"fx_wintune_end_2.ogg\",\"fx_win_tune_loop.ogg\",\"musicbigwinloop.ogg\",\"musicpicker.ogg\",\"redenvelope_End.ogg\",\"redenvelope_MysteryFeature.ogg\",\"sfxbetdecrease.ogg\",\"sfxbetincrease.ogg\",\"sfxmenubutton.ogg\",\"tier0.ogg\",\"tier1_A.ogg\",\"tier2_A.ogg\",\"tier3_A.ogg\"]},\"fonts\":{\"bitmap\":[]}}')}",
+      "dependencies": [],
+      "start": 501530,
+      "end": 505470,
+      "SHA256": "b166e45bc0f82873fdd966063cf54ab952627d574fc9de64fc0bed25ecb81fc2",
+      "selection": "actual own main-controller immediate parent 6838"
+    }
+  },
+  "ownEntryModule": "6838",
+  "previousAPIAndPhaserScopeReused": true,
+  "wholeSourcePinReusedWithoutRehash": {
+    "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\hurricanehorsecoincombo\\218.bundle.js",
+    "SHA256": "aa3b7e7d52f273a9504ad507f90ea55119aad930b3d12d41f2cbe18198076329",
+    "bytes": 505493,
+    "exactPriorClientFileCertificateExists": true
+  },
+  "newSelectedFactoryASTs": 2,
+  "wholeSDKASTs": 0,
+  "wholeSDKHashRechecks": 0,
+  "oldSelectedFactoriesReextracted": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "productionReady": false
+}

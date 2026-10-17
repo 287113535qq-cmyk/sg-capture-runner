@@ -1,0 +1,11 @@
+{
+  "at": 1792176859.1970809,
+  "gameId": "32738",
+  "method": "GET",
+  "url": "https://ogs-cdn-usnj.nyxop.net/html5/terrifictigercoincombo/config/errorlist/en.json",
+  "URLBinding": "Own certified cached HTML host/game folder plus native7135 relative config/errorlist/en.json; HTTPS origin inferred from CDN cache host",
+  "maxAttempts": 1,
+  "cookieOrPrivateSessionUsed": false,
+  "normalPoolReads": 0,
+  "gameplayRequests": 0
+}

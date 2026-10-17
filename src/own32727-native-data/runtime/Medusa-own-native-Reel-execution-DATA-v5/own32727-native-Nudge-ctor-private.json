@@ -1,0 +1,9 @@
+{
+  "gameId": "32727",
+  "name": "NovaReelMotionNudge",
+  "source": "function NovaReelMotionNudge(reel,config){this.motionConfig=NOVA.config.game.reelsMotionNudge,this.reelReference=reel,this.notifyReel=this.reelReference.notifyReelCallback,this.motionDuration=this.motionConfig.duration,this.bounceDuration=this.motionConfig.bounceDuration,this.bounceDistance=this.motionConfig.bounceDistance,this.motionReverse=!1,this.serverSliceCompleted=!1,this.motion,this.init=function(){}}",
+  "SHA256": "28bab88516b3eb68232ba46a2c4057e33f0528337b6d4ac227c2c3c4bdcc305d",
+  "inputReusedFrom": "v4 selected ReelManager adjacent window",
+  "sourceRequests": 0,
+  "wholeSDKASTRepeated": false
+}

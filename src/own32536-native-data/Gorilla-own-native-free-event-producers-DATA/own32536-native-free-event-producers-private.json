@@ -1,0 +1,51 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "rows": [
+    {
+      "name": "fireEvent",
+      "sourceStart": 1768424,
+      "sourceEnd": 1769271,
+      "source": "function(event,param){var exitCode=self.api_handleEvent(self.states[self.currentState],event,param);exitCode==ENUM.XC_NULL&&(exitCode=self.states[self.currentState].handleEvent(event,param)),exitCode>=0&&(NOVA.paused?lastExitCode=exitCode:(self.currentState==ENUM.gameState.BASE_SPINNING_STOP&&METRICS.stopFPS(),self.currentState=self.nextStateTable[self.currentState][exitCode],self.currentState==ENUM.gameState.BASE_SPINNING_START&&METRICS.startFPS(),self.api_enter(self.states[self.currentState])==ENUM.RUN_DEFAULT_ENTER?(self.debugUI.setDebugString(\"CORE_\"+self.stateNames[self.currentState]),self.states[self.currentState].enter()):self.debugUI.setDebugString(\"GAME_\"+self.stateNames[self.currentState]),self.unitTestStateListener&&self.unitTestStateListener(self.currentState))),self.unitTestEventListener&&self.unitTestEventListener(event)}",
+      "fragmentSHA256": "a5108bef2aecf2ffa0e3d4ec6e55968637aa6f65dbd25e1671b6045547ce6b14"
+    },
+    {
+      "name": "winCompleted",
+      "sourceStart": 1729924,
+      "sourceEnd": 1730014,
+      "source": "function(){self.api_notify(\"WIN_COMPLETE\"),self.fireEvent(\"WIN_COMPLETE\"),wingate.reset()}",
+      "fragmentSHA256": "46bba9f66a1b92df9c896b85c8df08c3d561e54022e3cb0e13925b3767547ef6"
+    },
+    {
+      "name": "allReelsStopped",
+      "sourceStart": 1730082,
+      "sourceEnd": 1730193,
+      "source": "function(){self.fireEvent(\"REEL_STOP\"),self.api_notify(\"ALL_REELS_STOPPED\"),quickStopFired=!1,reelgate.reset()}",
+      "fragmentSHA256": "c247ff8e167d0ce9a6e7965857d97dc426b39d23658da10ffa4752ea31b227c4"
+    },
+    {
+      "name": "introPanelClose",
+      "sourceStart": 1995107,
+      "sourceEnd": 1995167,
+      "source": "function(){self.slotGame.fireEvent(\"CLOSE_FREE_GAME_INTRO\")}",
+      "fragmentSHA256": "db9166a7c5a3606e62c828d29d286f765a86f2bf34e05968d6e1b6d0cf1fb934"
+    },
+    {
+      "name": "summaryPanelClose",
+      "sourceStart": 1995191,
+      "sourceEnd": 1995253,
+      "source": "function(){self.slotGame.fireEvent(\"CLOSE_FREE_GAME_SUMMARY\")}",
+      "fragmentSHA256": "c96d1563036a677cd38daa5a4345772645ad6e9701836b64875098153a1fe11d"
+    }
+  ],
+  "reelManagerGameStateSource": "{RM_BASE_GAME:0,RM_FREE_GAME:1}",
+  "constants": {
+    "XC_NULL": -1,
+    "RUN_DEFAULT_ENTER": -1,
+    "SKIP_DEFAULT_ENTER": -2
+  },
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

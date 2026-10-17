@@ -1,0 +1,6 @@
+{
+  "gameId": "32727",
+  "selector": "NovaReel.prototype.getSymbolID",
+  "source": "function(row){var index=this.getRowOffset(row);return this.getSlotByIndex(index).getSymbolID()}",
+  "wholeSDKASTRepeated": false
+}

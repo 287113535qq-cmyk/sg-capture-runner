@@ -1,0 +1,16 @@
+{
+  "32550": {
+    "gameId": "32550",
+    "dbName": "sg_hurricanehorsecoincombo",
+    "runtimeSlug": "hurricanehorsecoincombo",
+    "runtimeGameId": 33052,
+    "ownSDKFileSHA256": "eec95217f0c9fa34c1743026e73aed10ab77388ccfe194aa852f21f9bc18e43c"
+  },
+  "32738": {
+    "gameId": "32738",
+    "dbName": "sg_terrifictigercoincombo",
+    "runtimeSlug": "terrifictigercoincombo",
+    "runtimeGameId": 33138,
+    "ownSDKFileSHA256": "87e73b1f3403a9db1f41ef645ebe2772e0a495f052084874ea38fc8401043313"
+  }
+}

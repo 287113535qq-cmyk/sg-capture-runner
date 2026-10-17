@@ -1,0 +1,17 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "rows": [
+    {
+      "name": "recoverCascadeReel",
+      "sourceStart": 1942512,
+      "sourceEnd": 1942977,
+      "source": "function(msg){var recoveryCRR=msg;TweenMax.delayedCall(1,function(){if(recoveryCRR){recoveryCRR=recoveryCRR.split(\"|\");for(var recoveryCRR_reel=0;recoveryCRR_reel<recoveryCRR.length;recoveryCRR_reel++){recoveryCRR_rows=recoveryCRR[recoveryCRR_reel].split(\";\");for(var recoveryCRR_row=0;recoveryCRR_row<recoveryCRR_rows.length;recoveryCRR_row++)self.slotGame.reelManager.setSymbol(recoveryCRR_reel,recoveryCRR_row,recoveryCRR_rows[recoveryCRR_row])}}},null,this,!0)}",
+      "fragmentSHA256": "08f2c2a1995dbe2e511f875c5c769563929d8a27c200399393b8fb2b70ea51c5"
+    }
+  ],
+  "SDKHashRecomputed": false,
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

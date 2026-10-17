@@ -1,0 +1,26 @@
+{
+  "at": 1792178595.596,
+  "results": [
+    {
+      "gameId": "32550",
+      "moduleId": "2500",
+      "bytes": 7453,
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-config-parent-DATA-v292\\32550-selected-private.json",
+      "SHA256": "4c228508f4c73c07d71fe2692d2eb646710ab1e42e82d95580073672600a4683"
+    },
+    {
+      "gameId": "32738",
+      "moduleId": "82500",
+      "bytes": 7807,
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-config-parent-DATA-v292\\32738-selected-private.json",
+      "SHA256": "8ad54748639d022b2f56d079e59504409529d0e10921eccd08dfa11688ab6567"
+    }
+  ],
+  "newSelectedFactoryASTs": 2,
+  "wholeSDKASTs": 0,
+  "wholeSDKHashRechecks": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

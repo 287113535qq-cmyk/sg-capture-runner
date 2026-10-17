@@ -651,6 +651,7 @@ export class RoxorCometDSession {
     constructor(private readonly game: AGGameConfig) {
         // Provider boundary only; scheduler/round/storage are the original AG code.
         if (game.provider === 'sg') {
+            if(game.sg?.protocol==='gdm'){ const {SGGdmSession}=require('./sg.session'); return new SGGdmSession(game) as unknown as RoxorCometDSession; }
             const { SGWmsSession } = require('./sg.session');
             return new SGWmsSession(game) as unknown as RoxorCometDSession;
         }

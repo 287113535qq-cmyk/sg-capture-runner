@@ -1,0 +1,54 @@
+{
+  "gameId": "32536",
+  "retainedSDKSourceSHA256": "672dee8e2e1a3d269ceaf62a5d5fc3ccdcd4bd91f7f98fdb69eb1c17b94126f3",
+  "functions": [
+    {
+      "name": "BaseSpinningStartState",
+      "sourceStart": 1693751,
+      "sourceEnd": 1696174,
+      "source": "function BaseSpinningStartState(id){var XC_0_MSG_RECEIVED=0;this.id=id,this.enter=function(){if(self.winManager.stopWin(),self.reelManager.hideEffectsLayerSlots(),self.roundActive?console.warn(\"Tried starting a round when we were already in a round\"):(wrapperAPI(\"ROUND\",1),self.ui.setRound(!0),self.roundActive=!0,self.resultShown=!1,lowBalanceShown=!1),NOVA.startMsg(\"BET\"),NOVA.config.game.type==ENUM.winSequence.PAYWAY?(NOVA.addToMsg(\"RB\",self.account.getNumReelsSelected()),NOVA.addToMsg(\"BPR\",self.account.getCurrentBetPerReel())):(NOVA.addToMsg(\"LB\",self.account.getNumPaylinesSelected()),NOVA.addToMsg(\"BPL\",self.account.getCurrentBetPerLine())),1==NOVA.config.game.anteBet.superBet&&NOVA.addToMsg(\"ABPM\",self.account.superbet),\"undefined\"!=typeof NOVA.debug.debugScreen.getStopsString){var presetStr=NOVA.debug.debugScreen.getStopsString();\"\"!=presetStr&&(NOVA.addToMsg(\"PRESET\",presetStr),NOVA.debug.debugScreen.clearStopsString())}\"\"!=self.betGSD&&NOVA.addToMsg(\"GSD\",self.betGSD),self.freeRounds.isInFreeRounds()||self.account.takeBet(),NOVA.sendMsg(),METRICS.addSpin(self.ui.autoplay.inAutoplay?1:0,self.freeRounds.isInFreeRounds()?1:0),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.account.clearWin(),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.account.getWin()),0!=lastWin&&(self.metersManager.winMeter.isVisible()||self.metersManager.winMeter.show(),self.metersManager.winMeter.snapTo(lastWin),self.metersManager.balanceMeter.snapTo(self.account.getBalance()),self.freeRounds.snapWinMeter()),self.messageBar.displayWinText(!1),self.messageBar.showLeftText(!1),0==lastWin&&(self.metersManager.winMeter.setValue(self.account.getWin()),self.metersManager.winMeter.hide(),TweenMax.killTweensOf(self.messageBar.idle),self.messageBar.hideIdle(),self.messageBar.idle()),self.reelManager.startSpin(!1),timeSpinStarted=new Date,self.ui.canQuickStop(!0)},this.handleEvent=function(event,param){return\"MSG\"==event?(self.account.setBalance(self.serverResponse.balance),self.reelManager.setReelstrips(self.serverResponse.reelstripID),self.reelManager.storeStopsLocally(self.serverResponse.stops),self.freeRounds.processMsg(self.serverResponse.freeRounds),self.freeRounds.updateRoundMeter(),self.winManager.setWinCombinations(self.serverResponse.winCombinations),XC_0_MSG_RECEIVED):(\"UI\"==event&&\"QUICK_STOP\"==param&&(quickStopFired=!0),ENUM.XC_NULL)}}",
+      "fragmentSHA256": "20100e0aef3c625b0712f8562a43a6bab27fad86b74a970ee788529c30b2e0e7"
+    },
+    {
+      "name": "checkPatchStatus",
+      "sourceStart": 1993732,
+      "sourceEnd": 1994313,
+      "source": "function(){var serverDate=new Date(game.slotGame.serverResponse.utc.iso),operator=game.operator,uidCfg=NOVA.config.uid;uidCfg.hasOwnProperty(operator)||(operator=\"default\");var dateP1=\"\",dateP2=\"\";dateP1=NOVA.config.uid.nj.p1,dateP2=NOVA.config.uid.nj.p2,console.log(dateP1),console.log(dateP2);var cfgDateP1=new Date(dateP1),cfgDateP2=new Date(dateP2);p1available=cfgDateP1.getTime()<=serverDate.getTime(),p2available=cfgDateP2.getTime()<=serverDate.getTime(),p1available&&(self.betGSD=\"CP~1\"),p2available&&(self.betGSD=\"CP~2\"),island_main.updateInfoPage(p1available,p2available)}",
+      "fragmentSHA256": "949d6819e536c961d6e0e28f4584ee3a9f04f7db20f77dcf16d115d0fc04e515"
+    }
+  ],
+  "SDKExecuted": false,
+  "sourceRequests": 0,
+  "productionAdmission": false,
+  "uidConfig": {
+    "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\ogs-cdn-usnj.nyxop.net\\html5\\gorillagowilder\\uidConfig.json",
+    "bytes": 204,
+    "SHA256": "249f158a762536624f8b7c2f97e2e5b9ec146c0feabe69b612583f1676d26d77",
+    "value": {
+      "uid": {
+        "nyx": {
+          "p1": "2018-01-01T00:00:00Z",
+          "p2": "2018-01-01T00:00:00Z"
+        },
+        "nj": {
+          "p1": "2019-06-21T00:00:00Z",
+          "p2": "2019-08-20T00:00:00Z"
+        },
+        "default": {
+          "p1": "2019-04-17T00:00:00Z",
+          "p2": "2019-07-04T00:00:00Z"
+        }
+      }
+    }
+  },
+  "nativeEmptyBetGSDInitializers": [
+    {
+      "sourceStart": 1729553,
+      "source": "this.betGSD=\"\""
+    },
+    {
+      "sourceStart": 1968438,
+      "source": "this.betGSD=\"\""
+    }
+  ]
+}

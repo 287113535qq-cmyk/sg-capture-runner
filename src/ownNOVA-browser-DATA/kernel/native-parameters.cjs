@@ -1,0 +1,5 @@
+'use strict';
+const assert=require('node:assert/strict');
+function nativeParameters(request,slug){const pairs=[...new URLSearchParams(request.query)];assert.equal(new Set(pairs.map(p=>p[0])).size,pairs.length,'Duplicate native request fields');const fields=Object.fromEntries(pairs);assert.equal(fields.MSGID,request.message);delete fields.MSGID;assert(fields.GN===undefined&&fields.PID===undefined,'Original GDM wrapper owns GN/PID');return {GN:slug,...fields};}
+function createNativeRequestCapabilities(){const issued=new WeakMap();let active=null,closed=false;return {issue(event,parameters,first){assert(!closed&&!active);const cap=Object.freeze({event,parameters:Object.freeze({...parameters}),first});issued.set(cap.parameters,cap);active=cap;return {event,parameters:cap.parameters};},take(event,parameters){const cap=parameters&&issued.get(parameters);assert(!closed&&cap&&cap===active&&cap.event===event,'Foreign/repeated original AG native capability denied before provider');issued.delete(parameters);active=null;return cap;},close(){closed=true;active=null;}};}
+module.exports={nativeParameters,createNativeRequestCapabilities};

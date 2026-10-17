@@ -1,0 +1,7 @@
+{
+  "gameId": "32727",
+  "selector": "ReelManager.prototype.getSymbolID",
+  "source": "function(reel,row){return this.reelsArray[reel].getSymbolID(row)}",
+  "wholeSDKASTRepeated": false,
+  "sourceRequests": 0
+}

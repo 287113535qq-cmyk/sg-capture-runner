@@ -1,0 +1,25 @@
+{
+  "gameId": "32727",
+  "rows": [
+    {
+      "selector": "this.notifyManagerCallback",
+      "offset": 159554,
+      "file": "new-selected-inline-window-1-private.js",
+      "source": "function(key,value){switch(key){case\"CRANK_COMPLETED\":self.hasBlur&&(self.reelsArray[value].setSymbolState(ENUM.symbolState.BLURRED,self.srsTriggered),self.reelsBlurred=!0),self.notifyCallback(\"CRANK_COMPLETED\",value);break;case\"BOUNCE_STARTED\":self.notifyCallback(\"BOUNCE_STARTED\",value),self.hasBlur&&self.reelsBlurred&&(self.srsTriggered&&self.hasShade?self.reelsArray[value].setSymbolState(ENUM.symbolState.SHADED,self.srsTriggered):self.reelsArray[value].setSymbolState(ENUM.symbolState.NORMAL,self.srsTriggered)),self.reelStopCounter==self.reelsArray.length&&(self.reelsBlurred=!1);break;case\"STOPPED\":self.reelStopCounter++;var stopReel=Number(value);self.notifyCallback(\"REEL_STOPPED\",stopReel),self.srsEnabled&&self.reelCfg.enableSRS&&(stopReel==self.srsReelTrigger&&self.srsGate.fire(0),null!==self.activeSRS[stopReel+1]&&1===self.activeSRS[stopReel+1]&&self.srsGate.fire(1)),self.reelStopCounter==self.reelsArray.length&&(self.notifyCallback(\"ALL_STOPPED\",!1),self.resetReels(),self.resetSRS());break;case\"STOP_WIN\":self.notifyCallback(\"STOP_WIN\");break;case\"CHANGED_STOPS\":self.notifyCallback(\"CHANGED_STOPS\");break;case\"ANIMATE_SRS\":self.notifyCallback(\"ANIMATE_SRS\",value);break;case\"REEL_STOP_SOUND\":self.notifyCallback(\"REEL_STOP_SOUND\",value);break;case\"SRS_COMPLETED\":self.reelStopCounter==self.reelsArray.length&&self.notifyCallback(\"SRS_COMPLETED\",value);break;case\"REEL_NUDGE_COMPLETED\":self.reelCfg.serverNudge===!1&&(self.restoreReelStopBackup(value),self.reelsArray[value].setStop(self.reelStopsBackup[value],!0)),self.notifyCallback(\"REEL_NUDGE_COMPLETED\",value);break;case\"REEL_NUDGED\":self.notifyCallback(\"REEL_NUDGED\",value);break;case\"SLOT_HIGHLIGHT\":self.notifyCallback(\"SLOT_HIGHLIGHT\",value);break;case\"REEL_HIGHLIGHT\":self.notifyCallback(\"REEL_HIGHLIGHT\",value);break;case\"SYMBOL_FOLLOWER\":self.notifyCallback(\"SYMBOL_FOLLOWER\",value);break;case\"SYMBOL_PASS\":self.notifyCallback(\"SYMBOL_PASS\",value)}}",
+      "sourceBytes": 1934,
+      "SHA256": "bd3b8e70a2386c97be2c1605286bc534f9c153c937ba732bad7c267328a95b06"
+    },
+    {
+      "selector": "this.allReelsStopped",
+      "offset": 1780671,
+      "file": "new-selected-inline-window-2-private.js",
+      "source": "function(){self.fireEvent(\"REEL_STOP\"),self.api_notify(\"ALL_REELS_STOPPED\"),quickStopFired=!1,reelgate.reset()}",
+      "sourceBytes": 111,
+      "SHA256": "c247ff8e167d0ce9a6e7965857d97dc426b39d23658da10ffa4752ea31b227c4"
+    }
+  ],
+  "wholeSDKASTRepeated": false,
+  "SDKExecuted": false,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

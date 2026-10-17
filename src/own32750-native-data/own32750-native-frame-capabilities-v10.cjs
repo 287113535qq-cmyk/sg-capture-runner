@@ -1,0 +1,11 @@
+'use strict';
+function createOwn32750FrameCapabilities({sessionScope,game}){
+ const need=(ok,s)=>{if(!ok)throw Error('OWN32750_NATIVE_CAP_'+s)};
+ need(sessionScope&&typeof sessionScope==='object'&&game?.gameId==='32750'&&game.dbName==='sg_eightyeightfortunes'&&game.sg?.runtimeGameId===32972,'OWN_GAME_AND_SCOPE');
+ const issued=new WeakSet(),used=new WeakSet();const own=()=>game?.gameId==='32750'&&game.dbName==='sg_eightyeightfortunes'&&game.sg?.runtimeGameId===32972;let sealed=false,sequence=0;
+ return{issue(data){need(own()&&!sealed&&data&&['Init','Logic','EndGame'].includes(data.event)&&typeof data.requestPayload==='string'&&typeof data.requestSessionID==='string'&&data.requestSessionID.length>0,'ORIGINAL_NATIVE_FRAME');const dispatch=Object.freeze({...data,sessionScope,game,sequence:++sequence});issued.add(dispatch);return dispatch},hasDispatch(value){return!!value&&typeof value==='object'&&own()&&!sealed&&issued.has(value)&&value.sessionScope===sessionScope&&value.game===game&&!used.has(value)},consume(dispatch,requestSessionID){need(this.hasDispatch(dispatch)&&dispatch.requestSessionID===requestSessionID,'EXACT_ONE_USE_OWN_FRAME');used.add(dispatch);return dispatch.requestPayload},wasConsumed(dispatch){return!!dispatch&&issued.has(dispatch)&&used.has(dispatch)},seal(){sealed=true},status(){return{issued:sequence,sealed,otherGamesAllowed:false,physicalSourcePOSTs:0}}};
+}
+function createOwn32750PublicParameters(kind,sequence){if(kind!=='paid'||!Number.isSafeInteger(sequence)||sequence<1)throw Error('OWN32750_PUBLIC_CAP_SHAPE');return Object.freeze({own32750NativeCapability:kind+':'+sequence})}
+function createOwn32750ReplayParameters(nativeRequest){if(!nativeRequest||!['Init','Logic','EndGame'].includes(nativeRequest.event)||typeof nativeRequest.requestPayload!=='string'||nativeRequest.requestPayload.length===0)throw Error('OWN32750_ACTUAL_NATIVE_REPLAY_REQUEST_REQUIRED');return Object.freeze({nativeRequestPayload:nativeRequest.requestPayload})}
+function recordOwn32750GameRequest(nativeRequest){return Object.freeze({event:nativeRequest.event,parameters:createOwn32750ReplayParameters(nativeRequest)})}
+module.exports={createOwn32750FrameCapabilities,createOwn32750PublicParameters,createOwn32750ReplayParameters,recordOwn32750GameRequest};

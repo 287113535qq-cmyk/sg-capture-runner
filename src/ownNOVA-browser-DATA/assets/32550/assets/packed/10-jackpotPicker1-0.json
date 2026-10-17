@@ -1,0 +1,972 @@
+{"frames": {
+
+"HH_CC_JACKPOT_GRAND_BABY_00000":
+{
+	"frame": {"x":363,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00001":
+{
+	"frame": {"x":1651,"y":1,"w":182,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00002":
+{
+	"frame": {"x":547,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00003":
+{
+	"frame": {"x":1,"y":1,"w":182,"h":178},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":6,"w":182,"h":178},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00004":
+{
+	"frame": {"x":185,"y":1,"w":176,"h":178},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":6,"w":176,"h":178},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00005":
+{
+	"frame": {"x":175,"y":1487,"w":174,"h":177},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":6,"w":174,"h":177},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00006":
+{
+	"frame": {"x":1,"y":181,"w":174,"h":183},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":6,"w":174,"h":183},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00007":
+{
+	"frame": {"x":1,"y":366,"w":174,"h":183},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":6,"w":174,"h":183},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00008":
+{
+	"frame": {"x":1,"y":551,"w":173,"h":183},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":173,"h":183},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00009":
+{
+	"frame": {"x":1,"y":736,"w":172,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":172,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00010":
+{
+	"frame": {"x":1,"y":922,"w":172,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":172,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00011":
+{
+	"frame": {"x":1,"y":1108,"w":172,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":172,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00012":
+{
+	"frame": {"x":1,"y":1294,"w":172,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":172,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00013":
+{
+	"frame": {"x":1,"y":1480,"w":172,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":172,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00014":
+{
+	"frame": {"x":1539,"y":174,"w":160,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":160,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00015":
+{
+	"frame": {"x":1,"y":1666,"w":171,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":5,"w":171,"h":184},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00016":
+{
+	"frame": {"x":177,"y":368,"w":171,"h":182},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":7,"w":171,"h":182},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00017":
+{
+	"frame": {"x":351,"y":1485,"w":172,"h":176},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":172,"h":176},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00018":
+{
+	"frame": {"x":861,"y":361,"w":173,"h":176},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":173,"h":176},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00019":
+{
+	"frame": {"x":1701,"y":174,"w":172,"h":176},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":172,"h":176},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00020":
+{
+	"frame": {"x":1036,"y":361,"w":173,"h":176},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":173,"h":176},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00021":
+{
+	"frame": {"x":1390,"y":361,"w":173,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":173,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00022":
+{
+	"frame": {"x":861,"y":539,"w":173,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":13,"w":173,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00023":
+{
+	"frame": {"x":1211,"y":361,"w":177,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":177,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00024":
+{
+	"frame": {"x":1835,"y":1,"w":178,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":178,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00025":
+{
+	"frame": {"x":731,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00026":
+{
+	"frame": {"x":915,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00027":
+{
+	"frame": {"x":1099,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00028":
+{
+	"frame": {"x":1283,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_GRAND_BABY_00029":
+{
+	"frame": {"x":1467,"y":1,"w":182,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":13,"w":182,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00000":
+{
+	"frame": {"x":177,"y":181,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00001":
+{
+	"frame": {"x":176,"y":552,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00002":
+{
+	"frame": {"x":175,"y":739,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00003":
+{
+	"frame": {"x":175,"y":926,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00004":
+{
+	"frame": {"x":175,"y":1113,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00005":
+{
+	"frame": {"x":175,"y":1300,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00006":
+{
+	"frame": {"x":174,"y":1666,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00007":
+{
+	"frame": {"x":348,"y":181,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00008":
+{
+	"frame": {"x":350,"y":368,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00009":
+{
+	"frame": {"x":347,"y":555,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00010":
+{
+	"frame": {"x":346,"y":1303,"w":169,"h":180},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":7,"w":169,"h":180},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00011":
+{
+	"frame": {"x":688,"y":548,"w":169,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":13,"w":169,"h":174},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00012":
+{
+	"frame": {"x":1030,"y":712,"w":169,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":13,"w":169,"h":174},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00013":
+{
+	"frame": {"x":688,"y":724,"w":169,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":13,"w":169,"h":174},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00014":
+{
+	"frame": {"x":517,"y":900,"w":169,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":13,"w":169,"h":174},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00015":
+{
+	"frame": {"x":1565,"y":360,"w":169,"h":172},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":15,"w":169,"h":172},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00016":
+{
+	"frame": {"x":1036,"y":539,"w":169,"h":171},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":16,"w":169,"h":171},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00017":
+{
+	"frame": {"x":859,"y":712,"w":169,"h":172},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":15,"w":169,"h":172},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00018":
+{
+	"frame": {"x":345,"y":1666,"w":169,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":12,"w":169,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00019":
+{
+	"frame": {"x":346,"y":929,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00020":
+{
+	"frame": {"x":346,"y":1116,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00021":
+{
+	"frame": {"x":519,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00022":
+{
+	"frame": {"x":689,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00023":
+{
+	"frame": {"x":859,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00024":
+{
+	"frame": {"x":1029,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00025":
+{
+	"frame": {"x":1199,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00026":
+{
+	"frame": {"x":1369,"y":174,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00027":
+{
+	"frame": {"x":521,"y":361,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00028":
+{
+	"frame": {"x":691,"y":361,"w":168,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":168,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MAJOR_BABY_00029":
+{
+	"frame": {"x":346,"y":742,"w":169,"h":185},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":2,"w":169,"h":185},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00000":
+{
+	"frame": {"x":518,"y":732,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00001":
+{
+	"frame": {"x":1198,"y":1055,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00002":
+{
+	"frame": {"x":1196,"y":1223,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00003":
+{
+	"frame": {"x":1698,"y":1412,"w":168,"h":169},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":14,"w":168,"h":169},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00004":
+{
+	"frame": {"x":1364,"y":1393,"w":168,"h":168},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":168},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00005":
+{
+	"frame": {"x":1700,"y":709,"w":168,"h":172},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":172},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00006":
+{
+	"frame": {"x":1541,"y":534,"w":168,"h":173},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":12,"w":168,"h":173},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00007":
+{
+	"frame": {"x":1711,"y":534,"w":168,"h":173},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":12,"w":168,"h":173},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00008":
+{
+	"frame": {"x":516,"y":1663,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00009":
+{
+	"frame": {"x":518,"y":555,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00010":
+{
+	"frame": {"x":516,"y":1076,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00011":
+{
+	"frame": {"x":688,"y":900,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00012":
+{
+	"frame": {"x":686,"y":1077,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00013":
+{
+	"frame": {"x":684,"y":1254,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00014":
+{
+	"frame": {"x":1371,"y":534,"w":168,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":10,"w":168,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00015":
+{
+	"frame": {"x":686,"y":1589,"w":168,"h":169},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":16,"w":168,"h":169},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00016":
+{
+	"frame": {"x":1019,"y":1553,"w":168,"h":169},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":16,"w":168,"h":169},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00017":
+{
+	"frame": {"x":1366,"y":1224,"w":168,"h":167},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":16,"w":168,"h":167},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00018":
+{
+	"frame": {"x":1028,"y":1052,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00019":
+{
+	"frame": {"x":856,"y":1214,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00020":
+{
+	"frame": {"x":1026,"y":1219,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00021":
+{
+	"frame": {"x":854,"y":1381,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00022":
+{
+	"frame": {"x":1024,"y":1386,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00023":
+{
+	"frame": {"x":1199,"y":888,"w":168,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00024":
+{
+	"frame": {"x":859,"y":886,"w":168,"h":162},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":162},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00025":
+{
+	"frame": {"x":1029,"y":888,"w":168,"h":162},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":162},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00026":
+{
+	"frame": {"x":858,"y":1050,"w":168,"h":162},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":17,"w":168,"h":162},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00027":
+{
+	"frame": {"x":1194,"y":1391,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00028":
+{
+	"frame": {"x":1369,"y":888,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINI_BABY_00029":
+{
+	"frame": {"x":1368,"y":1056,"w":168,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":13,"w":168,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00000":
+{
+	"frame": {"x":517,"y":1253,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00001":
+{
+	"frame": {"x":1366,"y":711,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00002":
+{
+	"frame": {"x":1533,"y":711,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00003":
+{
+	"frame": {"x":1869,"y":886,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00004":
+{
+	"frame": {"x":1702,"y":1058,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00005":
+{
+	"frame": {"x":1869,"y":1063,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00006":
+{
+	"frame": {"x":1870,"y":709,"w":164,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":6,"w":164,"h":175},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00007":
+{
+	"frame": {"x":1201,"y":712,"w":163,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":6,"w":163,"h":174},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00008":
+{
+	"frame": {"x":1207,"y":539,"w":162,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":6,"w":162,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00009":
+{
+	"frame": {"x":1869,"y":1240,"w":162,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":6,"w":162,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00010":
+{
+	"frame": {"x":1534,"y":1397,"w":162,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":6,"w":162,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00011":
+{
+	"frame": {"x":1868,"y":1412,"w":161,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":18,"y":6,"w":161,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00012":
+{
+	"frame": {"x":1875,"y":174,"w":159,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":6,"w":159,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00013":
+{
+	"frame": {"x":1875,"y":346,"w":159,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":10,"w":159,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00014":
+{
+	"frame": {"x":856,"y":1716,"w":161,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":18,"y":20,"w":161,"h":156},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00015":
+{
+	"frame": {"x":686,"y":1431,"w":164,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":20,"w":164,"h":156},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00016":
+{
+	"frame": {"x":1515,"y":1569,"w":164,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":20,"w":164,"h":156},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00017":
+{
+	"frame": {"x":1019,"y":1724,"w":161,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":20,"w":161,"h":156},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00018":
+{
+	"frame": {"x":1182,"y":1726,"w":161,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":20,"w":161,"h":156},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00019":
+{
+	"frame": {"x":1345,"y":1731,"w":161,"h":157},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":20,"w":161,"h":157},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00020":
+{
+	"frame": {"x":1189,"y":1559,"w":161,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":12,"w":161,"h":165},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00021":
+{
+	"frame": {"x":1539,"y":888,"w":161,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":11,"w":161,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00022":
+{
+	"frame": {"x":856,"y":1548,"w":161,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":11,"w":161,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00023":
+{
+	"frame": {"x":1515,"y":1727,"w":160,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":11,"w":160,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00024":
+{
+	"frame": {"x":1677,"y":1727,"w":160,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":11,"w":160,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00025":
+{
+	"frame": {"x":1352,"y":1563,"w":161,"h":166},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":11,"w":161,"h":166},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00026":
+{
+	"frame": {"x":1538,"y":1056,"w":162,"h":167},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":11,"w":162,"h":167},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00027":
+{
+	"frame": {"x":1536,"y":1225,"w":164,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":11,"w":164,"h":170},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00028":
+{
+	"frame": {"x":1702,"y":883,"w":165,"h":173},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":8,"w":165,"h":173},
+	"sourceSize": {"w":190,"h":190}
+},
+"HH_CC_JACKPOT_MINOR_BABY_00029":
+{
+	"frame": {"x":1702,"y":1235,"w":165,"h":175},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":6,"w":165,"h":175},
+	"sourceSize": {"w":190,"h":190}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "10-jackpotPicker1-0.png",
+	"format": "RGBA8888",
+	"size": {"w":2035,"h":1894},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:096d81ed2d0f0824a7e280783c8f2d6b:7d0f495de441c265c5accab097279a22:a47aa2628ec04e3805bd344bcd482bf6$"
+}
+}

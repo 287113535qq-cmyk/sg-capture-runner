@@ -1,0 +1,16 @@
+{
+  "gameId": "32727",
+  "retainedSDKSourceSHA256": "d085fe6412ea19784b71eeca244875af239a6d1c29bae0e6d0f37647ade480b6",
+  "functions": [
+    {
+      "name": "BaseSpinningStartState",
+      "sourceStart": 1744521,
+      "sourceEnd": 1746942,
+      "source": "function BaseSpinningStartState(id){var XC_0_MSG_RECEIVED=0;this.id=id,this.enter=function(){if(self.winManager.stopWin(),self.reelManager.hideEffectsLayerSlots(),self.roundActive?console.warn(\"Tried starting a round when we were already in a round\"):(wrapperAPI(\"ROUND\",1),self.ui.setRound(!0),self.roundActive=!0,self.resultShown=!1,lowBalanceShown=!1),NOVA.startMsg(\"BET\"),NOVA.config.game.type==ENUM.winSequence.PAYWAY?(NOVA.addToMsg(\"RB\",self.account.getNumReelsSelected()),NOVA.addToMsg(\"BPR\",self.account.getCurrentBetPerReel())):(NOVA.addToMsg(\"LB\",self.account.getNumPaylinesSelected()),NOVA.addToMsg(\"BPL\",self.account.getCurrentBetPerLine())),1==NOVA.config.game.anteBet.superBet&&NOVA.addToMsg(\"ABPM\",self.account.superbet),\"undefined\"!=typeof NOVA.debug.debugScreen.getStopsString){var presetStr=NOVA.debug.debugScreen.getStopsString();\"\"!=presetStr&&(NOVA.addToMsg(\"PRESET\",presetStr),NOVA.debug.debugScreen.clearStopsString())}\"\"!=self.betGSD&&NOVA.addToMsg(\"GSD\",self.betGSD),self.freeRounds.isInFreeRounds()||self.account.takeBet(),NOVA.sendMsg(),METRICS.addSpin(self.ui.autoplay.inAutoplay?1:0,self.freeRounds.isInFreeRounds()?1:0),self.metersManager.balanceMeter.setValue(self.account.getBalance()),self.oldBalance=self.account.getBalance(),self.account.clearWin(),wrapperAPI(\"VALUE_CHANGED\",\"TOTAL_WIN\",self.account.getWin()),0!=lastWin&&(self.metersManager.winMeter.isVisible()||self.metersManager.winMeter.show(),self.metersManager.winMeter.snapTo(lastWin),self.metersManager.balanceMeter.snapTo(self.account.getBalance()),self.freeRounds.snapWinMeter()),self.messageBar.displayWinText(!1),self.messageBar.showLeftText(!1),0==lastWin&&(self.metersManager.winMeter.setValue(self.account.getWin()),self.metersManager.winMeter.hide(),TweenMax.killTweensOf(self.messageBar.idle),self.messageBar.hideIdle(),self.messageBar.idle()),self.reelManager.startSpin(),timeSpinStarted=new Date,self.ui.canQuickStop(!0)},this.handleEvent=function(event,param){return\"MSG\"==event?(self.account.setBalance(self.serverResponse.balance),self.reelManager.setReelstrips(self.serverResponse.reelstripID),self.reelManager.storeStopsLocally(self.serverResponse.stops),self.freeRounds.processMsg(self.serverResponse.freeRounds),self.freeRounds.updateRoundMeter(),self.winManager.setWinCombinations(self.serverResponse.winCombinations),XC_0_MSG_RECEIVED):(\"UI\"==event&&\"QUICK_STOP\"==param&&(quickStopFired=!0),ENUM.XC_NULL)}}",
+      "fragmentSHA256": "d19c75c130c081bd33560c5b9b72d2809b4d8d23ef486757e4adf555b144cd90"
+    }
+  ],
+  "SDKExecuted": false,
+  "sourceRequests": 0,
+  "productionAdmission": false
+}

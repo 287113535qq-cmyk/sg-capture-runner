@@ -1,0 +1,43 @@
+{
+  "schema": "own-native-offline-display-port-DATA-v1",
+  "at": 1792180989.1687412,
+  "rows": [
+    {
+      "gameId": "32550",
+      "displayEnvironment": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130.0.0.0 Safari/537.36",
+        "platform": "Win32",
+        "maxTouchPoints": 0,
+        "screenWidth": 1440,
+        "screenHeight": 900,
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "devicePixelRatio": 1
+      },
+      "cachedCohort": "10",
+      "expectedWindowScale": 1,
+      "nativeSelectorReason": "Own original AssetManager checkPixelScaling chooses windowScale1 on actual native desktop detection."
+    },
+    {
+      "gameId": "32738",
+      "displayEnvironment": {
+        "userAgent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/130.0.0.0 Mobile Safari/537.36",
+        "platform": "Linux armv8l",
+        "maxTouchPoints": 1,
+        "screenWidth": 720,
+        "screenHeight": 1280,
+        "viewportWidth": 720,
+        "viewportHeight": 1280,
+        "devicePixelRatio": 1
+      },
+      "cachedCohort": "07",
+      "expectedWindowScale": 0.75,
+      "nativeSelectorReason": "Own original mobile selector screen.width*devicePixelRatio/config.resolution.y=720/900=0.8; original allowedScale[.5,.75,1] selects.75."
+    }
+  ],
+  "historicalSourceDeviceClaim": false,
+  "gameProtocolOrAmountDefaults": false,
+  "assetPathRewrites": 0,
+  "nativeSelectorUnchanged": true,
+  "newProviderCalls": 0
+}

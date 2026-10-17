@@ -1,0 +1,38 @@
+{
+  "schema": "own-NOVA-pair-new-native-main-final-leaf-source-DATA-v297",
+  "at": 1792178788.021,
+  "results": [
+    {
+      "gameId": "32550",
+      "entry": "6838",
+      "parents": [
+        "7328",
+        "7633"
+      ],
+      "selectedBytes": 6706,
+      "nextRequiredModules": [],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-main-final-leaf-DATA-v297\\32550-selected-private.json",
+      "SHA256": "8c2cff1a1406a70e8d3799a21a4dd64530a18e4c6c3ffc2a776a2e4678ca2a0a"
+    },
+    {
+      "gameId": "32738",
+      "entry": "46838",
+      "parents": [
+        "94399",
+        "97328"
+      ],
+      "selectedBytes": 7800,
+      "nextRequiredModules": [],
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-main-final-leaf-DATA-v297\\32738-selected-private.json",
+      "SHA256": "e81f5669579bdf801cf99c974feeb379e78022d41cf0874e23051ba9ca44cb5c"
+    }
+  ],
+  "newSelectedFactoryASTs": 4,
+  "wholeSDKASTs": 0,
+  "wholeSDKHashRechecks": 0,
+  "oldSelectedFactoriesReextracted": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false
+}

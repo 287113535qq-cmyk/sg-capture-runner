@@ -1,0 +1,37 @@
+{
+  "at": 1792180325.616,
+  "results": [
+    {
+      "gameId": "32550",
+      "appModule": "5208",
+      "appDependencies": [
+        "6405",
+        "6838",
+        "1575"
+      ],
+      "particleModule": "3940",
+      "particleDependencies": [],
+      "bytes": 50143,
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-startup-DATA-v335\\32550-selected-private.json"
+    },
+    {
+      "gameId": "32738",
+      "appModule": "35208",
+      "appDependencies": [
+        "76405",
+        "46838",
+        "21575"
+      ],
+      "particleModule": "83940",
+      "particleDependencies": [],
+      "bytes": 50146,
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-NOVA-CoinCombo-next-batch-20261016\\own-native-startup-DATA-v335\\32738-selected-private.json"
+    }
+  ],
+  "newSelectedFactoryASTs": 6,
+  "wholeSDKASTs": 0,
+  "wholeSDKHashRechecks": 0,
+  "moduleFactoriesExecuted": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0
+}

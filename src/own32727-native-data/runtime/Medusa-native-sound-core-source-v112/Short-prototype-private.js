@@ -1,0 +1,1 @@
+ShortCelebration.prototype=new CelebrationModule,ShortCelebration.prototype.constructor=CelebrationModule

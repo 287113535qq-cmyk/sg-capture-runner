@@ -1,0 +1,1 @@
+{"selector": "NovaReel.prototype.setNumVisibleSymbols", "offset": 1631401, "source": "function(count){this.symbolCount=count}", "SHA256": "a142ce9e5104899eec042b15fd34d3c19706310d9898466791cc0a5490bf50be", "sourceRequests": 0}
