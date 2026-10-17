@@ -1,0 +1,147 @@
+{"frames": [
+
+{
+	"filename": "anticipation_main-hit_00.png",
+	"frame": {"x":0,"y":0,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_01.png",
+	"frame": {"x":0,"y":170,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_02.png",
+	"frame": {"x":0,"y":340,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_03.png",
+	"frame": {"x":94,"y":0,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_04.png",
+	"frame": {"x":94,"y":170,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_05.png",
+	"frame": {"x":94,"y":340,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_06.png",
+	"frame": {"x":188,"y":0,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_07.png",
+	"frame": {"x":282,"y":0,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_08.png",
+	"frame": {"x":376,"y":0,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_09.png",
+	"frame": {"x":188,"y":170,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_10.png",
+	"frame": {"x":188,"y":340,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_11.png",
+	"frame": {"x":282,"y":170,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_12.png",
+	"frame": {"x":282,"y":340,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_13.png",
+	"frame": {"x":376,"y":170,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+},
+{
+	"filename": "anticipation_main-hit_14.png",
+	"frame": {"x":376,"y":340,"w":94,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":170},
+	"sourceSize": {"w":94,"h":170},
+	"pivot": {"x":0,"y":0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "anticipation_mainhitv1.png",
+	"format": "RGBA8888",
+	"size": {"w":470,"h":510},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:c4b4b599ab4faa1fb47ccdde92ed4b28:808c15fcb95b99d507a36a154daf44b9:3d4090a1db50defb98802e49fc5881bf$"
+}
+}

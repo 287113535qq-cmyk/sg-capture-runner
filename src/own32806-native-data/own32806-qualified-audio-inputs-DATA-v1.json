@@ -1,0 +1,740 @@
+{
+  "schema": "own32806-retained-real-audio-inputs-DATA-v1",
+  "gameId": "32806",
+  "version": "5.0.4.1-1787670669",
+  "retainedCertificateSourceSHA256": "8e04bac0520f4008024baac1c8c195f5066cd84f3883e94ea314e25d6290a426",
+  "inputs": [
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/spartacus_game_welcome.ogg",
+      "inputSHA256": "9981b36dbe98ece3573a9d1a354602f9fc8ee6ae9d0180513a24397491359d69",
+      "samplesDecoded": 440016,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 9.977687074829932,
+      "pcmSHA256ByChannel": [
+        "b779160c76c0541db3c319395794bb07b50e418be9ca37392651f54f8e483866",
+        "1ef2b5a654a7c0bb2f240abc8235d55e51353f50b94e9fde6843a50d333383d7"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/spartacus_basegame_loop.ogg",
+      "inputSHA256": "ca1e515847a931e303a4e35511014b232cbdf938c29f39957bef8345b30cd9e9",
+      "samplesDecoded": 9285055,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 210.54546485260772,
+      "pcmSHA256ByChannel": [
+        "04b7b3d683af7f31099a236744b6d6c3ce21e8e82b6df245f9712b343469a057",
+        "9a53672c8a1ea34435cbad4ec221edb4f4cbf68ba7c085d5d538daeec50337f4"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/nubutton.ogg",
+      "inputSHA256": "cde4276c772a7c955289208f974b0ca903a85d83cf073ce3c39b9d164d4956c6",
+      "samplesDecoded": 2305,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.052267573696145125,
+      "pcmSHA256ByChannel": [
+        "340dddd32a7ea217a059f67f43f049310fd463ef3cba8258fa2cb124033384dd",
+        "340dddd32a7ea217a059f67f43f049310fd463ef3cba8258fa2cb124033384dd"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/line20.ogg",
+      "inputSHA256": "678cd5bcc15fdee065635b6ee873379ed3857e1bd939ed313b563c54315e21e2",
+      "samplesDecoded": 14600,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.3310657596371882,
+      "pcmSHA256ByChannel": [
+        "aa6fdea9827756eb32d33fc2204ba2ba4f9da8d51cae85ee62957c8764650436",
+        "103b5d3855778e9765b4aab85689c002633a57a96bc26f0a91f789f6829fd770"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/bonustransfer.ogg",
+      "inputSHA256": "211140707542d5c8c9891f2a0786c58e37bb1a84eabd13bbc5b2246a0e16ec91",
+      "samplesDecoded": 132300,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 3,
+      "pcmSHA256ByChannel": [
+        "1bde0d124b836c67ca11b4cfa97f86f847dd1608ff4a689d412da677db2fd790",
+        "32f9f87d8cc4ce67142b1905406483981aac7079eab81f21680e244b569d8563"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/anticipation.ogg",
+      "inputSHA256": "825d61f0cbd5ebf57de1b1f8aa652819af94d9ddebf978d5a3262489031435e4",
+      "samplesDecoded": 131838,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2.9895238095238095,
+      "pcmSHA256ByChannel": [
+        "4d8796d517362d67422accd75c491dcdfa0cd7ccc9ae8d8cbc44ffe06b0dfc07",
+        "860076943ae22858682167843cdeecd9d7a27c290319ee71ea8b38930ee0aa90"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacusbonusopen.ogg",
+      "inputSHA256": "2b9965d573cf71eed8f4260ae28dd6ab40966c006e63b1c198923f6d026ac935",
+      "samplesDecoded": 145162,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 3.291655328798186,
+      "pcmSHA256ByChannel": [
+        "8df0825fdbd1f7306877de10b472c9bd2a2679ad7112f391e14142fbc329eb3b",
+        "959408b5c515f6eed236f3e44580fa411eae21bffaaf37a5165f133ffd585864"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/zbell_03a2_quieter.ogg",
+      "inputSHA256": "74403938dc3a825178cf39295330c3f6873153de5a23fa95ad8c39f052268ccb",
+      "samplesDecoded": 157440,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 3.5700680272108842,
+      "pcmSHA256ByChannel": [
+        "be1beeca06b0f09a1b29c7bb72b1aa1e73ace90890cfed355b5159cae565e58b",
+        "a8f1dc953a829f06ee4b8522521300f6c13d35ebdbf712fe5d0fadc3efd34db8"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacus_intro_eq.ogg",
+      "inputSHA256": "654ed36afb86c376b3271a1f9b30a4cf342fd1fd90ec8a28af4bb955efa636be",
+      "samplesDecoded": 3175965,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 72.0173469387755,
+      "pcmSHA256ByChannel": [
+        "f90a587a52c5c661efa77a022036b3c253a45f464ca7bc9c633b63db42ddb9ca",
+        "2661d5d0508c5c644217820664204392355084f91584cff74b5cabf87a123a8f"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacus_loop_eq.ogg",
+      "inputSHA256": "1b3953a10d8dc3c0b198843b42af7a8895aaf143f94f823f12435d57171be313",
+      "samplesDecoded": 2116851,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 48.00115646258504,
+      "pcmSHA256ByChannel": [
+        "f00f37eb131c8e4ea68ac66c40ca5fc94e2f9c08179722d26fc3a56c36603c6d",
+        "af1d6066436536a88b23ebd43ff53a30b4e05d136c189d8925b70f69f00c2e4a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacusbonustally.ogg",
+      "inputSHA256": "639ce6372d32264c47f2dd3bedeb09a9e5d31885954a2ca3e194054857540873",
+      "samplesDecoded": 213150,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 4.833333333333333,
+      "pcmSHA256ByChannel": [
+        "60d3f4c095067d154e005892250edeea8f3dede7d3038566692aae893ed65dc4",
+        "b8d502038e33dc245fcd8f60f5db2cf2f4a23fa9485df53b847407b33a34a4c8"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacus_bangup_loop.ogg",
+      "inputSHA256": "6376d124f8a9b3c3451bf22fbb7d1565b75524db55ad9588c8873efe2b3bad87",
+      "samplesDecoded": 529196,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 11.999909297052154,
+      "pcmSHA256ByChannel": [
+        "5853c752718f6bad6aa824b418e9b94f6a1e99709d60182229c92ba0febf5f24",
+        "35a23031ac5a3d6da6369551685f4e6cfc2dc1e24b2a95b6fe1cfb652a1258ff"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/spartacus_bangup_stop.ogg",
+      "inputSHA256": "7b35944426159cd7849c152ea94db4433887c18ee41b4e15776e75e2f0d22b6d",
+      "samplesDecoded": 77244,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.7515646258503401,
+      "pcmSHA256ByChannel": [
+        "82dee2b6362aeb731182d6bcb9f3b9caf6a2ecd63151750faae0d87578795df5",
+        "fcaf50587802d20ad12eb16da262c43bdb0770937edd880175dc316e1ca8ef32"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/heatshield_green.ogg",
+      "inputSHA256": "f2bbd64fbb26609597b26206e4c3c61413d5057951ba60a5ff304a883712418f",
+      "samplesDecoded": 394864,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 8.953832199546484,
+      "pcmSHA256ByChannel": [
+        "e5d499feb1818f7ede2454be04313150444a75dfddfcb9e8395b7b16f85dbda1",
+        "51532eac5435f73692e6b3e290bdcaff8657cff3874c7fc64b2e34f06dbad658"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/help.ogg",
+      "inputSHA256": "1fce67bf509b0e7fbffa98cdfef14dc8b4a188db0d2cd2eb9b9364884a44c079",
+      "samplesDecoded": 33705,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.7642857142857142,
+      "pcmSHA256ByChannel": [
+        "7b8fc0eb3912a68fae5cf288a5e28c90649b1ef0ae8973e6269cb4302e19737a",
+        "dcb51d4d260296cb5c0f33742063eb7899f57e2ae47d289a678f70f3ae2434d1"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/helpexit.ogg",
+      "inputSHA256": "46390b49f4d6e6fc19316ccd630713c3c0cb91f795720b35aeabfa0817456e14",
+      "samplesDecoded": 30465,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.6908163265306122,
+      "pcmSHA256ByChannel": [
+        "44667869d4a056e01e5b94a5c0276046d1b451aee4f20284d556e1877a4600cc",
+        "0a50245006b68a11dd62f3f6d2ab3e8ecd9d45a31cd8251c94e56030ed34450d"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/helpforward.ogg",
+      "inputSHA256": "3168e446cf892fa384f97a6decd45acc19d107d87c8d9fa75dd3f7faa511bb9b",
+      "samplesDecoded": 29160,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.6612244897959184,
+      "pcmSHA256ByChannel": [
+        "a9080626c91c62cb740cbc3745a892a269fa8455546face6c2603f04d1eae317",
+        "c19f73141fee74086bd008d6acf8ad81631be299f0f2a4e61cfffba7b782a518"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/helpback.ogg",
+      "inputSHA256": "b4cd548117b2fe675806ec85a998a2da20129a4160875d0bf189c776dbc1a05e",
+      "samplesDecoded": 41344,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.9375056689342404,
+      "pcmSHA256ByChannel": [
+        "736d91cb1e1b2011e5a5ae4677689d6073f4cbbc6472869d7c7b845f5ca33972",
+        "0da7dd0a57ce59829665f35e9045f136b2f483e15fcc6a8a15e3ea43fd3ed16c"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_1.ogg",
+      "inputSHA256": "843c02d23cc7e11c67131d1fbcbdb0421b80a419acde521f4ca170d27ee3db05",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "35e338f50cc184868e26359ba49099c94b3aedab47d57dd8182c2359e34c6ab2",
+        "4f59693fae34d32fc98b1669e8bfc14817b6b3684401f7447203e6f65e8e1c41"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_2.ogg",
+      "inputSHA256": "56b3ad3fae5922440a5cd92987d2746b321e6a7bc9bf46d21757ab1271b68f42",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "c42cec3547937123bb1710418763133be3e5050db0757a01bf420f54f2dbef20",
+        "3be0b01fb36e91316a736696cc6269ea9f8caf363b2511a312daaa541ad829c5"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_3.ogg",
+      "inputSHA256": "138804d78b10d92b6d2e2f4a38e295fc4027ff6285098cc3f23f2873ec0fef85",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "91ffe60a76965f74ca2dbed18c271d1595fbea7dd0e14d6f9b354709b1742d49",
+        "f3f47eba5e9a1ffc50cfa821022c0f29c72935a780d3bfd3a17011978695d42d"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_4.ogg",
+      "inputSHA256": "cf73707f0353e381ba8681c37c7c5a0eca957c61cc8c0f8b427f890a84f9ecf5",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "5fa6c7407c3c4af2dbc2f8c3e3ea88ac7bee90353d699a01adfba0c1983f2ba7",
+        "861aff079d11a8cd4736fa3962d29c2f13ac5005205fd9ae8ce48f99f558dce2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_5.ogg",
+      "inputSHA256": "7e9aac4d798e159f6775da52f04ea9bb3bcf4188c97487cf7f91a858ec197125",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "75fb9ac7e2975b2933735e026391d4c4939089c9cf338ff9b8c7658113a7807f",
+        "8a483d869963d89087e5a4513080a59118d4deb0c01afb8338c24d588d4e75fd"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_6.ogg",
+      "inputSHA256": "53e4828331f9bb5290ebb6965e1f960bb1d0be1120f22c3b2820173351e9a7a3",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "8a483d869963d89087e5a4513080a59118d4deb0c01afb8338c24d588d4e75fd",
+        "75fb9ac7e2975b2933735e026391d4c4939089c9cf338ff9b8c7658113a7807f"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_7.ogg",
+      "inputSHA256": "f8a561ecb2da4ade9242a36a8170b660e20876934473b7f738bad349338cde61",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "861aff079d11a8cd4736fa3962d29c2f13ac5005205fd9ae8ce48f99f558dce2",
+        "5fa6c7407c3c4af2dbc2f8c3e3ea88ac7bee90353d699a01adfba0c1983f2ba7"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_8.ogg",
+      "inputSHA256": "229d338ac561d499279bd49aa607f3fd8955817c615491350cfecd9ca89db2c1",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "f3f47eba5e9a1ffc50cfa821022c0f29c72935a780d3bfd3a17011978695d42d",
+        "91ffe60a76965f74ca2dbed18c271d1595fbea7dd0e14d6f9b354709b1742d49"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_9.ogg",
+      "inputSHA256": "e4735dc9e5906278ca029be3f13efd10e12005d7f71439520c82e3b90eeec9fb",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "3be0b01fb36e91316a736696cc6269ea9f8caf363b2511a312daaa541ad829c5",
+        "c42cec3547937123bb1710418763133be3e5050db0757a01bf420f54f2dbef20"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/reelstop_grp_reels_10.ogg",
+      "inputSHA256": "e2303a5cecf0cdd7a5196b8788c7330f9075c29191bfe1d9dd698e576066bfea",
+      "samplesDecoded": 17640,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.4,
+      "pcmSHA256ByChannel": [
+        "4f59693fae34d32fc98b1669e8bfc14817b6b3684401f7447203e6f65e8e1c41",
+        "35e338f50cc184868e26359ba49099c94b3aedab47d57dd8182c2359e34c6ab2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig1.ogg",
+      "inputSHA256": "1eef42716ddc200dd1b695c114f6bf0b5020bda896663b7024546e6fc6c6a1ae",
+      "samplesDecoded": 88200,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2,
+      "pcmSHA256ByChannel": [
+        "7037737e9871a3e86ca109e8214bd15e407b2a9bdf71d35464db78d12994f761",
+        "e38a8e0351e514d68318db3e7bf40b71341ed8fbd3da0acdd39b4714f0bebf0b"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig2.ogg",
+      "inputSHA256": "7532888cb1deac78cc7c22792fa802129a90440d735e59c71d6eda64855d9c5d",
+      "samplesDecoded": 88200,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2,
+      "pcmSHA256ByChannel": [
+        "d6d1b8d8ab88bcd4c44958106aa2f965003c7868d2e8f7b019360d5c0039bdff",
+        "a502862ce7af799ef997ef865be98e371eced8f63dc5307356d5a1e5bc29750b"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig3.ogg",
+      "inputSHA256": "1c6ac76240a1c6e31646f9bee87347831075c1345306b6a724bf9d2eb22ca743",
+      "samplesDecoded": 176400,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 4,
+      "pcmSHA256ByChannel": [
+        "2ce4d94f0bf0c2a24162c4d98e7409359c07f348df923605cc49180d80c1ba49",
+        "38f07f1ec323453b95e62d755e8fd713dcf0f39d4dafbea77b86b5f055271bbe"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig4.ogg",
+      "inputSHA256": "2c04c14bbbbe01edeee435bdef00d20cae66c0661c920ed47c11dbbf3508909d",
+      "samplesDecoded": 88200,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2,
+      "pcmSHA256ByChannel": [
+        "d6d1b8d8ab88bcd4c44958106aa2f965003c7868d2e8f7b019360d5c0039bdff",
+        "a502862ce7af799ef997ef865be98e371eced8f63dc5307356d5a1e5bc29750b"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig5.ogg",
+      "inputSHA256": "a4070634a9302caeb3ae47b20bec3f0b3abc6bd85fb7479e69cde6d915c12b6b",
+      "samplesDecoded": 88200,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2,
+      "pcmSHA256ByChannel": [
+        "d6d1b8d8ab88bcd4c44958106aa2f965003c7868d2e8f7b019360d5c0039bdff",
+        "a502862ce7af799ef997ef865be98e371eced8f63dc5307356d5a1e5bc29750b"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/bonus_trig6.ogg",
+      "inputSHA256": "64fa79a58413c5c1b96d23af31f0d1f341fe98767339c40fd58d7512536f269f",
+      "samplesDecoded": 88200,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2,
+      "pcmSHA256ByChannel": [
+        "d6d1b8d8ab88bcd4c44958106aa2f965003c7868d2e8f7b019360d5c0039bdff",
+        "a502862ce7af799ef997ef865be98e371eced8f63dc5307356d5a1e5bc29750b"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/linemech1.ogg",
+      "inputSHA256": "240c51a46fbeb8c5b74166b199f2979fad03ed6aaff70720b0fefb869043783a",
+      "samplesDecoded": 28424,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.6445351473922902,
+      "pcmSHA256ByChannel": [
+        "3aaf81ca4dd93d9afeefda2f5170bcdf13c092031614c655cf102c647d778aa1",
+        "3dff6ea2ca700cf6ffc863200d0f45e2db0e5cf5c39b9329b6f18ea02c4b7e51"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/linemech2.ogg",
+      "inputSHA256": "48bf5c9f676d445d4d5ec49abe1f84defae6b23adbd249dc59bce6da19f35bdb",
+      "samplesDecoded": 34048,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.7720634920634921,
+      "pcmSHA256ByChannel": [
+        "d311665b7b36d2c5f92f4ab3322dfc58266ec09a284bafc1c2042e97d7bdd151",
+        "737e48de07f4115d82bbcbf702055b8022fb0c7b9ab66ad6a479e23c5efb2149"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/linemech3.ogg",
+      "inputSHA256": "31cee2d9d365c40f682a8b3b4c2cc558cfe57d316be4b0e3b8c32aa184493567",
+      "samplesDecoded": 34276,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.777233560090703,
+      "pcmSHA256ByChannel": [
+        "89f1ef734b68730e4793d435139898bc360d213926bcaf975b793d6c684e0c36",
+        "63d85d3c4c16b01ea71fa39f36cd32fbe804813b50ce8f52cc5b63c0396330f2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/linemech4.ogg",
+      "inputSHA256": "914155a23a0df1c4feeba9fdca4638ab9498e6ac8e45d9044524beb14ba4cf80",
+      "samplesDecoded": 34960,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.7927437641723356,
+      "pcmSHA256ByChannel": [
+        "9368be13955d7c2ab59b0724946d016b5302666b0033c8d19cbac5011e4cd9dd",
+        "d1a0b9987163f1182137bd1c736a0254cb5807775e2e4a55ef2faa67bd0fa9eb"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/basegame/linemech5.ogg",
+      "inputSHA256": "70a619c01b83990321efbfba22971e98c4520cfdc2b9bece28e52bf0429b7815",
+      "samplesDecoded": 31312,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.7100226757369614,
+      "pcmSHA256ByChannel": [
+        "9556e3823c8f6877830c7f377723677d53723ecd901a8534fdf78e4218f9eb07",
+        "43c263a1b6ada42c9cf38f5e217af10e1d94d5d8247cbb543cb79013b1e18d0a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/bigwinsegment.ogg",
+      "inputSHA256": "d464db1a8e56a7d7be594e86d66bc48e659963b79861b007eb6f0b36191ce4e1",
+      "samplesDecoded": 729240,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 16.536054421768707,
+      "pcmSHA256ByChannel": [
+        "194f08210fdbd9fec7218cd30713fa30c9ac4f6808172b8bc0dace3150eb8d2a",
+        "e25ca2c151cd1b71c28bbaf6731159b25368714ab45519dbbff79fa71f685bb7"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/bigwinwfx_end.ogg",
+      "inputSHA256": "485783a77659cc3d830981d025a33a5a3b1f538c490fd22019db13d47d446ded",
+      "samplesDecoded": 58584,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.32843537414966,
+      "pcmSHA256ByChannel": [
+        "76f971e0cf07ff1ed2708517c50cbb8df2ba42d366e95483397b75d6da3d86c6",
+        "8cf31a5994cfa685d9163b074946d4acb3eba56b96183ed922ff20c44ab7a212"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/megawinwfx_end.ogg",
+      "inputSHA256": "c217df8d180916841ad988c00c76c025c4836ad5f936df09ec4d6c62be534101",
+      "samplesDecoded": 79627,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.8056009070294785,
+      "pcmSHA256ByChannel": [
+        "65e79fee1f9fb012e2106492894ba2b06c5c5bf449d6d1761d83a5416bdccac3",
+        "80bbad23433bd67667512917c63715ec7dd241c99b78045f762d6b2a27081db0"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/superwinwfx_end.ogg",
+      "inputSHA256": "2e66a0af5afd846520a5fd8fee9a40c0f2a1126de571c625a21c12a0f6835155",
+      "samplesDecoded": 64606,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.4649886621315193,
+      "pcmSHA256ByChannel": [
+        "499812dd04558c6bade956a9df3696550ed9d42201ce44cab9a69cf2baf5ff02",
+        "b6f5ef72e023bacb9bd6d4f1eaba94b17a624dc44f1a5071bb7df33b3a36ef11"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/super_big_win_with_rampup.ogg",
+      "inputSHA256": "7f1dc771212e82251ce46bb05551b59534955f27b0f8787918e7a2e8c04445a6",
+      "samplesDecoded": 739828,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 16.776145124716553,
+      "pcmSHA256ByChannel": [
+        "2e1d928678dec9ebdfda234c50834ab07f97a7dbb2020acc338f234fa81da352",
+        "bb8e580aa372590f7fbc9ea661054e3a9cb62219d143840a90e2c0dc18e847b1"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/mega_big_win_with_rampup.ogg",
+      "inputSHA256": "3230321d1c5a5dc914228f71436aa12671bd85cb970093b9806d5314fcab07e4",
+      "samplesDecoded": 755005,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 17.120294784580498,
+      "pcmSHA256ByChannel": [
+        "cf9e2227f76c59b9696b5b7ce9bf04f282ac7ab05934892ba2058c4e411028a8",
+        "eed7f4b79463552d1e3bce1ab6a0c77104ab6b0f49b6994409480b108fb7f4aa"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_amazing.ogg",
+      "inputSHA256": "410d780b9e1fd62d072df6555259a95ba40ddc13307609564d74d426dbb25e61",
+      "samplesDecoded": 42240,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.9578231292517007,
+      "pcmSHA256ByChannel": [
+        "2aa0af2cb570e95464f0fa69a784b972ffdc45d084723a8a678ea77bc0e47676",
+        "1fa42631b29e3ece9d060eee7e3cc04f37246cc2df3e0fb52529fff3f157831a"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_awesome.ogg",
+      "inputSHA256": "65f0945dbcdba3a5809b400d0dea118ac1e972794dd214eeb47c629c49af6eec",
+      "samplesDecoded": 41359,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 0.9378458049886621,
+      "pcmSHA256ByChannel": [
+        "c10177ad28b3aee5c28677d443dd55c74e9a9be97d9e612cc1b544b2ca4fa7f2",
+        "9dbea0c1d70dfcb0bf7e9a025cfac47818e49ae87965c049eba6594fc1c06c39"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_excellent.ogg",
+      "inputSHA256": "016abd94213ebe40777a5e95b738d5d14efc36d37fdc6bd4f17c08095e3fed21",
+      "samplesDecoded": 45899,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.0407936507936508,
+      "pcmSHA256ByChannel": [
+        "0573f3f27d64fa68b35731bd7f824b0d2302dd5c481b87a1761d9d85908d9069",
+        "9481602c6f670be04769d26fb19e5ce49b40345c78d76afa8561af6f15b96ac0"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_fantastic.ogg",
+      "inputSHA256": "66d347a973eb2cbc23eb26370a15784df980df7c52b520977ea0a0d53005b8fc",
+      "samplesDecoded": 55485,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.2581632653061225,
+      "pcmSHA256ByChannel": [
+        "3e1e978af7f59641303d2bf95e65db4202efc570f7566814445848c0aa41c720",
+        "7ec8bf45fd223b9d326fcda71095f72ddd77d21a80231e04445e7a68d74e0d36"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_impossible.ogg",
+      "inputSHA256": "c3d5450d4056a943b93bcf30ca7adff0a659d398e50a2b86c09e32bf6fe0ce15",
+      "samplesDecoded": 51310,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.1634920634920636,
+      "pcmSHA256ByChannel": [
+        "ebe6f4883113d9212b4311c1327e7ee6c14ecfa0214cce5a2ef08c9ba7b1040b",
+        "c91100e6f984fa9e2c3c0b85a6b3693848773d72cb85816c946bc2a9ef861567"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_inconceivable.ogg",
+      "inputSHA256": "555a1b074b5efea04969e43442705474982f36c8c593a7582614e1c38fc611df",
+      "samplesDecoded": 74937,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.699251700680272,
+      "pcmSHA256ByChannel": [
+        "ce45219a4a188d2a8266028517ee26bc999d25a62e241a2255e4d78434c2bb78",
+        "6abdb9ce25345fb1b47f3ec4ab158ade6088d78e66c5aee78cccca1e17ea9633"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_incredible.ogg",
+      "inputSHA256": "4fa9dc6ae1dac7780b01338b271756c88507378e85bba1bd7434c8dfc1f57569",
+      "samplesDecoded": 55367,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.2554875283446711,
+      "pcmSHA256ByChannel": [
+        "5b091d76c46db83262df1acb75199aae83e5c99303dd2c4fb7fb1cda8f165de4",
+        "42ad7b4a40b764aeb7fc4994ddb3fe603bd66bd47d9ec334637133267e549024"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_magnificent.ogg",
+      "inputSHA256": "c5ded466ee3ab5563e69e2185680c0685975536541aa6949b720b84b9d878da9",
+      "samplesDecoded": 56878,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.289750566893424,
+      "pcmSHA256ByChannel": [
+        "6808fd38316bac322e88180c3ba0b26bfb4be0d6cac60a29c3be007670ecd83a",
+        "6a66e6ce1267f90d6e7a33d4225bc52686eaa63e188f8644c2a198c6e7a524c0"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_outstanding.ogg",
+      "inputSHA256": "75f1111ee3f84b214d056099eb0cbba9985e12f706509fc8851a7310784f4fae",
+      "samplesDecoded": 56161,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.2734920634920635,
+      "pcmSHA256ByChannel": [
+        "5a412bd1c1a1017e49904765fa97669e77b10a49b0b18dec3db44276eed11e99",
+        "e6d333adeeb9a70331f62b7c893b3c6fa9e40f1979f8fc03b42a46302b901ef5"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_terrific.ogg",
+      "inputSHA256": "e0a1513b49624bfdeb1e3102058199cb81dc4bb826cb9ffd93c868c03d0d82f9",
+      "samplesDecoded": 65076,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.4756462585034014,
+      "pcmSHA256ByChannel": [
+        "7ff1c61c28604f14de498012078ff9c01c53995715b431b53dee92402ea36577",
+        "22083b4b78394fce47b8de309af7d9e9c38d09b855b6094b996d8b0c842cdde2"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bigwin/en_us_unbelievable.ogg",
+      "inputSHA256": "0fa214ab10cd6d68b299494f86fa78a9c21a122cd92bb099286c32f9e4b77d26",
+      "samplesDecoded": 67935,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 1.5404761904761906,
+      "pcmSHA256ByChannel": [
+        "eebd0ba4e0a191f725dc23c16ac6a31df753211bcb327db05a35166f5111f768",
+        "3eb6d9d723dfaa35c335df56ecfdf4d2fea8d60aec37a4ce1d50fc355325d44e"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bangup/bangup1.ogg",
+      "inputSHA256": "a89f7030ecd6c591960a013345c518c6dab63ad4a78920419728edc6f63e2aff",
+      "samplesDecoded": 107847,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2.4455102040816326,
+      "pcmSHA256ByChannel": [
+        "9c46375afe8cdc5e2e0b316dc8dddcd67b85873f06b29d2c1ffbae761947f850",
+        "9c46375afe8cdc5e2e0b316dc8dddcd67b85873f06b29d2c1ffbae761947f850"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bangup/bangup2.ogg",
+      "inputSHA256": "5c4b750c00d8d0ddfe9d30f72a30f69a13aee9c56b9dae2ef4f4534dddea7e40",
+      "samplesDecoded": 106260,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2.4095238095238094,
+      "pcmSHA256ByChannel": [
+        "73a3c0a544c1bc8b8f4475ae8e571fde2b933eb97f5464011d1f7db1fa47571f",
+        "73a3c0a544c1bc8b8f4475ae8e571fde2b933eb97f5464011d1f7db1fa47571f"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bangup/bangup3.ogg",
+      "inputSHA256": "e0b0603020c333039f5bef933ad944a58b0f9de3e4a87b37c4f15d2d898fd04e",
+      "samplesDecoded": 118066,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 2.677233560090703,
+      "pcmSHA256ByChannel": [
+        "fb20ee1d3087bd36c7d6b0eb0fa250c9712fd4b809370080865cdde9a5092315",
+        "fb20ee1d3087bd36c7d6b0eb0fa250c9712fd4b809370080865cdde9a5092315"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bangup/bangup4.ogg",
+      "inputSHA256": "45df4c9692e6f5ba8b65a728213f69e690cb08a9405049b81fdf54093b600a43",
+      "samplesDecoded": 302968,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 6.870022675736961,
+      "pcmSHA256ByChannel": [
+        "334643a2b1e6c27a44739700029ec7875a34e970afab9692374f6073f7977a88",
+        "334643a2b1e6c27a44739700029ec7875a34e970afab9692374f6073f7977a88"
+      ]
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bangup/bangup5.ogg",
+      "inputSHA256": "9e79492a82ea7e18e15c4f4cd1065706c7cbacb3d6727fb70353a6f473918269",
+      "samplesDecoded": 309026,
+      "sampleRate": 44100,
+      "channels": 2,
+      "duration": 7.007392290249433,
+      "pcmSHA256ByChannel": [
+        "0f1d30dfbddee782eb43a8197f12e5bfa16d4bdb3e72610e0d618090ffdf31f6",
+        "0f1d30dfbddee782eb43a8197f12e5bfa16d4bdb3e72610e0d618090ffdf31f6"
+      ]
+    }
+  ]
+}

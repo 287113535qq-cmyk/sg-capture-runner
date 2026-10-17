@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "homebtn.png",
+	"frame": {"x":0,"y":0,"w":113,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":38},
+	"sourceSize": {"w":113,"h":38},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "homedownbtn.png",
+	"frame": {"x":0,"y":38,"w":113,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":38},
+	"sourceSize": {"w":113,"h":38},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "homeoverbtn.png",
+	"frame": {"x":0,"y":76,"w":113,"h":38},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":113,"h":38},
+	"sourceSize": {"w":113,"h":38},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "homev1.png",
+	"format": "RGBA8888",
+	"size": {"w":113,"h":114},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:ebf513ceb180819eaa09c39cf74858b1:afecc0c83996600f3c2ae14f8ef6670e:ad35a5627ddf24204a2768c8478acdcc$"
+}
+}

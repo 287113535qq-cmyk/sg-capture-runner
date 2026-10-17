@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "acceptnormal.png",
+	"frame": {"x":0,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "acceptdown.png",
+	"frame": {"x":48,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "acceptover.png",
+	"frame": {"x":96,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "acceptv1.png",
+	"format": "RGBA8888",
+	"size": {"w":144,"h":48},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:a42129bd6823a42b923dcc0a311d5452:98911d712c86d9cbbd3e2f80f92e9fb7:528a8706ca55de766948dfa2df58e8f6$"
+}
+}

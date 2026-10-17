@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "help.png",
+	"frame": {"x":0,"y":0,"w":23,"h":23},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":23},
+	"sourceSize": {"w":23,"h":23},
+	"pivot": {"x":0.0,"y":0.0}
+},
+{
+	"filename": "helpdisable.png",
+	"frame": {"x":23,"y":0,"w":23,"h":23},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":23},
+	"sourceSize": {"w":23,"h":23},
+	"pivot": {"x":0.0,"y":0.0}
+},
+{
+	"filename": "helpover.png",
+	"frame": {"x":46,"y":0,"w":23,"h":23},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":23},
+	"sourceSize": {"w":23,"h":23},
+	"pivot": {"x":0.0,"y":0.0}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "packedv1.png",
+	"format": "RGBA8888",
+	"size": {"w":69,"h":23},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:dab584ea77255ffd5ec7363a3e8d2559:202532b86737c6a307f3483231a0f20b:4dd136658827b53ea568d61d6dc0034d$"
+}
+}

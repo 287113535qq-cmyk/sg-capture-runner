@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "chevron_out1.png",
+	"frame": {"x":0,"y":0,"w":87,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
+	"sourceSize": {"w":87,"h":87},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "chevron_out2.png",
+	"frame": {"x":87,"y":0,"w":87,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
+	"sourceSize": {"w":87,"h":87},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "chevron_out3.png",
+	"frame": {"x":174,"y":0,"w":87,"h":87},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
+	"sourceSize": {"w":87,"h":87},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "chervonset.png",
+	"format": "RGBA8888",
+	"size": {"w":261,"h":87},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:29a6006b4d68b7f2329b4946ba9ba5c4:17024db003059b81d32bf127958603e9:9cbeded1df31c322de079ad42f074257$"
+}
+}

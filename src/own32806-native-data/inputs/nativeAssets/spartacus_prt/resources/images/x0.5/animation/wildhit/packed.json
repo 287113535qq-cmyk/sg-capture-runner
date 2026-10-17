@@ -1,0 +1,174 @@
+{"frames": [
+
+{
+	"filename": "symbolrrtogold_00000.png",
+	"frame": {"x":0,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00001.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00002.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00003.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00004.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00005.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00006.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00007.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00008.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00009.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00010.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00011.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00012.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00013.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00014.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00015.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00016.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "symbolrrtogold_00017.png",
+	"frame": {"x":94,"y":0,"w":94,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":61},
+	"sourceSize": {"w":94,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "packedv1.png",
+	"format": "RGBA8888",
+	"size": {"w":188,"h":61},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:e3a0d80143da391fc3b7c431431b1b27:5614cda622af3211efa6f0efd92924c5:4dd136658827b53ea568d61d6dc0034d$"
+}
+}

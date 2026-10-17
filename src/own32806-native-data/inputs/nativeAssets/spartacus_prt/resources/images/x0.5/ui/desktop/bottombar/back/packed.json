@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "back.png",
+	"frame": {"x":0,"y":0,"w":22,"h":22},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":22},
+	"sourceSize": {"w":22,"h":22},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "backdisable.png",
+	"frame": {"x":23,"y":0,"w":22,"h":22},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":22},
+	"sourceSize": {"w":22,"h":22},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "backover.png",
+	"frame": {"x":46,"y":0,"w":22,"h":22},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":22},
+	"sourceSize": {"w":22,"h":22},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "backv1v2.png",
+	"format": "RGBA8888",
+	"size": {"w":68,"h":22},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:1f4144a8590c321c6873c140c5ce0d12:ff2c9273e318e8f5c5e7e89cc70e17b1:a0ea00a48843c2f9fb5e9044c3ea2234$"
+}
+}

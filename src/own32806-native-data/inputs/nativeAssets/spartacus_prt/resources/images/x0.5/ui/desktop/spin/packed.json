@@ -1,0 +1,48 @@
+{"frames": [
+
+{
+	"filename": "spin0001.png",
+	"frame": {"x":0,"y":0,"w":70,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":61},
+	"sourceSize": {"w":70,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spin0002.png",
+	"frame": {"x":70,"y":0,"w":70,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":61},
+	"sourceSize": {"w":70,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spin0003.png",
+	"frame": {"x":140,"y":0,"w":70,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":61},
+	"sourceSize": {"w":70,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spin0004.png",
+	"frame": {"x":210,"y":0,"w":70,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":61},
+	"sourceSize": {"w":70,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "packedv1.png",
+	"format": "RGBA8888",
+	"size": {"w":280,"h":61},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:e1722d5d171f0f86588af7d89ae0f420:94c83d1e2184e441a4faf928b88a9eac:4dd136658827b53ea568d61d6dc0034d$"
+}
+}

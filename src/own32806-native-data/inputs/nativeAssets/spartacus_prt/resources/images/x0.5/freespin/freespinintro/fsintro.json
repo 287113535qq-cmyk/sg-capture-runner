@@ -1,0 +1,264 @@
+{"frames": [
+
+{
+	"filename": "tran01.png",
+	"frame": {"x":0,"y":0,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran02.png",
+	"frame": {"x":396,"y":0,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran03.png",
+	"frame": {"x":0,"y":204,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran04.png",
+	"frame": {"x":396,"y":204,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran05.png",
+	"frame": {"x":0,"y":408,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran06.png",
+	"frame": {"x":396,"y":408,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran07.png",
+	"frame": {"x":0,"y":612,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran08.png",
+	"frame": {"x":396,"y":612,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran09.png",
+	"frame": {"x":0,"y":816,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran10.png",
+	"frame": {"x":396,"y":816,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran11.png",
+	"frame": {"x":0,"y":1020,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran12.png",
+	"frame": {"x":396,"y":1020,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran13.png",
+	"frame": {"x":0,"y":1224,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran14.png",
+	"frame": {"x":396,"y":1224,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran15.png",
+	"frame": {"x":0,"y":1428,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran16.png",
+	"frame": {"x":396,"y":1428,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran17.png",
+	"frame": {"x":0,"y":1632,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran18.png",
+	"frame": {"x":396,"y":1632,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran19.png",
+	"frame": {"x":0,"y":1836,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran20.png",
+	"frame": {"x":396,"y":1836,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran21.png",
+	"frame": {"x":0,"y":2040,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran22.png",
+	"frame": {"x":396,"y":2040,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran23.png",
+	"frame": {"x":0,"y":2244,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran24.png",
+	"frame": {"x":396,"y":2244,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran25.png",
+	"frame": {"x":0,"y":2448,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran26.png",
+	"frame": {"x":396,"y":2448,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran27.png",
+	"frame": {"x":0,"y":2652,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "tran28.png",
+	"frame": {"x":396,"y":2652,"w":396,"h":204},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":396,"h":204},
+	"sourceSize": {"w":396,"h":204},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "fsintro.png",
+	"format": "RGBA8888",
+	"size": {"w":792,"h":2856},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:c6d409dfe04ef55c2193767188609307:3f3d7aca7cdd0c564cdd1536201289be:4dd136658827b53ea568d61d6dc0034d$"
+}
+}

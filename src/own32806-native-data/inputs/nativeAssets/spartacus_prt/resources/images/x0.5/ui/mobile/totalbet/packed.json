@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "totalbetdown.png",
+	"frame": {"x":0,"y":0,"w":89,"h":78},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":78},
+	"sourceSize": {"w":89,"h":78},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "totalbetnormal.png",
+	"frame": {"x":0,"y":78,"w":89,"h":78},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":78},
+	"sourceSize": {"w":89,"h":78},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "totalbetover.png",
+	"frame": {"x":0,"y":156,"w":89,"h":78},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":78},
+	"sourceSize": {"w":89,"h":78},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "totalbetv1.png",
+	"format": "RGBA8888",
+	"size": {"w":89,"h":234},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:3caa2b0b51fb71933c7baf115b045928:7cbe515ad383077eb125ae1d6c5fca46:a1b1bcb89bd6422aa190a2be8488d845$"
+}
+}

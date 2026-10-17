@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "nextbtn.png",
+	"frame": {"x":0,"y":0,"w":44,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":31},
+	"sourceSize": {"w":44,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "nextdownbtn.png",
+	"frame": {"x":44,"y":0,"w":44,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":31},
+	"sourceSize": {"w":44,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "nextover.png",
+	"frame": {"x":88,"y":0,"w":44,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":31},
+	"sourceSize": {"w":44,"h":31},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "nextv1.png",
+	"format": "RGBA8888",
+	"size": {"w":132,"h":31},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:daeee248e1fad51db39732999bbbc2eb:1ef426ccea31f2ea716a8a2abab190e3:175ce9ff565296db709657e5f22caccf$"
+}
+}

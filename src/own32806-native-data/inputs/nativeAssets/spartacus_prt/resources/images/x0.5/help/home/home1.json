@@ -1,0 +1,82 @@
+{
+	"frames": [
+
+		{
+			"filename": "homebtn.png",
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 56
+			},"pivot": {"x":0.5,"y":0.5}
+		},
+		{
+			"filename": "homedownbtn.png",
+			"frame": {
+				"x": 57,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 56
+			},
+			"pivot": {"x":0.5,"y":0.5}
+		},
+		{
+			"filename": "homeoverbtn.png",
+			"frame": {
+				"x": 114,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 57,
+				"h": 56
+			},
+			"sourceSize": {
+				"w": 57,
+				"h": 56
+			},
+			"pivot": {"x":0.5,"y":0.5}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "homev1.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 171,
+			"h": 56
+		},
+		"scale": "0.5",
+		"smartupdate": "$TexturePacker:SmartUpdate:9a4c332b03d9464661672192ce64494d:99a2c5264b9062e52ca81233df983dfb:ad35a5627ddf24204a2768c8478acdcc$"
+	}
+}

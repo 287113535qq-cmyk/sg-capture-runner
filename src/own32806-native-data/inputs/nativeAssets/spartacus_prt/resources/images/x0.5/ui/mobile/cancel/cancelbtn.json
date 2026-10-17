@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "cancelnormal.png",
+	"frame": {"x":0,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "canceldown.png",
+	"frame": {"x":48,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "cancelover.png",
+	"frame": {"x":96,"y":0,"w":48,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":48},
+	"sourceSize": {"w":48,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "cancelsetv1.png",
+	"format": "RGBA8888",
+	"size": {"w":144,"h":48},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:0ac2c9812eebd6e4d8a6098cc9fd1edd:7cbd15b3a1f131a9518753122e4ecb46:778429ec59e0416d2d3ca151a5ab2008$"
+}
+}

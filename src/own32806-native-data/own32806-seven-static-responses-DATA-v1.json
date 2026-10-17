@@ -1,0 +1,526 @@
+{
+  "schema": "own32806-retained-static-complete-response-DATA-v1",
+  "gameId": "32806",
+  "version": "5.0.4.1-1787670669",
+  "staticOnly": true,
+  "inputs": [
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/audio/desktop/desktop-ogg/bonus/SpartacusNudge.ogg",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66bdd78f890-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app104"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 2383ef6123aabc2603d88e63aa5c8934.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "qfS4FvOohM-hvy3xJQYs883it2pLLkAE8YEHQhZHapNwOl78Z2jLBg=="
+        ]
+      ],
+      "bodySHA256": "26bda05138c7ee8cad18ecedb9492904c7da3e20901532524c18cf925c7b884c",
+      "bodyRelativePath": "inputs/static-responses/1/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/logo.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66baf3ca24f-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app104"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 006c5eef5fef701e0a98936fdd28b27c.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "XcHlWRrS8MbXI3XO7S7M7GX4il2l4Z12iVqB33EVxCkN6WYCfsr2JQ=="
+        ]
+      ],
+      "bodySHA256": "b970cdb64067ccb020be3e150bc22d5595abcb9fdeb6c019503a22c3f1a00e47",
+      "bodyRelativePath": "inputs/static-responses/2/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/pattern1.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66beb635937-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app103"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 be44d003490e0ce1bc7306c03d03336c.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "J8WMYsTGN5y3rJQRqLSlZxbdS1_TwaggfB9MX_ebQnUmx7amJf60oQ=="
+        ]
+      ],
+      "bodySHA256": "6b66a0cfb8c4d13b79362570c9042a56dcd431f88b2451e97d5b480f1737002c",
+      "bodyRelativePath": "inputs/static-responses/3/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/pattern2.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66bbc825fa2-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app104"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 b0e86881f2888131e8e2022e585486ea.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "w3yqGWqFfnFZ-F6eRtQQBwVSXMr6uK_NgznFHcxsToC2rY5pQ3fY4Q=="
+        ]
+      ],
+      "bodySHA256": "6ad562fdd90dc639aec8254c5934c1952d263f44a8fae34f8160af8b1d3951b3",
+      "bodyRelativePath": "inputs/static-responses/4/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/king.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66c2a675f76-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app103"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 42d181a5e9b57585fdabdc863c797fc4.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "WYNgxXDudWBA2OCkCfkt6MhD3Pc92rpx6V5Um1mLxc-XGtVoNRR-5w=="
+        ]
+      ],
+      "bodySHA256": "35024e2ca51d2822753b19a572411f341453d6157a4f9b830e619e2141f75b0c",
+      "bodyRelativePath": "inputs/static-responses/5/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/queen.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66bcd43fde3-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app102"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 9a06a86043ac92b5eef02a04c8811096.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "7ZSrNq510HJRJtVCrJCqpGY792vbJzFZbHeUezbseNWjl_GUx9vMMw=="
+        ]
+      ],
+      "bodySHA256": "c144114997507b067841af7e48b4cf7b27202e44e99003aa48317bba4685699f",
+      "bodyRelativePath": "inputs/static-responses/6/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    },
+    {
+      "url": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/spartacus_prt/resources/images/x0.5/common/help/bonuslarge.png",
+      "httpStatus": 403,
+      "responseHeaders": [
+        [
+          "Content-Type",
+          "text/html; charset=iso-8859-1"
+        ],
+        [
+          "Transfer-Encoding",
+          "chunked"
+        ],
+        [
+          "Connection",
+          "close"
+        ],
+        [
+          "Date",
+          "Sat, 17 Oct 2026 11:07:05 GMT"
+        ],
+        [
+          "CF-RAY",
+          "a4bed66bef910b5f-SIN"
+        ],
+        [
+          "Server",
+          "cloudflare"
+        ],
+        [
+          "X-XSS-Protection",
+          "1; mode=block"
+        ],
+        [
+          "X-Content-Type-Options",
+          "nosniff"
+        ],
+        [
+          "Referrer-Policy",
+          "strict-origin-when-cross-origin"
+        ],
+        [
+          "Strict-Transport-Security",
+          "max-age=31536000; includeSubDomains"
+        ],
+        [
+          "X-Backend-Server",
+          "atc-mob-app101"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "X-Cache",
+          "Error from cloudfront"
+        ],
+        [
+          "Via",
+          "1.1 006c5eef5fef701e0a98936fdd28b27c.cloudfront.net (CloudFront)"
+        ],
+        [
+          "X-Amz-Cf-Pop",
+          "HKG54-P2"
+        ],
+        [
+          "X-Amz-Cf-Id",
+          "6e4TsJ7dKbkvSbbuHzXULGBpIDEd68WUc-KYUpX294LGLjkwQRqfJA=="
+        ]
+      ],
+      "bodySHA256": "17a1ebe35a83a221fb91c1fa00dd316038ba69b26f66255e1210a0e2851b1767",
+      "bodyRelativePath": "inputs/static-responses/7/body.bin",
+      "completeHTTPResponse": true,
+      "actualAttempts": 1
+    }
+  ]
+}

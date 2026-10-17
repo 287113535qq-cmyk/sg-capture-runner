@@ -1,0 +1,183 @@
+{"frames": [
+
+{
+	"filename": "freegameretrigger1.png",
+	"frame": {"x":0,"y":0,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger2.png",
+	"frame": {"x":1122,"y":729,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger3.png",
+	"frame": {"x":1683,"y":0,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger4.png",
+	"frame": {"x":1683,"y":243,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger5.png",
+	"frame": {"x":1683,"y":486,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger6.png",
+	"frame": {"x":1683,"y":729,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger7.png",
+	"frame": {"x":2244,"y":0,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger8.png",
+	"frame": {"x":2244,"y":243,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger9.png",
+	"frame": {"x":2244,"y":486,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger10.png",
+	"frame": {"x":0,"y":243,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger11.png",
+	"frame": {"x":0,"y":486,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger12.png",
+	"frame": {"x":0,"y":729,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger13.png",
+	"frame": {"x":561,"y":0,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger14.png",
+	"frame": {"x":561,"y":243,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger15.png",
+	"frame": {"x":561,"y":486,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger16.png",
+	"frame": {"x":561,"y":729,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger17.png",
+	"frame": {"x":1122,"y":0,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger18.png",
+	"frame": {"x":1122,"y":243,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "freegameretrigger19.png",
+	"frame": {"x":1122,"y":486,"w":561,"h":243},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":561,"h":243},
+	"sourceSize": {"w":561,"h":243},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "freegametriggerv1.png",
+	"format": "RGBA8888",
+	"size": {"w":2805,"h":972},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:c870dcbe66f339faf189d5573cc05fa2:e8471f6a4ab001745f093c7912667644:a1c708900d5d2bc389e0723e52fff8e8$"
+}
+}

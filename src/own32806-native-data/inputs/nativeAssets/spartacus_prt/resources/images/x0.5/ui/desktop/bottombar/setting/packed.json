@@ -1,0 +1,39 @@
+{"frames": [
+
+{
+	"filename": "settingdisable.png",
+	"frame": {"x":0,"y":0,"w":21,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
+	"sourceSize": {"w":21,"h":21},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "settingnormal.png",
+	"frame": {"x":22,"y":0,"w":21,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
+	"sourceSize": {"w":21,"h":21},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "settingsover.png",
+	"frame": {"x":44,"y":0,"w":21,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
+	"sourceSize": {"w":21,"h":21},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "backv1v2.png",
+	"format": "RGBA8888",
+	"size": {"w":65,"h":21},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:47651f31222e14349a14f57f2e416bc0:33b4f153c4221391a94cb0767bc5f89e:a0ea00a48843c2f9fb5e9044c3ea2234$"
+}
+}

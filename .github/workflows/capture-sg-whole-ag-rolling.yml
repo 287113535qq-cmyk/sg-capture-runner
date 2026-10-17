@@ -46,7 +46,7 @@ jobs:
           ROLLING_LANE: ${{ matrix.lane }}
           AG_CAPTURE_PLATFORM: sg
           AG_GAMES_MANIFEST: sg-games.yml
-          AG_MANIFEST_GAME_COUNT: "81"
+          AG_MANIFEST_GAME_COUNT: "82"
           SG_AG_ALLOW_SOURCE: "1"
           SG_GDM_OPERATOR_ID: ${{ secrets.SG_GDM_OPERATOR_ID }}
           SG_EVIDENCE_DIR: ${{ runner.temp }}/sg-source-evidence

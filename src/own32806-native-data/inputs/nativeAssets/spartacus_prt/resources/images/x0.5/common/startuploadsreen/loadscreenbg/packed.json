@@ -1,0 +1,21 @@
+{"frames": [
+
+{
+	"filename": "spartacusloadscreen.png",
+	"frame": {"x":1,"y":1,"w":1920,"h":1080},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1920,"h":1080},
+	"sourceSize": {"w":1920,"h":1080},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "packed.png",
+	"format": "RGBA8888",
+	"size": {"w":1922,"h":1082},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2822a47e133725e436aff2eee1e22df0:a6e1780f0b7ff3d7069388b51eaa28a8:de62c4130a72712ae995d05d7f4a14e5$"
+}
+}

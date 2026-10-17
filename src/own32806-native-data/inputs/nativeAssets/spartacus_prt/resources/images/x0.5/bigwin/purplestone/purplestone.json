@@ -1,0 +1,192 @@
+{"frames": [
+
+{
+	"filename": "blues01.png",
+	"frame": {"x":0,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues02.png",
+	"frame": {"x":60,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues03.png",
+	"frame": {"x":120,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues04.png",
+	"frame": {"x":180,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues05.png",
+	"frame": {"x":240,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues06.png",
+	"frame": {"x":300,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues07.png",
+	"frame": {"x":360,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues08.png",
+	"frame": {"x":420,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues09.png",
+	"frame": {"x":480,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues10.png",
+	"frame": {"x":540,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues11.png",
+	"frame": {"x":600,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues12.png",
+	"frame": {"x":660,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues13.png",
+	"frame": {"x":720,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues14.png",
+	"frame": {"x":780,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues15.png",
+	"frame": {"x":840,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues16.png",
+	"frame": {"x":900,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues17.png",
+	"frame": {"x":960,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues18.png",
+	"frame": {"x":1020,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues19.png",
+	"frame": {"x":1080,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "blues20.png",
+	"frame": {"x":1140,"y":0,"w":60,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":60,"h":61},
+	"sourceSize": {"w":60,"h":61},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bluestonev1.png",
+	"format": "RGBA8888",
+	"size": {"w":1200,"h":61},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:8f180d789a3e6b3a9e39bffbfd2b1363:21cd1f856f2794fc53cc9dc190e3434a:8bbf6a0b332f2d3020466b146c21c654$"
+}
+}
