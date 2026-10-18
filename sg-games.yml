@@ -17907,3 +17907,33 @@ games:
         total: '200'
       own32801ProtocolDATA:
         contract: own32801-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32812'
+    name: VeryFruity
+    dbName: sg_very_fruity
+    backendId: veryfruity
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33172
+      runtimeSlug: veryfruity
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "veryfruity"
+        gameID: "20206"
+        glsID: "65535"
+        lang: "en_us"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 100
+      stake:
+        perLine: '5'
+        total: '100'
+      own32812ProtocolDATA:
+        contract: own32812-original-SG-protocol-private-v1
