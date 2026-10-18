@@ -1,0 +1,309 @@
+{
+  "schema": "own32813-selected-original-SG-protocol-DATA-v1",
+  "source": {
+    "bootstrap": {
+      "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\voltsandbolts\\js\\bootstrapper.js",
+      "SHA256": "c863106fde3754fba0449bd42b01fb3d55201a7e29a94ca388b7103b7cdc7f27",
+      "bytes": 7421
+    },
+    "ownCDNURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "localPrimary": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "expectedSRI": "sha256-2/CCm5dKf/79/AYicoahoXNQzR8H4nB44B7ybxTDCgg=",
+    "expectedSHA256": "dbf0829b974a7ffefdfc06227286a1a17350cd1f07e27078e01ef26f14c30a08",
+    "fullPrimaryHashASTNotReexecuted": true
+  },
+  "leaves": {
+    "terminal": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 643650,
+      "startWithinWindow": 89,
+      "source": "function(a,b){if(this.w.Ac.type&d.Y.Rc.qd.ma){var c=!b.KA||0==this.w.rc.Xa.Gd;if(a.index==this.w.kb.length-1&&c)return!0}return e.prototype.TP.call(this,a,b)}",
+      "SHA256": "fe4e4aaf149c17a96f73b4185e326286bfdce0c503433e40d7a10cb85c04ad95",
+      "marker": "c.prototype.TP="
+    },
+    "continue": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 643650,
+      "startWithinWindow": 263,
+      "source": "function(a){return this.w.Ac.type&\nd.Y.Rc.qd.ma&&(!a.KA||0==this.w.rc.Xa.Gd)?!1:e.prototype.jO.call(this,a)}",
+      "SHA256": "f466e3b7e7060348e21a0809e7076d16a2083a6366295b70b773f149859f1093",
+      "marker": "c.prototype.jO="
+    },
+    "localRounds": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 645220,
+      "startWithinWindow": 108,
+      "source": "function(a){for(var b=1,c=0,d=a.Ch.nn;c<d.length;c++)this.Qka(d[c],b),b++;a.Ch.QB=b}",
+      "SHA256": "d776353e753668346d950a10cbe620f2794329596a4a7ae2d2979570a4a45147",
+      "marker": "c.prototype.Uka="
+    },
+    "sourceAmount": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 644850,
+      "startWithinWindow": 79,
+      "source": "function(a){this.w.rc.Xa=q({},this.w.Xa);\nthis.w.rc.kb=this.w.kb.slice();this.Uka(a);this.w.rc.xn=a.Ch.xn;this.w.rc.QB=a.Ch.QB;this.w.rc.ou=a.Ch.ou;this.w.kb[this.w.kb.length-1].Pb.ie+=this.w.rc.xn;this.w.Xa.Ui=!0;this.w.Xa.Gd=this.w.rc.QB-1;this.w.Xa.wn=0;this.w.Xa.winAmount=this.w.rc.xn}",
+      "SHA256": "ffa7ad7094ff62f6a55635ca571647d371eb925a4f8750ca305e642016fd2574",
+      "marker": "c.prototype.Rka="
+    },
+    "header": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 509780,
+      "startWithinWindow": 81,
+      "source": "function(){var c=new d.d6;c.$z=this.Pl.$z.toString();c.vM=this.fC.language;c.channel=this.Pl.channel;c.bu=this.fC.bu;c.Jfa=this.Pl.Ifa;c.dr=this.Pl.dr;c.NF=this.Pl.NF;c.lang=this.fC.language;c.Hla=!1;c.si=this.fC.si;c.Hp=this.fC.Hp;c.MQ=this.Pl.MQ;c.PQ=this.Pl.PQ;return c}",
+      "SHA256": "aac592994034bda26bbb189fc14fd519d58b8793fa8d71a124bdc5ba7a8fa408",
+      "marker": "e.prototype.HM="
+    },
+    "initObject": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 515950,
+      "startWithinWindow": 103,
+      "source": "function(b){var c=new a.iv;c.Ah=this.HM();b.qg&&(c.Br=this.JM(),this.qN(c.Br,b.qg));return c}",
+      "SHA256": "b47e01badb0b159e78d256d874b2598ad5573cf74c3258d3cc93177ec4da45b9",
+      "marker": "a.prototype.vA="
+    },
+    "endObject": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 511700,
+      "startWithinWindow": 123,
+      "source": "function(){var b=new a.iv;b.Ah=this.HM();return b}",
+      "SHA256": "f41b2367a177549302ee398c8cf25926081aabe08767da155a0b73f3dad4db23",
+      "marker": "a.prototype.vA="
+    },
+    "logicObject": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 521200,
+      "startWithinWindow": 105,
+      "source": "function(b){var c=new a.iv;c.Ah=this.HM();c.ZB=b.vw.value;c.rp=b.rp;b.DY&&(c.$t=this.FX(),this.pN(c.$t,b.DY));b.qg&&(c.Br=this.JM(),this.qN(c.Br,b.qg));null!=b.Ug&&\n(c.Pi=new d.Q3,c.Pi.Ug=b.Ug);return c}",
+      "SHA256": "9fb9005d4357fcdf306560d2912bca8c862bd815a9d2c3b6e1202f4124d69292",
+      "marker": "a.prototype.vA="
+    },
+    "baseTerminal": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 508150,
+      "startWithinWindow": 76,
+      "source": "function(a){return this.w.state.Fd?!0:a.index<this.w.kb.length-1||0<this.w.Xa.Gd?!1:\n!0}",
+      "SHA256": "e3a05541be4e0139a75b4ba5e143e1a4d7ff6901964b28454070e3c688ce313f",
+      "marker": "c.prototype.TP="
+    },
+    "featureType": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 644650,
+      "startWithinWindow": 20,
+      "source": "function(a){d.Y.Rc.clear(this.w.Ac);this.w.Ac.type=d.Y.Rc.qd.Ya;a.Ch&&(this.w.Ac.type|=d.Y.Rc.qd.ma);a.KA&&(this.w.Ac.type|=d.Y.Rc.qd.dm)}",
+      "SHA256": "3cb6ec7ab0d5cdc3eccdc434050cc6b54b95ebd78888bd65aa513e389b0cbbf9",
+      "marker": "c.prototype.Ufa="
+    },
+    "sourceRemoveBonus": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 644380,
+      "startWithinWindow": 29,
+      "source": "function(a){for(var b=0;b<a.nn.length;b++)a.nn[b]instanceof\nd.Dc.Qx&&a.nn.splice(b,1)}",
+      "SHA256": "cc434adce87b59214d658ff2b0729821df358749295ea346c88297a2c303bf61",
+      "marker": "c.prototype.sma="
+    },
+    "sourceBonusFields": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+      "byteWindowStart": 644480,
+      "startWithinWindow": 32,
+      "source": "function(a){for(var b=0;b<a.nn.length;b++)if(a.nn[b]instanceof d.Dc.Qx){var c=a.nn[b];this.w.Gj.Tq=c.Tq;this.w.Gj.Qk=c.Qk;this.w.Gj.$l=c.$l}}",
+      "SHA256": "71ce3eb037c3550bd724232dd1917e0c19cd309b98a4a68d4acc6e64fff93a4c",
+      "marker": "c.prototype.Wla="
+    }
+  },
+  "headerFields": [
+    [
+      "$z",
+      "affiliate"
+    ],
+    [
+      "vM",
+      "ccyCode"
+    ],
+    [
+      "channel",
+      "channel"
+    ],
+    [
+      "bu",
+      "freePlay"
+    ],
+    [
+      "Jfa",
+      "gameCodeRGI"
+    ],
+    [
+      "dr",
+      "gameID"
+    ],
+    [
+      "NF",
+      "glsID"
+    ],
+    [
+      "lang",
+      "lang"
+    ],
+    [
+      "Hla",
+      "promotions"
+    ],
+    [
+      "si",
+      "sessionID"
+    ],
+    [
+      "Hp",
+      "userID"
+    ],
+    [
+      "MQ",
+      "userType"
+    ],
+    [
+      "PQ",
+      "versionID"
+    ]
+  ],
+  "wireProjection": {
+    "implementation": "exact original A.ck.Ph.LP with exact original metadata/decorators/classes; existing owned DOM only",
+    "requestLeavesUnchanged": true,
+    "paylineCount": "own Init first PaylineInfo selectable Payline index+1, Nj[0], no default",
+    "ccyCode": "own MH.HM vM=fC.language; header.vM .ccyCode",
+    "historicalEmptyCCY": "generic static-header SG adapter can emit cached empty ccyCode; historical version identity not asserted"
+  },
+  "ownInitCurrencyAbsenceRule": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "offset": 501650,
+    "source": "s.w.Ta.Pg.length;Q++)if(Bc=this.w.Ta.Pg[Q],Bc.value==Ac){this.w.Ta.Ri=Q;break}this.w.kb.length=0;this.w.state.state=this.lk=A.F.Y.K.Z.hf;this.w.Hc.xA=c.Ah.vM||\"GBP\";this.w.Hc.Ug=1;c.Pi&&c.Pi.PX?(W=c.Pi.PX,this.w.Hc.zA={name:W.Zda,symbol:W.MM||\"\",gN:W.gN,OF:W.OF,ni:W.ni,Pw:W.Afa,Lj:W.iea,yA:W.yA,OX:W.jda,$q:W.$q,NM:W.Sna,Ug:W.Ug,tF:null!=W.MM,bY:null==W.MM},this.Cj.Ug=W.Ug):(this.w.Hc.zA=q({},A.ka.pF[this.w.Hc.xA]||A.ka.pF.GBP,{tF:!1}),this.Cj.Ug=1);this.Hm.$g&&(this.w.Hc.zA.tF=!1,this.w.Hc.zA.Ug=\n1);c.Ej&&this.c1(c.Ej);c.Pi&&c.Pi.FG&&this.d1(c.Pi.FG);this.Pka(c.Lfa);this.Cj.si=c.Ah.si;this.RK."
+  },
+  "sourcePerPaidClear": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "offset": 633830,
+    "source": "n(){return f(this,void 0,void 0,function(){return n(this,function(){this._context.Sa=0;this._context.j.w.kb.length=0;this._context.j.w.Xa.Ui=!1;this._context.j.w.Xa.Gd=0;this.ui(A."
+  },
+  "nativeTypedWire": {
+    "parts": {
+      "metadata": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 14000,
+        "startWithinWindow": 64,
+        "source": "(function(d){(function(h){function g(){return{he:[],methods:{},properties:{},Bp:{},staticProperties:{}}}function e(b,a){void 0===a&&(a=!0);if(d.M.Yd(b)){var k=Object.getPrototypeOf(b);if(null==b.$D||b.$D===k.$D){if(!a)return null;b.$D=g()}return b.$D}b=Object.getPrototypeOf(b).constructor;return d.M.Yd(b)?e(b,a):null}function c(b){if(d.M.Yd(b)){var k=g(),l=0;for(b=d.O.RY(b,!0);l<b.length;l++){var r=b[l];r=e(r,!1);if(null!=r){a(r.he,k.he);for(var h in r.methods)null==k.methods[h]&&(k.methods[h]={he:[]}),\na(r.methods[h].he,k.methods[h].he);for(var t in r.properties)null==k.properties[t]&&(k.properties[t]={he:[]}),a(r.properties[t].he,k.properties[t].he);for(h in r.Bp)null==k.Bp[h]&&(k.Bp[h]={he:[]}),a(r.Bp[h].he,k.Bp[h].he);for(t in r.staticProperties)null==k.staticProperties[t]&&(k.staticProperties[t]={he:[]}),a(r.staticProperties[t].he,k.staticProperties[t].he)}}return k}r=Object.getPrototypeOf(b).constructor;return d.M.Yd(r)?c(r):null}function a(b,a){for(var k=0,c=b.length;k<c;++k)null==a[k]&&(a[k]=\nb[k])}h.getMetadata=e;h.uP=c})(d.md||(d.md={}))})(A||(A={}));",
+        "SHA256": "04ee72a3b6349332b36d6aab7371e12a55f96e79f32567b7d3b600ae0fd46773"
+      },
+      "registry": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 15000,
+        "startWithinWindow": 142,
+        "source": "(function(d){(function(h){var g;(function(c){c[c.Yj=0]=\"Class\";c[c.JC=1]=\"Method\";c[c.aa=2]=\"Property\"})(g=h.gk||(h.gk={}));var e;(function(c){c[c.K8=0]=\"Static\";c[c.xg=1]=\"Instance\"})(e=h.bs||(h.bs={}));(function(c){function a(a,k){var c=b[a]++;switch(a){case g.Yj:var l=d.createEvent(),r=d.createEvent(),p=function(b){return function(a){h.getMetadata(a,!0).he[c]=b;k&&(a=k(a)||a);-1===p.af.indexOf(a)&&(p.af.push(a),l.pa(a));r.pa({hF:a,Hx:b});return a}};p.kind=a;p.get=function(b){return h.uP(b).he[c]};\np.af=[];p.OY=function(b){return this.af.filter(function(a){return p.get(a)===b})};p.pp=l.Ga;p.op=r.Ga;return p;case g.JC:var w=d.createEvent(),x=d.createEvent(),B=function(b){return function(a,k){if(d.M.Yd(a)){var l=h.getMetadata(a,!0);null==l.Bp[k]&&(l.Bp[k]={he:[]});l.Bp[k].he[c]=b;-1===B.af.indexOf(a)&&(B.af.push(a),w.pa(a));x.pa({hF:a,Yd:a[k],Hx:b})}else l=h.getMetadata(a.constructor,!0),null==l.methods[k]&&(l.methods[k]={he:[]}),l.methods[k].he[c]=b,-1===B.af.indexOf(a.constructor)&&(B.af.push(a.constructor),\nw.pa(a.constructor)),x.pa({hF:a.constructor,Yd:a[k],Hx:b})}};B.kind=a;B.get=function(b,a){var k=h.uP(b);b={};a=a===e.xg?k.methods:k.Bp;for(var d in a)k=a[d].he[c],null!=k&&(b[d]=k);return b};B.af=[];B.pp=w.Ga;B.op=x.Ga;return B;case g.aa:var E=d.createEvent(),F=d.createEvent(),G=function(b){return function(a,k){if(d.M.Yd(a)){var l=h.getMetadata(a,!0);null==l.staticProperties[k]&&(l.staticProperties[k]={he:[]});l.staticProperties[k].he[c]=b;-1===G.af.indexOf(a)&&(G.af.push(a),E.pa(a));F.pa({hF:a,Ila:Object.getOwnPropertyDescriptor(a,\nk),Hx:b})}else l=h.getMetadata(a.constructor,!0),null==l.properties[k]&&(l.properties[k]={he:[]}),l.properties[k].he[c]=b,-1===G.af.indexOf(a.constructor)&&(G.af.push(a.constructor),E.pa(a.constructor)),F.pa({hF:a.constructor,Ila:Object.getOwnPropertyDescriptor(a.constructor,k),Hx:b})}};G.kind=a;G.get=function(b,a){var k=h.uP(b);b={};a=a===e.xg?k.properties:k.staticProperties;for(var d in a)k=a[d].he[c],null!=k&&(b[d]=k);return b};G.af=[];G.pp=E.Ga;G.op=F.Ga;return G;default:return null}}var b=(k=\n{},k[g.Yj]=0,k[g.JC]=0,k[g.aa]=0,k);c.create=a;c.nF=function(b,k){var c=b===g.Yj?a(b,k):a(b);switch(c.kind){case g.Yj:return b=function(b){return c(!0)(b)},b.get=function(b){return c.get(b)||!1},b.af=c.af,b.pp=c.pp,b.op=c.op,b;case g.JC:return b=function(b,a,k){c(!0)(b,a,k)},b.get=function(b,a){return Object.keys(c.get(b,a))},b.af=c.af,b.pp=c.pp,b.op=c.op,b;case g.aa:return b=function(b,a){c(!0)(b,a)},b.get=function(b,a){return Object.keys(c.get(b,a))},b.af=c.af,b.pp=c.pp,b.op=c.op,b;default:return null}};\nvar k})(h.fk||(h.fk={}))})(d.md||(d.md={}))})(A||(A={}));",
+        "SHA256": "b34d7b3f220e80b7b1f2efacbadd855e863fd3800c5a9eeac347c4f182a0143e"
+      },
+      "events": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 4150,
+        "startWithinWindow": 63,
+        "source": "(function(d){d.createEvent=function(){var d=new g,c=d.on.bind(d);c.once=d.once.bind(d);c.off=d.off.bind(d);c.has=d.has.bind(d);c.pa=d.pa.bind(d);c.then=d.then.bind(d);Object.defineProperties(c,{Ga:{value:c}});return c};d.Bb=function(){var d=new g,c=d.on.bind(d);c.once=d.once.bind(d);c.off=d.off.bind(d);c.has=d.has.bind(d);c.pa=d.pa.bind(d);c.then=d.then.bind(d);Object.defineProperties(c,{Ga:{value:c}});return c};var h=function(){function d(c,a){this.iU=c;this._callback=a}Object.defineProperties(d.prototype,\n{Qa:{get:function(){return!this.iU.has(this._callback)},enumerable:!0,configurable:!0}});d.prototype.dispose=function(){this.iU.off(this._callback)};return d}(),g=function(){function d(){this.Ss=[]}d.prototype.once=function(c){return this.on(c,!0)};d.prototype.on=function(c,a){void 0===a&&(a=!1);this.Ss.push({UN:c,once:a});return new h(this,c)};d.prototype.off=function(c){for(var a=0,b=this.Ss.length;a<b;++a)if(this.Ss[a].UN===c){this.Ss.splice(a,1);break}};d.prototype.has=function(c){for(var a=0,\nb=this.Ss.length;a<b;++a)if(this.Ss[a].UN===c)return!0;return!1};d.prototype.pa=function(c){for(var a=0,b=this.Ss;a<b.length;a++)b[a].UN(c)};d.prototype.then=function(c){var a=this;return new Promise(function(b){a.once(function(a){c(a);b()})})};return d}()})(A||(A={}));",
+        "SHA256": "3cee257e21dbb23d469d7a0de28276dfc395969dd8b4cb182e2a104d435fca7f"
+      },
+      "primitives": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 9400,
+        "startWithinWindow": 114,
+        "source": "(function(d){(function(d){function g(c){return null!=c&&Array.isArray(c)}function e(c,a){return null!=c&&d.Uc(c)&&c.every(function(b){return a(b)})}d.Ea=function(c){return null!=c&&!isNaN(c)&&(\"number\"===typeof c||c instanceof Number)};d.Vc=function(c){return null!=c&&(\"string\"===typeof c||c instanceof String)};d.Uc=g;d.Rra=e;d.A1=function(c){return g(c)};d.owa=function(c,a){return e(c,a)};d.object=function(c){return null!=c&&\"object\"===typeof c&&!Array.isArray(c)};d.Yd=function(c){return null!=c&&\n(\"function\"===typeof c||c instanceof Function)};d.nA=function(c){return!0===c||!1===c};d.rP=function(c){return d.Ea(c)||d.nA(c)||d.Vc(c)};d.t0=function(c){return null!=c&&!d.rP(c)}})(d.M||(d.M={}))})(A||(A={}));",
+        "SHA256": "3b86c296c221304c76b0e6a710d4f16c42ab2022e235c6190cfb7795e0f493a3"
+      },
+      "xml": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 484150,
+        "startWithinWindow": 74,
+        "source": "(function(d){(function(h){(function(g){function e(b){var a=/<(.+)>/g.exec(b);if(null!=a&&1<a.length){b=b.substr(0,a.index);var c={},d=0;for(a=a[1].split(\",\");d<a.length;d++){var e=a[d].split(\"=\",2);c[e[0]]=e[1]}b={type:\"tag\",value:b,filter:c}}else b={type:\"tag\",value:b};return b}function c(b){for(var a=[],c=0;c<b.length;c++){var d=b[c];\"tag\"===d.type?(0<a.length&&a.push(\" \"),a.push(d.value)):\"attr\"===d.type&&(a.push(\".\"),a.push(d.value));if(null!=d.filter){a.push(\"<\");var e=!0,k;for(k in d.filter)e&&\n(e=!1),a.push(\",\"),a.push(k),a.push(\"=\"),a.push(d.filter[k]);a.push(\">\")}}return a.join(\"\")}function a(b,a){a=a.toLowerCase();var c=[];b=b.childNodes;for(var d=b.length,e=0;e<d;++e){var k=b.item(e);k instanceof Element&&k.tagName.toLowerCase()===a&&c.push(k)}return c}function b(b,c){var e=a(b,c);if(0===e.length)return c=b.ownerDocument.createElement(c),b.appendChild(c),c;1<e.length&&d.oa.warn(\"getOrCreateChild: More than 1 element found\");return e[0]}function k(b,e,g){void 0===g&&(g=0);if(e.length<=\ng)return b;var h=e[g];if(\"attr\"===h.type)return b.getAttribute(h.value);b=a(b,h.value);for(var l=[],r=0,y=b.length;r<y;++r){var t=b[r];if(null!=h.filter){var m=!0,p;for(p in h.filter){var w=h.filter[p];if(\"\"===p){if(w!==t.tagName){m=!1;break}}else{var x=t.getAttribute(p);if(w!==x){m=!1;break}}}m&&l.push(t)}else l.push(t)}if(0===l.length)return null;if(1<l.length){if(g>=e.length-1)return l;d.oa.warn(\"More than 1 element found matching path '\"+c(e)+\"'!\")}else return k(l[0],e,g+1)}function h(a,c,e,k){void 0===\nk&&(k=0);if(k>=c.length&&d.M.Vc(e))a.textContent=e;else if(0===c.length)if(e instanceof Element)a.appendChild(e);else{if(d.M.Uc(e))for(k=0;k<e.length;k++)c=e[k],null!=c&&a.appendChild(c)}else{var g=k===c.length-1,l=c[k];if(null!=l.filter)throw Error(\"Serialisation of paths containing a filter currently not supported\");if(\"attr\"===l.type){if(!d.M.Vc(e))throw Error(\"XML.write: can't serialise an Element or Element[] into an attribute\");a.setAttribute(l.value,e)}else{if(g){if(e instanceof Element){a.appendChild(e);\nreturn}if(d.M.Uc(e)){a=b(a,c[c.length-1].value);for(k=0;k<e.length;k++)c=e[k],null!=c&&a.appendChild(c);return}}a=b(a,l.value);h(a,c,e,k+1)}}}function r(b,a){if(null==b)return null;if(null==a){var c=g.Z.get(b);if(null==c)throw Error(\"Failed to serialise object (has no XML type)\");c=document.implementation.createDocument(null,c,null);var e=c.documentElement}else e=a;var k=g.aa.get(b,d.md.bs.xg),l;for(l in k){var r=k[l],y=b[l];null==r.type.Sk||null==y&&r.Jk||(y=r.type.Sk(null!=c?c:e.ownerDocument,y),\nnull!=y&&h(e,r.e1,y))}if(null==a)return c}function y(b,a){if(null==b)return null;a=a instanceof Document?a.documentElement:a;var c=g.aa.get(b,d.md.bs.xg),e;for(e in c){var h=c[e];if(null!=h.type.li){var l=k(a,h.e1);b[e]=h.type.li(l)}}}function t(b){var a=q({},t.L,b);return{Sk:function(b,c){return!0===c?a.$G:!1===c?a.ZG:\"undefined\"},li:function(b){if(null==b)return null;if(b instanceof Element){if(b=b.textContent&&b.textContent.toLowerCase(),null!=b)return-1!==a.oW.indexOf(b)?!0:-1!==a.nW.indexOf(b)?\n!1:a.default}else{if(d.M.Uc(b))throw Error(\"Failed to deserialise boolean (received array)\");b=b.toLowerCase();return-1!==a.oW.indexOf(b)?!0:-1!==a.nW.indexOf(b)?!1:a.default}}}}g.Z=d.md.fk.create(d.md.gk.Yj);g.aa=d.md.fk.create(d.md.gk.aa);g.aa.op(function(b){var a=b.Hx;var c=b.Hx.path;if(\"\"===c)b=[];else{b=[];var d=0;for(c=c.split(/\\s+/g);d<c.length;d++){var k=c[d],g;\".\"===k.substr(0,1)?b.push({type:\"attr\",value:k.substr(1)}):-1!==(g=k.indexOf(\".\"))?(b.push(e(k.substr(0,g))),b.push({type:\"attr\",\nvalue:k.substr(g+1)})):b.push(e(k))}}a.e1=b});var m;(function(b){b.is=function(b){return d.M.object(b)&&d.M.Yd(b.oga)}})(m=g.q6||(g.q6={}));g.LP=r;g.WM=y;g.zpa={Sk:function(b,a){return b.createElement(a)},li:function(b){if(null==b)return null;if(b instanceof Element)return b.tagName;if(d.M.Uc(b))throw Error(\"Failed to deserialise EmptyTag (received array)\");throw Error(\"Failed to deserialise EmptyTag (received string)\");}};g.String={Sk:function(b,a){return a},li:function(b){if(null==b)return null;\nif(b instanceof Element)return b.textContent||\"\";if(d.M.Uc(b))throw Error(\"Failed to deserialise string (received array)\");return b}};g.Number={Sk:function(b,a){return null!=a?a.toString():\"undefined\"},li:function(b){if(null==b)return null;if(b instanceof Element)return parseFloat(b.textContent||\"\");if(d.M.Uc(b))throw Error(\"Failed to deserialise number (received array)\");return parseFloat(b)}};g.Rx=t;(t=g.Rx||(g.Rx={})).L={$G:\"true\",ZG:\"false\",oW:[\"true\",\"1\",\"y\",\"yes\"],nW:[\"false\",\"0\",\"n\",\"no\"],\ndefault:!1};g.Boolean=t(t.L);g.Object={Sk:function(b,a){if(null==a)return null;if(m.is(a))b=b.createElement(\"ReelSpin\");else{var c=g.Z.get(a);if(null==c)throw Error(\"Failed to serialise object (has no XML type)\");b=b.createElement(c)}r(a,b);return b},li:function(b){if(null==b)return null;if(b instanceof Element){var a=g.Z.OY(b.tagName);if(0===a.length)throw Error(\"Failed to deserialise object (unknown XML type '\"+b.tagName+\"')\");if(1<a.length)throw Error(\"Failed to deserialise object (more than one class lays claim to XML type '\"+\nb.tagName+\"')\");a=new a[0];y(a,b);return a}if(d.M.Uc(b))throw Error(\"Failed to deserialise object (received array)\");throw Error(\"Failed to deserialise object (path lead to attribute)\");}};g.bI=function(b){return{Sk:g.Object.Sk,li:function(a){if(null==a)return null;if(a instanceof Element){var c=new b;y(c,a);return c}if(d.M.Uc(a))throw Error(\"Failed to deserialise object (received array)\");throw Error(\"Failed to deserialise object (path lead to attribute)\");}}};g.Array=function(b,a){return{Sk:function(a,\nc){if(null==c)return null;for(var e=[],k=0;k<c.length;k++){var g=b.Sk(a,c[k]);null!=g&&(g instanceof Element?e.push(g):d.M.Uc(g)?d.oa.warn(\"Serialisation of 2D arrays is not supported\"):d.oa.warn(\"Serialisation of string arrays is not supported (use DelimitedArray!)\"))}return e},li:function(c){if(null==c)return null;if(d.M.Uc(c))return c.map(function(a){return b.li(a)});if(c instanceof Element){for(var e=[],k=0,g=c.childNodes.length;k<g;++k){var h=c.childNodes.item(k);h instanceof Element&&(null==\na||h.tagName===a)&&(h=b.li(h),null!=h&&e.push(h))}return e}return[b.li(c)]}}};g.zi=function(b){var a=\"|\";void 0===a&&(a=\",\");return{Sk:function(c,e){if(null==e)return null;for(var k=[],g=0;g<e.length;g++){var h=b.Sk(c,e[g]);null!=h&&(h instanceof Element?d.oa.warn(\"Serialisation of object arrays is not supported (use Array!)\"):d.M.Uc(h)?d.oa.warn(\"Serialisation of 2D arrays is not supported\"):k.push(h))}return k.join(a)},li:function(c){return null==c?null:d.M.Uc(c)?c.map(function(a){return b.li(a)}):\nc instanceof Element?c.textContent.split(a).map(function(a){return b.li(a)}):c.split(a).map(function(a){return b.li(a)})}}}})(h.Ph||(h.Ph={}))})(d.ck||(d.ck={}))})(A||(A={}));",
+        "SHA256": "fd734443901d54e2a1f4e8b74e3d8f4a28ca24d7436e027c35d432b86913fb49"
+      },
+      "decorator": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 1480,
+        "startWithinWindow": 58,
+        "source": "function(d,h,g,e){var c=arguments.length,a=3>c?h:null===e?e=Object.getOwnPropertyDescriptor(h,g):e,b;if(\"object\"===typeof Reflect&&\"function\"===typeof Reflect.jea)a=Reflect.jea(d,h,g,e);else for(var k=d.length-1;0<=k;k--)if(b=d[k])a=(3>c?b(a):3<c?b(h,g,a):b(h,g))||a;return 3<c&&a&&Object.defineProperty(h,g,a),a}",
+        "SHA256": "a63cafc55cc172e80716f4fe0c1d811107ec1f957a7e16de908eae2d86987001",
+        "marker": "u=this&&this.nra||"
+      },
+      "fields": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 2110,
+        "startWithinWindow": 78,
+        "source": "function(d){for(var h=Object.keys(d),g=0;g<h.length;g++){var e=h[g],c=d[e];u(c.g,c.target,e,c.h)}}",
+        "SHA256": "c0d2858d512871c02ad725a676c200bbe8be4091b84dc89a993864caffcdeb5c",
+        "marker": "z=this&&this.qra||"
+      },
+      "hierarchy": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 22900,
+        "startWithinWindow": 135,
+        "source": "function(b,a){void 0===a&&(a=!1);var k=[],c=b.prototype;for(a&&k.push(b);null!=(c=Object.getPrototypeOf(c))&&c!==Function.prototype;)k.push(c.constructor);\nreturn k}",
+        "SHA256": "3706fad8a6f464546241b486c85b134815bc2700a9bdba2a89c7531c2ce58c08",
+        "marker": "h.RY="
+      },
+      "lineCaller": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 413580,
+        "source": "ch(k.label){case 0:return b=this._context.j.w,a=d.Vk.Fn.get(),null!=a&&a.ir().event({Rca:\"Slot Game\",action:\"Spin\",value:h.Y.hc.Jl(b.Ta,h.Y.hc.Z.qf)}),[4,this._context.j.Vg.cQ({vw:b.Ta.Pg[b.Ta.Ri],rp:b.Ta.Nj[b.Ta.yh]})];case 1:c=k.D();if(!c.Zg)return[3,3];this._context.j.o0.eF();h.sb.get().qn();null",
+        "SHA256": "f731b9c28bf490ffb510e8dd64d930fee312404fb61bbb8605ab6355f66c048b"
+      },
+      "initLines": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 501200,
+        "source": "c[Hb.index]=Oa;this.w.ac.gh=this.w.ac.CF[0];zc=this.w.ac.Pk[0];Pa=Array(zc.qe);Q=0;for(kb=Pa.length;Q<kb;++Q)Pa[Q]=0;this.w.ac.Fw={Dl:0,Aa:Pa,Id:this.DB(0,Pa,B)};this.w.Ta.Pg=c.Fna.map(function(b){return{type:A.F.Y.hc.Z.qf,value:b}});this.w.Ta.QM=c.YX;this.w.Ta.Ri=c.YX;this.w.Ta.Nj=[];lb=0;for(Jb=c.h1[0].iP;lb<Jb.length;lb++)Kb=Jb[lb],Kb.Cma&&this.w.Ta.Nj.push(Kb.index+1);this.w.Ta.WX=0;this.w.Ta.yh=0;if(this.Hm.$g)for(Ac=this.Hm.qg.Ta,",
+        "SHA256": "99c23525f4f1f19d2f1d5289b903ecca55949f97f58cd2531e65dc5b6041d1b3"
+      }
+    },
+    "classes": {
+      "header": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 493990,
+        "startWithinWindow": 16,
+        "source": "function(){function b(){}var a={};a.$z={g:[g.aa({path:\".affiliate\",type:g.String})],target:b.prototype,h:void 0};a.vM={g:[g.aa({path:\".ccyCode\",type:g.String})],target:b.prototype,h:void 0};a.channel={g:[g.aa({path:\".channel\",type:g.String})],target:b.prototype,h:void 0};a.bu={g:[g.aa({path:\".freePlay\",type:g.Rx({$G:\"Y\",ZG:\"N\"})})],target:b.prototype,h:void 0};a.Jfa={g:[g.aa({path:\".gameCodeRGI\",type:g.String})],target:b.prototype,h:void 0};a.dr={g:[g.aa({path:\".gameID\",\ntype:g.Number})],target:b.prototype,h:void 0};a.NF={g:[g.aa({path:\".glsID\",type:g.Number})],target:b.prototype,h:void 0};a.lang={g:[g.aa({path:\".lang\",type:g.String})],target:b.prototype,h:void 0};a.Hla={g:[g.aa({path:\".promotions\",type:g.Rx({$G:\"Y\",ZG:\"N\"})})],target:b.prototype,h:void 0};a.si={g:[g.aa({path:\".sessionID\",type:g.String})],target:b.prototype,h:void 0};a.Hp={g:[g.aa({path:\".userID\",type:g.String,Jk:!0})],target:b.prototype,h:void 0};a.MQ={g:[g.aa({path:\".userType\",type:g.String})],\ntarget:b.prototype,h:void 0};a.PQ={g:[g.aa({path:\".versionID\",type:g.String})],target:b.prototype,h:void 0};a.sia={g:[g.aa({path:\".isRecovering\",type:g.Rx({$G:\"Y\",ZG:\"N\"}),Jk:!0})],target:b.prototype,h:void 0};z(a);return b=u([g.Z(\"Header\")],b)}",
+        "SHA256": "24aa5579ef34ef4f90732b426c9b97481d1791334ccdeb36e15dbafce7a63f8a",
+        "marker": "e=function(){function b(){}var a={};a.$z="
+      },
+      "account": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 496460,
+        "startWithinWindow": 58,
+        "source": "function(){function b(){}var a={};a.PX={g:[g.aa({path:\"CurrencyInformation\",type:g.Object,Jk:!0})],target:b.prototype,h:void 0};a.Ug={g:[g.aa({path:\"CurrencyMultiplier\",type:g.Number,Jk:!0})],target:b.prototype,h:void 0};a.FG={g:[g.aa({path:\"Payload\",type:g.Object,Jk:!0})],target:b.prototype,h:void 0};z(a);return b=u([g.Z(\"AccountData\")],b)}",
+        "SHA256": "e66c4416b847300bb8aa8a7eab9e1a9e3dc114fac875b17e60a8395a2ba39f3a",
+        "marker": "e=function(){function b(){}var a={};a.PX="
+      },
+      "init": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 516300,
+        "startWithinWindow": 25,
+        "source": "function(){function b(){this.type=\"Init\"}var a={};a.type={g:[g.aa({path:\".type\",type:g.String})],target:b.prototype,h:void 0};a.Ah={g:[g.aa({path:\"Header\",type:g.Object})],target:b.prototype,h:void 0};a.Br={g:[g.aa({path:\"REPLAY\",type:g.Object})],target:b.prototype,h:void 0};z(a);return b=u([g.Z(\"GameRequest\")],b)}",
+        "SHA256": "e974b7534c9d6f94521efb85326d598f6292b4709c88ed6eb12cd73145444520",
+        "marker": "var a=function(){function b(){this.type="
+      },
+      "end": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 511940,
+        "startWithinWindow": 25,
+        "source": "function(){function b(){this.type=\n\"EndGame\"}var a={};a.type={g:[g.aa({path:\".type\",type:g.String})],target:b.prototype,h:void 0};a.Ah={g:[g.aa({path:\"Header\",type:g.Object})],target:b.prototype,h:void 0};z(a);return b=u([g.Z(\"GameRequest\")],b)}",
+        "SHA256": "ac42a3d0fa15e538a254f001a065fb55dc577752f71073821be029c5ad009baf",
+        "marker": "var a=function(){function b(){this.type="
+      },
+      "logic": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+        "byteWindowStart": 521900,
+        "startWithinWindow": 76,
+        "source": "function(){function b(){this.type=\"Logic\"}var a={};a.type={g:[g.aa({path:\".type\",type:g.String})],target:b.prototype,h:void 0};a.Pi={g:[g.aa({path:\"AccountData\",type:g.Object})],target:b.prototype,h:void 0};a.Ah={g:[g.aa({path:\"Header\",type:g.Object})],target:b.prototype,h:void 0};a.ZB={g:[g.aa({path:\"Stake.total\",type:g.Number})],target:b.prototype,h:void 0};a.rp={g:[g.aa({path:\"PaylineCount.count\",type:g.Number})],target:b.prototype,h:void 0};a.Br={g:[g.aa({path:\"REPLAY\",type:g.Object})],target:b.prototype,\nh:void 0};a.$t={g:[g.aa({path:\"FORCE\",type:g.Object})],target:b.prototype,h:void 0};z(a);return b=u([g.Z(\"GameRequest\")],b)}",
+        "SHA256": "b2869fbebcf1627a2e4a705026aff37346ac3bc4e3b5f9bb1545649f438ab3f9",
+        "marker": "var a=\nfunction(){function b(){this.type="
+      }
+    },
+    "adapterProvenance": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/zs1072/src/sg.session.ts",
+      "lines": [
+        2273,
+        2275
+      ],
+      "meaning": "generic adapter copies static header including ccyCode; native current HM derives ccyCode from language; historical packet version causality not fully trace proven"
+    }
+  }
+}
