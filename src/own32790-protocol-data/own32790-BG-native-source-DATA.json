@@ -1,0 +1,272 @@
+{
+  "schema": "own32790-ordinary-BG-native-clear-close-source-v1",
+  "gameId": "32790",
+  "nativeHeaderGameID": "20460",
+  "ownCachedSDK": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+  "lookupIndex": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32790-original-protocol-preparation-20261018/program/src/own32790-protocol-data/selected-original-SG-connection-DATA-v1.json",
+  "nativeBGCallerComplete": true,
+  "leaves": {
+    "clearFree": {
+      "source": "function(a){a.oe=!1;a.og=null;a.df=null;a.winAmount=null;a.vy=null}",
+      "SHA256": "2b9bd893ad8f7f0826f23fbc496573023b99a850a3f0d9f6d0aa649bc21a8b36",
+      "sourceCaptures": [
+        "source-captures/clearFree-550102.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 550102
+    },
+    "baseResponse": {
+      "source": "function(a){this.fMa(a);this.M.Ab.nna?(this.M.Sa.Tj=this.M.Sa.hm.indexOf(a.eq),-1===this.M.Sa.Tj&&(this.M.Sa.Tj=this.M.Sa.VR,C.Ea.warn(\"Game result has non selectable payline index\"))):\nthis.M.Sa.Tj=this.M.Sa.VR;C.$.Ga.Gc.clear(this.M.Ua);a.pL&&this.tT(a.pL);this.dMa(a);this.M.state.Ck=this.$_(a);this.eCa(a);this.TFa();this.Iza(a)}",
+      "SHA256": "a2a0bed405eb472db0edcba249a325f3796ea1f51119415819e1d2d0fcdd01c9",
+      "sourceCaptures": [
+        "source-captures/baseResponse-869417.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 869417
+    },
+    "ownResponse": {
+      "source": "function(d){g(this,void 0,void 0,function(){return m(this,function(c){switch(c.label){case 0:return d.pL?(this.tT(d.pL),this.M.Ua.Ioa=d.bd):this.M.Ua.td=3,[4,this.ZLa(d.Tc)];case 1:return c.ea(),[4,this.CNa(d.b5[0].Lo)];case 2:return c.ea(),\na.prototype.t4.call(this,d),this.YLa(d.Rj),d.lo&&this.cMa(d.lo),d.ze&&this.bMa(d.ze),[2]}})})}",
+      "SHA256": "6406871d9929410df49bd50a1bd42e1199b45ee540f179073112e17e807284e5",
+      "sourceCaptures": [
+        "source-captures/ownResponse-1135330.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1135330
+    },
+    "providerClose": {
+      "source": "function(){return g(this,void 0,void 0,function(){var a,c,d,e,h,l,p,u,v;return m(this,function(b){switch(b.label){case 0:if(!this.Kna())return this.M.state.state=this.Rn=C.$.Ga.ja.fa.Uh,[2,{Mg:!1,request:null}];if(!C.gV.connected.value)return this.M.error.type=\nC.Ga.Error.fa.Yo,this.M.error.title=f.oa.uz.vd,this.M.error.message=f.oa.uz.Ug,this.M.error.options=[{type:C.Ga.Error.Wh.wu,text:f.oa.uz.ZV}],[2,{Mg:!0,request:null}];a=new this.settings.qea(this.Ap,this.Oj);d={};e=0;for(h=this.yi;e<h.length;e++)l=h[e],l.F1a(d);b.label=1;case 1:return b.ng.push([1,3,,4]),[4,a.send(d)];case 2:return c=b.ea(),[3,4];case 3:return p=b.ea(),this.OF(p),[2,{Mg:!0,request:a}];case 4:if(c.error)return this.parseError(c.error),[2,c];this.M.error.type=C.Ga.Error.fa.mb;this.Oj.vl=\nc.Ji.vl;this.M.state.state=this.Rn=C.$.Ga.ja.fa.Uh;try{for(u=0,v=this.yi;u<v.length;u++)l=v[u],l.E1a(c,this.M)}catch(x){return C.Ea.warn(x),[2,{Mg:!0,request:c.request}]}this.K3.pa(c);return[2,c]}})})}",
+      "SHA256": "14c0b383b6bbfedce369fd7e86b2ea8f731609280a45a78d1b47fd49cc949b4d",
+      "sourceCaptures": [
+        "source-captures/providerClose-862679.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 862679
+    },
+    "ownCloseCaller": {
+      "source": "function(){return g(this,void 0,void 0,function(){var a,c,b,e,f;return m(this,function(d){switch(d.label){case 0:return[4,this._context.L.jf.close()];case 1:a=d.ea();c=this._context.L.M;if(!a.Mg)return[3,3];C.$.cc.get().Nr();b=C.Th.Vi.get();null!=b&&(e=!c.error.options.some(function(a){return a.type===C.Ga.Error.Wh.vz}),b.Uj().error({message:C.D.ih(this._context.L.locale,\nc.error.message),fatal:e}));this.EI=null;return[4,this._context.L.handleError()];case 2:return d.ea()?[2,this.A5()]:[2,!1];case 3:return f=c.Pc[this._context.ln],this._context.L.Wb.rh.value=f.Zl.Pf,this._context.L.Wb.Tm.value=f.Zl.Ni,this._context.L.ot.c3&&0>=this._context.L.Wb.dF.value&&this._context.L.ot.stop(),this._context.L.M.Ua.oe&&0>=this._context.L.M.Ua.df||this._context.L.M.Ua.oe&&this._context.L.M.state.Ck?(this.DY.gL(),[2,!1]):[2,!0]}})})}",
+      "SHA256": "1bc9c2c7706f6980330a415d5b798182d96f034335a72fe3ebbb1f7e7148f690",
+      "sourceCaptures": [
+        "source-captures/ownCloseCaller-1151187.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1151187
+    },
+    "featureFactory": {
+      "source": "function(e){var d=[],c=e.L.M;d.push(new a.W9(e));0<c.ze.cu&&d.push(new a.Ta(e));(c.Ua.oe||0<c.Ua.df)&&d.push(new a.Gc(e));return d}",
+      "SHA256": "e8390a874a56c68a1148e804d9d23f48c4ab2fc58ffa3f9d4a2328be9a615180",
+      "sourceCaptures": [
+        "source-captures/featureFactory-1180912.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1180912
+    },
+    "closePreInterceptors": {
+      "source": "function(){g(this,void 0,void 0,function(){var a,c,d,e;return m(this,function(b){switch(b.label){case 0:if(this._context.L.M.state.state===f.Ga.ja.fa.Uh)return[3,6];if(this._context.oma)return[3,4];this._context.oma=!0;a=0;c=this._context.features;b.label=1;case 1:if(!(a<c.length))return[3,4];d=c[a];return[4,d.L3()];case 2:e=b.ea();if(null!=e)return this.So(e),[2];\nb.label=3;case 3:return a++,[3,1];case 4:return[4,this.Efa()];case 5:if(!b.ea())return[2];b.label=6;case 6:return[4,this.tCa()];case 7:return b.ea(),this.ti(f.ja.Wi),[2]}})})}",
+      "SHA256": "b984df8235791bba32abe56afff0df9403544c515e480ad76d9b9ef0cf653848",
+      "sourceCaptures": [
+        "source-captures/closePreInterceptors-715441.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 715441
+    },
+    "jackpotFeatureL3": {
+      "source": "function(){return g(this,void 0,void 0,function(){return m(this,function(){return[2,null]})})}",
+      "SHA256": "dde5c66cea91febc32c6b73db715f77d3f45a077e68bd772ccee5aaf3228e221",
+      "sourceCaptures": [
+        "source-captures/jackpotFeatureL3-1183518.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1183518
+    },
+    "alwaysFeatureL3": {
+      "source": "function(){return null}",
+      "SHA256": "69e5d4178d2885d4dd22d9efa3be727906416a72e58d3e85993e855604dcddb3",
+      "sourceCaptures": [
+        "source-captures/alwaysFeatureL3-1184902.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1184902
+    },
+    "responseReelCashTail": {
+      "source": "function(a){a=a.Rj.LC;for(var b=this.M.Pc.length-1;0<=b;b--){var c=this.M.Pc[b];\nc.Fb.ci=a;a-=c.Fb.bd}}",
+      "SHA256": "362405c659f14bbd4d56ffe0461dc9f853ce08a104692220ed0e168f6ddd2534",
+      "sourceCaptures": [
+        "source-captures/responseReelCashTail-870553.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 870553
+    },
+    "responseWalletTail": {
+      "source": "function(a){for(var b=this.M.re.yg,c=!this.YIa(),d=C.Ga.Ti.clone(b),e=this.M.Pc.length-1;0<=e;--e){var f=this.M.Pc[e];f.ej=\nd;f.Zl=d;if(c){if(0==e){var h=a.Rj.LC;f.ej=C.Ga.Ti.clone(b)}else h=f.Fb.bd,f.ej=C.Ga.Ti.clone(d);this.dGa(f.ej,h);d=f.ej}}}",
+      "SHA256": "78cb56907bc3f492f7bf707b4832d4c0d7879ae6f514f5a5e9721811bcccc34d",
+      "sourceCaptures": [
+        "source-captures/responseWalletTail-871538.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 871538
+    },
+    "responseResultTail": {
+      "source": "function(){for(var a=0;a<this.M.Pc.length;a++){var c=this.M.Pc[a];0<a&&\n(c.ej=this.M.Pc[a-1].Zl);this.SOa(c)||(c.Zl=c.ej)}this.M.re.yg=this.M.Pc[this.M.Pc.length-1].Zl}",
+      "SHA256": "7e87824300612c9ae57c43bcc9d69e08d314589d972c4d01c75636d7ea50126d",
+      "sourceCaptures": [
+        "source-captures/responseResultTail-872093.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 872093
+    },
+    "ownCoinDisplayTransform": {
+      "source": "function(a){var c=this;this.M.Tc.qo.forEach(function(b,d){if(-1!=b){if(c.M.Ua.oe&&0<=c.M.Ua.df&&0<=c.M.Ua.og)var e=15;else switch(e=0,b){case 0:e=12;break;case 1:e=14;break;case 2:e=\n15}c.oOa(d,e,a)}})}",
+      "SHA256": "448fdbc71bb8ce5c9c56fe5cc9afb17013be6a0b6776f310e902e7e94ac86ae0",
+      "sourceCaptures": [
+        "source-captures/ownCoinDisplayTransform-1138451.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1138451
+    },
+    "ownCoinDisplayWrite": {
+      "source": "function(a,c,b){b=this.M.Ab.Sh[b];for(var d=0;d<b.Q1(a);d++){var e=b.get(a,d);12!==e&&14!==e&&15!==e||b.set(a,d,c)}}",
+      "SHA256": "08b8f694ad95033b6249f13a71612148d5d326503ec7e20112b2b1841b900276",
+      "sourceCaptures": [
+        "source-captures/ownCoinDisplayWrite-1138670.json"
+      ],
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+      "byteWindowStart": 1138670
+    }
+  },
+  "sourceCaptures": [
+    {
+      "name": "source-captures/clearFree-550102.json",
+      "bytes": 426,
+      "SHA256": "deff785d81cb0d5ed010fd957e54d4b5510abf2d3f73525ffc03de176b4210d1"
+    },
+    {
+      "name": "source-captures/baseResponse-869417.json",
+      "bytes": 889,
+      "SHA256": "8160dd56176af7df3984f739b5d452cd47871c26fea6f3f04ffb4e4bda80a561"
+    },
+    {
+      "name": "source-captures/ownResponse-1135330.json",
+      "bytes": 838,
+      "SHA256": "ad7d8511850b0871fe19b053379e3e51b67a8006813fa99ea9fd2802936f5112"
+    },
+    {
+      "name": "source-captures/providerClose-862679.json",
+      "bytes": 1642,
+      "SHA256": "2db1a9ae83926ecd37f7ecd3fa08332ff6c28cb4ca686e0729772281acad55fa"
+    },
+    {
+      "name": "source-captures/ownCloseCaller-1151187.json",
+      "bytes": 1491,
+      "SHA256": "913c6f0b004db85cdfb3e1205b5d8c26be4f6fb3947b0f826db19439a033be8d"
+    },
+    {
+      "name": "source-captures/featureFactory-1180912.json",
+      "bytes": 498,
+      "SHA256": "4aa53766175fbd505ce8c907b5a30ca5f438af24d6bbc44a92407c1666cccb89"
+    },
+    {
+      "name": "source-captures/closePreInterceptors-715441.json",
+      "bytes": 1037,
+      "SHA256": "c531186475790ed7e121211b9fb14aaf14378a7eaad580f65ada04fb6dd66e9c"
+    },
+    {
+      "name": "source-captures/jackpotFeatureL3-1183518.json",
+      "bytes": 408,
+      "SHA256": "6e63b4891bfd7f09c940428e79e0d57a1439a31a08445a6710c31e3fae7e06eb"
+    },
+    {
+      "name": "source-captures/alwaysFeatureL3-1184902.json",
+      "bytes": 487,
+      "SHA256": "3296b1ae79f9356d3006a69c382bde433c3e022aecd56a04d536e07feb3410fe"
+    },
+    {
+      "name": "source-captures/own-provider-inheritance-1138800.json",
+      "bytes": 888,
+      "SHA256": "a3765ed9c028536e60efbe05c7128fdd803bcc1d06c6d41a0d04c35b825a8611"
+    },
+    {
+      "name": "source-captures/responseReelCashTail-870553.json",
+      "bytes": 427,
+      "SHA256": "ff0ea4381aba5c29e7c6eb23e50293332b71cdb00961b9ee8f5f76bbe2b99bb1"
+    },
+    {
+      "name": "source-captures/responseWalletTail-871538.json",
+      "bytes": 597,
+      "SHA256": "dc20686adb90309528d9135cf53278196b07ba916f000e21d1aa583d2c0f5d7f"
+    },
+    {
+      "name": "source-captures/responseResultTail-872093.json",
+      "bytes": 487,
+      "SHA256": "682ea0296e07949827d101e75a300c9e94759de34c22861808467674b61210a1"
+    },
+    {
+      "name": "source-captures/ownCoinDisplayTransform-1138451.json",
+      "bytes": 508,
+      "SHA256": "7afb23505ef65828ca10706b8448058ddfe4abb4e0cacf0c0452ca3639d5fa56"
+    },
+    {
+      "name": "source-captures/ownCoinDisplayWrite-1138670.json",
+      "bytes": 457,
+      "SHA256": "42e2531b264df1ea63dbbc19efb94561ec1ad0f6a4325f4ceec4356d07a33e9b"
+    }
+  ],
+  "cachedExistingGate": {
+    "source": "function(){return this.ENa.Bf||!this.settings.qea||\n0<this.M.Ua.df&&!this.M.state.Ck?!1:!0}",
+    "SHA256": "433d5551ed43737a21d3b102c5c13655cec7204cea857168e0c9fc3ec343cdc4"
+  },
+  "sameOwnNativeEndSettings": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/marvelousmouse/js/app.js",
+    "byteWindowStart": 1141900,
+    "source": ",eGa:\"marvelousmouse\",R6:\"1_0\",Ay:20460,wS:4,NB:\"N\",channel:\"I\",O6:\"C\",xma:\"N\",sK:\"703\",VHa:\"https://pa01-ggms.wi-gameserver.com/gls-game-handler/game-history/partner/1/game-play/\"},rIa:hd.Dd.RH.EH,tPa:hd.Dd.RH.rs,qea:SG.Dd.dV,td:3};jd.xn=hd.Dd.xn;jd.csa=kd;\n(function(a){(function(f){f.Gc=\"freeSpins\";var l=function(h){function e(){return null!==h&&h.apply(this,arguments)||this}A(e,h);e.prototype.lf=function(){g(this,void 0,void 0,function(){var c,b,d,e,f;return m(this,function(h){switch(h.label)",
+    "SHA256": "578de0e422efea3ab1adab0dbbcc77537e3c647486c73509ad843194cf1a8504"
+  },
+  "normalScope": [
+    "actual own nonrecovery Header",
+    "actual non-MAX BGInfo",
+    "no FSInfo; native baseResponse clear branch",
+    "actual typed CoinInfo numeric array without unproved coinPrize/coinJackpot",
+    "actual raw cumulative win and wager binding"
+  ],
+  "chain": [
+    "Own Q.Dd.xn extends SG.Dd.xn; own t4 without pL selects base row layout then updates native coin/reel state and calls base t4.",
+    "Base t4 always invokes exact C.$.Ga.Gc.clear on current Ua, then invokes tT only if actual pL exists; absent FSInfo leaves the real cleared model untouched.",
+    "Exact native Gc.clear sets oe=false, og/df/winAmount/vy=null. No adapter constant/default is substituted for missing FSInfo.",
+    "Normal state.Ck binds actual parsed BGInfo.isMaxWin=0; native Kna consequently accepts Close after the actual clear.",
+    "Native registered feature factory only adds Free handler for Ua.oe || Ua.df>0; that branch is false after native clear. Its other two feature L3 interceptors both return null.",
+    "Standard closing mCa awaits feature L3 then invokes Efa. Own registered closing Efa calls current L.jf.close directly.",
+    "Provider.close returns local no-request if Kna false; when true it constructs configured settings.qea and calls send. Own configuration qea is the native SG.Dd.dV End constructor already bound by the existing typed wire.",
+    "Original connection emits its request-only native End descriptor; actual End response/normal original money closure remains downstream and unknown outcomes stay retained."
+  ],
+  "unknownPathsHeld": [
+    "MAX source mode/caller",
+    "coinPrize/coinJackpot and actual JackpotInfo",
+    "actual recovery and unknown transport"
+  ],
+  "noVFOrOtherGameSourceUsed": true,
+  "newSDKDownloadBootASTHash": 0,
+  "old28LeavesReextracted": 0,
+  "rawOrdinaryBGSampleClaimed": false,
+  "tailVerification": "Own Coin display transforms and base response tail mutate reel/cash/result presentation only; none overwrite Ua.oe/df after native clear. No UI wallet arithmetic is adopted as an AG cash equation.",
+  "projectionOrder": "CoinState updates only Tc and native clear updates only Ua; their request-affecting projection commutes. No full renderer, state machine callbacks or networking actors are executed.",
+  "responseFieldBinding": {
+    "capture": {
+      "name": "source-captures/own-native-response-field-map-1179900.json",
+      "bytes": 1104,
+      "SHA256": "daf42c1658cf1ab1ee77cbae2b9490276a67ffc8b2f6a754c78d72e932456777"
+    },
+    "FSInfo": "pL",
+    "BGInfo": "Rj",
+    "CoinInfo": "Tc",
+    "ReelResults": "b5",
+    "actualSourceFragment": "k.pL={i:[f.Fa({path:\"FSInfo\",type:f.zq(e)})],target:h.prototype,j:void 0};k.Rj={i:[f.Fa({path:\"BGInfo\",type:f.zq(d)})],target:h.prototype,j:void 0};k.ze={i:[f.Fa({path:\"JackpotInfo\",type:f.zq(c)})],target:h.prototype,j:void 0};k.Tc={i:[f.Fa({path:\"CoinInfo\",\ntype:f.zq(b)})],target:h.prototype,j:void 0};k.lo={i:[f.Fa({path:\"BaseGameRecoveryInfo\",type:f.zq(q)})],target:h.prototype,j:void 0};k.b5={i:[f.Fa({path:\"ReelResults\",type:f.Array(f.zq(l))})],target:h.prototype,j:void 0};"
+  },
+  "actualClearOutputBinding": {
+    "source": "function(a){a.oe=!1;a.og=null;a.df=null;a.winAmount=null;a.vy=null}",
+    "oe": false,
+    "og": null,
+    "df": null,
+    "winAmount": null,
+    "vy": null,
+    "origin": "exact native function, no adapter fallback literal to missing FSInfo"
+  }
+}

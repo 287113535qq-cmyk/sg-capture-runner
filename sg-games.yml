@@ -17937,3 +17937,62 @@ games:
         total: '100'
       own32812ProtocolDATA:
         contract: own32812-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32810'
+    name: BigFoot
+    dbName: sg_the_legend_of_big_foot
+    backendId: bigfoot
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33170
+      runtimeSlug: bigfoot
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "bigfoot"
+        gameID: "20205"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 100
+      stake:
+        total: "100"
+        isBigBet: "0"
+      own32810ProtocolDATA:
+        contract: own32810-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32790'
+    name: Mouse
+    dbName: sg_marvelousmouse
+    backendId: marvelousmouse
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33150
+      runtimeSlug: marvelousmouse
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "marvelousmouse"
+        gameID: "20460"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 176
+      stake:
+        total: "176"
+      own32790ProtocolDATA:
+        contract: own32790-original-SG-protocol-private-v1
