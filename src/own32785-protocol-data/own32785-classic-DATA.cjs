@@ -38,13 +38,14 @@ exports.createOwn32785ClassicDATA=function({DOM,vm,data,sharedSource,game,need})
   begin(){need(!emits.length&&!later.length,'prior protocol transition consumed');logic.gameState=0;logic.endSent=false;logic.freeGameIntro=false;custom=base=undefined},
   next(text){
    const d=doc(text),results=tags(d,'GameResult');need(results.length===1,'one actual own game result');const g=results[0],bg=children(g,'BaseGame');need(bg.length===1,'actual own BaseGame');
-   const win=int(bg[0],'totalWagerWin');need(win>=0&&int(g,'stake')===game.sg.betRaw,'actual stake and cumulative money');
+   const recovery=children(g,'BaseGameRecoveryInfo');need(recovery.length<=1,'one actual own base recovery marker');
+   const win=recovery.length?int(bg[0],'totalWagerWin'):int(g,'totalWin');need(win>=0&&int(g,'stake')===game.sg.betRaw,'actual stake and cumulative money');
    const max=bg[0].getAttribute('isMaxWin');need(max==='Y'||max==='N','actual own max selector');
    const features=children(g,'Feature'),freeNodes=features.filter(x=>x.getAttribute('name')==='FreeSpins');need(freeNodes.length<=1,'one own FreeSpins source');
    // Other features are retained raw. Only an unmapped network mode is a stop;
    // RandomWild/Jackpot are passive under the own reply/next selector.
    need(features.every(x=>['FreeSpins','RandomWild','Jackpot','bonusGuarantee'].includes(x.getAttribute('name'))),'unmapped actual feature');
-   const recovery=children(g,'BaseGameRecoveryInfo');need(recovery.length<=1,'one actual own base recovery marker');
+
    let bonus=false,free;
    const bgTag={getIsMaxWin:()=>max==='Y',getTotalWagerWin:()=>win};
    if(recovery.length){
