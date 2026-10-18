@@ -1,0 +1,277 @@
+{
+  "schema": "own32802-selected-original-SG-protocol-DATA-v1",
+  "source": {
+    "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+    "expectedSRI": "sha256-avd+big4SeQjg3laskWyFZxvFim3cbFDYCLTEx4gx34=",
+    "pathProof": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\own-bootstrap-CDN-cache-path-correction-20261018\\resolved-own-six-source-cache-paths-v1600.json",
+    "newWholeSDKHashAST": 0
+  },
+  "parts": {
+    "primitives": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 3000,
+      "startWithinWindow": 71,
+      "source": "(function(a){(function(a){function f(a){return null!=a&&Array.isArray(a)}function h(e,d){return null!=e&&a.array(e)&&e.every(function(b){return d(b)})}a.qa=function(a){return null!=a&&!isNaN(a)&&(\"number\"===typeof a||a instanceof Number)};a.KG=function(e){return a.qa(e)&&0===e%1};a.xc=function(a){return null!=a&&(\"string\"===typeof a||a instanceof String)};a.array=f;a.Q1=h;a.A7=function(a){return f(a)};a.u7a=function(a,d){return h(a,d)};a.object=function(a){return null!=a&&\"object\"===typeof a&&!Array.isArray(a)};\na.ec=function(a){return null!=a&&(\"function\"===typeof a||a instanceof Function)};a.wj=function(a){return!0===a||!1===a};a.xN=function(e){return a.qa(e)||a.wj(e)||a.xc(e)};a.Pr=function(e){return null!=e&&!a.xN(e)}})(a.I||(a.I={}))})(G||(G={}));",
+      "SHA256": "b6106a018945f093d729b2f98e57917c580ea774c2f45556b880024b0a051ceb"
+    },
+    "events": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 11650,
+      "startWithinWindow": 110,
+      "source": "(function(a){function f(b,a){var c=b?new d:new e;var h=c.on.bind(c);h.GJ=c;h.once=c.once.bind(c);h.off=c.off.bind(c);h.has=c.has.bind(c);h.ga=a?c.iRa.bind(c):c.ga.bind(c);h.then=c.then.bind(c);h.dispose=c.dispose.bind(c);h.clone=c.clone.bind(c);Object.defineProperties(h,{ze:{value:h},Oa:{get:function(){return c.Oa}},Kza:{value:!0},Jza:{value:l}});b&&Object.defineProperties(h,{un:{value:c.un}});return h}var l=Math.random();(function(b){b.event=function(a){return null!=a&&b.ec(a.once)&&b.ec(a.off)&&\nb.ec(a.has)&&a.Kza&&a.Jza===l}})(a.I||(a.I={}));(function(b){b.any=function(b){var a=f(void 0,void 0),c=b.map(function(b,c){return b(function(b){return a.ga({index:c,data:b})})}),d=a.dispose;a.dispose=function(){this.Oa||(c.forEach(function(b){return b.dispose()}),d())};return a}})(a.Event||(a.Event={}));a.createEvent=function(b,a){return f(b,a)};a.zb=function(){return f(void 0,void 0)};var h=function(){function b(b,a){this.GJ=b;this._callback=a}Object.defineProperties(b.prototype,{Oa:{get:function(){return this.GJ.Oa||\n!this.GJ.has(this._callback)},enumerable:!0,configurable:!0}});b.prototype.dispose=function(){this.GJ.Oa||this.GJ.off(this._callback)};return b}(),e=function(){function b(){this.XQ=0;this.Tj=[];this.sa=!1}Object.defineProperties(b.prototype,{Oa:{get:function(){return this.sa},enumerable:!0,configurable:!0}});b.prototype.clone=function(){return f(void 0,void 0)};b.prototype.dispose=function(){this.sa||(this.Tj.length=0,this.Tj=null,this.sa=!0)};b.prototype.once=function(b){return this.on(b,!0)};b.prototype.on=\nfunction(b,a){void 0===a&&(a=!1);if(this.sa)throw Error(\"Attempt to add handler when event was disposed\");this.Tj.push({ck:b,once:a});return new h(this,b)};b.prototype.off=function(b){for(var a=0,c=this.Tj.length;a<c;++a)if(null!=this.Tj[a]&&this.Tj[a].ck===b){0<this.XQ?this.Tj[a]=null:this.Tj.splice(a,1);break}};b.prototype.has=function(b){for(var a=0,c=this.Tj.length;a<c;++a)if(null!=this.Tj[a]&&this.Tj[a].ck===b)return!0;return!1};b.prototype.iRa=function(b){setTimeout(this.ga.bind(this,b),0)};\nb.prototype.ga=function(b){if(this.sa)throw Error(\"Attempt to publish event when event was disposed\");if(0!==this.Tj.length){++this.XQ;for(var a=0,c=this.Tj.length;a<c;++a){var d=this.Tj[a];if(null!=d){d.ck(b);if(this.sa)return;d.once&&this.off(d.ck)}}--this.XQ;if(0===this.XQ)for(a=this.Tj.length-1;0<=a;--a)null==this.Tj[a]&&this.Tj.splice(a,1)}};b.prototype.then=function(b){var a=this;return new Promise(function(c){if(a.Oa)c();else a.once(function(a){b(a);c()})})};return b}(),d=function(b){function c(){var c=\nnull!==b&&b.apply(this,arguments)||this;c.un=new a.pc(0);return c}A(c,b);c.prototype.clone=function(){return f(!0,void 0)};c.prototype.dispose=function(){this.sa||(this.un.dispose(),b.prototype.dispose.call(this))};c.prototype.on=function(a,c){void 0===c&&(c=!1);a=b.prototype.on.call(this,a,c);this.isa();return a};c.prototype.off=function(a){b.prototype.off.call(this,a);this.isa()};c.prototype.isa=function(){this.un.value=this.Tj.reduce(function(b,a){return null!=a?++b:b},0)};return c}(e)})(G||(G=\n{}));",
+      "SHA256": "91019ec32580ae82a9a32868834a575ebb706fab71674c7ad1f49d8f6c5b704c"
+    },
+    "metadata": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 19400,
+      "startWithinWindow": 19,
+      "source": "(function(a){(function(f){function l(){return{ag:[],methods:{},properties:{},Jk:{},staticProperties:{}}}function h(b,k){void 0===k&&(k=!0);if(a.I.ec(b)){var c=Object.getPrototypeOf(b);if(null==b.gR||b.gR===c.gR){if(!k)return null;b.gR=l()}return b.gR}b=Object.getPrototypeOf(b).constructor;return a.I.ec(b)?h(b,k):null}function e(c){if(a.I.ec(c)){var k=l(),n=0;for(c=a.F.Cka(c,!0);n<c.length;n++){var f=c[n];f=h(f,!1);if(null!=f){b(f.ag,k.ag);for(var t in f.methods)null==k.methods[t]&&(k.methods[t]={ag:[],\nparameters:[]}),b(f.methods[t].ag,k.methods[t].ag),d(f.methods[t].parameters,k.methods[t].parameters);for(var r in f.properties)null==k.properties[r]&&(k.properties[r]={ag:[]}),b(f.properties[r].ag,k.properties[r].ag);for(t in f.Jk)null==k.Jk[t]&&(k.Jk[t]={ag:[],parameters:[]}),b(f.Jk[t].ag,k.Jk[t].ag),d(f.Jk[t].parameters,k.Jk[t].parameters);for(r in f.staticProperties)null==k.staticProperties[r]&&(k.staticProperties[r]={ag:[]}),b(f.staticProperties[r].ag,k.staticProperties[r].ag)}}return k}f=Object.getPrototypeOf(c).constructor;\nreturn a.I.ec(f)?e(f):null}function d(a,k){for(var c in a)a[c]&&(k[c]||(k[c]=[]),b(a[c],k[c]))}function b(b,a){for(var c=0,k=b.length;c<k;++c)null==a[c]&&(a[c]=b[c])}f.getMetadata=h;f.UV=e})(a.ud||(a.ud={}))})(G||(G={}));",
+      "SHA256": "236b1e8da5a40fa8c54865ab0fc249b7d9a6bae250c3cebd2b7193bc31b4ab4c"
+    },
+    "registry": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 20650,
+      "startWithinWindow": 36,
+      "source": "(function(a){(function(f){var l;(function(a){a[a.In=0]=\"Class\";a[a.pA=1]=\"Method\";a[a.Ja=2]=\"Property\";a[a.tP=3]=\"Parameter\"})(l=f.qk||(f.qk={}));var h;(function(a){a[a.QP=0]=\"Static\";a[a.wg=1]=\"Instance\"})(h=f.Ln||(f.Ln={}));(function(e){function d(b,d){var k=c[b]++;switch(b){case l.In:var e=a.createEvent(),n=a.createEvent(),p=function(b){return function(a){f.getMetadata(a,!0).ag[k]=b;d&&(a=d(a)||a);-1===p.Wf.indexOf(a)&&(p.Wf.push(a),e.ga(a));n.ga({target:a,$F:a,Jz:b});return a}};p.kind=b;p.get=\nfunction(b){return f.UV(b).ag[k]};p.Wf=[];p.xka=function(b){return this.Wf.filter(function(a){return p.get(a)===b})};p.zo=e.ze;p.yo=n.ze;p.pD=!0;return p;case l.pA:var u=a.createEvent(),v=a.createEvent(),y=function(b){return function(c,d){if(a.I.ec(c)){var e=f.getMetadata(c,!0);null==e.Jk[d]&&(e.Jk[d]={ag:[],parameters:[]});e.Jk[d].ag[k]=b;-1===y.Wf.indexOf(c)&&(y.Wf.push(c),u.ga(c));v.ga({target:c,$F:c,ec:c[d],key:d,Jz:b})}else e=f.getMetadata(c.constructor,!0),null==e.methods[d]&&(e.methods[d]=\n{ag:[],parameters:[]}),e.methods[d].ag[k]=b,-1===y.Wf.indexOf(c.constructor)&&(y.Wf.push(c.constructor),u.ga(c.constructor)),v.ga({target:c,$F:c.constructor,ec:c[d],key:d,Jz:b});return Object.getOwnPropertyDescriptor(c,d)}};y.kind=b;y.get=function(b,a){var c=f.UV(b);b={};a=a===h.wg?c.methods:c.Jk;for(var d in a)null!=a[d]&&(c=a[d].ag[k],null!=c&&(b[d]=c));return b};y.Wf=[];y.zo=u.ze;y.yo=v.ze;y.pD=!0;return y;case l.Ja:var w=a.createEvent(),B=a.createEvent(),D=function(b){return function(c,d){if(a.I.ec(c)){var e=\nf.getMetadata(c,!0);null==e.staticProperties[d]&&(e.staticProperties[d]={ag:[]});e.staticProperties[d].ag[k]=b;-1===D.Wf.indexOf(c)&&(D.Wf.push(c),w.ga(c));B.ga({target:c,$F:c,gRa:Object.getOwnPropertyDescriptor(c,d),key:d,Jz:b})}else e=f.getMetadata(c.constructor,!0),null==e.properties[d]&&(e.properties[d]={ag:[]}),e.properties[d].ag[k]=b,-1===D.Wf.indexOf(c.constructor)&&(D.Wf.push(c.constructor),w.ga(c.constructor)),B.ga({target:c,$F:c.constructor,gRa:Object.getOwnPropertyDescriptor(c.constructor,\nd),key:d,Jz:b});return Object.getOwnPropertyDescriptor(c,d)}};D.kind=b;D.get=function(b,a){var c=f.UV(b);b={};a=a===h.wg?c.properties:c.staticProperties;for(var d in a)null!=a[d]&&(c=a[d].ag[k],null!=c&&(b[d]=c));return b};D.Wf=[];D.zo=w.ze;D.yo=B.ze;D.pD=!0;return D;case l.tP:var J=a.createEvent(),E=a.createEvent(),I=function(b){return function(c,d,e){if(a.I.ec(c)){var h=f.getMetadata(c,!0);null==h.Jk[d]&&(h.Jk[d]={ag:[],parameters:[]});null==h.Jk[d].parameters[e]&&(h.Jk[d].parameters[e]=[]);h.Jk[d].parameters[e][k]=\nb;-1===I.Wf.indexOf(c)&&(I.Wf.push(c),J.ga(c));E.ga({target:c,$F:c,ec:c[d],key:d,index:e,Jz:b})}else h=f.getMetadata(c.constructor,!0),null==h.methods[d]&&(h.methods[d]={ag:[],parameters:[]}),null==h.methods[d].parameters[e]&&(h.methods[d].parameters[e]=[]),h.methods[d].parameters[e][k]=b,-1===I.Wf.indexOf(c.constructor)&&(I.Wf.push(c.constructor),J.ga(c.constructor)),E.ga({target:c,$F:c.constructor,ec:c[d],key:d,index:e,Jz:b});return Object.getOwnPropertyDescriptor(c,d)}};I.kind=b;I.get=function(b,\na,c){var d=f.UV(b);b={};a=a===h.wg?d.methods:d.Jk;if(null!=a[c])for(var e in a[c].parameters)null!=a[c].parameters[e]&&(d=a[c].parameters[e][k],null!=d&&(b[e]=d));return b};I.Wf=[];I.zo=J.ze;I.yo=E.ze;I.pD=!0;return I;default:throw Error(\"Invalid or unhandled tag kind '\"+b+\"'\");}}var b,c=(b={},b[l.In]=0,b[l.pA]=0,b[l.Ja]=0,b[l.tP]=0,b);e.create=d;e.DL=function(b,a){var c=b===l.In?d(b,a):d(b);switch(c.kind){case l.In:return b=function(b){return c(!0)(b)},b.kind=c.kind,b.get=function(b){return c.get(b)||\n!1},b.Wf=c.Wf,b.zo=c.zo,b.yo=c.yo,b.pD=!1,b;case l.pA:return b=function(b,a,k){return c(!0)(b,a,k)},b.kind=c.kind,b.get=function(b,a){b=c.get(b,a);return Object.keys(b)},b.Wf=c.Wf,b.zo=c.zo,b.yo=c.yo,b.pD=!1,b;case l.Ja:return b=function(b,a){return c(!0)(b,a)},b.kind=c.kind,b.get=function(b,a){b=c.get(b,a);return Object.keys(b)},b.Wf=c.Wf,b.zo=c.zo,b.yo=c.yo,b.pD=!1,b;case l.tP:return b=function(b,a,k){return c(!0)(b,a,k)},b.kind=c.kind,b.get=function(b,a,k){b=c.get(b,a,k);return Object.keys(b).map(function(b){return parseInt(b)})},\nb.Wf=c.Wf,b.zo=c.zo,b.yo=c.yo,b.pD=!1,b;default:return null}}})(f.pk||(f.pk={}))})(a.ud||(a.ud={}))})(G||(G={}));",
+      "SHA256": "08509b1fafbb172016f2b72c2dc71672cb6a9fb36ec6c59b8a8437af4bd55bd6"
+    },
+    "xml": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 270300,
+      "startWithinWindow": 211,
+      "source": "(function(a){(function(f){(function(f){function h(a){var b=!1;\"*\"===a[0]&&(a=a.substr(1),b=!0);var c=/<(.+)>/g.exec(a);if(null!=c&&1<c.length){a=a.substr(0,c.index);var k={},d=0;for(c=c[1].split(\",\");d<c.length;d++){var e=c[d].split(\"=\",2);k[e[0]]=e[1]}b={type:\"tag\",value:a,filter:k,w6:b}}else b={type:\"tag\",value:a,w6:b};return b}function e(a){for(var b=[],c=0;c<a.length;c++){var k=a[c];\"tag\"===k.type?(0<b.length&&b.push(\" \"),k.w6&&b.push(\"*\"),b.push(k.value)):\"attr\"===k.type&&(b.push(\".\"),b.push(k.value));\nif(null!=k.filter){b.push(\"<\");var d=!0,e;for(e in k.filter)d?d=!1:b.push(\",\"),b.push(e),b.push(\"=\"),b.push(k.filter[e]);b.push(\">\")}}return b.join(\"\")}function d(a,b){b=b.toLowerCase();var c=[];a=a.childNodes;for(var k=a.length,d=0;d<k;++d){var e=a.item(d);e instanceof Element&&e.tagName.toLowerCase()===b&&c.push(e)}return c}function b(b,c){var k=d(b,c);if(0===k.length)return c=b.ownerDocument.createElement(c),b.appendChild(c),c;1<k.length&&a.xa.warn(\"getOrCreateChild: More than 1 element found\");\nreturn k[0]}function c(b,k,h){void 0===h&&(h=0);if(k.length<=h)return b;var f=k[h];if(\"attr\"===f.type)return b.getAttribute(f.value);b=d(b,f.value);for(var n=[],l=0,q=b.length;l<q;++l){var t=b[l];if(null!=f.filter){var r=!0,p;for(p in f.filter){var u=f.filter[p];if(\"\"===p){if(u!==t.tagName){r=!1;break}}else{var v=t.getAttribute(p);if(u!==v){r=!1;break}}}r&&n.push(t)}else n.push(t)}if(f.w6){if(h>=k.length-1)return n;throw Error(\"Can't have a multi-match segment not at end of path '\"+e(k)+\"'!\");}if(0===\nn.length)return null;if(1===n.length)return c(n[0],k,h+1);a.xa.warn(\"More than 1 element found matching path '\"+e(k)+\"'!\");return null}function k(c,d,e,h){void 0===h&&(h=0);if(h>=d.length&&a.I.xc(e))c.textContent=e;else if(0===d.length)if(e instanceof Element)c.appendChild(e);else{if(a.I.array(e))for(h=0;h<e.length;h++)d=e[h],null!=d&&c.appendChild(d)}else{var f=h===d.length-1,n=d[h];if(null!=n.filter)throw Error(\"Serialisation of paths containing a filter currently not supported\");if(\"attr\"===n.type){if(!a.I.xc(e))throw Error(\"XML.write: can't serialise an Element or Element[] into an attribute\");\nc.setAttribute(n.value,e)}else{if(f){if(e instanceof Element){c.appendChild(e);return}if(a.I.array(e)){c=b(c,d[d.length-1].value);for(h=0;h<e.length;h++)d=e[h],null!=d&&c.appendChild(d);return}}c=b(c,n.value);k(c,d,e,h+1)}}}function n(b,c){if(null==b)return null;if(null==c){var d=f.ea.get(b);if(null==d)throw Error(\"Failed to serialise object (has no XML type)\");d=document.implementation.createDocument(null,d,null);var e=d.documentElement}else e=c;var h=f.Ja.get(b,a.ud.Ln.wg),n;for(n in h)if(h[n]){var l=\nh[n],q=b[n];null==l.type.Zp||null==q&&l.Qt||(q=l.type.Zp(null!=d?d:e.ownerDocument,q),null!=q&&k(e,l.Poa,q))}if(null==c)return d}function l(b,k){if(null==b)return null;k=k instanceof Document?k.documentElement:k;var d=f.Ja.get(b,a.ud.Ln.wg),e;for(e in d)if(d[e]){var h=d[e];if(null!=h.type.to){var n=c(k,h.Poa);b[e]=h.type.to(n)}}}function t(b){var c=x(x({},t.P),b);return{Zp:function(a,b){return!0===b?c.eW:!1===b?c.dW:\"undefined\"},to:function(b){if(null==b)return null;if(b instanceof Element){if(b=\nb.textContent&&b.textContent.toLowerCase(),null!=b)return-1!==c.qga.indexOf(b)?!0:-1!==c.pga.indexOf(b)?!1:c.default}else{if(a.I.array(b))throw Error(\"Failed to deserialise boolean (received array)\");b=b.toLowerCase();return-1!==c.qga.indexOf(b)?!0:-1!==c.pga.indexOf(b)?!1:c.default}}}}f.ea=a.ud.pk.create(a.ud.qk.In);f.Ja=a.ud.pk.create(a.ud.qk.Ja);f.Ja.yo(function(a){var b=a.Jz;var c=a.Jz.path;if(\"\"===c)a=[];else{a=[];var k=0;for(c=c.trim().split(/\\s+/g);k<c.length;k++){var d=c[k],e=d.indexOf(\".\");\n\".\"===d.substr(0,1)?a.push({type:\"attr\",value:d.substr(1)}):-1!==e?(a.push(h(d.substr(0,e))),a.push({type:\"attr\",value:d.substr(e+1)})):a.push(h(d))}}b.Poa=a});var r;(function(b){b.is=function(b){return a.I.object(b)&&a.I.ec(b.KKa)}})(r=f.Kva||(f.Kva={}));f.cW=n;f.B3=l;f.KXa={Zp:function(a,b){return a.createElement(b)},to:function(b){if(null==b)return null;if(b instanceof Element)return b.tagName;if(a.I.array(b))throw Error(\"Failed to deserialise EmptyTag (received array)\");throw Error(\"Failed to deserialise EmptyTag (received string)\");\n}};f.String={Zp:function(a,b){return b},to:function(b){if(null==b)return null;if(b instanceof Element)return b.textContent||\"\";if(a.I.array(b))throw Error(\"Failed to deserialise string (received array)\");return b}};f.Number={Zp:function(a,b){return null!=b?b.toString():\"undefined\"},to:function(b){if(null==b)return null;if(b instanceof Element)return parseFloat(b.textContent||\"\");if(a.I.array(b))throw Error(\"Failed to deserialise number (received array)\");return parseFloat(b)}};f.SH=t;(t=f.SH||(f.SH=\n{})).P={eW:\"true\",dW:\"false\",qga:[\"true\",\"1\",\"y\",\"yes\"],pga:[\"false\",\"0\",\"n\",\"no\"],default:!1};f.Boolean=t(t.P);f.Object={Zp:function(a,b){if(null==b)return null;if(r.is(b))a=a.createElement(\"ReelSpin\");else{var c=f.ea.get(b);if(null==c)throw Error(\"Failed to serialise object (has no XML type)\");a=a.createElement(c)}n(b,a);return a},to:function(b){if(null==b)return null;if(b instanceof Element){var c=f.ea.xka(b.tagName);if(0===c.length)throw Error(\"Failed to deserialise object (unknown XML type '\"+\nb.tagName+\"')\");if(1<c.length)throw Error(\"Failed to deserialise object (more than one class lays claim to XML type '\"+b.tagName+\"')\");c=new c[0];l(c,b);return c}if(a.I.array(b))throw Error(\"Failed to deserialise object (received array)\");throw Error(\"Failed to deserialise object (path lead to attribute)\");}};f.xq=function(b){return{Zp:f.Object.Zp,to:function(c){if(null==c)return null;if(c instanceof Element){var k=new b;l(k,c);return k}if(a.I.array(c))throw Error(\"Failed to deserialise object (received array)\");\nthrow Error(\"Failed to deserialise object (path lead to attribute)\");}}};f.Array=function(b,c){return{Zp:function(c,k){if(null==k)return null;for(var d=[],e=0;e<k.length;e++){var h=b.Zp(c,k[e]);null!=h&&(h instanceof Element?d.push(h):a.I.array(h)?a.xa.warn(\"Serialisation of 2D arrays is not supported\"):a.xa.warn(\"Serialisation of string arrays is not supported (use DelimitedArray!)\"))}return d},to:function(k){if(null==k)return null;if(a.I.array(k))return k.map(function(a){return b.to(a)});if(k instanceof\nElement){for(var d=[],e=0,h=k.childNodes.length;e<h;++e){var f=k.childNodes.item(e);f instanceof Element&&(null==c||f.tagName===c)&&(f=b.to(f),null!=f&&d.push(f))}return d}return[b.to(k)]}}};f.mk=function(b,c){void 0===c&&(c=\",\");return{Zp:function(k,d){if(null==d)return null;for(var e=[],h=0;h<d.length;h++){var f=b.Zp(k,d[h]);null!=f&&(f instanceof Element?a.xa.warn(\"Serialisation of object arrays is not supported (use Array!)\"):a.I.array(f)?a.xa.warn(\"Serialisation of 2D arrays is not supported\"):\ne.push(f))}return e.join(c)},to:function(k){return(k=null==k?null:a.I.array(k)?k:k instanceof Element?\"\"===k.textContent?[]:k.textContent.split(c):\"\"===k?[]:k.split(c))?k.map(function(a){return b.to(a)}):null}}}})(f.Bh||(f.Bh={}))})(a.Ii||(a.Ii={}))})(G||(G={}));",
+      "SHA256": "7e284e44ee420d2e525784145bb7fcb81e82061481231acfa436b06f799cf5d1"
+    },
+    "hierarchy": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 30500,
+      "startWithinWindow": 37,
+      "source": "function(b,a){void 0===a&&(a=!1);var c=[],k=b.prototype;for(a&&c.push(b);null!=(k=Object.getPrototypeOf(k))&&k!==Function.prototype;)c.push(k.constructor);return c}",
+      "SHA256": "a574401e36be16e367be289e7edce8a72596234355d5f5b73d43f30f0dd2b077",
+      "marker": "f.Cka="
+    },
+    "decorator": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1400,
+      "startWithinWindow": 178,
+      "source": "function(a,f,l,h){var e=arguments.length,d=3>e?f:null===h?h=Object.getOwnPropertyDescriptor(f,l):h,b;if(\"object\"===typeof Reflect&&\"function\"===typeof Reflect.ZHa)d=Reflect.ZHa(a,f,l,h);else for(var c=a.length-1;0<=c;c--)if(b=a[c])d=(3>e?b(d):3<e?b(f,l,d):b(f,l))||d;return 3<e&&d&&Object.defineProperty(f,l,d),d}",
+      "SHA256": "ca13e08a616d3351c1bb46fba9b1a6ac785696db922d0c74367bcd8cc7ee8c10",
+      "marker": "z=this&&this.s0a||"
+    },
+    "fields": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 2150,
+      "startWithinWindow": 78,
+      "source": "function(a){for(var f=Object.keys(a),l=0;l<f.length;l++){var h=f[l],e=a[h];z(e.i,e.target,h,e.j)}}",
+      "SHA256": "c077deac437cd2c1779c42f98ce96104bea53a967ff14f39cfb449e09ed65097",
+      "marker": "C=this&&this.v0a||"
+    },
+    "extend": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1800,
+      "startWithinWindow": 110,
+      "source": "function(){var a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(a,l){a.__proto__=l}||function(a,l){for(var h in l)l.hasOwnProperty(h)&&\n(a[h]=l[h])};return function(f,l){function h(){this.constructor=f}a(f,l);f.prototype=null===l?Object.create(l):(h.prototype=l.prototype,new h)}}",
+      "SHA256": "90c0b3a252570f85b65ebd20b84a54e9a8853eebfb4a683240b474cc42d419e0",
+      "marker": "A=this&&this.t0a||"
+    }
+  },
+  "classes": {
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 610150,
+      "startWithinWindow": 110,
+      "source": "function(){function a(){}var b={};b.eL={i:[f.Ja({path:\".affiliate\",type:f.String})],target:a.prototype,j:void 0};b.ZS={i:[f.Ja({path:\".ccyCode\",type:f.String})],target:a.prototype,j:void 0};b.channel={i:[f.Ja({path:\".channel\",type:f.String})],target:a.prototype,j:void 0};b.pG={i:[f.Ja({path:\".freePlay\",type:f.SH({eW:\"Y\",dW:\"N\"})})],target:a.prototype,j:void 0};b.VJa={i:[f.Ja({path:\".gameCodeRGI\",type:f.String})],target:a.prototype,j:void 0};b.Uy=\n{i:[f.Ja({path:\".gameID\",type:f.Number})],target:a.prototype,j:void 0};b.nU={i:[f.Ja({path:\".glsID\",type:f.Number})],target:a.prototype,j:void 0};b.lang={i:[f.Ja({path:\".lang\",type:f.String})],target:a.prototype,j:void 0};b.fRa={i:[f.Ja({path:\".promotions\",type:f.SH({eW:\"Y\",dW:\"N\"})})],target:a.prototype,j:void 0};b.Cl={i:[f.Ja({path:\".sessionID\",type:f.String})],target:a.prototype,j:void 0};b.Tw={i:[f.Ja({path:\".userID\",type:f.String,Qt:!0})],target:a.prototype,j:void 0};b.O9={i:[f.Ja({path:\".userType\",\ntype:f.String})],target:a.prototype,j:void 0};b.S9={i:[f.Ja({path:\".versionID\",type:f.String})],target:a.prototype,j:void 0};b.kka={i:[f.Ja({path:\".fullVersionID\",type:f.String})],target:a.prototype,j:void 0};b.XMa={i:[f.Ja({path:\".isRecovering\",type:f.SH({eW:\"Y\",dW:\"N\"}),Qt:!0})],target:a.prototype,j:void 0};C(b);return a=z([f.ea(\"Header\")],a)}",
+      "SHA256": "4d004b6ce8a45b0eabcb97e4cfebc1920c373ca4caf3befd6b2c5f591e9d29a6",
+      "marker": "e=function(){"
+    },
+    "account": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 612850,
+      "startWithinWindow": 14,
+      "source": "function(){function a(){}var b={};b.Hia={i:[f.Ja({path:\"CurrencyInformation\",type:f.Object,Qt:!0})],target:a.prototype,j:void 0};b.Ld={i:[f.Ja({path:\"CurrencyMultiplier\",type:f.Number,Qt:!0})],target:a.prototype,j:void 0};b.GV={i:[f.Ja({path:\"Payload\",type:f.Object,Qt:!0})],target:a.prototype,j:void 0};C(b);return a=z([f.ea(\"AccountData\")],a)}",
+      "SHA256": "d2ca179dddc7b5c017c8aa97de9be95bf5d8b6637b6a0d06131c655885d03259",
+      "marker": "e=function(){"
+    },
+    "init": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 630350,
+      "startWithinWindow": 123,
+      "source": "function(){function a(){this.type=\"Init\"}var b={};b.type={i:[f.Ja({path:\".type\",type:f.String})],target:a.prototype,j:void 0};b.Wi={i:[f.Ja({path:\"Header\",type:f.Object})],target:a.prototype,j:void 0};b.xz={i:[f.Ja({path:\"REPLAY\",type:f.Object})],target:a.prototype,j:void 0};C(b);return a=z([f.ea(\"GameRequest\")],a)}",
+      "SHA256": "90ca049d3a2f02dee85a012319a5a85e50a1b18b01b5d61f769527b3c21a1992",
+      "marker": "var b=function(){"
+    },
+    "end": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 628120,
+      "startWithinWindow": 40,
+      "source": "function(){function a(){this.type=\n\"EndGame\"}var b={};b.type={i:[f.Ja({path:\".type\",type:f.String})],target:a.prototype,j:void 0};b.Wi={i:[f.Ja({path:\"Header\",type:f.Object})],target:a.prototype,j:void 0};C(b);return a=z([f.ea(\"GameRequest\")],a)}",
+      "SHA256": "883e5f7780c414fdc610c865cd6314d84561e81847f7ca4054cfd8c1318bb14c",
+      "marker": "var b=function(){"
+    },
+    "baseLogic": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 631650,
+      "startWithinWindow": 82,
+      "source": "function(){function a(){this.type=\"Logic\"}var b={};b.type={i:[f.Ja({path:\".type\",type:f.String})],target:a.prototype,j:void 0};b.vj={i:[f.Ja({path:\"AccountData\",\ntype:f.Object})],target:a.prototype,j:void 0};b.Wi={i:[f.Ja({path:\"Header\",type:f.Object})],target:a.prototype,j:void 0};b.Rw={i:[f.Ja({path:\"Stake.total\",type:f.Number})],target:a.prototype,j:void 0};b.xz={i:[f.Ja({path:\"REPLAY\",type:f.Object})],target:a.prototype,j:void 0};b.Sy={i:[f.Ja({path:\"FORCE\",type:f.Object})],target:a.prototype,j:void 0};C(b);return a=z([f.ea(\"GameRequest\")],a)}",
+      "SHA256": "b3cf84f5280077ceb101604b222190422dae1cc3f460624ca7a827faaf1147a8",
+      "marker": "var b=function(){"
+    },
+    "logic": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1154400,
+      "startWithinWindow": 101,
+      "source": "function(a){function b(){return null!==a&&a.apply(this,arguments)||this}A(b,a);var d={};d.ym={i:[f.Ja({path:\"PaylineCount.count\",type:f.Number,Qt:!0})],target:b.prototype,j:void 0};d.Sy={i:[f.Ja({path:\"FORCE\",type:f.Object})],target:b.prototype,j:void 0};C(d);return b=z([f.ea(\"GameRequest\")],b)}",
+      "SHA256": "fbd5b78f826adc4f93d0c35c49ad0317a76c083c5e2e3315d1ec33f4ec6fccdb",
+      "marker": "var d=function(a){"
+    }
+  },
+  "leaves": {
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 625650,
+      "startWithinWindow": 127,
+      "source": "function(){var d=new a.LX;d.eL=this.wm.eL.toString();d.ZS=this.fs.nn;d.channel=this.wm.channel;d.pG=this.fs.pG;d.VJa=this.wm.UJa;d.Uy=this.wm.Uy;d.nU=this.wm.nU;d.lang=this.fs.language;d.fRa=!1;d.Cl=this.fs.Cl;d.Tw=this.fs.Tw;d.O9=this.wm.O9;d.S9=this.wm.S9;return d}",
+      "SHA256": "01c3a639d236e7efa32c27dcb8366be5244b3e734ee6ca53b2fbb27a7742748e",
+      "marker": "e.prototype.h3="
+    },
+    "initObject": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 630100,
+      "startWithinWindow": 101,
+      "source": "function(a){var c=new b.Nn;c.Wi=this.h3();a.th&&(c.xz=this.o3(),this.i4(c.xz,a.th));return c}",
+      "SHA256": "ae73ccc725986d9c0d676802bdf6609a7482f8ac00c1d34f9d6605e6156e1607",
+      "marker": "b.prototype.Ft="
+    },
+    "endObject": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 627850,
+      "startWithinWindow": 168,
+      "source": "function(){var a=new b.Nn;a.Wi=this.h3();return a}",
+      "SHA256": "91d6e6d19fc106ff4d232615def865165e1ed4f48c17c3dd0c393da242c6a056",
+      "marker": "b.prototype.Ft="
+    },
+    "baseLogicObject": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 631100,
+      "startWithinWindow": 131,
+      "source": "function(b){var c=this.ria();c.Wi=this.h3();c.Rw=b.jm.value;b.m4&&(c.Sy=this.f3(),this.ST(c.Sy,b.m4));b.th&&(c.xz=this.o3(),this.i4(c.xz,b.th));null!=\nb.Ld&&(c.vj=new a.qD,c.vj.Ld=b.Ld);return c}",
+      "SHA256": "9b79c00c35cdce194e2289d18855b1a6cd0424d36709b775cecb70698fc81258",
+      "marker": "b.prototype.Ft="
+    },
+    "middleLogicObject": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1153600,
+      "startWithinWindow": 225,
+      "source": "function(a){var b=e.prototype.Ft.call(this,a);b.ym=a.ym;return b}",
+      "SHA256": "42150f240f6a562739415ad86675cfd9208d9940e9ea1b296ef2f8bf26f2664d",
+      "marker": "d.prototype.Ft="
+    },
+    "ownLogicObject": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1223100,
+      "startWithinWindow": 196,
+      "source": "function(a){a=b.prototype.Ft.call(this,a);a.ym=null;return a}",
+      "SHA256": "ce07e9ed7873bcf0e4f4cd5b054745ca1fc3a5ae4a0b3cbc0f2749887cf1d27e",
+      "marker": "c.prototype.Ft="
+    },
+    "terminal": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1144400,
+      "startWithinWindow": 99,
+      "source": "function(b){var c=G.Gb.get();return c instanceof a.gf.vP&&(c=c.ak.value)&&a.gf.FreeRoundsInfo.Xe(c)?!1:this.K.state.tm?!0:b.index<this.K.hd.length-1||0<this.K.dd.Fj?!1:!0}",
+      "SHA256": "69b4cfd3097c83db15a701a04446695cf62e35607882f94aa144fd712f6f159e",
+      "marker": "e.prototype.r8="
+    },
+    "closeGate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1141800,
+      "startWithinWindow": 132,
+      "source": "function(){return this.Npa.Xg||!this.settings.Sha||0<this.K.dd.Fj&&!this.K.state.tm?!1:!0}",
+      "SHA256": "ef323b2ec8578db0f69f981f38a6d3c20ee1aa31a75c9197205d4f923dd1ac90",
+      "marker": "e.prototype.jW="
+    },
+    "freeState": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1142600,
+      "startWithinWindow": 123,
+      "source": "function(a){this.K.dd.mq=(null!=a.cka?a.cka:a.zTa)||0;this.K.dd.Ut=0<this.K.dd.mq;this.K.dd.Fj=(null!=a.dka?a.dka-this.K.dd.mq:a.yTa)||0;this.K.dd.winAmount=a.SJa;this.K.dd.XL=a.XL||0}",
+      "SHA256": "afcbdfeb3e381d12a2f2128d60061d469d28c0971b510f7f8459e25e5913350e",
+      "marker": "e.prototype.bQa="
+    },
+    "ownAfterResult": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 1222400,
+      "startWithinWindow": 266,
+      "source": "function(a){this.K.mG.GU=[];this.K.Xd.Zg=a.Fy.Zg;this.K.WT=null;a.Fy&&a.Fy.$ja&&(this.K.WT=a.Fy.$ja)}",
+      "SHA256": "7f84f3545bff95368f6a3ccbe4a2c40f2b3b7c4eea21db1e5163c7f004664db5",
+      "marker": "d.prototype.aQa="
+    },
+    "freeClear": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "byteWindowStart": 254623,
+      "startWithinWindow": 38,
+      "source": "function(a){a.Ut=!1;a.mq=null;a.Fj=null;a.winAmount=null;a.XL=null}",
+      "SHA256": "619f0e053f66447a6e174d61e36ae9c9a80ac8d0128be294703e453c834808f1",
+      "marker": "a.clear="
+    }
+  },
+  "preparationLeaves": [
+    {
+      "name": "ownBGInfoTypedMoneyAndFlags",
+      "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "characterStart": 1151349,
+      "characterEnd": 1151849,
+      "source": "h=function(){function a(){}var b={};b.Jra={i:[l.Ja({path:\".totalWagerWin\",type:l.Number})],target:a.prototype,j:void 0};b.z1a={i:[l.Ja({path:\".bgWinnings\",type:l.Number})],target:a.prototype,j:void 0};b.v1a={i:[l.Ja({path:\".baseGameSpinsRemaining\",type:l.Number})],\ntarget:a.prototype,j:void 0};b.Z4a={i:[l.Ja({path:\".isBigBet\",type:l.Boolean})],target:a.prototype,j:void 0};b.tm={i:[l.Ja({path:\".isMaxWin\",type:l.Boolean})],target:a.prototype,j:void 0};C(b);return a=z([l.ea(\"BGInfo\")],a)}();f.n$=h;",
+      "SHA256": "89fff5cb49b25259df2a4a3ff57f8e6092d581ec4a7fc6d1d965800f84be9c94"
+    },
+    {
+      "name": "ownPotResultTypedExtension",
+      "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "characterStart": 1257940,
+      "characterEnd": 1258245,
+      "source": "d=function(a){function b(){return null!==a&&a.apply(this,arguments)||this}A(b,a);var c={};c.Zg={i:[e.Ja({path:\".potResult\",type:e.Number})],target:b.prototype,j:void 0};c.$ja={i:[e.Ja({path:\".forcedScatter\",type:e.mk(e.mk(e.Number,\",\"),\"|\")})],target:b.prototype,j:void 0};C(c);return b}(SG.Yb.n$);a.n$=d;",
+      "SHA256": "d9004ecd8a494e43f51c487563dd5027b67ebe80ea3f975ba9688b9a2bbf203a"
+    },
+    {
+      "name": "ownGameResultBGInfoClassBinding",
+      "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "characterStart": 1258245,
+      "characterEnd": 1258446,
+      "source": "var b=function(a){function b(){return null!==a&&a.apply(this,arguments)||this}A(b,a);var c={};c.Fy={i:[e.Ja({path:\"BGInfo\",type:e.xq(d)})],\ntarget:b.prototype,j:void 0};C(c);return b}(SG.Yb.cx);a.cx=b;",
+      "SHA256": "e07da96fbcdf81c41ddb523a26967b3769dc343a12f0635c7f8106baf0b580f5"
+    },
+    {
+      "name": "ownPotFeatureLifecycleReturnsAndPresentationWait",
+      "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+      "characterStart": 1258747,
+      "characterEnd": 1259640,
+      "source": "var l=function(){function f(a){this.context=a;this.QU=!0;G.xa.debug(\"Pot Of Gold feature created\")}f.prototype.qz=function(){return null};f.prototype.dL=function(){};f.prototype.iN=function(){return g(this,void 0,void 0,function(){var e,d;return m(this,function(b){switch(b.label){case 0:e=this.context.Kf;if(this.context.Z.ac.su.value||2!==this.context.Z.K.hd[0].Kb.Ep)return[3,2];d=G.ha.wait(a.Ia.qIa);e.Sr(function(){d.dispose()});return[4,d];case 1:b.$(),b.label=2;case 2:return[2,\nnull]}})})};f.prototype.fN=function(){return g(this,void 0,void 0,function(){return m(this,function(){return[2,null]})})};f.prototype.jN=function(){return g(this,void 0,void 0,function(){return m(this,function(){return[2]})})};f.prototype.gN=function(){return g(this,void 0,void 0,function(){return m(this,function(){return[2,null]})})};f.prototype.eN=function(){return null};return f=z([G.gb],f)}();f.Zua=l",
+      "SHA256": "0737fbb22a59f3a772849319835ca76bb6c6632d342484a14665caa0d0e9c2e4"
+    }
+  ],
+  "scope": {
+    "adapter": "ordinary SG own native context",
+    "recovery": false,
+    "freeRoundsCampaigns": false,
+    "max": false,
+    "potResultNotCashReplacement": true,
+    "freeCountersSourceBound": true,
+    "actualFreeResponseInSelectedCache": false
+  },
+  "nativeProviderInit": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+    "byteWindowStart": 620700,
+    "startWithinWindow": 85,
+    "source": "function(a){this.K.cd.nn=a.Wi.ZS||\"GBP\";this.K.cd.Ld=1;var b=a.vj;if(b&&b.Hia){b=b.Hia;var d=G.J.LP.hY,e;for(e in b)G.I.xc(b[e])&&(b[e]=b[e].replace(/\\s/g,d));this.K.cd.gC={name:b.currency,Ie:b.s3||\"\",Z3:b.Z3,pU:b.pU,ie:b.ie,bM:b.IJa,ve:b.YHa,qT:b.qT,Gia:b.vGa,Ui:b.Ui,vr:b.hUa,Ld:b.Ld,IT:null!=b.s3,\neja:null==b.s3};this.Ri.Ld=b.Ld;this.Ri.nn=a.Wi.ZS}else this.K.cd.gC=x(x({},G.J.dG[this.K.cd.nn]||G.J.dG.GBP),{IT:!1}),this.Ri.Ld=1,this.Ri.nn=\"\";this.jl.Xg&&(this.K.cd.gC.IT=!1,this.K.cd.gC.Ld=1)}",
+    "SHA256": "871ac1a5b21b80b763c9fe2667c70ad7314471a6e7a511f532b73ea04eeb9e89",
+    "marker": "d.prototype.fMa="
+  },
+  "responseFSClass": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrpg\\js\\app.js",
+    "byteWindowStart": 1151800,
+    "startWithinWindow": 51,
+    "source": "function(){function a(){}var b={};b.SJa={i:[l.Ja({path:\".fsWinnings\",type:l.Number})],target:a.prototype,j:void 0};b.tm={i:[l.Ja({path:\".isMaxWin\",type:l.Boolean})],target:a.prototype,j:void 0};b.dka={i:[l.Ja({path:\".freeSpinsTotal\",type:l.Number})],target:a.prototype,\nj:void 0};b.cka={i:[l.Ja({path:\".freeSpinNumber\",type:l.Number})],target:a.prototype,j:void 0};b.zTa={i:[l.Ja({path:\".spinsUsed\",type:l.Number})],target:a.prototype,j:void 0};b.yTa={i:[l.Ja({path:\".spinsRemaining\",type:l.Number})],target:a.prototype,j:void 0};b.XL={i:[l.Ja({path:\".extraSpinsAwarded\",type:l.Number})],target:a.prototype,j:void 0};C(b);return a=z([l.ea(\"FSInfo\")],a)}",
+    "SHA256": "fa017de9e38b4379139d16ac999fff6f5b0087df903ccbdd7db962bdc894f51f",
+    "marker": "h=function(){"
+  }
+}

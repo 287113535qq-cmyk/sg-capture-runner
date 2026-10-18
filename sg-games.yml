@@ -17791,3 +17791,32 @@ games:
         total: '200'
       own32813ProtocolDATA:
         contract: own32813-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32802'
+    name: Rainbow Riches Pick n Mix
+    dbName: sg_rrpg
+    backendId: rrpg
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33162
+      runtimeSlug: rrpg
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "rrpg"
+        gameID: "20474"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 200
+      stake:
+        total: '200'
+      own32802ProtocolDATA:
+        contract: own32802-original-SG-protocol-private-v1
