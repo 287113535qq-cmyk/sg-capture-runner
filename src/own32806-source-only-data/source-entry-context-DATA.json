@@ -1,0 +1,18 @@
+{
+  "schema": "own32806-same-original-capture-entry-normal-scope-v1",
+  "href": "https://offline.invalid/content/spartacus_prt/",
+  "search": "",
+  "partnerPlatformEmpty": true,
+  "externalPlatformInputsAccepted": false,
+  "sameOriginalProductionFactory": {
+    "path": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\WMS32806-original-SGI-native-source-integration-20261017\\full-linux-result.json",
+    "SHA256": "f2915d538d9ee54253ed4a723ab8e639195d7d37da644988246f5030ef975dce"
+  },
+  "oldProducerCertifiedSHA256": "8bc011116324676c1137f069259ac3da3af1945c541842ca0f0f7e36ebf432b4",
+  "rootReview": {
+    "path": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\WMS32806-original-SGI-native-source-integration-20261017\\source-only-Init-config-query-wire-DATA-20261019\\A-requested-fixed-original-entry-normal-mode-root-review.json",
+    "SHA256": "e5b82ca8fc54a05ce090e7988b2a8c89974f353205054c6fc8b8aac46315b862"
+  },
+  "noProviderAbsenceClaim": true,
+  "noRawHostMainPartnerObjectOrUpdatePortExposed": true
+}

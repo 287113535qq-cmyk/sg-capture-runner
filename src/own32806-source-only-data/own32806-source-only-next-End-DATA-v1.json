@@ -1,0 +1,149 @@
+{
+  "schema": "own32806-source-only-next-End-DATA-v1",
+  "gameId": "32806",
+  "dbName": "sg_spartacus_prt",
+  "runtimeGameId": 33166,
+  "nativeHeaderGameID": "20128",
+  "sourceApp": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+  "sourceExistingReference": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32806-original-SGI-native-preparation-20261017/v1-existing-own-cache-and-declared-input-gap/own32806-original-SGI-native-preparation-v1.json",
+  "newLeaves": {
+    "GoToBonus": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 797400,
+      "windowBytes": 2500,
+      "marker": "GoToBonusCmd.prototype.execute =",
+      "owner": "sgigame.GoToBonusCmd.execute",
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            var logicResponse = this._server.getLogicResponse();\n            if (this.isFreeGame() && !logicResponse.fsData.freeSpinEnd) {\n                if (this._autoPlayModel.isInProgress()) {\n                    this._autoPlayModel.stop();\n                }\n                if (logicResponse.fsData.firstSpin) {\n                    this._eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.FS_TRIGGER_STARTED));\n                    TweenMax.delayedCall(1, function () {\n                        _this._statesModel.changeStateByName(sgigame.BaseGameStates.FREESPIN_ENTER_STATE);\n                    });\n                }\n                else if (logicResponse.fsData.lastFreeSpin === \"Y\") {\n                    this._cyclers.stopCyclers();\n                    logicResponse.fsData.freeSpinEnd = true;\n                    this._statesModel.changeStateByName(sgigame.BaseGameStates.FS_SHOW_CONGRATS_STATE);\n                }\n                else {\n                    this._eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.FS_UPDATE_METERS));\n                    this._statesModel.changeStateByName(sgigame.BaseGameStates.LOGIC_GLS_STATE);\n                }\n            }\n            else {\n                if (!this._history.getIsHistoryReplay()) {\n                    this._statesModel.changeStateByName(sgigame.BaseGameStates.END_GLS_STATE);\n                }\n            }\n        }",
+      "SHA256": "55410081fe55ad067c52210dad241991574e1551bd4c1f0a246f7ff1934c9cfc"
+    },
+    "IsFreeGame": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 798920,
+      "windowBytes": 800,
+      "marker": "GoToBonusCmd.prototype.isFreeGame =",
+      "owner": "sgigame.GoToBonusCmd.isFreeGame",
+      "source": "function () {\n            var logicResponse = this._server.getLogicResponse();\n            if (logicResponse.fsData !== null && logicResponse.fsData !== undefined) {\n                return true;\n            }\n            return false;\n        }",
+      "SHA256": "442357282eef42175dcb101b6b4e355447b69e742b783d601eefc175a36c707d"
+    },
+    "MakeLogic": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 376500,
+      "windowBytes": 1650,
+      "marker": "MakeLogicRequestCmd.prototype.execute =",
+      "owner": "sgigame.MakeLogicRequestCmd.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            sgigame.GameModels.onError = false;\n            var encoders = [\n                this.getStakeEncode(),\n                new server.GLSCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier),\n            ];\n            if (this._statesModel.getCurrentState().stateName == sgigame.PreGameStates.RECOVERY_STATE) {\n                var data = new server.GLSRequest(encoders);\n                this._server.makeLogicRequest(data);\n            }\n            else {\n                var history = this._history.getNextState();\n                if (history) {\n                    encoders.push(new sgigame.HistoryReplaceEncoder(history));\n                }\n                if (this._forceModel.forceSet) {\n                    var forceEncoder = new sgigame.ForceEncoder(this._forceModel.reelData ? this._forceModel.reelData.positions : [0, 0, 0, 0, 0], this._forceModel.colreelData ? this._forceModel.colreelData.positions : [0, 0, 0, 0, 0], this._forceModel.reelData ? this._forceModel.reelData.index : 0, this._forceModel.colreelData ? this._forceModel.colreelData.index : 0);\n                    encoders.push(forceEncoder);\n                }\n                this._forceModel.forceSet = false;\n                var data = new server.GLSRequest(encoders);\n                this._server.makeLogicRequest(data);\n            }\n        }",
+      "SHA256": "8f997c474b451e07a5751dc9f169230a54a4b4cc80a8af2967fb3c0629b87b9e"
+    },
+    "CurrentStakeEncoder": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 377980,
+      "windowBytes": 500,
+      "marker": "MakeLogicRequestCmd.prototype.getStakeEncode =",
+      "owner": "sgigame.MakeLogicRequestCmd.getStakeEncode",
+      "source": "function () {\n            // return new StakeEncoder(this._bet.getTotalBet(), this._betController.getCurrentBet().getBetMultiplier(), this._paylinecountController.getCurrentLine() );\n            return new sgigame.StakeEncoder(this._betController.getCurrentBet().getTotalBet(), this._paylinecountController.getCurrentLine());\n        }",
+      "SHA256": "9e63d00b34d43d4665137e2ca1861b42b81b2803e78751234d123470d2da0804"
+    },
+    "StakeEncoder": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 674870,
+      "windowBytes": 1000,
+      "marker": "StakeEncoder.prototype.parse =",
+      "owner": "sgigame.StakeEncoder.parse",
+      "source": "function () {\n            /* var xmlStr: string = \"<WagerInfo\";\n             xmlStr += \" totalbet=\\\"\" + this._totalbet.toString() +\"\\\"\";\n             xmlStr += \" betper2line=\\\"\" + this._betper2line.toString() + \"\\\"\";\n             xmlStr += \" paylineCount=\\\"\" + this._paylineCount.toString() + \"\\\"\";\n             xmlStr += \"/>\"; */\n            var xmlStr = \"<WagerInfo\";\n            xmlStr += \" totalStake=\\\"\" + this._betper2line.toString() + \"\\\"\";\n            xmlStr += \" paylineCount=\\\"\" + this._paylineCount.toString() + \"\\\"\";\n            xmlStr += \"/>\";\n            return xmlStr;\n        }",
+      "SHA256": "b27400aba9912ad6d13e2913c3a45c04ba12667c17a2a056b3063bfd8485b946"
+    },
+    "MakeEnd": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 373990,
+      "windowBytes": 430,
+      "marker": "MakeEndRequestCmd.prototype.execute =",
+      "owner": "sgigame.MakeEndRequestCmd.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._partnerAdapter.finishedPlay();\n            this._partnerAdapter.finishedPostGameAnimations();\n            if (!this._history.getIsHistoryReplay()) {\n                this._server.makeEndRequest(new server.GLSRequest([]));\n            }\n        }",
+      "SHA256": "9ff891c2f1c9c07c8a546f6bbf828ae0f1a12893a2ca560a62235e783f5e6590"
+    },
+    "HandleEnd": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 803960,
+      "windowBytes": 1250,
+      "marker": "HandleEndGameCmd.prototype.execute =",
+      "owner": "sgigame.HandleEndGameCmd.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._partnerAdapter.receivedGameLogicResponse(this._serverModel.getEndResquester().getRequestObject());\n            var goToNextState = false;\n            var logicResponse = this._serverModel.getLogicResponse();\n            if (this._autoplayModel.isInProgress()) {\n                this._autoplayModel.updateWinAndStake(logicResponse.baseGameData.totalWagerWin, this._betController.getCurrentBet().getTotalBet());\n                goToNextState = !this._autoplayModel.doNextAutoplay();\n            }\n            else {\n                goToNextState = true;\n            }\n            if (goToNextState) {\n                this._statesModel.gotoNextState();\n            }\n            //this._audio.getSound(AudioBundle.BBSpinsLoop.name).stop();\n            //this._bbStakes.setIsBigBet(false);\n        }",
+      "SHA256": "cf86476432df51252d3002f6a7b5eb578a78ec43e98f9473d35ec8549529e514"
+    },
+    "BaseGameParser": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 381820,
+      "windowBytes": 1050,
+      "marker": "BaseGameParser.prototype.parse =",
+      "owner": "sgigame.BaseGameParser.parse",
+      "source": "function (input, object) {\n            var data = new sgigame.BaseGameData();\n            var node = input.getElementsByTagName(\"GameWinInfo\")[0];\n            if (node != null) {\n                var attributes = node.attributes;\n                var nodeChildren = node.childNodes;\n                data.totalWagerWin = parseInt(attributes.getNamedItem(\"totalWagerWin\").value);\n                data.totalBaseGameWin = parseInt(attributes.getNamedItem(\"totalBGWin\").value);\n                data.totalFreeGameWin = parseInt(attributes.getNamedItem(\"totalFSWin\").value);\n                data.maxWinValue = parseInt(attributes.getNamedItem(\"maxWinValue\").value);\n                data.isMaxWin = attributes.getNamedItem(\"isMaxWin\").value === \"Y\";\n            }\n            object.baseGameData = data;\n        }",
+      "SHA256": "c877a58a5addf81865bf473f61575070abb640cb289bff0527f508221ad96579"
+    },
+    "FreespinParser": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 389100,
+      "windowBytes": 1900,
+      "marker": "FreespinParser.prototype.parse =",
+      "owner": "sgigame.FreespinParser.parse",
+      "source": "function (input, object) {\n            var data;\n            var node = input.getElementsByTagName(\"Feature\")[0];\n            if (node != null) {\n                var attributesName = node.attributes;\n                if (attributesName.getNamedItem(\"name\") || attributesName.getNamedItem(\"name\").value.toLowerCase() === \"freegame\") {\n                    data = new sgigame.FsData();\n                    var attributes = node.attributes;\n                    var nodeChildren = node.childNodes;\n                    if (nodeChildren[0].attributes.length < 6) {\n                        data.firstSpin = true;\n                        data.fsWinnings = parseInt(nodeChildren[0].attributes.getNamedItem(\"freeSpinTriggerWin\").value);\n                    }\n                    else {\n                        data.firstSpin = false;\n                        data.fsWinnings = parseInt(nodeChildren[0].attributes.getNamedItem(\"freeSpinReTriggerWin\").value);\n                    }\n                    data.freeSpinsTotal = parseInt(nodeChildren[0].attributes.getNamedItem(\"totalFreeSpinsTriggered\").value);\n                    data.freeSpinNumber = parseInt(nodeChildren[0].attributes.getNamedItem(\"remainingFreeSpins\").value);\n                    data.extraFreeSpinsAwarded = parseInt(nodeChildren[0].attributes.getNamedItem(\"freeSpinsReTriggered\").value);\n                    data.lastFreeSpin = nodeChildren[0].attributes.getNamedItem(\"lastFreeSpin\").value;\n                    data.freeSpinEnd = false;\n                }\n            }\n            object.fsData = data;\n        }",
+      "SHA256": "9780c0358fffc7ee6928fb769b63fd35cf88b3d5f35cc9c2098e5778235007da"
+    },
+    "HandleMaxWin": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 541510,
+      "windowBytes": 1850,
+      "marker": "HandleMaxWinCmd.prototype.execute =",
+      "owner": "sgigame.HandleMaxWinCmd.execute",
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            if (this._serverModel.getLogicResponse().baseGameData.isMaxWin) {\n                this.stopAudioLoops();\n                console.log(\"IS MAX WIN YAYYYY\");\n                if (this._spinTypeModel.isCurrentSpinFS()) {\n                    //this._subgamesModel.crossFadeView(this._subgamesModel.basegameLayer);\n                    TweenMax.delayedCall(0.5, function () {\n                        _this.addCongrats();\n                        _this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.MAX_WIN_DISPLAYED));\n                    }, [], this);\n                    TweenMax.delayedCall(8, function () {\n                        _this._statesModel.changeSubGame(sgigame.SubGames.BASE_GAME, sgigame.BaseGameStates.END_GLS_STATE);\n                        _this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.MAX_WIN_COMPLETE));\n                    }, [], this);\n                }\n                else {\n                    this.addCongrats();\n                    this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.MAX_WIN_DISPLAYED));\n                    TweenMax.delayedCall(6, function () {\n                        _this._statesModel.changeStateByName(sgigame.BaseGameStates.END_GLS_STATE);\n                        _this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.MAX_WIN_COMPLETE));\n                    }, [], this);\n                }\n            }\n            else {\n                this._statesModel.gotoNextState();\n            }\n        }",
+      "SHA256": "0bcb7f4a60a422c7b06df6ab60a45946410f514edbc73ae22aa74eac9d6039bc"
+    },
+    "HistoryReplay": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 536990,
+      "windowBytes": 260,
+      "marker": "HistoryModel.prototype.getIsHistoryReplay =",
+      "owner": "sgigame.HistoryModel.getIsHistoryReplay",
+      "source": "function () {\n            return this._url.queryData('HistoryServerURL') != null;\n        }",
+      "SHA256": "e781ef787563010ea17bc228ae540e61ca3e00a0d58d69607b71ff705ae58550"
+    },
+    "FsReturn": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 807570,
+      "windowBytes": 1180,
+      "marker": "HandleFsReturnCmd.prototype.execute =",
+      "owner": "sgigame.HandleFsReturnCmd.execute",
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            var logicResponse = this._server.getLogicResponse();\n            TweenMax.delayedCall(0.2, function () {\n                // this._audio.getSound(AudioBundle.BBSpinsLoop.name).loop(true).play();\n                _this._statesModel.gotoNextState();\n            }, [], this);\n            /*if (this._server.getLogicResponse().baseGameData.baseGameSpinsRemaining > 0) {\n                TweenMax.delayedCall(4, () => {\n                   // this._audio.getSound(AudioBundle.BBSpinsLoop.name).loop(true).play();\n                    this._statesModel.gotoNextState();\n                }, [], this);\n            }\n            else {\n                TweenMax.delayedCall(1, () => {\n                    this._statesModel.changeStateByName(BaseGameStates.END_GLS_STATE);\n                }, [], this);\n            }  */\n        }",
+      "SHA256": "26b5ee9db09b739de9edccbc44668de5fdadcd708ca5ba1c1042df69e7f5b170"
+    },
+    "GetParsers": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 416500,
+      "windowBytes": 1100,
+      "marker": "LogicResponse.prototype.getParsers =",
+      "owner": "sgigame.LogicResponse.getParsers",
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new server.GLSPlatformParser(),\n                new sgigame.GameResultParser(),\n                new sgigame.ReelResultParser(),\n                new sgigame.BaseGameParser(),\n                new sgigame.FreespinParser(),\n                new sgigame.FeatureParser(),\n                new sgigame.ClumpParser(),\n                new sgigame.WildReelsParser(),\n                new sgigame.TrailParser(),\n                new sgigame.PayloadParser()\n            ];\n        }",
+      "SHA256": "7f92f4b9cc45a2978aebb289f1c94f8635edb4c7e323a4d15ffe12ab50f82f0b"
+    }
+  },
+  "realFaultPrefix": {
+    "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/live-lane7-own-two-pair-prefix-v1012/actual-source-rows-private.jsonl",
+    "retainedSHA256": "a1815ad26048c75c3ab1735381076ff731b0518352e2b5dfd1fd97daa34a39b2",
+    "onlyCurrentLogicOrdinal": 2,
+    "actualSDKReplayOrOldHashRepeated": false
+  },
+  "originalBudgetFault": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/actual-source-closure-repair-needed-v1027.json",
+  "stageGraph": {
+    "normal": "LogicGLS -> STOP_REELS -> FS_CHECK_RETRIGGER -> SHOW_PAYLINE_STACK -> HANDLE_MAX_WIN -> SHOW_PAYLINE_WINS -> GO_TO_BONUS",
+    "FreeFirst": "GoToBonus firstSpin -> FREESPIN_ENTER -> LOGIC_GLS",
+    "FreeContinue": "GoToBonus !freeSpinEnd&&!firstSpin&&lastFreeSpin!=Y -> LOGIC_GLS",
+    "FreeLast": "GoToBonus lastFreeSpinY writes freeSpinEnd=true -> FS_SHOW_CONGRATS -> FS_COMPLETE -> CONTINUE_PAYLINE_WINS -> HANDLE_MAX_WIN -> SHOW_PAYLINE_WINS -> GO_TO_BONUS -> END_GLS",
+    "MAX": "HandleMaxWin true, base and FS both select END_GLS after local presentation; no callbacks generated by DATA projection",
+    "End": "MakeEndRequestCmd -> server.makeEndRequest(new server.GLSRequest([])); actual ACK remains original owner"
+  },
+  "constraints": [
+    "Only original normal no-history/no-recovery route; raw parser fields and original native controller request values required.",
+    "No native host, clocks, render callbacks, RootPaint, source sampling or DB access.",
+    "Source graph projection is not observed native actor or End completion. Actual HTTP End and original AG money/finite-loop qualification remain A."
+  ],
+  "oldCertificatesReusedNotRerun": true
+}

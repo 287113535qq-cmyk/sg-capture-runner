@@ -1,0 +1,318 @@
+{
+  "schema": "own32806-source-only-Init-config-query-wire-DATA-v1",
+  "gameId": "32806",
+  "dbName": "sg_spartacus_prt",
+  "runtimeGameId": 33166,
+  "nativeHeaderGameID": "20128",
+  "ownSourceApp": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+  "ownSourceLib": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+  "newLeaves": {
+    "PlatformParser": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 497577,
+      "windowBytes": 1379,
+      "marker": "GLSPlatformParser.prototype.parse",
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var data = new server.PlatformData();\n            if (node != null) {\n                var attr = node.attributes;\n                var attrLength = attr.length;\n                for (var i = 0; i < attrLength; ++i) {\n                    switch (attr[i].nodeName) {\n                        case 'sessionID':\n                            data.sessionId = attr[i].nodeValue;\n                            break;\n                        case 'gameID':\n                            data.gameId = attr[i].nodeValue;\n                            break;\n                        case 'lang':\n                            data.languageCode = attr[i].nodeValue;\n                            break;\n                        case 'versionID':\n                            data.version = attr[i].nodeValue;\n                            break;\n                    }\n                }\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\n                if (currencyMultiplierNode != null) {\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\n                }\n                else {\n                    data.currencyMultiplier = 1;\n                }\n            }\n            object.platformData = data;\n        }",
+      "SHA256": "c567c70e5453ace22c24540e921369ba8624fa92f5f24bbe7e5b4e3756ae6f88"
+    },
+    "WireProperties": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 508384,
+      "windowBytes": 318,
+      "marker": "GLSRequester.prototype.setProperties",
+      "source": "function (url, glmId, glmVersion, metaData, partnerAdapter, sessionId) {\n            this._url = url;\n            this._glmId = glmId;\n            this._glmVersion = glmVersion;\n            this._metaData = metaData;\n            this._partnerAdapter = partnerAdapter;\n            this._sessionId = sessionId;\n        }",
+      "SHA256": "1bc233c4609db3df27faafb3e4d526ffe6727725c84e9895372a532fc0d668f2"
+    },
+    "WirePOST": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 510532,
+      "windowBytes": 95,
+      "marker": "GLSRequester.prototype.makeRequest",
+      "source": "function (data) {\n            this.doRequest(this.parseRequestData(data), this._url);\n        }",
+      "SHA256": "1b57bd833e79d7932a41b5520feb666d3eed8aaad330163a9b85290845c13ff6"
+    },
+    "LogicWire": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 517468,
+      "windowBytes": 534,
+      "marker": "GLSLogicRequester.prototype.parseRequestData",
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Logic\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "d1a1d82bed5eede03fa4fc11bfef4405fcc64446abca68bf9b0a08d51b37d9a3"
+    },
+    "EndWire": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 513554,
+      "windowBytes": 536,
+      "marker": "GLSEndRequester.prototype.parseRequestData",
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"EndGame\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "46bdd8d515061709bc9621ebd774900384fd3717c2e764e484e0fea6c89a0052"
+    },
+    "InitWire": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 515509,
+      "windowBytes": 533,
+      "marker": "GLSInitRequester.prototype.parseRequestData",
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Init\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "e059ae4fe763a7827929a9afb7b8697486260045faf9d92f73766aaf6a5a4be1"
+    },
+    "PayLineParser": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 396216,
+      "windowBytes": 649,
+      "marker": "PayLineCountParser.prototype.parse",
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Stakes\");\n            var data = new sgigame.PayLineCountInfo();\n            var lineCount = [];\n            if (node != null) {\n                data.setDefaultIndex(node.length - 1);\n                for (var i = 0; i < node.length; i++) {\n                    var attributes = node[i].attributes;\n                    var line = parseInt(node[i].attributes.getNamedItem(\"paylineCount\").value, 10);\n                    lineCount.push(line);\n                }\n                data.setLineCounts(lineCount);\n            }\n            object.payLineCountInfo = data;\n        }",
+      "SHA256": "abe6689fdbadc2784956682d110965a043429cde13af775b598e4ee8b1d1c4d2"
+    },
+    "BetParser": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 383349,
+      "windowBytes": 998,
+      "marker": "BetParser.prototype.parse",
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Stakes\");\n            var data = new sgigame.BetInfo();\n            var availableBetsArray = [];\n            var lines = [];\n            if (node != null) {\n                for (var i = 0; i < node.length; i++) {\n                    var attributes = node[i].attributes;\n                    availableBetsArray.push(node[i].textContent.split(\"|\").map(Number));\n                    var line = parseInt(node[i].attributes.getNamedItem(\"paylineCount\").value, 10);\n                    lines.push(line);\n                }\n                data.setAvailableBetArray(availableBetsArray);\n                data.setLines(lines);\n                data.setLineIndex(parseInt(node[lines.length - 1].attributes.getNamedItem(\"paylineCount\").value, 10));\n                data.setDefaultIndex(parseInt(node[lines.length - 1].attributes.getNamedItem(\"defaultIndex\").value, 10));\n            }\n            object.multibetData = data;\n        }",
+      "SHA256": "d7568247c414fd44dbcb758ff20a7b8858a695f9adb517539d1afe8b10e38f65"
+    },
+    "GLSHeader": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 477409,
+      "windowBytes": 2605,
+      "marker": "var GLSHeader = (function",
+      "source": "var GLSHeader = (function () {\n        /**\n         * Creates a new GLSHeader\n         * @param metadata Partneradapter metadata that we can get data from\n         * @param sessionData Partneradapter sessiondata that we can get data from\n         * @param glsServerSessionId The current session id form the GLS\n         * @param gameId GLM numbered game code\n         * @param gameVersion GLM version\n         */\n        function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\n            /**\n             * ID of casinarena's GLS\n             */\n            this.GLSID_CASINARENA = \"4\";\n            /**\n             * ID of freeplay's GLS\n             */\n            this.GLSID_FREEPLAY = \"65535\";\n            this.affiliate = sessionData.getContextID();\n            this.freePlay = !metadata.isRealMoney();\n            this.gameCodeRGI = metadata.getGameCode();\n            this.gameId = gameId;\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\n            this.langCode = metadata.getLocale();\n            this.sessionId = glsServerSessionId;\n            this.userId = sessionData.getPlayerID();\n            this.version = gameVersion;\n            this.promotions = false;\n            this.channel = \"I\";\n            this.userType = \"C\";\n            this.currencyCode = \"\";\n        }\n        /**\n         * Converts the data to an xml string to be sent to the GLS\n         */\n        GLSHeader.prototype.parse = function () {\n            var xmlString = \"\"; //\"<GameRequest type=\\\"Init\\\">\"\n            xmlString += \"<Header\";\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\n            xmlString += \"/>\";\n            //xmlString += \"</GameRequest>\"\n            return xmlString;\n        };\n        return GLSHeader;\n    })();",
+      "SHA256": "df598ff14cd4142202bde9acdbf78c3f482e5e91f7ca15b96e4ed2b80ef21ae3"
+    },
+    "GLSCurrencyEncoder": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 483317,
+      "windowBytes": 677,
+      "marker": "var GLSCurrencyEncoder = (function",
+      "source": "var GLSCurrencyEncoder = (function () {\n        /**\n         * Creates a new GLSCurrencyEncoder object\n         * @param currencyMultiplier Currency multiplier from CA\n         */\n        function GLSCurrencyEncoder(currencyMultiplier) {\n            this._currencyMultiplier = currencyMultiplier;\n        }\n        /**\n         * @inheritdoc\n         */\n        GLSCurrencyEncoder.prototype.parse = function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        };\n        return GLSCurrencyEncoder;\n    })();",
+      "SHA256": "bb20b69f6859978d38923cca49980609e419f4b0bf9d1e65ce1883853f81bf43"
+    },
+    "GLSRequest": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 482641,
+      "windowBytes": 448,
+      "marker": "var GLSRequest = (function",
+      "source": "var GLSRequest = (function () {\n        /**\n         * Creates a new GLSRequest object\n         * @param encoders List of encoders to format data to xml strings\n         */\n        function GLSRequest(encoders) {\n            this._encoders = encoders;\n        }\n        /**\n         * @inheritdoc\n         */\n        GLSRequest.prototype.getEncoders = function () {\n            return this._encoders;\n        };\n        return GLSRequest;\n    })();",
+      "SHA256": "139cecdae6772cffb1590734cd36ff88da4643c084673abc448bfca9796c21d7"
+    },
+    "BetData": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 453494,
+      "windowBytes": 1051,
+      "marker": "var BetData = (function",
+      "source": "var BetData = (function () {\n        function BetData() {\n            /**\n             * List of bet's available\n             */\n            this.availableBets = [1];\n            /**\n             * Index of the bet that should be selected by default\n             */\n            this.defaultBetIndex = 0;\n        }\n        /**\n         * Set the default bet index\n         */\n        BetData.prototype.setDefaultIndex = function (index) {\n            this.defaultBetIndex = index;\n        };\n        /**\n         * Get the default bet index\n         */\n        BetData.prototype.getDefaultIndex = function () {\n            return this.defaultBetIndex;\n        };\n        /**\n         * Set the list of bet's available\n         */\n        BetData.prototype.setAvailableBets = function (bets) {\n            this.availableBets = bets;\n        };\n        /**\n         * Get the list of bet's available\n         */\n        BetData.prototype.getAvailableBets = function () {\n            return this.availableBets;\n        };\n        return BetData;\n    })();",
+      "SHA256": "aaa5c279611137ed6cd0d5d089fa5b32487b5bb6c934da2597ba3c39adbf87f3"
+    },
+    "URLParts": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 682226,
+      "windowBytes": 385,
+      "marker": "var URLParts = (function",
+      "source": "var URLParts = (function () {\n        function URLParts() {\n        }\n        URLParts.URL = 0;\n        URLParts.PROTOCOL = 1;\n        URLParts.USERINFO = 2;\n        URLParts.DOMAIN = 3;\n        URLParts.PORT = 4;\n        URLParts.PATH = 5;\n        URLParts.PAGE = 6;\n        URLParts.EXT = 7;\n        URLParts.QUERY = 8;\n        URLParts.ANCHOR = 9;\n        return URLParts;\n    })();",
+      "SHA256": "6ab26c895e7bde746b26557b11dc6674a2eeefd573575868461f4c503906168a"
+    },
+    "URL": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 682748,
+      "windowBytes": 3551,
+      "marker": "var URL = (function",
+      "source": "var URL = (function () {\n        /**\n         * @constructor\n         * @param {string} url The full URL path\n         */\n        function URL(url) {\n            /**\n             * URL regex 1.2\n             * http://someweblog.com/url-regular-expression-javascript-link-shortener/\n             */\n            this.regex = /\\(?(?:(http|https|ftp):\\/\\/)?(?:((?:[^\\W\\s]|\\.|-|[:]{1})+)@{1})?((?:www.)?(?:[^\\W\\s]|\\.|-)+[\\.][^\\W\\s]{2,4}|localhost(?=\\/|:)|\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|(?=\\/|[^\\W\\s])+)(?::(\\d*))?([\\/]?[^\\s\\?]*[\\/]{1})*(?:\\/?([^\\s\\n\\?\\[\\]\\{\\}\\#]*(?:(?=\\.)){1}|[^\\s\\n\\?\\[\\]\\{\\}\\.\\#]*)?([\\.]{1}[^\\s\\?\\#]*)?)?(?:\\?{1}([^\\s\\n\\#\\[\\]]*))?([\\#][^\\s\\n]*)?\\)?/;\n            /**\n             * Query string regex\n             */\n            this.query = /([^?=&]+)(=([^&]*))?/g;\n            /**\n            * Entire URL – url being parsed\n            */\n            this.url = \"\";\n            /**\n             * Protocol – http, https, ftp\n             */\n            this.protocol = \"\";\n            /**\n             * Userinfo – username:password\n             */\n            this.userinfo = \"\";\n            /**\n             * Domain – www.mydomain.com, mydomain.com, 127.0.0.1, localhost…\n             */\n            this.domain = \"\";\n            /**\n             * Port – 80\n             */\n            this.port = 0;\n            /**\n             * Path / Folders – /folder/dir/\n             */\n            this.pathname = \"\";\n            /**\n             * Page / Filename – eg. index\n             */\n            this.basename = \"\";\n            /**\n             * File extension – .html, .php…\n             */\n            this.extension = \"\";\n            /**\n             * filename + extension - index.html, image.png\n             */\n            this.fullname = \"\";\n            /**\n             * Query string – item=value&item2=value2\n             */\n            this.querystring = \"\";\n            /**\n             * Query object - {item: value, item2: value2}\n             */\n            this.querydata = {};\n            /**\n             * Anchor – #home\n             */\n            this.anchor = \"\";\n            this.url = url;\n            var result = url.match(this.regex);\n            if (result) {\n                this.url = result[URLParts.URL] || \"\";\n                this.protocol = result[URLParts.PROTOCOL] || \"\";\n                this.userinfo = result[URLParts.USERINFO] || \"\";\n                this.domain = result[URLParts.DOMAIN] || \"\";\n                this.port = parseInt(result[URLParts.PORT] || \"0\");\n                this.pathname = result[URLParts.PATH] || \"\";\n                this.basename = result[URLParts.PAGE] || \"\";\n                this.extension = result[URLParts.EXT] || \"\";\n                this.fullname = this.basename + this.extension;\n                this.querystring = result[URLParts.QUERY] || \"\";\n                this.anchor = result[URLParts.ANCHOR] || \"\";\n                this.parseQuery();\n            }\n        }\n        /**\n         * Parse the query string into an object\n         */\n        URL.prototype.parseQuery = function () {\n            var _this = this;\n            this.querystring.replace(this.query, function ($0, $1, $2, $3) {\n                _this.querydata[$1] = $3;\n                return $0;\n            });\n        };\n        /**\n         * Returns the url parameter data\n         * @param data the parameter name\n         */\n        URL.prototype.queryData = function (data) {\n            return this.querydata[data];\n        };\n        return URL;\n    })();",
+      "SHA256": "c9d01ce2a7caa65cc508eddfaaab1a00a95ff8e08d4e24346e59c74f0794360d"
+    },
+    "BetInfo": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 658247,
+      "windowBytes": 1218,
+      "marker": "var BetInfo = (function",
+      "source": "var BetInfo = (function (_super) {\n        __extends(BetInfo, _super);\n        function BetInfo() {\n            _super.apply(this, arguments);\n            this.lines = [];\n            this.linesIndex = 0;\n            this.availableBetsArray = [];\n        }\n        /**\n         * Set paylines Array\n         */\n        BetInfo.prototype.setLines = function (lines) {\n            this.lines = lines;\n        };\n        /**\n         * Set paylines Array\n         */\n        BetInfo.prototype.getLines = function () {\n            return this.lines;\n        };\n        /**\n         * Set availableBetsArray Array\n         */\n        BetInfo.prototype.setAvailableBetArray = function (availableBetsArray) {\n            this.availableBetsArray = availableBetsArray;\n        };\n        /**\n         * Set paylines Array\n         */\n        BetInfo.prototype.getAvailableBetArray = function () {\n            return this.availableBetsArray;\n        };\n        BetInfo.prototype.setLineIndex = function (line) {\n            this.linesIndex = this.lines.indexOf(line);\n        };\n        BetInfo.prototype.getLineIndex = function () {\n            return this.linesIndex;\n        };\n        return BetInfo;\n    }(server.BetData));",
+      "SHA256": "af8456df3eb1c368893e25a3b17ff161975338b6e7143a99d16f5800cb4355dc"
+    },
+    "Bet": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 657387,
+      "windowBytes": 624,
+      "marker": "var Bet = (function",
+      "source": "var Bet = (function () {\n        function Bet(totalBet, betMultiplier) {\n            if (totalBet === void 0) { totalBet = 0; }\n            if (betMultiplier === void 0) { betMultiplier = 0; }\n            this.totalBet = totalBet;\n            this.betMultiplier = betMultiplier;\n        }\n        /**\n         * get the betMultiplier\n         */\n        Bet.prototype.getBetMultiplier = function () {\n            return this.betMultiplier;\n        };\n        /**\n         * Get total bet\n         */\n        Bet.prototype.getTotalBet = function () {\n            return this.totalBet;\n        };\n        return Bet;\n    }());",
+      "SHA256": "40e82334eded1bc0678746b9fad64f066b1b21b08d280f45590804d5f355cfe9"
+    },
+    "PayLineCountInfo": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 669617,
+      "windowBytes": 805,
+      "marker": "var PayLineCountInfo = (function",
+      "source": "var PayLineCountInfo = (function () {\n        function PayLineCountInfo() {\n            /**\n             * credit bet value\n             */\n            this.defaultIndex = 0;\n        }\n        /**\n         * Set the credit bet\n         */\n        PayLineCountInfo.prototype.setDefaultIndex = function (index) {\n            this.defaultIndex = index;\n        };\n        PayLineCountInfo.prototype.setLineCounts = function (values) {\n            this.lineCounts = values;\n        };\n        /**\n         * Get the credit bet\n         */\n        PayLineCountInfo.prototype.getDefaultIndex = function () {\n            return this.defaultIndex;\n        };\n        PayLineCountInfo.prototype.getLinecounts = function () {\n            return this.lineCounts;\n        };\n        return PayLineCountInfo;\n    }());",
+      "SHA256": "9573f14364ad478b208262f88aae921c96ab513a6fda05ff125d667c2140b474"
+    },
+    "BetSetData": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 97597,
+      "windowBytes": 646,
+      "marker": "BetController.prototype.setData",
+      "source": "function (betData) {\n            this.defaultBetIndex = this.currentBetIndex = betData.getDefaultIndex();\n            var betDatas = betData.getAvailableBetArray();\n            this.bets = [];\n            var lineCount;\n            for (var i = 0; i < betDatas.length; i++) {\n                lineCount = this._paylinecountController.getLines()[i] / 2;\n                this.bets[i] = [];\n                for (var j = 0; j < betDatas[i].length; j++) {\n                    var betMultiplier = betDatas[i][j] / lineCount;\n                    this.bets[i].push(new sgigame.Bet(betDatas[i][j], betMultiplier));\n                }\n            }\n        }",
+      "SHA256": "1951489d3e6e01ce324adc045b66dcd0e5fc086bbd0231ae7189a05401b48f19"
+    },
+    "BetGetCurrent": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 99672,
+      "windowBytes": 103,
+      "marker": "BetController.prototype.getCurrentBet",
+      "source": "function () {\n            return this.bets[this.getCurrentLineIndex()][this.currentBetIndex];\n        }",
+      "SHA256": "4240faf6c749da5bc5906da8d3f0903e90b07c460d8bef79028e6d8e9ea2d48f"
+    },
+    "BetSetIndex": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 100553,
+      "windowBytes": 160,
+      "marker": "BetController.prototype.setBetIndex",
+      "source": "function (index) {\n            if (index < this.bets[this.getCurrentLineIndex()].length) {\n                this.currentBetIndex = index;\n            }\n        }",
+      "SHA256": "2894f508c962dd9b2f064832e32862720588afff6d1706f42f3d5230ab1fc7ba"
+    },
+    "BetGetLineIndex": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 101380,
+      "windowBytes": 94,
+      "marker": "BetController.prototype.getCurrentLineIndex",
+      "source": "function () {\n            return this._paylinecountController.getCurrentLineIndex();\n        }",
+      "SHA256": "cd907dd9648d833e73491947af77b9ddd68ceb722e0913af334b7895547becce"
+    },
+    "LineSetData": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 294839,
+      "windowBytes": 192,
+      "marker": "PayLineCountController.prototype.setData",
+      "source": "function (lineData, defaultLineIndex) {\n            this.defaultLineIndex = defaultLineIndex;\n            this.lines = lineData;\n            this.currentLineIndex = defaultLineIndex;\n        }",
+      "SHA256": "6bf26cce256b0190ebf468c0812d79a22ae38e34c11ddb56851c2c98294f430f"
+    },
+    "LineGetCurrent": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 296888,
+      "windowBytes": 77,
+      "marker": "PayLineCountController.prototype.getCurrentLine",
+      "source": "function () {\n            return this.lines[this.currentLineIndex];\n        }",
+      "SHA256": "716cf4a593abf9170cf836788fb02c3f8a5794c51a865f6f02f6952a545b76f8"
+    },
+    "LineSetIndex": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 295096,
+      "windowBytes": 118,
+      "marker": "PayLineCountController.prototype.setCurrentLineIndex",
+      "source": "function (index) {\n            if (index < this.lines.length)\n                this.currentLineIndex = index;\n        }",
+      "SHA256": "a7ea994881e61a85befd383eb9bbdae676d9b8f25ed4957689a713b3d5557770"
+    },
+    "LineGetIndex": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 298298,
+      "windowBytes": 65,
+      "marker": "PayLineCountController.prototype.getCurrentLineIndex",
+      "source": "function () {\n            return this.currentLineIndex;\n        }",
+      "SHA256": "da6404de26a221e5d1ef1881cda798b1c407a43a0a94ff64396570397826202b"
+    },
+    "OwnInitHTTP": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 419608,
+      "windowBytes": 1000,
+      "marker": "GLSInitRequester.prototype.doRequest",
+      "source": "function (xmlStr, url) {\n            var request = new XMLHttpRequest();\n            request.onloadend = this.onResponse.bind(this);\n            request.ontimeout = this.onTimeout.bind(this);\n            request.open(\"POST\", url, true);\n            request.timeout = this._timeout;\n            request.setRequestHeader(\"Content-Type\", \"text/xml\");\n            if (this._promoInfo != undefined) {\n                var promoXmlStr = \"<CAMPAIGNID>\";\n                promoXmlStr += this._promoInfo.getCampaignId() + \"</CAMPAIGNID>\";\n                promoXmlStr += \"<ACTIVATIONID>\";\n                promoXmlStr += this._promoInfo.getActivationId() + \"</ACTIVATIONID>\";\n                promoXmlStr += \"<STATUS>\";\n                promoXmlStr += this._promoInfo.getstatus() + \"</STATUS>\";\n                promoXmlStr += \"<TYPE>\";\n                promoXmlStr += \"FREEROUND\" + \"</TYPE>\";\n                request.setRequestHeader(\"FR-Info\", promoXmlStr);\n            }\n            request.send(xmlStr);\n        }",
+      "SHA256": "462be3fe3db1aefbfb09b6188e285acbb933bf2ca479c3eccb7b6fd8157dc5a0"
+    },
+    "OwnLogicHTTP": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 421430,
+      "windowBytes": 1012,
+      "marker": "GLSLogicRequester.prototype.doRequest",
+      "source": "function (xmlStr, url) {\n            var request = new XMLHttpRequest();\n            request.onloadend = this.onResponse.bind(this);\n            request.ontimeout = this.onTimeout.bind(this);\n            request.open(\"POST\", url, true);\n            request.timeout = this._timeout;\n            request.setRequestHeader(\"Content-Type\", \"text/xml\");\n            if (this.freeRoundInfo != undefined) {\n                var promoXmlStr = \"<CAMPAIGNID>\";\n                promoXmlStr += this.freeRoundInfo.getCampaignId() + \"</CAMPAIGNID>\";\n                promoXmlStr += \"<ACTIVATIONID>\";\n                promoXmlStr += this.freeRoundInfo.getActivationId() + \"</ACTIVATIONID>\";\n                promoXmlStr += \"<STATUS>\";\n                promoXmlStr += this.freeRoundInfo.getstatus() + \"</STATUS>\";\n                promoXmlStr += \"<TYPE>\";\n                promoXmlStr += \"FREEROUND\" + \"</TYPE>\";\n                request.setRequestHeader(\"FR-Info\", promoXmlStr);\n            }\n            request.send(xmlStr);\n        }",
+      "SHA256": "43a222d3ff6821a01d2c5dc0d0b5c6745399d68811474d4dc383c9e56b4fedd7"
+    },
+    "ServerBindings": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 370923,
+      "windowBytes": 748,
+      "marker": "Logic.prototype.postInject",
+      "source": "function (url, glmId, glmVersion, metaData, partnerAdapter) {\n            this._dragonWingify.makeEventsGlobal(this);\n            this.init(this._metaData.getLogicUrl(), sgigame.GameConfig.glmID.toString(), sgigame.GameConfig.glm_version, this._metaData, this._partnerAdapter);\n            this.dummyInitRequester = new sgigame.GLSInitRequester(sgigame.InitResponse);\n            this.dummyLogicRequester = new sgigame.GLSLogicRequester(sgigame.LogicResponse);\n            var endRequester;\n            endRequester = new server.GLSEndRequester(server.GLSEndResponse);\n            this.setInitRequester(this.dummyInitRequester);\n            this.setLogicRequester(this.dummyLogicRequester);\n            this.setEndRequester(endRequester);\n        }",
+      "SHA256": "f687000fde5ece1ab27433c3d04f8404cdacc26983c83602e733209aef97c1a1"
+    },
+    "InitCommand": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 375159,
+      "windowBytes": 628,
+      "marker": "MakeInitRequestCmd.prototype.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            var encoders = [];\n            if (this._history.getIsHistoryReplay() && !this._server.getInitResponse()) {\n                encoders.push(new sgigame.HistoryReplaceEncoder(this._history.getNextState()));\n                this._history.restart();\n            }\n            if (this._platformModel.promoInfo != undefined) {\n                this._server.getGLSInitResquester().setPromoInfo(this._platformModel.promoInfo);\n            }\n            var initData = new server.GLSRequest(encoders);\n            this._server.makeInitRequest(initData);\n        }",
+      "SHA256": "85a9024396688d34e2661f1da85af37951265cfa23abb243b6801ae9f07e7a8f"
+    },
+    "InitResponseParsers": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 415124,
+      "windowBytes": 792,
+      "marker": "InitResponse.prototype.getParsers",
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new server.GLSBetParser(),\n                new server.GLSReelParser(),\n                new server.GLSPlatformParser(),\n                new server.GLSPaylinesParser(),\n                new server.GLSAwardsParser(),\n                new server.GLSCurrencyParser(),\n                new sgigame.PaylinesParser(),\n                new sgigame.LineOrderParser(),\n                new sgigame.LinesParser(),\n                new sgigame.PayLineCountParser(),\n                new sgigame.BetParser(),\n                new sgigame.RecoveryParser(),\n                new sgigame.PayloadParser(),\n                new sgigame.GameRtpParser(),\n                new sgigame.CurrencyParser(),\n            ];\n        }",
+      "SHA256": "7984c40a91e757291d0ac9dd3b671a98f8de078cd710e5c6b8b275d5fe9db654"
+    },
+    "LineInitBind": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 318535,
+      "windowBytes": 254,
+      "marker": "AddLineDataCmd.prototype.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._paylinecountController.setData(this._server.getInitResponse().payLineCountInfo.getLinecounts(), this._server.getInitResponse().payLineCountInfo.getDefaultIndex());\n        }",
+      "SHA256": "a0d12e265d5783ed4fc88e0d77883113c1a6ea75e0e4a4fc036ba8d841074e32"
+    },
+    "BetInitBind": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 305375,
+      "windowBytes": 523,
+      "marker": "AddBetDataCmd.prototype.execute",
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._betController.setData(this._server.getInitResponse().multibetData);\n            sgigame.Bet.lineCount = this._paylinecountController.getCurrentLine();\n            //this.eventDispatcher.addEventListener(PayLineControllerEvent.PAYLINE_COUNT_CHANGE,this._betController.payLineValue, this);\n            this._eventDispatcher.addEventListener(sgigame.PayLineControllerEvent.PAYLINE_COUNT_CHANGE, this._betController.payLineValue, this);\n        }",
+      "SHA256": "7cb41997cfb3240e536b334e4f773ee10511f80f84dc77f33ff941dba42ba8b5"
+    },
+    "CommonHTTP": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 510735,
+      "windowBytes": 391,
+      "marker": "GLSRequester.prototype.doRequest",
+      "source": "function (xmlStr, url) {\n            var request = new XMLHttpRequest();\n            request.onloadend = this.onResponse.bind(this);\n            request.ontimeout = this.onTimeout.bind(this);\n            request.open(\"POST\", url, true);\n            request.timeout = this._timeout;\n            request.setRequestHeader(\"Content-Type\", \"text/xml\");\n            request.send(xmlStr);\n        }",
+      "SHA256": "33a26a5765b1d279b49e8f7f8352a1c11934b7a7b3b7bf5440991cc120b912b3"
+    },
+    "CurrencyEncode": {
+      "file": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/inputs/nativeSDK/spartacus_prt/lib/game_libs.js",
+      "byteWindowStart": 483716,
+      "windowBytes": 232,
+      "marker": "GLSCurrencyEncoder.prototype.parse",
+      "source": "function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        }",
+      "SHA256": "ed266a1e9596d5ae8b097511f3e701759c6059c0206f564db9481d8e19e5c332"
+    },
+    "LineGetLines": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/spartacus_prt/app/js/main.js",
+      "byteWindowStart": 297189,
+      "windowBytes": 54,
+      "marker": "PayLineCountController.prototype.getLines",
+      "source": "function () {\n            return this.lines;\n        }",
+      "SHA256": "f039e9f0c9a9804195f33c4048887d58f9c93a6a66f03bd39be1bc4341a0a517"
+    }
+  },
+  "reuse": {
+    "sourceOnlyNextEndDATA": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/source-only-next-End-caller-DATA-20261019/own32806-source-only-next-End-DATA-v1.json",
+    "receipt": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/source-only-next-End-caller-DATA-20261019/receipt.json",
+      "bytes": 13889,
+      "SHA256": "87f09efc984756d8ce2378cdc415c611d697888adfd3557a0f797d33c8a94303"
+    },
+    "nativeMenu": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32806-original-SGI-native-source-integration-20261017/program/src/own32806-native-data/own32806-native-menu-selection-v5.cjs"
+  },
+  "constraints": {
+    "sourceProofOnly": true,
+    "SDKBoot": 0,
+    "SDKAST": 0,
+    "SDKWholeHashes": 0,
+    "oldEightGroupsRepeated": 0,
+    "cachedPacketReads": 0,
+    "network": 0,
+    "DB": 0,
+    "newFinalCredit": 0
+  },
+  "strictAdmission": {
+    "currencyMultiplier": "Original GLSPlatformParser uses parseInt(node.textContent,10) if present, else source-defined1. This helper requires a present valid node in same actual Init; no missing-node default is admitted.",
+    "selection": "Explicit actual paid totalStake/paylineCount must match parsed same-Init Stakes matrix. Native defaults are diagnostics, never paid choice authorization.",
+    "headers": "Ordinary non-promo only: caller must explicitly bind promoInfo===null and freeRoundInfo===null; non-null holds and keeps source FR-Info leaf as proof.",
+    "history": "Actual original util.URL queryData semantics, not URLSearchParams decoding. HistoryServerURL!==null/undefined stays hold.",
+    "originalAOwnership": "A binds actual launch/meta/session/paid intent/Init/response/money/token and original transport/ACK. No fake response/end/owner is created."
+  }
+}
