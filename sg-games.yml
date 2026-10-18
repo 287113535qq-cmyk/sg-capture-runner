@@ -17820,3 +17820,32 @@ games:
         total: '200'
       own32802ProtocolDATA:
         contract: own32802-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32804'
+    name: RRMMTD
+    dbName: sg_rrmmtd
+    backendId: rrmmtd
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33164
+      runtimeSlug: rrmmtd
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "rrmmtd"
+        gameID: "20413"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 200
+      stake:
+        total: '200'
+      own32804ProtocolDATA:
+        contract: own32804-original-SG-protocol-private-v1
