@@ -17849,3 +17849,61 @@ games:
         total: '200'
       own32804ProtocolDATA:
         contract: own32804-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32796'
+    name: PharaohsDream
+    dbName: sg_pharaohsdream
+    backendId: pharaohsdream
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33156
+      runtimeSlug: pharaohsdream
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "pharaohsdream"
+        gameID: "20311"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 100
+      stake:
+        total: '100'
+      own32796ProtocolDATA:
+        contract: own32796-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32801'
+    name: RRFreeSpins
+    dbName: sg_rrfreespins
+    backendId: rrfreespins
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: wms
+      runtimeGameId: 33161
+      runtimeSlug: rrfreespins
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: "0"
+        ccyCode: ""
+        channel: "I"
+        freePlay: "Y"
+        gameCodeRGI: "rrfreespins"
+        gameID: "20116"
+        glsID: "65535"
+        lang: "en_US"
+        promotions: "N"
+        userID: "null"
+        userType: "C"
+        versionID: "1_0"
+      betRaw: 200
+      stake:
+        total: '200'
+      own32801ProtocolDATA:
+        contract: own32801-original-SG-protocol-private-v1
