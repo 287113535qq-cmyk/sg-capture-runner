@@ -1,0 +1,23 @@
+{
+  "schema": "own32814-original-SG-protocol-connection-DATA-v1",
+  "sourceTransportContentType": "application/x-www-form-urlencoded",
+  "sourceHeaderFields": [
+    "affiliate",
+    "ccyCode",
+    "channel",
+    "freePlay",
+    "gameCodeRGI",
+    "gameID",
+    "glsID",
+    "lang",
+    "promotions",
+    "userID",
+    "userType",
+    "versionID"
+  ],
+  "sourceAbsentCurrencyMultiplier": 1,
+  "ownCurrencyFallbackSource": "own cached SGEngine.Yd: AccountData.CurrencyInformation.Nh; absent information source multiplier1",
+  "sourceStakeMenu": "Actual own accepted Init Stakes numeric list; wager must be present. No old sample combination whitelist.",
+  "sourceRequestDATA": "Own original Logic Header ccylanguage/AccountData/Stake/PaylineCount/Gamble; source default collect0 or actual own collect1; real KCa free/max plus unresolved own Gamble caller",
+  "ownWireSource": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\WMS32814-own-protocol-next-preparation-20261018\\own32814-original-protocol-next-end-DATA-v1338.json"
+}

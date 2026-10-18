@@ -17592,3 +17592,46 @@ games:
         total: '200'
       own32786ProtocolDATA:
         contract: own32786-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32814'
+    name: Wild Streets
+    dbName: sg_wild_streets
+    backendId: wildstreets
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      runtimeGameId: 33174
+      runtimeSlug: wildstreets
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: en_US
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: wildstreets
+        gameID: '20287'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      betRaw: 200
+      stake:
+        total: '200'
+      own32814ProtocolDATA:
+        contract: own32814-original-SG-protocol-private-v1
+        paylineCount: 20
