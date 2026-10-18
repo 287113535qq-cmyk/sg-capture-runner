@@ -17719,3 +17719,46 @@ games:
         total: '240'
       own32757ProtocolDATA:
         contract: own32757-original-SG-protocol-private-v1
+  - provider: sg
+    gameId: '32815'
+    name: Zeus God Of Thunder
+    dbName: sg_zeusgodofthunder
+    backendId: zeusgodofthunder
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      runtimeGameId: 33175
+      runtimeSlug: zeusgodofthunder
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: zeusgodofthunder
+        gameID: '20121'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      betRaw: 150
+      stake:
+        totalStake: '150'
+        isExtraBet: '0'
+      own32815ProtocolDATA:
+        contract: own32815-original-SG-protocol-private-v1
