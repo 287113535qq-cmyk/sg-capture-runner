@@ -1,0 +1,82 @@
+{
+  "schema": "own32813-inline-LIL-with-FS-request-only-DATA-v1",
+  "gameId": "32813",
+  "dbName": "sg_volts_and_bolts",
+  "runtimeGameId": 33173,
+  "nativeHeaderGameID": "20240",
+  "sourceIdentityCertificateReused": {
+    "bootstrap": {
+      "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\voltsandbolts\\js\\bootstrapper.js",
+      "SHA256": "c863106fde3754fba0449bd42b01fb3d55201a7e29a94ca388b7103b7cdc7f27",
+      "bytes": 7421
+    },
+    "ownCDNURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "localPrimary": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "expectedSRI": "sha256-2/CCm5dKf/79/AYicoahoXNQzR8H4nB44B7ybxTDCgg=",
+    "expectedSHA256": "dbf0829b974a7ffefdfc06227286a1a17350cd1f07e27078e01ef26f14c30a08",
+    "fullPrimaryHashASTNotReexecuted": true
+  },
+  "sourceQP": {
+    "baseQP": {
+      "source": "function(){return this.bma.$g||0<this.w.Xa.Gd&&!this.w.state.Fd?!1:!0}",
+      "SHA256": "8ba4ce4f729df3659268b7860164efa202b485eca77138de7d1dda8d90e4ec30",
+      "sourceCaptures": [
+        {
+          "name": "native-real-close-QP-504970.json",
+          "bytes": 1660,
+          "SHA256": "de20432324e2beec4753d49eecafe27c9b81c6b5dff66ec86e2308e7db1ea5d9"
+        }
+      ],
+      "name": "baseQP"
+    },
+    "ownQP": {
+      "source": "function(){return this.w.rc.Xa?!1:e.prototype.QP.call(this)}",
+      "SHA256": "767174769f510dc54d7fb012c80392abeab7f59b94f1dcbd8afbde0690efb37f",
+      "sourceCaptures": [
+        {
+          "name": "own-LIL-pending-close-predicate-644000.json",
+          "bytes": 454,
+          "SHA256": "4414425620f676706d70434dccfb5e81d8ee53c8af6e1549fcfc21e4efa7037a"
+        }
+      ],
+      "name": "ownQP"
+    },
+    "restoreWA": {
+      "source": "function(){return f(this,void 0,void 0,function(){var a,c,e,g,h,t;return n(this,function(b){switch(b.label){case 0:a=this._context.j.w;\nthis._context.Sa=0;a.kb.length=0;a.rc.Xa&&(a.Xa=a.rc.Xa,a.rc.Xa=null);a.kb=a.rc.kb;a.rc.kb=[];a.state.state=A.F.Y.K.Z.bl;if(a.state.Fd)return this.vi(A.F.K.Sp),[2];c=this._context.features.slice();e=0;b.label=1;case 1:if(!(e<c.length))return[3,5];g=c[e];if(!(g instanceof d.cm.av))return[3,2];h=this._context.features.indexOf(g);this._context.features.splice(h,1);return[3,4];case 2:return[4,g.KO()];case 3:t=b.D();if(null!=t)return this.vi(t),[2];b.label=4;case 4:return e++,[3,1];case 5:return this.ui(A.F.K.Tn),\n[2]}})})}",
+      "SHA256": "4e884f89da3e2a91935e7650a3b4a5f4ef73d46d9a443a16a193f649c2e543ec",
+      "sourceCaptures": [
+        {
+          "name": "own-LIL-local-exit-restores-FS-before-next-636650.json",
+          "bytes": 1538,
+          "SHA256": "2617511bea6c2f504d144aba4b1b63d949224dc3c82bf34f5be1fdc6af405b0d"
+        }
+      ],
+      "name": "restoreWA"
+    }
+  },
+  "sourceInlineFiniteRounds": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "byteWindowStart": 645220,
+    "startWithinWindow": 108,
+    "source": "function(a){for(var b=1,c=0,d=a.Ch.nn;c<d.length;c++)this.Qka(d[c],b),b++;a.Ch.QB=b}",
+    "SHA256": "d776353e753668346d950a10cbe620f2794329596a4a7ae2d2979570a4a45147",
+    "marker": "c.prototype.Uka="
+  },
+  "sourceSaveBeforeLocal": {
+    "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/voltsandbolts/js/app.js",
+    "byteWindowStart": 644850,
+    "startWithinWindow": 79,
+    "source": "function(a){this.w.rc.Xa=q({},this.w.Xa);\nthis.w.rc.kb=this.w.kb.slice();this.Uka(a);this.w.rc.xn=a.Ch.xn;this.w.rc.QB=a.Ch.QB;this.w.rc.ou=a.Ch.ou;this.w.kb[this.w.kb.length-1].Pb.ie+=this.w.rc.xn;this.w.Xa.Ui=!0;this.w.Xa.Gd=this.w.rc.QB-1;this.w.Xa.wn=0;this.w.Xa.winAmount=this.w.rc.xn}",
+    "SHA256": "ffa7ad7094ff62f6a55635ca571647d371eb925a4f8750ca305e642016fd2574",
+    "marker": "c.prototype.Rka="
+  },
+  "rawAmountPolicy": "BGInfo.totalWagerWin stays original cumulative source amount. Actual FSInfo.fsWinnings and LilInfo.LilWinnings are preserved separately; no additive or display-total equality is introduced and no amount is defaulted.",
+  "supersedesOldPlainFreeScope": {
+    "onlyWithoutLilOrOtherFeature": false,
+    "allows": "same actual Logic has FSInfo and finite inline LilSpins",
+    "otherBonusOrJackpotRequestBranchesStillHeld": true
+  },
+  "requestRule": "Normal own Rka saves actual native FS Xa/kb. Current response LilSpins is finite local data, not new provider requests. After local completion source WA restores saved Xa, clears rc.Xa, restores kb, then actual QP uses restored Gd/state.Fd. Pending local rc.Xa never grants End.",
+  "ackPolicy": "Only request/End intent is projected; no raw End response, ACK, closed business result or final credit is synthesized.",
+  "sourceUIEventsExecuted": false
+}
