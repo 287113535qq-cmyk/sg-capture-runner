@@ -1,0 +1,273 @@
+{
+  "schema": "own32757-wheel-free-control-DATA-v1448",
+  "gameId": "32757",
+  "ownApp": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\cheshirecat\\app\\js\\main.js",
+  "previousCertifiedOwnAppSHA256": "60cf8d16e339889615f0316edb4bb9253fdf0e602325835ffc5062a4a97a65de",
+  "wholeSDKRehashes": 0,
+  "leaves": {
+    "createStates": {
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this.addPre(game.PreGameStates.HISTORY_LOAD_STATE, game.PreGameStates.LOADING_STATE, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.LOADING_STATE, game.PreGameStates.MAKE_INIT_REQUEST, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.MAKE_INIT_REQUEST, game.PreGameStates.HISTORY_RECOVERY_STATE, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.HISTORY_RECOVERY_STATE, game.PreGameStates.CREATE_GAME, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.CREATE_GAME, game.PreGameStates.RECOVERY_INIT_STATE, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.RECOVERY_INIT_STATE, game.PreGameStates.RECOVERY_LOAD_STATE, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.RECOVERY_LOAD_STATE, game.PreGameStates.BASE_GAME_RECOVERY_STATE, game.SubGames.PRE_GAME);\n            this.addPre(game.PreGameStates.BASE_GAME_RECOVERY_STATE, game.BaseGameStates.STOP_REELS_STATE, game.SubGames.BASE_GAME);\n            this.addPre(game.PreGameStates.FREE_SPINS_RECOVERY_STATE, game.BonusGameState.FREE_SPIN_REEL_STOP, game.SubGames.FREE_GAME);\n            this.addPre(game.PreGameStates.HIDE_PROGRESS_BAR, game.BaseGameStates.IDLE_STATE, game.SubGames.BASE_GAME);\n            this.addPre(game.PreGameStates.CREATE_GAME, game.PreGameStates.CREATE_GAME_HELP_STATE, game.SubGames.PRE_GAME);\n            this.addBase(game.BaseGameStates.IDLE_STATE, game.BaseGameStates.LOGIC_GLS_STATE, game.SubGames.BASE_GAME);\n            this.addBase(game.BaseGameStates.LOGIC_GLS_STATE, game.BaseGameStates.STOP_REELS_STATE, game.SubGames.BASE_GAME);\n            this.addBase(game.BaseGameStates.STOP_REELS_STATE, game.BaseGameStates.SHOW_PAYLINE_SPAGHETTI_STATE, game.SubGames.BASE_GAME);\n            this.addBase(game.BaseGameStates.SHOW_PAYLINE_SPAGHETTI_STATE, game.BaseGameStates.SHOW_PAYLINE_WINS_STATE, game.SubGames.BASE_GAME);\n            this.addBase(game.BaseGameStates.SHOW_PAYLINE_WINS_STATE, game.BaseGameStates.IDLE_STATE, game.SubGames.BASE_GAME);\n            this.addBase(game.BaseGameStates.GAME_HELP_STATE, game.BaseGameStates.IDLE_STATE, game.SubGames.BASE_GAME);\n            this.addState(game.SubGames.WHEEL_GAME, game.BonusGameState.WHEEL_GAME, game.BonusGameState.WHEEL_GAME_OUTRO, game.SubGames.WHEEL_GAME);\n            this.addState(game.SubGames.WHEEL_GAME, game.BonusGameState.WHEEL_GAME_OUTRO, game.BonusGameState.FREE_SPIN_INTRO, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.FREE_SPIN_INTRO, game.BonusGameState.FREE_SPIN_REEL_SPIN, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.FREE_SPIN_REEL_SPIN, game.BonusGameState.FREE_SPIN_REEL_STOP, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.FREE_SPIN_REEL_STOP, game.BonusGameState.FREE_SPIN_RESULT, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.FREE_SPIN_RESULT, game.BonusGameState.FREE_SPIN_OUTRO, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.FREE_SPIN_OUTRO, game.BonusGameState.BONUS_GUARANTEE, game.SubGames.FREE_GAME);\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.BONUS_GUARANTEE, game.BaseGameStates.SHOW_PAYLINE_SPAGHETTI_STATE, game.SubGames.BASE_GAME);\n            //max win state..max win is only possible in free spins..\n            this.addState(game.SubGames.FREE_GAME, game.BonusGameState.MAX_WIN, game.BaseGameStates.IDLE_STATE, game.SubGames.BASE_GAME);\n            // this.addBase(BaseGameStates.END_GLS_STATE,                              BaseGameStates.IDLE_STATE,                  SubGames.BASE_GAME);\n            //to do.. this is altered..\n            // this._statesModel.init(SubGames.PRE_GAME, PreGameStates.HISTORY_LOAD_STATE);\n            this._statesModel.init(game.SubGames.PRE_GAME, game.PreGameStates.HISTORY_LOAD_STATE);\n        }",
+      "start": 46069,
+      "end": 50145,
+      "SHA256": "2aecf383334ff1b9f4eb16eb8151336be064d283de0942a373e4e3f6ae95b988",
+      "ownMethod": "CreateStatesCmd.prototype.execute"
+    },
+    "freeNext": {
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            if (!this._statesModel.isFreeSpin) {\n                return;\n            }\n            var logicResponse = this._server.getLogicResponse();\n            var currentFS = logicResponse.freeSpinInfoData.currentFreeSpin;\n            var totalFS = logicResponse.freeSpinInfoData.totalFreeSpins;\n            if (totalFS - currentFS > 0) {\n                if (!this._forceModel.forceOpen) {\n                    TweenLite.delayedCall(0.5, function () {\n                        _this._statesModel.changeStateByName(game.BonusGameState.FREE_SPIN_REEL_SPIN);\n                    });\n                }\n            }\n            else {\n                TweenLite.delayedCall(0.5, function () {\n                    _this._statesModel.gotoNextState();\n                });\n            }\n        }",
+      "start": 44428,
+      "end": 45311,
+      "SHA256": "be282f5005a1d5db14d56203e69c1a6d949bb65a52c768acc50cce89922bf7a4",
+      "ownMethod": "CheckForNextSpinCmd.prototype.execute"
+    },
+    "startWins": {
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            // this._subGamesModel.isWinSkipped = false;\n            var logicResponse = this._server.getLogicResponse();\n            if (!logicResponse.baseGameRecoverySpinData) {\n                //if this is base game..\n                this._cyclers.isPreBonusWin = logicResponse.reelSpinData[0].bonusAwarded;\n                this._cyclers.stopLineBurstPaylineCycler();\n                if (this._statesModel.getCurrentState() === this._statesModel.getStateByName(game.BaseGameStates.SHOW_PAYLINE_WINS_STATE)) {\n                    if (logicResponse.reelSpinData[0].bonusAwarded) {\n                        this._cyclers.startPreBonusWin(logicResponse, this._server.getInitResponse());\n                    }\n                    else {\n                        this._subGamesModel.isWinPresentationStarted = true;\n                        this._cyclers.startPaylinesCycler(logicResponse, this._server.getInitResponse());\n                    }\n                }\n            }\n            else {\n                //if this is return from free spins.\n                this._cyclers.isPreBonusWin = false;\n                this._subGamesModel.isWinPresentationStarted = true;\n                this._cyclers.stopLineBurstPaylineCycler();\n                this._cyclers.startPaylinesCycler(logicResponse, this._server.getInitResponse(), true);\n            }\n        }",
+      "start": 68492,
+      "end": 69908,
+      "SHA256": "8f77b0dfdeebf23530a943533e4aefd156b8a0d489141e9df4febd0af42fdc5a",
+      "ownMethod": "StartWinsCyclersCmd.prototype.execute"
+    },
+    "endRequest": {
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            if (!this._cyclers.isPreBonusWin && !this._subGamesModel.isEndResponseReceived) {\n                this._partnerAdapter.finishedPlay();\n                this._partnerAdapter.finishedPostGameAnimations();\n                if (!this._historyModel.getIsHistoryReplay()) {\n                    this._server.makeEndRequest(new server.GLSRequest([]));\n                }\n                if (this._autoplayModel.isInProgress()) {\n                    this._autoplayModel.updateWinAndStake(this._server.getLogicResponse().gameResultData.totalWin, this._stakesModel.currentBet.totalBet);\n                }\n            }\n        }",
+      "start": 86015,
+      "end": 86704,
+      "SHA256": "8dd4e50e129c68a57cc191fcdb9940287874f5e853d5277728a78b8a05451ec1",
+      "ownMethod": "MakeEndRequestCmd.prototype.execute"
+    },
+    "playRequest": {
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            var encoders = [\n                this.getStakeEncode(),\n                new server.GLSCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier),\n            ];\n            if (this._statesModel.getCurrentState().stateName !== game.PreGameStates.RECOVERY_INIT_STATE) {\n                var history = this._historyModel.getNextState();\n                if (history) {\n                    encoders.push(new game.HistoryReplaceEncoder(history));\n                }\n                if (this._forceModel.forceSet) {\n                    if (!this._forceModel.isFreeSpinGaff) {\n                        if (this._forceModel.reelData) {\n                            var stopPositions = this._forceModel.reelData.positions ? this._forceModel.reelData.positions : [0, 0, 0, 0, 0];\n                            var index = this._forceModel.reelData.index ? this._forceModel.reelData.index : 0;\n                            var mysterySymbolId = (this._forceModel.reelData.mysterySymbolId != undefined) ? this._forceModel.reelData.mysterySymbolId : -1;\n                            var innerWheelId = (this._forceModel.reelData.innerWheelId != undefined) ? this._forceModel.reelData.innerWheelId : -1;\n                            var outerWheelId = (this._forceModel.reelData.outerWheelId != undefined) ? this._forceModel.reelData.outerWheelId : -1;\n                            var forceEncoder = new game.ForceEncoder(stopPositions, index, mysterySymbolId, innerWheelId, outerWheelId, this._forceModel.reelData.isBonus);\n                            encoders.push(forceEncoder);\n                        }\n                    }\n                    else {\n                        var fsReelPositions = [];\n                        for (var i = 0; i < this._forceModel.fsReelData.length; i++) {\n                            fsReelPositions.push(this._forceModel.fsReelData[i].positions);\n                        }\n                        var fsForceEncoder = new game.FSForceEncoder(fsReelPositions);\n                        encoders.push(fsForceEncoder);\n                    }\n                }\n                this._forceModel.reset();\n                this._forceModel.forceSet = false;\n            }\n            if (this._server.getInitResponse().recoveryData.isRecovering == false) {\n                this._partnerAdapter.startedPlay();\n            }\n            var data = new server.GLSRequest(encoders);\n            this._server.makeLogicRequest(data);\n        }",
+      "start": 89065,
+      "end": 91604,
+      "SHA256": "a19798ab0e2dd287fed5db1c1143d5309eecc10fa1f5fd7faed9b21d549eed7b",
+      "ownMethod": "MakePlayRequestCmd.prototype.execute"
+    },
+    "stakeEncoder": {
+      "source": "function () {\n            return new game.StakeEncoder(this._stakesModel.currentBet.totalBet);\n        }",
+      "start": 91660,
+      "end": 91764,
+      "SHA256": "63f6480615f189968b769a9b3e3b63ae198c47f7ad2965681ed2da46ea8270fe",
+      "ownMethod": "MakePlayRequestCmd.prototype.getStakeEncode"
+    },
+    "wheelEntry": {
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._statesModel.changeSubGame(game.SubGames.WHEEL_GAME, game.BonusGameState.WHEEL_GAME);\n        }",
+      "start": 53822,
+      "end": 53997,
+      "SHA256": "82cd65bebadce58ba2d2c9defb21a653a221cd27bd3d04b36d2ea94760c377c5",
+      "ownMethod": "GoToWheelGameState.prototype.execute"
+    },
+    "preBonusComplete": {
+      "source": "function () {\n            this._eventDispatcher.dispatchEvent(new game.CyclersModelEvent(game.CyclersModelEvent.PRE_BONUS_WIN_COMPLETE));\n        }",
+      "start": 483419,
+      "end": 483566,
+      "SHA256": "0f2c605bd3bdc3c3be327a80bb09cf4acf3b62e18acf90f8f7a1fef4bdd35b2e",
+      "ownMethod": "CyclersModel.prototype.stopPreBonusCyclers"
+    },
+    "wheelComplete": {
+      "source": "function () {\n            this._wheelView.visible = false;\n            this.dispatchContextEvent(new game.GameEvent(game.GameEvent.WHEEL_GAME_COMPLETED));\n        }",
+      "start": 1034485,
+      "end": 1034649,
+      "SHA256": "9b0b8dd60f0b00163115f8b6207aae325f2e4916343cde46bfa81ebd707d2958",
+      "ownMethod": "WheelMediator.prototype.onTransitionOutComplete"
+    },
+    "startFree": {
+      "source": "function () {\n            this._winStackView.overlayForClick.getNativeDisplayObject().cursor = \"default\";\n            this._winStackView.overlayForClick.removeEventListener(rendering.InputEvent.CLICK, this.startFreeSpins, this);\n            this.dispatchContextEvent(new game.GameEvent(game.GameEvent.START_FREE_SPINS));\n        }",
+      "start": 1061770,
+      "end": 1062100,
+      "SHA256": "32f524ee5c9abd88550bc435e07355658c0c9507e9bc35576eb135ee24f3513a",
+      "ownMethod": "WinStackMediator.prototype.startFreeSpins"
+    },
+    "introComplete": {
+      "source": "function () {\n            this._statesModel.gotoNextState();\n        }",
+      "start": 928699,
+      "end": 928769,
+      "SHA256": "63c3981afd5be952ac4594f10d06b212d0dc8b4a7f59a75878e35ef7c6313f95",
+      "ownMethod": "FSReelsMediator.prototype.onTweenComplete"
+    },
+    "transitionComplete": {
+      "source": "function () {\n            this._transitionView.removeEventListener(game.TransitionEvent.TRANSITION_COMPLETE, this.onTransitionComplete, this);\n            if (this._transitionView.isIntro) {\n                this._audioModel.playBonusLoopSound();\n                this._gameContextEventDispatcher.dispatchEvent(new game.TransitionEvent(game.TransitionEvent.INTRO_TRANSITION_COMPLETE));\n            }\n            else {\n                this._gameContextEventDispatcher.dispatchEvent(new game.TransitionEvent(game.TransitionEvent.OUTRO_TRANSITION_COMPLETE));\n            }\n            if (this._transitionView.parent) {\n                this._transitionView.parent.removeChild(this._transitionView);\n            }\n        }",
+      "start": 957419,
+      "end": 958137,
+      "SHA256": "9e06d7cfba4c892de9b9a0d788e9a2b22837de5e1651879b5533aa2ce0979d8f",
+      "ownMethod": "TransitionMediator.prototype.onTransitionComplete"
+    },
+    "baseBangupComplete": {
+      "source": "function () {\n            var logicResponse = this._serverModel.getLogicResponse();\n            var totalWin = logicResponse.baseGameInfoData.totalWagerWin;\n            this._totalWin = totalWin;\n            this._gameContextEventDispatcher.dispatchEvent(new game.GameEvent(game.GameEvent.WIN_BANGUP_COMPLETE));\n            if (this._totalWin > 0) {\n                this._audioModel.playBangUpEndOverlaySound();\n            }\n            //this._audioModel.fadeInBaseGameSound();\n        }",
+      "start": 675135,
+      "end": 675624,
+      "SHA256": "edbb3555095683c1941a2077e95e90e573dad935a052b2b44bc0a0b3782c659b",
+      "ownMethod": "WinTextMediator.prototype.onBaseGameBangUpComplete"
+    },
+    "baseInfo": {
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"BGInfo\")[0];\n            var bgInfoData = new game.BaseGameInfoData;\n            bgInfoData.totalWagerWin = parseInt(this.getAttributeFromNode(node, \"totalWagerWin\", \"number\"));\n            bgInfoData.baseGameWin = parseInt(this.getAttributeFromNode(node, \"bgWinnings\", \"number\"));\n            bgInfoData.mysterySymbolId = parseInt(this.getAttributeFromNode(node, \"mysterySymbol\", \"number\"));\n            bgInfoData.isMaxWin = (this.getAttributeFromNode(node, \"isMaxWin\") === \"1\");\n            bgInfoData.maxWinVal = parseInt(this.getAttributeFromNode(node, \"maxWin\", \"number\"));\n            object.baseGameInfoData = bgInfoData;\n        }",
+      "start": 213482,
+      "end": 214199,
+      "SHA256": "6c1520ee43a00f54dc6cfc94fd0981e6034fe330c3e7294945fca46a8733ef71",
+      "ownMethod": "BaseGameInfoParser.prototype.parse"
+    },
+    "baseAttribute": {
+      "source": "function (dataNode, attribute, returnType) {\n            if (returnType === void 0) { returnType = \"string\"; }\n            var attributeValue = \"\";\n            if (returnType == \"number\")\n                attributeValue = \"-1\";\n            if (dataNode.attributes.getNamedItem(attribute)) {\n                attributeValue = dataNode.attributes.getNamedItem(attribute).value;\n            }\n            return attributeValue;\n        }",
+      "start": 214261,
+      "end": 214693,
+      "SHA256": "0e6a7692413425e18af80ba9105d63898e2ebc669fffef77b73898ab28813b7e",
+      "ownMethod": "BaseGameInfoParser.prototype.getAttributeFromNode"
+    },
+    "freeInfo": {
+      "source": "function (input, object) {\n            if (input.getElementsByTagName(\"FSInfo\") && input.getElementsByTagName(\"FSInfo\").length > 0) {\n                var node = input.getElementsByTagName(\"FSInfo\")[0];\n                var freeSpinInfoData = new game.FreeSpinInfoData;\n                freeSpinInfoData.totalFreeSpinWin = parseInt(this.getAttributeFromNode(node, \"fsWinnings\", \"number\"));\n                freeSpinInfoData.totalFreeSpins = parseInt(this.getAttributeFromNode(node, \"freeSpinsTotal\", \"number\"));\n                freeSpinInfoData.currentFreeSpin = parseInt(this.getAttributeFromNode(node, \"freeSpinNumber\", \"number\"));\n                freeSpinInfoData.mysterySymbolId = parseInt(this.getAttributeFromNode(node, \"mysterySymbol\", \"number\"));\n                freeSpinInfoData.triggerWin = parseInt(this.getAttributeFromNode(node, \"scatterWin\", \"number\"));\n                freeSpinInfoData.isBonusGuarantee = this.getAttributeFromNode(node, \"bonusGuarantee\") === \"1\";\n                object.freeSpinInfoData = freeSpinInfoData;\n            }\n        }",
+      "start": 214983,
+      "end": 216041,
+      "SHA256": "fe88601d751099d5a2ace1c4e921aaac7a4c715eac759d6475c144ed7f444815",
+      "ownMethod": "FreeSpinInfoParser.prototype.parse"
+    },
+    "freeAttribute": {
+      "source": "function (dataNode, attribute, returnType) {\n            if (returnType === void 0) { returnType = \"string\"; }\n            var attributeValue = \"\";\n            if (returnType == \"number\")\n                attributeValue = \"-1\";\n            if (dataNode.attributes.getNamedItem(attribute)) {\n                attributeValue = dataNode.attributes.getNamedItem(attribute).value;\n            }\n            return attributeValue;\n        }",
+      "start": 216103,
+      "end": 216535,
+      "SHA256": "0e6a7692413425e18af80ba9105d63898e2ebc669fffef77b73898ab28813b7e",
+      "ownMethod": "FreeSpinInfoParser.prototype.getAttributeFromNode"
+    },
+    "stateNext": {
+      "source": "function () {\n            this.nextState = this._defaultNextState;\n            this.nextSubGame = this._defaultNextSubGame;\n        }",
+      "start": 533311,
+      "end": 533444,
+      "SHA256": "cd92dc5caf832a5b181831925dfd99309e9cef7e1cdecb2f5b21895b6e61650c",
+      "ownMethod": "GameState.prototype.getNextState"
+    }
+  },
+  "constants": {
+    "BaseGameStates": {
+      "RECOVER_GAME": "BaseGameStates_RECOVER_GAME",
+      "SPLASH_STATE": "BaseGameStates_SPLASH_STATE",
+      "IDLE_STATE": "BaseGameStates_IDLE_STATE",
+      "LOGIC_GLS_STATE": "BaseGameStates_LOGIC_GLS_STATE",
+      "GAME_HELP_STATE": "BaseGameStates_GAME_HELP_STATE",
+      "STOP_REELS_STATE": "BaseGameStates_STOP_REELS_STATE",
+      "HANDLE_MAX_WIN_STATE": "BaseGameStates_HANDLE_MAX_WIN_STATE",
+      "SHOW_PAYLINE_SPAGHETTI_STATE": "BaseGameStates_SHOW_PAYLINE_SPAGHETTI_STATE",
+      "SHOW_PAYLINE_WINS_STATE": "BaseGameStates_SHOW_PAYLINE_WINS_STATE",
+      "END_GLS_STATE": "BaseGameStates_END_GLS_STATE",
+      "GO_TO_BONUS_STATE": "BaseGameStates_GO_TO_BONUS_STATE",
+      "MAKE_EXTRA_FS_REQUEST_STATE": "BaseGameStates_MAKE_EXTRA_FS_REQUEST_STATE",
+      "FS_COLLECT_OR_GAMBLE_HISTORY_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_HISTORY_STATE",
+      "FS_COLLECT_OR_GAMBLE_REJECT_HISTORY_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_REJECT_HISTORY_STATE",
+      "FS_COLLECT_OR_GAMBLE_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_STATE",
+      "FS_SKIP_DELAY_STATE": "BaseGameStates_FS_SKIP_DELAY_STATE",
+      "FREESPIN_ENTER_STATE": "BaseGameStates_FREESPIN_ENTER_STATE",
+      "FS_MORE_SPINS_STATE": "BaseGameStates_FS_MORE_SPINS_STATE",
+      "FS_COMPLETE_STATE": "BaseGameStates_FS_COMPLETE_STATE",
+      "FS_SHOW_CONGRATS_STATE": "BaseGameStates_FS_SHOW_CONGRATS_STATE"
+    },
+    "BonusGameState": {
+      "WHEEL_GAME": "BonusGameState.WheelGame",
+      "WHEEL_GAME_OUTRO": "BonusGameState.WheelGameOutro",
+      "FREE_SPIN_INTRO": "BonusGameState.FreeSpinIntro",
+      "FREE_SPIN_REEL_SPIN": "BonusGameState.FreeSpinReelSpin",
+      "FREE_SPIN_REEL_STOP": "BonusGameState.FreeSpinReelStop",
+      "FREE_SPIN_RESULT": "BonusGameState.FreeSpinResult",
+      "FREE_SPIN_OUTRO": "BonusGameState.FreeSpinOutro",
+      "BONUS_GUARANTEE": "BonusGameState.BonusGuarantee",
+      "MAX_WIN": "BonusGameState.MaxWin"
+    },
+    "PreGameStates": {
+      "LOADING_STATE": "PreGameStates_LOADING_STATE",
+      "MAKE_INIT_REQUEST": "PreGameStates_MAKE_INIT_REQUEST",
+      "INIT_COMPLETE_STATE": "PreGameStates_INIT_COMPLETE_STATE",
+      "INIT_RESPONSE_RECEIVED": "PreGameStates_INIT_RESPONSE_RECEIVED",
+      "CREATE_GAME": "PreGameStates_CREATE_GAME",
+      "HIDE_PROGRESS_BAR": "PreGameStates_HIDE_PROGRESS_BAR",
+      "CREATE_GAME_MAIN_STATE": "PreGameStates_CREATE_GAME_MAIN_STATE",
+      "CREATE_GAME_BIG_BET_STATE": "PreGameStates_CREATE_GAME_BIG_BET_STATE",
+      "CREATE_GAME_BONUS_STATE": "PreGameStates_CREATE_GAME_BONUS_STATE",
+      "CREATE_GAME_HELP_STATE": "PreGameStates_CREATE_GAME_HELP_STATE",
+      "RECOVERY_INIT_STATE": "RECOVERY_INIT_STATE",
+      "RECOVERY_LOAD_STATE": "PreGameStates_RECOVERY_LOAD_STATE",
+      "BASE_GAME_RECOVERY_STATE": "PreGameStates_BASE_GAME_RECOVERY_STATE",
+      "FREE_SPINS_RECOVERY_STATE": "PreGameStates_FREE_SPINS_RECOVERY_STATE",
+      "HISTORY_LOAD_STATE": "PreGameStates_HISTORY_LOAD_STATE",
+      "HISTORY_RECOVERY_STATE": "PreGameStates_HISTORY_RECOVERY_STATE"
+    },
+    "SubGames": {
+      "PRE_GAME": "SubGames_PRE_GAME",
+      "BASE_GAME": "SubGames_BASE_GAME",
+      "WHEEL_GAME": "SubGames_WHEEL_GAME",
+      "FREE_GAME": "SubGames_FREE_GAME"
+    },
+    "GameEvent": {
+      "INIT_RESPONSE_RECEIVED": "GameEvent.InitResponseReceived",
+      "MAKE_END_GAME_REQUEST": "GameEvent.MakeEndGameRequest",
+      "CREATE_GAME_COMPLETE": "GameEvent.CreateGameComplete",
+      "SPIN_BUTTON_CLICKED": "GameEvent.SpinButtonClicked",
+      "STOP_BUTTON_CLICKED": "GameEvent.StopButtonClicked",
+      "DISABLE_STAKE_SELECTION": "GameEvent.DisableStakeSelection",
+      "REEL_ZOOM_OUT_COMPLETE": "GameEvent.ReelZoomComplete",
+      "REEL_SPLICING_COMPLETE": "GameEvent.ReelSplicingComplete",
+      "HIT_ANIM_COMPLETE": "GameEvent.HitAnimComplete",
+      "WIN_BANGUP_COMPLETE": "GameEvent.WinBangUpComplete",
+      "WIN_BANGUP_STARTED": "GameEvent.WinBangUpStarted",
+      "START_BONUS_GAME_AFTER_LOAD": "GameEvent.StartBonusGameAfterLoad",
+      "WHEEL_GAME_COMPLETED": "GameEvent.WheelGameCompleted",
+      "START_FREE_SPINS": "GameEvent.StartFreeSpins",
+      "FREE_SPINS_VIEW_CREATED": "GameEvent_FREE_SPINS_VIEW_CREATED",
+      "REEL_ARRAY_SPIN_COMPLETE": "GameEvent_REEL_ARRAY_SPIN_COMPLETE",
+      "ALL_FREE_SPIN_REELS_STOPPED": "GameEvent_ALL_FREE_SPIN_REELS_STOPPED",
+      "FS_WIN_BANGUP_COMPLETE": "GameEvent_FS_WIN_BANGUP_COMPLETE",
+      "FS_WIN_BANGUP_STARTED": "GameEvent_FS_WIN_BANGUP_STARTED",
+      "FS_WIN_SKIPPED": "GameEvent_FS_WIN_SKIPPED",
+      "BONUS_GUARANTEE_STARTED": "GameEvent_BONUS_GUARANTEE_STARTED",
+      "BONUS_GUARANTEE_COMPLETED": "GameEvent_BONUS_GUARANTEE_COMPLETED",
+      "FS_LINE_BURST_STARTED": "GameEvent.FS_LINE_BURST_STARTED",
+      "FS_LINE_BURST_COMPLETE": "GameEvent.FS_LINE_BURST_COMPLETE",
+      "HELP_BUTTON_CLICKED": "GameEvent_HELP_BUTTON_CLICKED",
+      "LAYER_CLICKED": "GameEvent_LAYER_CLICKED",
+      "CREATE_GAME_HELP": "GameEvent_CREATE_GAME_HELP",
+      "FORCE_OPENED": "GameEvent_FORCE_OPENED",
+      "FORCE_CLOSED": "GameEvent_FORCE_CLOSED",
+      "RECOVERY_INIT": "GameEvent.RECOVERY_INIT",
+      "BASE_GAME_RECOVERY_STARTED": "GameEvent.BASE_GAME_RECOVERY_STARTED",
+      "FREE_SPIN_RECOVERY_STARTED": "GameEvent.FREE_SPIN_RECOVERY_STARTED",
+      "RECOVERY_SPIN_FREE_SPIN_REELS": "GameEvent.RECOVERY_SPIN_FREE_SPIN_REELS",
+      "START_REPLAY": "GameEvent.START_REPLAY",
+      "LOST_CONNECTION": "GameEvent_LOST_CONNECTION",
+      "START_RACKING": "GameEvent_START_RACKING",
+      "START_BANGUP": "GameEvent_START_BANGUP",
+      "ON_RACKING_COMPLETE": "GameEvent_ON_RACKING_COMPLETE",
+      "START_FG_WIN_METER_RACKING": "GameEvent_START_FG_WIN_METER_RACKING",
+      "ACCEPT_BUTTON_PRESSED": "GameEvent.AcceptButtonPressed",
+      "OPEN_BET_MENU": "GameEvent.OpenBetMenu",
+      "CLOSE_BET_MENU": "GameEvent.CloseBetMenu",
+      "ADD_DESKTOP_DASHBOARD": "GameEvent.AddDesktopDashboard",
+      "ADD_MOBILE_DASHBOARD": "GameEvent.AddMobileDashboard",
+      "EXIT_MAX_WIN": "GameEvent.EXIT_MAX_WIN",
+      "UPDATE_WIN_POST_FREE_SPINS": "GameEvent.UPDATE_BALANCE_POST_FREE_SPINS"
+    },
+    "CyclersModelEvent": {
+      "BONUS_WIN_DISPLAY": "CyclersModelEvent.PostBonusWinDisplay",
+      "SCATTER_WIN_DISPLAY": "CyclersModelEvent.SCATTER_WIN_DISPLAY",
+      "PRE_BONUS_WIN_STARTED": "CyclersModelEvent.PreBonusWinStarted",
+      "PRE_BONUS_WIN_COMPLETE": "CyclersModelEvent.PreBonusWinComplete",
+      "POST_WHEEL_BONUS_WIN_START": "CyclersModelEvent.POST_WHEEL_BONUS_WIN_START",
+      "POST_FS_SYMBOL_DISPLAY": "CyclersModelEvent.POST_FS_SYMBOL_DISPLAY",
+      "WINS_STARTED": "CyclersModelEvent_WINS_STARTED",
+      "WINS_COMPLETE": "CyclersModelEvent_WINS_COMPLETE",
+      "WIN_DISPLAY": "CyclersModelEvent_WIN_DISPLAY",
+      "WINS_SPAGHETTI_STARTED": "CyclersModelEvent_WINS_SPAGHETTI_STARTED",
+      "WINS_SPAGHETTI_COMPLETE": "CyclersModelEvent_WINS_SPAGHETTI_COMPLETE",
+      "FS_WIN_STARTED": "CyclersModelEvent_FS_WIN_STARTED",
+      "FS_ARRAY_WIN_COMPLETE": "CyclersModelEvent_FS_ARRAY_WIN_COMPLETE",
+      "FS_ALL_ARRAYS_WINS_COMPLETE": "CyclersModelEvent_FS_ALL_ARRAYS_WINS_COMPLETE",
+      "FS_WIN_DISPLAY": "CyclersModelEvent_FS_WIN_DISPLAY"
+    },
+    "TransitionEvent": {
+      "INTRO_TRANSITION_CHANGE": "TransitionEvent_INTRO_TRANSITION_CHANGE",
+      "INTRO_TRANSITION_COMPLETE": "TransitionEvent_INTRO_TRANSITION_COMPLETE",
+      "OUTRO_TRANSITION_CHANGE": "TransitionEvent_OUTRO_TRANSITION_CHANGE",
+      "OUTRO_TRANSITION_COMPLETE": "TransitionEvent_OUTRO_TRANSITION_COMPLETE",
+      "OUTRO_PLACARD_DISPLAY_COMPLETE": "TransitionEvent_OUTRO_PLACARD_DISPLAY_COMPLETE",
+      "TRANSITION_CHANGE": "TransitionEvent_INTRO_TRANSITION_CHANGE",
+      "TRANSITION_COMPLETE": "TransitionEvent_INTRO_TRANSITION_COMPLETE"
+    }
+  },
+  "scope": "ordinary and own Wheel/free next request selectors only; current Init/wire/AG integration remains unqualified",
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false,
+  "newFinalCredit": 0
+}

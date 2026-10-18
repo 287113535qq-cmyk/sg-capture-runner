@@ -1,0 +1,45 @@
+{
+  "schema": "own32757-original-request-DATA-v1455",
+  "gameId": "32757",
+  "leaves": {
+    "stakeXML": {
+      "source": "function () {\n            var xmlStr = \"<Stake \";\n            xmlStr += \"total=\\\"\" + this._stake.toString() + \"\\\"\";\n            xmlStr += \"/>\";\n            return xmlStr;\n        }",
+      "start": 186521,
+      "end": 186701,
+      "SHA256": "7d8b84132631b07736c663c707c842cc41e39998bb13643dc130446aee83f64f",
+      "ownMethod": "StakeEncoder.prototype.parse"
+    },
+    "currencyXML": {
+      "source": "function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        }",
+      "start": 423361,
+      "end": 423593,
+      "SHA256": "ed266a1e9596d5ae8b097511f3e701759c6059c0206f564db9481d8e19e5c332",
+      "ownMethod": "GLSCurrencyEncoder.prototype.parse"
+    },
+    "platform": {
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var data = new server.PlatformData();\n            if (node != null) {\n                var attr = node.attributes;\n                var attrLength = attr.length;\n                for (var i = 0; i < attrLength; ++i) {\n                    switch (attr[i].nodeName) {\n                        case 'sessionID':\n                            data.sessionId = attr[i].nodeValue;\n                            break;\n                        case 'gameID':\n                            data.gameId = attr[i].nodeValue;\n                            break;\n                        case 'lang':\n                            data.languageCode = attr[i].nodeValue;\n                            break;\n                        case 'versionID':\n                            data.version = attr[i].nodeValue;\n                            break;\n                    }\n                }\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\n                if (currencyMultiplierNode != null) {\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\n                }\n                else {\n                    data.currencyMultiplier = 1;\n                }\n            }\n            object.platformData = data;\n        }",
+      "start": 437222,
+      "end": 438601,
+      "SHA256": "c567c70e5453ace22c24540e921369ba8624fa92f5f24bbe7e5b4e3756ae6f88",
+      "ownMethod": "GLSPlatformParser.prototype.parse"
+    },
+    "headerXML": {
+      "source": "function () {\n            var xmlString = \"\"; //\"<GameRequest type=\\\"Init\\\">\"\n            xmlString += \"<Header\";\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\n            xmlString += \"/>\";\n            //xmlString += \"</GameRequest>\"\n            return xmlString;\n        }",
+      "start": 418537,
+      "end": 419622,
+      "SHA256": "596fb84ed62caa9445caee65771cb36818b9e6a1d3967886a44b9bf969904aa7",
+      "ownMethod": "GLSHeader.prototype.parse"
+    },
+    "headerConstructor": {
+      "source": "function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\n            /**\n             * ID of casinarena's GLS\n             */\n            this.GLSID_CASINARENA = \"4\";\n            /**\n             * ID of freeplay's GLS\n             */\n            this.GLSID_FREEPLAY = \"65535\";\n            this.affiliate = sessionData.getContextID();\n            this.freePlay = !metadata.isRealMoney();\n            this.gameCodeRGI = metadata.getGameCode();\n            this.gameId = gameId;\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\n            this.langCode = metadata.getLocale();\n            this.sessionId = glsServerSessionId;\n            this.userId = sessionData.getPlayerID();\n            this.version = gameVersion;\n            this.promotions = false;\n            this.channel = \"I\";\n            this.userType = \"C\";\n            this.currencyCode = \"\";\n        }",
+      "start": 417475,
+      "end": 418408,
+      "SHA256": "92578f3f56d59f5834b19935e6d269a3fa1b46c675d7c348a2cbabb615835e55"
+    }
+  },
+  "certifiedAppSHA256": "60cf8d16e339889615f0316edb4bb9253fdf0e602325835ffc5062a4a97a65de",
+  "certifiedLibrarySHA256": "b84701bfcfd447e5ec7939aa81dae126e3a436c9f34fef5bbcc90c1807b6d0bf",
+  "wholeSDKRehashes": 0,
+  "sourceRequests": 0,
+  "productionReady": false
+}
