@@ -1,0 +1,218 @@
+{
+  "schema": "own32803-Free-Choice-source-request-chain-DATA-v1",
+  "gameId": "32803",
+  "dbName": "sg_rrraceday",
+  "nativeGameID": 20456,
+  "runtimeGameId": 33163,
+  "sourceIdentityReused": {
+    "gameId": "32803",
+    "ownGameCode": "rrraceday",
+    "ownBootstrap": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\metadatabundle.js",
+    "ownLiteralCDNRoot": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service",
+    "ownLiteralScriptRef": "js/app.js",
+    "expectedSRIReusedFromOwnBootstrap": "sha256-BojP0s6B63KntNnwFCRI1HSZ1D/Cf+XoZZk3g9qQ1tc=",
+    "expectedContentSHA256DecodedNotNewSDKHash": "0688cfd2ce81eb72a7b4d9f0142448d47499d43fc27fe5e865993783da90d6d7",
+    "exactOwnPrimaryURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/rrraceday/js/app.js",
+    "exactOwnLocalAlias": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "exists": true,
+    "bytes": 1318575,
+    "previousWrongBaseCandidate": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\app.js",
+    "previousWrongBaseExists": false,
+    "sourceIdentityBinding": "Own getCdnRoot + getGameCode + scriptRef; whole SDK content/hash/AST certificate not recomputed",
+    "sourceContentQualificationClaimed": false,
+    "GETAttempts": 0,
+    "newSDKFullHashOrAST": 0,
+    "sourceRequests": 0,
+    "DBAccess": 0
+  },
+  "leaves": {
+    "gpa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.prototype.gpa=function()",
+      "characterOffset": 1218541,
+      "source": "function(){return g(this,void 0,void 0,function(){var e,d,b;return m(this,function(){e=this.context.K;d=e.J;b=e.Wb;return 0<d.vb.Vi?(b.RH.value=d.vb.Vi,[2,a.te.La]):[2,null]})})}",
+      "SHA256": "b539afe541c09d149464dec7a0dd62d3da72f79238b1c24de4be5ddc505709ff"
+    },
+    "dRa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.prototype.dRa=function()",
+      "characterOffset": 1219611,
+      "source": "function(){return g(this,void 0,void 0,function(){var e,d;return m(this,function(){e=this.context.K;d=e.J;this.context.K.Gc.get(a.Db.xi);return 0===d.vb.Vi&&0<d.vb.Lg?(this.context.K.ku.B6&&this.context.K.ku.stop(),[2,a.te.La]):0<this.context.K.J.vb.Lg&&\n!this.context.K.J.state.$j?[2,G.ea.ka.Fza]:[2,null]})})}",
+      "SHA256": "a734a5506756f0729a791cc434b9364c757d459ebd721e592cc18404b3d68b2c"
+    },
+    "hVa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.hVa=function()",
+      "characterOffset": 1201142,
+      "source": "function(){g(this,void 0,void 0,function(){var b,c,d,e;return m(this,function(f){switch(f.label){case 0:b=a.K.J;c=a.K.Pb;this.oC=new G.ka.Hba(a.xb.Mwa,this._context);this._context.X3a=\nthis.oC;this.wk=this._context.K.Pb.Su.declare(!1);this.WG=this._context.K.Pb.Nk.declare(!1);if(!(this._context.lI&&0<b.vb.Vi))return[3,1];this._context.lI=!1;this.oC.FA(G.ea.ka.Fh,!0);return[3,7];case 1:return b.vb.DO=[18,18,18,18,18],[4,this._context.K.Gc.open(a.Db.by)];case 2:return d=f.ga(),a.K.J.state.gg?[4,this.qNa(d)]:[3,4];case 3:f.ga(),f.label=4;case 4:return e=b.vb,[4,d.bFa];case 5:return e.DO=f.ga(),this.X9(),[4,this._context.K.Gc.close(a.Db.by)];case 6:f.ga(),this.oC.FA(G.ea.ka.wi),f.label=\n7;case 7:return this.Jv=c.Ru.declare(!0),[2]}})})}",
+      "SHA256": "89273122d258268b1ed6809914761024b111d1e5f3939919726c4c85d4b8fc2a"
+    },
+    "kLa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.kLa=function()",
+      "characterOffset": 1201901,
+      "source": "function(){return g(this,void 0,void 0,function(){var b;return m(this,function(c){switch(c.label){case 0:if(this._context.K.J.error&&this._context.K.J.error.type!=G.wa.Error.fa.nb)return null!=this.Jv&&(this.Jv.dispose(),this.Jv=null),[2];a.K.J.vb.DO=null;this._context.K.Wb.sM.value=0;this._context.K.J.vb.Dk=!0;null!=this.Jv&&(this.Jv.dispose(),this.Jv=null);this.oC.active=!1;b=new a.Db.kF(y(y({},a.Db.kF.V),{PO:!0,J:this._context.K.J}));\nreturn[4,this._context.K.Gc.psa(a.Db.xi,b)];case 1:c.ga();if(this._context.K.J.state.$j)return[3,3];this._context.K.Wb.Ab.value=this._context.K.J.Ed[0].Ab.sh;return[4,this.JKa()];case 2:c.ga(),c.label=3;case 3:return this.WG=this.wk=null,this._context.K.J.vb.Dk=!1,this._context.K.J.state.$j?[4,this.vj(G.ea.ka.jo)]:[3,5];case 4:return c.ga(),[3,7];case 5:return[4,this.Pk(G.ea.ka.Ta)];case 6:c.ga(),c.label=7;case 7:return[2]}})})}",
+      "SHA256": "fde7c2c3e09431752a4948215521b29b783c9dba2e747a316fa7001559fb3e25"
+    },
+    "Kwa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.re=function(){0>=",
+      "characterOffset": 1205292,
+      "source": "function(){0>=this._context.K.J.vb.Lg||this._context.K.J.state.$j||this._context.K.J.error&&this._context.K.J.error.type!=G.wa.Error.fa.nb?this.iS.fN():this.iS.isa(G.ea.ka.wi)}",
+      "SHA256": "4a61274e9042b14b2ae4f88396f2620cfd1f0b542de90e89088ff22780f0e35c"
+    },
+    "freeNT": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.NT=function(a)",
+      "characterOffset": 636803,
+      "source": "function(a){return g(this,void 0,void 0,function(){var b;return m(this,function(c){switch(c.label){case 0:return this.cU(this.J),[4,this.pI(a)];case 1:return b=c.ga(),b.Pf||(this.HI(b.So),this.o7.ia(b)),[2,b]}})})}",
+      "SHA256": "fd15b35881b2c1a851f65e33998e6d8a89f1fd8a5e0a3b913ce23f7c41997016"
+    },
+    "normalH4": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.H4=function()",
+      "characterOffset": 1130427,
+      "source": "function(){return g(this,void 0,void 0,function(){var a,c,d,e,h,l;return m(this,function(b){switch(b.label){case 0:a=null;try{a=f.NY.get()}catch(p){this._context.features=[]}null!=a&&(this._context.features=a.create(this._context));\nthis._context.lI=!1;if(this._context.K.J.state.state===f.wa.ka.fa.Tf)return[3,1];this.Pk(f.ka.kn);return[2,!0];case 1:c=null,d=0,e=this._context.features,b.label=2;case 2:if(!(d<e.length))return[3,6];h=e[d];return(l=c)?[3,4]:[4,h.ZV()];case 3:l=b.ga(),b.label=4;case 4:c=l,b.label=5;case 5:return d++,[3,2];case 6:if(c)return this.Pk(c),[2,!0];b.label=7;case 7:return[2,!1]}})})}",
+      "SHA256": "38616f28d04eb5615d3ae56e092e8e677a43717753c87b4f1d115175cee25916"
+    },
+    "choiceEqual": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1297800,
+      "startWithinWindow": 2106,
+      "source": "function(){for(var a=this.Kl.value=0;a<this.Hj.length;a++)this.Hj[a].value=28}",
+      "SHA256": "a6b29772df323252ed00797ee8186b24469d934f92284a71488feb7392130f3c",
+      "marker": "e.prototype.mX="
+    },
+    "choiceAccepted": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1297800,
+      "startWithinWindow": 1478,
+      "source": "function(){return g(this,void 0,void 0,function(){var b,\nc,d,e;return m(this,function(f){switch(f.label){case 0:b=G.f.Jc.create({T:G.f.P.eb,Pa:{x:.5,y:.8}},this);c=a.kh.vJ.create();d=new G.Tc.Xi.kp(c,a.kh.xF);b.addChild(c);d.emit(5);b.sc();G.ha.get(this).sa({alpha:0},800);G.ha.get(this.Jl.ig).sa({scaleX:1.1,scaleY:1.1},800);if(e=G.Audio.play(a.s.Cc.wwa))e.pj=!0;return[4,G.ha.wait(800)];case 1:return f.ga(),c.dispose(),d.dispose(),b.dispose(),this.u_.ia(this.Hj.map(function(a){return a.value-10})),[2]}})})}",
+      "SHA256": "1a7448fd82ea27f7a1b1bd72458cb714b652965ed085e3a0920e671300e287bd",
+      "marker": "e.prototype.accept="
+    },
+    "sourceOwnRU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1173800,
+      "startWithinWindow": 154,
+      "source": "function(a){return y(y({},e.prototype.RU.call(this,a)),{Z7:this.J.vb?this.J.vb.DO:null})}",
+      "SHA256": "66e09a310c000e7275deb20de9f1cc685437f93cb15dc04a14065fffd525e86c",
+      "marker": "d.prototype.RU="
+    },
+    "sourceLogicOw": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1181900,
+      "startWithinWindow": 334,
+      "source": "function(a){var b=new d.yl;b.Qi=this.iU();b.Pq=a.dl.value;a.lN&&(b.ps=this.hU(),this.kN(b.ps,a.lN));a.kg&&(b.Lu=this.kU(),this.QU(b.Lu,a.kg));null!=a.yd&&(b.Ki=new SG.Ub.Rd.PA,b.Ki.yd=\na.yd);b.Zm=a.Zm;a.Z7&&5==a.Z7.length&&(b.FQa=a.Z7);return b}",
+      "SHA256": "9bf444358a89a5348225e9f43a330a9a84eb7c19d17b9dfc6c29a360c9cd7ab2",
+      "marker": "d.prototype.Ow="
+    },
+    "freeFeatureFactory": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1218080,
+      "startWithinWindow": 78,
+      "source": "function(e){var d=[],b=e.K.J;b.vb&&(0<b.vb.Lg||0<b.vb.Vi)&&d.push(new a.La(e));return d}",
+      "SHA256": "2a26885f86aecbc6c3b4ba581aa08d57b02bae6c48e850a6f21d166396c36b32",
+      "marker": "f.prototype.create="
+    },
+    "freeClearUpdate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1108300,
+      "startWithinWindow": 919,
+      "source": "function(a){this.J.vb.Vi=\n(null!=a.Lka?a.Lka:a.ZUa)||0;this.J.vb.Dk=0<this.J.vb.Vi;this.J.vb.Lg=(null!=a.Mka?a.Mka-this.J.vb.Vi:a.YUa)||0;this.J.vb.winAmount=a.cMa;this.J.vb.Fz=a.Fz||0}",
+      "SHA256": "00139dd11ac52ff938fa9a7f5787e120af7e692c8d46f598ba5c51aebfdfc0a0",
+      "marker": "e.prototype.$Ra="
+    },
+    "outerCia": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.Cia=",
+      "characterOffset": 1132778,
+      "source": "function(){g(this,void 0,void 0,function(){var a,b,d,e;return m(this,function(c){switch(c.label){case 0:if(this._context.K.J.state.state===f.wa.ka.fa.Tf)return[3,6];if(this._context.qW)return[3,4];this._context.qW=!0;a=0;b=this._context.features;c.label=1;case 1:if(!(a<b.length))return[3,4];d=b[a];return[4,d.dRa()];case 2:e=c.ga();if(null!=e)return this.Pk(e),[2];c.label=3;case 3:return a++,[3,1];case 4:return[4,this.IU()];case 5:if(!c.ga())return[2];c.label=6;case 6:return[4,this.Eia()];case 7:return c.ga(),\nthis.vj(f.ka.wi),[2]}})})}",
+      "SHA256": "2b44770085867c7a45d372fece4c13f7e77d6c181abb2b0e36b4a271f10381c0"
+    },
+    "outerIU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.IU=",
+      "characterOffset": 1133335,
+      "source": "function(a){return g(this,void 0,void 0,function(){return m(this,function(b){switch(b.label){case 0:return a?[3,2]:[4,this._context.K.Ld.close()];case 1:a=b.ga(),b.label=2;case 2:return a.Pf&&(f.Tb.get().Mu(),this.OF=null),this._context.K.ku.B6&&0>=this._context.K.Wb.sM.value&&this._context.K.ku.stop(),[4,e.prototype.IU.call(this,a)];case 3:return[2,b.ga()]}})})}",
+      "SHA256": "8ce174d35d94cb801993890b61d2ebc2535f2708b7e6a591d053b21849c46df0"
+    },
+    "actualClose": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 637000,
+      "startWithinWindow": 36,
+      "source": "function(){return g(this,void 0,void 0,\nfunction(){var a,c,d,e,h,t,q,p,u;return m(this,function(b){switch(b.label){case 0:if(!this.XW())return this.J.state.state=this.Gi=G.wa.ka.fa.Tf,[2,{Pf:!1,request:null}];if(!G.nY.connected.value)return this.J.error.type=G.wa.Error.fa.ev,this.J.error.title=f.na.VA.$d,this.J.error.message=f.na.VA.yi,this.J.error.options=[{type:G.wa.Error.Dh.zv,text:f.na.VA.tZ}],[2,{Pf:!0,request:null}];a=new this.settings.Mia(this.Sp,this.lj);c={};d=0;for(e=this.fj;d<e.length;d++)h=e[d],h.l7a(c);b.label=1;case 1:return b.zg.push([1,\n3,,4]),[4,a.send(c)];case 2:return t=b.ga(),[3,4];case 3:return q=b.ga(),this.$H(q),[2,{Pf:!0,request:a}];case 4:if(t.error)return this.parseError(t.error),[2,t];this.J.error.type=G.wa.Error.fa.nb;this.lj.jm=t.Qi.jm;this.J.state.state=this.Gi=G.wa.ka.fa.Tf;try{for(p=0,u=this.fj;p<u.length;p++)h=u[p],h.k7a(t,this.J)}catch(x){return G.Ba.warn(x),[2,l.BD]}this.VV.ia(t);return[2,t]}})})}",
+      "SHA256": "19f422d9b4a662b3d805271d53a2fa64d8653a96f3ba8614f56e92eecf432e1d",
+      "marker": "d.prototype.close="
+    }
+  },
+  "projection": {
+    "gpa": "function(){var e=this.context.K,d=e.J;return 0<d.vb.Vi?a.te.La:null}",
+    "dRa": "function(){var e=this.context.K,d=e.J;return 0===d.vb.Vi&&0<d.vb.Lg?a.te.La:0<this.context.K.J.vb.Lg&&!this.context.K.J.state.$j?G.ea.ka.Fza:null}",
+    "innerKwa": "function(){return 0>=this._context.K.J.vb.Lg||this._context.K.J.state.$j||this._context.K.J.error&&this._context.K.J.error.type!=G.wa.Error.fa.nb?\"finish-inner\":\"continue-inner\"}",
+    "acceptedChoiceMap": {
+      "source": "function(){return this.Hj.map(function(a){return a.value-10})}",
+      "originalExpression": "this.Hj.map(function(a){return a.value-10})",
+      "characterOffset": 1299735
+    },
+    "equalPreset": "function(){for(var a=this.Kl.value=0;a<this.Hj.length;a++)this.Hj[a].value=28}"
+  },
+  "reusedTypedStateReceipt": {
+    "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-derived-typed-state-close-path-delta-20261019/receipt.json",
+    "bytes": 8551,
+    "SHA256": "a990a13a5698c510f6c036046f2782b63a199094f3bc34c0da957c86bdfbf9d2"
+  },
+  "reusedWire": {
+    "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-derived-typed-state-close-path-delta-20261019/own32803-source-native-normal-wire-v8.cjs",
+    "bytes": 14008,
+    "SHA256": "1420cc9ebbd44741b5f0ea6894c0aff8ef9a3cfc94ab98a36cfe1d55cc4e437a"
+  },
+  "oldDormantPositiveDescriptor": {
+    "source": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-native-next-choice-DATA-20261018/v1/own32803-diagnostic-DATA.cjs",
+    "method": "potChoiceDescriptor",
+    "logicalOption": 1,
+    "nativePreset": "mX equal sets every Hj.value=28, then explicit accept value-10",
+    "Z7": [
+      18,
+      18,
+      18,
+      18,
+      18
+    ],
+    "oldDescriptorHeldAndNotActive": true
+  },
+  "sourceProtocolSize": {
+    "ownLogicSourceToken": "a.Z7&&5==a.Z7.length&&(b.FQa=a.Z7)",
+    "menuInitialDO": "b.vb.DO=[18,18,18,18,18]",
+    "neverCompileWithoutActualMenuAndExplicitAGChoice": true
+  },
+  "innerStateMachine": {
+    "source": "\"};md.Mwa={s6:null,CA:[G.ea.Nb.AF,G.ea.Nb.Vca,G.ea.Nb.OB,Z.te.lF,Z.te.FQ,Z.te.OB,Z.te.J$,G.ea.Nb.xQ,Z.te.Kwa],Doa:(pd={},pd[G.ea.ka.Gv]=Z.te.RP,pd[Z.te.RP]=G.ea.ka.jo,pd)};\n(function(a){var f=function(f){function h(a){var",
+    "FzaAliasSource": ";cd.wv=ad.Nb.wv;cd.Fh=ad.Nb.wv;cd.Fza=ad.Nb.wF;cd.wF=ad.Nb.wF;cd.kn=ad",
+    "nextFree": "Fza aliases original wF -> NT -> pI -> own Logic. Selected DO persists through base La.clear/$Ra, which do not write DO.",
+    "completion": "Kwa finishes if 0>=Lg || MAX || native error, otherwise loops wi. kLa clears DO=null before outer jo (MAX) or Ta->jo. Preserve outer qW from actual activation route."
+  },
+  "freshMenu": {
+    "lI": "Fresh normal CJ.H4 sets lI=false; existing-open/recovery lI=true path excluded, never supply arbitrary lI or old actor.",
+    "routes": [
+      "gpa Vi>0 -> te.La, fresh hVa opens menu",
+      "otherwise Cia qW=true, dRa Vi===0 && Lg>0 ->te.La before XW"
+    ],
+    "initialDOIsNotChoice": "hVa initial18x5 never compiles until explicit actual AG logical1"
+  },
+  "holds": [
+    "no actual current native menu or same Init/session/round/SID",
+    "unsupported allocation/logical option, replay/recovery/promo/force",
+    "choice transport unknown retains intent; no retry",
+    "continued free needs actual own matching accepted choice ACK",
+    "menu activation together with MAX inner start not mapped",
+    "no native UI/clock/globalBQ or provider End response/full synthetic game"
+  ],
+  "operations": {
+    "sourceRequests": 0,
+    "DBAccess": 0,
+    "oldNormal7OrSDKOrWireOrTypedSuiteRuns": 0,
+    "newFinalCredit": 0,
+    "productionReady": false
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "schema": "own32803-fresh-BQ-normal-platform-entry-DATA-v1",
+  "gameId": "32803",
+  "dbName": "sg_rrraceday",
+  "runtimeGameId": 33163,
+  "nativeHeaderGameID": "20456",
+  "sourceIdentityReused": {
+    "gameId": "32803",
+    "ownGameCode": "rrraceday",
+    "ownBootstrap": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\metadatabundle.js",
+    "ownLiteralCDNRoot": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service",
+    "ownLiteralScriptRef": "js/app.js",
+    "expectedSRIReusedFromOwnBootstrap": "sha256-BojP0s6B63KntNnwFCRI1HSZ1D/Cf+XoZZk3g9qQ1tc=",
+    "expectedContentSHA256DecodedNotNewSDKHash": "0688cfd2ce81eb72a7b4d9f0142448d47499d43fc27fe5e865993783da90d6d7",
+    "exactOwnPrimaryURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/rrraceday/js/app.js",
+    "exactOwnLocalAlias": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "exists": true,
+    "bytes": 1318575,
+    "previousWrongBaseCandidate": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\app.js",
+    "previousWrongBaseExists": false,
+    "sourceIdentityBinding": "Own getCdnRoot + getGameCode + scriptRef; whole SDK content/hash/AST certificate not recomputed",
+    "sourceContentQualificationClaimed": false,
+    "GETAttempts": 0,
+    "newSDKFullHashOrAST": 0,
+    "sourceRequests": 0,
+    "DBAccess": 0
+  },
+  "newNecessaryLeaves": {
+    "nativeBQModeGetter": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "tI:{get:function(){return a.metaDataBundle?",
+      "byteWindowStart": 614836,
+      "source": "function(){return a.metaDataBundle?a.metaDataBundle.getMaxWinStatus()?G.bt.Yaa:G.bt.nb:G.bt.Yaa}",
+      "SHA256": "656a516a4defdcdba805a7bf94d537ac60e0da2fdae5bb29cb17b696102cf8ff"
+    },
+    "ownMetadataMaxWinStatus": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\metadatabundle.js",
+      "marker": "getMaxWinStatus=function()",
+      "byteWindowStart": 8230,
+      "source": "function(){return\"on\"===\"ON\".toLowerCase()}",
+      "SHA256": "a926f39319bac0491a3e39a7cdbe71ddb45be47029fd4e363c1fe7c82ba02af8"
+    },
+    "dummyAttachPlatform": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.cra=function(a)",
+      "byteWindowStart": 610085,
+      "source": "function(a){this.Ct=a;this.kga&&this.Ct.handlePromoInfoUpdate(this.kga);this.Ct.addPlatformBalanceListener(this);this.Ct.addWinDisplayListener(this)}",
+      "SHA256": "9f794e0bf363428c476bf93806f6ddb7022a31fa5e2bd6d9f270d0129dba17a8"
+    },
+    "BQGameRevealed": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "c.prototype.gameRevealed=function()",
+      "byteWindowStart": 622278,
+      "source": "function(){this.log(\"gameRevealed()\");this.dS.value=!0;this.wn.value&&this.wn.value.status===b.xp.yZ&&(this.wn.value=y(y({},this.wn.value),{status:b.xp.KZ}))}",
+      "SHA256": "51a789af72473b9f1fd18d08fcb8ea6514842dda9eb59097d02ea07145703271"
+    },
+    "originalBQRegistration": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "characterOffset": 625165,
+      "source": "f.BQ=c;G.Tb.register(c)",
+      "SHA256": "839902f3250d16cf21d8a5e1cbe2df89e3f39e7243099ff7c037eb67489d4c86"
+    },
+    "maxModeEnum": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "characterOffset": 603229,
+      "source": "(function(a){a[a.nb=0]=\"None\";\na[a.Yaa=1]=\"GreaterThan\";a[a.jZa=2]=\"GreaterThanOrEqual\"})(a.bt||(a.bt={}));",
+      "SHA256": "e344e62637334ae9a877461282adb5f75779d4a4c83876fd57294effcdd3a835"
+    },
+    "urlGetParameter": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 5583,
+      "source": "function h(b,a,k){void 0===a&&(a=null);void 0===k&&(k=c.d_);return(b=RegExp(b+\"=(.+?)(&|$)\").exec(location.search))?k(b[1]):a}",
+      "marker": "function h(b,a,k)",
+      "SHA256": "62ed251d18b59d28392c1dd0e2a9cdc30b0c05510040a2e22a4f16587e0dec55"
+    },
+    "urlNumeric": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.qs=function(b,c)",
+      "byteWindowStart": 6863,
+      "source": "function(b,c){void 0===c&&(c=0);b=h(b,\"\",void 0);return a.lr.ra(b,c)}",
+      "SHA256": "4820500c07915491e0862459f9c937ce1594294aba9d1e47aabfe42643f40ccb"
+    },
+    "numericParse": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.ra=function(d,b)",
+      "byteWindowStart": 4196,
+      "source": "function(d,b){void 0===b&&(b=null);return\"\"==d?b:a.as(Number(d),a.I.ra,b)}",
+      "SHA256": "1fb39ffebbf82ae238149a8d0acf601ba2d949319b690689c1f976c32e3cde58"
+    },
+    "isNumber": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.ra=function(a)",
+      "byteWindowStart": 3227,
+      "source": "function(a){return null!=a&&!isNaN(a)&&(\"number\"===typeof a||a instanceof Number)}",
+      "SHA256": "b71c6393c9e0b4a3ff3979038bdf5a17fe9b4efffe3ba039f29acb5b6cb8f3f2"
+    },
+    "valueOr": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.as=function(a,l,h)",
+      "byteWindowStart": 3851,
+      "source": "function(a,l,h){void 0===h&&(h=null);return l(a)?a:h}",
+      "SHA256": "5da172983dcada8bc918512418c3bcc4c2744a8c99b1cf2c6e44ef6ea5bc257f"
+    }
+  },
+  "reusedLeaves": {
+    "BQConstructor": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 613280,
+      "startWithinWindow": 38,
+      "source": "function c(){var b=this;this.UV=G.createEvent();this.BI=G.createEvent();this.hE=G.Jb();this.wRa=G.Jb();this.hRa=G.createEvent();\nthis.Qna=G.CQ.DZ;this.dS=new G.fc(!1);this.WL=this.Xr=this.nL=this.Sy=this.w1=this._partnerAdapter=null;this.F1=this.pfa=0;this.G1=!0;this._balanceService=this.v0=this.H_=this.D2=null;this.ufa=!1;this.wn=new G.fc(null);this.ufa=G.URL.wh(\"dev\");this.log(\"Using SG platform\");a&&a.EntryPoint?a.entryPoint?a.entryPoint.proxy=this:a.entryPointReadyCallback=function(){return a.entryPoint.proxy=b}:(this.log(\"SG environment not detected, using dummy partner adapter\"),G.fe.Document.readyState.for(!0).then(function(){b.setPartnerAdapter(new f.fv(b))}))}",
+      "SHA256": "edbe36bd6c6a07d0cbee585c3517dbde39106d9a911d6ddb81bf7a216a1909a5",
+      "marker": "function c()"
+    },
+    "enginePlatformBinding": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1104000,
+      "startWithinWindow": 93,
+      "source": "function e(b,c){var d=f.call(this,b,c)||this;d.settings=b;d.J=c;d.D7=G.createEvent();d.a6=!0;d.a1a=!1;b=G.Tb.get();d.lj.Ck=b instanceof a.lf.BQ?b.Ck.value:null;b instanceof a.lf.BQ&&(d.lj.Ck=b.Ck.value,d.mCa=b.Ck.Ma(function(a){d.lj.Ck=a}));return d}",
+      "SHA256": "e2d864b69be5dfcc0fdd27d6480a3026b738044cfdf49675198a444019300bc3",
+      "marker": "function e(b,c)"
+    },
+    "currentCkGetter": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 614000,
+      "startWithinWindow": 116,
+      "source": "function(){return this.wn}",
+      "SHA256": "ff086a2fb5cdea074300ee1ba0c2e448c67059f9c91fef6c51017e8ac46ee042",
+      "marker": "Ck:{get:"
+    },
+    "dummyFrbet": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 606500,
+      "startWithinWindow": 165,
+      "source": "function(){var a=G.URL.qs(\"frbet\",null);return null==a?null:a/100}",
+      "SHA256": "2ccdb041c34bbf40ac44de10a7320995400a4e0d18c40eca34fd646e9f406355",
+      "marker": "b5:{get:"
+    },
+    "dummyConstructor": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 606200,
+      "startWithinWindow": 63,
+      "source": "function d(b){this.Ct=this.partnerAutoplayManager=null;this.vEa=new a.ewa;this.CDa=new a.dwa;this.gS=this.fS=null;null!=this.b5&&(this.Jy=new a.cwa(\"MyCampaign\",\"MyActivation\",this.b5*this.Kka),this.kga={PROMOTIONS:{FREEROUNDS:[this.Jy.g8],GAMEPLAY:\"complete\"}});this.cra(b)}",
+      "SHA256": "6d3bf4000efd6c83d4c97fba79922927c31dbb0b0da77fcbd548d71d7146c364",
+      "marker": "function d(b)"
+    },
+    "dummyAdvance": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 608000,
+      "startWithinWindow": 180,
+      "source": "function(a){h.debug(\"DummyPartnerAdapter: receivedGameLogicResponse\");this.Jy&&!this.Jy.YOa&&200===a.status&&\"Logic\"===(new DOMParser).parseFromString(a.responseText,\"text/xml\").documentElement.getAttribute(\"type\")&&(this.Jy.advance(),this.Ct.handleFreeRoundsUpdate(this.Jy.Ck))}",
+      "SHA256": "112fad8a701abd901d89833adb29e3a3ae30c96709417eceed33da3833ce4da3",
+      "marker": "d.prototype.receivedGameLogicResponse="
+    },
+    "freeRoundUpdate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 622100,
+      "startWithinWindow": 55,
+      "source": "function(a){this.log(\"handleFreeRoundsUpdate(\"+\nJSON.stringify(a)+\")\");this.wn.value=this.MSa(a)}",
+      "SHA256": "e82f7d420c07852bed72cd7a328878dd25b53ea89b27c0ac3201303b4558c776",
+      "marker": "c.prototype.handleFreeRoundsUpdate="
+    },
+    "promoUpdate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 621930,
+      "startWithinWindow": 60,
+      "source": "function(a){this.log(\"handlePromoInfoUpdate(\"+JSON.stringify(a)+\")\");null!=a&&(a=this.ALa(a),0!==a.length&&(this.wn.value=a[0]))}",
+      "SHA256": "4240eacf05209f7a4d00088da7b5dd0185c57851ebe07ccb8b5b7ae46dd0d36c",
+      "marker": "c.prototype.handlePromoInfoUpdate="
+    },
+    "headerInput": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1112088,
+      "startWithinWindow": 0,
+      "source": "function e(d){if(!d)return null;G.Ba.debug(\"[SG.GLM.BaseRequest] Free Rounds status: \"+a.lf.FreeRoundsInfo.xp[d.status]+\" (pending rounds: \"+(d.Rqa||0)+\")\");if(!a.lf.FreeRoundsInfo.Ze(d))return null;d=G.$i.Gh.MW(h(d));var b=G.$i.Gh.fa.get(f.eQ);return d.getElementsByTagName(b)[0].innerHTML}",
+      "SHA256": "1fd377ba611ee3fd8b3415fe1badb9dbaa91f65415782922db3addc1f84d1ff4",
+      "marker": "function e(d)"
+    },
+    "nativeMax": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1108300,
+      "startWithinWindow": 850,
+      "source": "function(a){return G.Tb.get().tI!==G.bt.nb&&a.OT.$j}",
+      "SHA256": "e43b9b6580f10bc0db1414f7d3f6aef63fc37d495b455d979f352edb5a2a04c3",
+      "marker": "e.prototype.aU="
+    }
+  },
+  "sourceInitialCampaign": {
+    "exactConstructorToken": "this.wn=new G.fc(null)",
+    "initializerExpression": "null",
+    "onlyFreshOriginalEntry": true
+  },
+  "scope": "Prospective A-owned fresh source-only normal entry projection along real BQ branch. Not a native global/class instance and not a current old-session snapshot. Requires actual future explicit launch and closed external inputs.",
+  "unchanged": {
+    "oldDiagnosticAndEdModules": true,
+    "old4AndHostNotRerun": true,
+    "oldCachePacketsNotReopened": true,
+    "oldSourceIdentityNotRehashed": true
+  },
+  "operations": {
+    "SDKBoot": 0,
+    "SDKAST": 0,
+    "wholeSDKHashes": 0,
+    "provider": 0,
+    "DB": 0,
+    "newFinalCredit": 0
+  }
+}

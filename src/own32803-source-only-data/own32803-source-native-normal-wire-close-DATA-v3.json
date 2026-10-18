@@ -1,0 +1,892 @@
+{
+  "schema": "own32803-source-native-normal-wire-close-DATA-v3",
+  "gameId": "32803",
+  "nativeGameID": 20456,
+  "runtimeGameId": 33163,
+  "dbName": "sg_rrraceday",
+  "scope": "pure DTO/XML and wire-only config projection; fresh closed normal entry only",
+  "sourceIdentityReused": {
+    "gameId": "32803",
+    "ownGameCode": "rrraceday",
+    "ownBootstrap": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\metadatabundle.js",
+    "ownLiteralCDNRoot": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service",
+    "ownLiteralScriptRef": "js/app.js",
+    "expectedSRIReusedFromOwnBootstrap": "sha256-BojP0s6B63KntNnwFCRI1HSZ1D/Cf+XoZZk3g9qQ1tc=",
+    "expectedContentSHA256DecodedNotNewSDKHash": "0688cfd2ce81eb72a7b4d9f0142448d47499d43fc27fe5e865993783da90d6d7",
+    "exactOwnPrimaryURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/rrraceday/js/app.js",
+    "exactOwnLocalAlias": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "exists": true,
+    "bytes": 1318575,
+    "previousWrongBaseCandidate": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\app.js",
+    "previousWrongBaseExists": false,
+    "sourceIdentityBinding": "Own getCdnRoot + getGameCode + scriptRef; whole SDK content/hash/AST certificate not recomputed",
+    "sourceContentQualificationClaimed": false,
+    "GETAttempts": 0,
+    "newSDKFullHashOrAST": 0,
+    "sourceRequests": 0,
+    "DBAccess": 0
+  },
+  "xmlCore": {
+    "pathSegment": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function h(a){var b=!1;",
+      "characterOffset": 255741,
+      "source": "function h(a){var b=!1;\"*\"===a[0]&&(a=a.substr(1),b=!0);var c=/<(.+)>/g.exec(a);if(null!=c&&1<c.length){a=a.substr(0,c.index);var k={},d=0;for(c=c[1].split(\",\");d<c.length;d++){var e=c[d].split(\"=\",2);k[e[0]]=e[1]}b={type:\"tag\",value:a,filter:k,g7:b}}else b={type:\"tag\",value:a,g7:b};return b}",
+      "SHA256": "a5a43d41990147ebdd065c2ea06e582dd8479abe6eed8219a9fa35bb80ec7d33"
+    },
+    "matchingChildren": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function d(a,b)",
+      "characterOffset": 256367,
+      "source": "function d(a,b){b=b.toLowerCase();var c=[];a=a.childNodes;for(var k=a.length,d=0;d<k;++d){var e=a.item(d);e instanceof Element&&e.tagName.toLowerCase()===b&&c.push(e)}return c}",
+      "SHA256": "983df0a728ec0d2a0e5e92b8542ea949ef1790b8cda72d63c6ed26cb31a8ef37"
+    },
+    "getOrCreate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function b(b,c)",
+      "characterOffset": 256543,
+      "source": "function b(b,c){var k=d(b,c);if(0===k.length)return c=b.ownerDocument.createElement(c),b.appendChild(c),c;1<k.length&&a.Ba.warn(\"getOrCreateChild: More than 1 element found\");\nreturn k[0]}",
+      "SHA256": "5ad3e92c92d3331e95459c7e2e356580a0da52f175b47f048e6f77f7121f4d68"
+    },
+    "read": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function c(b,k,h)",
+      "characterOffset": 256731,
+      "source": "function c(b,k,h){void 0===h&&(h=0);if(k.length<=h)return b;var f=k[h];if(\"attr\"===f.type)return b.getAttribute(f.value);b=d(b,f.value);for(var n=[],l=0,r=b.length;l<r;++l){var t=b[l];if(null!=f.filter){var q=!0,p;for(p in f.filter){var u=f.filter[p];if(\"\"===p){if(u!==t.tagName){q=!1;break}}else{var v=t.getAttribute(p);if(u!==v){q=!1;break}}}q&&n.push(t)}else n.push(t)}if(f.g7){if(h>=k.length-1)return n;throw Error(\"Can't have a multi-match segment not at end of path '\"+e(k)+\"'!\");}if(0===\nn.length)return null;if(1===n.length)return c(n[0],k,h+1);a.Ba.warn(\"More than 1 element found matching path '\"+e(k)+\"'!\");return null}",
+      "SHA256": "091d1ee2e4e4ef63579d31b990daf0c9a37e8044c0b1e1bdabec1560883c90fa"
+    },
+    "write": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function k(c,d,e,h)",
+      "characterOffset": 257361,
+      "source": "function k(c,d,e,h){void 0===h&&(h=0);if(h>=d.length&&a.I.zc(e))c.textContent=e;else if(0===d.length)if(e instanceof Element)c.appendChild(e);else{if(a.I.array(e))for(h=0;h<e.length;h++)d=e[h],null!=d&&c.appendChild(d)}else{var f=h===d.length-1,n=d[h];if(null!=n.filter)throw Error(\"Serialisation of paths containing a filter currently not supported\");if(\"attr\"===n.type){if(!a.I.zc(e))throw Error(\"XML.write: can't serialise an Element or Element[] into an attribute\");\nc.setAttribute(n.value,e)}else{if(f){if(e instanceof Element){c.appendChild(e);return}if(a.I.array(e)){c=b(c,d[d.length-1].value);for(h=0;h<e.length;h++)d=e[h],null!=d&&c.appendChild(d);return}}c=b(c,n.value);k(c,d,e,h+1)}}}",
+      "SHA256": "49c2c8c54b4e370dfca4749d8fe21f6bedf7b725447d9a06f22a4a28a548bb1d"
+    },
+    "serialize": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function n(b,c)",
+      "characterOffset": 258056,
+      "source": "function n(b,c){if(null==b)return null;if(null==c){var d=f.fa.get(b);if(null==d)throw Error(\"Failed to serialise object (has no XML type)\");d=document.implementation.createDocument(null,d,null);var e=d.documentElement}else e=c;var h=f.Ca.get(b,a.sd.ho.Bg),n;for(n in h)if(h[n]){var l=\nh[n],r=b[n];null==l.type.Iq||null==r&&l.xu||(r=l.type.Iq(null!=d?d:e.ownerDocument,r),null!=r&&k(e,l.Lpa,r))}if(null==c)return d}",
+      "SHA256": "209b89d314d2d3f2035cd89a4bd81e480ee9a54cc6035534d41b03a685aca988"
+    },
+    "deserialize": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function l(b,k)",
+      "characterOffset": 258470,
+      "source": "function l(b,k){if(null==b)return null;k=k instanceof Document?k.documentElement:k;var d=f.Ca.get(b,a.sd.ho.Bg),e;for(e in d)if(d[e]){var h=d[e];if(null!=h.type.Qo){var n=c(k,h.Lpa);b[e]=h.type.Qo(n)}}}",
+      "SHA256": "fa02ad1299ff8a5440c8ed2ac5053be8628eca001f39faabee98d56c5ce17a44"
+    },
+    "booleanType": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function t(b)",
+      "characterOffset": 258672,
+      "source": "function t(b){var c=y(y({},t.V),b);return{Iq:function(a,b){return!0===b?c.PW:!1===b?c.OW:\"undefined\"},Qo:function(b){if(null==b)return null;if(b instanceof Element){if(b=\nb.textContent&&b.textContent.toLowerCase(),null!=b)return-1!==c.qha.indexOf(b)?!0:-1!==c.pha.indexOf(b)?!1:c.default}else{if(a.I.array(b))throw Error(\"Failed to deserialise boolean (received array)\");b=b.toLowerCase();return-1!==c.qha.indexOf(b)?!0:-1!==c.pha.indexOf(b)?!1:c.default}}}}",
+      "SHA256": "403027a71e52bfda8dfaaac1538768d28fb76fddfac2947dce1f1812b4faf493"
+    }
+  },
+  "methods": {
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.iU=function()",
+      "characterOffset": 645904,
+      "source": "function(){var d=new a.JY;d.kM=this.Xm.kM.toString();d.$T=this.Ms.lq;d.channel=this.Xm.channel;d.QH=this.Ms.QH;d.fMa=this.Xm.eMa;d.Mz=this.Xm.Mz;d.fV=this.Xm.fV;d.lang=this.Ms.language;d.TSa=!1;d.jm=this.Ms.jm;d.Cx=this.Ms.Cx;d.j$=this.Xm.j$;d.n$=this.Xm.n$;return d}",
+      "SHA256": "4e60090f4ec68cf36a8e4ba7c7445a9f9a0f36b2fcabab799bda3c497453b89d"
+    },
+    "init": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "b.prototype.Ow=function(a)",
+      "characterOffset": 650328,
+      "source": "function(a){var c=new b.yl;c.Qi=this.iU();a.kg&&(c.Lu=this.kU(),this.QU(c.Lu,a.kg));return c}",
+      "SHA256": "77062eef5ed11dc2d28c93f3bcbc69c0ad43575968b144fe23454f63f18a4392"
+    },
+    "end": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "b.prototype.Ow=function()",
+      "characterOffset": 648146,
+      "source": "function(){var a=new b.yl;a.Qi=this.iU();return a}",
+      "SHA256": "798845cc1344daf27e0f9e38ddc7421ce7045dc829f43fb123134e98e916d831"
+    },
+    "logic": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.Ow=function(a)",
+      "characterOffset": 1182234,
+      "source": "function(a){var b=new d.yl;b.Qi=this.iU();b.Pq=a.dl.value;a.lN&&(b.ps=this.hU(),this.kN(b.ps,a.lN));a.kg&&(b.Lu=this.kU(),this.QU(b.Lu,a.kg));null!=a.yd&&(b.Ki=new SG.Ub.Rd.PA,b.Ki.yd=\na.yd);b.Zm=a.Zm;a.Z7&&5==a.Z7.length&&(b.FQa=a.Z7);return b}",
+      "SHA256": "9bf444358a89a5348225e9f43a330a9a84eb7c19d17b9dfc6c29a360c9cd7ab2"
+    },
+    "currency": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.iOa=function(a)",
+      "characterOffset": 640916,
+      "source": "function(a){this.J.rd.lq=a.Qi.$T||\"GBP\";this.J.rd.yd=1;var b=a.Ki;if(b&&b.Aja){b=b.Aja;var d=G.F.QQ.qZ,e;for(e in b)G.I.zc(b[e])&&(b[e]=b[e].replace(/\\s/g,d));this.J.rd.uD={name:b.currency,He:b.p4||\"\",Q4:b.Q4,gV:b.gV,me:b.me,\npN:b.SLa,xe:b.mKa,oU:b.oU,zja:b.SIa,oj:b.oj,ds:b.NVa,yd:b.yd,GU:null!=b.p4,$ja:null==b.p4};this.lj.yd=b.yd;this.lj.lq=a.Qi.$T}else this.J.rd.uD=y(y({},G.F.GH[this.J.rd.lq]||G.F.GH.GBP),{GU:!1}),this.lj.yd=1,this.lj.lq=\"\";this.Ul.gg&&(this.J.rd.uD.GU=!1,this.J.rd.uD.yd=1)}",
+      "SHA256": "f6206f5432867a2156b1023a0263e258bd3d8c93548d866ff896c336ffbb43f1"
+    },
+    "ena": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.ena=function(a)",
+      "characterOffset": 1106733,
+      "source": "function(a){this.J.Ga.Ec=a.Zra.map(function(a){return{type:G.ea.wa.Ob.fa.cj,value:a}});this.J.Ga.mq=a.xU;this.J.Ga.Od=a.xU;this.J.Ga.Lk=[]}",
+      "SHA256": "3191cdfb7e5626185ab06d66d8ec0812bde0401b1ecd613dc74b071040ba7f77"
+    },
+    "RU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.RU=function(a)",
+      "characterOffset": 1105274,
+      "source": "function(a){var b=G.ea.wa.Ob.yh(this.J.Ga,a.dl);b.value/=this.By;return{yd:this.lj.yd,dl:b,Zm:a.Zm,lN:this.$f.shift(),kg:this.Ul.kg}}",
+      "SHA256": "1e3091ec36ef915e6830c7a50331cbf50e0eca0002580c4592cc06b4117df5b8"
+    },
+    "ownRU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.RU=function(a)",
+      "characterOffset": 1173954,
+      "source": "function(a){return y(y({},e.prototype.RU.call(this,a)),{Z7:this.J.vb?this.J.vb.DO:null})}",
+      "SHA256": "66e09a310c000e7275deb20de9f1cc685437f93cb15dc04a14065fffd525e86c"
+    },
+    "stakeTotal": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "function e(a,b)",
+      "characterOffset": 253398,
+      "source": "function e(a,b){switch(b.type){case k.cj:return{type:k.cj,value:b.value};case k.jr:return{type:k.cj,value:b.value*(a.Lk[a.Oi]+(a.T4||0))};case k.Mx:if(null==a.Zr)throw Error(\"Stake type was CreditMultiplier but no baseCreditValue is present\");return{type:k.cj,value:b.value*a.Zr};default:throw Error(\"Unknown stake type '\"+b.type+\"'\");}}",
+      "SHA256": "cff6aa7f0d7ab214329a592af17d0ef346cc91f124ae89b6ad266305358c6408"
+    },
+    "replayGG": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "get:function(){return null!=this.ila()",
+      "characterOffset": 265240,
+      "source": "function(){return null!=this.ila()&&null!=this.j5()}",
+      "SHA256": "76756e05003ea3468362e08d6d5352f47d84ebbb0003beacd33000560ffa1ac6"
+    },
+    "replayHistory": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.prototype.ila=function()",
+      "characterOffset": 265495,
+      "source": "function(){var a=G.URL.getParameter(\"HistoryServerURL\");return\"null\"!=a?a:null}",
+      "SHA256": "3483005c7b126c17b6cb1c577da056fdec9e18ba33e2384f97d60995657c6b43"
+    },
+    "replayBet": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.prototype.j5=function()",
+      "characterOffset": 265410,
+      "source": "function(){var a=G.URL.getParameter(\"betID\");return\"null\"!=a?a:null}",
+      "SHA256": "81250e952cb66f0eb859e1d8c35924eb7f6f8e0873b6197f36c2f329109f1c96"
+    },
+    "Vf": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.Vf=function(",
+      "characterOffset": 262127,
+      "source": "function(b){var c=\"|\";void 0===c&&(c=\",\");return{Iq:function(k,d){if(null==d)return null;for(var e=[],h=0;h<d.length;h++){var f=b.Iq(k,d[h]);null!=f&&(f instanceof Element?a.Ba.warn(\"Serialisation of object arrays is not supported (use Array!)\"):a.I.array(f)?a.Ba.warn(\"Serialisation of 2D arrays is not supported\"):\ne.push(f))}return e.join(c)},Qo:function(k){return(k=null==k?null:a.I.array(k)?k:k instanceof Element?\"\"===k.textContent?[]:k.textContent.split(c):\"\"===k?[]:k.split(c))?k.map(function(a){return b.Qo(a)}):null}}}",
+      "SHA256": "95bee35c15be6ab9641b545c836d3913bc96b7ddfcffad209e5f85ee269922ae"
+    },
+    "String": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.String=",
+      "characterOffset": 259895,
+      "source": "f.String={Iq:function(a,b){return b},Qo:function(b){if(null==b)return null;if(b instanceof Element)return b.textContent||\"\";if(a.I.array(b))throw Error(\"Failed to deserialise string (received array)\");return b}}",
+      "SHA256": "f04eb0b2f6b06ed9bc82286fcb4d8c271c6c38c67948b61ae5c34f958b31656f"
+    },
+    "Number": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.Number=",
+      "characterOffset": 260107,
+      "source": "f.Number={Iq:function(a,b){return null!=b?b.toString():\"undefined\"},Qo:function(b){if(null==b)return null;if(b instanceof Element)return parseFloat(b.textContent||\"\");if(a.I.array(b))throw Error(\"Failed to deserialise number (received array)\");return parseFloat(b)}}",
+      "SHA256": "30454b27958d5cd2f3197eb90a78a9e22ff0822e1b4e997501cf9bcf4a019b53"
+    },
+    "Object": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.Object=",
+      "characterOffset": 260509,
+      "source": "f.Object={Iq:function(a,b){if(null==b)return null;if(q.is(b))a=a.createElement(\"ReelSpin\");else{var c=f.fa.get(b);if(null==c)throw Error(\"Failed to serialise object (has no XML type)\");a=a.createElement(c)}n(b,a);return a},Qo:function(b){if(null==b)return null;if(b instanceof Element){var c=f.fa.ela(b.tagName);if(0===c.length)throw Error(\"Failed to deserialise object (unknown XML type '\"+\nb.tagName+\"')\");if(1<c.length)throw Error(\"Failed to deserialise object (more than one class lays claim to XML type '\"+b.tagName+\"')\");c=new c[0];l(c,b);return c}if(a.I.array(b))throw Error(\"Failed to deserialise object (received array)\");throw Error(\"Failed to deserialise object (path lead to attribute)\");}}",
+      "SHA256": "d6b5fb40986f8e240f8d449b8523cd2d9e5c498a839fe8f8f80802cf646626a3"
+    },
+    "compilePath": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.Ca.Vo(function(a)",
+      "characterOffset": 259202,
+      "source": "function(a){var b=a.NA;var c=a.NA.path;if(\"\"===c)a=[];else{a=[];var k=0;for(c=c.trim().split(/\\s+/g);k<c.length;k++){var d=c[k],e=d.indexOf(\".\");\n\".\"===d.substr(0,1)?a.push({type:\"attr\",value:d.substr(1)}):-1!==e?(a.push(h(d.substr(0,e))),a.push({type:\"attr\",value:d.substr(e+1)})):a.push(h(d))}}b.Lpa=a}",
+      "SHA256": "88833f47f149e756106acec1092abd195a585bd3d59770f0986d8b53826de6e2"
+    }
+  },
+  "tables": {
+    "Header": {
+      "name": "Header",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 630350,
+      "to": 631710,
+      "fields": [
+        {
+          "key": "kM",
+          "path": ".affiliate",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.kM={i:[f.Ca({path:\".affiliate\",type:f.String})]",
+          "characterOffset": 630413
+        },
+        {
+          "key": "$T",
+          "path": ".ccyCode",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.$T={i:[f.Ca({path:\".ccyCode\",type:f.String})]",
+          "characterOffset": 630492
+        },
+        {
+          "key": "channel",
+          "path": ".channel",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.channel={i:[f.Ca({path:\".channel\",type:f.String})]",
+          "characterOffset": 630569
+        },
+        {
+          "key": "QH",
+          "path": ".freePlay",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": false,
+          "originalDecorator": "b.QH={i:[f.Ca({path:\".freePlay\",type:f.hJ({PW:\"Y\",OW:\"N\"})})]",
+          "characterOffset": 630651
+        },
+        {
+          "key": "fMa",
+          "path": ".gameCodeRGI",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.fMa={i:[f.Ca({path:\".gameCodeRGI\",type:f.String})]",
+          "characterOffset": 630742
+        },
+        {
+          "key": "Mz",
+          "path": ".gameID",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Mz=\n{i:[f.Ca({path:\".gameID\",type:f.Number})]",
+          "characterOffset": 630824
+        },
+        {
+          "key": "fV",
+          "path": ".glsID",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.fV={i:[f.Ca({path:\".glsID\",type:f.Number})]",
+          "characterOffset": 630901
+        },
+        {
+          "key": "lang",
+          "path": ".lang",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.lang={i:[f.Ca({path:\".lang\",type:f.String})]",
+          "characterOffset": 630976
+        },
+        {
+          "key": "TSa",
+          "path": ".promotions",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": false,
+          "originalDecorator": "b.TSa={i:[f.Ca({path:\".promotions\",type:f.hJ({PW:\"Y\",OW:\"N\"})})]",
+          "characterOffset": 631052
+        },
+        {
+          "key": "jm",
+          "path": ".sessionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.jm={i:[f.Ca({path:\".sessionID\",type:f.String})]",
+          "characterOffset": 631146
+        },
+        {
+          "key": "Cx",
+          "path": ".userID",
+          "type": "f.String",
+          "optional": true,
+          "originalDecorator": "b.Cx={i:[f.Ca({path:\".userID\",type:f.String,xu:!0})]",
+          "characterOffset": 631225
+        },
+        {
+          "key": "j$",
+          "path": ".userType",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.j$={i:[f.Ca({path:\".userType\",\ntype:f.String})]",
+          "characterOffset": 631307
+        },
+        {
+          "key": "n$",
+          "path": ".versionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.n$={i:[f.Ca({path:\".versionID\",type:f.String})]",
+          "characterOffset": 631386
+        },
+        {
+          "key": "Ska",
+          "path": ".fullVersionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.Ska={i:[f.Ca({path:\".fullVersionID\",type:f.String})]",
+          "characterOffset": 631465
+        },
+        {
+          "key": "dPa",
+          "path": ".isRecovering",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": true,
+          "originalDecorator": "b.dPa={i:[f.Ca({path:\".isRecovering\",type:f.hJ({PW:\"Y\",OW:\"N\"}),xu:!0})]",
+          "characterOffset": 631549
+        }
+      ]
+    },
+    "CurrencyInformation": {
+      "name": "CurrencyInformation",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 631900,
+      "to": 632990,
+      "fields": [
+        {
+          "key": "currency",
+          "path": "Currency",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.currency={i:[f.Ca({path:\"Currency\",type:f.String})]",
+          "characterOffset": 631902
+        },
+        {
+          "key": "Q4",
+          "path": "ExchangeRate",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Q4={i:[f.Ca({path:\"ExchangeRate\",type:f.Number})]",
+          "characterOffset": 631985
+        },
+        {
+          "key": "p4",
+          "path": "CurrencySymbol",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.p4={i:[f.Ca({path:\"CurrencySymbol\",type:f.String})]",
+          "characterOffset": 632066
+        },
+        {
+          "key": "gV",
+          "path": "Grouping",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.gV={i:[f.Ca({path:\"Grouping\",type:f.Number})]",
+          "characterOffset": 632149
+        },
+        {
+          "key": "me",
+          "path": "GroupingSeparator",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.me={i:[f.Ca({path:\"GroupingSeparator\",type:f.String})]",
+          "characterOffset": 632226
+        },
+        {
+          "key": "SLa",
+          "path": "FracDigits",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.SLa={i:[f.Ca({path:\"FracDigits\",type:f.Number})]",
+          "characterOffset": 632312
+        },
+        {
+          "key": "mKa",
+          "path": "DecimalSeparator",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.mKa={i:[f.Ca({path:\"DecimalSeparator\",type:f.String})]",
+          "characterOffset": 632393
+        },
+        {
+          "key": "oU",
+          "path": "CurrencyCodeSpacing",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.oU={i:[f.Ca({path:\"CurrencyCodeSpacing\",type:f.Number})]",
+          "characterOffset": 632479
+        },
+        {
+          "key": "SIa",
+          "path": "CodeBeforeAmount",
+          "type": "f.Boolean",
+          "optional": false,
+          "originalDecorator": "b.SIa={i:[f.Ca({path:\"CodeBeforeAmount\",type:f.Boolean})]",
+          "characterOffset": 632567
+        },
+        {
+          "key": "oj",
+          "path": "CurrencySymbolSpacing",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.oj={i:[f.Ca({path:\"CurrencySymbolSpacing\",type:f.Number})]",
+          "characterOffset": 632654
+        },
+        {
+          "key": "NVa",
+          "path": "SymbolBeforeAmount",
+          "type": "f.Boolean",
+          "optional": false,
+          "originalDecorator": "b.NVa={i:[f.Ca({path:\"SymbolBeforeAmount\",type:f.Boolean})]",
+          "characterOffset": 632744
+        },
+        {
+          "key": "yd",
+          "path": "CurrencyMultiplier",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.yd={i:[f.Ca({path:\"CurrencyMultiplier\",\ntype:f.Number})]",
+          "characterOffset": 632833
+        }
+      ]
+    },
+    "AccountData": {
+      "name": "AccountData",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 632990,
+      "to": 633420,
+      "fields": [
+        {
+          "key": "Aja",
+          "path": "CurrencyInformation",
+          "type": "f.Object",
+          "optional": true,
+          "originalDecorator": "b.Aja={i:[f.Ca({path:\"CurrencyInformation\",type:f.Object,xu:!0})]",
+          "characterOffset": 633017
+        },
+        {
+          "key": "yd",
+          "path": "CurrencyMultiplier",
+          "type": "f.Number",
+          "optional": true,
+          "originalDecorator": "b.yd={i:[f.Ca({path:\"CurrencyMultiplier\",type:f.Number,xu:!0})]",
+          "characterOffset": 633112
+        }
+      ]
+    },
+    "InitResult": {
+      "name": "InitResult-wire-subset",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 649220,
+      "to": 649995,
+      "fields": [
+        {
+          "key": "Qi",
+          "path": "Header",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Qi={i:[f.Ca({path:\"Header\",type:f.Object})]",
+          "characterOffset": 649320
+        },
+        {
+          "key": "Ki",
+          "path": "AccountData",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Ki={i:[f.Ca({path:\"AccountData\",type:f.Object})]",
+          "characterOffset": 649395
+        },
+        {
+          "key": "Zra",
+          "path": "Stakes",
+          "type": "f.Vf(f.Number)",
+          "optional": false,
+          "originalDecorator": "b.Zra={i:[f.Ca({path:\"Stakes\",type:f.Vf(f.Number)})]",
+          "characterOffset": 649561
+        },
+        {
+          "key": "xU",
+          "path": "Stakes.defaultIndex",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.xU={i:[f.Ca({path:\"Stakes.defaultIndex\",\ntype:f.Number})]",
+          "characterOffset": 649643
+        }
+      ]
+    },
+    "Init": {
+      "name": "Init",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 650600,
+      "to": 650990,
+      "fields": [
+        {
+          "key": "type",
+          "path": ".type",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.type={i:[f.Ca({path:\".type\",type:f.String})]",
+          "characterOffset": 650650
+        },
+        {
+          "key": "Qi",
+          "path": "Header",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Qi={i:[f.Ca({path:\"Header\",type:f.Object})]",
+          "characterOffset": 650726
+        },
+        {
+          "key": "Lu",
+          "path": "REPLAY",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Lu={i:[f.Ca({path:\"REPLAY\",type:f.Object})]",
+          "characterOffset": 650801
+        }
+      ]
+    },
+    "End": {
+      "name": "End",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 648200,
+      "to": 648700,
+      "fields": [
+        {
+          "key": "type",
+          "path": ".type",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.type={i:[f.Ca({path:\".type\",type:f.String})]",
+          "characterOffset": 648342
+        },
+        {
+          "key": "Qi",
+          "path": "Header",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Qi={i:[f.Ca({path:\"Header\",type:f.Object})]",
+          "characterOffset": 648418
+        }
+      ]
+    },
+    "LogicBase": {
+      "name": "LogicBase",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 651750,
+      "to": 652520,
+      "fields": [
+        {
+          "key": "type",
+          "path": ".type",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.type={i:[f.Ca({path:\".type\",type:f.String})]",
+          "characterOffset": 651911
+        },
+        {
+          "key": "Ki",
+          "path": "AccountData",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Ki={i:[f.Ca({path:\"AccountData\",\ntype:f.Object})]",
+          "characterOffset": 651987
+        },
+        {
+          "key": "Qi",
+          "path": "Header",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Qi={i:[f.Ca({path:\"Header\",type:f.Object})]",
+          "characterOffset": 652068
+        },
+        {
+          "key": "Pq",
+          "path": "Stake.total",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Pq={i:[f.Ca({path:\"Stake.total\",type:f.Number})]",
+          "characterOffset": 652143
+        },
+        {
+          "key": "Lu",
+          "path": "REPLAY",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Lu={i:[f.Ca({path:\"REPLAY\",type:f.Object})]",
+          "characterOffset": 652223
+        },
+        {
+          "key": "ps",
+          "path": "FORCE",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.ps={i:[f.Ca({path:\"FORCE\",type:f.Object})]",
+          "characterOffset": 652298
+        }
+      ]
+    },
+    "LogicCommon": {
+      "name": "LogicCommon",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 1120400,
+      "to": 1121300,
+      "fields": [
+        {
+          "key": "Zm",
+          "path": "PaylineCount.count",
+          "type": "f.Number",
+          "optional": true,
+          "originalDecorator": "d.Zm={i:[f.Ca({path:\"PaylineCount.count\",type:f.Number,xu:!0})]",
+          "characterOffset": 1120797
+        },
+        {
+          "key": "ps",
+          "path": "FORCE",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "d.ps={i:[f.Ca({path:\"FORCE\",type:f.Object})]",
+          "characterOffset": 1120890
+        }
+      ]
+    },
+    "LogicOwn": {
+      "name": "LogicOwn",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 1183200,
+      "to": 1183690,
+      "fields": [
+        {
+          "key": "FQa",
+          "path": "PotChoice.multipliers",
+          "type": "f.Vf(f.Number)",
+          "optional": false,
+          "originalDecorator": "d.FQa={i:[f.Ca({path:\"PotChoice.multipliers\",type:f.Vf(f.Number)})]",
+          "characterOffset": 1183299
+        },
+        {
+          "key": "ps",
+          "path": "FORCE",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "d.ps={i:[f.Ca({path:\"FORCE\",type:f.Object})]",
+          "characterOffset": 1183396
+        }
+      ]
+    }
+  },
+  "currencyProjection": {
+    "source": "function(a){var b=a.Ki;if(b&&b.Aja){b=b.Aja;this.lj.yd=b.yd;this.lj.lq=a.Qi.$T}else this.lj.yd=1,this.lj.lq=\"\"}",
+    "edits": [
+      {
+        "from": "this.J.rd.lq=a.Qi.$T||\"GBP\";this.J.rd.yd=1;",
+        "to": ""
+      },
+      {
+        "from": "var d=G.F.QQ.qZ,e;for(e in b)G.I.zc(b[e])&&(b[e]=b[e].replace(/\\s/g,d));this.J.rd.uD={name:b.currency,He:b.p4||\"\",Q4:b.Q4,gV:b.gV,me:b.me,\npN:b.SLa,xe:b.mKa,oU:b.oU,zja:b.SIa,oj:b.oj,ds:b.NVa,yd:b.yd,GU:null!=b.p4,$ja:null==b.p4};",
+        "to": ""
+      },
+      {
+        "from": "this.J.rd.uD=y(y({},G.F.GH[this.J.rd.lq]||G.F.GH.GBP),{GU:!1}),",
+        "to": ""
+      },
+      {
+        "from": ";this.Ul.gg&&(this.J.rd.uD.GU=!1,this.J.rd.uD.yd=1)",
+        "to": ""
+      }
+    ],
+    "inverseOriginalExact": true,
+    "displayOnlyRemoved": true,
+    "noDisplayMoneyProjection": true
+  },
+  "closeGate": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "byteWindowStart": 1108300,
+    "startWithinWindow": 129,
+    "source": "function(){return this.Dqa.gg||!this.settings.Mia||0<this.J.vb.Lg&&!this.J.state.$j?!1:!0}",
+    "SHA256": "7e61c14632485c709dddc36c5e9bf9073a64d44f2fe9e505db01cc62b9a4c618",
+    "marker": "e.prototype.XW="
+  },
+  "closeCaller": {
+    "Cia": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.Cia=",
+      "characterOffset": 1132778,
+      "source": "function(){g(this,void 0,void 0,function(){var a,b,d,e;return m(this,function(c){switch(c.label){case 0:if(this._context.K.J.state.state===f.wa.ka.fa.Tf)return[3,6];if(this._context.qW)return[3,4];this._context.qW=!0;a=0;b=this._context.features;c.label=1;case 1:if(!(a<b.length))return[3,4];d=b[a];return[4,d.dRa()];case 2:e=c.ga();if(null!=e)return this.Pk(e),[2];c.label=3;case 3:return a++,[3,1];case 4:return[4,this.IU()];case 5:if(!c.ga())return[2];c.label=6;case 6:return[4,this.Eia()];case 7:return c.ga(),\nthis.vj(f.ka.wi),[2]}})})}",
+      "SHA256": "2b44770085867c7a45d372fece4c13f7e77d6c181abb2b0e36b4a271f10381c0"
+    },
+    "IU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.IU=",
+      "characterOffset": 1133335,
+      "source": "function(a){return g(this,void 0,void 0,function(){return m(this,function(b){switch(b.label){case 0:return a?[3,2]:[4,this._context.K.Ld.close()];case 1:a=b.ga(),b.label=2;case 2:return a.Pf&&(f.Tb.get().Mu(),this.OF=null),this._context.K.ku.B6&&0>=this._context.K.Wb.sM.value&&this._context.K.ku.stop(),[4,e.prototype.IU.call(this,a)];case 3:return[2,b.ga()]}})})}",
+      "SHA256": "8ce174d35d94cb801993890b61d2ebc2535f2708b7e6a591d053b21849c46df0"
+    },
+    "actualClose": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 637000,
+      "startWithinWindow": 36,
+      "source": "function(){return g(this,void 0,void 0,\nfunction(){var a,c,d,e,h,t,q,p,u;return m(this,function(b){switch(b.label){case 0:if(!this.XW())return this.J.state.state=this.Gi=G.wa.ka.fa.Tf,[2,{Pf:!1,request:null}];if(!G.nY.connected.value)return this.J.error.type=G.wa.Error.fa.ev,this.J.error.title=f.na.VA.$d,this.J.error.message=f.na.VA.yi,this.J.error.options=[{type:G.wa.Error.Dh.zv,text:f.na.VA.tZ}],[2,{Pf:!0,request:null}];a=new this.settings.Mia(this.Sp,this.lj);c={};d=0;for(e=this.fj;d<e.length;d++)h=e[d],h.l7a(c);b.label=1;case 1:return b.zg.push([1,\n3,,4]),[4,a.send(c)];case 2:return t=b.ga(),[3,4];case 3:return q=b.ga(),this.$H(q),[2,{Pf:!0,request:a}];case 4:if(t.error)return this.parseError(t.error),[2,t];this.J.error.type=G.wa.Error.fa.nb;this.lj.jm=t.Qi.jm;this.J.state.state=this.Gi=G.wa.ka.fa.Tf;try{for(p=0,u=this.fj;p<u.length;p++)h=u[p],h.k7a(t,this.J)}catch(x){return G.Ba.warn(x),[2,l.BD]}this.VV.ia(t);return[2,t]}})})}",
+      "SHA256": "19f422d9b4a662b3d805271d53a2fa64d8653a96f3ba8614f56e92eecf432e1d",
+      "marker": "d.prototype.close="
+    },
+    "nativeDQRegistration": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "characterOffset": 1133975,
+      "source": "return d=A([a.pb,a.ka.Ch(f.ka.jo)],d)}(a.Nb.DQ);l.DQ=h})(f.Nb||(f.Nb={}))})(a.ea||(a.ea={}))})(G||(G={}))",
+      "resolved": "G.ea.Nb.DQ@G.ea.ka.jo",
+      "base": "G.Nb.DQ"
+    }
+  },
+  "replayCorrection": {
+    "supersedesProseOnly": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/fresh-platform-Ed-close-consumer-ABI-20261019/A-fresh-platform-Ed-close-minimal-consumer-ABI.json",
+      "bytes": 10603,
+      "SHA256": "9bf93a761b2d448048f2ea647e6646ce036b0619109d666d520d351202040627"
+    },
+    "Dqa": "this.Ul=SG.Bi.jba.get()",
+    "Ul": "SG.Replay.Engine",
+    "getter": "Z3.gg",
+    "Z3": "SG.Bi.OY.get()",
+    "meaning": "native replay history mode, not pending/inflight",
+    "requestOpenInferenceAllowed": false
+  },
+  "urlFunctionsReused": {
+    "urlGetParameter": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 5583,
+      "source": "function h(b,a,k){void 0===a&&(a=null);void 0===k&&(k=c.d_);return(b=RegExp(b+\"=(.+?)(&|$)\").exec(location.search))?k(b[1]):a}",
+      "marker": "function h(b,a,k)",
+      "SHA256": "62ed251d18b59d28392c1dd0e2a9cdc30b0c05510040a2e22a4f16587e0dec55"
+    },
+    "numericParse": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.ra=function(d,b)",
+      "byteWindowStart": 4196,
+      "source": "function(d,b){void 0===b&&(b=null);return\"\"==d?b:a.as(Number(d),a.I.ra,b)}",
+      "SHA256": "1fb39ffebbf82ae238149a8d0acf601ba2d949319b690689c1f976c32e3cde58"
+    },
+    "urlNumeric": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.qs=function(b,c)",
+      "byteWindowStart": 6863,
+      "source": "function(b,c){void 0===c&&(c=0);b=h(b,\"\",void 0);return a.lr.ra(b,c)}",
+      "SHA256": "4820500c07915491e0862459f9c937ce1594294aba9d1e47aabfe42643f40ccb"
+    },
+    "isNumber": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.ra=function(a)",
+      "byteWindowStart": 3227,
+      "source": "function(a){return null!=a&&!isNaN(a)&&(\"number\"===typeof a||a instanceof Number)}",
+      "SHA256": "b71c6393c9e0b4a3ff3979038bdf5a17fe9b4efffe3ba039f29acb5b6cb8f3f2"
+    },
+    "valueOr": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.as=function(a,l,h)",
+      "byteWindowStart": 3851,
+      "source": "function(a,l,h){void 0===h&&(h=null);return l(a)?a:h}",
+      "SHA256": "5da172983dcada8bc918512418c3bcc4c2744a8c99b1cf2c6e44ef6ea5bc257f"
+    }
+  },
+  "nativeTotalEnum": {
+    "source": "a[a.cj=0]=\"Total\";a[a.jr=1]=\"PerLine\";a[a.Mx=2]=\"CreditMultiplier\"",
+    "characterOffset": 255006
+  },
+  "nativeByInitializer": {
+    "source": "this.By=1",
+    "characterOffset": 634853
+  },
+  "actualInputRefs": [
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-source-only-native-next-after-Spartacus-20261019/own-input-preparation-v2348.json",
+      "bytes": 2159,
+      "SHA256": "f7fba0cb41d2c10efe85399eda1ddaf38fe3aa056822b38c93fe7d5dfc7a1df0"
+    },
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-source-only-native-next-after-Spartacus-20261019/original-own-manifest-node-private-v2348.json",
+      "bytes": 5156,
+      "SHA256": "dbcc4abcb40acce99850542c4ea20609fdf51e313fc30e987914f6c85414a6af"
+    },
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-source-only-native-next-after-Spartacus-20261019/known-received-Init-Logic-fixtures-private-v2348.json",
+      "bytes": 22464,
+      "SHA256": "06f4cbaa522d31f4d3d41e2177482a3617f162609f5af5eb0012c746557c3ef5"
+    },
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-source-only-native-next-after-Spartacus-20261019/new-fresh-normal-entry-DATA-v2348.json",
+      "bytes": 720,
+      "SHA256": "3a8a24f506865197be24cac137515fa5094274a9d9e3cbe22b43e6a4e810deba"
+    }
+  ],
+  "reusedCertificates": {
+    "Ed": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-original-protocol-preparation-20261018/own32803-Ed-projection-DATA.cjs",
+    "platform": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/normal-platform-entry-source-review-20261019/own32803-fresh-BQ-normal-platform-entry-v2.cjs",
+      "bytes": 4213,
+      "SHA256": "ccc3abf36a071e616e014202c77809e84f51e1f2df4f7f9e535f7ccdde4b4015"
+    },
+    "wrapper": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/fresh-platform-Ed-close-consumer-ABI-20261019/own32803-platform-Ed-close-consumer-v1.cjs",
+      "bytes": 4361,
+      "SHA256": "76e8649963e7b49ba41063ebdbd66f27b26f74402fba86978240b588fc510b9a"
+    }
+  },
+  "holds": [
+    "source-owned current header/SID and same Init identity binding by A",
+    "true original DQ.Cia→IU(no prior result) close caller authorization",
+    "actual native current max/free state and own Mia reference",
+    "unmapped force/replay/promo/choice/recovery never admitted",
+    "no transport or provider End ACK"
+  ],
+  "operations": {
+    "sourceRequests": 0,
+    "DBAccess": 0,
+    "oldSDKRuns": 0,
+    "productionReady": false,
+    "newFinalCredit": 0
+  },
+  "transportBoundary": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "source": "e.open(\"POST\",c.Xm.endpoint,!0);var f=c.Oz(),h;for(h in f)e.setRequestHeader(h,f[h]);e.setRequestHeader(\"Content-type\",c.Xm.contentType);e.send(d)",
+    "wire": "native XML Document, serialized XML DATA only; no HTTP action"
+  },
+  "draftSuperseded": [
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-native-normal-wire-close-delta-20261019/own32803-source-native-normal-wire-close-DATA-v1.json",
+      "bytes": 44765,
+      "SHA256": "929e9d83db7f41a8c6f5f2d2e74998439232c7263195cefb6c714eed54b838c1"
+    },
+    {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-native-normal-wire-close-delta-20261019/own32803-source-native-normal-wire-close-DATA-v2.json",
+      "bytes": 45760,
+      "SHA256": "feea81f51f17b798243832811b06b1a8e73d81344ed8b5b0a25f647d9dd1c01e"
+    }
+  ],
+  "edClear": {
+    "GE": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1104620,
+      "startWithinWindow": 36,
+      "source": "function(a){return g(this,void 0,void 0,function(){var b;return m(this,function(c){switch(c.label){case 0:return this.cU(this.J),[4,this.pI(a)];case 1:b=c.ga();if(!b.Pf)return this.HI(b.So),[2,b];this.D7.ia(b);return[2,b]}})})}",
+      "SHA256": "e0afdbf2f54873a7bdad02f7c2fe3f4bcd0cbff2ac0b9f7285a5b283d1a3894f",
+      "marker": "e.prototype.GE="
+    },
+    "cU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.cU=function(a)",
+      "characterOffset": 1111410,
+      "source": "function(a){G.ea.wa.SQ.clear(this.Mf(a))}",
+      "SHA256": "29f12ba150e744e0854658a8c703cd43e5102730edbf7f36d02433d2acd9bba1"
+    },
+    "Mf": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.Mf=function(a)",
+      "characterOffset": 1111370,
+      "source": "function(a){return a.Ed}",
+      "SHA256": "d5d3ed6767c2645bded05d2a3bd733f585de5f3f17c04099eae44002578a461b"
+    },
+    "SQclear": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.clear=function(a)",
+      "characterOffset": 253184,
+      "source": "function(a){a.length=0}",
+      "SHA256": "c5c90ddc443322117b8dc0f0b1f8b4044a285c88d948e182822ff3ef8880c156"
+    },
+    "cachedSourceDATA": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/WMS32803-original-protocol-preparation-20261018/own32803-Ed-projection-source-DATA.json",
+    "sourceStage": "actual accepted Logic consume then original GE.cU before pI",
+    "notDisplayGate": true
+  },
+  "DOMTypeAdapter": {
+    "reason": "certified DOM uses owned plain nodes; constructor is Object for both Document and Element",
+    "adapter": "source instanceof Element/Document uses isolated nodeType 1/9 predicates for DOM-created nodes; original XML leaves unchanged",
+    "newBoundaryQualificationRequired": true
+  }
+}

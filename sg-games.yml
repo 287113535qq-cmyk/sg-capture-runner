@@ -17996,3 +17996,4 @@ games:
         total: "176"
       own32790ProtocolDATA:
         contract: own32790-original-SG-protocol-private-v1
+  - {"provider":"sg","gameId":"32803","name":"Road to Riches Race Day","dbName":"sg_rrraceday","backendId":"rrraceday","serviceDir":"sg_rrraceday","rtpBuckets":[0,30,100,300,500,1000,2500,5000,10000,1001,2001,5001,10001],"sg":{"protocol":"wms","endpoint":"https://gls.atc.casinarena.com/gls.rgsx","header":{"affiliate":"0","ccyCode":"","channel":"I","freePlay":"Y","gameCodeRGI":"rrraceday","gameID":"20456","glsID":"65535","lang":"en_US","promotions":"N","userID":"null","userType":"C","versionID":"1_0"},"stake":{"total":"200"},"freeStake":{},"betRaw":200,"runtimeGameId":33163,"runtimeSlug":"rrraceday","nativeGameID":"20456","own32803SourceProtocolDATA":{"contract":"own32803-source-only-fresh-Free-Choice-v2"}}}

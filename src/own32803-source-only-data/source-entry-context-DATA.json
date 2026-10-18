@@ -1,0 +1,20 @@
+{
+  "schema": "own32803-new-fresh-closed-normal-source-entry-v1",
+  "gameId": "32803",
+  "dbName": "sg_rrraceday",
+  "registration": "SG.lf.BQ",
+  "adapterPath": "own-SG-EntryPoint",
+  "inputPolicy": "closed-no-platform-callbacks",
+  "actualLaunchURL": "https://offline.invalid/content/rrraceday/",
+  "actualLaunchSearch": "",
+  "priorPlatformActor": null,
+  "initialPartnerPromoInfo": null,
+  "initialPlatformInputEpoch": 0,
+  "externalPlatformUpdatePortExposed": false,
+  "closedOnAnyExternalPlatformInput": true,
+  "ownSourceMetadataMaxWinStatus": "ON",
+  "isNewExplicitScope": true,
+  "describesOldLaunchOrActor": false,
+  "ordinaryModeOnly": true,
+  "historyReplayForcePromoChoiceAndOtherUnmappedModesHeld": true
+}

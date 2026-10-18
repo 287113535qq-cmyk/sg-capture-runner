@@ -1,0 +1,553 @@
+{
+  "schema": "own32803-source-derived-typed-state-close-path-DATA-v2",
+  "gameId": "32803",
+  "dbName": "sg_rrraceday",
+  "sourceIdentityReused": {
+    "gameId": "32803",
+    "ownGameCode": "rrraceday",
+    "ownBootstrap": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\metadatabundle.js",
+    "ownLiteralCDNRoot": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service",
+    "ownLiteralScriptRef": "js/app.js",
+    "expectedSRIReusedFromOwnBootstrap": "sha256-BojP0s6B63KntNnwFCRI1HSZ1D/Cf+XoZZk3g9qQ1tc=",
+    "expectedContentSHA256DecodedNotNewSDKHash": "0688cfd2ce81eb72a7b4d9f0142448d47499d43fc27fe5e865993783da90d6d7",
+    "exactOwnPrimaryURL": "https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service/content/rrraceday/js/app.js",
+    "exactOwnLocalAlias": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+    "exists": true,
+    "bytes": 1318575,
+    "previousWrongBaseCandidate": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\rrraceday\\js\\app.js",
+    "previousWrongBaseExists": false,
+    "sourceIdentityBinding": "Own getCdnRoot + getGameCode + scriptRef; whole SDK content/hash/AST certificate not recomputed",
+    "sourceContentQualificationClaimed": false,
+    "GETAttempts": 0,
+    "newSDKFullHashOrAST": 0,
+    "sourceRequests": 0,
+    "DBAccess": 0
+  },
+  "reusedWireDATA": {
+    "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-native-normal-wire-close-delta-20261019/own32803-source-native-normal-wire-close-DATA-v3.json",
+    "bytes": 48644,
+    "SHA256": "141bcbdcf7c324cad63acc25bd4d760801e6c0ef8656e21ef00211531872ab42"
+  },
+  "sourceLeaves": {
+    "freeClear": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.clear=function(a){a.Dk=!1",
+      "characterOffset": 252306,
+      "source": "function(a){a.Dk=!1;a.Vi=null;a.Lg=null;a.winAmount=null;a.Fz=null}",
+      "SHA256": "65f5fb6169b13cec00948bcbda8df15838e21b4b0e5b7fee056da9f9280666e3"
+    },
+    "ownFreeClear": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.clear=function(a){G.ea.wa.La.clear(a);a.DO=null}",
+      "characterOffset": 1231158,
+      "source": "function(a){G.ea.wa.La.clear(a);a.DO=null}",
+      "SHA256": "daa81db5e94d07d39dc129e33bdcbae65cfb7c34e0d8731216e01f4a91a01eea"
+    },
+    "stateClear": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "a.clear=function(a){a.state=h.Tf",
+      "characterOffset": 247788,
+      "source": "function(a){a.state=h.Tf;a.gg=!1;a.tna=!1;a.$j=!1}",
+      "SHA256": "0d4219542858f5e6f2b9cc891a1d51763e1830dfbb128e0115a10212fbe6f180"
+    },
+    "baseHI": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.HI=function(a)",
+      "characterOffset": 642611,
+      "source": "function(a){this.J.state.$j=this.aU(a);this.qia(a);this.Nka();\nthis.DFa(a);this.fSa(a)}",
+      "SHA256": "d9cf3b074efd267c41484806ed609e7104686bbc66c16d8574c78f92ee6260c0"
+    },
+    "cSa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.cSa=function(a)",
+      "characterOffset": 644892,
+      "source": "function(a){this.J.rd.lq=a.Qi.$T||\"GBP\";this.Bpa(a.Xl);a.Ki&&a.Ki.iW&&this.Epa(a.Ki.iW);this.lj.jm=a.Qi.jm;this.J.state.state=this.Gi=G.wa.ka.fa.zj;this.Ul.kg&&(this.J.state.tna=this.Ul.kg.isComplete);a.So.$r||\"REPLAY\"==a.So.$r||(this.xga[a.So.$r]={SNa:this.Sp.RNa,$r:a.So.$r})}",
+      "SHA256": "f48312420b37ef51dc7094b8d442e019eb0385bdc6761946b963ed046ea52396"
+    },
+    "GEReset": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.re=function()",
+      "characterOffset": 1134325,
+      "source": "function(){return g(this,void 0,void 0,function(){return m(this,function(a){switch(a.label){case 0:return this._context.K.Wb.Pn.value===f.Be.rp&&(this._context.K.Wb.Ab.value=0),this._context.features=[],this._context.qW=!1,this._context.K.ku.B6&&this._context.K.ku.lJa(),this.wr=this._context.K.Pc.CI(this.kl),[4,this.vx()];case 1:return a.ga(),e.prototype.re.call(this),\n[2]}})})}",
+      "SHA256": "792b9b1be118ac61eb0695a92a64b9bbebb424a8de4451a80491d584637fee69"
+    },
+    "postLogicFactory": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.x7=function()",
+      "characterOffset": 1136071,
+      "source": "function(){this.LA();var a=this._context.K.J,b=null;try{b=f.NY.get()}catch(n){this._context.features=[]}null!=b&&(this._context.features=b.create(this._context));\na.vb.Dk&&(this._context.K.Wb.c5.value=a.vb.Lg-a.vb.Fz);this.vj(f.ka.wv)}",
+      "SHA256": "d25db991d28767d4a1ad42367f37bbf42905f4f2b8efed02c4fe089a5b8158f3"
+    },
+    "spa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "c.prototype.spa=function(b)",
+      "characterOffset": 1144274,
+      "source": "function(b){void 0===b&&(b=!1);return g(this,void 0,\nvoid 0,function(){var c,d,e,h,k=this;return m(this,function(l){switch(l.label){case 0:c=0,d=this._context.features,l.label=1;case 1:if(!(c<d.length))return[3,4];e=d[c];return[4,e.Uoa()];case 2:h=l.ga();if(null!=h)return this.Pk(h),[2];l.label=3;case 3:return c++,[3,1];case 4:return b?this.vj(f.ka.Ta):a.ha.wait(500).call(function(){return k.vj(f.ka.Ta)}),[2]}})})}",
+      "SHA256": "e75eea5a51609f64ef05e64381f6aa74405694c62b8b6d4291ef49478f12e84a"
+    },
+    "ownPostPlay": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.dka=function()",
+      "characterOffset": 1198847,
+      "source": "function(){g(this,void 0,void 0,function(){var a,b,c,e,f,h;return m(this,function(d){switch(d.label){case 0:a=this._context.K.pD;if(!a)return[3,2];b=this._context.K.J;c=G.ea.wa.Ob.yh(b.Ga,G.ea.wa.Ob.mi(b.Ga)).value;e=this.P4();if(!this.cP(c,e))return[3,2];f=this._context.K.Pb.Su.declare(!1);h=this._context.K.Pb.Nk.declare(!1);return[4,a.KH(c,e)];case 1:d.ga(),f.dispose(),\nh.dispose(),d.label=2;case 2:return this.vj(G.ea.ka.jo),[2]}})})}",
+      "SHA256": "9bd6ce05a1fe9e6b59670eb48cb793519fb33b27c62be4e7637ba171ab36bec0"
+    },
+    "baseDQRe": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.re=function()",
+      "characterOffset": 814449,
+      "source": "function(){h.prototype.re.call(this);var a=this._context.K,c=a.Pb;a=a.J;this.nk=c.Bk.declare(!1);this.Hm=c.ux.declare(\"skip\");a.Bb.Qk&&(this.cl=c.Nk.declare(!0),this.Dn=c.Cz.declare(!0));this._context.lI=!1;this.Cia()}",
+      "SHA256": "3869f014d561ef67ae37e366ff0d6d54f8c32e1d1e52c490d6aba73517d7dcc0"
+    },
+    "ownCia": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.Cia=",
+      "characterOffset": 1132778,
+      "source": "function(){g(this,void 0,void 0,function(){var a,b,d,e;return m(this,function(c){switch(c.label){case 0:if(this._context.K.J.state.state===f.wa.ka.fa.Tf)return[3,6];if(this._context.qW)return[3,4];this._context.qW=!0;a=0;b=this._context.features;c.label=1;case 1:if(!(a<b.length))return[3,4];d=b[a];return[4,d.dRa()];case 2:e=c.ga();if(null!=e)return this.Pk(e),[2];c.label=3;case 3:return a++,[3,1];case 4:return[4,this.IU()];case 5:if(!c.ga())return[2];c.label=6;case 6:return[4,this.Eia()];case 7:return c.ga(),\nthis.vj(f.ka.wi),[2]}})})}",
+      "SHA256": "2b44770085867c7a45d372fece4c13f7e77d6c181abb2b0e36b4a271f10381c0"
+    },
+    "ownIU": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "d.prototype.IU=",
+      "characterOffset": 1133335,
+      "source": "function(a){return g(this,void 0,void 0,function(){return m(this,function(b){switch(b.label){case 0:return a?[3,2]:[4,this._context.K.Ld.close()];case 1:a=b.ga(),b.label=2;case 2:return a.Pf&&(f.Tb.get().Mu(),this.OF=null),this._context.K.ku.B6&&0>=this._context.K.Wb.sM.value&&this._context.K.ku.stop(),[4,e.prototype.IU.call(this,a)];case 3:return[2,b.ga()]}})})}",
+      "SHA256": "8ce174d35d94cb801993890b61d2ebc2535f2708b7e6a591d053b21849c46df0"
+    },
+    "actualClose": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 637000,
+      "startWithinWindow": 36,
+      "source": "function(){return g(this,void 0,void 0,\nfunction(){var a,c,d,e,h,t,q,p,u;return m(this,function(b){switch(b.label){case 0:if(!this.XW())return this.J.state.state=this.Gi=G.wa.ka.fa.Tf,[2,{Pf:!1,request:null}];if(!G.nY.connected.value)return this.J.error.type=G.wa.Error.fa.ev,this.J.error.title=f.na.VA.$d,this.J.error.message=f.na.VA.yi,this.J.error.options=[{type:G.wa.Error.Dh.zv,text:f.na.VA.tZ}],[2,{Pf:!0,request:null}];a=new this.settings.Mia(this.Sp,this.lj);c={};d=0;for(e=this.fj;d<e.length;d++)h=e[d],h.l7a(c);b.label=1;case 1:return b.zg.push([1,\n3,,4]),[4,a.send(c)];case 2:return t=b.ga(),[3,4];case 3:return q=b.ga(),this.$H(q),[2,{Pf:!0,request:a}];case 4:if(t.error)return this.parseError(t.error),[2,t];this.J.error.type=G.wa.Error.fa.nb;this.lj.jm=t.Qi.jm;this.J.state.state=this.Gi=G.wa.ka.fa.Tf;try{for(p=0,u=this.fj;p<u.length;p++)h=u[p],h.k7a(t,this.J)}catch(x){return G.Ba.warn(x),[2,l.BD]}this.VV.ia(t);return[2,t]}})})}",
+      "SHA256": "19f422d9b4a662b3d805271d53a2fa64d8653a96f3ba8614f56e92eecf432e1d",
+      "marker": "d.prototype.close="
+    },
+    "featureFactory": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1218080,
+      "startWithinWindow": 78,
+      "source": "function(e){var d=[],b=e.K.J;b.vb&&(0<b.vb.Lg||0<b.vb.Vi)&&d.push(new a.La(e));return d}",
+      "SHA256": "2a26885f86aecbc6c3b4ba581aa08d57b02bae6c48e850a6f21d166396c36b32",
+      "marker": "f.prototype.create="
+    },
+    "bSa": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1108300,
+      "startWithinWindow": 1189,
+      "source": "function(a){this.gSa(a);G.ea.wa.La.clear(this.J.vb);a.g5&&this.$Ra(a.g5);this.Gpa(a)}",
+      "SHA256": "6d12652b3e31ff70b9bf02de9827c30baf085a3274a20ebae78232529011d225",
+      "marker": "e.prototype.bSa="
+    },
+    "freeUpdate": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1108300,
+      "startWithinWindow": 919,
+      "source": "function(a){this.J.vb.Vi=\n(null!=a.Lka?a.Lka:a.ZUa)||0;this.J.vb.Dk=0<this.J.vb.Vi;this.J.vb.Lg=(null!=a.Mka?a.Mka-this.J.vb.Vi:a.YUa)||0;this.J.vb.winAmount=a.cMa;this.J.vb.Fz=a.Fz||0}",
+      "SHA256": "00139dd11ac52ff938fa9a7f5787e120af7e692c8d46f598ba5c51aebfdfc0a0",
+      "marker": "e.prototype.$Ra="
+    },
+    "max": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "byteWindowStart": 1108300,
+      "startWithinWindow": 850,
+      "source": "function(a){return G.Tb.get().tI!==G.bt.nb&&a.OT.$j}",
+      "SHA256": "e43b9b6580f10bc0db1414f7d3f6aef63fc37d495b455d979f352edb5a2a04c3",
+      "marker": "e.prototype.aU="
+    },
+    "bigWinOnly": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "f.prototype.KH=function(d,b)",
+      "characterOffset": 1167542,
+      "source": "function(d,b){return g(this,void 0,void 0,function(){var c,e,f,h;return m(this,function(k){switch(k.label){case 0:if(this.Er)return[2];this.Er=\n!0;c=this;return[4,this.Ut.Gc.open(a.Db.gY)];case 1:c.Ew=k.ga();e=0;f=this.bO(d,b);switch(f){case V.Ta.ue.jp:e=this.ja.thresholds.big;break;case V.Ta.ue.my:e=this.ja.thresholds.x9;break;case V.Ta.ue.Yx:e=this.ja.thresholds.Z6;break;case V.Ta.ue.Us:e=this.ja.thresholds.M4}h={WE:b,Pq:d,BX:e,AM:!1,yb:this.Ut.yb,locale:this.Ut.locale,IA:f,Sq:null};this.Ew.zq(h);a.K.J.state.gg||(this.rn=a.K.Gc.zH(),this.rn.Yb.then(this.dP));return[4,this.Ew.Kn];case 2:return k.ga(),this.rn=null,this.Ut.Gc.close(a.Db.gY),\nthis.Er=!1,[2]}})})}",
+      "SHA256": "e5b65551560122662f91790f536b0908561b5f417276a4bff89fe3ed255e9a55"
+    }
+  },
+  "tables": {
+    "Header": {
+      "name": "Header",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 630350,
+      "to": 631710,
+      "fields": [
+        {
+          "key": "kM",
+          "path": ".affiliate",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.kM={i:[f.Ca({path:\".affiliate\",type:f.String})]",
+          "characterOffset": 630413
+        },
+        {
+          "key": "$T",
+          "path": ".ccyCode",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.$T={i:[f.Ca({path:\".ccyCode\",type:f.String})]",
+          "characterOffset": 630492
+        },
+        {
+          "key": "channel",
+          "path": ".channel",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.channel={i:[f.Ca({path:\".channel\",type:f.String})]",
+          "characterOffset": 630569
+        },
+        {
+          "key": "QH",
+          "path": ".freePlay",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": false,
+          "originalDecorator": "b.QH={i:[f.Ca({path:\".freePlay\",type:f.hJ({PW:\"Y\",OW:\"N\"})})]",
+          "characterOffset": 630651
+        },
+        {
+          "key": "fMa",
+          "path": ".gameCodeRGI",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.fMa={i:[f.Ca({path:\".gameCodeRGI\",type:f.String})]",
+          "characterOffset": 630742
+        },
+        {
+          "key": "Mz",
+          "path": ".gameID",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Mz=\n{i:[f.Ca({path:\".gameID\",type:f.Number})]",
+          "characterOffset": 630824
+        },
+        {
+          "key": "fV",
+          "path": ".glsID",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.fV={i:[f.Ca({path:\".glsID\",type:f.Number})]",
+          "characterOffset": 630901
+        },
+        {
+          "key": "lang",
+          "path": ".lang",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.lang={i:[f.Ca({path:\".lang\",type:f.String})]",
+          "characterOffset": 630976
+        },
+        {
+          "key": "TSa",
+          "path": ".promotions",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": false,
+          "originalDecorator": "b.TSa={i:[f.Ca({path:\".promotions\",type:f.hJ({PW:\"Y\",OW:\"N\"})})]",
+          "characterOffset": 631052
+        },
+        {
+          "key": "jm",
+          "path": ".sessionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.jm={i:[f.Ca({path:\".sessionID\",type:f.String})]",
+          "characterOffset": 631146
+        },
+        {
+          "key": "Cx",
+          "path": ".userID",
+          "type": "f.String",
+          "optional": true,
+          "originalDecorator": "b.Cx={i:[f.Ca({path:\".userID\",type:f.String,xu:!0})]",
+          "characterOffset": 631225
+        },
+        {
+          "key": "j$",
+          "path": ".userType",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.j$={i:[f.Ca({path:\".userType\",\ntype:f.String})]",
+          "characterOffset": 631307
+        },
+        {
+          "key": "n$",
+          "path": ".versionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.n$={i:[f.Ca({path:\".versionID\",type:f.String})]",
+          "characterOffset": 631386
+        },
+        {
+          "key": "Ska",
+          "path": ".fullVersionID",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.Ska={i:[f.Ca({path:\".fullVersionID\",type:f.String})]",
+          "characterOffset": 631465
+        },
+        {
+          "key": "dPa",
+          "path": ".isRecovering",
+          "type": "f.hJ({PW:\"Y\",OW:\"N\"})",
+          "optional": true,
+          "originalDecorator": "b.dPa={i:[f.Ca({path:\".isRecovering\",type:f.hJ({PW:\"Y\",OW:\"N\"}),xu:!0})]",
+          "characterOffset": 631549
+        }
+      ]
+    },
+    "BGInfo": {
+      "name": "BGInfo",
+      "fields": [
+        {
+          "key": "osa",
+          "path": ".totalWagerWin",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.osa={i:[l.Ca({path:\".totalWagerWin\",type:l.Number})]",
+          "characterOffset": 1117695
+        },
+        {
+          "key": "H1a",
+          "path": ".bgWinnings",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.H1a={i:[l.Ca({path:\".bgWinnings\",type:l.Number})]",
+          "characterOffset": 1117779
+        },
+        {
+          "key": "D1a",
+          "path": ".baseGameSpinsRemaining",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.D1a={i:[l.Ca({path:\".baseGameSpinsRemaining\",type:l.Number})]",
+          "characterOffset": 1117860
+        },
+        {
+          "key": "s5a",
+          "path": ".isBigBet",
+          "type": "f.Boolean",
+          "optional": false,
+          "originalDecorator": "b.s5a={i:[l.Ca({path:\".isBigBet\",type:l.Boolean})]",
+          "characterOffset": 1117954
+        },
+        {
+          "key": "$j",
+          "path": ".isMaxWin",
+          "type": "f.Boolean",
+          "optional": false,
+          "originalDecorator": "b.$j={i:[l.Ca({path:\".isMaxWin\",type:l.Boolean})]",
+          "characterOffset": 1118034
+        }
+      ]
+    },
+    "FSInfo": {
+      "name": "FSInfo",
+      "fields": [
+        {
+          "key": "cMa",
+          "path": ".fsWinnings",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.cMa={i:[l.Ca({path:\".fsWinnings\",type:l.Number})]",
+          "characterOffset": 1118196
+        },
+        {
+          "key": "$j",
+          "path": ".isMaxWin",
+          "type": "f.Boolean",
+          "optional": false,
+          "originalDecorator": "b.$j={i:[l.Ca({path:\".isMaxWin\",type:l.Boolean})]",
+          "characterOffset": 1118277
+        },
+        {
+          "key": "Mka",
+          "path": ".freeSpinsTotal",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Mka={i:[l.Ca({path:\".freeSpinsTotal\",type:l.Number})]",
+          "characterOffset": 1118356
+        },
+        {
+          "key": "Lka",
+          "path": ".freeSpinNumber",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Lka={i:[l.Ca({path:\".freeSpinNumber\",type:l.Number})]",
+          "characterOffset": 1118442
+        },
+        {
+          "key": "ZUa",
+          "path": ".spinsUsed",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.ZUa={i:[l.Ca({path:\".spinsUsed\",type:l.Number})]",
+          "characterOffset": 1118527
+        },
+        {
+          "key": "YUa",
+          "path": ".spinsRemaining",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.YUa={i:[l.Ca({path:\".spinsRemaining\",type:l.Number})]",
+          "characterOffset": 1118607
+        },
+        {
+          "key": "Fz",
+          "path": ".extraSpinsAwarded",
+          "type": "f.Number",
+          "optional": false,
+          "originalDecorator": "b.Fz={i:[l.Ca({path:\".extraSpinsAwarded\",type:l.Number})]",
+          "characterOffset": 1118692
+        }
+      ]
+    },
+    "GameResult": {
+      "name": "GameResult-close-subset",
+      "fields": [
+        {
+          "key": "OT",
+          "path": "BGInfo",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "c.OT={i:[l.Ca({path:\"BGInfo\",type:l.Object})]",
+          "characterOffset": 1119175
+        },
+        {
+          "key": "g5",
+          "path": "FSInfo",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "c.g5={i:[l.Ca({path:\"FSInfo\",type:l.Object})]",
+          "characterOffset": 1119250
+        }
+      ]
+    }
+  },
+  "projection": {
+    "freeOnly": "function(a){G.ea.wa.La.clear(this.J.vb);a.g5&&this.$Ra(a.g5)}",
+    "maxOnly": "function(a){this.J.state.$j=this.aU(a);}",
+    "cSaOnly": "function(a){this.lj.jm=a.Qi.jm;this.J.state.state=this.Gi=G.wa.ka.fa.zj}",
+    "factoryDescriptors": "function(e){var d=[],b=e.K.J;b.vb&&(0<b.vb.Lg||0<b.vb.Vi)&&d.push({nativeClass:\"Y.DY.La\",unmapped:true});return d}",
+    "maxPartial": "function(a,platformMode,modeNone){return platformMode!==modeNone&&a.OT.$j}"
+  },
+  "originalEnums": {
+    "Open": 0,
+    "Closed": 2,
+    "source": "nction(a){a[a.zj=0]=\"Open\";a[a.F0a=1]=\"WaitingForUserInput\";a[a.Tf=2]=\"Closed\"})(h=a.fa||(a.fa={}));a.clear=function(a){a.state=h.Tf;a.gg=!1;a.tn"
+  },
+  "protocolProgram": [
+    {
+      "stage": "originalGE",
+      "source": "GE -> cU(this.J) before pI; paired real Logic request ticket",
+      "operations": [
+        "source cU/Mf/SQ.clear same Ed array",
+        "source GE context.features=[] and qW=false"
+      ],
+      "nativeStateDisplayCounterDefaultsAdded": false
+    },
+    {
+      "stage": "acceptedLogic",
+      "source": "pI successful cSa -> GE successful HI; own HI -> base bSa then base HI then own supplemental display/horse",
+      "operations": [
+        "same real ACK and original money committed",
+        "source cSa SID/state=Open projection only; original money processing retained in A",
+        "source bSa order La.clear, conditional typed FS $Ra, existing ordered Gpa projection reused",
+        "source baseHI aU writes MAX using actual fresh platform mode"
+      ]
+    },
+    {
+      "stage": "normalFeatures",
+      "source": "own Y.DY.wd registered G.ea.NY; x7 builds actual features from current Vi/Lg",
+      "operations": [
+        "source factory returns empty only if Vi/Lg are not >0",
+        "any free feature descriptor remains hold, no actor instantiated"
+      ]
+    },
+    {
+      "stage": "originalNextAfterData",
+      "source": "ordinary ordered protocol DATA exhausted; protocol completion projection of spa -> Y.te.TP.dka -> playFinished -> G.Nb.DQ.re -> own DQ.Cia -> IU() -> engine.close",
+      "operations": [
+        "no feature routing can occur for source-derived empty array",
+        "bigwin KH/render/wait are presentation-only and omitted under authorized source-only next-end simplification; no fake completion callback or clock",
+        "Cia branches inspect actual derived Open/Closed, set qW in same private context, invoke IU without prior result",
+        "IU invokes close; actualClose original XW + actual connection + own Mia before request action",
+        "returns opaque caller/control for native End serializer; no ACK invented"
+      ]
+    }
+  ],
+  "ordinaryScope": "fresh closed normal entry only; source-derived empty feature factory; free/choice/recovery/replay hold",
+  "money": "Original A SG/AG complete money/replay/classification kept; raw GameResponse unchanged and typed BG/FS money fields passed only as original values",
+  "operations": {
+    "sourceRequests": 0,
+    "DBAccess": 0,
+    "oldSDKRuns": 0,
+    "oldSuiteRuns": 0,
+    "newFinalCredit": 0,
+    "productionReady": false
+  },
+  "configuredMia": {
+    "ownConfig": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "characterOffset": 1184810,
+      "source": ".Ub.Xs,UUa:gd.Ub.Cv,Mia:SG.Ub.lJ,ni:4};hd.hk=\"true"
+    },
+    "requester": "SG.Ub.lJ",
+    "ownEndOw": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "b.prototype.Ow=function()",
+      "characterOffset": 648146,
+      "source": "function(){var a=new b.yl;a.Qi=this.iU();return a}",
+      "SHA256": "798845cc1344daf27e0f9e38ddc7421ce7045dc829f43fb123134e98e916d831"
+    },
+    "ownEndDTO": {
+      "name": "End",
+      "sourceIdentity": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "from": 648200,
+      "to": 648700,
+      "fields": [
+        {
+          "key": "type",
+          "path": ".type",
+          "type": "f.String",
+          "optional": false,
+          "originalDecorator": "b.type={i:[f.Ca({path:\".type\",type:f.String})]",
+          "characterOffset": 648342
+        },
+        {
+          "key": "Qi",
+          "path": "Header",
+          "type": "f.Object",
+          "optional": false,
+          "originalDecorator": "b.Qi={i:[f.Ca({path:\"Header\",type:f.Object})]",
+          "characterOffset": 648418
+        }
+      ]
+    },
+    "ownHeader": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\rrraceday\\js\\app.js",
+      "marker": "e.prototype.iU=function()",
+      "characterOffset": 645904,
+      "source": "function(){var d=new a.JY;d.kM=this.Xm.kM.toString();d.$T=this.Ms.lq;d.channel=this.Xm.channel;d.QH=this.Ms.QH;d.fMa=this.Xm.eMa;d.Mz=this.Xm.Mz;d.fV=this.Xm.fV;d.lang=this.Ms.language;d.TSa=!1;d.jm=this.Ms.jm;d.Cx=this.Ms.Cx;d.j$=this.Xm.j$;d.n$=this.Xm.n$;return d}",
+      "SHA256": "4e60090f4ec68cf36a8e4ba7c7445a9f9a0f36b2fcabab799bda3c497453b89d"
+    },
+    "wireCertificate": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-native-normal-wire-close-delta-20261019/receipt.json",
+      "bytes": 8711,
+      "SHA256": "41a52a5cf220097b9eed06d01425ec538634b77976e64739e775cf1e490b6d2c"
+    },
+    "capabilityOnly": true,
+    "nativeClassOrActorConstructed": false
+  },
+  "wireNativeCounterDelta": {
+    "parent": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-native-normal-wire-close-delta-20261019/own32803-source-native-normal-wire-v6.cjs",
+      "bytes": 13955,
+      "SHA256": "f60a1bb23265752130f544262ac27186f1f7a219e792f6fe1548474eb91a93a3"
+    },
+    "candidate": {
+      "path": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-SECOND32803-minimum-platform-input-gap-20261018/source-derived-typed-state-close-path-delta-20261019/own32803-source-native-normal-wire-v8.cjs",
+      "bytes": 14008,
+      "SHA256": "1420cc9ebbd44741b5f0ea6894c0aff8ef9a3cfc94ab98a36cfe1d55cc4e437a"
+    },
+    "before": "Number.isInteger(control.J?.vb?.Lg)&&control.J.vb.Lg>=0",
+    "after": "control.J?.vb&&Object.hasOwn(control.J.vb,'Lg')&&(control.J.vb.Lg===null||typeof control.J.vb.Lg==='number')",
+    "inverseExact": true,
+    "policy": "Keep original La.clear null and typed original $Ra numbers, including native comparisons; no integer/nonnegative/equality gate"
+  },
+  "clearReceiptSemantics": "GE clears prior Ed before this Logic request; receipt is joined by original request ticket to the newly accepted ACK frame. After original Gpa builds current Ed, the historical pre-request clear remains valid; it does not require newly built Ed to remain empty."
+}
