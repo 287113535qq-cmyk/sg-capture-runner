@@ -1,0 +1,41 @@
+{
+  "schema": "own32790-current-JackpotInfo-native-local-effect-DATA-v1",
+  "gameId": "32790",
+  "leaves": {
+    "jackpotClass": {
+      "name": "own JackpotInfo typed class",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\marvelousmouse\\js\\app.js",
+      "start": 1178440,
+      "end": 1178875,
+      "length": 435,
+      "source": "c=function(){function a(){}var b={};b.fm={i:[f.Fa({path:\".jackpotIndex\",type:f.Number})],target:a.prototype,j:void 0};b.$m={i:[f.Fa({path:\".jackpotUpgrade\",type:f.Boolean})],target:a.prototype,j:void 0};b.lJa={i:[f.Fa({path:\".jackpotIndexAfterUpgrade\",type:f.Number})],target:a.prototype,j:void 0};b.nJa={i:[f.Fa({path:\".jackpotWinnings\",type:f.Number})],target:a.prototype,\nj:void 0};B(b);return a=z([f.fa(\"JackpotInfo\")],a)}();a.Hw=c",
+      "sha256": "b72db281ec5e6fb8383c3b13b9e6a7daa93750992c4a561bd25a50685d55f6c7"
+    },
+    "ownResponse": {
+      "name": "own t4 actual response order",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\marvelousmouse\\js\\app.js",
+      "start": 1135345,
+      "end": 1135681,
+      "length": 336,
+      "source": "function(d){g(this,void 0,void 0,function(){return m(this,function(c){switch(c.label){case 0:return d.pL?(this.tT(d.pL),this.M.Ua.Ioa=d.bd):this.M.Ua.td=3,[4,this.ZLa(d.Tc)];case 1:return c.ea(),[4,this.CNa(d.b5[0].Lo)];case 2:return c.ea(),\na.prototype.t4.call(this,d),this.YLa(d.Rj),d.lo&&this.cMa(d.lo),d.ze&&this.bMa(d.ze),[2]}})})}",
+      "sha256": "6406871d9929410df49bd50a1bd42e1199b45ee540f179073112e17e807284e5"
+    },
+    "jackpotState": {
+      "name": "own bMa jackpot-only writer",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\d10ml311dd14ci.cloudfront.net\\5.0.4.1-1787670669\\resource-service\\content\\marvelousmouse\\js\\app.js",
+      "start": 1137980,
+      "end": 1138074,
+      "length": 94,
+      "source": "function(a){this.M.ze.index=a.fm;this.M.ze.upgrade=a.$m;this.M.ze.J2=a.lJa;this.M.ze.cu=a.nJa}",
+      "sha256": "741964703eb2c26d1fb594bfe53cb7733d454f68fe2ac44c8dc8dd2a43f71f96"
+    }
+  },
+  "causalProof": [
+    "own typed JackpotInfo is four source fields; own response t4 invokes bMa only when supplied",
+    "bMa writes only M.ze; the unchanged native free-state and closeGate read Ua.df and state.Ck, not M.ze",
+    "current three actual packets have FSInfo; own free caller and next/close gate are reused with actual total/used/mode",
+    "no Jackpot amount replaces BGInfo totalWagerWin; no Jackpot display/upgrade animation is required to calculate protocol next"
+  ],
+  "nativeEndACKOrFeatureLifecycleClaimed": false,
+  "newSDKASTBootDownloadFullHash": 0
+}

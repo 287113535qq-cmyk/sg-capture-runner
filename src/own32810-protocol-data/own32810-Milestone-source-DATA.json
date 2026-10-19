@@ -158,5 +158,38 @@
     "laterFeature": "native own Free handleWinRenderingState compares current BG totalWagerWin",
     "MAX": "retain hold if either possible enabled metadata state or strictness changes false; no invented host flags",
     "notAnAmountConstraint": "These values project native MAX input only; original cash remains BGInfo.totalWagerWin without prize addition"
+  },
+  "currentFaultSupplement": {
+    "schema": "own32810-current-392056-nonrecovery-milestone-response-projection-v1",
+    "leaves": {
+      "parseReelResults": {
+        "name": "own Spin parseReelResults",
+        "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\bigfoot\\app\\js\\game.js",
+        "start": 2745249,
+        "end": 2746159,
+        "length": 910,
+        "source": "function(data){var spinResults=_super.prototype.parseReelResults.call(this,data);if(data.hasOwnProperty(\"ReelResults\")){var reelResultsData=data.ReelResults[0];if(reelResultsData.hasOwnProperty(\"ReelSpin\")&&(spinResults[0].featureData=this.parseFeature(data,reelResultsData.ReelSpin[0]),data.hasOwnProperty(\"IRFInfo\")&&(spinResults[0].featureData.inReelFeatureData=this.parseInReelFeatures(data,reelResultsData.ReelSpin[0]),null!==spinResults[0].featureData.inReelFeatureData.respinStopIndex&&\"SCATTER_RESPIN\"===spinResults[0].featureData.inReelFeatureData.name))){var aux=spinResults[0].reelIndices[4],aux2=spinResults[0].featureData.inReelFeatureData.respinStopIndex;spinResults[0].featureData.inReelFeatureData.respinStopIndex=aux,spinResults[0].reelIndices[4]=aux2}}if(data.hasOwnProperty(\"BGInfo\")){var bgInfoData=data.BGInfo[0];spinResults[0].baseGameData=this.parseBGInfo(bgInfoData)}return spinResults}",
+        "sha256": "b26ad107aa13b59333547c97d4e8651bcf4b01bee3b2b7388282df6fe130c45d"
+      },
+      "setFeatureData": {
+        "name": "own feature assignment",
+        "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\bigfoot\\app\\js\\game.js",
+        "start": 2218663,
+        "end": 2218763,
+        "length": 100,
+        "source": "function(totalWin,featureData){this.featureData=featureData,this.totalWin=totalWin,this.broadcast()}",
+        "sha256": "3ba35c23b157a43a1a97b696f606c97150f4adcdca2a108dbe4a1bc21102cedc"
+      }
+    },
+    "causalProof": [
+      "own parseReelResults reads current ReelResults, IRFInfo and BGInfo; supplied BaseGameRecoveryInfo is not a next-control input",
+      "own parseFeature already parses actual FSInfo unconditionally, including action undefined from the actual empty state",
+      "own setFeatureData replaces the feature object, with no prior action merge/default",
+      "cached UPDATE_TRAIL checkFinished continues when action is not native MS_END; empty action is not synthesized to END or another enum",
+      "current Header.isRecovering=N and private frame binding remain required; interactive PickResult and true recovery remain held"
+    ],
+    "actualPacketsOnly": true,
+    "newSDKASTBootDownloadFullHash": 0,
+    "displayCallbacksExecuted": 0
   }
 }

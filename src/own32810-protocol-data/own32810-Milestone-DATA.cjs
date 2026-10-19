@@ -18,7 +18,7 @@ exports.createOwn32810MilestoneDATA=function({DOM,vm,data,native,game,need}){
   need(fsNodes.length===1&&typed?.FSInfo?.length===1,'MILESTONE_ACTUAL_ONE_FS');
   const first=typed?.ReelResults?.[0]?.ReelSpin?.[0];need(first&&['Y','N'].includes(first.attr_bonusAwarded?.value),'MILESTONE_ACTUAL_BONUS_FLAG');
   const feature=parseFeature.call({parseFreespins:x=>parseFS.call(parser,x)},typed,first),fs=feature.freespinsData?.fsInfo,bg=typed.BGInfo?.[0]&&parseBG(typed.BGInfo[0]);
-  need(feature.featureAwarded===true&&fs&&Object.values(actions).includes(fs.action)&&Number.isSafeInteger(fs.milestoneIndex)&&fs.milestoneIndex>=-1,'MILESTONE_NATIVE_FEATURE');
+  need(feature.featureAwarded===true&&fs&&Number.isSafeInteger(fs.milestoneIndex)&&fs.milestoneIndex>=-1,'MILESTONE_NATIVE_FEATURE');
   need(Array.isArray(fs.mileStones)&&fs.mileStones.length===children(fsNodes[0],'Milestone').length&&fs.mileStones.every(x=>uint(x.index)&&uint(x.spinsUsed)&&uint(x.totalSpins)),'MILESTONE_NATIVE_SOURCE_ARRAY');
   need(bg&&bg.totalWagerWin===cash&&uint(bg.baseGameSpinsRemaining)&&typeof bg.isBigBet==='boolean','MILESTONE_ACTUAL_BG');
   // Nested MAX flags are not a fabricated terminal indication.
@@ -32,6 +32,8 @@ exports.createOwn32810MilestoneDATA=function({DOM,vm,data,native,game,need}){
    const receiver={maxWinGreaterOrEqual:greaterOrEqual,models:{winModel:{getMaxWinningsEnabled:()=>enabled,getFeatureData:()=>feature,getTotalWin:()=>value,getMaxWinnings:()=>limit}}};
    need(maxCheck.call(receiver,value)===false,'MILESTONE_NATIVE_MAX_METADATA_REQUIRED');
   }
+  // Native parseFsInfo leaves action undefined for the observed empty state.
+  // Native checkFinished tests only MS_END; no action enum/default is added.
   const entryToSpin=!isActive&&fs.milestoneIndex!==-1;
   const ending=!entryToSpin&&fs.action===actions.MS_END;
   if(ending)need(bg.baseGameSpinsRemaining===0&&bg.isBigBet===false,'MILESTONE_END_BIGBET_ROUTE_DEFERRED');
