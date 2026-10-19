@@ -1,0 +1,162 @@
+{
+  "schema": "own32810-native-Milestone-next-caller-DATA-v1",
+  "gameId": "32810",
+  "source": "own current fixed SDK; bounded new source leaves only",
+  "leaves": {
+    "parseFreespins": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2748230,
+      "source": "function(freeSpinData){return{fsInfo:this.parseFsInfo(freeSpinData)}}",
+      "SHA256": "dc3547a7534195a89ed3549cbbce97f7ce0ef4e763341ce606d03f407565b991"
+    },
+    "parseFsInfo": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2748960,
+      "source": "function(fsInfoData){var infoData={};if(fsInfoData.hasOwnProperty(\"Milestone\")){for(var milestoneData=fsInfoData.Milestone,mileStones=new Array,i=0;i<milestoneData.length;i++)mileStones.push({index:milestoneData[i].attr_index.value,spinsUsed:milestoneData[i].attr_spinsUsed.value,totalSpins:milestoneData[i].attr_totalSpins.value});infoData.mileStones=mileStones}if(fsInfoData.hasOwnProperty(\"attr_fsWinnings\")&&(infoData.winnings=fsInfoData.attr_fsWinnings.value),fsInfoData.hasOwnProperty(\"attr_isMaxWin\")&&(infoData.isMaxWin=1===fsInfoData.attr_isMaxWin.value),fsInfoData.hasOwnProperty(\"attr_milestoneIndex\")&&(infoData.milestoneIndex=fsInfoData.attr_milestoneIndex.value),fsInfoData.hasOwnProperty(\"attr_milestoneSteps\")&&(infoData.milestoneSteps=fsInfoData.attr_milestoneSteps.value),fsInfoData.hasOwnProperty(\"attr_state\")){var currentAction=void 0;switch(fsInfoData.attr_state.value){case\"BEGIN\":currentAction=BF.Engines.Responses.MilestoneTrackAction.MS_BEGIN;break;case\"END\":currentAction=BF.Engines.Responses.MilestoneTrackAction.MS_END;break;case\"STEP\":currentAction=BF.Engines.Responses.MilestoneTrackAction.MS_STEP;break;case\"ADVANCE\":currentAction=BF.Engines.Responses.MilestoneTrackAction.MS_ADVANCE;break;case\"RETREAT\":currentAction=BF.Engines.Responses.MilestoneTrackAction.MS_RETREAT;break}infoData.action=currentAction}if(fsInfoData.hasOwnProperty(\"attr_wildOverlay\")){for(var wildsStringArray=fsInfoData.attr_wildOverlay.value.split(\"|\"),wildNumArray=new Array,i=0;i<wildsStringArray.length;i++)wildNumArray.push(wildsStringArray[i].split(\",\").map(Number));infoData.wilds=wildNumArray}return infoData}",
+      "SHA256": "28bff2bb1e53ea5a2d5ed7c071922cc3217029b45d3585bd807d29e82b9e4791"
+    },
+    "parseBGInfo": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2748327,
+      "source": "function(bgInfoData){var infoData={};return bgInfoData.hasOwnProperty(\"attr_baseGameSpinsRemaining\")&&(infoData.baseGameSpinsRemaining=bgInfoData.attr_baseGameSpinsRemaining.value),bgInfoData.hasOwnProperty(\"attr_bgWinnings\")&&(infoData.baseGameWinnings=bgInfoData.attr_bgWinnings.value),bgInfoData.hasOwnProperty(\"attr_isBigBet\")&&(infoData.isBigBet=1===bgInfoData.attr_isBigBet.value),bgInfoData.hasOwnProperty(\"attr_isMaxWin\")&&(infoData.isMaxWin=1===bgInfoData.attr_isMaxWin.value),bgInfoData.hasOwnProperty(\"attr_totalWagerWin\")&&(infoData.totalWagerWin=bgInfoData.attr_totalWagerWin.value),infoData}",
+      "SHA256": "e05b4fa532d7f1414fee53118d72f90fa0908eb719ad9e3b59762aca1b0e7de7"
+    },
+    "checkMaxWin": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 1983644,
+      "source": "function(valueToCompare){var isMaxWin;if(!this.models.winModel.getMaxWinningsEnabled())return!1;var featureData=this.models.winModel.getFeatureData();return null!=featureData&&featureData.isMaxWin?isMaxWin=!0:(null==valueToCompare&&(valueToCompare=this.models.winModel.getTotalWin()),isMaxWin=this.maxWinGreaterOrEqual?valueToCompare>=this.models.winModel.getMaxWinnings():valueToCompare>this.models.winModel.getMaxWinnings()),isMaxWin}",
+      "SHA256": "cadc4382c13fbd1bec3c6f9f94e21666fed4fcda451ca03ac60c87e29260355d"
+    },
+    "parseMaxWinnings": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2064603,
+      "source": "function(data){var maxWinnings=0;if(data.hasOwnProperty(\"AwardsInfo\")){var awardsInfoData=data.AwardsInfo[0];awardsInfoData.hasOwnProperty(\"attr_maxWin\")&&(maxWinnings=+awardsInfoData.attr_maxWin.value)}return maxWinnings}",
+      "SHA256": "0097ad51cd3aaf7994bf0c4a63748b36af0a39da98adcf4d52f26a5a772b1f8f"
+    },
+    "handleSpinStarted": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2878223,
+      "source": "function(){var _this=this;if(this.controllers.uiController.handleSpinStarted(),this.controllers.spinController.removeEventListener(BL.Controllers.Spin.Event.SPIN_STARTED,this.handleSpinStarted,this),this.models.playModel.getRecovering()){this.models.playModel.setRecovering(!1);this.models.winModel.getFeatureData().freespinsData.fsInfo.action===BF.Engines.Responses.MilestoneTrackAction.MS_BEGIN?this.makeSpinRequest():(this.controllers.spinController.addEventListener(BL.Controllers.Spin.Event.SPIN_FINISHED,this.spinFinishedForRestore,this),TweenMax.delayedCall(3,function(){_this.controllers.spinController.requestStop()}))}else this.makeSpinRequest()}",
+      "SHA256": "e41a0165de9b9e9ccb397ca74e3ffb86695eba8f2552d9dff81752e64c407fac"
+    },
+    "makeSpinRequest": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2878914,
+      "source": "function(){this.controllers.engineController.addEventListener(BL.Controllers.Engine.Event.SPIN_REQUEST_COMPLETE,this.onSpinSuccess,this),this.controllers.engineController.addEventListener(BL.Controllers.Engine.Event.SPIN_REQUEST_ERROR,this.onSpinError,this),this.controllers.engineController.makeSpinRequest()}",
+      "SHA256": "0a02c98c51ec721e7a9f7fcdcfb5d76e96026b24e888ec79c4fa43674ba5b8b5"
+    },
+    "checkFinished": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2881713,
+      "source": "function(){var featureData=this.models.winModel.getFeatureData(),isRecovering=this.models.playModel.getRecovering();featureData.freespinsData.fsInfo.action!==BF.Engines.Responses.MilestoneTrackAction.MS_END||isRecovering?BL.Managers.Force.Manager.isOpened()?this.waitingForForceToolClose=!0:this.models.stateModel.gotoNextState():(BL.Managers.Force.Manager.removeEventListener(BL.Components.Force.ComponentEvent.CLOSED,this.onForceClosed,this),this.controllers.uiController.hideButtons(),this.controllers.featureController.dispatchEvent(new BE.BorgEvent.Event(\"FREESPINS_ENDING\")),TweenMax.delayedCall(4,this.onFreeSpinsEnded,[],this))}",
+      "SHA256": "5b25e7ac1b6444758e0d4d8e6345b00206c2b3fd911a6fd637d41e5dd20377c8"
+    },
+    "onFreeSpinsEnded": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2882385,
+      "source": "function(){var _this=this,transition=new BF.Transitions.SnowTransition;transition.endDelay=0,this.controllers.viewController.changeToView(\"BASE\",transition),BL.Managers.Sound.playSound({assetID:\"Sound.FS_TransitionOut\"}),transition.onRemoved=function(){var baseGameData=_this.models.winModel.spinResults[0].baseGameData;if(baseGameData&&(baseGameData.baseGameSpinsRemaining>0||!0===baseGameData.isBigBet))_this.models.stateModel.changeSubGame(\"BIGBET\",\"POST_FEATURE\");else{BL.Util.Replay.isReplay()||(_this.controllers.engineController.addEventListener(BL.Controllers.Engine.Event.CLOSE_REQUEST_COMPLETE,_this.onCloseSuccess,_this),_this.controllers.engineController.addEventListener(BL.Controllers.Engine.Event.CLOSE_REQUEST_ERROR,_this.onCloseError,_this),_this.controllers.engineController.makeCloseRequest());var featureWinnings=_this.models.winModel.getFeatureWin()+_this.models.winModel.getBaseWin(),fsWinnings=_this.models.winModel.getFeatureData().fsInfo;_this.controllers.uiController.updateTotalWin(featureWinnings),_this.models.winModel.getFeatureData().featureAwarded=!1,_this.models.stateModel.changeSubGame(\"BASE\",\"POST_FEATURE\")}}}",
+      "SHA256": "8c1822a8444f725e0f2369eb5cf439610fc9836f140f69e07abb3f541a17e9bd"
+    },
+    "displayEntry": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2876559,
+      "source": "function(){if(-1==this.models.winModel.getFeatureData().freespinsData.fsInfo.milestoneIndex)return void this.models.stateModel.changeStateByName(\"UPDATE_TRAIL\");if(this.controllers.viewController.removeEventListener(\"VIEW_OPENED\",this.handleDisplayComplete,this),this.controllers.featureController.addEventListener(\"FREESPINS_INTRO_COMPLETE\",this.handleFreeSpinsIntroComplete,this),this.models.playModel.getRecovering()){var spinResults=this.models.winModel.getSpinResults();this.models.reelsModel.reelSetIndex=spinResults[0].reelset;var symbolMap=BF.Config.ReelProperties.symbolIDToFrameID[BF.Config.ReelIndexSymbolMap[spinResults[0].reelset]];this.models.reelsModel.changeReelSetForReels(spinResults[0].reelset,[0,1,2,3,4],symbolMap,!1)}}",
+      "SHA256": "52646338337a05b4064b07402d0995e623cfd9a21286d4860c5afe38dc9ef8cc"
+    },
+    "introNext": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "byteOffset": 2877347,
+      "source": "function(){this.controllers.featureController.removeEventListener(\"FREESPINS_INTRO_COMPLETE\",this.handleFreeSpinsIntroComplete,this),this.models.stateModel.gotoNextState()}",
+      "SHA256": "29866ff68e7deae0dfbc8a3614641c6b85ee3b5f628be00ccef1ce334266a86f"
+    }
+  },
+  "windows": {
+    "enum": {
+      "name": "BF-own-milestone-action-enum",
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "start": 2764900,
+      "length": 700,
+      "text": "}))}(BF||(BF={}));var BF;!function(BF){var Engines;!function(Engines){var Responses;!function(Responses){!function(MilestoneTrackAction){MilestoneTrackAction[MilestoneTrackAction.MS_BEGIN=0]=\"MS_BEGIN\",MilestoneTrackAction[MilestoneTrackAction.MS_END=1]=\"MS_END\",MilestoneTrackAction[MilestoneTrackAction.MS_STEP=2]=\"MS_STEP\",MilestoneTrackAction[MilestoneTrackAction.MS_ADVANCE=3]=\"MS_ADVANCE\",MilestoneTrackAction[MilestoneTrackAction.MS_RETREAT=4]=\"MS_RETREAT\"}(Responses.MilestoneTrackAction||(Responses.MilestoneTrackAction={}));var MilestoneTrackAction=Responses.MilestoneTrackAction}(Responses=Engines.Responses||(Engines.Responses={}))}(Engines=BF.Engines||(BF.Engines={}))}(BF||(BF={}));var "
+    },
+    "stateTable": {
+      "name": "BF-own-free-state-table",
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "start": 2666020,
+      "length": 920,
+      "text": "te:\"IDLE\",nextSubGame:\"BASE\",getNextState:null,reset:null},{stateName:\"LOAD_ASSETS\",nextState:\"IDLE\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null}],FREESPINS:[{stateName:\"INIT\",nextState:\"DISPLAY\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null},{stateName:\"DISPLAY\",nextState:\"SPINNING\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null},{stateName:\"SPINNING\",nextState:\"WILDS_RENDERING\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null},{stateName:\"WILDS_RENDERING\",nextState:\"WIN_RENDERING\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null},{stateName:\"WIN_RENDERING\",nextState:\"UPDATE_TRAIL\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null},{stateName:\"UPDATE_TRAIL\",nextState:\"SPINNING\",nextSubGame:\"FREESPINS\",getNextState:null,reset:null}],BIGBET:[{stateName:\"INIT\",nextState:\"DISPLAY\",nextSubGame:\"BIGBET\",getNextState:null,reset:null},{stateName:\"DISPLAY\",nextState:\"IDLE\",nextSubGa"
+    },
+    "engineProducer": {
+      "name": "BF-own-engine-spin-producer",
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+      "start": 1966910,
+      "length": 900,
+      "text": ")},Controller.prototype.makeSpinRequest=function(){return __awaiter(this,void 0,void 0,function(){var lineStake,totalStake,lines,currencyMultiplier,response;return __generator(this,function(_a){switch(_a.label){case 0:return lineStake=this.models.stakeModel.getBetPerLine(),totalStake=this.models.stakeModel.getTotalBet(),lines=this.models.stakeModel.getLines(),currencyMultiplier=this.models.playerModel.getCurrencyMultiplier(),[4,this.engine.spin(lineStake,totalStake,lines,currencyMultiplier)];case 1:return response=_a.sent(),response instanceof BL.Engines.Responses.Spin?this.handleSpinSuccess(response):response instanceof BL.Engines.Responses.Error&&this.handleSpinError(response),[2]}})})},Controller.prototype.processMultiSpinData=function(){for(var spinResult=this.models.winModel.getSpinResults().shift(),spinWins=spinResult.spinWins,paylines=[],paylinesData=spinResult.paylines,i=0;i<payl"
+    }
+  },
+  "authority": {
+    "providerACK": false,
+    "displayPipelineExecuted": false,
+    "oldNormalCertificateReused": true,
+    "unknownRecovery": false
+  },
+  "routes": {
+    "nonrecoveringEntry": "DISPLAY -> SPINNING -> handleSpinStarted -> makeSpinRequest",
+    "entryMilestoneMinusOne": "DISPLAY -> UPDATE_TRAIL -> checkFinishedFreeSpins",
+    "active": "WIN_RENDERING -> UPDATE_TRAIL -> checkFinishedFreeSpins",
+    "trailEnd": "onFreeSpinsEnded transition local callback -> same native close only if BG no BigBet",
+    "MAX": "evaluate native check under both metadata statuses and both comparison modes; admit only invariant false",
+    "money": "actual BGInfo.totalWagerWin only; no Milestone display total or synthesized FreeSpinsInfo"
+  },
+  "comparisonSupplement": {
+    "schema": "own32810-native-MAX-comparison-source-supplement-v2",
+    "sourceWindowReadsOnly": true,
+    "leaves": {
+      "processSpinData": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "byteOffset": 1968624,
+        "source": "function(data){if(this.models.playerModel.setBalance(data.balance),this.models.openBetModel&&null!=data.openbetData&&this.models.openBetModel.setData(data.openbetData),data.spinResults.length>1)return this.models.winModel.setSpinResults(data.spinResults),void this.processMultiSpinData();for(var totalWin=data.totalWin,paylines=[],paylinesData=data.spinResults[0].paylines,i=0;i<paylinesData.length;i++){var payline={index:paylinesData[i].index,win:paylinesData[i].win,columns:paylinesData[i].columns};paylines.push(payline)}if(this.models.winModel.setData(totalWin,data.spinResults[0].spinWins,paylines,data.spinResults[0].scatterSymbols||[],data.spinResults[0].featureData||{}),this.models.reelsModel.setReelStopIndices(data.spinResults[0].reelIndices),data.baseGameSpinResults&&data.baseGameSpinResults[0]){this.models.reelsModel.setReelStopIndices(data.baseGameSpinResults[0].reelIndices,\"BaseGame\",!1),this.models.winModel.setBaseWin(data.baseGameSpinResults[0].spinWins);var baseGameScatters=data.baseGameSpinResults[0].scatterSymbols||[];this.models.winModel.setScatters(baseGameScatters,\"BaseGame\"),this.models.winModel.setBaseWin(data.baseGameSpinResults[0].spinWins)}else this.models.winModel.setBaseWin(0);this.models.reelsModel.reelSetIndex=data.spinResults[0].reelset,data.stakeData&&data.stakeData.stake&&this.models.stakeModel.setCurrentData(data.stakeData,this.models.reelsModel.reelSetIndex),this.models.playModel.setBetID(data.betID)}",
+        "SHA256": "c87e4b2981f65fd99883dfc0b76b6fce8620032c55d4fbaa859bae9812537277"
+      },
+      "parseTotalWin": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "byteOffset": 2074992,
+        "source": "function(data){var totalWin=0;return data.hasOwnProperty(\"GameResult\")&&data.GameResult[0].hasOwnProperty(\"attr_totalWin\")&&(totalWin=parseFloat(data.GameResult[0].attr_totalWin.value)),totalWin}",
+        "SHA256": "3019d0214d3ba4db6c38640f90d6df3a879661a4e7a3916abeea83f3a9bb85a8"
+      }
+    },
+    "windows": {
+      "freeWinRenderPrefix": {
+        "name": "BF-own-free-win-rendering-prefix",
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "start": 2879450,
+        "length": 900,
+        "text": ".prototype.handleWinRenderingState=function(){this.controllers.uiController.showMobileActionButtons();var trueTotalWin=this.models.winModel.spinResults[0].baseGameData.totalWagerWin;if(this.controllers.maxWinController.checkMaxWin(trueTotalWin)){if(this.controllers.uiController.handleWinRenderingComplete(),this.partnerAdapter){var totalWin=this.models.winModel.getSpinResults()[0].baseGameData.totalWagerWin;this.partnerAdapter.handleWinDisplay(totalWin)}this.controllers.maxWinController.addEventListener(BL.Components.MaxWin.MaxWinEvent.COMPLETE,this.onMaxWinComplete,this),this.controllers.maxWinController.start()}else this.winRenderingSkipped=!1,this.controllers.winController.addEventListener(BL.Controllers.Win.Event.WIN_RENDERING_SKIPPED,this.handleWinRenderingSkipped,this),this.controllers.winController.addEventListener(BL.Controllers.Win.Event.WIN_RENDERING_COMPLETE,this.handleWinRende"
+      },
+      "freeWinRenderTail": {
+        "name": "BF-own-free-win-rendering-tail",
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "start": 2880250,
+        "length": 450,
+        "text": "s.winController.addEventListener(BL.Controllers.Win.Event.WIN_RENDERING_COMPLETE,this.handleWinRenderingComplete,this),this.controllers.winController.renderWins()},Machine.prototype.handleWinRenderingSkipped=function(){this.winRenderingSkipped=!0,this.controllers.uiController.handleWinRenderingSkipped()},Machine.prototype.onMaxWinComplete=function(){this.controllers.maxWinController.removeEventListener(BL.Components.MaxWin.MaxWinEvent.COMPLETE,th"
+      },
+      "baseRender": {
+        "name": "BF-own-base-WinRender-MAX-caller",
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "start": 2284800,
+        "length": 2100,
+        "text": "in.BigwinEvent.CANCELLED,this.handleBigWinCancelled,this),this.controllers.bigwinController.addEventListener(BL.Components.BigWin.BigwinEvent.COMPLETE,this.handleBigWinComplete,this),this.controllers.bigwinController.start(),this.controllers.winController.addEventListener(BL.Controllers.Win.Event.WIN_RENDERING_SKIPPED,this.handleWinRenderingSkipped,this),this.controllers.winController.addEventListener(BL.Controllers.Win.Event.WIN_RENDERING_COMPLETE,this.handleWinRenderingComplete,this),this.controllers.winController.renderWins()},Machine.prototype.handleBigWinCancelled=function(){this.winRenderingSkipped=!0,this.handleBigWinComplete(),this.controllers.winController.isRendering()&&this.controllers.winController.requestSkip()},Machine.prototype.handleBigWinComplete=function(){this.checkAllWinRenderingComplete()},Machine.prototype.handleWinRenderingSkipped=function(){this.winRenderingSkipped=!0,this.controllers.uiController.handleWinRenderingSkipped()},Machine.prototype.handleWinRenderingComplete=function(){this.checkAllWinRenderingComplete(),this.controllers.bigwinController.isInBigWin()&&this.controllers.bigwinController.cancel(),this.updatePartnerAdapterTotalWin()},Machine.prototype.checkAllWinRenderingComplete=function(){var winRendering=this.controllers.winController.isRendering(),bigWinRendering=this.controllers.bigwinController.isInBigWin();winRendering||bigWinRendering||(this.controllers.bigwinController.removeEventListener(BL.Components.BigWin.BigwinEvent.CANCELLED,this.handleBigWinCancelled,this),this.controllers.bigwinController.removeEventListener(BL.Components.BigWin.BigwinEvent.COMPLETE,this.handleBigWinComplete,this),this.controllers.winController.removeEventListener(BL.Controllers.Win.Event.WIN_RENDERING_SKIPPED,this.handleWinRenderingSkipped,this),this.controllers.winController.removeEventListener(BL.Controllers.Win.Event.WIN_RENDERING_COMPLETE,this.handleWinRenderingComplete,this),this.controllers.autoplayController.handleWinRenderingComplete(),this.controllers.uiController.handleWinRenderingComplete(),this.partnerAdapter&&this.partnerAdapter.finish"
+      },
+      "baseRenderPrefix": {
+        "name": "BF-own-base-WinRender-MAX-prefix",
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/bigfoot/app/js/game.js",
+        "start": 2283750,
+        "length": 1150,
+        "text": "llers.uiController.handleSpinSuccess(),this.controllers.spinController.addEventListener(BL.Controllers.Spin.Event.SPIN_FINISHED,this.spinFinished,this),this.controllers.spinController.requestStop(),this.updatePartnerAdapterBalance(!0),this.clearPartnerAdapterTotalWin()},Machine.prototype.onSpinError=function(event){this.controllers.engineController.removeEventListener(BL.Controllers.Engine.Event.SPIN_REQUEST_COMPLETE,this.onSpinSuccess,this),this.controllers.engineController.removeEventListener(BL.Controllers.Engine.Event.SPIN_REQUEST_ERROR,this.onSpinError,this),this.spinError=!0,this.controllers.autoplayController.stopAutoplay(),this.stopReelsImmediately(),this.handleError(event.errorData)},Machine.prototype.spinFinished=function(){this.controllers.spinController.removeEventListener(BL.Controllers.Spin.Event.SPIN_FINISHED,this.spinFinished,this),this.models.stateModel.gotoNextState()},Machine.prototype.handleWinRenderingState=function(){this.winRenderingSkipped=!1,this.controllers.bigwinController.addEventListener(BL.Components.BigWin.BigwinEvent.CANCELLED,this.handleBigWinCancelled,this),this.controllers.bigwinController.addEvent"
+      }
+    },
+    "admittedFirstEntry": "one actual ReelResults / one ReelSpin only; current GameResult totalWin exists; exact native parser -> processSpinData first argument",
+    "laterFeature": "native own Free handleWinRenderingState compares current BG totalWagerWin",
+    "MAX": "retain hold if either possible enabled metadata state or strictness changes false; no invented host flags",
+    "notAnAmountConstraint": "These values project native MAX input only; original cash remains BGInfo.totalWagerWin without prize addition"
+  }
+}
