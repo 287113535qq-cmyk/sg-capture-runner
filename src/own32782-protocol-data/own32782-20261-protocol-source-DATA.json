@@ -1,0 +1,439 @@
+{
+  "schema": "own32782-20261-original-SG-protocol-DATA-v2",
+  "gameId": "32782",
+  "dbName": "sg_knights_keep",
+  "runtimeGameId": 33004,
+  "nativeGameID": "20261",
+  "versionID": "1_0",
+  "ownSource": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+  "ownLibrary": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+  "cachedLeaves": {
+    "request": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 358500,
+      "startWithinWindow": 62,
+      "source": "var GLSRequest = (function () {\n        function GLSRequest(encoders) {\n            this._encoders = encoders;\n        }\n        GLSRequest.prototype.getEncoders = function () {\n            return this._encoders;\n        };\n        return GLSRequest;\n    }());\n    server.GLSRequest = GLSRequest;",
+      "SHA256": "dc65c6b88881f270dacfeeef7226cafeace109f186de2c5c7c325ca70a224dd1"
+    },
+    "currency": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 358900,
+      "startWithinWindow": 25,
+      "source": "var GLSCurrencyEncoder = (function () {\n        function GLSCurrencyEncoder(currencyMultiplier) {\n            this._currencyMultiplier = currencyMultiplier;\n        }\n        GLSCurrencyEncoder.prototype.parse = function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        };\n        return GLSCurrencyEncoder;\n    }());\n    server.GLSCurrencyEncoder = GLSCurrencyEncoder;",
+      "SHA256": "31f3306bb0d5971811477baa57ce88192d258689278ab24725df3abf41cae313"
+    },
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 354700,
+      "startWithinWindow": 90,
+      "source": "var GLSHeader = (function () {\n        function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\n            this.GLSID_CASINARENA = \"4\";\n            this.GLSID_FREEPLAY = \"65535\";\n            this.affiliate = sessionData.getContextID();\n            this.freePlay = !metadata.isRealMoney();\n            this.gameCodeRGI = metadata.getGameCode();\n            this.gameId = gameId;\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\n            this.langCode = metadata.getLocale();\n            this.sessionId = glsServerSessionId;\n            this.userId = sessionData.getPlayerID();\n            this.version = gameVersion;\n            this.promotions = false;\n            this.channel = \"I\";\n            this.userType = \"C\";\n            this.currencyCode = \"\";\n        }\n        GLSHeader.prototype.parse = function () {\n            var xmlString = \"\";\n            xmlString += \"<Header\";\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\n            xmlString += \"/>\";\n            return xmlString;\n        };\n        return GLSHeader;\n    }());\n    server.GLSHeader = GLSHeader;",
+      "SHA256": "9c83c3393afc3329623d50d2054ad0162b648e1f935cab6f0864345b4600ae92"
+    },
+    "resultData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 341400,
+      "startWithinWindow": 50,
+      "source": "var GameResultData = (function () {\n        function GameResultData(stake, stakePerLine, paylineCount, totalWin) {\n            this.stake = stake;\n            this.stakePerLine = stakePerLine;\n            this.paylineCount = paylineCount;\n            this.totalWin = totalWin;\n        }\n        return GameResultData;\n    }());\n    server.GameResultData = GameResultData;",
+      "SHA256": "689a453fb1e6e6fa77ba08e474abc33f376aebe21c9bd195e86518b3b9008a1d"
+    },
+    "winData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 342000,
+      "startWithinWindow": 106,
+      "source": "var PaylineWinData = (function () {\n        function PaylineWinData(index, winVal, awardIndex, awardTableIndex, reelPositions) {\n            this.index = index;\n            this.winVal = winVal;\n            this.awardIndex = awardIndex;\n            this.awardTableIndex = awardTableIndex;\n            this.reelPositions = reelPositions;\n        }\n        return PaylineWinData;\n    }());\n    server.PaylineWinData = PaylineWinData;",
+      "SHA256": "6a669d23524bdc99df4b9de2aca9699da6975dc3767e8d2c73c76da6729ffe2c"
+    },
+    "platformData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 342750,
+      "startWithinWindow": 77,
+      "source": "var PlatformData = (function () {\n        function PlatformData() {\n        }\n        return PlatformData;\n    }());\n    server.PlatformData = PlatformData;",
+      "SHA256": "a8c1bf21bb1a09d8026ff309c69e3eca1030eec0f96ee8eaad1e2e625427f57f"
+    },
+    "reelData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 343900,
+      "startWithinWindow": 56,
+      "source": "var ReelSpinData = (function () {\n        function ReelSpinData(spinIndex, paylineWinCount, scatterWinCount, reelsetIndex, spinWins, freeSpin, bonusAwarded, reelStops, paylineWins) {\n            this.spinIndex = spinIndex;\n            this.paylineWinCount = paylineWinCount;\n            this.scatterWinCount = scatterWinCount;\n            this.reelsetIndex = reelsetIndex;\n            this.spinWins = spinWins;\n            this.freeSpin = freeSpin;\n            this.bonusAwarded = bonusAwarded;\n            this.reelStops = reelStops;\n            this.paylineWins = paylineWins;\n        }\n        return ReelSpinData;\n    }());\n    server.ReelSpinData = ReelSpinData;",
+      "SHA256": "ce49ba8a7495f7fd166d4fa0067101b41b129b47875f371a03ff6afa019c792e"
+    },
+    "baseResult": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 367500,
+      "startWithinWindow": 43,
+      "source": "var GLSGameResultParser = (function () {\n        function GLSGameResultParser() {\n        }\n        GLSGameResultParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"GameResult\")[0];\n            var attributes = node.attributes;\n            var nodeChildren = node.childNodes;\n            var stake = parseInt(node.attributes.getNamedItem(\"stake\").value);\n            var stakePerLine = parseInt(node.attributes.getNamedItem(\"stakePerLine\").value);\n            var paylineCount = parseInt(node.attributes.getNamedItem(\"paylineCount\").value);\n            var totalWin = parseInt(node.attributes.getNamedItem(\"totalWin\").value);\n            object.gameResultData = new server.GameResultData(stake, stakePerLine, paylineCount, totalWin);\n        };\n        return GLSGameResultParser;\n    }());\n    server.GLSGameResultParser = GLSGameResultParser;",
+      "SHA256": "7368f31660974abc4cfedd90a534166a999fe7ef7f784d2baab53207a6f77e82"
+    },
+    "reels": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 373550,
+      "startWithinWindow": 76,
+      "source": "var GLSReelResultParser = (function () {\n        function GLSReelResultParser() {\n        }\n        GLSReelResultParser.prototype.parse = function (input, object) {\n            object.reelSpinData = [];\n            var node = input.getElementsByTagName(\"GameResult\")[0];\n            var attributes = node.attributes;\n            var nodeChildren = node.childNodes;\n            for (var i = 0; i < nodeChildren.length; ++i) {\n                if (nodeChildren[i].nodeName == \"ReelResults\") {\n                    this.populateResults(object, nodeChildren[i]);\n                }\n            }\n        };\n        GLSReelResultParser.prototype.populateResults = function (object, node) {\n            var spinNode = node.childNodes;\n            for (var spinNodeIndex = 0; spinNodeIndex < spinNode.length; ++spinNodeIndex) {\n                var spinDataSource = spinNode[spinNodeIndex].childNodes;\n                var reelStops;\n                var paylineWins = [];\n                for (var spinDataIndex = 0; spinDataIndex < spinDataSource.length; ++spinDataIndex) {\n                    var spinDataSubType = spinDataSource[spinDataIndex];\n                    var nodeType = spinDataSubType.nodeName;\n                    if (nodeType == \"ReelStops\") {\n                        reelStops = spinDataSubType.textContent.split(\"|\").map(Number);\n                    }\n                    else if (nodeType == \"PaylineWin\") {\n                        var paylineIndex = 0;\n                        var paylineWinVal = 0;\n                        var paylineAwardIndex = 0;\n                        var paylineAwardTableIndex = 0;\n                        var paylineReelPositions = [];\n                        if (spinDataSubType.attributes.getNamedItem(\"index\")) {\n                            paylineIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"index\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"winVal\")) {\n                            paylineWinVal = parseInt(spinDataSubType.attributes.getNamedItem(\"winVal\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"awardIndex\")) {\n                            paylineAwardIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"awardIndex\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"awardTableIndex\")) {\n                            paylineAwardTableIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"awardTableIndex\").value);\n                        }\n                        if (spinDataSubType.textContent) {\n                            paylineReelPositions = spinDataSubType.textContent.split(\"|\").map(Number);\n                        }\n                        paylineWins.push(new server.PaylineWinData(paylineIndex, paylineWinVal, paylineAwardIndex, paylineAwardTableIndex, paylineReelPositions));\n                    }\n                }\n                if (spinNode[spinNodeIndex].nodeName == \"ReelSpin\") {\n                    var spinIndex = 0;\n                    var paylineWinCount = 0;\n                    var scatterWinCount = 0;\n                    var reelsetIndex = 0;\n                    var spinWins = 0;\n                    var freeSpin = false;\n                    var bonusAwarded = false;\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"spinIndex\")) {\n                        spinIndex = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"spinIndex\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountPL\")) {\n                        paylineWinCount = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountPL\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountSC\")) {\n                        scatterWinCount = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountSC\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"reelsetIndex\")) {\n                        reelsetIndex = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"reelsetIndex\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"spinWins\")) {\n                        spinWins = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"spinWins\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"freeSpin\")) {\n                        freeSpin = spinNode[spinNodeIndex].attributes.getNamedItem(\"freeSpin\").value == \"Y\" ? true : false;\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"bonusAwarded\")) {\n                        bonusAwarded = spinNode[spinNodeIndex].attributes.getNamedItem(\"bonusAwarded\").value == \"Y\" ? true : false;\n                    }\n                    object.reelSpinData.push(new server.ReelSpinData(spinIndex, paylineWinCount, scatterWinCount, reelsetIndex, spinWins, freeSpin, bonusAwarded, reelStops, paylineWins));\n                }\n            }\n        };\n        return GLSReelResultParser;\n    }());\n    server.GLSReelResultParser = GLSReelResultParser;",
+      "SHA256": "2e993057cbd0adcd7dfdbd57d5daa09477fb526c8ec808643c0aae24a081f5f8"
+    },
+    "platform": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 369000,
+      "startWithinWindow": 838,
+      "source": "var GLSPlatformParser = (function () {\n        function GLSPlatformParser() {\n        }\n        GLSPlatformParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var data = new server.PlatformData();\n            if (node != null) {\n                var attr = node.attributes;\n                var attrLength = attr.length;\n                for (var i = 0; i < attrLength; ++i) {\n                    switch (attr[i].nodeName) {\n                        case 'sessionID':\n                            data.sessionId = attr[i].nodeValue;\n                            break;\n                        case 'gameID':\n                            data.gameId = attr[i].nodeValue;\n                            break;\n                        case 'lang':\n                            data.languageCode = attr[i].nodeValue;\n                            break;\n                        case 'versionID':\n                            data.version = attr[i].nodeValue;\n                            break;\n                        case 'isRecovering':\n                            data.isRecovering = attr[i].nodeValue === 'Y';\n                            break;\n                    }\n                }\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\n                if (currencyMultiplierNode != null) {\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\n                }\n                else {\n                    data.currencyMultiplier = 1;\n                }\n            }\n            object.platformData = data;\n        };\n        return GLSPlatformParser;\n    }());\n    server.GLSPlatformParser = GLSPlatformParser;",
+      "SHA256": "6a7203313ff5dbe3f7ceed28421b9a059cad9701df84735af3fe93fa6b821f39"
+    },
+    "stake": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 254450,
+      "startWithinWindow": 72,
+      "source": "var StakeEncoder = (function () {\n        function StakeEncoder(totalStake) {\n            this._totalStake = totalStake;\n        }\n        StakeEncoder.prototype.parse = function () {\n            return \"<Stake total=\\\"\" + this._totalStake.toString() + \"\\\" />\";\n        };\n        return StakeEncoder;\n    }());\n    game.StakeEncoder = StakeEncoder;",
+      "SHA256": "707df6b8d7e9b35613a1b4e718062609c89e12c2bbfe4eea620c4bc3b96f3145"
+    },
+    "result": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 388500,
+      "startWithinWindow": 157,
+      "source": "var GameResultParser = (function (_super) {\n        __extends(GameResultParser, _super);\n        function GameResultParser() {\n            return _super !== null && _super.apply(this, arguments) || this;\n        }\n        // Just override the populateResults() method of the base class\n        // to parse the additional non-standard nodes / attributes \n        GameResultParser.prototype.parse = function (input, object) {\n            _super.prototype.parse.call(this, input, object);\n            var node = input.getElementsByTagName(\"GameResult\")[0];\n            var resultNodes = node.childNodes;\n            var baseGameRecoveryInfo = {\n                reelStops: [],\n                paylineWins: [],\n                scatterWinVal: 0\n            };\n            var freeSpinResult = {\n                fsWinnings: 0,\n                freeSpinsTotal: 0,\n                freeSpinNumber: 0,\n                freeSpinsAwarded: 0,\n                isMaxWin: false\n            };\n            for (var nodeIndex = 0; nodeIndex < resultNodes.length; ++nodeIndex) {\n                var childNode = resultNodes[nodeIndex];\n                if (childNode.nodeName == \"BaseGameRecoveryInfo\") {\n                    // <ReelResults>\n                    var grandchildNodes = childNode.childNodes;\n                    var paylineWins = [];\n                    for (var i = 0; i < grandchildNodes.length; i++) {\n                        var greatGrandchildNodes = grandchildNodes[i].childNodes;\n                        for (var j = 0; j < greatGrandchildNodes.length; j++) {\n                            if (greatGrandchildNodes[j].nodeName === \"ReelSpin\") {\n                                var greatGreatGrandchildNodes = greatGrandchildNodes[j].childNodes;\n                                for (var k = 0; k < greatGreatGrandchildNodes.length; k++) {\n                                    if (greatGreatGrandchildNodes[k].nodeName === \"ReelStops\") {\n                                        var reelStops = greatGreatGrandchildNodes[k].textContent;\n                                        baseGameRecoveryInfo.reelStops = reelStops.split(\"|\").map(Number);\n                                    }\n                                    if (greatGreatGrandchildNodes[k].nodeName === \"ScatterWin\") {\n                                        baseGameRecoveryInfo.scatterWinVal = parseInt(greatGreatGrandchildNodes[k].attributes.getNamedItem(\"winVal\").value);\n                                    }\n                                    else if (greatGreatGrandchildNodes[k].nodeName == \"PaylineWin\") {\n                                        var node = greatGreatGrandchildNodes[k];\n                                        var paylineIndex = 0;\n                                        var paylineWinVal = 0;\n                                        var paylineAwardIndex = 0;\n                                        var paylineAwardTableIndex = 0;\n                                        var paylineReelPositions = [];\n                                        if (node.attributes.getNamedItem(\"index\")) {\n                                            paylineIndex = parseInt(node.attributes.getNamedItem(\"index\").value);\n                                        }\n                                        if (node.attributes.getNamedItem(\"winVal\")) {\n                                            paylineWinVal = parseInt(node.attributes.getNamedItem(\"winVal\").value);\n                                        }\n                                        if (node.attributes.getNamedItem(\"awardIndex\")) {\n                                            paylineAwardIndex = parseInt(node.attributes.getNamedItem(\"awardIndex\").value);\n                                        }\n                                        if (node.attributes.getNamedItem(\"awardTableIndex\")) {\n                                            paylineAwardTableIndex = parseInt(node.attributes.getNamedItem(\"awardTableIndex\").value);\n                                        }\n                                        if (node.textContent) {\n                                            paylineReelPositions = node.textContent.split(\"|\").map(Number);\n                                        }\n                                        paylineWins.push(new server.PaylineWinData(paylineIndex, paylineWinVal, paylineAwardIndex, paylineAwardTableIndex, paylineReelPositions));\n                                    }\n                                }\n                            }\n                        }\n                    }\n                    baseGameRecoveryInfo.paylineWins = paylineWins;\n                    object.baseGameRecoveryInfo = baseGameRecoveryInfo;\n                }\n                if (childNode.nodeName === \"BGInfo\") {\n                    object.totalWagerWin = parseInt(childNode.attributes.getNamedItem(\"totalWagerWin\").value);\n                    object.bgWinnings = parseInt(childNode.attributes.getNamedItem(\"bgWinnings\").value);\n                    object.isMaxWin = (childNode.attributes.getNamedItem(\"isMaxWin\").value === \"1\") ? true : false;\n                }\n                if (childNode.nodeName === \"FSInfo\") {\n                    freeSpinResult.fsWinnings = parseInt(childNode.attributes.getNamedItem(\"fsWinnings\").value);\n                    freeSpinResult.freeSpinsTotal = parseInt(childNode.attributes.getNamedItem(\"freeSpinsTotal\").value);\n                    freeSpinResult.freeSpinNumber = parseInt(childNode.attributes.getNamedItem(\"freeSpinNumber\").value);\n                    freeSpinResult.freeSpinsAwarded = parseInt(childNode.attributes.getNamedItem(\"freeSpinsAwarded\").value);\n                    freeSpinResult.isMaxWin = (childNode.attributes.getNamedItem(\"isMaxWin\").value === \"1\") ? true : false;\n                    object.freeSpinResult = freeSpinResult;\n                }\n            }\n        };\n        return GameResultParser;\n    }(server.GLSGameResultParser));\n    game.GameResultParser = GameResultParser;",
+      "SHA256": "f36bb66ff34e69d70f540032cd5ec7f8bb6c969d8830e58bf1d4b2888363b056"
+    },
+    "endWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 382700,
+      "startWithinWindow": 186,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"EndGame\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "46bdd8d515061709bc9621ebd774900384fd3717c2e764e484e0fea6c89a0052",
+      "marker": "GLSEndRequester.prototype.parseRequestData"
+    },
+    "initWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 383800,
+      "startWithinWindow": 214,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Init\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "e059ae4fe763a7827929a9afb7b8697486260045faf9d92f73766aaf6a5a4be1",
+      "marker": "GLSInitRequester.prototype.parseRequestData"
+    },
+    "logicWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 384900,
+      "startWithinWindow": 244,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Logic\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "d1a1d82bed5eede03fa4fc11bfef4405fcc64446abca68bf9b0a08d51b37d9a3",
+      "marker": "GLSLogicRequester.prototype.parseRequestData"
+    },
+    "checkWins": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 69000,
+      "startWithinWindow": 127,
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            var logicResponse = this._server.getLogicResponse();\n            var reelResults = logicResponse.reelSpinData[0];\n            var winLinesPresent = reelResults && (reelResults.paylineWins.length > 0);\n            if (logicResponse.bonusAwarded && logicResponse.freeSpinResult.freeSpinNumber === 0) {\n                this.doGlobalDispatch(new game.GameEvent(game.GameEvent.BONUS_TRIGGERED, this));\n                this._commonuiData.disableUI();\n                this._commonuiData.disableDesktopBetPanel();\n                TweenMax.delayedCall(2.5, function () {\n                    _this._gameStateModel.changeSubgame(game.Subgame.BONUS_GAME, \"showIntro\");\n                    _this._gameStateModel.currentSubgameFSM.init(\"showIntro\");\n                });\n            }\n            else {\n                if (winLinesPresent) {\n                    this.doDeferredDispatch(new game.GameEvent(game.GameEvent.HAS_WINS), 0, true);\n                }\n                else {\n                    this.doDeferredDispatch(new game.GameEvent(game.GameEvent.HAS_NO_WINS), 0, true);\n                }\n            }\n        }",
+      "SHA256": "c601d4cd5b95770a24322763767b2c5fd1331bec4cd1a48e7f84cfd9f017be16",
+      "marker": "CheckWinsCmd.prototype.execute"
+    },
+    "endCommand": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 162800,
+      "startWithinWindow": 95,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._forceModel.visible = false;\n            //End Request not required if history is running.\n            var historyReplay = this._historyModel.getIsHistoryReplay();\n            if (!historyReplay) {\n                this._server.makeEndRequest(new server.GLSRequest([]));\n            }\n        }",
+      "SHA256": "50c575858d4dfe1aa8e40b58c60f71472a82af1dcd7b15ea3641774b8dc036e0",
+      "marker": "MakeEndRequestCmd.prototype.execute"
+    },
+    "transitions": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 124850,
+      "startWithinWindow": 67,
+      "source": "var baseGameTransitions = [\n                new game.FSMTransition(\"idle\", \"spinReels\", \"onSpin\"),\n                new game.FSMTransition(\"spinReels\", \"stopReels\", \"onLogicResponse\"),\n                new game.FSMTransition(\"stopReels\", \"checkMaxWin\", \"onReelsStopped\"),\n                new game.FSMTransition(\"checkMaxWin\", \"showMaxWin\", \"onHasMaxWin\"),\n                new game.FSMTransition(\"showMaxWin\", \"spinComplete\", \"onMaxWinComplete\"),\n                new game.FSMTransition(\"checkMaxWin\", \"checkWins\", \"onHasNoMaxWin\"),\n                new game.FSMTransition(\"checkWins\", \"inBonusGame\", \"onBonusTriggered\"),\n                new game.FSMTransition(\"checkWins\", \"spinComplete\", \"onHasNoWins\"),\n                new game.FSMTransition(\"checkWins\", \"showSpaghetti\", \"onHasWins\"),\n                new game.FSMTransition(\"showSpaghetti\", \"showWins\", \"onSpaghettiComplete\"),\n                new game.FSMTransition(\"showWins\", \"showBigWin\", \"onHasBigWin\"),\n                new game.FSMTransition(\"showBigWin\", \"spinComplete\", \"onBigWinComplete\"),\n                new game.FSMTransition(\"checkDeferredWins\", \"spinComplete\", \"onHasNoWins\"),\n                new game.FSMTransition(\"checkDeferredWins\", \"showSpaghetti\", \"onHasWins\"),\n                new game.FSMTransition(\"showWins\", \"spinComplete\", \"onShowWinsComplete\"),\n                new game.FSMTransition(\"inBonusGame\", \"checkDeferredWins\", \"onReturnToBaseGame\"),\n                new game.FSMTransition(\"spinComplete\", \"idle\", \"onEndResponse\")\n            ];",
+      "SHA256": "5e2380028b9c3d2ffe4902a05955e88be2a23c527927befd63ccb096e9cf66cf"
+    },
+    "extends": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 0,
+      "startWithinWindow": 0,
+      "source": "var __extends = (this && this.__extends) || (function () {\n    var extendStatics = Object.setPrototypeOf ||\n        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();",
+      "SHA256": "e8c437dfa70eee75dc6ef2351ca483129dc3906779a50c9841bb5c78e2b9d5fb"
+    },
+    "winEventBindings": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 118450,
+      "startWithinWindow": 72,
+      "source": "this._stateModel.mapEventTransition(game.GameEvent.HAS_NO_WINS, game.Subgame.BASE_GAME, \"onHasNoWins\");\n            this._stateModel.mapEventTransition(game.GameEvent.HAS_WINS, game.Subgame.BASE_GAME, \"onHasWins\");",
+      "SHA256": "61efefe2084da0ad406a6d0c2196728a39b3438ad2c7e3ee889740a4f735ac76"
+    },
+    "winEventConstants": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 267900,
+      "startWithinWindow": 97,
+      "source": "GameEvent.HAS_WINS = \"GameEvent_HAS_WINS\";\n        GameEvent.HAS_NO_WINS = \"GameEvent_HAS_NO_WINS\";",
+      "SHA256": "2d872e6571469cd606ec49c6aab7fea9f16eb62cc35c4f3a14d53542c7b2dd0a"
+    }
+  },
+  "newLeaves": {
+    "PayloadData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 250200,
+      "startWithinWindow": 23,
+      "source": "var PayloadData = (function () {\n        function PayloadData() {\n            this.CASH = 0;\n            this.FREEBET = 0;\n            this.BONUS = 0;\n        }\n        PayloadData.TYPE_INIT = \"init\";\n        PayloadData.TYPE_WAGER = \"wager\";\n        PayloadData.TYPE_OUTCOME = \"outcome\";\n        return PayloadData;\n    }());\n    game.PayloadData = PayloadData;",
+      "SHA256": "432438e5caac4de0b8e7e9206432e924e8f6d3007134c21a2e627eb225362177"
+    },
+    "PayloadParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 250600,
+      "startWithinWindow": 44,
+      "source": "var PayloadParser = (function () {\n        function PayloadParser() {\n        }\n        /**\n         * Parses the server input data and sets it on an IResponse object\n         */\n        PayloadParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"Payload\")[0];\n            if (node != null) {\n                object.payloadData = [];\n                for (var i = 0; i < node.childNodes.length; i++) {\n                    var payloadItem = node.childNodes[i];\n                    var requestType = payloadItem.attributes.getNamedItem(\"request\").value;\n                    var payloadNode = payloadItem.childNodes[0];\n                    if (payloadNode != null) {\n                        for (var j = 0; j < payloadNode.childNodes.length; j++) {\n                            var data = this.parseMapItem(payloadNode.childNodes[j], requestType);\n                            if (data) {\n                                object.payloadData[requestType] = data;\n                            }\n                        }\n                    }\n                }\n            }\n        };\n        PayloadParser.prototype.parseMapItem = function (mapItem, requestType) {\n            var data = null;\n            for (var i = 0; i < mapItem.childNodes.length; i++) {\n                if (mapItem.childNodes[i].nodeName == \"key\") {\n                    //var keyText: string = mapItem.childNodes[i].textContent;\n                    //if (keyText.indexOf(\"OPENBET_CONTAINER_PAYLOAD\") == -1) {\n                    // if we are not looking at an openbet payload skip to next item\n                    //continue;\n                    //}\n                }\n                else if (mapItem.childNodes[i].nodeName == \"value\") {\n                    data = new game.PayloadData();\n                    var valuesText = mapItem.childNodes[i].textContent;\n                    var values = valuesText.split(\";\");\n                    for (var j = 0; j < values.length; j++) {\n                        data.type = requestType;\n                        var mapsText = values[j].split(\"=\");\n                        switch (mapsText[0]) {\n                            case \"CASH\":\n                                data.CASH = parseInt(mapsText[1]);\n                                break;\n                            case \"FREEBET\":\n                                data.FREEBET = parseInt(mapsText[1]);\n                                break;\n                            case \"BONUS\":\n                                data.BONUS = parseFloat(mapsText[1]);\n                                break;\n                        }\n                    }\n                    // found a payload value\n                    break;\n                }\n            }\n            return data;\n        };\n        return PayloadParser;\n    }());\n    game.PayloadParser = PayloadParser;",
+      "SHA256": "1808ef6e618d6bf300470f7df3c1178bc53e4ff072727e4b3a9d211c724cf4e0"
+    },
+    "StakesParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 407000,
+      "startWithinWindow": 33,
+      "source": "var StakesParser = (function () {\n        function StakesParser() {\n        }\n        // Need a custom parser because there are two stakes to read\n        StakesParser.prototype.parse = function (input, object) {\n            var stakesData = [];\n            var stakeNodes = input.getElementsByTagName(\"Stakes\");\n            for (var nodeIdx = 0; nodeIdx < stakeNodes.length; ++nodeIdx) {\n                if (stakeNodes[nodeIdx]) {\n                    var node = stakeNodes[nodeIdx];\n                    var stake = this.parseStake(node);\n                    stakesData.push(stake);\n                }\n            }\n            object.betData = stakesData;\n            // Parse the MaxWin value\n            var awardNodes = input.getElementsByTagName(\"AwardsInfo\");\n            if (awardNodes[0] != null) {\n                object.maxWinValue = parseInt(awardNodes[0].attributes.getNamedItem(\"maxWin\").value, 10);\n            }\n            // and game variant info - seems OTT to add a new parser just for this\n            // even though arguably it has nothing to do with stakes\n            var gameVariantNode = input.getElementsByTagName(\"GameVariantInfo\")[0];\n            if (gameVariantNode != null) {\n                var attributes = gameVariantNode.attributes;\n                //object.rtpBelow200 = attributes.getNamedItem(\"rtpBelow200\").value;\n                //object.rtpAtLeast200 = attributes.getNamedItem(\"rtpAtleast200\").value;\n                object.rtp = attributes.getNamedItem(\"rtp\").value;\n            }\n        };\n        StakesParser.prototype.parseStake = function (node) {\n            var stake = new server.BetData();\n            if (node != null) {\n                var attributes = node.attributes;\n                stake.setDefaultIndex(parseInt(attributes.getNamedItem(\"defaultIndex\").value, 10));\n                stake.setAvailableBets(node.textContent.split(\"|\").map(Number));\n            }\n            return stake;\n        };\n        return StakesParser;\n    }());\n    game.StakesParser = StakesParser;",
+      "SHA256": "103c3b0f46913efa03f3ad0d9f12a75590c366548e253b3a37bf5b9480056c8c"
+    },
+    "BalanceData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 339650,
+      "startWithinWindow": 33,
+      "source": "var BalanceData = (function () {\n        function BalanceData(balanceData) {\n            this.balances = balanceData;\n        }\n        BalanceData.prototype.getBalance = function (type) {\n            var value = 0;\n            var name = BalanceType[type];\n            if (name != null &&\n                this.balances[name] != null) {\n                value = this.balances[name];\n            }\n            return value;\n        };\n        BalanceData.prototype.hasBalance = function (type) {\n            var name = BalanceType[type];\n            if (name != null &&\n                this.balances[name] != null) {\n                return true;\n            }\n            return false;\n        };\n        return BalanceData;\n    }());\n    server.BalanceData = BalanceData;",
+      "SHA256": "4cd8695750aa78b2e16561570dfbf0a9ce6f752044712187a59b5f85a765b738"
+    },
+    "GLSBalanceParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 361500,
+      "startWithinWindow": 71,
+      "source": "var GLSBalanceParser = (function () {\n        function GLSBalanceParser() {\n        }\n        GLSBalanceParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"Balances\")[0];\n            var data = {};\n            if (node) {\n                var nodeChildren = node.childNodes;\n                var numChildren = nodeChildren.length;\n                for (var childIndex = 0; childIndex < numChildren; ++childIndex) {\n                    var balanceSource = nodeChildren[childIndex];\n                    if (balanceSource.nodeName == \"Balance\") {\n                        var attributes = balanceSource.attributes;\n                        data[attributes.getNamedItem(\"name\").value] = parseInt(attributes.getNamedItem(\"value\").value, 10);\n                    }\n                }\n                object.balanceData = new server.BalanceData(data);\n            }\n        };\n        return GLSBalanceParser;\n    }());\n    server.GLSBalanceParser = GLSBalanceParser;",
+      "SHA256": "2e0aa5f88d6c0138bfa100b6262e9f071b15accce8f9c18a5a1f09b9d0b59f4f"
+    },
+    "BetData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 340500,
+      "startWithinWindow": 20,
+      "source": "var BetData = (function () {\n        function BetData() {\n            this.availableBets = [1];\n            this.defaultBetIndex = 0;\n        }\n        BetData.prototype.setDefaultIndex = function (index) {\n            this.defaultBetIndex = index;\n        };\n        BetData.prototype.getDefaultIndex = function () {\n            return this.defaultBetIndex;\n        };\n        BetData.prototype.setAvailableBets = function (bets) {\n            this.availableBets = bets;\n        };\n        BetData.prototype.getAvailableBets = function () {\n            return this.availableBets;\n        };\n        return BetData;\n    }());\n    server.BetData = BetData;",
+      "SHA256": "914f4874082fd384cbb631415218f424f62514df1933ce640694158a74f67cd5"
+    },
+    "sendRequest": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 167530,
+      "startWithinWindow": 66,
+      "source": "function () {\n            var payload = [];\n            var totalBet = this._commonuiData.getTotalBet();\n            payload.push(new game.StakeEncoder(totalBet));\n            payload.push(new server.GLSCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier));\n            if (this._forceModel) {\n                var stops = this._forceModel.forceData.positions;\n                var extraXML = this._forceModel.forceData.extraXML;\n                var bandsetIndex = this._forceModel.forceData.bandsetIndex;\n                var forceDataPresent = (stops.length > 0) || (extraXML != undefined);\n                if (forceDataPresent) {\n                    payload.push(new game.ForceEncoder(stops, extraXML, bandsetIndex));\n                    Utils.PSLog.log(\"MakePlayRequestCmd::execute() - adding FORCE payload: \" + payload.toString());\n                }\n            }\n            // Add HistoryReplay data if required\n            if (this._historyModel.getIsHistoryReplay()) {\n                var historyData = this._historyModel.getNextState(true);\n                if (historyData) {\n                    payload.push(new game.ReplayEncoder(historyData));\n                }\n            }\n            var data = new server.GLSRequest(payload);\n            //////////////////////////////\n            // Diagnostic purposes only\n            var initResponse = this._server.getInitResponse();\n            var recoveryRequest = initResponse.isRecovering;\n            if (!recoveryRequest) {\n                Utils.PSLog.log(\"MakePlayRequestCmd::execute() - normal logic request\");\n            }\n            else {\n                var initialRecoveryRequest = (this._server.getLogicResponse() == undefined);\n                if (initialRecoveryRequest) {\n                    Utils.PSLog.log(\"MakePlayRequestCmd::execute() - initial recovery logic request\");\n                }\n                else {\n                    Utils.PSLog.log(\"MakePlayRequestCmd::execute() - subsequent recovery logic request\");\n                }\n            }\n            this._server.makeLogicRequest(data);\n            this._commonuiData.startPlay();\n            this._forceModel.clear(true, true);\n        }",
+      "SHA256": "30ecc8656e0332e4c88092c62620bc4cd9ee1f88f04f1b9f3a8dd6894352acb2",
+      "marker": "MakePlayRequestCmd.prototype.sendRequest ="
+    },
+    "requestFree": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 87100,
+      "startWithinWindow": 67,
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            var logicResponse = this._gameServer.getLogicResponse();\n            if (logicResponse.freeSpinResult.freeSpinNumber < logicResponse.freeSpinResult.freeSpinsTotal) {\n                this.doGlobalDispatch(new game.BonusGameEvent(game.BonusGameEvent.HAS_MORE_FREE_SPINS));\n            }\n            else {\n                TweenMax.delayedCall(1, function () {\n                    _this.doGlobalDispatch(new game.BonusGameEvent(game.BonusGameEvent.HAS_NO_MORE_FREE_SPINS));\n                });\n                this._bonusGameModel.isReturningFrom = true;\n            }\n        }",
+      "SHA256": "ce869a3a8439398db36bcda4d1456b227e0cb044609071ef9f4d62c890575666",
+      "marker": "RequestBonusSpinCmd.prototype.execute ="
+    },
+    "checkMax": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 78350,
+      "startWithinWindow": 133,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            var logicResponse = this._server.getLogicResponse();\n            if (logicResponse.isMaxWin) {\n                this.doGlobalDispatch(new game.MaxWinEvent(game.MaxWinEvent.HAS_MAX_WIN));\n            }\n            else {\n                this.doGlobalDispatch(new game.MaxWinEvent(game.MaxWinEvent.HAS_NO_MAX_WIN));\n            }\n        }",
+      "SHA256": "20bc470b9ba993c0c81f133752fa917ed2c993b8247b1b7d32241f1ee9b144f8",
+      "marker": "CheckMaxWinCmd.prototype.execute ="
+    },
+    "bonusFSM": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 126600,
+      "startWithinWindow": 79,
+      "source": "function () {\n            var transitions = [\n                new game.FSMTransition(\"showIntro\", \"transitionReels\", \"onStartButtonPressed\"),\n                new game.FSMTransition(\"transitionReels\", \"spinReels\", \"onTransitionReelsComplete\"),\n                new game.FSMTransition(\"spinReels\", \"stopReels\", \"onLogicResponse\"),\n                new game.FSMTransition(\"stopReels\", \"checkMaxWin\", \"onReelsStopped\"),\n                new game.FSMTransition(\"checkMaxWin\", \"showMaxWin\", \"onHasMaxWin\"),\n                new game.FSMTransition(\"showMaxWin\", \"showSummary\", \"onMaxWinComplete\"),\n                new game.FSMTransition(\"checkMaxWin\", \"checkForRetrigger\", \"onHasNoMaxWin\"),\n                new game.FSMTransition(\"checkForRetrigger\", \"checkWins\", \"onHasNoRetrigger\"),\n                new game.FSMTransition(\"checkForRetrigger\", \"showRetriggerPopup\", \"onHasRetrigger\"),\n                new game.FSMTransition(\"showRetriggerPopup\", \"checkWins\", \"onShowRetriggerComplete\"),\n                new game.FSMTransition(\"checkWins\", \"requestSpin\", \"onHasNoWins\"),\n                new game.FSMTransition(\"checkWins\", \"showSpaghetti\", \"onHasWins\"),\n                new game.FSMTransition(\"showSpaghetti\", \"showWins\", \"onSpaghettiComplete\"),\n                new game.FSMTransition(\"showWins\", \"showBigWin\", \"onHasBigWin\"),\n                new game.FSMTransition(\"showBigWin\", \"requestSpin\", \"onBigWinComplete\"),\n                new game.FSMTransition(\"showSpaghetti\", \"requestSpin\", \"onShowWinsComplete\"),\n                new game.FSMTransition(\"showWins\", \"requestSpin\", \"onShowWinsComplete\"),\n                new game.FSMTransition(\"requestSpin\", \"spinReels\", \"onHasMoreSpins\"),\n                new game.FSMTransition(\"requestSpin\", \"showSummary\", \"onHasNoMoreSpins\"),\n                new game.FSMTransition(\"showSummary\", game.Subgame.BONUS_GAME_EXIT_STATE, \"onSummaryComplete\")\n            ];\n            this.initFSMFromTransitions(this._bonusGameFSM, transitions);\n            this._bonusGameFSM.exitState = game.Subgame.BONUS_GAME_EXIT_STATE;\n        }",
+      "SHA256": "e83ccc569e981b33652accdbeac628d624e71b0f70feacb62193272d2b2f1e2a",
+      "marker": "CreateGameStatesCmd.prototype.initBonusGameFSM ="
+    },
+    "getNativeDisplayWin": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 371080,
+      "startWithinWindow": 79,
+      "source": "function (fromRecovery) {\n            if (fromRecovery === void 0) { fromRecovery = false; }\n            var response = this._server.getLogicResponse();\n            var win = 0;\n            if (response) {\n                if (response.freeSpinResult != undefined && response.freeSpinResult.freeSpinNumber > 0) {\n                    win = response.freeSpinResult.fsWinnings;\n                    if (response.baseGameRecoveryInfo && response.baseGameRecoveryInfo.scatterWinVal > 0) {\n                        win += response.baseGameRecoveryInfo.scatterWinVal;\n                    }\n                    if (fromRecovery) {\n                        win -= response.spinWins;\n                    }\n                }\n                else {\n                    win = response.gameResultData.totalWin;\n                    if (fromRecovery) {\n                        win -= response.gameResultData.totalWin;\n                    }\n                }\n            }\n            // generic error catch\n            if (win == undefined)\n                win = 0;\n            return win;\n        }",
+      "SHA256": "7a26f0dc409720790572ee26d15cc16ec3b43fce814c116045555e2a7bad97e3",
+      "marker": "CommonUIMediator.prototype.getTotalWin ="
+    },
+    "recoveryClass": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 403100,
+      "startWithinWindow": 27,
+      "source": "var RecoveryParser = (function () {\n        function RecoveryParser() {\n        }\n        RecoveryParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var isRecovering = false;\n            if (node != null) {\n                var attributes = node.attributes;\n                isRecovering = attributes.getNamedItem(\"isRecovering\").value == \"Y\";\n            }\n            object.isRecovering = isRecovering;\n        };\n        return RecoveryParser;\n    }());\n    game.RecoveryParser = RecoveryParser;",
+      "SHA256": "6a85b703973a979aa4af4ee24810b2f257344bbe7bb9a4e2bb38e0693961568e"
+    },
+    "reelOverride": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 342800,
+      "startWithinWindow": 104,
+      "source": "var AnchormanReelResultParser = (function (_super) {\n        __extends(AnchormanReelResultParser, _super);\n        function AnchormanReelResultParser() {\n            return _super !== null && _super.apply(this, arguments) || this;\n        }\n        // Just override the populateResults() method of the base class\n        // to parse the additional non-standard nodes / attributes \n        AnchormanReelResultParser.prototype.populateResults = function (object, node) {\n            _super.prototype.populateResults.call(this, object, node);\n            var resultNodes = node.childNodes;\n            for (var nodeIndex = 0; nodeIndex < resultNodes.length; ++nodeIndex) {\n                var childNode = resultNodes[nodeIndex];\n                if (childNode.nodeName === \"MysteryReels\") {\n                    object.mysteryReels = parseInt(childNode.textContent);\n                }\n                if (childNode.nodeName === \"MysterySymbolIdx\") {\n                    object.mysterySymbolIdx = parseInt(childNode.textContent);\n                }\n                if (childNode.nodeName === \"ReelSpin\") {\n                    var strReelsetIdx = childNode.attributes.getNamedItem(\"reelsetIndex\").value;\n                    var reelsetIndex = parseInt(strReelsetIdx);\n                    object.reelsetIndex = reelsetIndex;\n                    var strSpinIdx = childNode.attributes.getNamedItem(\"spinIndex\").value;\n                    var spinIndex = parseInt(strSpinIdx);\n                    object.spinIndex = spinIndex;\n                    var strSpinWins = childNode.attributes.getNamedItem(\"spinWins\").value;\n                    var spinWins = parseInt(strSpinWins);\n                    object.spinWins = spinWins;\n                    var strBonusAwarded = childNode.attributes.getNamedItem(\"bonusAwarded\").value;\n                    var bonusAwarded = (strBonusAwarded == \"Y\") ? true : false;\n                    object.bonusAwarded = bonusAwarded;\n                    for (var childIndex = 0; childIndex < childNode.childNodes.length; ++childIndex) {\n                        var childchild = childNode.childNodes[childIndex];\n                        if (childchild.nodeName == \"ScatterWin\") {\n                            object.scatterInfo = {\n                                winVal: parseInt(childchild.attributes.getNamedItem(\"winVal\").value),\n                                awardIndex: parseInt(childchild.attributes.getNamedItem(\"awardIndex\").value),\n                                positions: childchild.textContent.split(\"|\").map(Number),\n                            };\n                        }\n                    }\n                }\n            }\n        };\n        return AnchormanReelResultParser;\n    }(server.GLSReelResultParser));\n    game.AnchormanReelResultParser = AnchormanReelResultParser;",
+      "SHA256": "fa37d672d293dc31b2eefe178a3c06458dc679ee45a6855544628a4b5f6e0f66"
+    },
+    "actualLogicParsers": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 400700,
+      "startWithinWindow": 138,
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new server.GLSPlatformParser(),\n                new game.RecoveryParser(),\n                new game.GameResultParser(),\n                new game.AnchormanReelResultParser(),\n                new game.PayloadParser()\n            ];\n        }",
+      "SHA256": "be11830c8cc4970484843f902271afdaeca00759c6ecbd51d44ab6d98d572690",
+      "marker": "LogicResponse.prototype.getParsers"
+    },
+    "requesterBinding": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 394800,
+      "startWithinWindow": 127,
+      "source": "function () {\n            this._dragonWingify.makeEventsGlobal(this);\n            //this.init(this._metaData.getLogicUrl(), \"20196\", \"1_0\", this._metaData, this._partnerAdapter);\n            this.init(this._metaData.getLogicUrl(), \"20261\", \"1_0\", this._metaData, this._partnerAdapter);\n            var initRequester;\n            initRequester = new server.GLSInitRequester(game.InitResponse);\n            var logicRequester;\n            logicRequester = new server.GLSLogicRequester(game.LogicResponse);\n            var endRequester;\n            endRequester = new server.GLSEndRequester(server.GLSEndResponse);\n            this.setInitRequester(initRequester);\n            this.setLogicRequester(logicRequester);\n            this.setEndRequester(endRequester);\n        }",
+      "SHA256": "5e227ce5ec6752ba5691f6394eb55a937fd1485fb76223fde6d2cb1b832bc9b5",
+      "marker": "GameServer.prototype.postInject ="
+    },
+    "actualInitParsers": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 396350,
+      "startWithinWindow": 206,
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new game.StakesParser(),\n                new server.GLSReelParser(),\n                new server.GLSPlatformParser(),\n                new game.RecoveryParser(),\n                new game.PaylinesParser(),\n                new game.AwardsParser(),\n                new server.GLSCurrencyParser(),\n                new game.PayloadParser()\n            ];\n        }",
+      "SHA256": "7236bdcccb256fb704522a12e8cbb87bb298eba87969f0cd56f438560a764cc4",
+      "marker": "InitResponse.prototype.getParsers ="
+    },
+    "endParserList": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 353730,
+      "startWithinWindow": 71,
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new server.GLSPlatformParser()\n            ];\n        }",
+      "SHA256": "5fd15a70367c27396b1c25bba7f4a4a6338812fb260ae2a99b5dafead8d3558a",
+      "marker": "GLSEndResponse.prototype.getParsers ="
+    },
+    "makeInit": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 164000,
+      "startWithinWindow": 60,
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            if (this._historyModel.getIsHistoryReplay()) {\n                var historyData = this._historyModel.getNextState(false);\n                if (historyData) {\n                    this.sendHistoryRequest();\n                }\n                else {\n                    // HISTORY NOT AVAILABLE YET\n                    this.eventDispatcher.addEventListener(util.history.HistoryModelEvent.COMPLETE, function () { return _this.sendHistoryRequest(); }, this);\n                }\n            }\n            else {\n                this.sendNormalRequest();\n            }\n        }",
+      "SHA256": "899e21fce78d4d256e25089d609356f3127a51555f8a58b03c42ab119f13a03e",
+      "marker": "MakeInitRequestCmd.prototype.execute ="
+    },
+    "normalInit": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 164720,
+      "startWithinWindow": 71,
+      "source": "function () {\n            var encoders = [new game.PageEncoder(this._server.getInitResponse() ? this._server.getInitResponse().pageData.pageIndex + 1 : 0)];\n            var initData = new server.GLSRequest(encoders);\n            this._server.makeInitRequest(initData);\n        }",
+      "SHA256": "8cb79597ae6f7f0b9d003af23c0aaf4806a2d2888fe1835d03c27af393ef474d",
+      "marker": "MakeInitRequestCmd.prototype.sendNormalRequest ="
+    },
+    "PageEncoder": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 247600,
+      "startWithinWindow": 59,
+      "source": "var PageEncoder = (function () {\n        function PageEncoder(page) {\n            this._page = page;\n        }\n        PageEncoder.prototype.parse = function () {\n            var xmlStr = \"<Page\";\n            xmlStr += \" number=\\\"\" + this._page.toString() + \"\\\"\";\n            xmlStr += \"/>\";\n            return xmlStr;\n        };\n        return PageEncoder;\n    }());\n    game.PageEncoder = PageEncoder;",
+      "SHA256": "711b827b2682d161c8ef3d5bf5bc6828fb119afd5c1c7ec27daa398f5b485bf6"
+    }
+  },
+  "sourceFragments": {
+    "bonus-exit-parent": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 108950,
+      "source": " has ended\n            var msg = basemsg + (\" leaving fsm: \" + this.currentSubgame + \" state: \" + this.currentSubgameState);\n            this.logDiagnostic(msg);\n            var exitedGame = this._subgameStack.pop();\n            this._dispatcher.dispatchEvent(new game.GameStateEvent(game.GameStateEvent.ExitSubgame(exitedGame.name), this, exitedGame.name));\n            this._dispatcher.dispatchEvent(new game.GameStateEvent(game.GameStateEvent.CHANGE_SUBGAME, this, exitedGame.name, this.currentSubgameState));\n            // Check if there is a previous subgame to re-enter\n            if (currStackDepth > 1) {\n                var reenterEvent = new game.GameStateEvent(game.GameStateEvent.ReturnToSubgame(this.currentSubgame), this, this.currentSubgame, this.currentSubgameState);\n                msg = basemsg + (\" returning to fsm: \" + this.currentSubgame + \" state: \" + this.currentSubgameState);\n                this.logDiagnostic(msg);\n                this.doDeferredDispatch(reenterEvent);\n            }\n        };\n        // IFSMDelegate ",
+      "SHA256": "6ee1978f34f68cf8856fb97635198b4a7b92b9eeed1c1e0595e703242ce98848",
+      "meaning": "Native FSM pops own bonus stack, returns to parent"
+    },
+    "bonus-transition-base-event": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 465950,
+      "source": "     }));\n                _this._exitBonusGameTweens.push(_this._zoomInBaseGameReelsTween = new TweenMax(_this._container, 0.5, {\n                    delay: 1.2,\n                    scaleX: 1,\n                    scaleY: 1,\n                    onComplete: function () {\n                        _this.dispatchEvent(new game.GameEvent(game.GameEvent.TRANSITION_BASE_REELS_COMPLETE));\n                        _this._reelsCanBeRescale",
+      "SHA256": "8bd72f15dfc0711e814bd8b002d169f40b9666d905453673ab0563479e878a43",
+      "meaning": "Local bonus exit emits TRANSITION_BASE_REELS_COMPLETE"
+    },
+    "network-command-bindings": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 228000,
+      "source": "ame.Subgame.PRE_GAME, \"checkRecovery\"));\n            this.mapCommand(game.MakePlayRequestCmd, game.GameEvent.RECOVERY_SEND_LOGIC);\n            this.mapCommand(game.MakePlayRequestCmd, game.GameEvent.REEL_SPIN_STARTED);\n            this.mapCommand(game.MakePlayRequestCmd, game.GameEvent.REPLAY_SPIN);\n            this.mapCommand(game.HardResetCmd, game.ExternalEvent.RESET_HARD);\n            this.mapCommand(game.HandleGlsErrorCmd, server.ServerResponseEvent.ERROR_RESPONSE);\n            // BASE UI READY\n            this.mapCommand(game.CreateDebugOverlayCmd, game.PreloadEvent.PRE_INIT_COMPLETE);\n            this.mapCommand(game.CreateForceCmd, game.PreloadEvent.PRE_INIT_COMPLETE);\n            this.mapCommand(game.CreateCyclersCmd, game.PreloadEvent.PRE_INIT_COMPLETE);\n            this.mapCommand(game.CreateUICmd, game.PreloadEvent.PRE_INIT_COMPLETE);\n            // Partner commands\n            this.mapCommand(game.RefreshOpenbetOutcomeBalanceCmd, server.ServerResponseEvent.END_RESPONSE);\n            this.mapCommand(game.RefreshOpenbetWagerBalanceCmd, server.ServerResponseEvent.LOGIC_RESPONSE);\n            this.mapCommand(game.UpdatePartnerCmd, server.ServerResponseEvent.INIT_RESPONSE);\n            this.mapCommand(game.UpdatePartnerCmd, server.ServerResponseEvent.LOGIC_RESPONSE);\n            this.mapCommand(game.UpdatePartnerCmd, server.ServerResponseEvent.END_RESPONSE);\n            this.mapCommand(game.UpdatePartnerCmd, game.StakeModelEvent.STAKE_MODEL_CHANGED);\n            this.mapCommand(game.UpdateUIDebugCmd, game.UIDebugButtonEvent.TURNED_ON);\n            this.mapCommand(game.UpdateUIDebugCmd, game.UIDebugButtonEvent.TURNED_OFF);\n            this.mapCommand(game.HidePreloaderCmd, game.GameStateEvent.ExitSubgame(game.Subgame.PRE_GAME));\n            this.mapCommand(game.ExitPreGameCmd, game.GameStateEvent.ExitSubgame(game.Subgame.PRE_GAME));\n            // Recovery\n            this.mapCommand(game.InitRecoveryCmd, game.GameStateEvent.EnterState(game.Subgame.PRE_GAME, \"awaitingInputs\"));\n            this.mapCommand(game.ContinueRecoveryCmd, game.GameStateEvent.EnterState(game.Subgame.PRE_GAME, \"recoveryInit\"));\n            this.mapCommand(game.CanShowRecoveredGameCmd, server.ServerResponseEvent.INIT_RESPONSE);\n            this.mapCommand(game.CanShowRecoveredGameCmd, server.ServerResponseEvent.LOGIC_RESPONSE);\n            this.mapCommand(game.CanShowRecoveredGameCmd, util.loading.StageLoadModelEvent.CompleteState(game.LoadingStageConstants.FREE_SPINS_GAME_ASSETS));\n            this.mapCommand(game.CheckWinsCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"checkWins\"));\n            this.mapCommand(game.CheckWinsCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"checkWins\"));\n            this.mapCommand(game.CheckDeferredWinsCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"checkDeferredWins\"));\n            this.mapCommand(game.OnCyclerCompleteCmd, components.CyclerEvent.ON_COMPLETE);\n            this.mapCommand(game.ShowSpaghettiCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"showSpaghetti\"));\n            this.mapCommand(game.ShowSpaghettiCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"showSpaghetti\"));\n            this.mapCommand(game.ShowWinsCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"showWins\"));\n            this.mapCommand(game.ShowWinsCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"showWins\"));\n            this.mapCommand(game.RequestBonusSpinCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"requestSpin\"));\n            this.mapCommand(game.CheckForRetriggerCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"checkForRetrigger\"));\n            this.mapCommand(game.BigWinCompleteCmd, game.BigWinEvent.ANIMATION_COMPLETE);\n            this.mapCommand(game.BigWinCompleteCmd, game.GameEvent.SKIP_WIN_ANIMATION);\n            // Max win\n            this.mapCommand(game.CheckMaxWinCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"checkMaxWin\"));\n            this.mapCommand(game.CheckMaxWinCmd, game.GameStateEvent.EnterState(game.Subgame.BONUS_GAME, \"checkMaxWin\"));\n            // End requests\n            this.mapCommand(game.MakeEndRequestCmd, game.GameStateEvent.EnterState(game.Subgame.BASE_GAME, \"spinComplet",
+      "SHA256": "5e54c9100e0dd243ae911721a57e8173bece645c4267d8ec3fee10734e876a9e",
+      "meaning": "Actual REEL_SPIN_STARTED -> own MakePlayRequest, RequestBonusSpin at free requestSpin, End at base spinComplete"
+    },
+    "http-header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep/lib/game_libs.js",
+      "byteWindowStart": 381400,
+      "source": "        try {\n                request.timeout = this._timeout;\n            }\n            catch (e) {\n                console.log(\"set timeout failed\");\n            }\n            request.setRequestHeader(\"Content-Type\", \"text/xml\");\n            request.send(xmlStr);\n        };\n        GLSRequester.pr",
+      "SHA256": "951cb734b852a4f33f422d714762ce891704b9b24bef24a3e04cc4e625b00a21",
+      "meaning": "Own GLSRequester Content-Type text/xml"
+    }
+  },
+  "bootstrapSource": {
+    "87-loader": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\legendofthepharaohs\\app\\legendofthepharaohs.Game.js",
+      "byteWindowStart": 4900,
+      "source": "  this.affiliateID = sessionData.getContextID();\n            this.userID = sessionData.getPlayerID();\n            this.sessionID = sessionData.getSessionID();\n            // this.updateMuteMenuItem(false); //tell the partner adapter to update the menu 'MUTE' item\n\n            this.metadata = new legendofthepharaohs.MetaDataBundle();\n            console.log(\"Looks like this version is: \" + this.metadata.getResourceVersion() );\n\n            //this.partnerAdapter.hideProgressBar();\n        require([\"content/legendofthepharaohs/lib/require/require_cfg.js?resourceversion=5.0.4.1-1787670669&appcode=legendofthepharaohs&gaffingenabled=false&demoenabled=false&debugenabled=false&touchdevice=false&partnercode=nyx_draftkings_nj&realmoney=false&gamecode=legendofthepharaohs&locale=en_US&webaudio=true&countrycode=US&jurisdiction=us-nj\"], function() {\n            require([\"app/legendofthepharaohs\"], function(game) {\n                //\n                var countryCode = _this.metadata.getCountryCode();\n                if(countryCode == \"DE\" || countryCode == \"de\") { // Germany\n                    document.getElementById(\"progress-bar-modal\").classList.add(\"de\");\n                } else { //rest\n                    document.getElementById(\"progress-bar-modal\").classList.add(\"non-de\");\n                }\n                _this.main = new game.Main(_this.metadata, _this.partnerAdapter, isDesktop, _this.partnerListeners);\n            });\n\t\t});\n        };\n\n        /*\n        * Reset the game to replayable state.\n        * Implementations should stop all game animations, ie. Stop spinning reels and reset the game to\n        * a state where a new game can be started.\n        * This is called if there is some condition where the current game is aborted, but a new one\n        * can be started. For e",
+      "SHA256": "8c46f940ad670c95a8230e18eef7d24c1546eff0b06ff07ff3638206fbd8cc17",
+      "meaning": "Own sessionData into own metadata; exact RequireJS load app/legendofthepharaohs"
+    },
+    "87-native-description": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\legendofthepharaohs\\app\\legendofthepharaohs.js",
+      "byteWindowStart": 103200,
+      "source": "         //glm info\n            LOPConfig.GLM_INFO = {\n                id: \"20118\",\n                version: \"1_0\"\n            };\n            LOPConfig.reelStopPos = [];\n            LOPConfig.bigBetSpins = 5; //hard coded from client side \n            LOPConfig.GameVersion = \"1.0.57\";\n            LOPConfig.CDN_PATH = \"\";\n            LOPConfig.lowerVolume = 0.3; //volume\n            LOPConfig.INIT ",
+      "SHA256": "7ea99cb6cf20161a70ff3656b246a8a642ff5b5ce09637969fc142c0ba3a6e96",
+      "meaning": "Own selected factory native20118/version1_0/GameVersion1.0.57"
+    },
+    "82-loader": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\resources\\js\\knightskeep.game.js",
+      "byteWindowStart": 3950,
+      "source": "aDataBundle();\n\t\t\tconsole.log(\"Looks like this version is: \" + this.metadata.getResourceVersion());\n\t\t\tconsole.log(\"entry point\");\n\t\t\trequire([\"content/knightskeep/lib/require/require_cfg.js?resourceversion=5.0.4.1-1787670669&appcode=knightskeep&gaffingenabled=false&demoenabled=false&debugenabled=false&touchdevice=false&partnercode=nyx_draftkings_nj&realmoney=false&gamecode=knightskeep&locale=en_US&webaudio=true&countrycode=US&jurisdiction=us-nj\"], function () {\n\t\t\t\trequire([\"../app/js/main\"], function () {\n\t\t\t\t\t_this.formFactorModel = new game.FormFactorModel();\n\t\t\t\t\t_this.formFactorModel.isLandscape = _this.isLandscape;\n\t\t\t\t\tif (_this.balanceService) {\n\t\t\t\t\t\t_this.balanceListener = new sgi.BalanceListener(null, _this.metadata);\n\t\t\t\t\t\t_this.partnerAdapter.addBalanceUpdateListener(_this.balanceListener);\n\t\t\t\t\t}\n\t\t\t\t\t_this.main = new game.Main(_this.partnerAdapter, _this.metadata, _this.partnerAdapterEventModel, _this.formFactorModel, _this.balanceService, _this.balanceListener);\n\t\t\t\t\t_this.main.setOrientation(_this.formFactorModel.isLandscape);\n\t\t\t\t});\n\t\t\t});\n\t\t\t//this.partnerAdapter.hideProgressBar();\n\t\t};\n\n\t\t/*\n\t\t * Reset the game to replay",
+      "SHA256": "c5052e37ef3c43dbcc9c301bb2884998b19b4fb0d7137e46abf7be0efc6cd527",
+      "meaning": "Own knightskeep require_cfg then ../app/js/main; instantiate own game.Main"
+    },
+    "82-metadata": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\resources\\js\\knightskeep.metadatabundle.js",
+      "byteWindowStart": 720,
+      "source": "\n\n\t\tMetaDataBundle.prototype.isRealMoney = function () {\n\t\t\treturn \"false\".toLowerCase() === \"true\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.getGameCode = function () {\n\t\t\treturn \"knightskeep\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.getCdnRoot = function () {\n\t\t\treturn \"https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.getLogicUrl = function () {\n\t\t\treturn \"https://gls.atc.casinarena.com/gls.rgsx\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.getCountryCode = function () {\n\t\t\treturn \"US\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.getMaxWinStatus = function () {\n\t\t\treturn \"ON\".toLowerCase() === \"on\";\n\t\t};\n\n\t\tMetaDataBundle.prototype.isBetBigEnabled = function () {\n\t\t\treturn \"${bigbet}\".toLowerCase() === \"on\";\n\t\t};\n\n\t",
+      "SHA256": "b9e7254cb2ef96bd614fd2d38a4976507c468f5151fc20666e3108e84df2cfcf",
+      "meaning": "Own slug knightskeep/CDN/GLS endpoint"
+    },
+    "87-metadata": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\legendofthepharaohs\\bundles\\metadata\\legendofthepharaohs.MetaDataBundle.js",
+      "byteWindowStart": 720,
+      "source": "n() {\nreturn \"false\".toLowerCase() === \"true\" ;\n}\nMetaDataBundle.prototype.getGameCode = function() {\nreturn \"legendofthepharaohs\";\n}\nMetaDataBundle.prototype.getCountryCode = function(){\nreturn \"US\";\n};\nMetaDataBundle.prototype.getCdnRoot = function() {\nreturn \"https://d10ml311dd14ci.cloudfront.net/5.0.4.1-1787670669/resource-service\";\n}\nMetaDataBundle.prototype.getLogicUrl = function() {\nreturn \"https://gls.atc.casinarena.com/gls.rgsx\";\n}\nMetaDataBundle.prototype.getAutoplayStatus = function() {\nreturn \"ON\";\n}\nMetaDataBundle.prototype.getPubsubUrl = function() {\nreturn \"h",
+      "SHA256": "239dec7ecd2b0e59747d5dff31ec909763687b0e7b16f7f7a5cb07782bcf0c25",
+      "meaning": "Own slug/GLS endpoint"
+    },
+    "original-SG-fresh-SID": {
+      "file": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\WMS32809-original-protocol-preparation-20261018\\program\\src\\sg.session.ts",
+      "byteWindowStart": 231720,
+      "source": "| undefined;\n    private steps: WireStep[] = [];\n    private readonly freshFreeId = 'Free:' + crypto.randomBytes(16).toString('hex');\n    private session = this.freshFreeId;\n    private closed = false;\n    private lastRequest: {event:string",
+      "SHA256": "66e089214055f8179bd7f3c6b43f1b2163baf12b125ee2341cf08a11c697aee3",
+      "meaning": "Existing original SGWmsSession constructs Free:crypto.randomBytes16, no new external SID source required for fresh native Init"
+    },
+    "82-native-target": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 394500,
+      "startWithinWindow": 509,
+      "source": "//this.init(this._metaData.getLogicUrl(), \"20196\", \"1_0\", this._metaData, this._partnerAdapter);\n            this.init(this._metaData.getLogicUrl(), \"20261\", \"1_0\", this._metaData, this._partnerAdapter);\n            var initRequester;",
+      "SHA256": "30c68a137ea9c35965b2c4ad530f79528a8515d17f07e97f69c2a92c02bd55b4"
+    },
+    "87-requestor-binding": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\legendofthepharaohs\\app\\legendofthepharaohs.js",
+      "byteWindowStart": 224350,
+      "source": "\n                    }\n                }\n            };\n            /** gls request handlers **/\n            this.glsRequestor = new glscomms.GLSRequestor(metaData, partnerAdapter.getSessionData(), legendofthepharaohs.LOPConfig.GLM_INFO);\n            this.glsRequestor.getEvents().add(requestListener);\n            this.glsRequestor.setXMLParserFactory(new legendofthepharaohs.LOPResponseXmlParser());\n            this.deviceContext = new util.DeviceContext(legendofthepharaohs.LOPConfig.SCREEN_WIDTH",
+      "meaning": "Own Main passes actual LOPConfig.GLM_INFO into GLSRequestor",
+      "SHA256": "ec793ae332eb149996aea3f525382ee537a23e2cf7c9f558f41e604ecc7b0486"
+    },
+    "82-actual-requester-binding": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 394800,
+      "startWithinWindow": 127,
+      "source": "function () {\n            this._dragonWingify.makeEventsGlobal(this);\n            //this.init(this._metaData.getLogicUrl(), \"20196\", \"1_0\", this._metaData, this._partnerAdapter);\n            this.init(this._metaData.getLogicUrl(), \"20261\", \"1_0\", this._metaData, this._partnerAdapter);\n            var initRequester;\n            initRequester = new server.GLSInitRequester(game.InitResponse);\n            var logicRequester;\n            logicRequester = new server.GLSLogicRequester(game.LogicResponse);\n            var endRequester;\n            endRequester = new server.GLSEndRequester(server.GLSEndResponse);\n            this.setInitRequester(initRequester);\n            this.setLogicRequester(logicRequester);\n            this.setEndRequester(endRequester);\n        }",
+      "SHA256": "5e227ce5ec6752ba5691f6394eb55a937fd1485fb76223fde6d2cb1b832bc9b5",
+      "marker": "GameServer.prototype.postInject ="
+    },
+    "82-actual-Init-parsers": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\knightskeep\\app\\js\\main.js",
+      "byteWindowStart": 396350,
+      "startWithinWindow": 206,
+      "source": "function () {\n            return [\n                new server.GLSBalanceParser(),\n                new game.StakesParser(),\n                new server.GLSReelParser(),\n                new server.GLSPlatformParser(),\n                new game.RecoveryParser(),\n                new game.PaylinesParser(),\n                new game.AwardsParser(),\n                new server.GLSCurrencyParser(),\n                new game.PayloadParser()\n            ];\n        }",
+      "SHA256": "7236bdcccb256fb704522a12e8cbb87bb298eba87969f0cd56f438560a764cc4",
+      "marker": "InitResponse.prototype.getParsers ="
+    }
+  },
+  "bootstrapCorrection": {
+    "oldPureHelperSHA256": "1415c629621ec84e2aaf8b7d9ff76d465e547484b0c7e391e7acd89d8ab9e612",
+    "oldCapsule": "bc5582cb73a0476eb85a61af9cfede0259ff103e4bc535b5542b10788077407e",
+    "oldBootstrapGroupNotRerun": true,
+    "oldHeaderOnlyHelperNotARealNormalInitCaller": true,
+    "actualNormalInit": "MakeInitRequestCmd.sendNormalRequest sends PageEncoder(0) when no previous Init response; no empty-payload substitution",
+    "normalFreshFirstInitOnly": true,
+    "laterInitRequestNeedsActualNativePageDataIfEverSelected": true
+  },
+  "actualLogicParserChain": [
+    "server.GLSBalanceParser",
+    "server.GLSPlatformParser",
+    "game.RecoveryParser",
+    "game.GameResultParser",
+    "game.AnchormanReelResultParser",
+    "game.PayloadParser"
+  ],
+  "historical20196NotRelabeled": true
+}

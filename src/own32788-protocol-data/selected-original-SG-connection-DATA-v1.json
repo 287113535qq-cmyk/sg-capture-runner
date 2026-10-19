@@ -1,0 +1,189 @@
+{
+  "schema": "own32788-normal-original-SG-DATA-v1",
+  "wireLeaves": {
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 337700,
+      "startWithinWindow": 84,
+      "source": "var GLSHeader = (function () {\n        function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\n            this.GLSID_CASINARENA = \"4\";\n            this.GLSID_FREEPLAY = \"65535\";\n            this.affiliate = sessionData.getContextID();\n            this.freePlay = !metadata.isRealMoney();\n            this.gameCodeRGI = metadata.getGameCode();\n            this.gameId = gameId;\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\n            this.langCode = metadata.getLocale();\n            this.sessionId = glsServerSessionId;\n            this.userId = sessionData.getPlayerID();\n            this.version = gameVersion;\n            this.promotions = false;\n            this.channel = \"I\";\n            this.userType = \"C\";\n            this.currencyCode = \"\";\n        }\n        GLSHeader.prototype.parse = function () {\n            var xmlString = \"\";\n            xmlString += \"<Header\";\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\n            xmlString += \"/>\";\n            return xmlString;\n        };\n        return GLSHeader;\n    }());\n    server.GLSHeader = GLSHeader;",
+      "SHA256": "9c83c3393afc3329623d50d2054ad0162b648e1f935cab6f0864345b4600ae92"
+    },
+    "request": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 341400,
+      "startWithinWindow": 88,
+      "source": "var GLSRequest = (function () {\n        function GLSRequest(encoders) {\n            this._encoders = encoders;\n        }\n        GLSRequest.prototype.getEncoders = function () {\n            return this._encoders;\n        };\n        return GLSRequest;\n    }());\n    server.GLSRequest = GLSRequest;",
+      "SHA256": "dc65c6b88881f270dacfeeef7226cafeace109f186de2c5c7c325ca70a224dd1"
+    },
+    "initWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 366500,
+      "startWithinWindow": 214,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Init\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "e059ae4fe763a7827929a9afb7b8697486260045faf9d92f73766aaf6a5a4be1",
+      "marker": "GLSInitRequester.prototype.parseRequestData"
+    },
+    "currency": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 341800,
+      "startWithinWindow": 51,
+      "source": "var GLSCurrencyEncoder = (function () {\n        function GLSCurrencyEncoder(currencyMultiplier) {\n            this._currencyMultiplier = currencyMultiplier;\n        }\n        GLSCurrencyEncoder.prototype.parse = function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        };\n        return GLSCurrencyEncoder;\n    }());\n    server.GLSCurrencyEncoder = GLSCurrencyEncoder;",
+      "SHA256": "31f3306bb0d5971811477baa57ce88192d258689278ab24725df3abf41cae313"
+    },
+    "platformData": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 325950,
+      "startWithinWindow": 80,
+      "source": "var PlatformData = (function () {\n        function PlatformData() {\n        }\n        return PlatformData;\n    }());\n    server.PlatformData = PlatformData;",
+      "SHA256": "a8c1bf21bb1a09d8026ff309c69e3eca1030eec0f96ee8eaad1e2e625427f57f"
+    },
+    "platform": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 352700,
+      "startWithinWindow": 64,
+      "source": "var GLSPlatformParser = (function () {\n        function GLSPlatformParser() {\n        }\n        GLSPlatformParser.prototype.parse = function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var data = new server.PlatformData();\n            if (node != null) {\n                var attr = node.attributes;\n                var attrLength = attr.length;\n                for (var i = 0; i < attrLength; ++i) {\n                    switch (attr[i].nodeName) {\n                        case 'sessionID':\n                            data.sessionId = attr[i].nodeValue;\n                            break;\n                        case 'gameID':\n                            data.gameId = attr[i].nodeValue;\n                            break;\n                        case 'lang':\n                            data.languageCode = attr[i].nodeValue;\n                            break;\n                        case 'versionID':\n                            data.version = attr[i].nodeValue;\n                            break;\n                        case 'isRecovering':\n                            data.isRecovering = attr[i].nodeValue === 'Y';\n                            break;\n                    }\n                }\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\n                if (currencyMultiplierNode != null) {\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\n                }\n                else {\n                    data.currencyMultiplier = 1;\n                }\n            }\n            object.platformData = data;\n        };\n        return GLSPlatformParser;\n    }());\n    server.GLSPlatformParser = GLSPlatformParser;",
+      "SHA256": "6a7203313ff5dbe3f7ceed28421b9a059cad9701df84735af3fe93fa6b821f39"
+    },
+    "logicWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 367600,
+      "startWithinWindow": 197,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Logic\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "d1a1d82bed5eede03fa4fc11bfef4405fcc64446abca68bf9b0a08d51b37d9a3",
+      "marker": "GLSLogicRequester.prototype.parseRequestData"
+    },
+    "endWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\lib/game_libs.js",
+      "byteWindowStart": 365450,
+      "startWithinWindow": 183,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"EndGame\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "46bdd8d515061709bc9621ebd774900384fd3717c2e764e484e0fea6c89a0052",
+      "marker": "GLSEndRequester.prototype.parseRequestData"
+    },
+    "stake": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 557500,
+      "startWithinWindow": 65,
+      "source": "var StakeEncoder = (function () {\n        function StakeEncoder(stake) {\n            this._stake = stake;\n        }\n        StakeEncoder.prototype.parse = function () {\n            var xmlStr = \"<WagerInfo\";\n            xmlStr += \" totalStake=\\\"\" + this._stake.toString() + \"\\\"/>\";\n            return xmlStr;\n        };\n        return StakeEncoder;\n    }());\n    sgigame.StakeEncoder = StakeEncoder;",
+      "SHA256": "001ec0217c42185bbacfbb6d01d03dd5645e9bc33f99fa3db763cd9378d32fdb"
+    },
+    "endCommand": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 218650,
+      "startWithinWindow": 146,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            if (!this._historyModel.getIsHistoryReplay()) {\n                this._server.makeEndRequest(new server.GLSRequest([]));\n            }\n        }",
+      "SHA256": "4555900f4b3628b9afd64af2a875935cce8af5196d0a6a5e2f02416e9b2e240d",
+      "marker": "MakeEndRequestCmd.prototype.execute"
+    }
+  },
+  "normalSourceProof": {
+    "source": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+    "normalBranch": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 184500,
+      "startWithinWindow": 245,
+      "source": "function () {\n            var _this = this;\n            _super.prototype.execute.call(this);\n            var logicResponse = this._server.getLogicResponse();\n            var reelSpinData = (logicResponse.reelSpinData[0]);\n            this._cyclers.stopCyclers();\n            if (!logicResponse.baseGameRecoverySpinData) {\n                if (logicResponse.reelSpinData[0].bonusAwarded) {\n                    this._commonui.stopAutoPlay();\n                    this._commonui.disableStopButton();\n                    TweenMax.delayedCall(1.0, function () {\n                        _this._cyclers.startPreBonusWin(logicResponse, _this._server.getInitResponse());\n                    }, [], this);\n                }\n                else if (reelSpinData.lilSpininfoData != undefined && reelSpinData.lilSpininfoData.numTotalLilSpinsAwarded > 0) {\n                    this._commonui.stopAutoPlay();\n                    this._commonui.disableStopButton();\n                    TweenMax.delayedCall(1.0, function () {\n                        _this._cyclers.startPreLockItFeatureAnim(logicResponse, _this._server.getInitResponse());\n                    }, [], this);\n                }\n                else {\n                    this._cyclers.startPaylinesCycler(logicResponse, this._server.getInitResponse());\n                }\n            }\n            else {\n                this._cyclers.startPaylinesCycler(logicResponse, this._server.getInitResponse(), true);\n            }\n        }",
+      "SHA256": "a15246ecfde067f9c2729fac558df7b417bb27db928fa7c1656b32ee1edc6869",
+      "marker": "StartWinsCyclersCmd.prototype.execute"
+    },
+    "endStateMap": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 16650,
+      "startWithinWindow": 120,
+      "source": "this.mapCommand(sgigame.MakeEndRequestCmd, states.GameStateEvent.EnterState(sgigame.BaseGameStates.END_GLS_STATE, sgigame.SubGames.BASE_GAME));",
+      "SHA256": "a1a730bdcc76d53ee9de58a179f14b4025c402f2e319a2727b03131db22c4838"
+    },
+    "normalTransition": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 157150,
+      "startWithinWindow": 71,
+      "source": "this.addBase(sgigame.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sgigame.BaseGameStates.END_GLS_STATE, sgigame.SubGames.BASE_GAME);",
+      "SHA256": "1e01e099025845d1994a62f5314c76bd426a1af6efed7ec542e0e4bdeadeaacb"
+    },
+    "nativeEndMethod": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 218650,
+      "startWithinWindow": 146,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            if (!this._historyModel.getIsHistoryReplay()) {\n                this._server.makeEndRequest(new server.GLSRequest([]));\n            }\n        }",
+      "SHA256": "4555900f4b3628b9afd64af2a875935cce8af5196d0a6a5e2f02416e9b2e240d",
+      "marker": "MakeEndRequestCmd.prototype.execute"
+    },
+    "cashParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+      "byteWindowStart": 231250,
+      "startWithinWindow": 147,
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"GameWinInfo\")[0];\n            var bgInfoData = new sgigame.BaseGameInfoData;\n            bgInfoData.totalWagerWin = parseInt(this.getAttributeFromNode(node, \"totalWagerWin\", \"number\"));\n            bgInfoData.baseGameWin = parseInt(this.getAttributeFromNode(node, \"bgWinnings\", \"number\"));\n            bgInfoData.isMaxWin = (this.getAttributeFromNode(node, \"isMaxWin\") === \"Y\");\n            bgInfoData.maxWinVal = parseInt(this.getAttributeFromNode(node, \"maxWin\", \"number\"));\n            var bgInfoNode = input.getElementsByTagName(\"BGInfo\")[0];\n            if (bgInfoNode)\n                bgInfoData.numTotalFreeSpinsAwarded = parseInt(this.getAttributeFromNode(bgInfoNode, \"numTotalFreeSpinsAwarded\", \"number\"));\n            object.baseGameInfoData = bgInfoData;\n        }",
+      "SHA256": "9376f12f7669913a3de61131a25de609b749faecdcfe1af2aefa375a2d00fec8",
+      "marker": "BaseGameInfoParser.prototype.parse"
+    },
+    "nativeFirstBonusExpression": "logicResponse.reelSpinData[0].bonusAwarded",
+    "nativeLilExpression": "reelSpinData.lilSpininfoData != undefined && reelSpinData.lilSpininfoData.numTotalLilSpinsAwarded > 0",
+    "noDisplayFunctionsExecuted": true,
+    "noWinDisplayCompleteEventProduced": true
+  },
+  "scope": "Actual non-recovery, nonfree/nonBonusChoice/nonLiL ordinary; original paging required before Logic. No display pipeline or synthetic completion.",
+  "pageData": {
+    "schema": "own32788-paged-Init-source-DATA-v1547",
+    "gameId": "32788",
+    "ownApp": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+    "onlyNewNecessaryProtocolLeaves": true,
+    "wholeSDKHashOrASTRepeated": false,
+    "leaves": {
+      "pageEncoder": {
+        "source": "function () {\n            var xmlStr = \"<Page\";\n            xmlStr += \" number=\\\"\" + this._page.toString() + \"\\\"\";\n            xmlStr += \"/>\";\n            return xmlStr;\n        }",
+        "SHA256": "abd825d1192e5405128490bc784eb0f0a9690297b147bc69046c717c01b1352f",
+        "ownMethod": "PageEncoder.prototype.parse",
+        "start": 207881,
+        "end": 208060,
+        "startLine": 3581
+      },
+      "makeInit": {
+        "source": "function () {\n            _super.prototype.execute.call(this);\n            var encoders = [new sgigame.PageEncoder(this._server.getInitResponse() ? this._server.getInitResponse().pageData.pageIndex + 1 : 0)];\n            if (this._historyModel.getIsHistoryReplay() && !this._server.getInitResponse()) {\n                encoders.push(new sgigame.HistoryReplaceEncoder(this._historyModel.getNextState()));\n                this._historyModel.restart();\n            }\n            var initData = new server.GLSRequest(encoders);\n            this._server.makeInitRequest(initData);\n        }",
+        "SHA256": "2006c4731155f8d926ced2a0de26223f57381c233342a20c4cb235171382b02d",
+        "ownMethod": "MakeInitRequestCmd.prototype.execute",
+        "start": 219678,
+        "end": 220263,
+        "startLine": 3828
+      },
+      "checkInit": {
+        "source": "function () {\n            _super.prototype.execute.call(this);\n            if (this._server.getInitResponse().pageData.pageIndex < this._server.getInitResponse().pageData.pageCount - 1) {\n                this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.INIT_STAGE_COMPLETE));\n            }\n            else {\n                this.eventDispatcher.dispatchEvent(new sgigame.GameEvent(sgigame.GameEvent.INIT_COMPLETE));\n            }\n            if (this._server.getInitResponse().pageData.pageIndex == 0) {\n                this._partnerAdapter.receivedGameLogicResponse(this._server.getInitResquester().getRequestObject());\n            }\n        }",
+        "SHA256": "29485b978dd7b8f68165efe4acaf655a4287280c4608bda052bee5561002a46b",
+        "ownMethod": "CheckInitFinishedCmd.prototype.execute",
+        "start": 153294,
+        "end": 153965,
+        "startLine": 2493
+      },
+      "pageParser": {
+        "source": "function (input, object) {\n            var data = new sgigame.PageData();\n            var node = input.getElementsByTagName(\"PageInfo\")[0];\n            if (node != null) {\n                var attributes = node.attributes;\n                var nodeChildren = node.childNodes;\n                data.pageCount = parseInt(attributes.getNamedItem(\"pageCount\").value);\n            }\n            var node = input.getElementsByTagName(\"Page\")[0];\n            if (node != null) {\n                var attributes = node.attributes;\n                var nodeChildren = node.childNodes;\n                data.pageIndex = parseInt(attributes.getNamedItem(\"pageIndex\").value);\n            }\n            object.pageData = data;\n        }",
+        "SHA256": "876821927f01043e7b8f7c0768df7e38a6dde182e931e2be9096d6d6a0fbe973",
+        "ownMethod": "LILPageParser.prototype.parse",
+        "start": 256727,
+        "end": 257444,
+        "startLine": 4528
+      },
+      "pageConstructor": {
+        "source": "function PageEncoder(page) {\n            this._page = page;\n        }",
+        "SHA256": "a96d85d27742802bcb9fcda478305f2fb99a38072c1952bc1428024c8013f605",
+        "ownMethod": "PageEncoder",
+        "start": 207773,
+        "end": 207842,
+        "startLine": 3578
+      },
+      "pageDataConstructor": {
+        "source": "function PageData() {\n            this.pageCount = 0;\n            this.pageIndex = 0;\n        }",
+        "SHA256": "89742679f18f407f7a5e45649bf76fa0ddf70a34f7fecff7374bd163219d3c72",
+        "ownMethod": "PageData",
+        "start": 554492,
+        "end": 554587,
+        "startLine": 10596
+      }
+    },
+    "currentOwnInitPacket": {
+      "path": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\repair-efficiency-v2\\caae7a0eef6d72a88ef768166c3fc5e78e7eaaf6c801b35026f38be9b31bf5cb-private.json",
+      "SHA256": "0a56176da360aa4e7680af206cdc25e29a65d4d2adb33df5030f0070c05b746a"
+    },
+    "newProviderRequests": 0,
+    "newFinalCredit": 0,
+    "productionReady": false
+  }
+}

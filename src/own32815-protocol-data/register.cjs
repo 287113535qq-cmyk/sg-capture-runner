@@ -1,6 +1,1 @@
-'use strict';
-const vm=require('node:vm'),DOM=require('../own32750-native-data/vendor/own32750-dom/own32769-node-dom.cjs');
-const data=require('./original-SG-connection-DATA-v1.json'),flowData=require('./source-control-DATA.json'),requestData=require('./source-request-DATA.json');
-const {createOwn32815WireNextEndDATA}=require('./own32815-wire-next-end-DATA.cjs');
-const {createOwn32815OriginalSGProtocolConnection}=require('./own32815-original-SG-connection.cjs');
-exports.createOwn32815OriginalSGConnection=d=>createOwn32815OriginalSGProtocolConnection({...d,DOM,data,flowData,requestData,createFlow:()=>createOwn32815WireNextEndDATA({DOM,vm,data:flowData})});
+'use strict';const DOM=require('../own32750-native-data/vendor/own32750-dom/own32769-node-dom.cjs');const data=require('./own32815-connection-DATA.json'),flowData=require('./own32815-max-Free-request-DATA-v2.json'),createFlow=require('./own32815-wire-next-end-DATA-v2.cjs').createOwn32815WireNextEndDATA;exports.createOwn32815OriginalSGConnection=args=>{const c=require('./own32815-original-SG-connection.cjs').createOwn32815OriginalSGProtocolConnection({...args,DOM,data,flowData,requestData:require('./own32815-request-DATA-reused.json'),createFlow});return Object.freeze({...c,pickProtocol:()=>undefined})};

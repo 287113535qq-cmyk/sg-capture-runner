@@ -18013,3 +18013,21 @@ games:
       header: {"affiliate": "0", "ccyCode": "", "channel": "I", "freePlay": "Y", "gameCodeRGI": "swordofdestiny", "gameID": "20175", "glsID": "65535", "lang": "en_US", "promotions": "N", "userID": "null", "userType": "C", "versionID": "1_0"}
       stake: {"total": 200}
       own32809ProtocolDATA: {"contract": "own32809-original-SG-protocol-private-v1"}
+  - {"provider":"sg","gameId":"32782","name":"Knight's Keep","dbName":"sg_knights_keep","backendId":"knightskeep","serviceDir":"sg_knights-keep","rtpBuckets":[0,30,100,300,500,1000,2500,5000,10000,1001,2001,5001,10001],"sg":{"protocol":"wms","endpoint":"https://gls.atc.casinarena.com/gls.rgsx","runtimeGameId":33004,"runtimeSlug":"knightskeep","betRaw":75,"header":{"affiliate":"0","ccyCode":"","channel":"I","freePlay":"Y","gameCodeRGI":"knightskeep","gameID":"20261","glsID":"65535","lang":"en_US","promotions":"N","userID":"null","userType":"C","versionID":"1_0"},"stake":{"total":75},"own32782ProtocolDATA":{"contract":"own32782-20261-original-SG-protocol-v2","scope":"own normal base/free/max native20261; recovery/history/force excluded; actual declared parser chain"}}}
+  - provider: sg
+    gameId: '32788'
+    name: "Lock It Link Night Life"
+    dbName: "sg_lockitlink"
+    backendId: "lockitlink"
+    serviceDir: "sg_lockitlink"
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      protocol: "wms"
+      endpoint: "https://gls.atc.casinarena.com/gls.rgsx"
+      header: {"affiliate": "0", "ccyCode": "", "channel": "I", "freePlay": "Y", "gameCodeRGI": "lockitlink", "gameID": "20158", "glsID": "65535", "lang": "en_US", "promotions": "N", "userID": "null", "userType": "C", "versionID": "1_0"}
+      stake: {"totalStake": "50"}
+      freeStake: {}
+      betRaw: 50
+      runtimeGameId: 33010
+      runtimeSlug: "lockitlink"
+      own32788ProtocolDATA: {"contract": "own32788-original-SG-protocol-private-v1", "scope": "known ordinary only; paged actual Init; BonusChoice/FS/LockIt held"}

@@ -1,0 +1,390 @@
+{
+  "schema": "own32815-max-Free-request-DATA-v2",
+  "gameId": "32815",
+  "sourceApp": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\zeusgodofthunder\\app\\js\\main.js",
+  "certifiedOwnAppSHA256": "3179909eebe7bbe557b303479459e54b46a4defa10514eac72263beac6e8fd31",
+  "certifiedOwnLibrarySHA256": "8b8d879331218cf45179ba1aeb5275c17c33038e1744c754c3946bdfc4ce5cde",
+  "leaves": {
+    "createStates": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            //State                                    //Next State                                //Next Sub Game\r\n            this.addPre(sgigame.PreGameStates.HISTORY_LOAD_STATE, sgigame.PreGameStates.LOADING_STATE, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.LOADING_STATE, sgigame.PreGameStates.MAKE_INIT_REQUEST, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.MAKE_INIT_REQUEST, sgigame.PreGameStates.HISTORY_RECOVERY_STATE, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.HISTORY_RECOVERY_STATE, sgigame.PreGameStates.CREATE_GAME, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.CREATE_GAME, sgigame.PreGameStates.CREATE_GAME_HELP_STATE, sgigame.SubGames.PRE_GAME);\r\n            //this.addPre(PreGameStates.CREATE_GAME_HELP_STATE,                       PreGameStates.HIDE_PROGRESS_BAR,            SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.CREATE_GAME_HELP_STATE, sgigame.PreGameStates.RECOVERY_STATE, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.RECOVERY_STATE, sgigame.PreGameStates.RECOVERY_RESPONSE_STATE, sgigame.SubGames.PRE_GAME);\r\n            this.addPre(sgigame.PreGameStates.RECOVERY_RESPONSE_STATE, sgigame.BaseGameStates.RECOVER_GAME, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.RECOVER_GAME, sgigame.BaseGameStates.RECOVER_BASEGAME, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.RECOVER_BASEGAME, sgigame.BaseGameStates.STOP_REELS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addPre(sgigame.PreGameStates.HIDE_PROGRESS_BAR, sgigame.BaseGameStates.LANDING_PAGE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.LANDING_PAGE, sgigame.BaseGameStates.IDLE_STATE, sgigame.SubGames.BASE_GAME);\r\n            /*this.addPre(PreGameStates.HISTORY_RECOVERY_STATE,                       PreGameStates.CREATE_GAME_MAIN_STATE,     SubGames.PRE_GAME);\r\n            this.addPre(PreGameStates.CREATE_GAME_MAIN_STATE,                       PreGameStates.CREATE_GAME_BIG_BET_STATE,    SubGames.PRE_GAME);\r\n            this.addPre(PreGameStates.CREATE_GAME_BIG_BET_STATE,                    PreGameStates.CREATE_GAME_BONUS_STATE,      SubGames.PRE_GAME);\r\n            this.addPre(PreGameStates.CREATE_GAME_BONUS_STATE,                      PreGameStates.CREATE_GAME_HELP_STATE,       SubGames.PRE_GAME);\r\n            this.addPre(PreGameStates.CREATE_GAME_HELP_STATE,                       PreGameStates.RECOVERY_STATE,               SubGames.PRE_GAME);\r\n            this.addPre(PreGameStates.RECOVERY_STATE,                               PreGameStates.RECOVERY_RESPONSE_STATE,      SubGames.PRE_GAME);*/\r\n            /*Working state flow - Senthil\r\n            this.addBase(BaseGameStates.IDLE_STATE,                                 BaseGameStates.LOGIC_GLS_STATE,             SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.LOGIC_GLS_STATE,                            BaseGameStates.STOP_REELS_STATE,            SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.STOP_REELS_STATE,                           BaseGameStates.SHOW_WAYWINE_STACK_STATE,    SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.SHOW_WAYWINE_STACK_STATE,                   BaseGameStates.SHOW_WAYWINE_WINS_STATE,     SubGames.BASE_GAME);//\r\n            this.addBase(BaseGameStates.SHOW_WAYWINE_WINS_STATE,                    BaseGameStates.CHECK_FREE_GAME_IS_TRIGGER,  SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.CHECK_FREE_GAME_IS_TRIGGER,                 BaseGameStates.END_GLS_STATE,               SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.END_GLS_STATE,                              BaseGameStates.IDLE_STATE,                  SubGames.BASE_GAME);*/\r\n            this.addBase(sgigame.BaseGameStates.IDLE_STATE, sgigame.BaseGameStates.LOGIC_GLS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.LOGIC_GLS_STATE, sgigame.BaseGameStates.LOGIC_GLS_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.LOGIC_GLS_COMPLETE, sgigame.BaseGameStates.STOP_REELS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.STOP_REELS_STATE, sgigame.BaseGameStates.HANDLE_MAX_WIN_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.HANDLE_MAX_WIN_STATE, sgigame.BaseGameStates.CHECK_WHEEL_TRIGGERED, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.CHECK_WHEEL_TRIGGERED, sgigame.BaseGameStates.SHOW_PAYLINE_STACK_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.SHOW_PAYLINE_STACK_STATE, sgigame.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sgigame.BaseGameStates.GO_TO_BONUS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.GO_TO_BONUS_STATE, sgigame.BaseGameStates.END_GLS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.END_GLS_STATE, sgigame.BaseGameStates.IDLE_STATE, sgigame.SubGames.BASE_GAME);\r\n            /*this.addBase(BaseGameStates.WF_START,                                   BaseGameStates.WF_INTRO_TRANSITION_START,       SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_INTRO_TRANSITION_START,                  BaseGameStates.WF_INTRO_TRANSITION_COMPELET,    SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_INTRO_TRANSITION_COMPELET,               BaseGameStates.WF_LOGIC_REQUEST,                SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_LOGIC_REQUEST,                           BaseGameStates.WF_LOGIC_COMPLETE,               SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_LOGIC_COMPLETE,                          BaseGameStates.WF_STOP_WHEEL,                   SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_STOP_WHEEL,                              BaseGameStates.WF_HANDLE_MAX_WIN,               SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_HANDLE_MAX_WIN,                          BaseGameStates.WF_OUTRO_TRANSITION_START,       SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_OUTRO_TRANSITION_START,                  BaseGameStates.WF_OUTRO_TRANSITION_COMPELET,    SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_OUTRO_TRANSITION_COMPELET,               BaseGameStates.WF_CHECK_TRIGGERED_FEATURE_TYPE, SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WF_CHECK_TRIGGERED_FEATURE_TYPE,            BaseGameStates.FG_TRIGGERED,                    SubGames.BASE_GAME);*/\r\n            this.addBase(sgigame.BaseGameStates.WF_START, sgigame.BaseGameStates.WF_LOGIC_REQUEST, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_LOGIC_REQUEST, sgigame.BaseGameStates.WF_LOGIC_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_LOGIC_COMPLETE, sgigame.BaseGameStates.WF_STOP_WHEEL, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_STOP_WHEEL, sgigame.BaseGameStates.WF_HANDLE_MAX_WIN, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_HANDLE_MAX_WIN, sgigame.BaseGameStates.WF_CHECK_TRIGGERED_FEATURE_TYPE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_CHECK_TRIGGERED_FEATURE_TYPE, sgigame.BaseGameStates.FG_TRIGGERED, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_UPGRADE, sgigame.BaseGameStates.WF_START, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING, sgigame.BaseGameStates.SHOW_PAYLINE_STACK_STATE, sgigame.SubGames.BASE_GAME);\r\n            //Wild Spin States\r\n            /*this.addBase(BaseGameStates.WS_START,                                   BaseGameStates.WS_INRO_TRANISITION,             SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_INRO_TRANISITION,                        BaseGameStates.WS_LOGIC_REQUEST,                    SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_LOGIC_REQUEST,                           BaseGameStates.WS_LOGIC_COMPLETE,               SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_LOGIC_COMPLETE,                          BaseGameStates.WS_WILD_PLACE,                   SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_WILD_PLACE,                              BaseGameStates.WS_STOP_REEL,                    SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_STOP_REEL,                               BaseGameStates.WS_SHOW_PAYLINE_STACK_STATE,     SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_SHOW_PAYLINE_STACK_STATE,                BaseGameStates.WS_SHOW_PAYLINE_WINS_STATE,      SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_SHOW_PAYLINE_WINS_STATE,                 BaseGameStates.WS_OUTRO_TRANISITION,            SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_OUTRO_TRANISITION,                       BaseGameStates.WS_COMPLETE,                     SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.WS_COMPLETE,                                BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING,SubGames.BASE_GAME);*/\r\n            this.addBase(sgigame.BaseGameStates.WS_RECOVERY_START, sgigame.BaseGameStates.WS_RECOVERY_INTRO, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_RECOVERY_INTRO, sgigame.BaseGameStates.WS_LOGIC_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_START, sgigame.BaseGameStates.WS_INRO_TRANISITION, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_INRO_TRANISITION, sgigame.BaseGameStates.WS_LOGIC_REQUEST, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_LOGIC_REQUEST, sgigame.BaseGameStates.WS_LOGIC_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_LOGIC_COMPLETE, sgigame.BaseGameStates.WS_WILD_PLACE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_WILD_PLACE, sgigame.BaseGameStates.WS_STOP_REEL, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_STOP_REEL, sgigame.BaseGameStates.WS_HANDLE_MAX_WIN, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_HANDLE_MAX_WIN, sgigame.BaseGameStates.WS_SHOW_PAYLINE_WINS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_SHOW_PAYLINE_WINS_STATE, sgigame.BaseGameStates.WS_OUTRO_TRANISITION, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_OUTRO_TRANISITION, sgigame.BaseGameStates.WS_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.WS_COMPLETE, sgigame.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING, sgigame.SubGames.BASE_GAME);\r\n            //Jackport\r\n            this.addBase(sgigame.BaseGameStates.JACKPOT_START, sgigame.BaseGameStates.JACKPOT_TRANSITION_START, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.JACKPOT_TRANSITION_START, sgigame.BaseGameStates.JACKPOT_DISPLAY, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.JACKPOT_DISPLAY, sgigame.BaseGameStates.JACKPOT_COMPLETE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.JACKPOT_COMPLETE, sgigame.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING, sgigame.SubGames.BASE_GAME);\r\n            //Free Game - START\r\n            this.addBase(sgigame.BaseGameStates.FG_RECOVERY, sgigame.BaseGameStates.STOP_REELS_STATE, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_TRIGGERED, sgigame.BaseGameStates.FG_INTRO_TRANSITION, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_INTRO_TRANSITION, sgigame.BaseGameStates.FG_SHOW_TRIGGER_BANNER, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_SHOW_TRIGGER_BANNER, sgigame.BaseGameStates.FG_START, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_START, sgigame.BaseGameStates.LOGIC_GLS_STATE, sgigame.SubGames.BASE_GAME);\r\n            //Free Game - END\r\n            this.addBase(sgigame.BaseGameStates.FG_COMPLETE, sgigame.BaseGameStates.FG_SHOW_TOTALWIN_BANNER, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_SHOW_TOTALWIN_BANNER, sgigame.BaseGameStates.FG_OUTRO_TRANSITION, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.FG_OUTRO_TRANSITION, sgigame.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING, sgigame.SubGames.BASE_GAME);\r\n            //Free Game - Retrigger\r\n            this.addBase(sgigame.BaseGameStates.FG_MORE_FREE_GAME_BANNER, sgigame.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING, sgigame.SubGames.BASE_GAME);\r\n            //Handle max win\r\n            this.addBase(sgigame.BaseGameStates.SHOW_MAX_WIN_BANNER, sgigame.BaseGameStates.REMOVE_MAX_WIN_BANNER, sgigame.SubGames.BASE_GAME);\r\n            this.addBase(sgigame.BaseGameStates.REMOVE_MAX_WIN_BANNER, sgigame.BaseGameStates.END_GLS_STATE, sgigame.SubGames.BASE_GAME);\r\n            /* this.addBase(BaseGameStates.STOP_REELS_STATE,                           BaseGameStates.GO_TO_BONUS_STATE,           SubGames.BASE_GAME);\r\n            this.addBase(BaseGameStates.SHOW_WAYWINE_STACK_STATE,                   BaseGameStates.SHOW_WAYWINE_WINS_STATE,     SubGames.BASE_GAME);//\r\n\r\n            this.addBase(BaseGameStates.SHOW_WAYWINE_WINS_STATE,                    BaseGameStates.CHECK_FREE_GAME_IS_TRIGGER,  SubGames.BASE_GAME);*/\r\n            this._statesModel.init(sgigame.SubGames.PRE_GAME, sgigame.PreGameStates.HISTORY_LOAD_STATE);\r\n        }",
+      "start": 69730,
+      "end": 83857,
+      "SHA256": "8c2df8be7cdf6daef9a687f722aa705a2f2494c7ffb9503ce3b6b5c9ee428077",
+      "ownMethod": "CreateStatesCmd.prototype.execute"
+    },
+    "stateNext": {
+      "source": "function () {\r\n            this.nextState = this._defaultNextState;\r\n            this.nextSubGame = this._defaultNextSubGame;\r\n        }",
+      "start": 504828,
+      "end": 504964,
+      "SHA256": "6394dd8698955e4c76d97b8e3f55bf4475f58a05dda884d417f9f505926f3a77",
+      "ownMethod": "GameState.prototype.getNextState"
+    },
+    "wheelTrigger": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (!this._gameType.isFG && logicResponse.featureDatas.data[0]) {\r\n                //Wheel triggered \r\n                this._statesModel.changeStateByName(sgigame.BaseGameStates.WF_START);\r\n                this._autoPlayModel.stop();\r\n                sgigame.CommonUIModel.isautoplaying = 0;\r\n            }\r\n            else if (this._gameType.isFG && logicResponse.fsData.triggeredFeatureIndex > 0) {\r\n                this._statesModel.changeStateByName(sgigame.BaseGameStates.WF_START);\r\n            }\r\n            else {\r\n                this._statesModel.gotoNextState();\r\n            }\r\n        }",
+      "start": 67933,
+      "end": 68677,
+      "SHA256": "bb10f771a89b65bb0efa4f423dff9144195620b62cfad132f1c24bcfd7f318e1",
+      "ownMethod": "CheckWheelTriggered.prototype.execute"
+    },
+    "wheelResult": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (logicResponse.featureDatas.data[0]) {\r\n                //Wheel triggered \r\n                var triggeredFeatureIndex = parseInt(this._server.getLogicResponse().featureDatas.data[0].attributeData.triggeredFeatureIndex);\r\n                switch (triggeredFeatureIndex) {\r\n                    case 1:\r\n                        console.log(\"Free spin\");\r\n                        if (parseInt(logicResponse.featureDatas.data[0].attributeData.isRetrigger))\r\n                            this._statesModel.changeStateByName(sgigame.BaseGameStates.FG_MORE_FREE_GAME_BANNER);\r\n                        else if (this._gameType.isFG)\r\n                            this._statesModel.changeStateByName(sgigame.BaseGameStates.FG_MORE_FREE_GAME_BANNER);\r\n                        else\r\n                            this._statesModel.gotoNextState();\r\n                        break;\r\n                    case 3: // Upgrade\r\n                    case 4:\r\n                        this._RecoveryType.isGameRecover = false;\r\n                        this._statesModel.changeStateByName(sgigame.BaseGameStates.WF_UPGRADE); //Upgrade\r\n                        console.log(\"Upgrade\");\r\n                        break;\r\n                    case 5:\r\n                        console.log(\"Wild spin\");\r\n                        this._RecoveryType.isGameRecover = false;\r\n                        this._statesModel.changeStateByName(sgigame.BaseGameStates.WS_START);\r\n                        break;\r\n                    case 10:\r\n                        // To be changed.\r\n                        //this._statesModel.changeStateByName(BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING);\r\n                        //this.eventDispatcher.dispatchEvent(new sgigame.JackPotMeterEvent(JackPotMeterEvent.SHOW_WIN_METER));\r\n                        this._statesModel.changeStateByName(sgigame.BaseGameStates.JACKPOT_START);\r\n                        console.log(\"Jackport\");\r\n                        break;\r\n                }\r\n            }\r\n        }",
+      "start": 64624,
+      "end": 66770,
+      "SHA256": "b73a0777f17d08ca3d544aff835a91fa0f92a0749f7b00eb7f94520ddacf57c7",
+      "ownMethod": "CheckWheelFeatureTriggeredTypes.prototype.execute"
+    },
+    "remainingWheel": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (logicResponse.wheelRemaining) {\r\n                if (logicResponse.wheelRemaining.index !== 1) {\r\n                    if (this._gameType.isFG) {\r\n                        if (logicResponse.wheelRemaining.isFGWheel === \"Y\")\r\n                            this._statesModel.changeStateByName(sgigame.BaseGameStates.WF_START);\r\n                        else\r\n                            this._statesModel.gotoNextState();\r\n                    }\r\n                    else\r\n                        this._statesModel.changeStateByName(sgigame.BaseGameStates.WF_START);\r\n                }\r\n                else {\r\n                    //Goto show all win.\r\n                    this._statesModel.gotoNextState();\r\n                    sgigame.GameConfig.featureTobase = true;\r\n                }\r\n            }\r\n            else {\r\n                //Goto show all win.\r\n                this._statesModel.gotoNextState();\r\n                sgigame.GameConfig.featureTobase = true;\r\n            }\r\n        }",
+      "start": 62458,
+      "end": 63594,
+      "SHA256": "12f094611a28a81fe63446171322488b643ebfdedf35cb669633b6b189a688ba",
+      "ownMethod": "CheckWheelFeatureRemmaing.prototype.execute"
+    },
+    "bonusNext": {
+      "source": "function () {\r\n            var _this = this;\r\n            _super.prototype.execute.call(this);\r\n            if (this._gameType.isFG) {\r\n                //Free game next spin\r\n                if (this._server.getLogicResponse().fsData.lastFreeSpin) {\r\n                    TweenMax.delayedCall(1.0, function () {\r\n                        _this._statesModel.changeStateByName(sgigame.BaseGameStates.FG_COMPLETE);\r\n                    }, null, this);\r\n                }\r\n                else {\r\n                    TweenMax.delayedCall(1.0, function () {\r\n                        _this._statesModel.changeStateByName(sgigame.BaseGameStates.LOGIC_GLS_STATE);\r\n                    }, null, this);\r\n                }\r\n            }\r\n            else {\r\n                this._statesModel.gotoNextState();\r\n            }\r\n            //this._statesModel.changeStateByName(BaseGameStates.SHOW_WAYWINE_STACK_STATE);\r\n            sgigame.GameConfig.featureTobase = false;\r\n        }",
+      "start": 86898,
+      "end": 87868,
+      "SHA256": "754ef11d74aadce3a693da183a719fbeae788785fca8bc8fb55109e6656370fe",
+      "ownMethod": "GotoBonusState.prototype.execute"
+    },
+    "enterFree": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var triggeredFeatureIndex = parseInt(this._server.getLogicResponse().featureDatas.data[0].attributeData.triggeredFeatureIndex);\r\n            if (triggeredFeatureIndex === 1) {\r\n                //Goto Free game transition - Free game is triggered from base game.\r\n                this._gameType.isFG = true;\r\n                this._statesModel.gotoNextState();\r\n            }\r\n            else {\r\n                //Show more free game banner.\r\n                this._statesModel.changeStateByName(sgigame.BaseGameStates.FG_MORE_FREE_GAME_BANNER);\r\n            }\r\n        }",
+      "start": 97729,
+      "end": 98375,
+      "SHA256": "e13259fe2969e909219ac223a551922aea3a6d1d65a1e1a2badc3ea1d9cbf8ff",
+      "ownMethod": "HandleFreeGameTriggeredCmd.prototype.execute"
+    },
+    "upgrade": {
+      "source": "function () {\r\n            var _this = this;\r\n            _super.prototype.execute.call(this);\r\n            TweenMax.delayedCall(.1, function () {\r\n                _this._statesModel.gotoNextState();\r\n            }, null, this);\r\n            ;\r\n        }",
+      "start": 112764,
+      "end": 113018,
+      "SHA256": "a5fcf375c003e94c4f52729d5a30ec4e61cb4ff79c717432576e0100a5ee29bc",
+      "ownMethod": "HandleWheelFeatureUpgradeCmd.prototype.execute"
+    },
+    "logicRequest": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var encoders = [\r\n                this.getStakeEncode(),\r\n                new server.GLSCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier),\r\n            ];\r\n            var history = this._history.getNextState();\r\n            if (history) {\r\n                encoders.push(new sgigame.HistoryReplaceEncoder(history));\r\n            }\r\n            if (this._statesModel.getCurrentState().stateName === sgigame.BaseGameStates.WF_LOGIC_REQUEST) {\r\n                if (this._metaData.isGaffingEnabled() && !history) {\r\n                    var WheelIndex = prompt(\"Enter wheel Stop Index\", \"-1\");\r\n                    {\r\n                        if (WheelIndex !== null && WheelIndex != \"-1\") {\r\n                            var index = WheelIndex;\r\n                            var trigerredWheel = this._server.getLogicResponse().featureDatas.data[0].index;\r\n                            if (this._server.getLogicResponse().featureDatas.data[0].attributeData) {\r\n                                var triggeredFeature = this._server.getLogicResponse().featureDatas.data[0].attributeData.triggeredFeatureIndex;\r\n                                if (triggeredFeature == \"3\" || triggeredFeature == \"4\") {\r\n                                    trigerredWheel = parseInt(triggeredFeature);\r\n                                }\r\n                            }\r\n                            var wheelencoder = new sgigame.wheelEncoder(index, trigerredWheel);\r\n                            encoders.push(wheelencoder);\r\n                        }\r\n                    }\r\n                }\r\n                var data = new server.GLSRequest(encoders);\r\n                this._server.makeLogicRequest(data);\r\n            }\r\n            else if (this._statesModel.getCurrentState().stateName === sgigame.BaseGameStates.WS_LOGIC_REQUEST) {\r\n                if (this._metaData.isGaffingEnabled() && !history) {\r\n                    var wildIndex = prompt(\"Number of wild and wild positions\", \"4,1,2,3,4\");\r\n                    {\r\n                        if (wildIndex !== null) {\r\n                            var wildno = wildIndex.split(',')[0];\r\n                            var wildpos = wildIndex.split(',').map(Number);\r\n                            wildpos.shift();\r\n                            var pos = wildpos.join('|');\r\n                            var wildSpinEncoder = new sgigame.WildSpinEncoder(wildno, pos);\r\n                            encoders.push(wildSpinEncoder);\r\n                        }\r\n                    }\r\n                }\r\n                var data = new server.GLSRequest(encoders);\r\n                this._server.makeLogicRequest(data);\r\n            }\r\n            else {\r\n                if (this._forceModel) {\r\n                    if (this._forceModel.forceSet) {\r\n                        var forceEncoder = new sgigame.ForceEncoder(this._forceModel.reelData ? this._forceModel.reelData.positions : [0, 0, 0, 0, 0], this._forceModel.reelData ? this._forceModel.reelData.index : 0, this._forceModel.featureID, this._forceModel.wildIndex, this._forceModel.wildMulValue);\r\n                        encoders.push(forceEncoder);\r\n                    }\r\n                    this._forceModel.featureID = -1;\r\n                    this._forceModel.forceSet = false;\r\n                }\r\n                var data = new server.GLSRequest(encoders);\r\n                this._server.makeLogicRequest(data);\r\n            }\r\n        }",
+      "start": 249893,
+      "end": 253412,
+      "SHA256": "759dc3f73fccffaffbadcd277e092fac5d3837fe3f9ffaed2cd8e485fdd081a9",
+      "ownMethod": "MakeLogicRequestCmd.prototype.execute"
+    },
+    "stakeInput": {
+      "source": "function () {\r\n            //return new StakeEncoder(this._betController.getCurrentBet().getBetMultiplier());\r\n            return new sgigame.StakeEncoder(this._baseModel.getCredit(), this._baseModel.getBetTypeIndex());\r\n        }",
+      "start": 253470,
+      "end": 253700,
+      "SHA256": "3397d13b3d2389fa47bec1064191d0929c52f78967f21bbb7daa09531edddf81",
+      "ownMethod": "MakeLogicRequestCmd.prototype.getStakeEncode"
+    },
+    "endRequest": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            this._RecoveryType.isGameRecover = false;\r\n            if (!this._history.getIsHistoryReplay()) {\r\n                this._server.makeEndRequest(new server.GLSRequest([]));\r\n            }\r\n        }",
+      "start": 247688,
+      "end": 247961,
+      "SHA256": "57b73037f8b7976a9b818b51cceada90530a302fdc131fd43859c38f1e6e504f",
+      "ownMethod": "MakeEndRequestCmd.prototype.execute"
+    },
+    "featureParser": {
+      "source": "function (input, object) {\r\n            var nodeList = input.getElementsByTagName(\"Feature\");\r\n            object.featureDatas = new sgigame.FeatureDatas();\r\n            var randomWildNode = input.getElementsByTagName(\"RandomWilds\")[0];\r\n            if (randomWildNode) {\r\n                object.ramdomWild = randomWildNode.attributes.getNamedItem(\"positions\").value;\r\n            }\r\n            if (nodeList.length > 0) {\r\n                for (var i = 0; i < nodeList.length; i++) {\r\n                    var node = input.getElementsByTagName(\"Feature\")[i];\r\n                    if (node.parentNode.nodeName === \"GameResult\") {\r\n                        var attributes = node.attributes;\r\n                        var nodeChildren = node.childNodes;\r\n                        var index = parseInt(node.attributes.getNamedItem(\"index\").value);\r\n                        var name = node.attributes.getNamedItem(\"name\").value;\r\n                        var attributeData;\r\n                        //Sakthi\r\n                        if (nodeChildren.length > 0) {\r\n                            if (nodeChildren[0].attributes) {\r\n                                attributeData = sgigame.CustomParser.xmlnameValuePairArrayToObject(nodeChildren[0].attributes);\r\n                            }\r\n                        }\r\n                        var featureInfo = new sgigame.FeatureData();\r\n                        featureInfo.setData(index, name, attributeData);\r\n                        object.featureDatas.data.push(featureInfo);\r\n                    }\r\n                }\r\n            }\r\n        }",
+      "start": 271914,
+      "end": 273498,
+      "SHA256": "dfac2b9fd062521d832f5a82217b48cf0b103c54ea263d9a305653297429ac6d",
+      "ownMethod": "FeatureParser.prototype.parse"
+    },
+    "featureData": {
+      "source": "function (index, name, attributeData) {\r\n            this.index = index;\r\n            this.name = name;\r\n            this.attributeData = attributeData;\r\n        }",
+      "start": 415057,
+      "end": 415220,
+      "SHA256": "8b4dab3265710554ba1c1683cc7601b7a5b60c84c0518e5b99ffaa2e3ca51c6e",
+      "ownMethod": "FeatureData.prototype.setData"
+    },
+    "freeParser": {
+      "source": "function (input, object) {\r\n            var nodeList = input.getElementsByTagName(\"Feature\");\r\n            object.fsData = null;\r\n            if (nodeList.length > 0) {\r\n                for (var i = 0; i < nodeList.length; i++) {\r\n                    var node = input.getElementsByTagName(\"Feature\")[i];\r\n                    var index = parseInt(node.attributes.getNamedItem(\"index\").value);\r\n                    var nodeChildren = node.childNodes;\r\n                    if (index === sgigame.FeatureDataIndex.FeatureDataIndex_FREE_GAME && nodeChildren[0].attributes.length > 2) {\r\n                        var attributes = node.attributes;\r\n                        var name = node.attributes.getNamedItem(\"name\").value;\r\n                        var dataNode = nodeChildren[0];\r\n                        var featureAwarded = (dataNode.attributes.getNamedItem(\"featureAwarded\").value === \"Y\") ? true : false;\r\n                        var triggeredFeatureIndex = parseInt(dataNode.attributes.getNamedItem(\"triggeredFeatureIndex\").value);\r\n                        var triggeredFeatureName = dataNode.attributes.getNamedItem(\"triggeredFeatureName\").value;\r\n                        var currentFreeSpinWin = parseInt(dataNode.attributes.getNamedItem(\"currentFreeSpinWin\").value);\r\n                        var freeSpinTotalWin = parseInt(dataNode.attributes.getNamedItem(\"freeSpinTotalWin\").value);\r\n                        var freeSpinsTotal = parseInt(dataNode.attributes.getNamedItem(\"freeSpinsTotal\").value);\r\n                        var freeSpinNumber = parseInt(dataNode.attributes.getNamedItem(\"freeSpinNumber\").value);\r\n                        var lastFreeSpin = dataNode.attributes.getNamedItem(\"lastFreeSpin\").value;\r\n                        object.fsData = new sgigame.FreeSpinsData();\r\n                        object.fsData.setData(featureAwarded, triggeredFeatureIndex, triggeredFeatureName, currentFreeSpinWin, freeSpinTotalWin, freeSpinNumber, freeSpinsTotal, lastFreeSpin);\r\n                    }\r\n                }\r\n            }\r\n        }",
+      "start": 281810,
+      "end": 283857,
+      "SHA256": "ecf749f98a01cf723e56b95f3363f429ec0161142400dc14d96313eb2722ab91",
+      "ownMethod": "FreeSpinParser.prototype.parse"
+    },
+    "freeData": {
+      "source": "function (featureAwarded, featureIndex, featureName, csWin, fsTotalWin, fsSpinCount, fsTotalCount, isLastSpin) {\r\n            this.featureAwareded = featureAwarded;\r\n            this.triggeredFeatureIndex = featureIndex;\r\n            this.triggeredFeatureName = featureName;\r\n            this.currentFSWin = csWin;\r\n            this.freeSpinTotalWin = fsTotalWin;\r\n            this.currentSpinNumber = fsSpinCount;\r\n            this.freeSpinsTotal = fsTotalCount;\r\n            this.lastFreeSpin = (isLastSpin === \"Y\") ? true : false;\r\n        }",
+      "start": 416939,
+      "end": 417483,
+      "SHA256": "dce6c275a32c38f2212460a9c480ef2f2d805707ce5c06ee5871af370b26e573",
+      "ownMethod": "FreeSpinsData.prototype.setData"
+    },
+    "remainingParser": {
+      "source": "function (input, object) {\r\n            var nodeList = input.getElementsByTagName(\"RemainingFeature\");\r\n            if (nodeList.length > 0) {\r\n                object.wheelRemaining = new sgigame.WheelFeatureRemainingData();\r\n                object.wheelRemaining.index = parseInt(nodeList[0].attributes.getNamedItem(\"index\").value);\r\n                object.wheelRemaining.featureName = nodeList[0].attributes.getNamedItem(\"name\").value;\r\n                if (nodeList[0].attributes.getNamedItem(\"isFGWheel\"))\r\n                    object.wheelRemaining.isFGWheel = nodeList[0].attributes.getNamedItem(\"isFGWheel\").value;\r\n            }\r\n            else {\r\n                object.wheelRemaining = null;\r\n            }\r\n        }",
+      "start": 292614,
+      "end": 293341,
+      "SHA256": "b27e81dd1fdb08a224382482b37d7c62acf6fd057a4a580d228d0715c5c1b190",
+      "ownMethod": "RemainingWheelFeatureParser.prototype.parse"
+    },
+    "isNextFree": {
+      "source": "function () {\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (logicResponse) {\r\n                if (logicResponse.gameWagerInfo && logicResponse.gameWagerInfo.isMaxWin) {\r\n                    return false;\r\n                }\r\n                if (logicResponse.fsData && !logicResponse.fsData.lastFreeSpin) {\r\n                    return true;\r\n                }\r\n            }\r\n            return false;\r\n        }",
+      "start": 500083,
+      "end": 500531,
+      "SHA256": "f2904565afef9fecad105b94330c293c599453049a8b298857e3ce24b2307321",
+      "ownMethod": "SpinTypeModel.prototype.isNextSpinFS"
+    },
+    "isCurrentFree": {
+      "source": "function () {\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (logicResponse) {\r\n                if (logicResponse.fsData) {\r\n                    return true;\r\n                }\r\n            }\r\n            return false;\r\n        }",
+      "start": 500584,
+      "end": 500848,
+      "SHA256": "cd986b700d45b11d0093719c5618ee384304516181c2a047694efb931d911b0b",
+      "ownMethod": "SpinTypeModel.prototype.isCurrentSpinFS"
+    },
+    "stakeXML": {
+      "source": "function () {\r\n            var xmlStr = \"<WagerInfo\";\r\n            //xmlStr += \" betMultiplier=\\\"\" + this._betMultiplier.toString() +\"\\\"/>\";\r\n            xmlStr += \" totalStake='\" + this._betMultiplier + \"' isExtraBet='\" + this._betType + \"' />\";\r\n            return xmlStr;\r\n        }",
+      "start": 427725,
+      "end": 428010,
+      "SHA256": "728d1b53be9363e90e8b1088b4a4ebf0c32bd40a66636ae3e42606c8d60dc0ef",
+      "ownMethod": "StakeEncoder.prototype.parse"
+    },
+    "platform": {
+      "source": "function (input, object) {\r\n            var node = input.getElementsByTagName(\"Header\")[0];\r\n            var data = new server.PlatformData();\r\n            if (node != null) {\r\n                var attr = node.attributes;\r\n                var attrLength = attr.length;\r\n                for (var i = 0; i < attrLength; ++i) {\r\n                    switch (attr[i].nodeName) {\r\n                        case 'sessionID':\r\n                            data.sessionId = attr[i].nodeValue;\r\n                            break;\r\n                        case 'gameID':\r\n                            data.gameId = attr[i].nodeValue;\r\n                            break;\r\n                        case 'lang':\r\n                            data.languageCode = attr[i].nodeValue;\r\n                            break;\r\n                        case 'versionID':\r\n                            data.version = attr[i].nodeValue;\r\n                            break;\r\n                    }\r\n                }\r\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\r\n                if (currencyMultiplierNode != null) {\r\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\r\n                }\r\n                else {\r\n                    data.currencyMultiplier = 1;\r\n                }\r\n            }\r\n            object.platformData = data;\r\n        }",
+      "start": 447866,
+      "end": 449276,
+      "SHA256": "3119a97b3571f11794f7521dd4056cbfa759a3d5a853b0a6cd319ed0d8470ffd",
+      "ownMethod": "GLSPlatformParser.prototype.parse"
+    },
+    "headerXML": {
+      "source": "function () {\r\n            var xmlString = \"\"; //\"<GameRequest type=\\\"Init\\\">\"\r\n            xmlString += \"<Header\";\r\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\r\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\r\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\r\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\r\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\r\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\r\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\r\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\r\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\r\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\r\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\r\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\r\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\r\n            xmlString += \"/>\";\r\n            //xmlString += \"</GameRequest>\"\r\n            return xmlString;\r\n        }",
+      "start": 428694,
+      "end": 429798,
+      "SHA256": "84bf8f9c04f7c249c95ecddfd9a8380b1228a5d92b20debeca05313fefc2f035",
+      "ownMethod": "GLSHeader.prototype.parse"
+    },
+    "currencyXML": {
+      "source": "function () {\r\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\r\n            xmlStr += this._currencyMultiplier.toString();\r\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\r\n            return xmlStr;\r\n        }",
+      "start": 433660,
+      "end": 433897,
+      "SHA256": "4b5c1b1953054aef5adeeb62fc054cbb74f7d401a117a53d5ea65fffd9feaee3",
+      "ownMethod": "GLSCurrencyEncoder.prototype.parse"
+    },
+    "headerConstructor": {
+      "source": "function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\r\n            /**\r\n             * ID of casinarena's GLS\r\n             */\r\n            this.GLSID_CASINARENA = \"4\";\r\n            /**\r\n             * ID of freeplay's GLS\r\n             */\r\n            this.GLSID_FREEPLAY = \"65535\";\r\n            this.affiliate = sessionData.getContextID();\r\n            this.freePlay = !metadata.isRealMoney();\r\n            this.gameCodeRGI = metadata.getGameCode();\r\n            this.gameId = gameId;\r\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\r\n            this.langCode = metadata.getLocale();\r\n            this.sessionId = glsServerSessionId;\r\n            this.userId = sessionData.getPlayerID();\r\n            this.version = gameVersion;\r\n            this.promotions = false;\r\n            this.channel = \"I\";\r\n            this.userType = \"C\";\r\n            this.currencyCode = \"\";\r\n        }",
+      "start": 427606,
+      "end": 428561,
+      "SHA256": "4b94dad25ee8de2be8ee0135240a25a46c79cb4e276a1a01e11056afaec2e113"
+    },
+    "attributeDATA": {
+      "source": "function (nodeAttribute) {\r\n            var object = {};\r\n            var count = nodeAttribute.length;\r\n            for (var i = 0; i < count; i++) {\r\n                var attribute = nodeAttribute[i];\r\n                object[attribute.name] = attribute.value;\r\n            }\r\n            return object;\r\n        }",
+      "start": 551157,
+      "end": 551471,
+      "SHA256": "02b14422fa81dbcbf429eac2e7ffade66e916cac664a42d81fcae8cfb11f0815",
+      "ownMethod": "CustomParser.xmlnameValuePairArrayToObject"
+    },
+    "freeOutroComplete": {
+      "source": "function (e) {\r\n            console.log(\"Free game outro transition completed\");\r\n            //Go to check wheels remaning.\r\n            this._gameType.isFG = false;\r\n            this.updateFeatureName();\r\n            //this._statesModel.gotoNextState();\r\n        }",
+      "start": 1056417,
+      "end": 1056683,
+      "SHA256": "316631d7ed0e5c026adcdeb4ebb9474520e31b21eecbfde97a60de1035b0e161",
+      "ownMethod": "FreeGameOutroTransitionMediator.prototype.onFGTransitionComplete"
+    },
+    "freeComplete": {
+      "source": "function () {\r\n            //if(this._statesModel.getCurrentState().stateName!=\"BaseGameStates_WHEEL_LOGIC_GLS_STATE\"){\r\n            _super.prototype.execute.call(this);\r\n            //Go to  FG_SHOW_TOTALWIN_BANNER    \r\n            this._cyclerModel.stopCyclers();\r\n            this._statesModel.gotoNextState();\r\n            //}\r\n        }",
+      "start": 991259,
+      "end": 991600,
+      "SHA256": "ef22a8f2e22c55e0fba1391707792d2f5f45326238b06bb34bd7a49437059f20",
+      "ownMethod": "HandleFreeGameCompleteCmd.prototype.execute"
+    },
+    "maxSelector": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            var logicResponse = this._server.getLogicResponse();\r\n            if (!logicResponse.gameWagerInfo.isMaxWin)\r\n                this._statesModel.gotoNextState();\r\n            else {\r\n                //this._statesModel.changeStateByName(BaseGameStates.SHOW_MAX_WIN_BANNER);\r\n                this.eventDispatcher.dispatchEvent(new sgigame.MaxWinBannerEvent(sgigame.MaxWinBannerEvent.ADD_MAX_WIN_BANNER));\r\n            }\r\n        }",
+      "byteWindowStart": 1275480,
+      "startWithinWindow": 198,
+      "SHA256": "1438fcb0ce6036ec0d391284920a8887cf8789d9dc1f22ecfda19d023c808aa4",
+      "ownMethod": "HandleMaxWin.prototype.execute"
+    },
+    "maxAdd": {
+      "source": "function () {\r\n            _super.prototype.execute.call(this);\r\n            // Please add Factory class.\r\n            var graphicObjColorCode = sgigame.GameConfig.FGBannnerGraphicObjectColorCode;\r\n            var winLabelText = sgigame.Factory.createText(sgigame.MaxWinBannerView.MaxWinLabelPostion, sgigame.MaxWinBannerView.MaxWinLabelColor, sgigame.MaxWinBannerView.MaxWinLabelColorShadow, sgigame.GameConfig.Myriad_Pro_Black, this.translator.findByKey(\"com.ragingrhino.FreeGame.maxwin\"));\r\n            sgigame.Factory.createGradientFilter(winLabelText, sgigame.MaxWinBannerView.MaxWinTextColor, [0, 0.8], new util.Point(0, 0), new util.Point(0, sgigame.MaxWinBannerView.MaxWinLabelPostion[4]));\r\n            var winMeterText = sgigame.Factory.createText(sgigame.MaxWinBannerView.MaxWinValuePosition, sgigame.MaxWinBannerView.MaxWinValueColor, sgigame.MaxWinBannerView.MaxWinValueColorShadow, sgigame.GameConfig.Myriad_Pro_Black, \" \");\r\n            var MaxWinBannerImg = sgigame.Factory.createImage(this.cache.getAssetById(sgigame.MainBundle.MaxWinBanner.name), 0, 0, this.maxWinBannerView.getMaxWinBanner());\r\n            var graphicObj = sgigame.Factory.createGraphicObject(graphicObjColorCode, 0, 0, sgigame.GameConfig.screen_Width, sgigame.GameConfig.screen_Height, 0.7);\r\n            this.maxWinBannerView.addChild(graphicObj);\r\n            this.maxWinBannerView.getMaxWinBanner().addChild(winLabelText);\r\n            this.maxWinBannerView.getMaxWinBanner().addChild(winMeterText);\r\n            winLabelText.x = (sgigame.MaxWinBannerView.MaxWinLabelPostion[3] - winLabelText.width) / 2 + sgigame.MaxWinBannerView.MaxWinLabelPostion[0];\r\n            winLabelText.y = sgigame.MaxWinBannerView.MaxWinLabelPostion[1];\r\n            this.maxWinBannerView.init(winLabelText, winMeterText, MaxWinBannerImg, sgigame.MaxWinBannerView.MaxWinValuePosition, graphicObj, sgigame.MaxWinBannerView.MaxWinStayDuration);\r\n            this.subgamesModel.basegameLayer.addChild(this.maxWinBannerView);\r\n            this.eventDispatcher.dispatchEvent(new sgigame.MaxWinBannerEvent(sgigame.MaxWinBannerEvent.SHOW_MAX_WIN_BANNER));\r\n        }",
+      "byteWindowStart": 1272430,
+      "startWithinWindow": 119,
+      "SHA256": "d1f66c96e497f41f7066f2f597102f5af64fd3ff0c5179717c1bf9c7849d1d31",
+      "ownMethod": "AddMaxWinBanner.prototype.execute"
+    },
+    "gameWinParser": {
+      "source": "function (input, object) {\r\n            var node = input.getElementsByTagName(\"GameWinInfo\")[0];\r\n            var attributes = node.attributes;\r\n            var nodeChildren = node.childNodes;\r\n            var totalWagerWin = parseInt(node.attributes.getNamedItem(\"totalWagerWin\").value);\r\n            var totalBaseGameWin = parseInt(node.attributes.getNamedItem(\"totalBGWin\").value);\r\n            var totalFreeGameWin = parseInt(node.attributes.getNamedItem(\"totalFSWin\").value);\r\n            var totalCurrentFGWin = parseInt(node.attributes.getNamedItem(\"totalCurrentFGWin\").value);\r\n            var maxWinValue = parseInt(node.attributes.getNamedItem(\"maxWinValue\").value);\r\n            var isMaxWin = node.attributes.getNamedItem(\"isMaxWin\").value;\r\n            var isExtrabet = (node.attributes.getNamedItem(\"isExtrabet\").value === 'Y') ? true : false;\r\n            var isEndGame = (node.attributes.getNamedItem(\"isEndGame\").value === 'Y') ? true : false;\r\n            object.gameWagerInfo = new sgigame.GameWinInfoData(totalWagerWin, totalBaseGameWin, totalFreeGameWin, totalCurrentFGWin, maxWinValue, isMaxWin, isExtrabet, isEndGame);\r\n        }",
+      "byteWindowStart": 288930,
+      "startWithinWindow": 125,
+      "SHA256": "5cc5337b8fcd862bb4794f85ae2f3ae76edc51a0cf4e198bb37269c096ea1314",
+      "ownMethod": "GameWinInfoParser.prototype.parse"
+    },
+    "gameWinCtor": {
+      "source": "function GameWinInfoData(totalWagerWin, totalBaseGameWin, totalFreeGameWin, totalCurrentFGWin, maxWinValue, isMaxWin, isExtraBet, isEndGame) {\r\n            this.totalWagerWin = totalWagerWin;\r\n            this.totalBaseGameWin = totalBaseGameWin;\r\n            this.totalFreeGameWin = totalFreeGameWin;\r\n            this.maxWinValue = maxWinValue;\r\n            this.isMaxWin = (isMaxWin === \"N\") ? false : true;\r\n            this.isEndGame = isEndGame;\r\n            this.isExtrabet = isExtraBet;\r\n            this.totalCurrentFGWin = totalCurrentFGWin;\r\n        }",
+      "byteWindowStart": 420700,
+      "startWithinWindow": 144,
+      "SHA256": "0091a2aa1bf546f444b5fe27975753f58c77d8a58cdf76dda3a467971eb2137f",
+      "ownMethod": "function GameWinInfoData"
+    },
+    "maxTimerComplete": {
+      "source": "function (e) {\r\n            //this.statesModel.gotoNextState();\r\n            this.eventDispatcher.dispatchEvent(new sgigame.MaxWinBannerEvent(sgigame.MaxWinBannerEvent.MAX_WIN_BANNER_ON_REMOVE));\r\n        }",
+      "byteWindowStart": 1279100,
+      "startWithinWindow": 70,
+      "SHA256": "f563abcdac0917ae20230b7cb4d3d51cb5a9dc6c0a11e591fe4ea6b88f45fdcb",
+      "ownMethod": "MaxWinBannerMediator.prototype.onTimerCompleted"
+    },
+    "maxRemove": {
+      "source": "function (e) {\r\n            this.maxWinView.removeBanner();\r\n            this.statesModel.changeStateByName(sgigame.BaseGameStates.END_GLS_STATE);\r\n            this.subgamesModel.basegameLayer.removeChild(this.maxWinView);\r\n            //this.statesModel.gotoNextState();\r\n        }",
+      "byteWindowStart": 1279370,
+      "startWithinWindow": 69,
+      "SHA256": "e274bbd38ff97439904cfc102b34e25b313c99e94d8681b65551164e27c0519d",
+      "ownMethod": "MaxWinBannerMediator.prototype.removeMaxWinBanner"
+    },
+    "maxShow": {
+      "source": "function (winAmount) {\r\n            this._maxWinMeterText.text = this.currencyFormatter.format(winAmount);\r\n            this._maxWinMeterText.x = (this._meterRect[3] - this._maxWinMeterText.width) / 2 + this._meterRect[0];\r\n            this._maxWinMeterText.y = this._meterRect[1];\r\n            this.visible = true;\r\n            this.upDatePosition(sgigame.GameModels.orientationMode);\r\n            TweenMax.delayedCall(this._stayDuration, this.onTimerComplete, [], this);\r\n        }",
+      "byteWindowStart": 1282520,
+      "startWithinWindow": 57,
+      "SHA256": "8cc026b781d6cbfee51f4a376abe750f30a8a8051f6f0fe45a783aa0a161153c",
+      "ownMethod": "MaxWinBannerView.prototype.showBanner"
+    },
+    "maxViewComplete": {
+      "source": "function () {\r\n            this.dispatchEvent(new sgigame.MaxWinBannerEvent(sgigame.MaxWinBannerEvent.MAX_WIN_BANNER_STAY_TIMER_COMPLETED));\r\n        }",
+      "byteWindowStart": 1283050,
+      "startWithinWindow": 66,
+      "SHA256": "b057b972341ffa839ae12933d7addd93a50d539053ffd87eb7b175172ec4078a",
+      "ownMethod": "MaxWinBannerView.prototype.onTimerComplete"
+    }
+  },
+  "constants": {
+    "BaseGameStates": {
+      "RECOVER_GAME": "BaseGameStates_RECOVER_GAME",
+      "SPLASH_STATE": "BaseGameStates_SPLASH_STATE",
+      "LANDING_PAGE": "BaseGameStates_LANDING_PAGE",
+      "IDLE_STATE": "BaseGameStates_IDLE_STATE",
+      "LOGIC_GLS_STATE": "BaseGameStates_LOGIC_GLS_STATE",
+      "LOGIC_GLS_COMPLETE": "BaseGameStates_LOGIC_GLS_COMPLETE",
+      "STOP_REELS_STATE": "BaseGameStates_STOP_REELS_STATE",
+      "HANDLE_MAX_WIN_STATE": "BaseGameStates_HANDLE_MAX_WIN_STATE",
+      "CHECK_WHEEL_TRIGGERED": "BaseGameStates_CHECK_WHEEL_TRIGGERED",
+      "SHOW_PAYLINE_STACK_STATE": "BaseGameStates_SHOW_PAYLINE_STACK_STATE",
+      "SHOW_PAYLINE_WINS_STATE": "BaseGameStates_SHOW_PAYLINE_WINS_STATE",
+      "GO_TO_BONUS_STATE": "BaseGameStates_GO_TO_BONUS_STATE",
+      "END_GLS_STATE": "BaseGameStates_END_GLS_STATE",
+      "SHOW_MAX_WIN_BANNER": "BaseGameStates_SHOW_MAX_WIN_BANNER",
+      "REMOVE_MAX_WIN_BANNER": "BaseGameState_REMOVE_MAX_WIN_BANNER",
+      "WF_START": "BaseGameStates_WF_START",
+      "WF_INTRO_TRANSITION_START": "BaseGameStates_WF_INTRO_TRANSITION_START",
+      "WF_INTRO_TRANSITION_COMPELET": "BaseGameStates_WF_INTRO_TRANSITION_COMPELET",
+      "WF_LOGIC_REQUEST": "BaseGameStates_WF_LOGIC_REQUEST",
+      "WF_LOGIC_COMPLETE": "BaseGameStates_WF_LOGIC_COMPLETE",
+      "WF_STOP_WHEEL": "BaseGameStates_WF_STOP_WHEEL",
+      "WF_HANDLE_MAX_WIN": "BaseGameStates_WF_HANDLE_MAX_WIN",
+      "WF_OUTRO_TRANSITION_START": "BaseGameStates_WF_OUTRO_TRANSITION_START",
+      "WF_OUTRO_TRANSITION_COMPELET": "BaseGameStates_WF_OUTRO_TRANSITION_COMPELET",
+      "WF_COMPLETE": "BaseGameStates_WF_COMPLETE",
+      "WF_CHECK_TRIGGERED_FEATURE_TYPE": "BaseGameStates_WF_CHECK_TRIGGERED_FEATURE_TYPE",
+      "WF_CHECK_WHEEL_FEATURE_REMAINING": "BaseGameStates_WF_CHECK_WHEEL_FEATURE_REMAINING",
+      "WF_UPGRADE": "BaseGameStates_WF_UPGRADE",
+      "JACKPOT_START": "BaseGameStates_JACKPOT_START",
+      "JACKPOT_TRANSITION_START": "BaseGameStates_JACKPOT_TRANSITION_START",
+      "JACKPOT_DISPLAY": "BaseGameStates_JACKPOT_DISPLAY",
+      "JACKPOT_COMPLETE": "BaseGameStates_JACKPOT_COMPLETE",
+      "WS_START": "BaseGameStates_WS_START",
+      "WS_INRO_TRANISITION": "BaseGameStates_WS_INRO_TRANISITION",
+      "WS_REEL_SPIN": "BaseGameStates_WS_REEL_SPIN",
+      "WS_LOGIC_REQUEST": "BaseGameStates_WS_LOGIC_REQUEST",
+      "WS_LOGIC_COMPLETE": "BaseGameStates_WS_LOGIC_COMPLETE",
+      "WS_WILD_PLACE": "BaseGameStates_WS_WILD_PLACE",
+      "WS_STOP_REEL": "BaseGameStates_WS_STOP_REEL",
+      "WS_HANDLE_MAX_WIN": "BaseGameStates_WS_HANDLE_MAX_WIN",
+      "WS_SHOW_PAYLINE_STACK_STATE": "BaseGameStates_WS_SHOW_PAYLINE_STACK_STATE",
+      "WS_SHOW_PAYLINE_WINS_STATE": "BaseGameStates_WS_SHOW_PAYLINE_WINS_STATE",
+      "WS_OUTRO_TRANISITION": "BaseGameStates_WS_OUTRO_TRANISITION",
+      "WS_COMPLETE": "BaseGameStates_WS_COMPLETE",
+      "FG_RECOVERY": "BaseGameStates_FG_RECOVERY",
+      "FG_TRIGGERED": "BaseGameStates_FG_TRIGGERED",
+      "FG_CHECK_FG_IS_PLAY": "BaseGameStates_FG_CHECK_FG_IS_PLAY",
+      "FG_SHOW_TRIGGER_BANNER": "BaseGameStates_FG_SHOW_TRIGGER_BANNER",
+      "FG_MORE_FREE_GAME_BANNER": "BaseGameStates_FG_MORE_FREE_GAME_BANNER",
+      "FG_START": "BaseGameStates_FG_START",
+      "FG_INTRO_TRANSITION": "BaseGameStates_FG_INTRO_TRANSITION",
+      "FG_OUTRO_TRANSITION": "BaseGameStates_FG_OUTRO_TRANSITION",
+      "FG_SHOW_TOTALWIN_BANNER": "BaseGameStates_FG_SHOW_TOTALWIN_BANNER",
+      "FG_COMPLETE": "BaseGameStates_FG_COMPLETE",
+      "TRANSFER_WILDS_STATE": "BaseGameStates_TRANSFER_WILDS_STATE",
+      "CONVERT_WILDS_STATE": "BaseGameStates_CONVERT_WILD_STATE",
+      "SHOW_FAIRY_STATE": "BaseGameStates_SHOW_FAIRY_STATE",
+      "FAKE_FAIRY_STATE": "BaseGameStates_FAKE_FAIRY_STATE",
+      "PSUDO_FS_STATE": "BaseGameStates_PSUDO_FS_STATE",
+      "PSUDO_WIN_STATE": "BaseGameStates_PSUDO_WIN_STATE",
+      "BURST_WILDS_STATE": "BaseGameStates_BURST_WILDS_STATE",
+      "MAGIC_WILDS_STATE": "BaseGameStates_MAGIC_WILDS_STATE",
+      "SWAP_SYMBOLS_STATE": "BaseGameStates_SWAP_SYMBOLS_STATE",
+      "CHECK_FREE_GAME_IS_TRIGGER": "BaseGameStates_CHECK_FREE_GAME_IS_TRIGGER",
+      "SHOW_WAYWINE_STACK_STATE": "BaseGameStates_SHOW_WAYWINE_STACK_STATE",
+      "SHOW_WAYWINE_WINS_STATE": "BaseGameStates_SHOW_WAYWINE_WINS_STATE",
+      "RETURN_TO_BIGBET_STATE": "BaseGameStates_RETURN_TO_BIGBET_STATE",
+      "MAKE_EXTRA_FS_REQUEST_STATE": "BaseGameStates_MAKE_EXTRA_FS_REQUEST_STATE",
+      "FREESPIN_ENTER_STATE": "BaseGameStates_FREESPIN_ENTER_STATE",
+      "FS_RETRIGER": "BaseGameStates_FS_RETRIGER",
+      "FS_SHOW_RETRIGER_BANNER": "BaseGameStates_FS_SHOW_RETRIGER_BANNER",
+      "FS_WILD_SHOW_MULTIPLIER_STATE": "BaseGameStates_FS_WILD_SHOW_MULTIPLIER_STATE",
+      "FS_COLLECT_OR_GAMBLE_HISTORY_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_HISTORY_STATE",
+      "FS_COLLECT_OR_GAMBLE_REJECT_HISTORY_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_REJECT_HISTORY_STATE",
+      "FS_COLLECT_OR_GAMBLE_STATE": "BaseGameStates_FS_COLLECT_OR_GAMBLE_STATE",
+      "FS_SKIP_DELAY_STATE": "BaseGameStates_FS_SKIP_DELAY_STATE",
+      "FS_MORE_SPINS_STATE": "BaseGameStates_FS_MORE_SPINS_STATE",
+      "FS_COMPLETE_STATE": "BaseGameStates_FS_COMPLETE_STATE",
+      "FS_SHOW_CONGRATS_STATE": "BaseGameStates_FS_SHOW_CONGRATS_STATE",
+      "SHOW_WHEEL": "BaseGameStates_SHOW_WHEEL",
+      "SHOW_WHEELANIM": "BaseGameStates_SHOW_WHEELANIM",
+      "WHEEL_LOGIC_GLS_STATE": "BaseGameStates_WHEEL_LOGIC_GLS_STATE",
+      "SHOW_WILDSPIN": "BaseGameStates_SHOW_WILDSPIN",
+      "WILD_SPIN_LOGIC_GLS_STATE": "BaseGameStates_WILD_SPIN_LOGIC_GLS_STATE",
+      "STOP_WILDSPIN_REELS": "BaseGameStates_SPIN_WILDSPIN",
+      "WILD_PAYLINE_WINS_STATE": "BaseGameStates_WILD_PAYLINE_WINS_STATE",
+      "SWAP_BASEGAME_STATE": "BaseGameStates_SWAP_BASEGAME_STATE",
+      "RECOVER_BASEGAME": "BaseGameStates_RECOVER_BASEGAME",
+      "RECOVER_WHEEL": "BaseGameStates_RECOVER_BASEGAME",
+      "WS_RECOVERY_START": "BaseGameStates_WS_RECOVERY_START",
+      "WS_RECOVERY_INTRO": "BaseGameStates_WS_RECOVERY_INTRO"
+    },
+    "PreGameStates": {
+      "LOADING_STATE": "PreGameStates_LOADING_STATE",
+      "MAKE_INIT_REQUEST": "PreGameStates_MAKE_INIT_REQUEST",
+      "INIT_COMPLETE_STATE": "PreGameStates_INIT_COMPLETE_STATE",
+      "INIT_RESPONSE_RECEIVED": "PreGameStates_INIT_RESPONSE_RECEIVED",
+      "CREATE_GAME": "PreGameStates_CREATE_GAME",
+      "HIDE_PROGRESS_BAR": "PreGameStates_HIDE_PROGRESS_BAR",
+      "CREATE_GAME_MAIN_STATE": "PreGameStates_CREATE_GAME_MAIN_STATE",
+      "CREATE_GAME_BIG_BET_STATE": "PreGameStates_CREATE_GAME_BIG_BET_STATE",
+      "CREATE_GAME_BONUS_STATE": "PreGameStates_CREATE_GAME_BONUS_STATE",
+      "CREATE_GAME_HELP_STATE": "PreGameStates_CREATE_GAME_HELP_STATE",
+      "RECOVERY_STATE": "PreGameStates_RECOVERY_STATE",
+      "RECOVERY_RESPONSE_STATE": "PreGameStates_RECOVERY_RESPONSE_STATE",
+      "HISTORY_LOAD_STATE": "PreGameStates_HISTORY_LOAD_STATE",
+      "HISTORY_RECOVERY_STATE": "PreGameStates_HISTORY_RECOVERY_STATE"
+    },
+    "SubGames": {
+      "PRE_GAME": "SubGames_PRE_GAME",
+      "BASE_GAME": "SubGames_BASE_GAME",
+      "FREE_GAME": "SubGames_FREE_GAME"
+    },
+    "FeatureDataIndex": {
+      "FeatureDataIndex_FREE_GAME": 1,
+      "FeatureDataIndex_WILD_MULTIPLIER": 2,
+      "FeatureDataIndex_BONUS_GUARANTEE": 3
+    }
+  },
+  "exactOwnSharedLeavesComparedWithPrior32757": {
+    "platform": false,
+    "headerXML": false,
+    "currencyXML": false,
+    "headerConstructor": false
+  },
+  "scope": "own base/Wheel/Wild/Free source next/end including max native handler; no display callbacks or count equations; recovery held",
+  "wholeSDKExecutions": 0,
+  "sourceRequests": 0,
+  "DBAccess": 0,
+  "productionReady": false,
+  "newFinalCredit": 0,
+  "old23OwnSourceLeavesReusedExactly": true,
+  "sourceAnchors": {
+    "maxStateCommandBindings": {
+      "source": "            this.mapCommand(sgigame.HandleMaxWin, sgigame.GameStateEvent.EnterState(sgigame.BaseGameStates.HANDLE_MAX_WIN_STATE, sgigame.SubGames.BASE_GAME));\r\n            this.mapCommand(sgigame.HandleMaxWin, sgigame.GameStateEvent.EnterState(sgigame.BaseGameStates.WF_HANDLE_MAX_WIN, sgigame.SubGames.BASE_GAME));\r\n            this.mapCommand(sgigame.HandleMaxWin, sgigame.GameStateEvent.EnterState(sgigame.BaseGameStates.WS_HANDLE_MAX_WIN, sgigame.SubGames.BASE_GAME));\r\n   ",
+      "byteWindowStart": 23287
+    },
+    "maxMediatorListeners": {
+      "source": "mes.BASE_GAME), this.showMaxWinBanner);\r\n            //this.addContextListener(sgigame.GameStateEvent.EnterState(BaseGameStates.REMOVE_MAX_WIN_BANNER, SubGames.BASE_GAME), this.removeMaxWinBanner);\r\n            this.addContextListener(sgigame.MaxWinBannerEvent.SHOW_MAX_WIN_BANNER, this.showMaxWinBanner);\r\n            this.addContextListener(sgigame.MaxWinBannerEvent.MAX_WIN_BANNER_ON_REMOVE, this.removeMaxWinBanner);\r\n            this.maxWinView.addEventListener(sgigame.MaxWinBannerEvent.MAX_WIN_BANNER_STAY_TIMER_COMPLETED, this.onTimerCompleted, this);\r\n            this.addContextListener(sgigame.ExternalEvent.ORIENTATION_CHANGE, this.onOrientationChange);\r\n        };\r\n        MaxWinBannerMediator.prototype.on",
+      "byteWindowStart": 1277200
+    }
+  }
+}

@@ -1,0 +1,1 @@
+'use strict';const DOM=require('../own32750-native-data/vendor/own32750-dom/own32769-node-dom.cjs');const vm=require('node:vm'),data=require('./own32782-20261-protocol-source-DATA.json');exports.createOwn32782OriginalSGConnection=args=>require('./own32782-20261-original-SG-connection.cjs').createOwn32782OriginalSGConnection({...args,DOM,vm,data});
