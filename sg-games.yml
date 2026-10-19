@@ -18031,3 +18031,52 @@ games:
       runtimeGameId: 33010
       runtimeSlug: "lockitlink"
       own32788ProtocolDATA: {"contract": "own32788-original-SG-protocol-private-v1", "scope": "known ordinary only; paged actual Init; BonusChoice/FS/LockIt held"}
+  - provider: sg
+    gameId: '32754'
+    name: Arthur and the Round Table
+    backendId: arthurandtheroundtable
+    dbName: sg_arthurandtheroundtable
+    serviceDir: sg_arthurandtheroundtable
+    rtpBuckets:
+      - 0
+      - 30
+      - 100
+      - 300
+      - 500
+      - 1000
+      - 2500
+      - 5000
+      - 10000
+      - 1001
+      - 2001
+      - 5001
+      - 10001
+    sg:
+      protocol: wms
+      endpoint: https://gls.atc.casinarena.com/gls.rgsx
+      header:
+        affiliate: '0'
+        ccyCode: ''
+        channel: I
+        freePlay: 'Y'
+        gameCodeRGI: arthurandtheroundtable
+        gameID: '20467'
+        glsID: '65535'
+        lang: en_US
+        promotions: 'N'
+        userID: 'null'
+        userType: C
+        versionID: 1_0
+      stake:
+        total: '200'
+      betRaw: 200
+      runtimeGameId: 32976
+      runtimeSlug: arthurandtheroundtable
+      omitsBaseRemaining: true
+      own32754ProtocolDATA:
+        contract: own32754-original-SG-protocol-private-v1
+        normalRoutePolicy: original-private-no-history-no-recovery
+        launchParameters:
+          HistoryServerURL: null
+          betID: null
+          useDummy: false
