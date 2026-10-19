@@ -1,0 +1,996 @@
+{
+  "schema": "own32809-original-SG-protocol-DATA-v1",
+  "gameId": "32809",
+  "dbName": "sg_sword_of_destiny",
+  "runtimeGameId": 33169,
+  "nativeGameID": "20175",
+  "sources": {
+    "sod": {
+      "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "SHA256": "0dcca4f9b4f6c188f4f9f74e02699a250f07d62cce20703bb9d94d273b0b5236",
+      "bytes": 588761
+    },
+    "sgi": {
+      "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "SHA256": "8c466d57a4d16d5e050444b901f5ee8eff050ecd918aa62a5df8cc39a28ea67d",
+      "bytes": 350950
+    },
+    "server": {
+      "path": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "SHA256": "64d5f6f4be5de05e37bd3ebda3f20af067307c47db25fc695444b3b09e05b49f",
+      "bytes": 496932
+    }
+  },
+  "newLeaves": {
+    "header": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 354480,
+      "startWithinWindow": 45,
+      "source": "function () {\n            var xmlString = \"\";\n            xmlString += \"<Header\";\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\n            xmlString += \"/>\";\n            return xmlString;\n        }",
+      "SHA256": "1922bdcdcf781ad07ba3443016b74f51b6a7ca8118e909f5789d8a3c5e98303e",
+      "marker": "GLSHeader.prototype.parse ="
+    },
+    "initWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 382800,
+      "startWithinWindow": 78,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Init\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "e059ae4fe763a7827929a9afb7b8697486260045faf9d92f73766aaf6a5a4be1",
+      "marker": "GLSInitRequester.prototype.parseRequestData ="
+    },
+    "logicWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 383930,
+      "startWithinWindow": 78,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"Logic\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "d1a1d82bed5eede03fa4fc11bfef4405fcc64446abca68bf9b0a08d51b37d9a3",
+      "marker": "GLSLogicRequester.prototype.parseRequestData ="
+    },
+    "endWire": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 381650,
+      "startWithinWindow": 100,
+      "source": "function (data) {\n            var sessionData = this._partnerAdapter.getSessionData();\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\n            var xmlString = \"<GameRequest type=\\\"EndGame\\\">\";\n            xmlString += header.parse();\n            for (var i = 0; i < data.getEncoders().length; i++) {\n                xmlString += data.getEncoders()[i].parse();\n            }\n            xmlString += \"</GameRequest>\";\n            return xmlString;\n        }",
+      "SHA256": "46bdd8d515061709bc9621ebd774900384fd3717c2e764e484e0fea6c89a0052",
+      "marker": "GLSEndRequester.prototype.parseRequestData ="
+    },
+    "currencyEncoder": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 357930,
+      "startWithinWindow": 71,
+      "source": "function () {\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\n            xmlStr += this._currencyMultiplier.toString();\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\n            return xmlStr;\n        }",
+      "SHA256": "ed266a1e9596d5ae8b097511f3e701759c6059c0206f564db9481d8e19e5c332",
+      "marker": "GLSCurrencyEncoder.prototype.parse ="
+    },
+    "platformParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 368760,
+      "startWithinWindow": 74,
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Header\")[0];\n            var data = new server.PlatformData();\n            if (node != null) {\n                var attr = node.attributes;\n                var attrLength = attr.length;\n                for (var i = 0; i < attrLength; ++i) {\n                    switch (attr[i].nodeName) {\n                        case 'sessionID':\n                            data.sessionId = attr[i].nodeValue;\n                            break;\n                        case 'gameID':\n                            data.gameId = attr[i].nodeValue;\n                            break;\n                        case 'lang':\n                            data.languageCode = attr[i].nodeValue;\n                            break;\n                        case 'versionID':\n                            data.version = attr[i].nodeValue;\n                            break;\n                        case 'isRecovering':\n                            data.isRecovering = attr[i].nodeValue === 'Y';\n                            break;\n                    }\n                }\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\n                if (currencyMultiplierNode != null) {\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\n                }\n                else {\n                    data.currencyMultiplier = 1;\n                }\n            }\n            object.platformData = data;\n        }",
+      "SHA256": "a1fe3d931cd2a1f3ba58c5a3ec506cb903a2b22698b5a39f12816a9221b2917d",
+      "marker": "GLSPlatformParser.prototype.parse ="
+    },
+    "wager": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "byteWindowStart": 302600,
+      "startWithinWindow": 66,
+      "source": "function () {\n            var logicResponse = this._server.getLogicResponse();\n            if (this.betIndex < 0) {\n                return logicResponse.gameResultData.stake;\n            }\n            else {\n                return this.stakes[this.betIndex];\n            }\n        }",
+      "SHA256": "72997c295ddf5e091f5fcecd512890b1b444219baff7dca944254f002de7bbf7",
+      "marker": "WalletModel.prototype.getTotalWagerNumber ="
+    },
+    "handlePlay": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "byteWindowStart": 324700,
+      "startWithinWindow": 97,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._partnerAdapter.receivedGameLogicResponse(this._server.getLogicResquester().getRequestObject());\n            var response = this._server.getLogicResponse();\n            this._basegame.setLogicResponse(response);\n            this._server.logicRequestOpen = true;\n            if (this._walletModel.isMaxWin() || this._forceModel.isMaxWin) {\n                this.eventDispatcher.dispatchEvent(new sgi.GameEvent(sgi.GameEvent.MAX_WIN));\n                this._forceModel.isMaxWin = false;\n            }\n        }",
+      "SHA256": "2c1cc70e9060768c62e89e91d62038d566edf16c3990167a18fe31d4d734f270",
+      "marker": "HandlePlayResponseCmd.prototype.execute ="
+    },
+    "handleEnd": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "byteWindowStart": 320100,
+      "startWithinWindow": 133,
+      "source": "function () {\n            console.log(\"**** HandleEndResponseCmd.prototype.execute\");\n            _super.prototype.execute.call(this);\n            this._partnerAdapter.receivedGameLogicResponse(this._server.getEndResquester().getRequestObject());\n            console.log(\"**** HandleEndResponseCmd.prototype.execute: this._commonuiData.endPlay();\")            \n            this._commonuiData.endPlay();\n            this._server.logicRequestOpen = false;\n        }",
+      "SHA256": "ab83bc35c8bf8690add4594814e59261f79b427427ecbffa7ca853d401a06f72",
+      "marker": "HandleEndResponseCmd.prototype.execute ="
+    },
+    "makeInit": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "byteWindowStart": 329560,
+      "startWithinWindow": 70,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            var encoders = [];\n            if (this._history.getIsHistoryReplay() && !this._server.getInitResponse()) {\n                encoders.push(new sgi.HistoryReplayEncoder(this._history.getNextState()));\n                this._history.restart();\n            }\n            var initData = new server.GLSRequest(encoders);\n            this._server.makeInitRequest(initData);\n        }",
+      "SHA256": "8c70771806494383b3fbc3e97bf1ac67e5e219a5ce052f713760eb1f92cfab2c",
+      "marker": "MakeInitRequestCmd.prototype.execute ="
+    },
+    "makePlay": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+      "byteWindowStart": 330750,
+      "startWithinWindow": 63,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._commonuiData.startPlay();\n            var encoders = this.getEncoders();\n            encoders.push(new server.GLSCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier));\n            var history = this._history.getNextState();\n            if (history) {\n                encoders.push(new sgi.HistoryReplayEncoder(history));\n            }\n            var data = new server.GLSRequest(encoders);\n            this._server.makeLogicRequest(data);\n        }",
+      "SHA256": "1881278b9d5d2b6121a2b9341a73b87170e208948305be98489faf17ebc141b1",
+      "marker": "MakePlayRequestCmd.prototype.execute ="
+    },
+    "resetGame": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 56300,
+      "startWithinWindow": 48,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this.resetReels();\n        }",
+      "SHA256": "7522cf3afde12dbab37f4d7e66f61f0773a704e531092f3bf1a72b51698255e0",
+      "marker": "ResetGameCmd.prototype.execute ="
+    },
+    "showMax": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 85600,
+      "startWithinWindow": 55,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            this._statesModel.doChangeSubGame(sod.SubGames.RESET, sgi.ResetStates.RESET_TRAP);\n            TweenMax.delayedCall(2, this.delayedExecute, [], this, true);\n        }",
+      "SHA256": "efeded8386ec1a4d0df8c53a0a18dcc375ff3c9860cde93564ca2d02fbbb594d",
+      "marker": "ShowMaxWinCmd.prototype.execute ="
+    },
+    "showMaxDelayed": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 85890,
+      "startWithinWindow": 57,
+      "source": "function () {\n            this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.GAME_RESET));\n            JAM.start(\"MAX_WIN_CAP_AWARD\");\n            this._subgamesModel.UIupperLayer.addChild(this._maxWinView);\n            TweenMax.delayedCall(sod.MAX_WIN_TIME, this.eventDispatcher.dispatchEvent, [new sod.GameEvent(sod.GameEvent.MAX_WIN_COMPLETE)], this.eventDispatcher);\n        }",
+      "SHA256": "dba913107cb3fbd56cadacaf38537e5e8bdf5b53ad26e37cf0b7bbee41cbeb62",
+      "marker": "ShowMaxWinCmd.prototype.delayedExecute ="
+    },
+    "resetReels": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 56400,
+      "startWithinWindow": 97,
+      "source": "function () {\n            if (this._commonui.autoplayInProgress) {\n                this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.AUTOPLAY_STOPPED));\n            }\n            if (this._statesModel.getSubGame() !== sod.SubGames.PRE_GAME) {\n                console.log(\"!!!! RESET GAME\");\n                if (this._basegameModel.isFreeSpin) {\n                    this._contextEvents.dispatchEvent(new sod.GameEvent(sod.GameEvent.SWAP_FROM_XZONE));\n                }\n                this._subgamesModel.basegameReels.reelGroup.forceStop([2, 5, 3, 1, 2]);\n                this._subgamesModel.swapToBasegame();\n                this._statesModel.changeSubGame(sgi.SubGames.RESET, sgi.ResetStates.RESET_STATE);\n                this._commonui.endPlay();\n                this._contextEvents.dispatchEvent(new sod.GameEvent(sod.GameEvent.RESET_REELS));\n            }\n        }",
+      "SHA256": "685c04177077ad5bc38552fe9f18c29857bfd09f80846f80e75978a479946edb",
+      "marker": "ResetGameCmd.prototype.resetReels ="
+    },
+    "betParser": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 361560,
+      "startWithinWindow": 64,
+      "source": "function (input, object) {\n            var node = input.getElementsByTagName(\"Stakes\")[0];\n            var data = new server.BetData();\n            if (node != null) {\n                var attributes = node.attributes;\n                data.setDefaultIndex(parseInt(attributes.getNamedItem(\"defaultIndex\").value, 10));\n                data.setAvailableBets(node.textContent.split(\"|\").map(Number));\n            }\n            object.betData = data;\n        }",
+      "SHA256": "766bfc696cc5e51400943dde0f937d1ccf1a8ac027baeb98676ec1b9934be893",
+      "marker": "GLSBetParser.prototype.parse ="
+    },
+    "startRecovery": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 49400,
+      "startWithinWindow": 63,
+      "source": "function () {\n            TweenMax.delayedCall(3, this.doStartRecovery, [], this, true);\n        }",
+      "SHA256": "78ecb2e7155b19bb05c1ce05d0dff12105926286ea5d3b77ff5b80364937328b",
+      "marker": "CheckFreespinRecoveryCmd.prototype.startRecovery ="
+    },
+    "doStartRecovery": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\app\\swordofdestiny.js",
+      "byteWindowStart": 49550,
+      "startWithinWindow": 74,
+      "source": "function () {\n            JAM.start(\"RESET_TO_FS\");\n            this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.RECOVER_FS));\n            this._statesModel.doChangeSubGame(sod.SubGames.FREESPIN_GAME, sod.FreespinStates.STOP_REELS_STATE);\n        }",
+      "SHA256": "0ff534aa2fae59160c90122a88753e34dba654171918580009bcfd02ed5fcf4c",
+      "marker": "CheckFreespinRecoveryCmd.prototype.doStartRecovery ="
+    },
+    "platformConstructor": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 341580,
+      "startWithinWindow": 35,
+      "source": "function PlatformData() {\n        }",
+      "SHA256": "50733c7e1ffc7e1e23b95f874c02ab620ede7162df02879ad7dc38cf3c9d0a40",
+      "marker": "function PlatformData"
+    },
+    "headerConstructor": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\gamelibs.js",
+      "byteWindowStart": 353680,
+      "startWithinWindow": 13,
+      "source": "function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\n            this.GLSID_CASINARENA = \"4\";\n            this.GLSID_FREEPLAY = \"65535\";\n            this.affiliate = sessionData.getContextID();\n            this.freePlay = !metadata.isRealMoney();\n            this.gameCodeRGI = metadata.getGameCode();\n            this.gameId = gameId;\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\n            this.langCode = metadata.getLocale();\n            this.sessionId = glsServerSessionId;\n            this.userId = sessionData.getPlayerID();\n            this.version = gameVersion;\n            this.promotions = false;\n            this.channel = \"I\";\n            this.userType = \"C\";\n            this.currencyCode = \"\";\n        }",
+      "SHA256": "148b9bbceefdb9376a57338f674f26f4b9b61e087f026dc0a23db3882a5be721",
+      "marker": "function GLSHeader"
+    }
+  },
+  "cachedLeaves": {
+    "freeParser": {
+      "namespace": "sod",
+      "method": "FreespinParser.prototype.parse",
+      "characterOffset": 112091,
+      "byteOffset": 112091,
+      "line": 2440,
+      "source": "FreespinParser.prototype.parse = function (input, object) {\n            var fsInfo = input.getElementsByTagName(\"FSInfo\")[0];\n            if (fsInfo === undefined) {\n                return;\n            }\n            var data = {\n                spinNumber: 0,\n                spinsTotal: 0,\n                extraSpins: 0,\n                winning: 0,\n                maxWin: false,\n                multipliers: undefined,\n                removePos: [],\n                addValues: [],\n                lastSpin: false\n            };\n            var fsWinningsStr = fsInfo.attributes.getNamedItem(\"fsWinnings\").value;\n            var freeSpinsTotalStr = fsInfo.attributes.getNamedItem(\"freeSpinsTotal\").value;\n            var freeSpinNumberStr = fsInfo.attributes.getNamedItem(\"freeSpinNumber\").value;\n            var isMaxWinStr = fsInfo.attributes.getNamedItem(\"isMaxWin\").value;\n            data.spinNumber = parseInt(freeSpinNumberStr);\n            data.spinsTotal = parseInt(freeSpinsTotalStr);\n            data.lastSpin = (data.spinNumber === data.spinsTotal);\n            data.winning = parseInt(fsWinningsStr);\n            data.maxWin = (isMaxWinStr === \"Y\");\n            var multipliersNode = input.getElementsByTagName(\"Multipliers\")[0];\n            if (multipliersNode) {\n                var removePosItem = multipliersNode.attributes.getNamedItem(\"removePos\");\n                var addItem = multipliersNode.attributes.getNamedItem(\"add\");\n                var multipliersStr = multipliersNode.textContent;\n                if (removePosItem) {\n                    data.removePos = XMLFilterNumbers(removePosItem.value);\n                }\n                if (addItem) {\n                    data.addValues = XMLFilterNumbers(addItem.value);\n                }\n                if (multipliersStr && multipliersStr.length > 0) {\n                    data.multipliers = XMLFilterNumbers(multipliersStr);\n                }\n            }\n            object.freeSpinData = data;\n        };",
+      "SHA256": "51ee033fa321d55b337eb67afde624c0cad08fd9e685bd9211be651fb6cf7488"
+    },
+    "baseParser": {
+      "namespace": "sod",
+      "method": "BaseGameParser.prototype.parse",
+      "characterOffset": 106304,
+      "byteOffset": 106304,
+      "line": 2304,
+      "source": "BaseGameParser.prototype.parse = function (input, object) {\n            var bgInfo = input.getElementsByTagName(\"BGInfo\")[0];\n            if (bgInfo === undefined) {\n                return;\n            }\n            var bgWinnings;\n            var bgIsMaxWin;\n            var totalWagerWin;\n            try {\n                bgWinnings = bgInfo.attributes.getNamedItem(\"bgWinnings\").value;\n                bgIsMaxWin = bgInfo.attributes.getNamedItem(\"isMaxWin\").value;\n                totalWagerWin = bgInfo.attributes.getNamedItem(\"totalWagerWin\").value;\n            }\n            catch (e) {\n                console.warn(\"!!! Base game parse error !!!\");\n            }\n            var nearWinData = [];\n            var nearWinNodes = input.getElementsByTagName(\"NearPaylineWin\");\n            if (nearWinNodes) {\n                for (var i = 0; i < nearWinNodes.length; i++) {\n                    var anticipationNode = nearWinNodes[i];\n                    var positionNumbers = sod.XMLFilterNumbers(anticipationNode.textContent);\n                    var awardIndex = anticipationNode.attributes.getNamedItem(\"awardIndex\").value;\n                    var awardIndexNumber = parseInt(awardIndex);\n                    nearWinData.push({\n                        positions: positionNumbers,\n                        awardIndex: awardIndexNumber\n                    });\n                }\n            }\n            var data = {\n                winnings: parseInt(bgWinnings),\n                isMaxWin: (bgIsMaxWin === \"1\"),\n                totalWagerWin: parseInt(totalWagerWin),\n                expandedReels: false,\n                featureTrigger: null,\n                bgFeature: sod.BaseGameFeatureType.NONE,\n                nearWins: nearWinData\n            };\n            object.baseGameData = data;\n        };",
+      "SHA256": "79bcbcd6fc766a13244a588047c5b6e9ef7efd2129ca9ea58a8a8b353aca58d4"
+    },
+    "playBody": {
+      "namespace": "sod",
+      "method": "MakePlayRequestCmd.prototype.getEncoders",
+      "characterOffset": 52277,
+      "byteOffset": 52277,
+      "line": 1029,
+      "source": "MakePlayRequestCmd.prototype.getEncoders = function () {\n            var encoders = _super.prototype.getEncoders.call(this);\n            encoders.push(new sod.PlayRequestEncoder(this._wallet.getTotalWagerNumber()));\n            if (this._statesModel.getSubGame() == sod.SubGames.BASE_GAME) {\n                if (this._forceModel.forceSet) {\n                    var forceEncoder = new sod.ForceEncoder(this._forceModel, 0);\n                    encoders.push(forceEncoder);\n                }\n                this._forceModel.reset(true);\n            }\n            else if (this._statesModel.getSubGame() === sod.SubGames.FREESPIN_GAME) {\n                if (this._forceModel.forceSet) {\n                    var forceEncoder = new sod.ForceEncoder(this._forceModel, 1);\n                    encoders.push(forceEncoder);\n                }\n                this._forceModel.reset(true);\n            }\n            return encoders;\n        };",
+      "SHA256": "f3def03f4abe46d182c359a533720b6672277bb218730fcf2e32740819484cdd"
+    },
+    "playEncoder": {
+      "namespace": "sod",
+      "method": "PlayRequestEncoder.prototype.parse",
+      "characterOffset": 118013,
+      "byteOffset": 118013,
+      "line": 2586,
+      "source": "PlayRequestEncoder.prototype.parse = function () {\n            return '<Stake total=\"' + this.stake + '\"/>';\n        };",
+      "SHA256": "60d21646bf517952f2eacdbeac2434744ac2c50e45101a79ceda4289ca0f0ac8"
+    },
+    "freeNext": {
+      "namespace": "sod",
+      "method": "FreespinSpinCmd.prototype.execute",
+      "characterOffset": 89549,
+      "byteOffset": 89549,
+      "line": 1932,
+      "source": "FreespinSpinCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            if (!this._forceModel.forceOpen && !this._forceModel.demoOpen) {\n                var totalSpins = this._server.getLogicResponse().freeSpinData.spinsTotal;\n                var currentSpin = this._server.getLogicResponse().freeSpinData.spinNumber;\n                if (currentSpin == totalSpins) {\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.STOP_CYCLERS));\n                    this._statesModel.changeSubGame(sod.SubGames.FREESPIN_GAME, sod.FreespinStates.TRANSITION_OUT_STATE);\n                }\n                else {\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.FS_SPIN));\n                }\n            }\n        };",
+      "SHA256": "29202fd501190c8687aa8bf4d761fa5a2ad9f2351f72a4a7326bb8219cda357e"
+    },
+    "reelsTrigger": {
+      "namespace": "sod",
+      "method": "ReelsMediator.prototype.onSpinComplete",
+      "plainFunction": false,
+      "characterOffset": 344467,
+      "byteOffset": 344467,
+      "line": 7633,
+      "source": "ReelsMediator.prototype.onSpinComplete = function (e) {\n            console.log(\"***ReelMediator: onSpinComplete\");\n            this.disableStopButton();\n            this.skillStopEnabled = false;\n            {\n                this.spinState = ReelsSpinState.REELS_STOPPED;\n                if (this._statesModel.getSubGame() === sod.SubGames.BASE_GAME &&\n                    this._server.getLogicResponse().jackpotData.jackpotLevels) {\n                    this._statesModel.changeSubGame(sod.SubGames.BASE_GAME, sod.BaseGameStates.JACKPOT_TRIGGER_STATE);\n                }\n                else if (this._statesModel.getSubGame() === sod.SubGames.BASE_GAME &&\n                    this._server.getLogicResponse().reelSpinData[0].bonusAwarded) {\n                    this._statesModel.changeSubGame(sod.SubGames.BASE_GAME, sod.BaseGameStates.BONUS_TRIGGER_STATE);\n                }\n                else {\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.CLEAR_XZONE_SYMBOLS));\n                    console.log(\"*** ReelsMediator: onSpinComplete: Dispached GameEvent.GO_TO_NEXT_STATE\");\n                    this.dispatchContextEvent(new sod.GameEvent(sod.GameEvent.GO_TO_NEXT_STATE));\n                }\n            }\n        };",
+      "SHA256": "b613c31122af2be66220db332b3acd4ed097ca7daa39c964942b1460bb994f1d"
+    },
+    "reelParser": {
+      "namespace": "server",
+      "method": "GLSReelResultParser.prototype.parse",
+      "plainFunction": false,
+      "characterOffset": 372590,
+      "byteOffset": 372590,
+      "line": 8427,
+      "source": "GLSReelResultParser.prototype.parse = function (input, object) {\n            object.reelSpinData = [];\n            var node = input.getElementsByTagName(\"GameResult\")[0];\n            var attributes = node.attributes;\n            var nodeChildren = node.childNodes;\n            for (var i = 0; i < nodeChildren.length; ++i) {\n                if (nodeChildren[i].nodeName == \"ReelResults\") {\n                    this.populateResults(object, nodeChildren[i]);\n                }\n            }\n        };",
+      "SHA256": "c06b310847278082962c45f58e5fd69282c2822922eb06eecd2b5d9a22e8e369"
+    },
+    "reelPopulate": {
+      "namespace": "server",
+      "method": "GLSReelResultParser.prototype.populateResults",
+      "plainFunction": false,
+      "characterOffset": 373098,
+      "byteOffset": 373098,
+      "line": 8438,
+      "source": "GLSReelResultParser.prototype.populateResults = function (object, node) {\n            var spinNode = node.childNodes;\n            for (var spinNodeIndex = 0; spinNodeIndex < spinNode.length; ++spinNodeIndex) {\n                var spinDataSource = spinNode[spinNodeIndex].childNodes;\n                var reelStops;\n                var paylineWins = [];\n                for (var spinDataIndex = 0; spinDataIndex < spinDataSource.length; ++spinDataIndex) {\n                    var spinDataSubType = spinDataSource[spinDataIndex];\n                    var nodeType = spinDataSubType.nodeName;\n                    if (nodeType == \"ReelStops\") {\n                        reelStops = spinDataSubType.textContent.split(\"|\").map(Number);\n                    }\n                    else if (nodeType == \"PaylineWin\") {\n                        var paylineIndex = 0;\n                        var paylineWinVal = 0;\n                        var paylineAwardIndex = 0;\n                        var paylineAwardTableIndex = 0;\n                        var paylineReelPositions = [];\n                        if (spinDataSubType.attributes.getNamedItem(\"index\")) {\n                            paylineIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"index\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"winVal\")) {\n                            paylineWinVal = parseInt(spinDataSubType.attributes.getNamedItem(\"winVal\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"awardIndex\")) {\n                            paylineAwardIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"awardIndex\").value);\n                        }\n                        if (spinDataSubType.attributes.getNamedItem(\"awardTableIndex\")) {\n                            paylineAwardTableIndex = parseInt(spinDataSubType.attributes.getNamedItem(\"awardTableIndex\").value);\n                        }\n                        if (spinDataSubType.textContent) {\n                            paylineReelPositions = spinDataSubType.textContent.split(\"|\").map(Number);\n                        }\n                        paylineWins.push(new server.PaylineWinData(paylineIndex, paylineWinVal, paylineAwardIndex, paylineAwardTableIndex, paylineReelPositions));\n                    }\n                }\n                if (spinNode[spinNodeIndex].nodeName == \"ReelSpin\") {\n                    var spinIndex = 0;\n                    var paylineWinCount = 0;\n                    var scatterWinCount = 0;\n                    var reelsetIndex = 0;\n                    var spinWins = 0;\n                    var freeSpin = false;\n                    var bonusAwarded = false;\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"spinIndex\")) {\n                        spinIndex = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"spinIndex\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountPL\")) {\n                        paylineWinCount = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountPL\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountSC\")) {\n                        scatterWinCount = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"winCountSC\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"reelsetIndex\")) {\n                        reelsetIndex = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"reelsetIndex\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"spinWins\")) {\n                        spinWins = parseInt(spinNode[spinNodeIndex].attributes.getNamedItem(\"spinWins\").value);\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"freeSpin\")) {\n                        freeSpin = spinNode[spinNodeIndex].attributes.getNamedItem(\"freeSpin\").value == \"Y\" ? true : false;\n                    }\n                    if (spinNode[spinNodeIndex].attributes.getNamedItem(\"bonusAwarded\")) {\n                        bonusAwarded = spinNode[spinNodeIndex].attributes.getNamedItem(\"bonusAwarded\").value == \"Y\" ? true : false;\n                    }\n                    object.reelSpinData.push(new server.ReelSpinData(spinIndex, paylineWinCount, scatterWinCount, reelsetIndex, spinWins, freeSpin, bonusAwarded, reelStops, paylineWins));\n                }\n            }\n        };",
+      "SHA256": "993260bf04c7249e63014d4bd4dfc01b3483fa2d5b9430549604f55d25b44a78"
+    },
+    "reelData": {
+      "namespace": "server",
+      "method": "ReelSpinData",
+      "plainFunction": true,
+      "characterOffset": 342744,
+      "byteOffset": 342744,
+      "line": 7725,
+      "source": "function ReelSpinData(spinIndex, paylineWinCount, scatterWinCount, reelsetIndex, spinWins, freeSpin, bonusAwarded, reelStops, paylineWins) {\n            this.spinIndex = spinIndex;\n            this.paylineWinCount = paylineWinCount;\n            this.scatterWinCount = scatterWinCount;\n            this.reelsetIndex = reelsetIndex;\n            this.spinWins = spinWins;\n            this.freeSpin = freeSpin;\n            this.bonusAwarded = bonusAwarded;\n            this.reelStops = reelStops;\n            this.paylineWins = paylineWins;\n        }",
+      "SHA256": "357cf2a9495cd5aec0cff102c261ec6b17d963a40132b3925d7e2b00acc1c22b"
+    },
+    "paylineData": {
+      "namespace": "server",
+      "method": "PaylineWinData",
+      "plainFunction": true,
+      "characterOffset": 340896,
+      "byteOffset": 340896,
+      "line": 7663,
+      "source": "function PaylineWinData(index, winVal, awardIndex, awardTableIndex, reelPositions) {\n            this.index = index;\n            this.winVal = winVal;\n            this.awardIndex = awardIndex;\n            this.awardTableIndex = awardTableIndex;\n            this.reelPositions = reelPositions;\n        }",
+      "SHA256": "97d7ae7a43d727ee1e62d8ddac6d5ff12c916b072004d6dddeb6dd7056eac384"
+    },
+    "filter": {
+      "namespace": "sod",
+      "method": "XMLFilterNumbers",
+      "characterOffset": 111520,
+      "byteOffset": 111520,
+      "line": 2425,
+      "source": "function XMLFilterNumbers(sequence, count) {\n        var results = [];\n        var split = sequence.length > 0 ? sequence.split(\"|\") : [];\n        if (count !== undefined && split.length !== count) {\n            console.warn(\"GLM XML Warning: Count does not match number of elements.\");\n        }\n        for (var i = 0; i < split.length; i++) {\n            results.push(parseInt(split[i]));\n        }\n        return results;\n    }",
+      "SHA256": "d235ca9ff7dc4a25967efc71e32a6b895c1798088100687ce137d4cedeb9c20f"
+    },
+    "jackpotParser": {
+      "namespace": "sod",
+      "method": "JackpotParser.prototype.parse",
+      "characterOffset": 114803,
+      "byteOffset": 114803,
+      "line": 2507,
+      "source": "JackpotParser.prototype.parse = function (input, object) {\n            var watermarksNode = input.getElementsByTagName(\"WatermarkPositions\")[0];\n            if (watermarksNode) {\n                var countStr = watermarksNode.textContent.split(\"|\");\n                var count = countStr.length;\n                var watermarks = sod.XMLFilterNumbers(watermarksNode.textContent, count);\n            }\n            var jackpotInfo = input.getElementsByTagName(\"JackpotInfo\")[0];\n            if (jackpotInfo) {\n                var jackpotLevels = jackpotInfo.textContent.split('|').map(function (item) {\n                    return parseInt(item, 10);\n                });\n            }\n            var data = {\n                jackpotLevels: jackpotLevels,\n                watermarks: watermarks,\n                award: 0,\n                step: 0,\n                results: [],\n                remainingCoins: undefined\n            };\n            var coinData = input.getElementsByTagName(\"CoinData\")[0];\n            if (coinData && coinData.attributes.getNamedItem(\"steps\")) {\n                data.step = parseInt(coinData.attributes.getNamedItem(\"steps\").value);\n                for (var child = 0; child < coinData.childNodes.length; child++) {\n                    var childNode = coinData.childNodes[child];\n                    if (childNode.nodeName === \"Coin\") {\n                        var result = childNode.textContent;\n                        data.results.push(parseInt(result));\n                    }\n                    else if (childNode.nodeName === \"Award\") {\n                        var award = childNode.textContent;\n                        data.award = parseInt(award);\n                    }\n                    else if (childNode.nodeName === \"RemainingCoins\") {\n                        data.remainingCoins = sod.XMLFilterNumbers(childNode.textContent);\n                    }\n                }\n            }\n            object.jackpotData = data;\n        };",
+      "SHA256": "c6b7b12090638cdb7b65485730e2706b1e67eed31d68743f5e3a69e9788aad32"
+    },
+    "walletCash": {
+      "namespace": "sod",
+      "method": "BaseGameModel.prototype.updateBalanceAndWins",
+      "characterOffset": 128823,
+      "byteOffset": 128823,
+      "line": 2821,
+      "source": "BaseGameModel.prototype.updateBalanceAndWins = function () {\n            var isMaxWin = this._wallet.isMaxWin();\n            var isFunPlay = !this._metadata.isRealMoney();\n            var isRecovery = this.isRecovery;\n            var isFreespin = this.logicResponse.reelSpinData[0].freeSpin;\n            var isJackpot = (this.logicResponse.jackpotData.jackpotLevels !== undefined);\n            var isFinalResponse = true;\n            var isFeatureTrigger = this.logicResponse.reelSpinData[0].bonusAwarded && !isFreespin;\n            if (isFreespin) {\n                if (this.logicResponse.freeSpinData.spinNumber !==\n                    this.logicResponse.freeSpinData.spinsTotal) {\n                    isFinalResponse = false;\n                }\n            }\n            else if (isFeatureTrigger && this.logicResponse.freeSpinData) {\n                isFinalResponse = false;\n            }\n            if (isMaxWin) {\n                isFinalResponse = true;\n            }\n            var isInBasegame = this._statesModel.getSubGame() === sod.SubGames.BASE_GAME;\n            var currentState = this._statesModel.getCurrentState().stateName;\n            var isInLogicState = (currentState === sod.BaseGameStates.LOGIC_GLS_STATE ||\n                currentState === sod.FreespinStates.LOGIC_GLS_STATE ||\n                currentState === sod.JackpotStates.LOGIC_GLS_STATE);\n            var isComplete = (isInBasegame && !isInLogicState) || isMaxWin;\n            var reelSpin = this.getReelSpin();\n            var initBalance = this.initResponse.balanceData.getBalance(server.BalanceType.CASH_BALANCE);\n            var logicBalance = this.logicResponse.balanceData.getBalance(server.BalanceType.CASH_BALANCE);\n            var logicTotalWin = this.logicResponse.gameResultData.totalWin;\n            var totalWagerWin = this.logicResponse.baseGameData.totalWagerWin;\n            var bgWinnings = this.logicResponse.baseGameData.winnings;\n            var reelSpinWins = reelSpin.spinWins;\n            if (isRecovery) {\n                var balance = initBalance;\n                if (isFinalResponse && !isComplete) {\n                    balance -= totalWagerWin;\n                }\n                this._wallet.balance = balance;\n            }\n            else if (isComplete) {\n                this._wallet.balance = logicBalance;\n            }\n            else if (isInBasegame) {\n                if (isFinalResponse) {\n                    this._wallet.balance = logicBalance - totalWagerWin;\n                }\n                else {\n                    this._wallet.balance = logicBalance;\n                    if (isFunPlay) {\n                        this._wallet.balance -= bgWinnings;\n                    }\n                }\n            }\n            var baseGameWin = 0.0;\n            var featureWin = 0.0;\n            var totalWin = 0.0;\n            var prevWin = 0.0;\n            if (isJackpot) {\n                baseGameWin = bgWinnings;\n                featureWin = totalWagerWin - bgWinnings;\n                totalWin = totalWagerWin;\n                prevWin = 0.0;\n            }\n            else if (isFreespin) {\n                featureWin = totalWagerWin - bgWinnings;\n                if (isRecovery) {\n                    prevWin = featureWin - logicTotalWin;\n                }\n                else {\n                    prevWin = featureWin - reelSpinWins;\n                }\n            }\n            else if (isFeatureTrigger) {\n                featureWin = 0.0;\n                baseGameWin = 0.0;\n                totalWin = 0.0;\n                prevWin = 0.0;\n            }\n            else {\n                baseGameWin = totalWagerWin;\n                totalWin = totalWagerWin;\n                prevWin = 0.0;\n            }\n            if (isInLogicState) {\n                this._wallet.lastWin = prevWin;\n                this._wallet.win = prevWin;\n            }\n            else {\n                if (isInBasegame) {\n                    this._wallet.lastWin = featureWin;\n                    this._wallet.win = totalWagerWin;\n                }\n                else {\n                    this._wallet.lastWin = prevWin;\n                    this._wallet.win = featureWin;\n                }\n            }\n            this._wallet.featureWin = featureWin;\n            var payloadData = this.logicResponse.payloadData;\n            var payloadType = (isComplete ? sgi.PayloadData.TYPE_OUTCOME : sgi.PayloadData.TYPE_WAGER);\n            var payload = payloadData ? payloadData[payloadType] : undefined;\n            var freeBet = 0.0;\n            var cashBalance = 0.0;\n            if (payload) {\n                this._wallet._payload = true;\n            }\n            if (payload || !this._wallet._payload) {\n                if (isComplete) {\n                    if (payload) {\n                        cashBalance = payload.CASH;\n                        freeBet = payload.FREEBET;\n                    }\n                    else {\n                        cashBalance = this._wallet.balance;\n                    }\n                    this._wallet.freebetBalance = freeBet;\n                    this._wallet.cashBalance = cashBalance;\n                }\n                else if (isInLogicState && isInBasegame) {\n                    if (payload) {\n                        cashBalance = payload.CASH;\n                        freeBet = payload.FREEBET;\n                    }\n                    else {\n                        cashBalance = this._wallet.balance;\n                    }\n                    this._wallet.freebetBalance = freeBet;\n                    this._wallet.cashBalance = cashBalance;\n                }\n            }\n            if (isMaxWin) {\n                this._wallet.lastWin = 0.0;\n                this._wallet.win = totalWagerWin;\n            }\n        };",
+      "SHA256": "a7fd1dec56bd6ff63b6a483146c9dc8e1cd9c7d7d8822f20bb08533ccdffa137"
+    },
+    "setLogicResponse": {
+      "namespace": "sod",
+      "method": "BaseGameModel.prototype.setLogicResponse",
+      "characterOffset": 134611,
+      "byteOffset": 134611,
+      "line": 2957,
+      "source": "BaseGameModel.prototype.setLogicResponse = function (response) {\n            var firstResponse = true;\n            if (this.logicResponse) {\n                firstResponse = false;\n            }\n            if (this.isRecovery && !firstResponse) {\n                this.isRecovery = false;\n            }\n            this.logicResponse = response;\n            this._wallet.setMaxWin(response.baseGameData.isMaxWin);\n            var isFreespin = response.reelSpinData[0].freeSpin;\n            this._isFreeSpin = isFreespin;\n            var isJackpot = (this.logicResponse.jackpotData.jackpotLevels !== undefined);\n            this._isJackpot = isJackpot;\n            if (this.logicResponse.baseGameData.expandedReels) {\n                this.clearAnticipationData();\n            }\n            else {\n                this.fillAnticipationData(isFreespin);\n            }\n            if (this.isRecovery && firstResponse) {\n                this._wallet.handleGameInitialized(true);\n            }\n            this.updateBalanceAndWins();\n        };",
+      "SHA256": "aa8bbee916b5c0e685770476809c5f5dbaa4824146110a496b186882f7f7ba9a"
+    },
+    "nativeEnd": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/swordofdestiny/lib/framework.js",
+      "byteWindowStart": 328000,
+      "startWithinWindow": 368,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            if (!this._history.getIsHistoryReplay()) {\n                if (this._server.logicRequestOpen) {\n                    this._server.makeEndRequest(new server.GLSRequest([]));\n                }\n                else {\n                    this._statesModel.gotoNextState();\n                }\n            }\n        }",
+      "SHA256": "613fe4cb41274e4f466263339a1d0fd29a7978d500797df385baa5c793a03ab9",
+      "marker": "MakeEndRequestCmd.prototype.execute ="
+    },
+    "stateChain": {
+      "namespace": "sod",
+      "method": "SodCreateStatesCmd.prototype.execute",
+      "characterOffset": 189603,
+      "byteOffset": 189603,
+      "line": 4280,
+      "source": "SodCreateStatesCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.HISTORY_RECOVERY_STATE, sod.PreGameStates.PRELOAD_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.PRELOAD_STATE, sod.PreGameStates.INIT_GLS_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.INIT_GLS_STATE, sod.PreGameStates.LOADING_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.LOADING_STATE, sod.PreGameStates.PRERENDER_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.PRERENDER_STATE, sod.PreGameStates.CREATE_GAME_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.CREATE_GAME_STATE, sod.PreGameStates.SHOW_CONTINUE_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.SHOW_CONTINUE_STATE, sod.PreGameStates.RECOVERY_STATE, sod.SubGames.PRE_GAME));\n            this._statesModel.addState(sod.SubGames.PRE_GAME, new sgi.GameState(sod.PreGameStates.RECOVERY_STATE, sod.BaseGameStates.IDLE_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.RESET, new sgi.GameState(sgi.ResetStates.RESET_TRAP, sgi.ResetStates.RESET_TRAP, sod.SubGames.RESET));\n            this._statesModel.addState(sod.SubGames.RESET, new sgi.GameState(sgi.ResetStates.RESET_STATE, sod.BaseGameStates.IDLE_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.IDLE_STATE, sod.BaseGameStates.LOGIC_GLS_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.LOGIC_GLS_STATE, sod.BaseGameStates.PRE_FEATURE_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.PRE_FEATURE_STATE, sod.BaseGameStates.STOP_REELS_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.STOP_REELS_STATE, sod.BaseGameStates.POST_FEATURE_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.POST_FEATURE_STATE, sod.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sod.BaseGameStates.END_GLS_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.END_GLS_STATE, sod.BaseGameStates.IDLE_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.BASEGAME_SPIN_EVAL, sod.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.BONUS_TRIGGER_STATE, sod.FreespinStates.TRANSITION_IN_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.TRANSITION_IN_STATE, sod.FreespinStates.IDLE_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.IDLE_STATE, sod.FreespinStates.LOGIC_GLS_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.LOGIC_GLS_STATE, sod.FreespinStates.STOP_REELS_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.STOP_REELS_STATE, sod.FreespinStates.EXTRA_SPINS_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.EXTRA_SPINS_STATE, sod.FreespinStates.SHOW_PAYLINE_WINS_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.SHOW_PAYLINE_WINS_STATE, sod.FreespinStates.XZONE_LIGHTNING_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.XZONE_LIGHTNING_STATE, sod.FreespinStates.XZONE_DROP_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.XZONE_DROP_STATE, sod.FreespinStates.IDLE_STATE, sod.SubGames.FREESPIN_GAME));\n            this._statesModel.addState(sod.SubGames.FREESPIN_GAME, new sgi.GameState(sod.FreespinStates.TRANSITION_OUT_STATE, sod.BaseGameStates.BASEGAME_SPIN_EVAL, sod.SubGames.BASE_GAME));\n            this._statesModel.addState(sod.SubGames.BASE_GAME, new sgi.GameState(sod.BaseGameStates.JACKPOT_TRIGGER_STATE, sod.JackpotStates.TRANSITION_IN_STATE, sod.SubGames.JACKPOT));\n            this._statesModel.addState(sod.SubGames.JACKPOT, new sgi.GameState(sod.JackpotStates.TRANSITION_IN_STATE, sod.JackpotStates.IDLE_STATE, sod.SubGames.JACKPOT));\n            this._statesModel.addState(sod.SubGames.JACKPOT, new sgi.GameState(sod.JackpotStates.IDLE_STATE, sod.JackpotStates.SHOW_WINS_STATE, sod.SubGames.JACKPOT));\n            this._statesModel.addState(sod.SubGames.JACKPOT, new sgi.GameState(sod.JackpotStates.SHOW_WINS_STATE, sod.JackpotStates.IDLE_STATE, sod.SubGames.JACKPOT));\n            this._statesModel.addState(sod.SubGames.JACKPOT, new sgi.GameState(sod.JackpotStates.TRANSITION_OUT_STATE, sod.BaseGameStates.BASEGAME_SPIN_EVAL, sod.SubGames.BASE_GAME));\n            this._statesModel.init(sod.SubGames.PRE_GAME, sgi.PreGameStates.HISTORY_RECOVERY_STATE);\n        };",
+      "SHA256": "999f3dc3de4f92eedc96e22044b8b6a00d13a3d64a2438081f723adffabf53ad"
+    },
+    "checkFreeRecovery": {
+      "namespace": "sod",
+      "method": "CheckFreespinRecoveryCmd.prototype.execute",
+      "characterOffset": 48855,
+      "byteOffset": 48855,
+      "line": 950,
+      "source": "CheckFreespinRecoveryCmd.prototype.execute = function () {\n            if (this._wallet.isMaxWin()) {\n                return;\n            }\n            var response = this._server.getLogicResponse();\n            if (response.reelSpinData[0].freeSpin && this._statesModel.getCurrentState().stateName === \"BaseGameStates_LOGIC_GLS_STATE\") {\n                this._statesModel.doChangeSubGame(sod.SubGames.BASE_GAME, sod.BaseGameStates.IDLE_STATE);\n                this._loaderModel.callOnXZoneLoaded(this.startRecovery, this);\n            }\n        };",
+      "SHA256": "47576c767e06d9812e2455f093ec1de15345daa997f7f269ed0a188477b18eef"
+    }
+  },
+  "coin": {
+    "bindings": {
+      "coin-source-receiver-locator.json": {
+        "path": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\winB-sod-v6-root-FSInfo-current-parent-reuse\\fresh-scope\\coin-source-receiver-locator.json",
+        "SHA256": "c462b7c200c704120a9e1fe43e497bdf8e221bf54dcca85831e680196982e2fb"
+      },
+      "coin-command-table-binding.json": {
+        "path": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\winB-sod-v6-root-FSInfo-current-parent-reuse\\fresh-scope\\coin-command-table-binding.json",
+        "SHA256": "98d0d0fa6648f9c5585aabc7d8b1aea1b886c2eb3619bdc95ae8860a32476f17"
+      }
+    },
+    "commandTable": {
+      "schema": "B-own-Sword32809-ACK4-CoinData-explicit-command-table-binding-v1",
+      "gameId": "32809",
+      "status": "explicit-context-Jackpot-command-table-closed-source-only",
+      "fixedSource": {
+        "path": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/swordofdestiny/app/swordofdestiny.js",
+        "retainedCertifiedSHA256": "0dcca4f9b4f6c188f4f9f74e02699a250f07d62cce20703bb9d94d273b0b5236",
+        "reauthenticated": false
+      },
+      "priorProofUnmodified": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-sod-v6-root-FSInfo-current-parent-reuse/fresh-scope/coin-source-receiver-locator.json",
+      "constructorBoundaryLocator": {
+        "pattern": "function BaseGameContext|BaseGameContext\\.prototype\\.initialize|BaseGameContext\\.prototype\\.configure|BaseGameContext\\.prototype\\.[A-Za-z]+",
+        "options": [
+          "-n",
+          "-b",
+          "-o"
+        ],
+        "matches": [
+          {
+            "line": 16,
+            "byteOffset": 956,
+            "match": "function BaseGameContext"
+          },
+          {
+            "line": 154,
+            "byteOffset": 14458,
+            "match": "BaseGameContext.prototype.postInject"
+          }
+        ],
+        "initializeOrConfigureMatches": 0
+      },
+      "tableReadScope": {
+        "previousReadWindowsReused": [
+          {
+            "offset": 1650,
+            "length": 600
+          },
+          {
+            "offset": 4380,
+            "length": 500
+          },
+          {
+            "offset": 6500,
+            "length": 1100
+          }
+        ],
+        "newGapWindows": [
+          {
+            "offset": 2250,
+            "length": 2130
+          },
+          {
+            "offset": 4880,
+            "length": 1620
+          },
+          {
+            "offset": 7600,
+            "length": 600
+          }
+        ],
+        "previousConstructorEntryNotReread": true,
+        "wholeConstructorNotReread": true,
+        "selection": "Exact state/event locators over the fixed app and only uncovered commandtable gaps; unrelated later DI/view registration is outside the needed Jackpot mapping proof."
+      },
+      "newGapWindowBodies": [
+        {
+          "offset": 2250,
+          "source": "Cmd, server.ServerResponseEvent.END_RESPONSE);\n            this.mapCommand(sgi.OnGlsErrorCmd, server.ServerResponseEvent.ERROR_RESPONSE);\n            this.mapCommand(sgi.HistoryReplayCmd, sgi.GameStateEvent.EnterState(sgi.PreGameStates.HISTORY_RECOVERY_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sod.HandleRecoveryCmd, sgi.GameStateEvent.EnterState(sgi.PreGameStates.RECOVERY_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sod.RecoverFreeSpinCmd, sod.GameEvent.RECOVER_FS);\n            this.mapCommand(sod.MakePlayRequestCmd, commonui.CommonUIEvent.SPIN_CLICKED);\n            this.mapCommand(sgi.GoToNextStateCmd, commonui.CommonUIEvent.SPIN_CLICKED);\n            this.mapCommand(sod.UpdateBetCmd, commonui.CommonUIEvent.BET_CHANGED);\n            this.mapCommand(sod.MakePlayRequestCmd, sod.GameEvent.FS_SPIN);\n            this.mapCommand(sgi.GoToNextStateCmd, sod.GameEvent.FS_SPIN);\n            this.mapCommand(sgi.StartAutoplayCmd, sod.GameEvent.AUTOPLAY_STARTED);\n            this.mapCommand(sod.DoNextAutoplayCmd, commonui.CommonUIEvent.NEXT_AUTOPLAY);\n            this.mapCommand(sgi.StartWinsCyclersCmd, sod.GameEvent.START_CYCLERS);\n            this.mapCommand(sgi.StopCyclersCmd, sod.GameEvent.STOP_CYCLERS);\n            this.mapCommand(sgi.StopCyclersCmd, commonui.CommonUIEvent.STOP_CLICKED);\n            this.mapCommand(sgi.StopCyclersCmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.LOGIC_GLS_STATE, sod.SubGames.BASE_GAME));\n            this.mapCommand(sgi.StopCyclersCmd, sgi.GameStateEvent.EnterState(sod.FreespinStates.LOGIC_GLS_STATE, sod.SubGames.FREESPIN_GAME));\n            this.mapCommand(sod.CheckPostFeatureUICmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.SHOW_PAYLINE_WINS_STATE, sod.SubGames.BASE_GAME));\n            this.mapCommand(sod.ButtonClickSoundCmd, commonui.CommonUIEvent.BUTTON_CLICKED);\n            this.mapCommand(sod.ButtonClickSoundCmd, commonui.CommonUIEvent.AUTOPLAY_CLICKED);\n            this.mapCommand(sod.ButtonClickSoundCmd, commonui.CommonUIEvent.HELP_PAYS_CLICKED);\n            this.mapCommand(sod.ButtonClickSoundCmd, commonui.CommonUIEve"
+        },
+        {
+          "offset": 4880,
+          "source": "mes.BASE_GAME));\n            this.mapCommand(sod.PostBaseGameFeatureCmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.POST_FEATURE_STATE, sod.SubGames.BASE_GAME));\n            this.mapCommand(sgi.GoToNextStateCmd, sod.GameEvent.SHRINK_REELS_COMPLETE);\n            this.mapCommand(sgi.GoToNextStateCmd, sod.GameEvent.GO_TO_NEXT_STATE);\n            this.mapCommand(sod.ShowMaxWinCmd, sod.GameEvent.MAX_WIN);\n            this.mapCommand(sod.ResetGameCmd, sod.GameEvent.GAME_RESET);\n            this.mapCommand(sod.ShowCommonUICmd, sod.GameEvent.GAME_RESET);\n            this.mapCommand(sod.ShowCommonUICmd, sod.GameEvent.UNHIDE_REELS);\n            this.mapCommand(sod.AddHelpCmd, commonui.CommonUIEvent.HELP_PAYS_CLICKED);\n            this.mapCommand(sod.HideCommonUICmd, commonui.CommonUIEvent.HELP_PAYS_CLICKED);\n            this.mapCommand(sod.ShowExternalHelp, commonui.CommonUIEvent.EXTERNAL_HELP_CLICKED);\n            this.mapCommand(sod.FreespinSpinCmd, sgi.GameStateEvent.EnterState(sod.FreespinStates.IDLE_STATE, sod.SubGames.FREESPIN_GAME));\n            this.mapCommand(sod.BonusTriggerCmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.BONUS_TRIGGER_STATE, sod.SubGames.BASE_GAME));\n            this.mapCommand(sod.StartTransitionToXZoneCmd, sgi.GameStateEvent.EnterState(sod.FreespinStates.TRANSITION_IN_STATE, sod.SubGames.FREESPIN_GAME));\n            this.mapCommand(sod.StartTransitionFromXZoneCmd, sgi.GameStateEvent.EnterState(sod.FreespinStates.TRANSITION_OUT_STATE, sod.SubGames.FREESPIN_GAME));\n            this.mapCommand(sod.AddXZoneCmd, sod.GameEvent.SWAP_TO_XZONE);\n            this.mapComman"
+        },
+        {
+          "offset": 7600,
+          "source": "ERENDER_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sgi.AddLayerContainerCmd, sgi.GameStateEvent.EnterState(sgi.PreGameStates.CREATE_GAME_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sod.AddGameLayersCmd, sgi.GameStateEvent.EnterState(sgi.PreGameStates.CREATE_GAME_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sod.AddCommonUI, sgi.GameStateEvent.EnterState(sgi.PreGameStates.CREATE_GAME_STATE, sod.SubGames.PRE_GAME));\n            this.mapCommand(sod.AddManagersCmd, sgi.GameStateEvent.EnterState(sgi.PreGameStates.CREATE_GAME_STATE, sod.SubGames.PRE_GAM"
+        }
+      ],
+      "explicitJackpotStateMappings": [
+        {
+          "state": "TRANSITION_IN_STATE",
+          "subgame": "sod.SubGames.JACKPOT",
+          "command": "sod.StartTransitionToJackpotCmd",
+          "bindingWindowOffset": 6500,
+          "networkCommand": false,
+          "source": "this.mapCommand(sod.StartTransitionToJackpotCmd, sgi.GameStateEvent.EnterState(sod.JackpotStates.TRANSITION_IN_STATE, sod.SubGames.JACKPOT));"
+        },
+        {
+          "state": "IDLE_STATE",
+          "subgame": "sod.SubGames.JACKPOT",
+          "commands": [],
+          "networkCommand": false,
+          "scope": "No explicit BaseGameContext command binding; state exists in cached state table, local view/mediator controls picks."
+        },
+        {
+          "state": "SHOW_WINS_STATE",
+          "subgame": "sod.SubGames.JACKPOT",
+          "commands": [],
+          "networkCommand": false,
+          "scope": "No explicit BaseGameContext command binding; cached CoinView/TempleTower local mediator handles presentation."
+        },
+        {
+          "state": "TRANSITION_OUT_STATE",
+          "subgame": "sod.SubGames.JACKPOT",
+          "command": "sod.StartTransitionFromJackpotCmd",
+          "bindingWindowOffset": 6500,
+          "networkCommand": false,
+          "source": "this.mapCommand(sod.StartTransitionFromJackpotCmd, sgi.GameStateEvent.EnterState(sod.JackpotStates.TRANSITION_OUT_STATE, sod.SubGames.JACKPOT));"
+        },
+        {
+          "state": "LOGIC_GLS_STATE",
+          "subgame": "sod.SubGames.JACKPOT",
+          "commands": [],
+          "networkCommand": false,
+          "scope": "Constant and wallet comparison exist; no explicit Jackpot Logic request state binding in this context."
+        }
+      ],
+      "explicitJackpotRelatedEventMappings": [
+        {
+          "event": "sod.GameEvent.SWAP_TO_TEMPLETOWER",
+          "command": "sod.AddJackpotCmd",
+          "networkCommand": false,
+          "bindingWindowOffset": 6500
+        },
+        {
+          "event": "sod.GameEvent.SWAP_TO_TEMPLETOWER",
+          "command": "sod.HideCommonUICmd",
+          "networkCommand": false,
+          "bindingWindowOffset": 6500
+        },
+        {
+          "event": "sod.GameEvent.SWAP_FROM_TEMPLETOWER",
+          "command": "sod.RemoveJackpotCmd",
+          "networkCommand": false,
+          "bindingWindowOffset": 6500
+        },
+        {
+          "event": "sod.GameEvent.COIN_SELECTED",
+          "commands": [],
+          "scope": "No explicit BaseGameContext command binding; previous event locator enumerated local view/mediator receivers."
+        },
+        {
+          "event": "sod.GameEvent.PILE_SELECTED",
+          "commands": [],
+          "scope": "No explicit BaseGameContext command binding; previous event locator enumerated local view/mediator receivers."
+        },
+        {
+          "event": "sod.GameEvent.JACKPOT_WIN_COMPLETE",
+          "commands": [],
+          "scope": "No explicit BaseGameContext command binding; previous event locator enumerated local view/mediator receivers."
+        }
+      ],
+      "preJackpotEntry": {
+        "state": "sod.BaseGameStates.JACKPOT_TRIGGER_STATE",
+        "subgame": "sod.SubGames.BASE_GAME",
+        "command": "sod.JackpotTriggerCmd",
+        "bindingWindowOffset": 6500,
+        "cachedExecuteOffset": 65207,
+        "cachedMeaning": "this._statesModel.gotoNextState()",
+        "networkCommand": false
+      },
+      "newNecessaryCalleeReadWindows": [
+        {
+          "offset": 64446,
+          "length": 650
+        },
+        {
+          "offset": 66136,
+          "length": 600
+        },
+        {
+          "offset": 67808,
+          "length": 650
+        },
+        {
+          "offset": 78614,
+          "length": 750
+        }
+      ],
+      "newCompleteCalleeBodies": [
+        {
+          "symbol": "AddJackpotCmd.prototype.execute",
+          "byteOffset": 64446,
+          "inheritance": "dragonwings.Command",
+          "source": "AddJackpotCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this._subgamesModel.jackpotLayer.addChild(this._templeTowerView);\n        };"
+        },
+        {
+          "symbol": "RemoveJackpotCmd.prototype.execute",
+          "byteOffset": 66136,
+          "inheritance": "dragonwings.Command",
+          "source": "RemoveJackpotCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this.removeTopChildFromLayer(this._subgamesModel.jackpotLayer);\n        };"
+        },
+        {
+          "symbol": "StartTransitionToJackpotCmd.prototype.execute",
+          "byteOffset": 67808,
+          "inheritance": "dragonwings.Command",
+          "source": "StartTransitionToJackpotCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this._subgamesModel.transitionLayer.addChild(this._templeTowerTransitionView);\n            this._templeTowerTransitionView.startTransitionIn();\n        };"
+        },
+        {
+          "symbol": "HideCommonUICmd.prototype.execute",
+          "byteOffset": 78614,
+          "inheritance": "dragonwings.Command",
+          "source": "HideCommonUICmd.prototype.execute = function () {\n            this._commonuiData.disableDesktopBetPanel();\n            this._commonuiData.disableStopButton();\n            this._commonuiData.disableUI();\n        };"
+        }
+      ],
+      "actualNetworkEntryBindings": [
+        {
+          "command": "sod.MakePlayRequestCmd",
+          "event": "commonui.CommonUIEvent.SPIN_CLICKED",
+          "windowOffset": 2250
+        },
+        {
+          "command": "sod.MakePlayRequestCmd",
+          "event": "sod.GameEvent.FS_SPIN",
+          "windowOffset": 2250
+        },
+        {
+          "command": "sgi.MakeEndRequestCmd",
+          "state": "sod.BaseGameStates.END_GLS_STATE",
+          "subgame": "sod.SubGames.BASE_GAME",
+          "reusedWindowOffset": 1650
+        },
+        {
+          "command": "sgi.MakeEndRequestCmd",
+          "state": "sgi.ResetStates.RESET_STATE",
+          "subgame": "sod.SubGames.RESET",
+          "reusedWindowOffset": 1650
+        }
+      ],
+      "conclusions": {
+        "completeExplicitContextJackpotStateAndRelevantEventMappingsEnumerated": true,
+        "anyMakePlayOrLogicNetworkCommandBoundToJackpotStatesOrPickEvents": false,
+        "localJackpotPicksConsumeSameLogicCoinData": true,
+        "localCompletionEntersOriginalEndCommand": true,
+        "displayBaseGamePaylinesOrBigWinReroutesBonusYToFREE": false,
+        "FREEBranchDistinguished": "The context binds FreespinSpinCmd only to FREESPIN_GAME IDLE and MakePlayRequestCmd to FS_SPIN. The located jackpot exit path enters BASE_GAME BASEGAME_SPIN_EVAL, whose actual command only starts local win presentation.",
+        "noMoneyEqualityAdmissionGateAdded": true,
+        "currentNoFSInfoDoesNotRequireInventedFREERequestInLocatedJackpotPath": true,
+        "actualProviderEndACKProved": false,
+        "runtimeChanged": false,
+        "productionReadyOrAdmissionCertified": false
+      },
+      "limits": [
+        "This is the explicit fixed-app BaseGameContext command table and its named local callees. Inherited context setup, dragonwings.Command implementation, other contexts, generic runtime event machinery and dynamic aliases were not re-audited.",
+        "No whole-SDK dynamic-alias negative proof is required or claimed.",
+        "The source path authorizes mapping a future actual next request to original End handling; it is not an actual End ACK or full-money/natural20 certificate."
+      ],
+      "operations": {
+        "newContextBoundaryLocatorScans": 1,
+        "newExactNamedCalleeLocatorScans": 1,
+        "newTableGapWindows": 3,
+        "newCalleeWindows": 4,
+        "wholeConstructorReads": 0,
+        "oldCoveredWindowsRereadThisFollowup": 0,
+        "StonePickLocatorScans": 0,
+        "SDKASTRuns": 0,
+        "oldHashWalks": 0,
+        "archiveReads": 0,
+        "tests": 0,
+        "remoteRequests": 0,
+        "DBReads": 0,
+        "DBWrites": 0,
+        "sourceDispatches": 0,
+        "sharedWrites": 0,
+        "newEndCertificates": 0,
+        "newFinalCredits": 0
+      }
+    },
+    "localReceivers": {
+      "schema": "B-own-Sword32809-ACK4-CoinData-source-receiver-locator-v1",
+      "gameId": "32809",
+      "status": "source-path-to-original-End-command-located-no-runtime-change",
+      "fixedSource": {
+        "path": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/swordofdestiny/app/swordofdestiny.js",
+        "retainedCertifiedSHA256": "0dcca4f9b4f6c188f4f9f74e02699a250f07d62cce20703bb9d94d273b0b5236",
+        "reauthenticated": false
+      },
+      "newFaultReference": "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-sod-v6-root-FSInfo-current-parent-reuse/fresh-scope/first-natural-fault-decoded.json",
+      "faultReferenceRole": "parent-reported existing uniquely decoded ACK4; not reread or re-extracted in this review",
+      "cachedReferences": [
+        "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-os-v3-32794-current-parent-reuse/current-source-next-preparation/source-bridge.json",
+        "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-os-v3-32794-current-parent-reuse/current-source-next-preparation/provider-locator.json",
+        "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-os-v2/sword-own-jackpot-six-fragment-review.json",
+        "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-sod-src-v2/source-methods.json",
+        "C:/Users/xxx/Documents/Codex/2026-10-07/zhe/work/ag-reuse-sg/winB-os-v1/own-sword-initial-trigger-source-methods-private.json"
+      ],
+      "cachedStonePickLocatorReused": {
+        "exactMatches": 6,
+        "newStonePickScans": 0,
+        "directNamedConstructionOrRegistrationMatches": 0,
+        "allExistingHitsDefinitionReturnExport": true,
+        "dynamicAliasAbsenceNotClaimed": true
+      },
+      "newEventLocator": {
+        "pattern": "COIN_SELECTED|PILE_SELECTED|JACKPOT_WIN_COMPLETE|JackpotStates\\.TRANSITION_OUT|JackpotStates\\.PICK",
+        "options": [
+          "-n",
+          "-b",
+          "-o"
+        ],
+        "fileCount": 1,
+        "matchCount": 21,
+        "matches": [
+          {
+            "line": 75,
+            "byteOffset": 7033,
+            "match": "JackpotStates.TRANSITION_OUT",
+            "role": "new command binding: StartTransitionFromJackpotCmd"
+          },
+          {
+            "line": 2646,
+            "byteOffset": 121098,
+            "match": "PILE_SELECTED",
+            "role": "event constant definition"
+          },
+          {
+            "line": 2646,
+            "byteOffset": 121125,
+            "match": "PILE_SELECTED",
+            "role": "event constant value"
+          },
+          {
+            "line": 2647,
+            "byteOffset": 121159,
+            "match": "COIN_SELECTED",
+            "role": "event constant definition"
+          },
+          {
+            "line": 2647,
+            "byteOffset": 121186,
+            "match": "COIN_SELECTED",
+            "role": "event constant value"
+          },
+          {
+            "line": 2650,
+            "byteOffset": 121348,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "event constant definition"
+          },
+          {
+            "line": 2650,
+            "byteOffset": 121382,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "event constant value"
+          },
+          {
+            "line": 4314,
+            "byteOffset": 195564,
+            "match": "JackpotStates.TRANSITION_OUT",
+            "role": "cached SodCreateStatesCmd transition edge"
+          },
+          {
+            "line": 4378,
+            "byteOffset": 198518,
+            "match": "JackpotStates.TRANSITION_OUT",
+            "role": "state constant definition"
+          },
+          {
+            "line": 8401,
+            "byteOffset": 378565,
+            "match": "COIN_SELECTED",
+            "role": "cached CoinMediator context listener"
+          },
+          {
+            "line": 8403,
+            "byteOffset": 378742,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "previously read CoinMediator local listener; raw body not reread"
+          },
+          {
+            "line": 8410,
+            "byteOffset": 379199,
+            "match": "COIN_SELECTED",
+            "role": "cached CoinMediator dispatch"
+          },
+          {
+            "line": 8453,
+            "byteOffset": 380776,
+            "match": "PILE_SELECTED",
+            "role": "cached CoinPileMediator context listener"
+          },
+          {
+            "line": 8455,
+            "byteOffset": 380942,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "previously read CoinPileMediator local listener; raw body not reread"
+          },
+          {
+            "line": 8469,
+            "byteOffset": 381637,
+            "match": "PILE_SELECTED",
+            "role": "cached CoinPileMediator dispatch"
+          },
+          {
+            "line": 8859,
+            "byteOffset": 396797,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "new TempleTowerLadderMediator view-event to context-event bridge"
+          },
+          {
+            "line": 9036,
+            "byteOffset": 405194,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "cached TempleTowerLadderView local finalPick dispatch"
+          },
+          {
+            "line": 9337,
+            "byteOffset": 416860,
+            "match": "PILE_SELECTED",
+            "role": "cached TempleTowerMediator local receiver"
+          },
+          {
+            "line": 9339,
+            "byteOffset": 417038,
+            "match": "COIN_SELECTED",
+            "role": "cached TempleTowerMediator local receiver"
+          },
+          {
+            "line": 9340,
+            "byteOffset": 417125,
+            "match": "JACKPOT_WIN_COMPLETE",
+            "role": "previously read TempleTowerMediator local receiver; raw body not reread"
+          },
+          {
+            "line": 9370,
+            "byteOffset": 418418,
+            "match": "JackpotStates.TRANSITION_OUT",
+            "role": "cached TempleTowerMediator.onShowFeatureOver"
+          }
+        ],
+        "noPickStateLiteralMatches": true,
+        "wholeSourceLinesPrinted": false
+      },
+      "newNecessaryReadWindows": [
+        {
+          "offset": 198050,
+          "length": 1000
+        },
+        {
+          "offset": 396450,
+          "length": 900
+        },
+        {
+          "offset": 6500,
+          "length": 1100
+        },
+        {
+          "offset": 50920,
+          "length": 1100
+        },
+        {
+          "offset": 66822,
+          "length": 700
+        },
+        {
+          "offset": 1650,
+          "length": 600
+        },
+        {
+          "offset": 431733,
+          "length": 1500
+        },
+        {
+          "offset": 435386,
+          "length": 1200
+        },
+        {
+          "offset": 433666,
+          "length": 562
+        },
+        {
+          "offset": 4380,
+          "length": 500
+        },
+        {
+          "offset": 68739,
+          "length": 2100
+        }
+      ],
+      "earlierPreviouslyCoveredReadWindowsBeforeParentClarification": [
+        {
+          "offset": 170326,
+          "length": 2100
+        },
+        {
+          "offset": 418284,
+          "length": 1000
+        }
+      ],
+      "newCompleteCalleeBodies": [
+        {
+          "symbol": "TempleTowerLadderMediator.prototype.onAdded",
+          "windowOffset": 396450,
+          "source": "TempleTowerLadderMediator.prototype.onAdded = function () {\n            this.view = this.getViewComponent();\n            this.addContextListener(sod.GameEvent.SWAP_FROM_TEMPLETOWER, this.onRemoveChildren);\n            this.addEventListener(this.view, sod.GameEvent.JACKPOT_WIN_COMPLETE, this.dispatchContextEvent, this);\n            this.addEventListener(this.view, sod.GameEvent.TOWER_COUNT_DOWN, this.dispatchContextEvent, this);\n        };"
+        },
+        {
+          "symbol": "StartTransitionFromJackpotCmd.prototype.execute",
+          "byteOffset": 66822,
+          "source": "StartTransitionFromJackpotCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this._subgamesModel.transitionLayer.addChild(this._templeTowerTransitionView);\n            this._templeTowerTransitionView.startTransitionOut();\n        };",
+          "inheritance": "dragonwings.Command"
+        },
+        {
+          "symbol": "DisplayBaseGamePaylinesCmd.prototype.execute",
+          "byteOffset": 50920,
+          "source": "DisplayBaseGamePaylinesCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.BASE_GAME_MUSIC_PLAY));\n            this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.START_BIG_WIN));\n        };",
+          "inheritance": "dragonwings.Command"
+        },
+        {
+          "symbol": "TempleTowerTransitionView.prototype.startTransitionOut",
+          "byteOffset": 431733,
+          "source": "TempleTowerTransitionView.prototype.startTransitionOut = function () {\n            JAM.start(\"PICK_OUTRO\");\n            this.createAssets();\n            this._closeDoor();\n        };"
+        },
+        {
+          "symbol": "TempleTowerTransitionView.prototype._closeDoor",
+          "byteOffset": 435386,
+          "source": "TempleTowerTransitionView.prototype._closeDoor = function () {\n            this._leftDoor.alpha = this._rightDoor.alpha = 1;\n            var timeline = new TimelineMax();\n            timeline.fromTo(this._rightDoor, 2.0, {\n                \"x\": 1140\n            }, {\n                \"x\": 540\n            }, 0.0);\n            timeline.fromTo(this._leftDoor, 2.0, {\n                \"x\": -600\n            }, {\n                \"x\": 0\n            }, 0.0);\n            var time = 6.75;\n            timeline.call(this._fadeInTally, [], this, 2.0);\n            timeline.call(this._fadeOutTally, [], this, 2.0 + time);\n            timeline.call(this._openDoor, [], this, 2.0 + time);\n            timeline.call(this._swapFromJackpot, [], this, 2.0 + time);\n            timeline.call(this._finishTransition, [], this, 3.0 + time);\n            this.timelines.push(timeline);\n        };"
+        },
+        {
+          "symbol": "TempleTowerTransitionView.prototype._finishTransition",
+          "byteOffset": 433666,
+          "source": "TempleTowerTransitionView.prototype._finishTransition = function () {\n            this.clearTimelines();\n            this.parent.removeChild(this);\n            this._statesModel.gotoNextState();\n        };"
+        },
+        {
+          "symbol": "TempleTowerTransitionView.prototype._swapFromJackpot",
+          "windowOffset": 433666,
+          "source": "TempleTowerTransitionView.prototype._swapFromJackpot = function () {\n            this.dispatchEvent(new sod.GameEvent(sod.GameEvent.SWAP_FROM_TEMPLETOWER));\n        };"
+        },
+        {
+          "symbol": "BigWinCmd.prototype.execute",
+          "byteOffset": 68739,
+          "source": "BigWinCmd.prototype.execute = function () {\n            _super.prototype.execute.call(this);\n            var winData = this._basegameModel.getWinData();\n            this._basegameModel.bangUpDuration = 0.0;\n            switch (winData.winLevel) {\n                case sod.BigWinLevel.NONE:\n                    if (winData.coinShower) {\n                        this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.COIN_SHOWER));\n                    }\n                    var resetFromZero = true;\n                    var reelSpin = this._server.getLogicResponse().reelSpinData[0];\n                    if (reelSpin.freeSpin) {\n                        resetFromZero = false;\n                    }\n                    var duration = this._bangup.startBangupCalculateDuration(winData.totalWin, sod.LOW_TIER_WIN_MULTIPLIER * this._wallet.getBetNumber(), 'BASEGAME_BANGUP_LOW', 'BASEGAME_BANGUP_END_LOW', resetFromZero, sod.BANG_UP_PROFILE);\n                    this._basegameModel.bangUpDuration = duration;\n                    this.eventDispatcher.dispatchEvent(new sod.WinMeterEvent(winData.currentWin, duration));\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.MAIN_SPIN_COMPLETE));\n                    break;\n                case sod.BigWinLevel.LOW_TIER:\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.LEGENDARY_WIN));\n                    break;\n                case sod.BigWinLevel.HIGH_TIER:\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.EPIC_WIN));\n                    break;\n                default:\n                    this.eventDispatcher.dispatchEvent(new sod.GameEvent(sod.GameEvent.MAIN_SPIN_COMPLETE));\n                    console.warn(\"bad win data\");\n                    break;\n            }\n        };"
+        }
+      ],
+      "newCommandBindings": [
+        {
+          "windowOffset": 6500,
+          "literal": "this.mapCommand(sod.StartTransitionFromJackpotCmd, sgi.GameStateEvent.EnterState(sod.JackpotStates.TRANSITION_OUT_STATE, sod.SubGames.JACKPOT));",
+          "role": "local transition command"
+        },
+        {
+          "windowOffset": 6500,
+          "literal": "this.mapCommand(sod.DisplayBaseGamePaylinesCmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.BASEGAME_SPIN_EVAL, sod.SubGames.BASE_GAME));",
+          "role": "local display command"
+        },
+        {
+          "windowOffset": 1650,
+          "literal": "this.mapCommand(sgi.MakeEndRequestCmd, sgi.GameStateEvent.EnterState(sod.BaseGameStates.END_GLS_STATE, sod.SubGames.BASE_GAME));",
+          "role": "original End request entry"
+        },
+        {
+          "windowOffset": 4380,
+          "literal": "this.mapCommand(sod.BigWinCmd, sod.GameEvent.START_BIG_WIN);",
+          "role": "local win presentation command"
+        },
+        {
+          "windowOffset": 4380,
+          "literal": "this.mapCommand(sgi.GoToNextStateCmd, sod.GameEvent.MAIN_SPIN_COMPLETE);",
+          "role": "original state advance"
+        }
+      ],
+      "sourceConclusions": {
+        "coinResultsArePreloadedInSameLogicResponse": true,
+        "totalPicksFromCoinDataStepsNotHardcodedFrequencyGate": true,
+        "observedSteps3CanDriveThreeLocalPicks": true,
+        "jackpotSelectionPrecedesBonusAwardedFREEBranch": true,
+        "transitionOutViewDrivesGotoNextState": true,
+        "basegameSpinEvalCommandReadsBonusAwardedOrFreeSpinData": false,
+        "bigWinCommandReadsBonusAwardedOrFreeSpinData": false,
+        "bigWinFreeSpinReadOnlyAffectsBangupReset": true,
+        "sourcePathToOriginalMakeEndRequestCmdLocated": true,
+        "newProviderRequestNeededByLocatedCoinHandlers": false,
+        "noDirectStonePickCallerInReusedExactLocator": true,
+        "wholeDynamicAliasRequestGraphAbsenceProved": false,
+        "allJackpotCommandMappingsEnumeratedFromCompleteCommandTable": false,
+        "cacheNamedAsCompleteCommandTableWasActuallyParserReelMethodsOnly": true,
+        "noEndFromBonusYOrMoneySumInference": true,
+        "newEndACKProved": false,
+        "naturalTwentyCompleted": false,
+        "runtimeGuardRelaxationMade": false
+      },
+      "minimumResidualEvidence": [
+        "Complete already-cached command/receiver table was not present in the parent-specified parser/reel cache; use correct existing table to rule out any uninspected alias/dynamic Jackpot request binding.",
+        "Actual original End request/ACK and original full money/finite-loop behavior remain future authorized runtime evidence, never synthesized."
+      ],
+      "operations": {
+        "newFixedFileExactLocatorScans": 6,
+        "SDKASTRuns": 0,
+        "wholeSDKScans": 0,
+        "oldHashWalks": 0,
+        "archiveReads": 0,
+        "tests": 0,
+        "remoteRequests": 0,
+        "DBReads": 0,
+        "DBWrites": 0,
+        "sourceDispatches": 0,
+        "sharedWrites": 0,
+        "newProviderACKs": 0,
+        "newEndCertificates": 0,
+        "newFinalCredits": 0
+      }
+    }
+  },
+  "baseRecovery": {
+    "sourceMeaning": {
+      "tagDoesNotItselfSetRecovering": true,
+      "parserReadsHeaderOrChangesSubgameOrRequestsServer": false,
+      "normalFreeGetReelSpinSelectsMainReelSpinData0": true,
+      "baseSnapshotOnlySelectedByGetReelSpinWhileBASE_GAME": true,
+      "getBaseGameReelSpinOnlyLocatedCallerRestoresBaseReelsWhenLeavingXZone": true,
+      "locatedCallerConstructsOrSendsProviderRequest": false,
+      "locatedCallerChangesFreeCountersOrNextSelector": false,
+      "freeContinuationStillUsesActualDocumentFirstFSInfo": true,
+      "FSInfoFirstDocumentPreservesCurrentFreeDataEvenWhenBaseGameRecoveryInfoPresent": true,
+      "normalFreeNextUsesExistingActualPlayedTotalPredicate": true,
+      "HeaderNDoesNotMeanBaseGameRecoveryInfoMustBeAbsent": true,
+      "noInitialOrTrueRecoveryFlowAdmittedByThisReview": true
+    },
+    "fixedSources": {
+      "app": {
+        "path": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/swordofdestiny/app/swordofdestiny.js",
+        "retainedCertifiedSHA256": "0dcca4f9b4f6c188f4f9f74e02699a250f07d62cce20703bb9d94d273b0b5236"
+      },
+      "framework": {
+        "retainedCertifiedSHA256": "8c466d57a4d16d5e050444b901f5ee8eff050ecd918aa62a5df8cc39a28ea67d"
+      },
+      "gamelibs": {
+        "retainedCertifiedSHA256": "64d5f6f4be5de05e37bd3ebda3f20af067307c47db25fc695444b3b09e05b49f"
+      },
+      "reauthenticated": false
+    }
+  },
+  "openConstructor": {
+    "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\swordofdestiny\\lib\\framework.js",
+    "byteWindowStart": 293600,
+    "source": "    __extends(ServerModel, _super);\n        function ServerModel() {\n            _super.call(this, null, \"\", \"\", null, null);\n            this.logicRequestOpen = false;\n        }\n        ServerModel.prototype.makeEventsGlobal = function () ",
+    "constructorLine": 6289,
+    "SHA256": "c8abcc07aec65e4b5e14772d71fd6e07915aefbb5de1f140189ff3715df73139"
+  },
+  "currentExecutionUnknownBodyRead": false,
+  "retiredReferenceNotInstalled": true
+}
