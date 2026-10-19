@@ -41,7 +41,7 @@ exports.createOwn32815WireNextEndDATA=function({DOM,vm,data}){
    else if(name===sg.BaseGameStates.WF_CHECK_WHEEL_FEATURE_REMAINING)own.remainingWheel.call(context);
    else if(name===sg.BaseGameStates.GO_TO_BONUS_STATE){if(type.isFG){need(dto.fsData,'CURRENT_FREE_MODE_DATA');model.changeStateByName(dto.fsData.lastFreeSpin?sg.BaseGameStates.FG_COMPLETE:sg.BaseGameStates.LOGIC_GLS_STATE)}else model.gotoNextState()}
    else if(name===sg.BaseGameStates.FG_TRIGGERED)own.enterFree.call(context);
-   else if(name===sg.BaseGameStates.WF_UPGRADE)own.upgrade.call(context);
+   else if(name===sg.BaseGameStates.WF_UPGRADE)model.gotoNextState(); // Native upgrade callback only advances to WF_START; no UI timer is executed.
    else if(name===sg.BaseGameStates.FG_COMPLETE)model.gotoNextState();
    else if(name===sg.BaseGameStates.FG_OUTRO_TRANSITION){type.isFG=false;model.gotoNextState()}
    else model.gotoNextState(); // frozen own graph: opaque local display completion
