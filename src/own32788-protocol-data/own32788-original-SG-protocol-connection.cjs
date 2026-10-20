@@ -53,7 +53,17 @@ exports.createOwn32788OriginalSGConnection=function({game,sessionScope,DOM,data,
   initial(){const s=open();need(init&&phase==='idle'&&!pending&&!inflight&&s.action==='SPIN'&&Number.isSafeInteger(s.balanceRaw),'original paid issue from actual idle');round=Object.freeze({sessionScope,roundOrdinal:++roundOrdinal,startBalanceRaw:s.balanceRaw});flow.begin();nativePort?.close();control=null;nativePort=null;controlReceipt=null;controlContinuationDispatch=null;choice=null;logicOrdinal=0;mapped=null;lastResult=null;mappingTaken=false;protocolState=Object.freeze({stage:'base'});visibleProtocolState=protocolState;phase='paid-ready';const q=issue('Logic',{...game.sg.stake},native('Logic',s.sessionID));return {event:q.event,parameters:q.parameters}},
   exact(action){open();need(action===nextAction,'original next matches current source');if(choice&&!pending){const t=choice.prepareNext();issue(t.event,t.parameters,t.requestPayload,t)}need(pending&&['FREE_SPIN','PLAY'].includes(action),'current original source followup');return {event:pending.event,parameters:pending.parameters}},
   pickProtocol(action){open();need(action===nextAction,'current original source action');return choice&&action==='PICK'?choice.pickProtocol():undefined;},
-  currentOriginalMapping(g,first){open();need(current?.msgId==='Logic'&&mapped&&!mappingTaken&&first===(logicOrdinal===1)&&g&&Number(g.stake)===game.sg.betRaw&&g.GameWinInfo&&g.GameWinInfo.totalWagerWin!==''&&g.GameWinInfo.totalWagerWin!==null&&Number(g.GameWinInfo.totalWagerWin)===mapped.sourceCumulativeWin,'one original raw money mapping');mappingTaken=true;return {win:mapped.sourceCumulativeWin,free:mapped.free,next:nextAction,sourceProtocolKind:mapped.sourceProtocolKind}},
+  currentOriginalMapping(g,first){
+   open();let rawWin=g?.GameWinInfo?.totalWagerWin;
+   if(mapped?.sourcePrimaryMoney==='GameResponse.GameWinInfo.totalWagerWin'){
+    const root=doc(current.responsePayload).documentElement;
+    const cash=Array.from(root.childNodes||[]).filter(n=>n.nodeType===1&&n.nodeName==='GameWinInfo');
+    need(choice&&cash.length===1&&g&&g.GameWinInfo===undefined&&g.totalWin!==undefined&&g.totalWin!==''&&Number(g.totalWin)===mapped.sourceCurrentResultWinRaw,'actual selected LIL intermediate root money');
+    rawWin=cash[0].getAttribute('totalWagerWin');
+   }
+   need(current?.msgId==='Logic'&&mapped&&!mappingTaken&&first===(logicOrdinal===1)&&g&&Number(g.stake)===game.sg.betRaw&&rawWin!==undefined&&rawWin!==''&&rawWin!==null&&Number(rawWin)===mapped.sourceCumulativeWin,'one original raw money mapping');
+   mappingTaken=true;return {win:mapped.sourceCumulativeWin,free:mapped.free,next:nextAction,sourceProtocolKind:mapped.sourceProtocolKind};
+  },
   finishOriginalResult(event,result){const s=open();need(s.action===nextAction&&result?.NextActionInfo?.nextAction===nextAction&&current?.msgId===event,'original result and source next agree');if(event==='Logic')need(mappingTaken&&result.money?.totalWinRaw===mapped.sourceCumulativeWin,'original source money preserved');lastResult=result;return result},
   seal(error){nativePort?.close();control?.seal();pager.seal(error);if(!sealed)sealed=error||new Error('Original own32788 session closed');phase='sealed'},
   status(){return {phase,sealed:!!sealed,roundOrdinal,pendingRetained:!!pending,inflightRetained:!!inflight,acceptedInitRetained:!!init,retryAllowed:false,newProviderACKAssessed:false}}
