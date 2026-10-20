@@ -1,0 +1,42 @@
+{
+  "scope": "Only exact known AddAndPlayFSTransition/TransitionView/TransitionMediator symbols and nearby original MakeLogic map; old SDK pins/encoders reused.",
+  "sourceFile": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\lockitlink\\app\\js\\main.js",
+  "leaves": {
+    "addIntro": {
+      "firstLine": 15307,
+      "source": "function () {\n            _super.prototype.execute.call(this);\n            var bonusAwarded = false;\n            if (this._server.getLogicResponse().reelSpinData.length > 0)\n                bonusAwarded = this._server.getLogicResponse().reelSpinData[0].bonusAwarded;\n            bonusAwarded = bonusAwarded || sgigame.HandleIncompleteGameCmd.IS_FREESPIN_RECOVERY || sgigame.HandleIncompleteGameCmd.IS_FEATURE_SELECTION_RECOVERY;\n            bonusAwarded = bonusAwarded || sgigame.HistoryModel.HANDLE_TRANSITION_LOGIC_HISTORY;\n            if (sgigame.HistoryModel.HANDLE_TRANSITION_LOGIC_HISTORY)\n                sgigame.HistoryModel.HANDLE_TRANSITION_LOGIC_HISTORY = false;\n            this._transitionView.init(bonusAwarded);\n            this._subgamesModel.fsTransitionLayer = this._fsTransitionLayer;\n            this.eventDispatcher.dispatchEvent(new dragonwings.MediatorEvent(dragonwings.MediatorEvent.ADDED_TO_STAGE, this._fsTransitionLayer));\n            this._subgamesModel.fsTransitionLayer.addChild(this._transitionView);\n            this._eventDispatcher.dispatchEvent(new dragonwings.MediatorEvent(dragonwings.MediatorEvent.ADDED_TO_STAGE, this._transitionView));\n            if (!sgigame.HandleIncompleteGameCmd.IS_FREESPIN_RECOVERY) {\n                if (bonusAwarded) {\n                    this._subgamesModel.activateViews([\n                        this._subgamesModel.fsSelectionLayer,\n                        this._subgamesModel.jackpotMeterLayer,\n                        this._subgamesModel.fsTransitionLayer\n                    ]);\n                }\n                else {\n                    this._subgamesModel.activateViews([\n                        this._subgamesModel.freeSpinLayer,\n                        this._subgamesModel.jackpotMeterLayer,\n                        this._subgamesModel.fsTransitionLayer\n                    ]);\n                }\n                this._transitionView.startTransition();\n            }\n        }",
+      "SHA256": "5582d4eb437c1d8f7bff197f275164c5ef77d790c02484581245247ace02a2e1"
+    },
+    "mediatorComplete": {
+      "firstLine": 19112,
+      "source": "function () {\n            var _this = this;\n            this._transitionView.removeEventListener(sgigame.TransitionEvent.TRANSITION_COMPLETE, this.onTransitionComplete, this);\n            if (this._transitionView.isIntro) {\n                TweenLite.delayedCall(1.0, function () {\n                    _this._gameContextEventDispatcher.dispatchEvent(new sgigame.TransitionEvent(sgigame.TransitionEvent.INTRO_TRANSITION_COMPLETE));\n                });\n            }\n            else {\n                this._gameContextEventDispatcher.dispatchEvent(new sgigame.TransitionEvent(sgigame.TransitionEvent.OUTRO_TRANSITION_COMPLETE));\n                this._subgamesModel.activateViews([\n                    this._subgamesModel.basegameBgLayer,\n                    this._subgamesModel.jackpotMeterLayer,\n                    this._subgamesModel.reelsLayer,\n                    this._subgamesModel.bigWinLayer\n                ]);\n            }\n            if (this._transitionView.parent) {\n                this._transitionView.parent.removeChild(this._transitionView);\n            }\n        }",
+      "SHA256": "f89c333ea67781646b1d453fee18b7e36b58bbe6f615258a3d20d5c8c2ad42b6"
+    },
+    "viewInit": {
+      "firstLine": 19154,
+      "source": "function (isIntro) {\n            this._isIntro = isIntro;\n            if (!isIntro) {\n                if (this.checkWinThreshold()) {\n                    this._toShowPlacard = true;\n                    this._outroPlacard.init();\n                    this.addChild(this._outroPlacard);\n                    this._eventDispatcher.dispatchEvent(new dragonwings.MediatorEvent(dragonwings.MediatorEvent.ADDED_TO_STAGE, this._outroPlacard));\n                    this._outroPlacard.addEventListener(sgigame.TransitionEvent.OUTRO_PLACARD_DISPLAY_COMPLETE, this.playTransitionAnim, this);\n                }\n                else {\n                    this._toShowPlacard = false;\n                }\n                this.addTransition();\n            }\n            else {\n                this.addTransition();\n            }\n            this.onOrientationChange();\n        }",
+      "SHA256": "cfc04c9a01cb6dfb74a6c740448c837e36f98a2ed28fb6dd64c50e919d15ac6c"
+    },
+    "viewStart": {
+      "firstLine": 19193,
+      "source": "function () {\n            if (this._isIntro) {\n                this._audioModel.stopFeatureSelectionLoop();\n                this.playTransitionAnim();\n            }\n            else {\n                if (this._toShowPlacard) {\n                    this._audioModel.fadeOutFreeSpinsLoopSound();\n                    this._audioModel.playFreespinEndSound();\n                    this._outroPlacard.bangUpTotalWin(this._totalFSWin);\n                }\n                else {\n                    this.playTransitionAnim();\n                }\n            }\n        }",
+      "SHA256": "552a12ebebc0acd1610e49b47865906c54e72a2a17ef070b02cbf2c8acd639c2"
+    },
+    "viewPlay": {
+      "firstLine": 19229,
+      "source": "function () {\n            this._audioModel.playLIIntroBurst();\n            this._transitionAnim.visible = true;\n            this._transitionAnim.gotoAndPlay(0);\n        }",
+      "SHA256": "b1cfe881cd1af532eda0ea03cd1f6de1aaa6805f5bcdca83349c49f9c2f3e35c"
+    },
+    "viewComplete": {
+      "firstLine": 19243,
+      "source": "function () {\n            this._transitionAnim.stop();\n            this._transitionAnim.visible = false;\n            this._transitionAnim.removeEventListener(rendering.DisplayEvent.ANIMATION_COMPLETE, this.onAnimationComplete, this);\n            this.dispatchEvent(new sgigame.TransitionEvent(sgigame.TransitionEvent.TRANSITION_COMPLETE));\n            this._transitionAnim.removeEventListener(rendering.DisplayEvent.ENTER_FRAME, this.onEnterFrame, this);\n            this._transitionAnim.removeEventListener(rendering.DisplayEvent.ANIMATION_COMPLETE, this.onAnimationComplete, this);\n        }",
+      "SHA256": "48bfabe287c887f7364544dc9c0cc7b0fd4473f03d3597709a3fa244fd19896c"
+    },
+    "map": {
+      "line": 110,
+      "source": "_this.mapCommand(sgigame.MakeLogicRequestCmd, sgigame.TransitionEvent.INTRO_TRANSITION_COMPLETE);",
+      "SHA256": "398d6e6443b52e770b8f90ebddb73a4d91cbf6330f6eca3ffdda54b89df081bf"
+    }
+  },
+  "displayAdapter": "Protocol DATA presentation boundary invokes actual viewComplete after actual viewPlay gotoAndPlay; no browser asset animation prerequisite, no fabricated protocol input/result. Original mediator 1s callback retained."
+}

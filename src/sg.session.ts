@@ -3086,9 +3086,22 @@ if(this.game.gameId==='32760'){const slot=own32760ProtocolSlots.get(this);assert
         else if(this.game.gameId==='32788'&&this.action==='PICK')assert(event==='Logic','AG integrity: own32788 native explicit Choice event');
         else assert(event===this.getExactFollowUpRequest(this.action).event,'AG integrity: SG request order');
         assert(Number.isSafeInteger(this.startBalance),'AG integrity: SG missing initial balance');
-        const step=await this.exchange(event,parameters || {}),r=this.readEnvelope(step,event);
+        let requestParameters=parameters || {};
+        let step=await this.exchange(event,requestParameters),r=this.readEnvelope(step,event);
+        if(this.game.gameId==='32788'){
+            const own=own32788ProtocolSlots.get(this);assert(own?.connection,'AG integrity: own32788 control connection absent');
+            for(let controls=0;own.connection.hasPendingControl();controls++){
+                assert(controls<1&&event==='Logic','AG integrity: own32788 finite native intro continuation');
+                // Control ACK is retained raw, with its actual cash/SID, without an AG spin result.
+                this.steps.push({...step,responseBalance:this.balance});
+                const next=await own.connection.prepareControlContinuation();
+                assert(next.event==='Logic','AG integrity: own32788 original native intro next');
+                requestParameters=next.parameters;
+                step=await this.exchange(next.event,requestParameters);r=this.readEnvelope(step,next.event);
+            }
+        }
         if(this.game.sg.healthyComponentsContract){assert(Object.keys(r).every(k=>['type','Header','AccountData','Balances','GameResult',...(this.game.gameId==='32777'?['SymbolGrids']:[])].includes(k)),'AG integrity: SG healthy response schema');if(r.SymbolGrids!==undefined)assert(this.game.gameId==='32777'&&r.SymbolGrids==='','AG integrity: SG healthy symbols envelope changed');}
-        this.steps.push({...step,responseBalance:this.balance});this.lastRequest={event,parameters:structuredClone(parameters)};
+        this.steps.push({...step,responseBalance:this.balance});this.lastRequest={event,parameters:structuredClone(requestParameters)};
         if(event==='EndGame') {
             assert(!r.GameResult,'AG integrity: SG unexpected EndGame result');
             assert(this.balance===this.startBalance-this.game.sg.betRaw+this.totalWin,'AG integrity: SG final balance mismatch');
