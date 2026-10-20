@@ -18080,3 +18080,18 @@ games:
           HistoryServerURL: null
           betID: null
           useDummy: false
+  - provider: sg
+    gameId: '32793'
+    name: "Nemo's Voyage"
+    dbName: "sg_nemos_voyage"
+    backendId: "nemosvoyage_prt"
+    serviceDir: "sg_nemos-voyage"
+    rtpBuckets: [0, 30, 100, 300, 500, 1000, 2500, 5000, 10000, 1001, 2001, 5001, 10001]
+    sg:
+      runtimeGameId: 33153
+      betRaw: 40
+      protocol: "wms"
+      runtimeSlug: "nemosvoyage_prt"
+      stake: {"totalStake": 40, "stakePerLine": 1, "paylineCount": 40}
+      header: {"affiliate": "0", "ccyCode": "", "channel": "I", "freePlay": "Y", "gameCodeRGI": "nemosvoyage_prt", "gameID": "20154", "glsID": "65535", "lang": "en_US", "promotions": "N", "userID": "null", "userType": "C", "versionID": "1_0"}
+      own32793ProtocolDATA: {"contract": "own32793-original-SG-protocol-private-v1"}

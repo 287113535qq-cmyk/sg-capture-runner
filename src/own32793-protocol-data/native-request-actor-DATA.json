@@ -1,0 +1,361 @@
+{
+  "schema": "own32793-request-actor-native-DATA-v1",
+  "gameId": "32793",
+  "newLeaves": {
+    "viewConstructor": {
+      "source": "function WildIndicatorsView() {\n                    var _this = _super !== null && _super.apply(this, arguments) || this;\n                    _this._reelsetIndex = 0;\n                    _this._pressureNeedleStartRotation = -27;\n                    _this._pressureNeedleEndRotation = 33;\n                    _this._maxDuration = 1;\n                    _this._pressureGaugeScale = 1.35;\n                    _this._pressureGaugeX = 1125;\n                    _this._pressureGaugeY = -340;\n                    _this._pressureGaugeDefaultAlpha = 0;\n                    _this._pressureGaugeVisibleAlpha = 0.9;\n                    _this._submarineDepthMinY = 165;\n                    _this._submarineDepthMaxY = 840;\n                    _this._submarineDescending = false;\n                    _this._depthIncreasePerSec = 40;\n                    _this._depthDecreasePerSec = 40;\n                    _this._pressureIncreasePerSec = 40;\n                    _this._pressureDecreasePerSec = 40;\n                    _this._totalDepth = 0;\n                    _this._maxDepthReached = false;\n                    _this._totalPressure = 0;\n                    _this._ascensionTweenInProgress = false;\n                    _this._subGateDisabledX = 1465;\n                    _this._subGateEnabledX = 1500;\n                    _this._subGateDepthsY = [165, 289, 445, 628, 850];\n                    _this._subGates = [];\n                    _this._subGateCloseX = 32;\n                    _this._subGateCurrentIndex = 0;\n                    _this._subGateIndicatorDisabledX = 1638;\n                    _this._subGateIndicatorEnabledX = 1620;\n                    _this._subGateIndicatorActiveIndex = 0;\n                    _this._subGateIndicatorsY = [0, 270, 427, 608, 832];\n                    _this._subGateIndicatorsTranslationKeys = [\"\", \"NemosVoyage_com_wms_nemosvoyage_Placard_MultiplierWilds\", \"NemosVoyage_com_wms_nemosvoyage_Placard_PressurizedWilds\", \"NemosVoyage_com_wms_nemosvoyage_Placard_StackedWilds\", \"NemosVoyage_com_wms_nemosvoyage_Rules_WildReelsHeader\"];\n                    _this._subGateIndicators = [];\n                    _this._subGateIndicatorTexts = [];\n                    _this._spurtsX = [];\n                    _this._spurts = [];\n                    return _this;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1330789,
+      "byteEndExclusive": 1333082,
+      "SHA256": "6ce2cacd1a1dbe1de6e1403e8b2156c60d439e57090cee9ddc60b6ac1c4df35f"
+    },
+    "mediatorConstructor": {
+      "source": "function WildIndicatorsViewMediator() {\n                    var _this = _super !== null && _super.apply(this, arguments) || this;\n                    _this._ascensionDuration = 20;\n                    _this._currentSubGateLvl = 0;\n                    _this._currentSubGateIndicatorLvl = 0;\n                    _this._stakeWasChanged = false;\n                    return _this;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1360394,
+      "byteEndExclusive": 1360787,
+      "SHA256": "168fb73885a3ce5dc67dc1341f1479f27ffcc4c27a6aae08cd3939f940927eb6"
+    },
+    "serverConstructor": {
+      "source": "function GameServer() {\n                    return _super !== null && _super.apply(this, arguments) || this;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1072137,
+      "byteEndExclusive": 1072263,
+      "SHA256": "d2c94344fd1d16e16e9fb440ba87bc5104e6445d363a727a55687b418784950f"
+    },
+    "transitionConstructor": {
+      "source": "function FreeSpinsTransitionView() {\n                    var _this = _super !== null && _super.apply(this, arguments) || this;\n                    _this._transitionDuration = 1.5;\n                    _this._enterTransitionHandlers = [];\n                    _this._onEnterTransitionCompleteCallbacks = [];\n                    _this._exitTransitionHandlers = [];\n                    _this._onExitTransitionCompleteCallbacks = [];\n                    return _this;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 516196,
+      "byteEndExclusive": 516675,
+      "SHA256": "b921b943f016d5b8ca84e5991f6c47bf001d5dcfd7cda775d36b4369df86599b"
+    },
+    "createDepth": {
+      "source": "function () {\n                    this._submarineDepthContainer = new rendering.DisplayObjectContainer();\n                    this.addChild(this._submarineDepthContainer);\n                    var submarineAsset = ps.utils.MiscUtils.getAssetFrameWithName(\"nv_sidesubmarine.png\", game.BaseGameBundle.WildIndicators.name, game.BaseGameBundle.WildIndicatorsJson.name, this._cache);\n                    this._submarineDepthBitmap = new rendering.Bitmap(submarineAsset);\n                    this._submarineDepthContainer.addChild(this._submarineDepthBitmap);\n                    this._submarineDepthBitmap.x = 1540;\n                    this._submarineDepthBitmap.y = this._submarineDepthMinY;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1336287,
+      "byteEndExclusive": 1336991,
+      "SHA256": "840e0a4cd04ce09e9c35254a2f8e6334969ae9e5a026e9f10f28a11102576bbd"
+    },
+    "createPressure": {
+      "source": "function () {\n                    this._pressureGaugeContainer = new rendering.DisplayObjectContainer();\n                    this.addChild(this._pressureGaugeContainer);\n                    var pressureGaugeAsset = ps.utils.MiscUtils.getAssetFrameWithName(\"nv_guage.png\", game.BaseGameBundle.WildIndicators.name, game.BaseGameBundle.WildIndicatorsJson.name, this._cache);\n                    this._pressureGaugeBitmap = new rendering.Bitmap(pressureGaugeAsset);\n                    this._pressureGaugeContainer.addChild(this._pressureGaugeBitmap);\n                    this._pressureGaugeBitmap.x = 1400;\n                    var pressureNeedleAsset = ps.utils.MiscUtils.getAssetFrameWithName(\"nv_guage_needle.png\", game.BaseGameBundle.WildIndicators.name, game.BaseGameBundle.WildIndicatorsJson.name, this._cache);\n                    this._pressureNeedleBitmap = new rendering.Bitmap(pressureNeedleAsset);\n                    this._pressureGaugeContainer.addChild(this._pressureNeedleBitmap);\n                    this._pressureNeedleBitmap.x = this._pressureGaugeBitmap.x + (this._pressureGaugeBitmap.width * 0.5);\n                    this._pressureNeedleBitmap.y = 182;\n                    this._pressureNeedleBitmap.pivot = new rendering.Point(this._pressureNeedleBitmap.width * 0.5, this._pressureNeedleBitmap.height * 1.75);\n                    this._pressureNeedleBitmap.rotation = this._pressureNeedleStartRotation;\n                    this._pressureNeedleTotalRotation = this._pressureNeedleEndRotation - this._pressureNeedleStartRotation;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1334648,
+      "byteEndExclusive": 1336212,
+      "SHA256": "11f42404e9664a11a0b7075bd437e41a11f8d76aa7af05eb3c29d77be7140edc"
+    },
+    "createGates": {
+      "source": "function () {\n                    this._subGateContainer = new rendering.DisplayObjectContainer();\n                    this.addChild(this._subGateContainer);\n                    var subGateAsset = ps.utils.MiscUtils.getAssetFrameWithName(\"nv_sidegate.png\", game.BaseGameBundle.WildIndicators.name, game.BaseGameBundle.WildIndicatorsJson.name, this._cache);\n                    for (var i = 1; i < this._subGateDepthsY.length; i++) {\n                        this._subGates[i] = new rendering.Bitmap(subGateAsset);\n                        this._subGates[i].x = this._subGateDisabledX;\n                        this._subGates[i].y = this._subGateDepthsY[i];\n                        this._subGateContainer.addChild(this._subGates[i]);\n                    }\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1337055,
+      "byteEndExclusive": 1337824,
+      "SHA256": "3aa88b1b835e53674256f933acbeb8b4a5d80081f3adc68b2db79e65c660a98d"
+    },
+    "depthLimits": {
+      "source": "function (min, max) {\n                    this._minDepth = min;\n                    this._maxDepth = max;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1344076,
+      "byteEndExclusive": 1344199,
+      "SHA256": "ce239aea28764611ca30bc1973e0a6394806d69ec2c1eb772ed522f002ba4ee5"
+    },
+    "pressureLimits": {
+      "source": "function (min, max) {\n                    this._minPressure = min;\n                    this._maxPressure = max;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1344277,
+      "byteEndExclusive": 1344406,
+      "SHA256": "c478a7928bc86b292301298ac76bc06f37459d25ad276e2b23d60205172ca4d3"
+    },
+    "gateDepths": {
+      "source": "function (subGateDepths) {\n                    this._subGateDepths = subGateDepths;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1344773,
+      "byteEndExclusive": 1344874,
+      "SHA256": "17ce454a4068eeac7176804e0a5a36ad4de03961a79fdb63e7de223872c21d46"
+    },
+    "viewPressure": {
+      "source": "function (totalPressure, pressureChange, immediate) {\n                    if (pressureChange === void 0) { pressureChange = 1; }\n                    if (immediate === void 0) { immediate = false; }\n                    this._totalPressure = totalPressure;\n                    var pressurePercentage = Math.round((totalPressure / this._maxPressure) * 100);\n                    var distance = this._pressureNeedleTotalRotation * pressurePercentage / 100;\n                    var targetPressureAngle = Math.round(this._pressureNeedleStartRotation + distance);\n                    //if we had a pressure symbol, we need to have a shorter duration!\n                    var duration = Math.max(this._maxDuration, Math.abs(pressureChange) / (this.isDescending ? this._pressureIncreasePerSec : this._pressureDecreasePerSec));\n                    if (immediate) {\n                        duration = 0.01;\n                    }\n                    // console.log(\"Luke - update pressure to: \" + totalPressure + \" (+\" + pressureChange + \") over \" + duration + \" secs\");\n                    this._pressureNeedleTween = TweenLite.to(this._pressureNeedleBitmap, duration, {\n                        ease: Power1.easeOut,\n                        rotation: targetPressureAngle\n                    });\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1348520,
+      "byteEndExclusive": 1349820,
+      "SHA256": "6ff4262d8d0e9f3ab6835d10eb34f8f0ff54d3a9e16315ef3ece6dab384e05f0"
+    },
+    "closeGates": {
+      "source": "function () {\n                    for (var i = 1; i < this._subGateDepths.length; i++) {\n                        if (this._subGateDepths[i] === this._totalDepth) {\n                            if (!this._maxDepthReached) {\n                                this.closeSubGateAtIndex(i);\n                            }\n                            return;\n                        }\n                    }\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1349883,
+      "byteEndExclusive": 1350297,
+      "SHA256": "ce408f1f114a12cb8749ff806619500be427248b82cfa7c6ae0cb5076b377d63"
+    },
+    "closeGate": {
+      "source": "function (index) {\n                    var _this = this;\n                    this._subGateCurrentIndex = index;\n                    if (this._subGateCurrentIndex === 4) {\n                        this._maxDepthReached = true;\n                    }\n                    else {\n                        this._maxDepthReached = false;\n                    }\n                    TweenLite.to(this._subGates[index], 0.8, { x: this._subGateEnabledX, onComplete: function () {\n                            _this._subGateLightningAnimation.y = _this._subGateDepthsY[index];\n                            _this._subGateLightningAnimation.visible = true;\n                            _this._subGateLightningAnimation.playRepetitions(1);\n                        } });\n                    this.dispatchEvent(new game.NemoGenericEvent(game.NemoGenericEvent.SUB_GATE_CLOSE_ANNOUNCE));\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1351294,
+      "byteEndExclusive": 1352174,
+      "SHA256": "7369e0891a83f560bb552fcff0401f4cda5654f79f34375a863ca9e5937ea879"
+    },
+    "releaseGates": {
+      "source": "function () {\n                    for (var i = 1; i < this._subGates.length; i++) {\n                        if (this._subGates[i].x !== this._subGateDisabledX) {\n                            this.releaseSubGateAtIndex(i);\n                        }\n                    }\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1352242,
+      "byteEndExclusive": 1352528,
+      "SHA256": "399f003e4608f7a361eef1c1997b161f87d252c99a6f9fdae4f820d89f3d9c7b"
+    },
+    "releaseGate": {
+      "source": "function (index) {\n                    TweenLite.to(this._subGates[index], 0.8, { x: this._subGateDisabledX });\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1352599,
+      "byteEndExclusive": 1352728,
+      "SHA256": "84d649e0130e1f101ee0440e43b8cfec8f8da8b8b3118b4024ce59b343f6edb8"
+    },
+    "directionGet": {
+      "source": "function () {\n                        return this._submarineDescending;\n                    }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1345279,
+      "byteEndExclusive": 1345372,
+      "SHA256": "8ab668954a0e5325505b73ea53071a620823a0bdc852109d289efe00cdd59349"
+    },
+    "directionSet": {
+      "source": "function (descending) {\n                        this._submarineDescending = descending;\n                    }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1345399,
+      "byteEndExclusive": 1345508,
+      "SHA256": "c3af181a9c53045a90d566d12a267fecbbc2b32e79f75e7b06448a1cff353112"
+    },
+    "transitionDurationGet": {
+      "source": "function () {\n                        return this._transitionDuration;\n                    }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 517113,
+      "byteEndExclusive": 517205,
+      "SHA256": "5323092b3aa5c368e2ef0901398785453d34b60a3ebebffb09df3ab3f7363b35"
+    },
+    "transitionDurationSet": {
+      "source": "function (duration) {\n                        this._transitionDuration = duration;\n                    }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 517232,
+      "byteEndExclusive": 517336,
+      "SHA256": "de6249abb4a180a096f5c2ba25976c73425608aa6624aaa14450ed5765c719e0"
+    },
+    "logicResponse": {
+      "source": "function (e) {\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.subInfo) {\n                        this.updateSubInfo(logicResponse.subInfo);\n                    }\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1365779,
+      "byteEndExclusive": 1366022,
+      "SHA256": "e2591267405969fa7a43b000bc90390c4954505cdc1dfa234be36e57882e2c7c"
+    },
+    "transitionConfiguration": {
+      "source": "this._freeSpinsTransitionView.transitionDuration = 2.8;",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1003664,
+      "byteEndExclusive": 1003719,
+      "SHA256": "0caa82137d81902a1b4f90cf648449e7d3760501f2a79a961c58bca156caad6d",
+      "enclosingMethod": "CreateFreeSpinTransitionsCmd.prototype.execute",
+      "exactStatement": true
+    },
+    "totalWonConstructor": {
+      "source": "function FreeSpinsTotalWonView() {\n                    var _this = _super !== null && _super.apply(this, arguments) || this;\n                    _this._revealDuration = 1;\n                    _this._showDuration = 3;\n                    return _this;\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 539676,
+      "byteEndExclusive": 539944,
+      "SHA256": "ff1390a79a570c828ba7e8124e31ae8c77bbe27c6b4e0e789bcfd51cb34062c3"
+    },
+    "totalWonHide": {
+      "source": "function () {\n                    var _this = this;\n                    TweenLite.to(this, this._revealDuration, { alpha: 0 });\n                    this.dispatchEvent(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_GAME_EXIT_TRANSITION_START));\n                    TweenLite.delayedCall(this._freeSpinsTransitionView.transitionDuration, function () {\n                        _this.dispatchEvent(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_SHOW_TOTAL_WON_COMPLETE));\n                    });\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 541339,
+      "byteEndExclusive": 541856,
+      "SHA256": "47d202d4985d10152d6df444910922a66d3afe53f5d3d71dc472707b8a64d4de"
+    },
+    "spinCompleteEmitter": {
+      "source": "function (e) {\n                    this.dispatchContextEvent(new ps.core.GameEvent(ps.core.GameEvent.SPIN_COMPLETE));\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 631216,
+      "byteEndExclusive": 631351,
+      "SHA256": "ee3ab78a27258404b9a12c9960d65c20bf40b96d7aab5e46214f93200dcecf59"
+    },
+    "totalWonShow": {
+      "source": "function () {\n                    TweenLite.to(this, this._revealDuration, { alpha: 1, onComplete: this.onShowComplete, onCompleteScope: this });\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 540936,
+      "byteEndExclusive": 541099,
+      "SHA256": "242d004ebe672b4e8a32d26350581cc83f287bf535dc988f8c7dbd8dc1c5c7f8"
+    },
+    "totalWonOnShowComplete": {
+      "source": "function () {\n                    TweenLite.delayedCall(this._showDuration, this.hide.bind(this));\n                }",
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 541166,
+      "byteEndExclusive": 541282,
+      "SHA256": "1f3415d3b46c91e3ecb4189c6193be1c729922e5eb18d34e038bbc0de3cdd60d"
+    }
+  },
+  "reusedLeaves": {
+    "setDepth": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1344900,
+      "startWithinWindow": 1255,
+      "source": "function (totalDepth, depthChange) {\n                    var _this = this;\n                    if (depthChange === void 0) { depthChange = 0; }\n                    if (!this._ascensionTweenInProgress) {\n                        if (!this._submarineDescending) {\n                            this._ascensionTweenInProgress = true;\n                            var targetSubgateIndex = this._subGateIndicatorActiveIndex === 4 ? this._subGateIndicatorActiveIndex - 1 : this._subGateIndicatorActiveIndex;\n                            totalDepth = this._subGateDepths[targetSubgateIndex];\n                            depthChange = this._totalDepth - totalDepth;\n                        }\n                        depthChange = Math.abs(depthChange);\n                        this._totalDepth = totalDepth;\n                        var currentDepthY = this._submarineDepthBitmap.y;\n                        var depthPercentage = (totalDepth / this._maxDepth) * 100;\n                        var targetDepthY = Math.round((((this._submarineDepthMaxY - this._submarineDepthMinY) / 100) * depthPercentage) + this._submarineDepthMinY);\n                        var duration = (this._submarineDescending ? depthChange / this._depthIncreasePerSec : depthChange / this._depthDecreasePerSec);\n                        // console.log(\"Luke - \" + (this._submarineDescending ? \"descend\" : \"ascend\") + \" to depth \" + totalDepth + \" (+ \" + depthChange + \") over \" + duration + \" secs\");\n                        this.releaseAllSubgates();\n                        this._submarineDepthTween = TweenLite.to(this._submarineDepthBitmap, duration, {\n                            ease: Linear.easeNone,\n                            y: targetDepthY,\n                            onComplete: function () {\n                                _this.closeSubGates();\n                                _this.activateSubGateIndicators();\n                                _this._ascensionTweenInProgress = false;\n                                _this._submarineDepthTween = null;\n                                if (targetDepthY == _this._submarineDepthMinY) {\n                                    _this.setPressure(0, 1, true);\n                                }\n                            }\n                        });\n                    }\n                }",
+      "SHA256": "bd54bbbf031b251060897c23fe45f22aa4c1344f5a2bec388415ce06189099ae",
+      "marker": "WildIndicatorsView.prototype.setDepth ="
+    },
+    "pause": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1344900,
+      "startWithinWindow": 774,
+      "source": "function (pause) {\n                    if (pause === void 0) { pause = true; }\n                    if (this._ascensionTweenInProgress) {\n                        if (pause) {\n                            this._submarineDepthTween.pause();\n                        }\n                        else {\n                            this._submarineDepthTween.resume();\n                        }\n                    }\n                }",
+      "SHA256": "408bc83c3c2f2a3be779fed1463b068384048f05bbc960dae391d7eb18a1a5e5",
+      "marker": "WildIndicatorsView.prototype.pauseAscensionTween ="
+    },
+    "gates": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 1303,
+      "source": "function () {\n                    for (var i = this._subGateDepths.length - 1; i > 0; i--) {\n                        if ((this._totalDepth === this._maxDepth && i === this._subGateDepths.length - 1) || this._totalDepth > this._subGateDepths[i]) {\n                            this.activateSubGateIndicatorForIndex(i);\n                            return;\n                        }\n                    }\n                    this.activateSubGateIndicatorForIndex(0);\n                }",
+      "SHA256": "1360fe8951066ad2fb05bee9f3da6d651ce3f2f8b849c5df68bcf6087c700b3d",
+      "marker": "WildIndicatorsView.prototype.activateSubGateIndicators ="
+    },
+    "setGate": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 1865,
+      "source": "function (targetIndex) {\n                    this._subGateIndicatorActiveIndex = targetIndex;\n                    for (var i = 1; i < this._subGateIndicators.length; i++) {\n                        if (i === targetIndex && this._subGateIndicators[i].x === this._subGateIndicatorDisabledX) {\n                            TweenLite.to(this._subGateIndicators[i], 0.8, {\n                                x: this._subGateIndicatorEnabledX,\n                                onCompleteParams: [this._subGateIndicators[i]],\n                                onComplete: function (subGate) { subGate.gotoAndStop(WildIndicatorsView.SUBGATE_INDICATOR_ON_FRAME); }\n                            });\n                        }\n                        else if (i !== targetIndex && this._subGateIndicators[i].x === this._subGateIndicatorEnabledX) {\n                            this._subGateIndicators[i].gotoAndStop(WildIndicatorsView.SUBGATE_INDICATOR_OFF_FRAME);\n                            TweenLite.to(this._subGateIndicators[i], 0.8, { x: this._subGateIndicatorDisabledX });\n                        }\n                    }\n                }",
+      "SHA256": "7a4829412c0414eb96b1fdada8da57eaf91b89ac51866d5e31de90907d07dd8f",
+      "marker": "WildIndicatorsView.prototype.activateSubGateIndicatorForIndex ="
+    },
+    "initParser": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1042500,
+      "startWithinWindow": 302,
+      "source": "function (input, object) {\n                    var subInfoNodeList = input.getElementsByTagName(\"SubInfo\");\n                    var subInfoNode = subInfoNodeList[0];\n                    if (subInfoNode) {\n                        object.subInfo = new game.NemoSubInfoObject();\n                        object.subInfo.descending = (subInfoNode.attributes.getNamedItem(\"descending\").value === \"1\");\n                        object.subInfo.symbolValue = parseInt(subInfoNode.attributes.getNamedItem(\"symbolValue\").value);\n                        object.subInfo.minDepth = parseInt(subInfoNode.attributes.getNamedItem(\"minDepth\").value);\n                        object.subInfo.maxDepth = parseInt(subInfoNode.attributes.getNamedItem(\"maxDepth\").value);\n                        object.subInfo.totalDepth = parseInt(subInfoNode.attributes.getNamedItem(\"totalDepth\").value);\n                        object.subInfo.minPressure = parseInt(subInfoNode.attributes.getNamedItem(\"minPressure\").value);\n                        object.subInfo.maxPressure = parseInt(subInfoNode.attributes.getNamedItem(\"maxPressure\").value);\n                        object.subInfo.totalPressure = parseInt(subInfoNode.attributes.getNamedItem(\"totalPressure\").value);\n                        object.subInfo.lastStakeUsed = parseInt(subInfoNode.attributes.getNamedItem(\"stake\").value);\n                    }\n                }",
+      "SHA256": "fe2ab3c3d24d884ce8232db3d58b876b2137f5b0997f411729aa4e1ca8a82730",
+      "marker": "NemoInitSubInfoParser.prototype.parse ="
+    },
+    "subInfoConstructor": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1050450,
+      "startWithinWindow": 468,
+      "source": "function NemoSubInfoObject() {\n                    this.levelDepths = [0, 500, 1200, 2000, 3000];\n                    this.depthDecreasePerSec = 40;\n                    this.pressureDecreasePerSec = 25;\n                }",
+      "SHA256": "d693acb40a2dbb0da2dbbb6b3d2205e3dd1865753538fa625eccceee5431aba3",
+      "marker": "function NemoSubInfoObject"
+    },
+    "initMediator": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 13029,
+      "source": "function () {\n                    var initResponse = this._server.getInitResponse();\n                    if (initResponse) {\n                        if (initResponse.subInfo) {\n                            this._minDepth = initResponse.subInfo.minDepth;\n                            this._maxDepth = initResponse.subInfo.maxDepth;\n                            this._minPressure = initResponse.subInfo.minPressure;\n                            this._maxPressure = initResponse.subInfo.maxPressure;\n                            this.view.setSubGateDepths(initResponse.subInfo.levelDepths);\n                            this.view.setMinimumAndMaximumDepths(this._minDepth, this._maxDepth);\n                            this.view.setMinimumAndMaximumPressure(this._minPressure, this._maxPressure);\n                            this.updateSubInfo(initResponse.subInfo, this._historyModel.getIsHistoryReplay());\n                            if (!this._historyModel.getIsHistoryReplay()) {\n                                this.setPressure(this._totalPressure, this._pressureChange);\n                            }\n                        }\n                    }\n                }",
+      "SHA256": "d85860d1e46cf30b1a0f3f791d73b0adbc139b2ed6b29329248ee647dbe50aaa",
+      "marker": "WildIndicatorsViewMediator.prototype.initialiseFromInitResponse ="
+    },
+    "pressure": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 16626,
+      "source": "function (totalPressure, pressureChange, immediate) {\n                    if (immediate === void 0) { immediate = false; }\n                    var pressurePercentage = Math.round((totalPressure / this._maxPressure) * 100);\n                    this.view.setPressure(totalPressure, pressureChange, immediate);\n                    if (immediate) {\n                        this.view.showDamage(pressurePercentage);\n                    }\n                    else {\n                        TweenLite.delayedCall(0.1, this.view.showDamage, [pressurePercentage], this.view);\n                    }\n                    // Pressure danger level events\n                    if (pressurePercentage >= 91) {\n                        this.view.startPressureGaugeShake(3);\n                        this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_PRESSURE_DANGER_CODE_RED));\n                    }\n                    else if (pressurePercentage >= 75) {\n                        this.view.startPressureGaugeShake(2);\n                        this.view.stopPressureGaugeWarningLight();\n                        this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_PRESSURE_DANGER_CODE_ORANGE));\n                    }\n                    else if (pressurePercentage >= 50) {\n                        this.view.startPressureGaugeShake(1);\n                        this.view.stopPressureGaugeWarningLight();\n                        this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_PRESSURE_DANGER_CODE_YELLOW));\n                    }\n                    else {\n                        this.view.stopPressureGaugeShake();\n                        this.view.stopPressureGaugeWarningLight();\n                        this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_PRESSURE_DANGER_CODE_WHITE));\n                    }\n                    // Ascension events\n                    if (this._descending === true && this._depthChange === -1) {\n                        this.setDescending(false);\n                        this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_ASCENSION_DISPLAY_POPUP));\n                    }\n                    else if (this._totalPressure >= (this._maxPressure - this._symbolValue)) {\n                        this.view.startPressureGaugeWarningLight();\n                        if (!this._ascensionWarningPopupView.isShowingAscensionWarning) {\n                            this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_ASCENSION_DISPLAY_WARNING));\n                        }\n                    }\n                }",
+      "SHA256": "e1d9249b492443599987f3535cb6062ebbaae7ad418dbc8b499f0319e6bf7c18",
+      "marker": "WildIndicatorsViewMediator.prototype.setPressure ="
+    },
+    "freeEnter": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 19448,
+      "source": "function (e) {\n                    var _this = this;\n                    if (!this.view.isDescending) {\n                        this.view.pauseAscensionTween();\n                    }\n                    TweenLite.delayedCall(this._freeSpinsTransitionView.transitionDuration * 0.5, function () {\n                        _this._layerManager.setVisible([new ps.core.LayerVisibility(game.Layer.WILD_INDICATORS, false)]);\n                    });\n                }",
+      "SHA256": "c627298e0e959a71b78e52f2bc51fb6c34ae606aad76b0b338d3dd453423b21b",
+      "marker": "WildIndicatorsViewMediator.prototype.onFreeSpinsEnterTransitionStart ="
+    },
+    "freeExit": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 19994,
+      "source": "function (e) {\n                    var _this = this;\n                    TweenLite.delayedCall(this._freeSpinsTransitionView.transitionDuration * 0.5, function () {\n                        _this._layerManager.setVisible([new ps.core.LayerVisibility(game.Layer.WILD_INDICATORS, true)]);\n                    });\n                    if (!this.view.isDescending) {\n                        TweenLite.delayedCall(this._freeSpinsTransitionView.transitionDuration, function () {\n                            _this.view.pauseAscensionTween(false);\n                        });\n                    }\n                }",
+      "SHA256": "aa2aa13b7e9c74c7ec621915b1906f6f5bdc8ad3372d3222680632a1d6affd99",
+      "marker": "WildIndicatorsViewMediator.prototype.onFreeSpinsExitTransitionStart ="
+    },
+    "stakeAllowed": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 15918,
+      "source": "function (e) {\n                    this._stakeWasChanged = true;\n                }",
+      "SHA256": "2303517e5c11767ce9e0919bcc7d2887f0441f4b40b9f196e3fbed2f36256de7",
+      "marker": "WildIndicatorsViewMediator.prototype.onStakeUpdateAllowed ="
+    },
+    "spinComplete": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1351500,
+      "startWithinWindow": 16077,
+      "source": "function (e) {\n                    this.setPressure(this._totalPressure, this._pressureChange);\n                }",
+      "SHA256": "65dcc326a376211c45dfd4c91213868e7de6476a8fceb30c3ca7d087cb6c9b5f",
+      "marker": "WildIndicatorsViewMediator.prototype.updatePressureGauge ="
+    },
+    "logicSubInfo": {
+      "source": "function(childNode,object){object.subInfo = new game.NemoSubInfoObject();\n                            object.subInfo.descending = (childNode.attributes.getNamedItem(\"descending\").value === \"1\");\n                            object.subInfo.symbolValue = parseInt(childNode.attributes.getNamedItem(\"symbolValue\").value);\n                            object.subInfo.depthChange = parseInt(childNode.attributes.getNamedItem(\"depthChange\").value);\n                            object.subInfo.totalDepth = parseInt(childNode.attributes.getNamedItem(\"totalDepth\").value);\n                            object.subInfo.pressureChange = parseInt(childNode.attributes.getNamedItem(\"pressureChange\").value);\n                            object.subInfo.totalPressure = parseInt(childNode.attributes.getNamedItem(\"totalPressure\").value);\n                            object.subInfo.nextSpinReelLvl = parseInt(childNode.attributes.getNamedItem(\"nextSpinReelLvl\").value);\n}",
+      "exactNativeBlock": "object.subInfo = new game.NemoSubInfoObject();\n                            object.subInfo.descending = (childNode.attributes.getNamedItem(\"descending\").value === \"1\");\n                            object.subInfo.symbolValue = parseInt(childNode.attributes.getNamedItem(\"symbolValue\").value);\n                            object.subInfo.depthChange = parseInt(childNode.attributes.getNamedItem(\"depthChange\").value);\n                            object.subInfo.totalDepth = parseInt(childNode.attributes.getNamedItem(\"totalDepth\").value);\n                            object.subInfo.pressureChange = parseInt(childNode.attributes.getNamedItem(\"pressureChange\").value);\n                            object.subInfo.totalPressure = parseInt(childNode.attributes.getNamedItem(\"totalPressure\").value);\n                            object.subInfo.nextSpinReelLvl = parseInt(childNode.attributes.getNamedItem(\"nextSpinReelLvl\").value);",
+      "parentNativeSHA256": "40c240bd1f39e89c8efd4621390abac2cce95f6f9503b305b222d5902131412b",
+      "SHA256": "67ce35fd8fa18d1e2940cdd5956a1fc5ec5a5beeb4f6b4b61323e0c3a28d98cd"
+    },
+    "updateSubInfo": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1365800,
+      "startWithinWindow": 293,
+      "source": "function (subInfoObject, isHistoryReplayInit) {\n                    if (isHistoryReplayInit === void 0) { isHistoryReplayInit = false; }\n                    this._totalDepth = subInfoObject.totalDepth;\n                    this._totalPressure = subInfoObject.totalPressure;\n                    this._pressureChange = subInfoObject.pressureChange;\n                    this.setDescending(subInfoObject.descending);\n                    this._symbolValue = subInfoObject.symbolValue;\n                    this._depthChange = subInfoObject.depthChange;\n                    this._nextSpinReelLvl = subInfoObject.nextSpinReelLvl;\n                    if (!isHistoryReplayInit) {\n                        this.view.setDepth(this._totalDepth, this._depthChange);\n                    }\n                    if (this._stakeWasChanged) {\n                        this.setPressure(this._totalPressure, this._pressureChange);\n                        this._stakeWasChanged = false;\n                    }\n                    if (this._totalDepth <= 0) {\n                        this._totalPressure = 0;\n                        this.setPressure(this._totalPressure, 0, true);\n                        this._stakeWasChanged = false;\n                    }\n                }",
+      "SHA256": "31f37fad17381d916c0ef20ceea583b525d4e86b96257789292bd02d293e62bd",
+      "marker": "WildIndicatorsViewMediator.prototype.updateSubInfo ="
+    },
+    "setDescending": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1365800,
+      "startWithinWindow": 1961,
+      "source": "function (descending) {\n                    this._descending = descending;\n                    this.view.isDescending = descending;\n                    this.dispatchContextEvent(new game.NemoSubmarineEvent(game.NemoSubmarineEvent.SUBMARINE_DESCENSION_SET_ANNOUNCE, descending));\n                }",
+      "SHA256": "d1fc65fd9e4853cf24bd280d8e7caecc1f7e46efd183d316768517e3ec4caa27",
+      "marker": "WildIndicatorsViewMediator.prototype.setDescending ="
+    },
+    "clientDepth": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1350100,
+      "startWithinWindow": 846,
+      "source": "function () {\n                        var currentDepth = Math.round(this._maxDepth * this.submarineDepthYFraction);\n                        return currentDepth;\n                    }",
+      "SHA256": "a212e24d038ad0069dd1e37bb45a6693ab05b53cd198acdc5acf40e855179367",
+      "marker": "Object.defineProperty(WildIndicatorsView.prototype, \"submarineDepth\","
+    },
+    "clientDepthFraction": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1350100,
+      "startWithinWindow": 321,
+      "source": "function () {\n                        var percentageY = Math.round(((this._submarineDepthBitmap.y - this._submarineDepthMinY) / (this._submarineDepthMaxY - this._submarineDepthMinY)) * 100);\n                        var fractionY = percentageY / 100;\n                        return fractionY;\n                    }",
+      "SHA256": "328e1c615d462ddc9136ea21ed795be2d4aa1e195ebd356da635cd8bae89360d",
+      "marker": "Object.defineProperty(WildIndicatorsView.prototype, \"submarineDepthYFraction\","
+    },
+    "customPayloads": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1073000,
+      "startWithinWindow": 284,
+      "source": "function (payloadData) {\n                    if (!this._historyModel.getIsHistoryReplay() && !this._wildIndicatorsView.isDescending) {\n                        var depth = this._wildIndicatorsView.submarineDepth;\n                        var nemoAscensionPayload = new game.NemoAscensionPayload(depth);\n                        payloadData.push(nemoAscensionPayload);\n                    }\n                }",
+      "SHA256": "a7d26ba9c0e89b09cf799af203c826677a2a22af4a53c41c880d0a45a002d237",
+      "marker": "GameServer.prototype.addCustomPayloads ="
+    },
+    "payloadEncoder": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1046600,
+      "startWithinWindow": 327,
+      "source": "function () {\n                    return \"<SpinInfo subAscendPos=\\\"\" + this._depth + \"\\\" />\";\n                }",
+      "SHA256": "9920c59fde56cf02e024ebc5b4704ae05c68506d11b1e300f84438d1316a1cb6",
+      "marker": "NemoAscensionPayload.prototype.parse ="
+    },
+    "payloadConstructor": {
+      "file": "E:\\platform-sync\\api_new_docker\\api_new\\client\\game\\sg\\static\\resource.atc.casinarena.com\\resource-service\\content\\nemosvoyage_prt\\app\\js\\main.js",
+      "byteStart": 1046774,
+      "byteEndExclusive": 1046871,
+      "source": "function NemoAscensionPayload(depth) {\n                    this._depth = depth;\n                }",
+      "SHA256": "0015af7c4ab26880f29c62d9a3fef96f03f3b7220940674fb515ae741d0f92c2",
+      "bytes": 97,
+      "effect": "Only this._depth = depth; no clock/view read/default/time or animation prerequisite."
+    },
+    "exitCommand": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 488150,
+      "startWithinWindow": 114,
+      "source": "function () {\n                    _super.prototype.execute.call(this);\n                    ps.utils.PSLog.log(\"ExitFreeSpinsGameCmd->execute()\");\n                    this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_FINALISE_TOTAL_WON, this));\n                    this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_RETURN_TO_BASE_GAME, this));\n                }",
+      "SHA256": "0516afbb084f2ec05d9df772f2e6955683c09e7afe0297efbe1875c9cc352e2a",
+      "marker": "OnFreeSpinsGameExitCmd.prototype.execute ="
+    }
+  },
+  "noFullSDKBoot": true,
+  "noOldASTOrQualificationRepeated": true
+}

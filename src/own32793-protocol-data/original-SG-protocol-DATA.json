@@ -1,0 +1,306 @@
+{
+  "schema": "own32793-original-SG-protocol-DATA-v1",
+  "gameId": "32793",
+  "tail": {
+    "schema": "own32793-native-next-finalise-proof-DATA-v1",
+    "gameId": "32793",
+    "source": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+    "leaves": {
+      "freeClass": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 203500,
+        "startWithinWindow": 279,
+        "source": "var PSFreeSpinObject = (function () {\n                function PSFreeSpinObject() {\n                    this.fsPlayed = false;\n                    this.isRecovering = false;\n                }\n                Object.defineProperty(PSFreeSpinObject.prototype, \"spinsLeft\", {\n                    get: function () {\n                        var left = this.spinsTotal - this.currentSpin;\n                        if (!isNaN(left) && left > -1) {\n                            return left;\n                        }\n                        else if (this.spinsAwarded > 0) {\n                            return this.spinsAwarded;\n                        }\n                        return 0;\n                    },\n                    enumerable: true,\n                    configurable: true\n                });\n                Object.defineProperty(PSFreeSpinObject.prototype, \"spinsLeftAtRecovery\", {\n                    get: function () {\n                        var left = this.spinsLeft + 1;\n                        if (left > this.spinsTotal) {\n                            left = this.spinsTotal;\n                        }\n                        return left;\n                    },\n                    enumerable: true,\n                    configurable: true\n                });\n                Object.defineProperty(PSFreeSpinObject.prototype, \"requiresResume\", {\n                    get: function () {\n                        return !this.fsPlayed && this.spinsLeft > 0;\n                    },\n                    enumerable: true,\n                    configurable: true\n                });\n                Object.defineProperty(PSFreeSpinObject.prototype, \"requiresFinalising\", {\n                    get: function () {\n                        return !this.fsPlayed && this.currentSpin === this.spinsTotal;\n                    },\n                    enumerable: true,\n                    configurable: true\n                });\n                Object.defineProperty(PSFreeSpinObject.prototype, \"spinsLeftAfterNextSpin\", {\n                    get: function () {\n                        var afterNext = this.spinsLeft - 1;\n                        if (this.isRecovering) {\n                            afterNext = this.spinsLeft;\n                        }\n                        return afterNext >= 0 ? afterNext : 0;\n                    },\n                    enumerable: true,\n                    configurable: true\n                });\n                return PSFreeSpinObject;\n            }());\n            core.PSFreeSpinObject = PSFreeSpinObject;",
+        "SHA256": "794414954ada9d8e26b6c227ee5622d0b610100bbb35b3bc67cfc69ab1894bfd"
+      },
+      "freeParser": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 220300,
+        "startWithinWindow": 171,
+        "source": "function (input, object) {\n                    _super.prototype.parse.call(this, input, object);\n                    this._node = input.getElementsByTagName(\"FS_Info\")[0];\n                    if (this._node) {\n                        object.freeSpin = new core.PSFreeSpinObject();\n                        if (this._node.attributes.getNamedItem(\"fsAwarded\")) {\n                            object.freeSpin.spinsAwarded = parseInt(this._node.attributes.getNamedItem(\"fsAwarded\").value);\n                        }\n                        if (this._node.attributes.getNamedItem(\"fsPlayed\")) {\n                            object.freeSpin.fsPlayed = this._node.attributes.getNamedItem(\"fsPlayed\").value === \"Y\" ? true : false;\n                        }\n                        if (this._node.attributes.getNamedItem(\"totalSpinsWon\")) {\n                            object.freeSpin.spinsTotal = parseInt(this._node.attributes.getNamedItem(\"totalSpinsWon\").value);\n                        }\n                        if (this._node.attributes.getNamedItem(\"currentSpin\")) {\n                            object.freeSpin.currentSpin = parseInt(this._node.attributes.getNamedItem(\"currentSpin\").value);\n                        }\n                        if (this._node.attributes.getNamedItem(\"currentFSWins\")) {\n                            object.freeSpin.currentFSWinnings = parseInt(this._node.attributes.getNamedItem(\"currentFSWins\").value);\n                        }\n                        if (this._node.attributes.getNamedItem(\"totalGameWins\")) {\n                            object.freeSpin.totalGameWinnings = parseInt(this._node.attributes.getNamedItem(\"totalGameWins\").value);\n                        }\n                    }\n                }",
+        "SHA256": "a1a7f66c8574bb5d886f3a3f98e12896b1f4d14ad0543b56bb6b52c6993e1761",
+        "marker": "PSFreeSpinsParser.prototype.parse"
+      },
+      "checkAward": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 93600,
+        "startWithinWindow": 232,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    ps.utils.PSLog.log(\"core.CheckingIfFreeSpinsGameHasBeenAwardedCmd->execute()\");\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.freeSpin && (logicResponse.freeSpin.requiresResume)) {\n                        ps.utils.PSLog.log(\"core.CheckingIfFreeSpinsGameHasBeenAwardedCmd - Free game awarded\");\n                        this.doGlobalDispatch(new core.GameEvent(core.GameEvent.FREE_SPINS_GAME_AWARDED, logicResponse.freeSpin.spinsAwarded));\n                    }\n                    else {\n                        ps.utils.PSLog.log(\"core.CheckingIfFreeSpinsGameHasBeenAwardedCmd - No free game awarded\");\n                        this.doGlobalDispatch(new core.GameEvent(core.GameEvent.FREE_SPINS_GAME_NOT_AWARDED));\n                    }\n                }",
+        "SHA256": "c67f98b7a095ed9a892a74543f9e74ed76429f6874bede4f86218580fa306653",
+        "marker": "CheckIfFreeSpinsGameAwardedCmd.prototype.execute"
+      },
+      "finalise": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 979950,
+        "startWithinWindow": 149,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.freeSpin.spinsLeft === 0 && logicResponse.freeSpin.currentSpin === logicResponse.freeSpin.spinsTotal) {\n                        var payload = [];\n                        var stakePerLine = this._stakeModel.getStakePerLine();\n                        var totalStake = this._stakeModel.getTotalBet();\n                        var lineCount = this._stakeModel.getLines();\n                        var freeSpinsActive = (this._freeSpinsGameModel && this._freeSpinsGameModel.isInProgress());\n                        payload.push(this._server.getStakeEncoder(stakePerLine, totalStake, lineCount, freeSpinsActive));\n                        payload.push(this._server.getCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier));\n                        com.ps.reel.Reels.RESTORATION_LOGIC_RESPONSE = true;\n                        var data = new server.GLSRequest(payload);\n                        this._server.makeLogicRequest(data);\n                    }\n                }",
+        "SHA256": "d732a93ef0582f9b387039da8215fb4f0789c94f1c0ce7e47bbf45397cc6ffbe",
+        "marker": "OnFinaliseFreeSpinsGameCmd.prototype.execute"
+      },
+      "stake": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 1038000,
+        "startWithinWindow": 208,
+        "source": "function () {\n                    return '<Stake perLine=\"' + this._stakePerLine.toString() +\n                        '\" total=\"' + this._totalStake.toString() +\n                        '\" gameMode=\"' + (this._freeSpinsOn ? 'NormalFreeSpins' : 'NormalBaseGame') + '\"/>' +\n                        '<PaylineCount count=\"' + this._paylineCount + '\"/>';\n                }",
+        "SHA256": "d1a38936f31248faaa0be651d0e55b1984e12f23efd1fec636d089ffc3076c21",
+        "marker": "NemoStakeEncoder.prototype.parse"
+      },
+      "featureParse": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 1039200,
+        "startWithinWindow": 194,
+        "source": "function (input, object) {\n                    _super.prototype.parse.call(this, input, object);\n                    if (com.ps.reel.Reels.RESTORATION_LOGIC_RESPONSE) {\n                        object.isRestorationResponse = true;\n                        com.ps.reel.Reels.RESTORATION_LOGIC_RESPONSE = false;\n                    }\n                    for (var i = 0; i < this._resultNodes.length; i++) {\n                        var childNode = this._resultNodes[i];\n                        if (childNode.nodeName === \"SubInfo\") {\n                            object.subInfo = new game.NemoSubInfoObject();\n                            object.subInfo.descending = (childNode.attributes.getNamedItem(\"descending\").value === \"1\");\n                            object.subInfo.symbolValue = parseInt(childNode.attributes.getNamedItem(\"symbolValue\").value);\n                            object.subInfo.depthChange = parseInt(childNode.attributes.getNamedItem(\"depthChange\").value);\n                            object.subInfo.totalDepth = parseInt(childNode.attributes.getNamedItem(\"totalDepth\").value);\n                            object.subInfo.pressureChange = parseInt(childNode.attributes.getNamedItem(\"pressureChange\").value);\n                            object.subInfo.totalPressure = parseInt(childNode.attributes.getNamedItem(\"totalPressure\").value);\n                            object.subInfo.nextSpinReelLvl = parseInt(childNode.attributes.getNamedItem(\"nextSpinReelLvl\").value);\n                        }\n                        else if (childNode.nodeName === \"WildenedReels\") {\n                            object.wildenedReels = new game.NemoWildenedReelsObject();\n                            var listSet = childNode.attributes.getNamedItem(\"changed\").value.split(\"|\");\n                            object.wildenedReels.changed = [];\n                            for (var x = 0; x < listSet.length; x++) {\n                                object.wildenedReels.changed.push(parseInt(listSet[x]));\n                            }\n                        }\n                        else if (childNode.nodeName === \"PersistingWildsInfo\") {\n                            object.persistingWilds = new game.NemoPersistingWildsObject();\n                            object.persistingWilds.positions = childNode.attributes.getNamedItem(\"positions\").value.split(\"|\");\n                        }\n                        else if (childNode.nodeName === \"PressurizedWilds\") {\n                            object.pressurisedWilds = new game.NemoPressurizedWildsObject();\n                            object.pressurisedWilds.expanded = childNode.attributes.getNamedItem(\"expanded\").value.split(\"|\");\n                        }\n                    }\n                }",
+        "SHA256": "40c240bd1f39e89c8efd4621390abac2cce95f6f9503b305b222d5902131412b",
+        "marker": "NemoGameResultParser.prototype.parse"
+      },
+      "makeEnd": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 109700,
+        "startWithinWindow": 147,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    ps.utils.PSLog.log(\"MakeEndRequestCmd::execute()\");\n                    //End Request not required if history is running.\n                    var historyReplay = this._historyModel.getIsHistoryReplay();\n                    if (!historyReplay) {\n                        this._server.makeEndRequest(new server.GLSRequest([]));\n                    }\n                }",
+        "SHA256": "5dbacbc5db0359d1223dcbb3576a2abc451f11dc2f49d2c143d17c8e6c498b47",
+        "marker": "MakeEndRequestCmd.prototype.execute"
+      },
+      "validate": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 491250,
+        "startWithinWindow": 159,
+        "source": "function () {\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.freeSpin.spinsLeft === 0) {\n                        this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_NO_MORE_SPINS_REMAINING));\n                    }\n                    if (logicResponse.freeSpin.currentFSWinnings) {\n                        this._winningsModel.winningsFreeSpins = logicResponse.freeSpin.currentFSWinnings;\n                    }\n                    this.doDeferredDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_GAME_VALIDATED), freespin.Pervasive.SPIN_DELAY_DURATION);\n                }",
+        "SHA256": "8c5e91a3d114c7d151a42a5e0b27e6cd130548ca407a12dd560c35db6f2564d5",
+        "marker": "ValidateFreeSpinsGame.prototype.execute"
+      }
+    },
+    "knownPackets": [
+      {
+        "gameId": "32793",
+        "packet": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\repair-efficiency-v2\\b0c952a9ae5605f911268e3595846182b4eca5e685a04937308e5310394f782c-private.json",
+        "packetSHA256": "b678e98a81fb111f713cb6cbe793e7b0e6e422cd72f9153f6e9176a90bb7f388",
+        "category": "protocol-shape-review",
+        "signature": "2cad0c37ffe2f4047d91ed8df1bc8e431c5b83ba701d58683ab031b63401d4c4",
+        "replayAllowed": true,
+        "oldPOSTReplayAllowed": false,
+        "protocolFamily": "WMS"
+      },
+      {
+        "gameId": "32793",
+        "packet": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\repair-efficiency-v2\\a748a8e4609ba9b6854d32ab6fae76a6e78ae155e63321c234b52e3dabd87e24-private.json",
+        "packetSHA256": "4457a2a71d6c3fcb79119557a4bd6af7833d99176fa57084e456a859380e76f3",
+        "category": "protocol-shape-review",
+        "signature": "2ff4661421ed7f50d9c479266351297b504fe53ab8626aac07d53dc21e13e678",
+        "replayAllowed": true,
+        "oldPOSTReplayAllowed": false,
+        "protocolFamily": "WMS"
+      },
+      {
+        "gameId": "32793",
+        "packet": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\repair-efficiency-v2\\e9698b5704c6c2c4b622f0b2deafb594b7457ef38c4e5f052526ba418a805270-private.json",
+        "packetSHA256": "084399be8a09890fe5537e567f898df3fa54a5266f66ee3c88a78feba0cd852e",
+        "category": "protocol-shape-review",
+        "signature": "2ff4661421ed7f50d9c479266351297b504fe53ab8626aac07d53dc21e13e678",
+        "replayAllowed": true,
+        "oldPOSTReplayAllowed": false,
+        "protocolFamily": "WMS"
+      },
+      {
+        "gameId": "32793",
+        "packet": "C:\\Users\\xxx\\Documents\\Codex\\2026-10-07\\zhe\\work\\ag-reuse-sg\\repair-efficiency-v2\\dd68c30979993366b95aef912760ecd2286cb126ba8a69184744b6c54cec9924-private.json",
+        "packetSHA256": "9f9b4a7f17c1e6827f20c3649e8c53408ba6c834cf4f68bc516b283bd3d67a9d",
+        "category": "protocol-shape-review",
+        "signature": "14fe82fba73a204ef88b4307597da439d34030e65de8a82f33251f57de9cacd1",
+        "replayAllowed": true,
+        "oldPOSTReplayAllowed": false,
+        "protocolFamily": "WMS"
+      }
+    ],
+    "pathCorrection": {
+      "actualStdout": "b693f8",
+      "oldSelectedCDNGapCapsule": "0f15a0619599ad0816b196363a30e3904648cdad92d068e1d728f1d7ce09359c",
+      "oldGapSuperseded": true
+    },
+    "tailLeaves": {
+      "restoration": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 982600,
+        "startWithinWindow": 108,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.isRestorationResponse) {\n                        if (this._gameStateModel.currentSubgame !== ps.core.Subgame.FREE_SPINS_GAME) {\n                            var logicResponse = this._server.getLogicResponse();\n                            var reelSpinData = logicResponse.reelSpinData[0];\n                            this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.REELS_RESET_POSITIONS, reelSpinData));\n                        }\n                    }\n                }",
+        "SHA256": "3aa4a5174b8659489bd7104117ef22992cad71bc33583e7d53a1862b813369b4",
+        "marker": "OnRestoreFreeSpinsReelCmd.prototype.execute ="
+      },
+      "extra": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 476000,
+        "startWithinWindow": 123,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    var logicResponse = this._server.getLogicResponse();\n                    if (logicResponse.freeSpin.spinsAwarded > 0) {\n                        this._freeSpinsGameModel.addExtraFreeSpins(logicResponse.freeSpin.spinsAwarded);\n                    }\n                    else {\n                        this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_NO_MORE_SPINS_AWARDED));\n                    }\n                }",
+        "SHA256": "90884f58cbcdf116cbeb14c5ebb78d2444464485d459dc3b2d6545ebc7626392",
+        "marker": "CheckExtraFreeSpinsCmd.prototype.execute ="
+      },
+      "freeExit": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 488150,
+        "startWithinWindow": 114,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    ps.utils.PSLog.log(\"ExitFreeSpinsGameCmd->execute()\");\n                    this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_FINALISE_TOTAL_WON, this));\n                    this.doGlobalDispatch(new ps.core.GameEvent(ps.core.GameEvent.FREE_SPINS_RETURN_TO_BASE_GAME, this));\n                }",
+        "SHA256": "0516afbb084f2ec05d9df772f2e6955683c09e7afe0297efbe1875c9cc352e2a",
+        "marker": "OnFreeSpinsGameExitCmd.prototype.execute ="
+      },
+      "baseWins": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 92150,
+        "startWithinWindow": 78,
+        "source": "function () {\n                    _super.prototype.execute.call(this);\n                    ps.utils.PSLog.log(\"CheckForWinsCmd->execute()\");\n                    var logicResponse = this._server.getLogicResponse();\n                    var gameResultData = logicResponse.gameResultData;\n                    if (gameResultData.totalWin > 0) {\n                        this.doGlobalDispatch(new core.GameEvent(core.GameEvent.SPIN_HAS_WIN, this));\n                    }\n                    else {\n                        this.doGlobalDispatch(new core.GameEvent(core.GameEvent.SPIN_HAS_NO_WIN, this));\n                    }\n                }",
+        "SHA256": "e7faa45daf2cafb0a3958565d6b91d6333a0d0485ab8eb073fe209840e6da1bc",
+        "marker": "CheckForWinsCmd.prototype.execute ="
+      },
+      "freeFSM": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 498680,
+        "startWithinWindow": 107,
+        "source": "function () {\n                    this._freespinsGameFsm = new ps.core.FSM(ps.core.Subgame.FREE_SPINS_GAME);\n                    var freeSpinsTransitions = [\n                        new ps.core.FSMTransition(\"showFreeSpinsGameIntro\", \"requestFreeSpin\", \"onPlayFreeSpinsButtonPressed\"),\n                        new ps.core.FSMTransition(\"requestFreeSpin\", \"freeSpinValid\", \"onFreeSpinIsValid\"),\n                        new ps.core.FSMTransition(\"freeSpinValid\", \"reelsSpinning\", \"onLogicResponse\"),\n                        new ps.core.FSMTransition(\"requestFreeSpin\", \"showingTotalWon\", \"onNoMoreFreeSpins\"),\n                        new ps.core.FSMTransition(\"reelsSpinning\", \"checkingForMaxWin\", \"onReelsStopped\"),\n                        new ps.core.FSMTransition(\"checkingForMaxWin\", \"showingMaxWin\", \"onMaxWinCheckTrue\"),\n                        new ps.core.FSMTransition(\"showingMaxWin\", \"showingTotalWon\", \"onMaxWinShowComplete\"),\n                        new ps.core.FSMTransition(\"checkingForMaxWin\", \"checkingForWins\", \"onMaxWinCheckFalse\"),\n                        new ps.core.FSMTransition(\"checkingForWins\", \"showingWins\", \"onHasWins\"),\n                        new ps.core.FSMTransition(\"checkingForWins\", \"checkingForExtraFreeSpins\", \"onHasNoWins\"),\n                        new ps.core.FSMTransition(\"showingWins\", \"checkingForExtraFreeSpins\", \"onShowingWinsComplete\"),\n                        new ps.core.FSMTransition(\"checkingForExtraFreeSpins\", \"showingExtraFreeSpins\", \"onHasExtraFreeSpins\"),\n                        new ps.core.FSMTransition(\"checkingForExtraFreeSpins\", \"requestFreeSpin\", \"onHasNoExtraFreeSpins\"),\n                        new ps.core.FSMTransition(\"showingExtraFreeSpins\", \"requestFreeSpin\", \"onShowingExtraFreeSpinsComplete\"),\n                        new ps.core.FSMTransition(\"showingTotalWon\", ps.core.Subgame.FREE_SPINS_GAME_EXIT_STATE, \"onShowingTotalWonComplete\"),\n                    ];\n                    this.initFSMFromTransitions(this._freespinsGameFsm, freeSpinsTransitions);\n                    this._freespinsGameFsm.exitState = ps.core.Subgame.FREE_SPINS_GAME_EXIT_STATE;\n                    this._stateModel.addSubgame(this._freespinsGameFsm);\n                }",
+        "SHA256": "b0e1111598f2a7ff5eaadffb9c2f178e6852a897b200b21637aee07b84680d14",
+        "marker": "CreateFreeSpinsGameStatesCmd.prototype.initFreeSpinsGameFSM ="
+      },
+      "baseFSM": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "byteWindowStart": 996570,
+        "startWithinWindow": 120,
+        "source": "function () {\n                    this._baseGameFsm = new ps.core.FSM(ps.core.Subgame.BASE_GAME);\n                    var baseGameTransitions = [\n                        new ps.core.FSMTransition(\"idle\", \"reelsSpinning\", \"onSpinStarted\"),\n                        new ps.core.FSMTransition(\"reelsSpinning\", \"checkingForMaxWin\", \"onSpinComplete\"),\n                        new ps.core.FSMTransition(\"checkingForMaxWin\", \"showingMaxWin\", \"onMaxWinCheckTrue\"),\n                        new ps.core.FSMTransition(\"showingMaxWin\", \"spinComplete\", \"onMaxWinShowComplete\"),\n                        new ps.core.FSMTransition(\"checkingForMaxWin\", \"checkingForWins\", \"onMaxWinCheckFalse\"),\n                        new ps.core.FSMTransition(\"checkingForWins\", \"showingWins\", \"onSpinWins\"),\n                        new ps.core.FSMTransition(\"showingWins\", \"spinComplete\", \"onSpinShowWinsComplete\"),\n                        new ps.core.FSMTransition(\"checkingForWins\", \"checkingIfFreeSpinsGameHasBeenAwarded\", \"onSpinNoWins\"),\n                        new ps.core.FSMTransition(\"checkingIfFreeSpinsGameHasBeenAwarded\", \"spinComplete\", \"onFreeSpinsGameNotAwarded\"),\n                        new ps.core.FSMTransition(\"checkingIfFreeSpinsGameHasBeenAwarded\", \"checkingForWins\", \"onFreeSpinsGameEnded\"),\n                        new ps.core.FSMTransition(\"spinComplete\", \"idle\", \"onEndResponse\"),\n                    ];\n                    // add the FSM transitions to the subGames.\n                    this.initFSMFromTransitions(this._baseGameFsm, baseGameTransitions);\n                    this._baseGameFsm.init(\"idle\");\n                    this._stateModel.addSubgame(this._baseGameFsm);\n                }",
+        "SHA256": "b345ba6ac7bd171ac03e12abf9fc65dfbd562273fc9c9a890e2da954a1e4b7e9",
+        "marker": "CreateBaseGameStatesCmd.prototype.initBaseGameFSM ="
+      },
+      "currency": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+        "byteWindowStart": 494380,
+        "startWithinWindow": 100,
+        "source": "function () {\r\n            var xmlStr = \"<AccountData><CurrencyMultiplier>\";\r\n            xmlStr += this._currencyMultiplier.toString();\r\n            xmlStr += \"</CurrencyMultiplier></AccountData>\";\r\n            return xmlStr;\r\n        }",
+        "SHA256": "4b5c1b1953054aef5adeeb62fc054cbb74f7d401a117a53d5ea65fffd9feaee3",
+        "marker": "GLSCurrencyEncoder.prototype.parse ="
+      }
+    },
+    "tailBindings": {
+      "finalise": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "offset": 1035000,
+        "source": "          this.mapGlobalCommand(game.UIScatterPaylinesHandlerCmd, ps.core.CyclersModelEvent.PAYLINES_CYCLER_ON_SCATTER_LINE_SHOW);\n                    this.mapGlobalCommand(game.OnFinaliseFreeSpinsGameCmd, ps.core.PreloadEvent.RECOVERY_FREE_SPINS_FINALISE);\n                    this.mapGlobalCommand(game.OnFinaliseFreeSpinsGameCmd, ps.core.GameEvent.FREE_SPINS_NO_MORE_SPINS_AWARDED);\n                    this.mapGlobalCommand(game.OnRestoreFreeSpinsReelCmd, server.ServerResponseEvent.LOGIC_RESPONSE);\n                };\n                BaseGameContext.prototype.mapViewsAndMediators = function () {\n                    _super.prototype.mapViewsAndMediators.call(this);\n        ",
+        "SHA256": "60051db4abea4223a6fb38d2409adafec9382af5473af00f78797c6b7d4f3ed7"
+      },
+      "freeExit": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "offset": 995400,
+        "source": "                   this._stateModel.mapEventTransition(ps.core.GameEvent.SPIN_SHOW_WINS_COMPLETE, ps.core.Subgame.BASE_GAME, \"onSpinShowWinsComplete\");\n                    this._stateModel.mapEventTransition(ps.core.GameEvent.FREE_SPINS_GAME_NOT_AWARDED, ps.core.Subgame.BASE_GAME, \"onFreeSpinsGameNotAwarded\");\n                    this._stateModel.mapEventTransition(server.ServerResponseEvent.END_RESPONSE, ps.core.Subgame.BASE_GAME, \"onEndResponse\");\n                    this._stateModel.mapEventTransition(ps.core.GameEvent.FREE_SPINS_RETURN_TO_BASE_GAME, ps.core.Subgame.BASE_GAME, \"onFreeSpinsGameEnded\");\n                };\n                /*\n                 FSMTransition is effectively (sta",
+        "SHA256": "ca95ab189af34a4ef9e39f8e4a5b09b99d96ae651fae5356d3aed78a9416763c"
+      },
+      "end": {
+        "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+        "offset": 193500,
+        "source": "ameStateEvent.EnterState(core.Subgame.BASE_GAME, \"checkingForWins\"));\n                    this.mapCommand(core.CheckIfFreeSpinsGameAwardedCmd, core.GameStateEvent.EnterState(core.Subgame.BASE_GAME, \"checkingIfFreeSpinsGameHasBeenAwarded\"));\n                    this.mapCommand(core.MakeEndRequestCmd, core.GameStateEvent.EnterState(core.Subgame.BASE_GAME, \"spinComplete\"));\n                    // - Auto play\n                    this.mapCommand(core.InitAutoplayCmd, server.ServerResponseEvent.INIT_RESPONSE);\n          ",
+        "SHA256": "05a3adce627345766777a6f768280f0cfadaec155e360cee18f14e394eeb1b46"
+      }
+    }
+  },
+  "wire": {
+    "headerConstructor": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 488350,
+      "startWithinWindow": 76,
+      "source": "function GLSHeader(metadata, sessionData, glsServerSessionId, gameId, gameVersion) {\r\n            /**\r\n             * ID of casinarena's GLS\r\n             */\r\n            this.GLSID_CASINARENA = \"4\";\r\n            /**\r\n             * ID of freeplay's GLS\r\n             */\r\n            this.GLSID_FREEPLAY = \"65535\";\r\n            this.affiliate = sessionData.getContextID();\r\n            this.freePlay = !metadata.isRealMoney();\r\n            this.gameCodeRGI = metadata.getGameCode();\r\n            this.gameId = gameId;\r\n            this.glsId = (this.freePlay ? this.GLSID_FREEPLAY : this.GLSID_CASINARENA);\r\n            this.langCode = metadata.getLocale();\r\n            this.sessionId = glsServerSessionId;\r\n            this.userId = sessionData.getPlayerID();\r\n            this.version = gameVersion;\r\n            this.promotions = false;\r\n            this.channel = \"I\";\r\n            this.userType = \"C\";\r\n            this.currencyCode = \"\";\r\n        }",
+      "SHA256": "4b94dad25ee8de2be8ee0135240a25a46c79cb4e276a1a01e11056afaec2e113",
+      "marker": "function GLSHeader"
+    },
+    "headerXML": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 488350,
+      "startWithinWindow": 1164,
+      "source": "function () {\r\n            var xmlString = \"\"; //\"<GameRequest type=\\\"Init\\\">\"\r\n            xmlString += \"<Header\";\r\n            xmlString += \" affiliate=\\\"\" + this.affiliate + \"\\\"\";\r\n            xmlString += \" ccyCode=\\\"\" + this.currencyCode + \"\\\"\";\r\n            xmlString += \" channel=\\\"\" + this.channel + \"\\\"\";\r\n            xmlString += \" freePlay=\\\"\" + (this.freePlay ? \"Y\" : \"N\") + \"\\\"\";\r\n            xmlString += \" gameCodeRGI=\\\"\" + this.gameCodeRGI + \"\\\"\";\r\n            xmlString += \" gameID=\\\"\" + this.gameId + \"\\\"\";\r\n            xmlString += \" glsID=\\\"\" + this.glsId + \"\\\"\";\r\n            xmlString += \" lang=\\\"\" + this.langCode + \"\\\"\";\r\n            xmlString += \" promotions=\\\"\" + (this.promotions ? \"Y\" : \"N\") + \"\\\"\";\r\n            xmlString += \" sessionID=\\\"\" + this.sessionId + \"\\\"\";\r\n            xmlString += \" userID=\\\"\" + this.userId + \"\\\"\";\r\n            xmlString += \" userType=\\\"\" + this.userType + \"\\\"\";\r\n            xmlString += \" versionID=\\\"\" + this.version + \"\\\"\";\r\n            xmlString += \"/>\";\r\n            //xmlString += \"</GameRequest>\"\r\n            return xmlString;\r\n        }",
+      "SHA256": "84bf8f9c04f7c249c95ecddfd9a8380b1228a5d92b20debeca05313fefc2f035",
+      "marker": "GLSHeader.prototype.parse ="
+    },
+    "requestInit": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 526800,
+      "startWithinWindow": 204,
+      "source": "function (data) {\r\n            var sessionData = this._partnerAdapter.getSessionData();\r\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\r\n            var xmlString = \"<GameRequest type=\\\"Init\\\">\";\r\n            xmlString += header.parse();\r\n            for (var i = 0; i < data.getEncoders().length; i++) {\r\n                xmlString += data.getEncoders()[i].parse();\r\n            }\r\n            xmlString += \"</GameRequest>\";\r\n            return xmlString;\r\n        }",
+      "SHA256": "40e2e9291481c969bc4bf564077450d2ab4df6d8777d1ec8cfcd611b3d9a506f",
+      "marker": "GLSInitRequester.prototype.parseRequestData ="
+    },
+    "requestLogic": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 528800,
+      "startWithinWindow": 209,
+      "source": "function (data) {\r\n            var sessionData = this._partnerAdapter.getSessionData();\r\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\r\n            var xmlString = \"<GameRequest type=\\\"Logic\\\">\";\r\n            xmlString += header.parse();\r\n            for (var i = 0; i < data.getEncoders().length; i++) {\r\n                xmlString += data.getEncoders()[i].parse();\r\n            }\r\n            xmlString += \"</GameRequest>\";\r\n            return xmlString;\r\n        }",
+      "SHA256": "9a2088def6349b1b9e94e757ab7e9a0cbb854868ac0c41bd5e3b78696195f71c",
+      "marker": "GLSLogicRequester.prototype.parseRequestData ="
+    },
+    "requestEnd": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 524800,
+      "startWithinWindow": 203,
+      "source": "function (data) {\r\n            var sessionData = this._partnerAdapter.getSessionData();\r\n            var header = new server.GLSHeader(this._metaData, sessionData, this._sessionId, this._glmId, this._glmVersion);\r\n            var xmlString = \"<GameRequest type=\\\"EndGame\\\">\";\r\n            xmlString += header.parse();\r\n            for (var i = 0; i < data.getEncoders().length; i++) {\r\n                xmlString += data.getEncoders()[i].parse();\r\n            }\r\n            xmlString += \"</GameRequest>\";\r\n            return xmlString;\r\n        }",
+      "SHA256": "52bb4683a221f1877ea604467d02eb4123e352303a76b052c9c90d6f321f6c7b",
+      "marker": "GLSEndRequester.prototype.parseRequestData ="
+    },
+    "platform": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 508500,
+      "startWithinWindow": 186,
+      "source": "function (input, object) {\r\n            var node = input.getElementsByTagName(\"Header\")[0];\r\n            var data = new server.PlatformData();\r\n            if (node != null) {\r\n                var attr = node.attributes;\r\n                var attrLength = attr.length;\r\n                for (var i = 0; i < attrLength; ++i) {\r\n                    switch (attr[i].nodeName) {\r\n                        case 'sessionID':\r\n                            data.sessionId = attr[i].nodeValue;\r\n                            break;\r\n                        case 'gameID':\r\n                            data.gameId = attr[i].nodeValue;\r\n                            break;\r\n                        case 'lang':\r\n                            data.languageCode = attr[i].nodeValue;\r\n                            break;\r\n                        case 'versionID':\r\n                            data.version = attr[i].nodeValue;\r\n                            break;\r\n                    }\r\n                }\r\n                var currencyMultiplierNode = input.getElementsByTagName(\"CurrencyMultiplier\")[0];\r\n                if (currencyMultiplierNode != null) {\r\n                    data.currencyMultiplier = parseInt(currencyMultiplierNode.textContent, 10);\r\n                }\r\n                else {\r\n                    data.currencyMultiplier = 1;\r\n                }\r\n            }\r\n            object.platformData = data;\r\n        }",
+      "SHA256": "3119a97b3571f11794f7521dd4056cbfa759a3d5a853b0a6cd319ed0d8470ffd",
+      "marker": "GLSPlatformParser.prototype.parse ="
+    },
+    "gameResult": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/lib/game_libs.js",
+      "byteWindowStart": 505400,
+      "startWithinWindow": 249,
+      "source": "function (input, object) {\r\n            var node = input.getElementsByTagName(\"GameResult\")[0];\r\n            var attributes = node.attributes;\r\n            var nodeChildren = node.childNodes;\r\n            var stake = parseInt(node.attributes.getNamedItem(\"stake\").value);\r\n            var stakePerLine = parseInt(node.attributes.getNamedItem(\"stakePerLine\").value);\r\n            var paylineCount = parseInt(node.attributes.getNamedItem(\"paylineCount\").value);\r\n            var totalWin = parseInt(node.attributes.getNamedItem(\"totalWin\").value);\r\n            object.gameResultData = new server.GameResultData(stake, stakePerLine, paylineCount, totalWin);\r\n        }",
+      "SHA256": "f9dbb8eedfb96c37d82b2de35e95b3aab5e1f750c38847e2bd4fab75052fbc48",
+      "marker": "GLSGameResultParser.prototype.parse ="
+    },
+    "psGameResult": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 222600,
+      "startWithinWindow": 280,
+      "source": "function (input, logicResponseObject) {\n                    _super.prototype.parse.call(this, input, logicResponseObject);\n                    this._node = input.getElementsByTagName(\"GameResult\")[0];\n                    this._resultNodes = this._node.childNodes;\n                    var betID = this._node.attributes.getNamedItem(\"betID\").value;\n                    if (betID === \"REPLAY\") {\n                        logicResponseObject.isHistoryReplay = true;\n                    }\n                    for (var nodeIndex = 0; nodeIndex < this._resultNodes.length; ++nodeIndex) {\n                        var childNode = this._resultNodes[nodeIndex];\n                        if (childNode.nodeName === \"ReelResults\") {\n                            logicResponseObject.reelResults = new core.PSReelResultsObject();\n                            logicResponseObject.reelResults.numSpins = parseInt(childNode.attributes.getNamedItem(\"numSpins\").value);\n                        }\n                        if (childNode.nodeName === \"MaxWin_Info\") {\n                            logicResponseObject.maxWin = new core.PSMaxWinObject();\n                            logicResponseObject.maxWin.isMaxWin = childNode.attributes.getNamedItem(\"maxWin\").value === \"true\" ? true : false;\n                            logicResponseObject.maxWin.maxWinValue = parseInt(childNode.attributes.getNamedItem(\"maxWinValue\").value);\n                            logicResponseObject.maxWin.cappedWins = parseInt(childNode.attributes.getNamedItem(\"cappedWins\").value);\n                        }\n                    }\n                }",
+      "SHA256": "8dff45c3061d8385d296966993ad997a4aa6ab2e01b53c8ccabdfb6729069302",
+      "marker": "PSGameResultParser.prototype.parse ="
+    },
+    "initCommand": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 111250,
+      "startWithinWindow": 204,
+      "source": "function () {\n                    _super.prototype.execute.call(this);\n                    var encoders = [new core.PSPageEncoder(this._server.getInitResponse() ? this._server.getInitResponse().pageData.pageIndex + 1 : 0)];\n                    var initData = new server.GLSRequest(encoders);\n                    this._server.makeInitRequest(initData);\n                }",
+      "SHA256": "7333b23fa4db9a9143c593b3fdf57ff87e05b68f75d3f304e860429a5a4bfeee",
+      "marker": "MakeInitRequestCmd.prototype.execute ="
+    },
+    "playCommand": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 112550,
+      "startWithinWindow": 1173,
+      "source": "function (logicResponse) {\n                    var payload = [];\n                    if (this._forceModel && this._forceModel.enabled && this._forceModel.forceData) {\n                        payload.push(new core.PSForceEncoder(this._forceModel.forceData.positions, this._forceModel.forceData.index));\n                        ps.utils.PSLog.log('- Force MakePlayRequestCmd::execute() - adding FORCE payload');\n                    }\n                    // Add HistoryReplay data if required\n                    if (this._historyModel.getIsHistoryReplay()) {\n                        var historyData = this._historyModel.getNextState(true);\n                        if (historyData) {\n                            ps.utils.PSLog.log(\"MakePlayRequestCmd::execute() - adding REPLAY payload\");\n                            payload.push(new core.PSReplayEncoder(historyData));\n                        }\n                        else {\n                            ps.utils.PSLog.log(\"MakePlayRequestCmd::execute() - Do not send next LogicRequest, REPLAY is over.\");\n                            return;\n                        }\n                    }\n                    var stakePerLine = this._stakeModel.getStakePerLine();\n                    var totalStake = this._stakeModel.getTotalBet();\n                    var lineCount = this._stakeModel.getLines();\n                    var freeSpinsActive = (this._freeSpinsGameModel && this._freeSpinsGameModel.isInProgress());\n                    payload.push(this._server.getStakeEncoder(stakePerLine, totalStake, lineCount, freeSpinsActive));\n                    payload.push(this._server.getCurrencyEncoder(this._server.getInitResponse().platformData.currencyMultiplier));\n                    this._server.addCustomPayloads(payload);\n                    var data = new server.GLSRequest(payload);\n                    //////////////////////////////\n                    // Diagnostic purposes only\n                    var initResponse = this._server.getInitResponse();\n                    var recoveryRequest = initResponse.isRecovering;\n                    if (!recoveryRequest) {\n                        ps.utils.PSLog.log(\"MakePlayRequestCmd::execute() - normal logic request\");\n                        this.eventDispatcher.dispatchEvent(new core.GameEvent(core.GameEvent.SPIN_LOGIC_REQUEST_SENT));\n                    }\n                    else {\n                        var initialRecoveryRequest = (logicResponse == undefined);\n                        if (initialRecoveryRequest) {\n                            ps.utils.PSLog.log(\"MakePlayRequestCmd::execute() - initial recovery logic request\");\n                        }\n                        else {\n                            ps.utils.PSLog.log(\"MakePlayRequestCmd::execute() - subsequent recovery logic request\");\n                            this.eventDispatcher.dispatchEvent(new core.GameEvent(core.GameEvent.SPIN_LOGIC_REQUEST_SENT));\n                        }\n                    }\n                    this._server.makeLogicRequest(data);\n                    //(<any>this._partnerAdapter).updateBet(0);\n                    this._partnerAdapter.startedPlay();\n                }",
+      "SHA256": "e77509f16de4d6830b566773c2419ac28bb972483f71601f06a233f9a7de3b24",
+      "marker": "MakePlayRequestCmd.prototype.sendRequest ="
+    },
+    "pageEncoder": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 214800,
+      "startWithinWindow": 863,
+      "source": "function () {\n                    var xmlStr = \"<Page\";\n                    xmlStr += \" number=\\\"\" + this._page.toString() + \"\\\"\";\n                    xmlStr += \"/>\";\n                    return xmlStr;\n                }",
+      "SHA256": "6ed90ee4fda6cd334f1568eb2a126f932ba7b617afadbf327aa5a575628658e5",
+      "marker": "PSPageEncoder.prototype.parse ="
+    },
+    "customPayloads": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1073000,
+      "startWithinWindow": 284,
+      "source": "function (payloadData) {\n                    if (!this._historyModel.getIsHistoryReplay() && !this._wildIndicatorsView.isDescending) {\n                        var depth = this._wildIndicatorsView.submarineDepth;\n                        var nemoAscensionPayload = new game.NemoAscensionPayload(depth);\n                        payloadData.push(nemoAscensionPayload);\n                    }\n                }",
+      "SHA256": "a7d26ba9c0e89b09cf799af203c826677a2a22af4a53c41c880d0a45a002d237",
+      "marker": "GameServer.prototype.addCustomPayloads ="
+    },
+    "ascensionPayload": {
+      "file": "E:/platform-sync/api_new_docker/api_new/client/game/sg/static/resource.atc.casinarena.com/resource-service/content/nemosvoyage_prt/app/js/main.js",
+      "byteWindowStart": 1046600,
+      "startWithinWindow": 327,
+      "source": "function () {\n                    return \"<SpinInfo subAscendPos=\\\"\" + this._depth + \"\\\" />\";\n                }",
+      "SHA256": "9920c59fde56cf02e024ebc5b4704ae05c68506d11b1e300f84438d1316a1cb6",
+      "marker": "NemoAscensionPayload.prototype.parse ="
+    }
+  },
+  "scope": "normal native Init-page0, paid/free/finalise/restoration/End; no max/recovery/history/force; Ascension only with exact own native depth binding"
+}
