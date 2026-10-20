@@ -18091,6 +18091,7 @@ games:
       runtimeGameId: 33153
       betRaw: 40
       protocol: "wms"
+      endpoint: "https://gls.atc.casinarena.com/gls.rgsx"
       runtimeSlug: "nemosvoyage_prt"
       stake: {"totalStake": 40, "stakePerLine": 1, "paylineCount": 40}
       header: {"affiliate": "0", "ccyCode": "", "channel": "I", "freePlay": "Y", "gameCodeRGI": "nemosvoyage_prt", "gameID": "20154", "glsID": "65535", "lang": "en_US", "promotions": "N", "userID": "null", "userType": "C", "versionID": "1_0"}

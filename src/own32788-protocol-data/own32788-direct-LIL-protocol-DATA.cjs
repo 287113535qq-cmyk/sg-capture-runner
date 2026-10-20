@@ -14,7 +14,8 @@ exports.createOwn32788DirectLilProtocolDATA=function({DOM,game}){
   const h=one(root,'Header');need(h.getAttribute('gameID')==='20158'&&h.getAttribute('versionID')==='1_0'&&h.getAttribute('isRecovering')==='N','OWN_NORMAL_HEADER');
   const g=one(root,'GameResult'),features=children(g,'Feature'),lil=features.filter(x=>x.getAttribute('index')==='3'&&x.getAttribute('name')==='LilGame'),active=rounds.get(round);
   if(!active&&lil.length===0)return undefined; // Existing normal/choice consumers retain their own paths.
-  need(lil.length===1&&!children(g,'BaseGameRecoveryInfo').length&&!children(g,'LilRecoveryInfo').length,'ONE_NORMAL_LIL_FEATURE');
+  // Normal Header-N LIL replies retain LilRecoveryInfo as raw display data.
+  need(lil.length===1&&!children(g,'BaseGameRecoveryInfo').length,'ONE_NORMAL_LIL_FEATURE');
   need(integer(g,'stake')===50,'OWN_STAKE');const cash=one(g,'GameWinInfo');need(cash.getAttribute('isMaxWin')==='N','MAX_STAYS_UNMAPPED');
   const win=integer(cash,'totalWagerWin');let event,route;
   if(!active){
